@@ -51,7 +51,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `Rail` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
-| `Logomark` | An inlined, sanitized SVG mark that themes by `currentColor`. Moved from kol-shell 2026-10-22 with `NavRail`. |
+| `VectorLoader` | Any SVG by URL (`src`), fetched, sanitized and inlined so it themes by `currentColor` — pair it with kol-icons' `identity/<id>/…?url` paths or a file of your own. `Logomark` until 2026-10-28 (the alias is on the ledger; `svgUrl` still works). Moved from kol-shell 2026-10-22 with `NavRail`. |
 | `SortControls` | The sortable-header group — click a field to sort ascending, click it again to flip. |
 | `CurveOverlay` | An SVG easing/curve visualizer with a two-handle bezier editor in custom mode. |
 | `Divider` | A thin rule separating content, horizontal or vertical. Vertical `height` is px (default 16, centred) or `'fill'` — stretches to the row (0.276.0). |
@@ -187,6 +187,8 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `NewsletterBand` | **Deprecated 2026-08-27** — `SectionNewsletter` under its old name (`title` → `headline`, `description` → `body`). |
 | `ParallaxShelf` | A scroll-parallax horizontal shelf of WorkCards. |
 | `PortableTextRenderer` | A block-array renderer — maps a plain {type,…} block list to KOL components. |
+| `portableTextComponents` · `createPortableTextComponents({ imageUrl })` | kolkrabbi.io's article map, carried verbatim (2026-10-28): Sanity's real Portable Text blocks, marks and lists for `@portabletext/react`, its image · video · quote · table blocks inside; `imageUrl` binds the app's own Sanity builder |
+| `StickyNavCard` | The article's scroll-spy summary card — heading, index, body and bullets; the active one opens (kolkrabbi.io's, 2026-10-28) |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
 | `CommandOverlay` (was `ShellSearchOverlay`) | The ⌘K overlay — search · go · add · shortcuts (`mode`); ↑↓ rows, → / Enter opens a category, ← back; disabled rows; the keymap at a glance in `shortcuts`. |
@@ -241,6 +243,7 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 | `ThemeToggle` | chrome | A light/dark switcher persisted to localStorage. |
 | `Layout` | chrome | The outer page layout wrapper. |
 | `PageHero` (aliases `BrandHero` · `SubPageHero`) | structure | The page kit's opening band — label · title · lede, `mark` beside the text, `backTo` / `backLabel` above it — a composition of `SectionText` in the `kol-prose-*` voices (0.39.0, page-family-is-not-a-set). One hero: the two old names were one core with one optional slot each. |
+| `SiteHero` | structure | A site's landing: the full-screen image (or any media), the 32 % / 80 % inverse wash, the mark, the name, a tagline and actions, every part optional — brand's Landing class for class (2026-10-28) |
 | `CategoryPage` | structure | The foldernote — a rail category's overview from the nav tree: `PageHero` (its label, lede) over a `ContentCollection` of its pages as the article card, each page's `card` on its tree row; nothing listed by hand (2026-10-24, site-hub W4). |
 | `PageSection` | structure | A titled, labeled content section with anchor support; its head composes `SectionText` since 0.39.0 (internals only — the `kol-prose-*` voices are the base's seams). |
 | `ScrollToTop` | behavior | Resets scroll position on route change. |

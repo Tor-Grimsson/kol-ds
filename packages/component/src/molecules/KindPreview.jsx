@@ -9,6 +9,7 @@ import { kindOf as defaultKindOf, extOf as defaultExtOf, KIND_LABEL } from '../u
 import markdownToHtml from '../utilities/markdownToHtml.js'
 import { parseFrontmatter } from '@kolkrabbi/kol-markdown'
 import DocPage from './DocPage.jsx'
+import { credentialsFor } from '../utilities/credentials.js'
 
 /* taxonomy-ok: molecule — nests the DS media atoms + CodeBlock (relative). */
 
@@ -51,13 +52,14 @@ const LANG = {
   csv: 'text', tsv: 'text', pgn: 'text', txt: 'text', xml: 'xml',
 }
 
-function useTextContent(url, enabled, limit) {
+function useTextContent(url, enabled, limit, credentials) {
   const [result, setResult] = useState({ url: null, text: '', error: null, truncated: false })
   useEffect(() => {
     if (!enabled || !url) return undefined
     let cancelled = false
     const controller = new AbortController()
-    fetch(url, { signal: controller.signal })
+    /* the sign-in cookie for a registered origin (utilities/credentials.js) */
+    fetch(url, { signal: controller.signal, credentials: credentialsFor(url, credentials) })
       .then(async (res) => {
         if (!res.ok) throw new Error(`${res.status}`)
         const size = Number(res.headers.get('content-length') || 0)
@@ -68,7 +70,7 @@ function useTextContent(url, enabled, limit) {
       })
       .catch((e) => { if (!cancelled && e.name !== 'AbortError') setResult({ url, text: '', error: e.message, truncated: false }) })
     return () => { cancelled = true; controller.abort() }
-  }, [url, enabled, limit])
+  }, [url, enabled, limit, credentials])
   return { ...result, loading: enabled && result.url !== url }
 }
 
@@ -116,6 +118,9 @@ const PDF_LIMIT = 8 * 1024 * 1024
 export default function KindPreview({
   o, text: textProp, kind: kindProp, urlOf = (x) => x.url, poster, kindOf = defaultKindOf,
   extOf = defaultExtOf, kindLabel = KIND_LABEL, textLimit = TEXT_LIMIT,
+  /* `'include'` sends the sign-in cookie with this preview's own fetches (PDF, text); unset, a registered origin decides
+   * (`registerCredentialedOrigin`, utilities/credentials.js) */
+  credentials,
   /* ONE RENDERER, THREE FITS (user 2026-09-23: *"theres just a bunch of different views, why? you
    * know what consistency means?"*). Five surfaces each patched this component with their own CSS
    * or bypassed it — the pane, the wall tile, the row thumb, the kind overview and the overlay. The
@@ -153,7 +158,7 @@ export default function KindPreview({
   const ext = extOf(o.key)
   const name = o.displayKey ?? o.key
   const isText = kind === 'text' || kind === 'code' || kind === 'markdown' || kind === 'json' || kind === 'yaml'
-  const fetched = useTextContent(url, isText && textProp == null, textLimit)
+  const fetched = useTextContent(url, isText && textProp == null, textLimit, credentials)
   /* content in hand is never loading and never errors — there is nothing to
    * wait for. It still honours `textLimit`, so one long note cannot outgrow a
    * tile the way a fetched one cannot. */
@@ -215,9 +220,9 @@ export default function KindPreview({
    * pulled to paint one page. */
   const servableUrl = /^(https?:|data:|blob:|\/)/.test(String(url ?? ''))
   if (ext === 'pdf' && servableUrl && fit !== 'thumb' && (o.size ?? 0) <= pdfLimit) {
-    if (fit === 'sheet') return <PdfDocument src={url} fallback={icon} />
+    if (fit === 'sheet') return <PdfDocument src={url} fallback={icon} credentials={credentials} />
     return (
-      <PdfPage src={url} fallback={icon}
+      <PdfPage src={url} fallback={icon} credentials={credentials}
         className={fit === 'tile' ? 'w-full h-full object-cover object-top' : 'w-full h-auto rounded'} />
     )
   }

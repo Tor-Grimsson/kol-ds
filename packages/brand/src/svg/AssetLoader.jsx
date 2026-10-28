@@ -1,4 +1,9 @@
 /**
+ * @deprecated 2026-10-28 — the marks moved to `@kolkrabbi/kol-icons/identity/<id>/` (kol-brand 0.2.0,
+ * plan-2026-10-28-identity); this loader and the copies beside it drop 2026-11-27. It only ever globbed THIS folder,
+ * so it never loaded a consumer's own file — inline any SVG with kol-component's `VectorLoader` (`Logomark` until
+ * 0.308.0) and read a mark by path: `@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-wordmark.svg?raw`.
+ *
  * Brand asset loader — the <Icon>/<Graphic> pattern, rehomed to kol-brand for
  * the brand marks (logos, wordmark, favicons). It sits in the same folder as
  * the SVGs and globs its siblings (`./*.svg`, `?raw`), injecting the markup so

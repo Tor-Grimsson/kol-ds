@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { CategoryPage, SiteLayout } from '@kolkrabbi/kol-framework'
+import { SiteHero, CategoryPage, SiteLayout } from '@kolkrabbi/kol-framework'
 import { Button, PageHeader, useScrollSpy } from '@kolkrabbi/kol-component'
 import { BrandAssets, BrandBook, brandToc } from '@kolkrabbi/kol-styleguide'
 import { VOYAGER } from 'voyager-fixture'
@@ -68,33 +68,19 @@ const NAV = [
   { id: 'icons', label: 'Icons', icon: 'grid', to: '/icons' },
 ]
 
-/* ── Home: the landing hero — kol-website apps/brand's Landing, class-for-class, on VOYAGER's mood and marks ── */
+/* ── Home: the landing hero — kol-framework's SiteHero (2026-10-28; kol-website apps/brand's Landing until then, copied
+ * here class for class), on VOYAGER's mood and marks ── */
 function Home() {
   const navigate = useNavigate()
   const mood = assets.MOOD[0]
   return (
-    <section className="relative min-h-dvh flex items-center justify-center overflow-hidden">
-      <div className="absolute inset-0 w-full h-full">
-        <img src={mood.url} alt="" className="w-full h-full object-cover" style={{ objectPosition: 'center' }} />
-      </div>
-      {/* the site's hero overlay (landing.css): the inverse ink over the photo, so the text reads in either theme — the
-          variable flips with the theme, the mix is inline (Tailwind first, no app CSS) */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none bg-[color-mix(in_srgb,var(--kol-surface-on-inverse)_32%,transparent)]" aria-hidden="true" />
-
-      <div className="relative z-[1] flex flex-col items-center gap-10 px-8 text-center">
-        <div className="w-[clamp(140px,16vw,220px)] text-emphasis">
-          <Mark id="logomark" />
-        </div>
-
-        <h1 className="kol-prose-display uppercase">{brand.meta.name}</h1>
-
-        <p className="kol-prose-tagline">{business.BRAND_INFO.labels.manifesto}</p>
-
-        <div className="flex flex-wrap items-center justify-center gap-3 mt-4">
-          <Button tone="primary" size="md" onClick={() => navigate('/brand')}>Styleguide</Button>
-        </div>
-      </div>
-    </section>
+    <SiteHero
+      image={{ src: mood.url }}
+      mark={<Mark id="logomark" />}
+      title={brand.meta.name}
+      tagline={business.BRAND_INFO.labels.manifesto}
+      actions={<Button tone="primary" size="md" onClick={() => navigate('/brand')}>Styleguide</Button>}
+    />
   )
 }
 

@@ -1,0 +1,20 @@
+/* ── Resume source view (/resume) ─────────────────────────────────────
+   The five kit section components rendered as sections of ONE page. Each
+   still carries its own <main> page padding + width cap, and Cover/Back nest
+   their content in a framed 1:√2 A-sheet card — flatten both so the sections
+   read as one continuous document. Screen-only; the treatments (/resume/t/*)
+   keep the sheet framing because there it IS the page. */
+
+.kol-resume-source main {
+  padding: 0;
+  max-width: none;
+}
+
+.kol-resume-source main > div[class*="aspect-"] {
+  aspect-ratio: auto;
+  max-width: none;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "pnpm --filter showcase dev",
-    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && node scripts/extract-sitemap.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter overlays build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter brand-sections build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio-hub build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter rack-hub build && pnpm --filter mixer build && pnpm --filter mixer-hub build && pnpm --filter editor-hub build && pnpm --filter labs build && pnpm --filter randomiser build && pnpm --filter stationery build && pnpm --filter brand-lab build && pnpm --filter site-hub build && pnpm --filter document build && pnpm --filter rails build",
+    "build": "node scripts/validate-roster.mjs && node scripts/validate-imports.mjs && node scripts/validate-foundations.mjs && node scripts/extract-descriptions.mjs && node scripts/extract-sitemap.mjs && pnpm --filter showcase build && pnpm --filter media build && pnpm --filter media-hub build && pnpm --filter hub build && pnpm --filter overlays build && pnpm --filter shell build && pnpm --filter notes build && pnpm --filter presentation build && pnpm --filter notes-hub build && pnpm --filter presentation-hub build && pnpm --filter catalog build && pnpm --filter brand build && pnpm --filter brand-sections build && pnpm --filter editor build && pnpm --filter controls build && pnpm --filter curves build && pnpm --filter workshop build && pnpm --filter markdown build && pnpm --filter search build && pnpm --filter studio-hub build && pnpm --filter studio build && pnpm --filter panels build && pnpm --filter fixtures build && pnpm --filter brand-hub build && pnpm --filter rack build && pnpm --filter rack-hub build && pnpm --filter mixer build && pnpm --filter mixer-hub build && pnpm --filter editor-hub build && pnpm --filter labs build && pnpm --filter randomiser build && pnpm --filter stationery build && pnpm --filter brand-lab build && pnpm --filter site-hub build && pnpm --filter document build && pnpm --filter rails build && pnpm --filter identity build && pnpm --filter print build",
     "lookups": "node scripts/generate-lookups.mjs",
     "validate:roster": "node scripts/validate-roster.mjs",
     "validate:preview-files": "node scripts/validate-preview-files.mjs",
@@ -64,6 +64,7 @@
     "validate:retirements": "node scripts/validate-retirements.mjs --check",
     "retirements": "node scripts/validate-retirements.mjs",
     "extract:icons": "node scripts/extract-icon-cuts.mjs",
+    "identity:render": "node scripts/render-identity.mjs",
     "media-hub": "pnpm --filter media-hub dev",
     "hub": "pnpm --filter hub dev",
     "overlays": "pnpm --filter overlays dev",
@@ -85,6 +86,9 @@
     "studio-hub": "pnpm --filter studio-hub dev",
     "site-hub": "pnpm --filter site-hub dev",
     "rails": "pnpm --filter rails dev",
+    "identity": "pnpm --filter identity dev",
+    "print": "pnpm --filter print dev",
+    "resume": "pnpm --filter resume dev",
     "hubs": "pnpm --parallel --filter studio-hub --filter editor-hub --filter mixer-hub --filter rack-hub dev",
     "studio": "pnpm --filter studio dev",
     "panels": "pnpm --filter panels dev",
@@ -104,7 +108,8 @@
     "@changesets/cli": "^2.27.9",
     "esbuild": "^0.25.12",
     "playwright": "^1.63.0",
-    "react-docgen": "^8.0.3"
+    "react-docgen": "^8.0.3",
+    "sharp": "^0.35.5"
   },
   "packageManager": "pnpm@9.15.0",
   "engines": {

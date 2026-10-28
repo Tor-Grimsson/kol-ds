@@ -1,0 +1,14 @@
+39:  .stack-hero-overlay {
+40-    --overlay-mix: 32%;
+41-    background-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) var(--overlay-mix), transparent);
+42-  }
+43:  :is([data-theme="dark"], .dark) .stack-hero-overlay {
+44-    --overlay-mix: 80%;
+45-  }
+46-  @media (prefers-color-scheme: dark) {
+47:    :root:not([data-theme="light"]) .stack-hero-overlay {
+48-      --overlay-mix: 80%;
+49-    }
+50-  }
+51-}
+52-

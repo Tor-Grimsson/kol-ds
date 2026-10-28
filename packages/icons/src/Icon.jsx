@@ -12,46 +12,55 @@
  * @param {ReactNode} props.children - Optional: Direct SVG path content for custom icons
  */
 import { useEffect, useState } from 'react'
+import { setOf } from './iconNames.js'
 
-/* ONE icon home: kol-icon-set-interface. Legacy sets removed 0.8.0 (2026-07-28) —
- * a name either resolves from v1 or from consumer-registered SVGs, nothing else.
- *
- * The raw SVG strings live in ./iconData.js and are pulled in via a single
- * dynamic import — that keeps them out of the entry chunk (off the critical first-
- * paint path) and streams them in their own async chunk. Once loaded the map is
- * cached at module scope, so resolution stays synchronous for every render after. */
-let ICONS = null            // { V1 } once the chunk resolves
-let loadPromise = null
+/* THREE SETS, THREE CHUNKS (1.5, plan-2026-10-28-identity — user: "I cant believe you have to take every icon we
+ * ship if you only need one? is kol-icon just one tier?"). Until 0.50.0 every set's SVG text sat in ONE async
+ * module, so the first <Icon> on a website pulled every rack waveform and every app mark too — the "a website pays
+ * nothing for the rest" claim was never true in the bundle. Now each set is its own module under ./sets/, and a
+ * name's set is known from the keys-only index (iconNames.js, no SVG text) BEFORE anything is fetched: the first
+ * interface name fetches the interface chunk and nothing else; signal and identity load the first time one of their
+ * names renders. Within a set it is still the whole set — one request, not one per glyph. Once a chunk lands its map
+ * is cached at module scope, so resolution stays synchronous for every render after. Nothing is prefetched at boot. */
+const SETS = {
+  interface: () => import('./sets/interface.js'),
+  signal: () => import('./sets/signal.js'),
+  identity: () => import('./sets/identity.js'),
+}
+const LOADED = {}           // set → { name: svg } once its chunk resolves
+const PENDING = {}          // set → the in-flight import
 const subscribers = new Set()
 
-const loadIcons = () => {
-  if (!loadPromise) {
-    loadPromise = import('./iconData.js').then((mod) => {
-      ICONS = mod
+const loadSet = (set) => {
+  if (!set || !SETS[set]) return Promise.resolve(null)
+  if (LOADED[set]) return Promise.resolve(LOADED[set])
+  if (!PENDING[set]) {
+    PENDING[set] = SETS[set]().then((mod) => {
+      LOADED[set] = mod.default
       subscribers.forEach((fn) => fn())
-      return mod
+      return mod.default
     })
   }
-  return loadPromise
+  return PENDING[set]
 }
 
-// Start fetching the icon chunk the moment this module evaluates, in parallel with
-// the rest of boot — by first paint it's usually already in flight or resolved.
-loadIcons()
-
-const useIconsReady = () => {
-  const [ready, setReady] = useState(() => !!ICONS)
+/* ready = the set this name lives in has landed (a name no set ships is "ready" at once — it is a consumer's
+ * registered glyph or a miss, and neither waits on a chunk) */
+const useIconsReady = (name) => {
+  const set = setOf(name)
+  const [ready, setReady] = useState(() => !set || !!LOADED[set])
   useEffect(() => {
-    /* the chunk can land BETWEEN the render (which read `ICONS` as null) and this effect — under a
+    /* the chunk can land BETWEEN the render (which read the set as missing) and this effect — under a
        Suspense boundary that gap is as long as the lazy route takes. Nobody was subscribed then, so
        returning here without setting the state left the icon blank for good (kol-fxr's rail on
        /editor and /randomiser, found in apps/editor-hub 2026-10-03). */
-    if (ICONS) { setReady(true); return undefined }
-    const cb = () => setReady(true)
+    if (!set || LOADED[set]) { setReady(true); return undefined }
+    setReady(false)
+    const cb = () => { if (LOADED[set]) setReady(true) }
     subscribers.add(cb)
-    loadIcons()
+    loadSet(set)
     return () => subscribers.delete(cb)
-  }, [])
+  }, [set])
   return ready
 }
 
@@ -92,9 +101,10 @@ export const registerIcons = (globMap) => {
  * blank an icon. Drop each once no repo in the estate names it (Retirements R2).
  *   customize → nav-settings (2026-10-09: two drawings of one sliders mark; nav-settings has the
  *     punched hole)
- *   user-interface → metrics (2026-10-09: it is the metrics app's mark, moved to `identity`)
+ *   user-interface → metrics → metric (2026-10-09: it is the metrics app's mark, moved to `identity`)
+ *   metrics → metric (2026-10-28: one word, singular, the app's own name — `apps/metric`, metric.kolkrabbi.io)
  *   rack → rack-v (2026-10-09: beside the new rack-h) */
-export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'metrics', rack: 'rack-v' }
+export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v' }
 
 /* A REGISTERED GLYPH NEVER OVERRIDES A DS NAME (user 2026-10-24: kol-mirror registered its own set over the resolver and
  * its `refresh` replaced the DS's in the settings rail's reset — *"how can it register its own in a FIXED PRESET OF
@@ -104,13 +114,14 @@ export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'met
 const overridden = new Set()
 const resolveIcon = (name) => {
   const n = RENAMED_ICONS[name] ?? name
-  const shipped = ICONS ? (ICONS.V1[n] ?? ICONS.SIGNAL[n] ?? ICONS.IDENTITY?.[n]) : undefined
-  if (shipped) {
+  const set = setOf(n)
+  if (set) {
+    /* a DS name: its set's map, or nothing yet while that chunk streams — never the custom glyph */
     if (CUSTOM[name] && import.meta.env?.DEV && !overridden.has(name)) {
       overridden.add(name)
       console.warn(`kol-icons: "${name}" is a DS glyph — the registered one is ignored (a registration never overrides a shipped name, 2026-10-24). Register it under another name if it is a different drawing.`)
     }
-    return shipped
+    return LOADED[set]?.[n]
   }
   return CUSTOM[name]
 }
@@ -149,7 +160,7 @@ const Icon = ({
   style = {},
   children
 }) => {
-  const ready = useIconsReady()
+  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)
 
   // If children are provided, render directly (for custom icons)
   if (children) {

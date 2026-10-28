@@ -1,6 +1,6 @@
 // The signal engine's check: `node src/signal/signal.test.mjs`
 import assert from 'node:assert/strict'
-import { compileExpression, isExpression, fitRange, envelopeAt, envelopeLength, gateSeconds, createEnvelope, stageSeconds, EXPRESSION_SECTIONS } from './index.js'
+import { createTransport, seekToSeconds, compileExpression, isExpression, fitRange, envelopeAt, envelopeLength, gateSeconds, createEnvelope, stageSeconds, EXPRESSION_SECTIONS } from './index.js'
 
 // helpers span [min, max] — monitor's semantics; min 0 is mirror's / the editor's
 const w = compileExpression('wave(t)')
@@ -50,3 +50,23 @@ assert.equal(lvl, 0)
 assert.equal(env.stage, 'idle')
 
 console.log('signal: ok')
+
+// the transport: paused at boot, shaped time folds over the loop window, phase is 0..1, stop/home bump the epoch
+{
+  const tr = createTransport({ loopIn: 2, loopOut: 6 })
+  assert.equal(tr.playing, false)
+  assert.equal(tr.now(), 0)
+  assert.equal(tr.loopSeconds, 4)
+  tr.seek(5); assert.equal(tr.now(), 5)                 // free-running forward: raw time
+  tr.set({ looping: true }); tr.seek(5); assert.equal(tr.now(), 2 + 1)   // a loop: IN + wrap(5, 4)
+  assert.equal(tr.phase(), 0.25)
+  tr.set({ mode: 'reverse' }); tr.seek(1); assert.equal(tr.now(), 2 + 3)
+  seekToSeconds(tr, 3); assert.equal(tr.now(), 3)       // a scrubber lands where it points
+  const e = tr.epoch; tr.pause(); assert.equal(tr.epoch, e)   // pause never resets
+  tr.home(); assert.equal(tr.epoch, e + 1)
+  tr.stop(); assert.equal(tr.epoch, e + 2); assert.equal(tr.playing, false)
+  tr.setLoopSeconds(10); assert.equal(tr.state.loopOut, 12)
+  tr.set({ hold: true }); const h = tr.now(); tr.seek(0.5); assert.equal(tr.now(), h)  // hold freezes the output
+  tr.reset(); assert.equal(tr.state.mode, 'forward'); assert.equal(tr.state.loopOut, 8)
+}
+console.log('transport: ok')

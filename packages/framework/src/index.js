@@ -26,6 +26,8 @@ export { default as PageSection } from './PageSection.jsx'
 export { default as PortalFooter } from './PortalFooter.jsx'
 export { default as ScrollToTop } from './ScrollToTop.jsx'
 export { default as PageHero, default as BrandHero, default as SubPageHero } from './PageHero.jsx'
+/* a site's landing — the full-screen image, wash, mark and name (ArticleRendererHomeHeroSelection, 2026-10-28) */
+export { default as SiteHero } from './SiteHero.jsx'
 export { default as CategoryPage } from './CategoryPage.jsx'
 /* the document page (plan-2026-10-28-document W5.2): a markdown file as `.kol-sheet`, the hover card for its links,
  * a folder of files as page rows */

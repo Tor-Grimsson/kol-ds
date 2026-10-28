@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 /* THE TOGGLE IS THE HUB'S (user 2026-10-24: *"THIS SHOULDNT BE POSSIBLE if you were using a preset"*): kol-framework's
    ThemeToggle, imported by its file so the framework's router-bound chrome never rides along, drawn here with the Hub's
    props on every rail — no app passes a toggle. kol-framework is kol-shell's peer for this (ARCHITECTURE §3: the shell
@@ -12,7 +12,8 @@ import HubDev from './HubDev.jsx'
 import SettingsLinks, { SettingsColophon } from './SettingsLinks.jsx'
 import About from './About.jsx'
 import { warnJsx } from './warnJsx.js'
-import { CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAIL_PRESETS, SettingsFooter, SettingsPanel, SettingsSections, ShortcutsOverlay, TabsRow, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
+import { Icon } from '@kolkrabbi/kol-icons'
+import { Avatar, CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAIL_PRESETS, SettingsFooter, SettingsPanel, SettingsSections, ShortcutsOverlay, TabsRow, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubDev (relative) + kol-component's CommandOverlay */
 
@@ -91,10 +92,15 @@ import { CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAI
  *                              foot, opening `MediaLibrary variant="picker"` (the column browser with the preview pane,
  *                              Cancel and Use — mirror's) over `client` (kol-media-client's shape, or the media
  *                              fixture's). OPT-IN: no `media`, no row
- * @param {Object}   signIn     `{ signedIn, onPress(password | null) }` — the user row at the rail's foot: a `user` glyph
- *                              and "Sign in" while out, a `cloud` glyph and "Signed in" while in. The Hub asks in the DS
- *                              dialog — signed out, the password prompt (empty cancels), then `onPress(password)`;
- *                              signed in, the sign-out confirm, then `onPress(null)`. OPT-IN: no `signIn`, no row
+ * @param {Object}   signIn     `{ signedIn, user?, onProfile?, onPress }` — the user row at the rail's foot. OPT-IN: no
+ *                              `signIn`, no row. THE ACCOUNT (HubAccountRow, kol-fxr 2026-10-28 — user: *"I am the only user.
+ *                              and we will treat me THE ONLY USER as a proper user"* · *"why does it say password for library
+ *                              sync? … stupid."*): with `user: { name, avatar? }` the row is an account — signed out it reads
+ *                              Sign in and the DS dialog asks Email and Password, then `onPress({ email, password })`; signed
+ *                              in it draws the avatar (the initial when none) and the name, and opens `onProfile()` (the
+ *                              app's profile page, which owns sign-out). Without `user` it is the shared-password row it was:
+ *                              a `user` glyph and "Sign in" out, `cloud` and "Signed in" in; the password prompt, then
+ *                              `onPress(password)`; signed in, the sign-out confirm, then `onPress(null)`
  * @param {Array}    shortcuts  `[{ section, items: [{ id, label, combo }] }]` — the sheet AND Settings
  * @param {*}        themeToggle  RETIRED 2026-10-24 — the Hub draws kol-framework's `ThemeToggle` itself, the same on every
  *                              rail (*"wrong themetoggle"* — two apps had written `tone="sunken"`); a value passed here
@@ -114,6 +120,9 @@ const SETTINGS_ROW = (path) => [{ icon: 'nav-settings', path, label: 'Settings' 
 /* the foot's two sentinels (fxr's `#media` and `#sign-in`, made the Hub's) — a press opens, never routes */
 const MEDIA_PATH = '#media'
 const SIGN_IN_PATH = '#sign-in'
+/* the signed-in account row's glyph is the user (HubAccountRow): a name no set ships, drawn by the rail's icon component as
+ * the Avatar at the glyph's 20; a phone's pill and More draw the `user` glyph in its place */
+const ACCOUNT_GLYPH = '__hub-account'
 /* the drawer tier's Settings row — a sentinel too: it opens the drawer, it never routes */
 const SETTINGS_DRAWER = '#settings'
 
@@ -229,6 +238,16 @@ function HubFrame({
    * empty cancels — then `onPress(password)`; signed in, the sign-out confirm, then `onPress(null)` */
   const askSignIn = async () => {
     if (!signIn) return
+    /* an account: signed in opens the profile; signed out asks email and password */
+    if (signIn.user || signIn.onProfile) {
+      if (signIn.signedIn) { signIn.onProfile?.(); return }
+      const got = await modal.form('Sign in', [
+        { id: 'email', placeholder: 'Email', type: 'email', autoComplete: 'username' },
+        { id: 'password', placeholder: 'Password', type: 'password', autoComplete: 'current-password' },
+      ], { okLabel: 'Sign in' })
+      if (got?.email && got?.password) signIn.onPress?.({ email: got.email.trim(), password: got.password })
+      return
+    }
     if (signIn.signedIn) {
       const ok = await modal.confirm('Sign out of the library sync? Saves stay on this device only.', { okLabel: 'Sign out' })
       if (ok) signIn.onPress?.(null)
@@ -301,8 +320,12 @@ function HubFrame({
     ...(home.action ? [{ label: home.action.label, icon: 'plus', onPress: home.action.onClick }] : []),
     ...(walkthrough?.length ? [{ label: touring ? 'Close walkthrough' : 'Walkthrough', icon: 'book-open', onPress: () => setTouring((t) => !t) }] : []),
   ] : []
+  /* SIGNED OUT (HubHomeSignedOut, 2026-10-28): Home is the stage, no files; the desk's round + carries Sign in beside New File
+   * and Walkthrough; on a phone the pill is the app's chromes and More is the rail (frame A2) */
+  const signedOutHome = onHome && (home.signedOut ?? (home.stage != null && !(home.files?.length)))
+  const signInAction = signIn && !signIn.signedIn ? { label: 'Sign in', icon: 'user', onPress: () => askSignIn() } : undefined
   const page = onHome
-    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...home} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} />
+    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...home} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} signInAction={signInAction} />
     : settingsPage && currentPath === settingsPath
       ? <HubSettings app={app} shortcuts={shortcuts} themeToggle={toggle} filters={settingsFilters} {...settingsProps} drawer={settingsProps.drawer ?? true} />
       : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
@@ -314,11 +337,23 @@ function HubFrame({
   /* the pinned foot: Media, Sign in, Settings — each only when the app passes it */
   const bottom = [
     ...(media ? [{ icon: 'image', path: MEDIA_PATH, label: 'Media' }] : []),
-    ...(signIn ? [{ icon: signIn.signedIn ? 'cloud' : 'user', path: SIGN_IN_PATH, label: signIn.signedIn ? 'Signed in' : 'Sign in' }] : []),
+    ...(signIn ? [signIn.signedIn && signIn.user
+      ? { icon: ACCOUNT_GLYPH, path: SIGN_IN_PATH, label: signIn.user.name ?? 'Account' }
+      : { icon: signIn.signedIn ? 'cloud' : 'user', path: SIGN_IN_PATH, label: signIn.signedIn ? 'Signed in' : 'Sign in' }] : []),
     ...(settings ? SETTINGS_ROW(settingsDrawer ? SETTINGS_DRAWER : settingsPath) : []),
   ]
   /* the phone bar lists Home as a tab — the rail draws it as the mark, the bar has no mark */
-  const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...rows, ...bottom]
+  const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...rows, ...bottom.map((r) => (r.icon === ACCOUNT_GLYPH ? { ...r, icon: 'user' } : r))]
+  /* the rail's glyphs, with the account's avatar where its row is */
+  const user = signIn?.signedIn ? signIn.user : null
+  const railIcon = useMemo(() => {
+    if (!user) return iconComponent
+    const Base = iconComponent ?? Icon
+    const initial = (user.name ?? '?').trim().charAt(0).toUpperCase()
+    return function HubRailIcon({ name, ...rest }) {
+      return name === ACCOUNT_GLYPH ? <Avatar initial={initial} src={user.avatar} alt="" size="xs" /> : <Base name={name} {...rest} />
+    }
+  }, [iconComponent, user?.name, user?.avatar]) // eslint-disable-line react-hooks/exhaustive-deps
   /* the two sentinels open, everything else routes — the rail, the bar, ⌥-digits and ⌘K all come through here */
   const go = (path, ...rest) => {
     if (path === MEDIA_PATH) { setMediaOpen(true); return }
@@ -353,12 +388,13 @@ function HubFrame({
     <AppShell
       items={rows}
       bottomItems={bottom}
-      barItems={barItems}
+      barItems={signedOutHome && home.chromes?.length ? home.chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress })) : barItems}
       barActions={homeActions}
+      phoneNav={signedOutHome && home.chromes?.length ? { sheetItems: [...rows, ...bottom.map((r) => ({ ...r, icon: r.icon === ACCOUNT_GLYPH ? 'user' : r.icon, foot: true }))], moreKeepsOpen: true } : undefined}
       logomark={app.logomark ? { svgUrl: app.logomark, title: app.name } : undefined}
       currentPath={currentPath}
       onNavigate={go}
-      iconComponent={iconComponent}
+      iconComponent={railIcon}
       appName={app.name}
       railToggleKey={'\\'}
       settingsPath={settingsPage ? settingsPath : undefined}

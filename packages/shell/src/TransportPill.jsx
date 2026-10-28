@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { PHONE_NAV_VARIANTS } from './PhoneNav.jsx'
 import { TabsRow, TABBAR_H, TABBAR_PILL_INSET, TABBAR_PILL_TAB, tabbarPillWidth } from '@kolkrabbi/kol-component'
 import MoreRows from './MoreSheet.jsx'
 
@@ -64,9 +65,10 @@ export default function TransportPill({ items = [], sheetFor = {}, placement = '
         placement="phone"
         shape="pill"
         edge={top ? 'top' : 'bottom'}
-        border={false}
-        shadow
-        active="circle"
+        /* the `transport` row of PHONE_NAV_VARIANTS (2026-10-28) — one table, not a second tuning */
+        border={PHONE_NAV_VARIANTS.transport.border}
+        shadow={PHONE_NAV_VARIANTS.transport.shadow}
+        active={PHONE_NAV_VARIANTS.transport.active}
         foldable={foldable}
         folded={folded}
         onFoldChange={(v) => { if (v) setSheet(null); onFoldChange?.(v) }}

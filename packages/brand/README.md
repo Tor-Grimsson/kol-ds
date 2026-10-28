@@ -11,7 +11,13 @@ brand.colors.anchors       // the four semantic identity anchors
 brand.logos                // package-relative SVG paths
 ```
 
-## Brand assets — `src/svg/` + the `<Asset>` loader
+## Brand assets — moved to kol-icons (0.2.0, 2026-10-28)
+
+The marks live in **`@kolkrabbi/kol-icons`**, one folder per identity, the brand's at `identity/kolkrabbi/`: `kolkrabbi.svg` (the icon, `<Icon name="kolkrabbi">`) · `kolkrabbi-logomark.svg` · `kolkrabbi-wordmark.svg` · `kolkrabbi-lockup-h.svg` · `kolkrabbi-lockup-v.svg` · `kolkrabbi-favicon.svg`; `kol-ds/` and `metric/` hold those favicons. Import by path — `@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-wordmark.svg?raw` (or `?url`) — and inline any of them with kol-component's loader. The `brand.logos` / `brand.favicons` entries below point there.
+
+**`src/svg/` is the 30-day ledger**: the same files under their old names, dropped 2026-11-27, with the `<Asset>` loader that globbed them. Until then the section below still works.
+
+### Until 2026-11-27 — `src/svg/` + the `<Asset>` loader
 
 All brand marks (logos, wordmark, favicons) live in one `src/svg/` folder with the loader co-located — the `<Icon>`/`<Graphic>` pattern rehomed here. **Nothing is inlined in source; assets are files, loaded.** Two ways in:
 

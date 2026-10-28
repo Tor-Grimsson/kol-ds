@@ -126,8 +126,12 @@ import useDragResize from '../hooks/useDragResize.js'
  * THE RAIL'S BEHAVIOURS ARE PROPS (SiteRailTitleNavigatesOnly, kol-branding 2026-10-27 — user: "clicking on title
  * shouldnt also expand, that is what the chevron is for", and: a small rail behaviour should never need a ticket here —
  * a sensible default plus a prop the consumer sets in its own repo):
- *   `discloseOnTitle`  `true` lets a foldernote's TITLE also open its pages; default `false` — the title navigates, the
- *                      chevron alone expands and collapses
+ *   `discloseOnTitle`  `true` lets a foldernote's TITLE also open its pages; default `false` — the title navigates, and
+ *                      the rest of the row (everything right of the title, the chevron at its end) expands and collapses
+ *                      (2026-10-28: "it should expand anywhere except the title")
+ *   `fade`             `true` (default) — the tree fades out at its foot where the window clips it, as the app rail and
+ *                      the workshop rail do (2026-10-28: "we also are missing a fade when list clips in navrail");
+ *                      `false` draws it plain
  *   `defaultOpen`      category ids open on first render (default none — the rail loads closed, elder ruling 2026-08-06)
  *   `openOnRoute`      `true` opens the category holding the current route whenever the route changes (default `false`
  *                      — nothing auto-expands on arrival); it only adds, never closes what you opened
@@ -204,6 +208,7 @@ export default function NavRailSite({
   expandOnSelect = false,
   defaultCollapsed = false,
   discloseOnTitle = false,
+  fade = true,
   defaultOpen = [],
   openOnRoute = false,
 }) {
@@ -368,24 +373,28 @@ export default function NavRailSite({
                  definition, and an <a href> would promise a page that does
                  not exist. Clicking it discloses its pages. */
               const head = isFolder ? (
-                /* the row opens the page (and discloses only with `discloseOnTitle`); the caret beside it (a sibling — a
-                 * button cannot sit inside a link) toggles the disclosure */
+                /* THE TITLE NAVIGATES, THE REST OF THE ROW EXPANDS (user 2026-10-28: *"it should expand anywhere except the
+                 * title, so press title > get overview, press the row f.e. on right of the title, expand category"* — the
+                 * 12px chevron was the only target). The link keeps the row's full box and wash but only its glyph and title
+                 * take the pointer (`.kol-sidenav-hop--split`); the caret is a button under it filling the whole row
+                 * (`.kol-sidenav-hop-caret--row`), the chevron at its end, so a press anywhere else on the row lands on it.
+                 * `discloseOnTitle` still lets the title open its pages too. Collapsed, the link takes the whole row again. */
                 <>
-                  <RouteLeaf {...leafProps(cat.to)} onPress={discloseOnTitle ? () => discloseCat(cat.id) : undefined} className={(active) => `${rowCls}${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
-                    {glyph}
-                    <span className="kol-sidenav-hop-label flex-1 min-w-0">{cat.label}</span>
-                  </RouteLeaf>
                   <button
                     type="button"
                     /* no display utility on the caret — it would outrank the collapsed rule's display:none (the 2026-08-09 defect; the
                      * box lives in .kol-sidenav-hop-caret, kol-framework.css) */
-                    className={`kol-sidenav-hop-caret bg-transparent border-0 cursor-pointer p-0 text-emphasis${isOpen ? '' : ' -rotate-90'}`}
+                    className="kol-sidenav-hop-caret kol-sidenav-hop-caret--row bg-transparent border-0 cursor-pointer pt-3 pr-4 pb-0 pl-0 text-emphasis"
                     aria-expanded={isOpen}
                     aria-label={isOpen ? `Collapse ${cat.label}` : `Expand ${cat.label}`}
                     onClick={() => (collapsed ? (expandOnSelect && toggleCollapsed(), discloseCat(cat.id)) : toggleCat(cat.id))}
                   >
-                    <Icon name="chevron-down" size={12} />
+                    <span className={`kol-sidenav-hop-chevron${isOpen ? '' : ' -rotate-90'}`}><Icon name="chevron-down" size={12} /></span>
                   </button>
+                  <RouteLeaf {...leafProps(cat.to)} onPress={discloseOnTitle ? () => discloseCat(cat.id) : undefined} className={(active) => `${rowCls} kol-sidenav-hop--split${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
+                    {glyph}
+                    <span className="kol-sidenav-hop-label flex-1 min-w-0"><span className="kol-sidenav-hop-title">{cat.label}</span></span>
+                  </RouteLeaf>
                 </>
               ) : isLink ? (
                 <RouteLeaf {...leafProps(cat.to)} className={(active) => `${rowCls}${active ? ' is-active' : ''}`}>
@@ -449,7 +458,7 @@ export default function NavRailSite({
                   {/* ONE TREE IN BOTH STATES (2026-10-24, the clip model): the Tooltip wraps the row expanded too,
                       disabled — wrapping only when collapsed rebuilt every row on the toggle, losing hover and
                       focus and flashing the rail. Portalled, so overflow can't clip it. */}
-                  <Tooltip label={cat.label} placement="right" triggerClassName="block" disabled={!collapsed}>
+                  <Tooltip label={cat.label} placement="right" triggerClassName={isFolder ? 'block relative kol-sidenav-hop-split' : 'block'} disabled={!collapsed}>
                     {head}
                   </Tooltip>
 
@@ -482,7 +491,7 @@ export default function NavRailSite({
         * collapsed tree they scrolled off below the footer — "pinned" only
         * held while the tree was shorter than the rail. They are the block
         * after it now, above the footer, the tree scrolling underneath. */}
-      <div className="kol-sidenav-scroll flex-1 overflow-y-auto pt-4 pb-4 [scrollbar-width:thin]">
+      <div className={`kol-sidenav-scroll flex-1 overflow-y-auto pt-4 [scrollbar-width:thin] ${fade ? 'pb-12 kol-sidenav-scroll--fade' : 'pb-4'}`}>
         <nav aria-label="Sections">
           <ul className="kol-sidenav-tree flex flex-col gap-[2px]">
             {navTree.map(renderCat)}

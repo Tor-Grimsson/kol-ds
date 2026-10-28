@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { AppShell, useNavHidden } from '@kolkrabbi/kol-shell'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { fixtureClient } from 'media-fixture'
 
 /* THE EDITOR, ALONE — every chrome the package exports, reachable (apps review §6c-1, 2026-09-29).

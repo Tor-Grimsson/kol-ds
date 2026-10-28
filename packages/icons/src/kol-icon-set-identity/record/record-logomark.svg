@@ -1,0 +1,4 @@
+<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- record logomark: the mark in its own 24 box, currentColor — from kol-website public/identity/record/touch-icons/apple-touch-icon-dark.svg (its tile inner); the tile places it in the middle 60 % (render-identity.mjs). -->
+<g transform="translate(12 12) scale(1.5484) translate(-12 -12)"><g stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M13.618 5H17.382L18.882 8L17.382 11H13.618L12.118 8L13.618 5Z"/><path d="M6.618 9H10.382L11.882 12L10.382 15H6.618L5.118 12L6.618 9Z"/><path d="M13.618 13H17.382L18.882 16L17.382 19H13.618L12.118 16L13.618 13Z"/></g></g>
+</svg>

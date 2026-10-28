@@ -37,6 +37,7 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `PageHeader` | component | `SectionText` with `level` (page · app · section · content) — `title` → `headline`, `subtitle` → `body`, `titleClass` → `headlineClass` | 2026-10-22 |
 | `PAGE_HEADER_ROLES` | component | `SECTION_TEXT_LEVELS` | 2026-10-22 |
 | `SideNav` | framework | `NavRail variant="site"` from kol-component (same props; kol-framework's `SideNav` keeps the react-router read and the ThemeToggle) | 2026-10-22 |
+| `Logomark` | component | `VectorLoader` — the same component, any SVG by URL; `src` is the URL (`svgUrl` still works) | 2026-10-28 |
 | `BrandHero` | framework | `PageHero` | 2026-09-03 |
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |

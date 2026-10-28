@@ -3,7 +3,7 @@ import { HashRouter, Routes, Route, Navigate, useLocation, useNavigate, useParam
 import { AppStudio, CatalogPage } from '@kolkrabbi/kol-shell'
 import { createFixtureClient } from 'media-fixture'
 import { registerIcons } from '@kolkrabbi/kol-icons'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import MirrorPlayground from '../../mixer/src/pages/MirrorPlayground.jsx'
 import { StudioKeys } from '../../mixer/src/Standalone.jsx'
 import { KEYBOARD_SHORTCUTS } from '../../mixer/src/data/shortcuts.js'

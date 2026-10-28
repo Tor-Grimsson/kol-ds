@@ -1378,7 +1378,7 @@
       "Button",
       "Tooltip",
       "GRAB",
-      "Logomark",
+      "VectorLoader",
       "RAIL_ROW",
       "NavRailSite"
     ]
@@ -1391,10 +1391,14 @@
       "Button",
       "Tooltip",
       "GRAB",
-      "Logomark",
+      "VectorLoader",
       "RAIL_ROW",
       "NavRailSite"
     ]
+  },
+  "VectorLoader": {
+    "typeClasses": [],
+    "composes": []
   },
   "Logomark": {
     "typeClasses": [],

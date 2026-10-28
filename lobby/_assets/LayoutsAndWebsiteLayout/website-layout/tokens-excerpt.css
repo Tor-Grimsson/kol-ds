@@ -1,0 +1,39 @@
+/* Web-owned theme tokens — the live survivors of the elder @kol/ui vendor block
+ * (index.css went imports-only 2026-08-08; the dead siblings and the original
+ * file are parked in _tmp/2026-08-08-web-indexcss-dispersal/). */
+
+@theme {
+  /* kol-theme's chess CSS consumes this token but only kol-framework's brand
+   * layer (kol-brand-color.css) defines it — and web deliberately does not
+   * import that layer, because it also rebinds --kol-accent-primary from ink
+   * to yellow-300 site-wide. So the definition lives here, on the canon
+   * family token. */
+  --kol-font-family-heading: var(--kol-font-family-sans-tight);
+
+  /* Status pair — verified 2026-08-08: no published @kolkrabbi token carries
+   * these values. kol-brand-color.css ships its own via --ui-error, but see
+   * the accent note above for why that import is off the table. */
+  --kol-status-danger: #9b3928;
+  --kol-status-danger-muted: color-mix(in srgb, #9b3928 18%, transparent);
+
+  /* Radius override — Tailwind's default --radius-lg is 0.5rem; web's
+   * rounded-lg has always rendered 0.75rem. (--radius-full is gone: v4 ships
+   * rounded-full built-in and nothing consumed the var.) */
+  --radius-lg: 0.75rem;
+
+  /* Navbar height — verified 2026-08-31: no published @kolkrabbi token carries
+   * a nav height, which is exactly why nothing could reserve it. The bar is
+   * `fixed` and floats over every page; pages with a text header absorb it in
+   * their own top padding, but a full-bleed SectionHero starts at top:0 and
+   * loses its first 68px underneath an opaque strip (measured on
+   * /foundry/typefaces/root: hero 422px at 50svh, 68px eaten).
+   * Measured identical at 390 and 1280 — only the bar's horizontal padding is
+   * breakpoint-dependent, so one value is correct everywhere. */
+  --kol-nav-h: 68px;
+}
+
+/* Dark-mode status values (dark surfaces live in canon kol-base-tokens.css) */
+:is([data-theme="dark"], .dark) {
+  --kol-status-danger: #bc583f;
+  --kol-status-danger-muted: color-mix(in srgb, #bc583f 24%, transparent);
+}

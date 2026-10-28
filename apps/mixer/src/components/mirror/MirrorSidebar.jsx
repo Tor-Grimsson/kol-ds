@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Logomark } from '@kolkrabbi/kol-shell'
-import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomarkUrl from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { DISPLACEMENT_VARIANTS, COPIES_VARIANTS, MOVEMENT_VARIANTS, findVariant } from '../../data/mirrorVariants'
 import VariantControls from './VariantControls'
 import Dropdown from '../molecules/Dropdown'

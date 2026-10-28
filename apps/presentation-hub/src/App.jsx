@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AppHub } from '@kolkrabbi/kol-shell'
 import { Decks, NEW_DECK } from '@kolkrabbi/kol-deck'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
 import { useDecksTool } from 'media-fixture/wiring'
 

@@ -31,7 +31,7 @@ related:
 The CMS content system — the two Sanity streams `/stack` (blog editorial) and `/work` (portfolio) — lifted out of `kol-component` into one package because they share a content model and version on their own cadence.
 
 ```js
-import { StackHero, ArticleHeader, PortableTextRenderer } from '@kolkrabbi/kol-content'
+import { StackHero, ArticleHeader, PortableTextRenderer, portableTextComponents, createPortableTextComponents, StickyNavCard } from '@kolkrabbi/kol-content'
 ```
 
 ## Component index
@@ -45,6 +45,7 @@ import { StackHero, ArticleHeader, PortableTextRenderer } from '@kolkrabbi/kol-c
 | `AuthorLine` | author cluster (Avatar + name + role), standalone |
 | `ArticleCard` | blog card family — `size` `hero` / `default` / `mini` |
 | `PortableTextRenderer` (+ `slugify`) | portable-text body → 10 block types + inline `link` / `segmentTitle` marks |
+| `portableTextComponents` · `createPortableTextComponents({ imageUrl })` · `StickyNavCard` | kolkrabbi.io's /stack article renderer, carried verbatim (kol-content 0.15.0): the map for `@portabletext/react` over Sanity's real blocks, the image source a prop so no Sanity client lives in the package, and the scroll-spy card |
 | `ShareButtons` | share bar — copy-link + X / LinkedIn / email |
 | `SourcesReferences` | end-of-article sources / references block |
 

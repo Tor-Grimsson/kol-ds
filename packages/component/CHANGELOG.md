@@ -1,5 +1,25 @@
 # @kolkrabbi/kol-component
 
+## 0.311.0 — 2026-10-28
+
+- **TabsRow `dock`** (PhoneNavDock, kol-fxr 2026-10-28): the stacked pill on a desk — shown from md up, hidden below, placed at the content's bottom-left (`--kol-shell-rail-width` + 64, 64 up) instead of centred. kol-shell's `PhoneNav variant="dock"` sets it.
+
+## 0.310.0 — 2026-10-28
+
+- **Quick Look sends the sign-in cookie for private files** (ArticleRendererHomeHeroSelection, kol-website — a PDF on private.kolkrabbi.io answered 401 while its image and download worked). `PdfPage`, `PdfDocument` and `KindPreview`'s text fetch send credentials for a REGISTERED origin: `registerCredentialedOrigin(url)` (new export, beside `credentialsFor`). `MediaLibrary` registers its signed-in bucket's `publicBase` itself (kol-media-client marks the private bucket `signedIn`); an app registers its own once at boot. A registry, not every cross-origin URL: a credentialed request to a public CDN answering `Access-Control-Allow-Origin: *` is refused, so the cookie goes only where it is wanted. A `credentials` prop on each overrides per call.
+
+## 0.309.0 — 2026-10-28
+
+- **`modal.form(title, fields, { okLabel, cancelLabel })`** (HubAccountRow, kol-fxr 2026-10-28 — sign-in asks Email and Password): one field per `{ id, placeholder, type?, autoComplete?, defaultValue? }`, resolving `{ [id]: value }` or `null`. The first field takes the focus; Enter submits.
+- **Every DS dialog holds still under the iPhone keyboard** (PromptHoldsWithKeyboard — user: *"does the UI have to move upp to show keyboard?"*): the scrim is sized to the visual viewport, so the dialog rides above the keyboard; a field takes its focus without scrolling the page (`preventScroll`), and the document's scroll is put back when the keyboard closes and when the dialog does.
+- **`Avatar size="xs"`** — 20, a rail row's glyph (the Hub's signed-in account row).
+
+## 0.308.0 — 2026-10-28
+
+- **The site rail's category row: the title navigates, the rest of the row expands** (user 2026-10-28: *"it should expand anywhere except the title, so press title > get overview, press the row f.e. on right of the title, expand category"*). The 12px chevron was the only disclosure target; now the caret is a button filling the whole row under the link, the chevron at its end, and the link passes the pointer through except on its glyph and title. `discloseOnTitle` keeps its meaning; collapsed, the link takes the whole row again. Needs kol-framework ≥0.60.0 (the split row's box).
+- **`NavRail variant="site"` fades its tree at the clip** (*"we also are missing a fade when list clips in navrail"*) — the app rail's and the workshop rail's 3rem ramp, with room under the last row so the end of the list reads clear. `fade` (default `true`); `fade={false}` draws it plain.
+- **`Logomark` → `VectorLoader`** (plan-2026-10-28-identity 1.6 — user: *"Logomark is the loader Im talking about, it just has a terrible name … VectorLoader or AssetLoader?"*). The same component — any SVG by URL, fetched, sanitised, inlined in `currentColor` — named for what it does, so it reads as the loader for a consumer's own file and not as one mark. `src` is the URL prop; `svgUrl` still works. `Logomark` stays an export on the retirements ledger and drops when nobody imports it. The showcase's preview reads the brand's wordmark through kol-icons' new `identity/*` path export. `VectorLoader` over `AssetLoader` because kol-brand's retiring folder loader is already called that.
+
 ## 0.307.0 — 2026-10-28
 
 - **BREAKING (default flip): the site rail's Kolkrabbi credit is opt-in** (NavRailSiteCreditOptIn, kol-website — user ruling 2026-10-28). `NavRail preset="site"` with no `footer` draws no footer box; the "Kolkrabbi Vinnustofa · <year>" link renders only on `footer="credit"` (through `SiteLayout`'s `sideNav={{ footer: 'credit' }}`). A node still renders as before and `false` stays valid. A site that wants the credit passes the opt-in; one that passed `footer: false` can drop it.

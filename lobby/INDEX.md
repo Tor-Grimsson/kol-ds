@@ -38,6 +38,21 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🔵 | [LayoutsAndWebsiteLayout](inbox/LayoutsAndWebsiteLayout.md) | **kol-website** — kolkrabbi.io's frame into the DS as `WebsiteLayout` (verbatim, content as props), and a Layouts app: four frames, every page type that fits under each, live on fixtures, docs + a guard | 2026-10-28 | 🔵 `queued` |
+| 🟢 | [KolResumeExportNotExecutable](done/KolResumeExportNotExecutable.md) | **kol-website** — kol-resume 0.1.0 `bin/export-kit.sh` ships without the exec bit, `kitExportPlugin` → 500; run it with `bash` | 2026-10-28 | 🟢 `closed` 2026-10-28 · kol-resume 0.1.1 |
+| 🟢 | [TimeStripInADock](done/TimeStripInADock.md) | **kol-fxr** — `TimeStrip` in flow (no absolute / z / own frame), spanning the loop window exactly, with a label gutter — so fxr's TimelineDock can take its ruler and head | 2026-10-28 | `filed` — from a kol-fxr session || 🟢 `closed` 2026-10-28 · hardware 0.9.0 |
+| 🟢 | [ResumeKit](done/ResumeKit.md) | **kol-website** — the resume kit (resume + 3 treatments, cover, back, letter, portfolio, A4/continuous preview, export) copied verbatim into the DS; record's data becomes props | 2026-10-28 | 🟢 `closed` 2026-10-28 · kol-resume 0.1.0 |
+| 🟢 | [PhonePillMoreTurnsToClose](done/PhonePillMoreTurnsToClose.md) | **kol-fxr** — On the signed-out phone Home (kol-shell 0.86.0) the pill's ••• opens the list but stays •••; frame A2 has it turn to × while open | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.87.0 |
+| 🟢 | [HubHomeSignedOut](done/HubHomeSignedOut.md) | **kol-fxr** — `HubHome` signed out: no catalog, a full-bleed stage slot (the app's live generator), the heading alone, the round + (New File, Walkthrough, Sign in) and the chrome pill — frames A2 and B2 | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.86.0 · kol-component 0.311.0 |
+| 🟢 | [PhoneNavDock](done/PhoneNavDock.md) | **kol-fxr** — `PhoneNav variant="dock"`: the chrome pill on a desktop, parked bottom-left beside the rail (frame B2 as the user moved it), so no app hand-tunes it | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.86.0 · kol-component 0.311.0 |
+| 🟢 | [PublicSansByLink](done/PublicSansByLink.md) | **kol-fxr** — kol-theme declares Public Sans as self-hosted `@font-face` (`/fonts/public-sans/…`) in `kol-typography.css`, so every app importing `core` carries it; serve it by a Google Fonts link where it is used (apps/document) instead | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-theme 0.195.0 |
+| 🟢 | [ArticleRendererHomeHeroSelection](done/ArticleRendererHomeHeroSelection.md) | **kol-website** — four asks: kol-content takes web's Portable Text renderer as is · a flexible site home hero in kol-framework · `::selection` neutral by default, accent opt-in · Quick Look sends credentials for private files | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-content 0.15.0 · kol-framework 0.61.0 · kol-component 0.310.0 |
+| 🟢 | [IdentityFaviconIcoAnd96](done/IdentityFaviconIcoAnd96.md) | **kol-website** — every identity set ships `favicon.ico` (32) and `favicon-96.png`; studio (Sanity) serves both by name and they are the last hand-made identity files there | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-icons 0.52.0 |
+| 🟢 | [PhoneNavVariants](done/PhoneNavVariants.md) | **kol-fxr** — PhoneNav ships named variants (`nav` · `panel` · `transport`) so every app gets the settled look without re-tuning props; AppShell/AppStudio pass it through, so Home's pill drops its hairline | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 🟢 | [PhoneMoreWholeNav](done/PhoneMoreWholeNav.md) | **kol-fxr** — The phone More sheet lists every nav row above the page actions by default, with a prop to choose which rows | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 🟢 | [PromptHoldsWithKeyboard](done/PromptHoldsWithKeyboard.md) | **kol-fxr** — The DS `prompt` / dialog stays put when the iOS keyboard opens, and the page is not left scrolled after it closes | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 🟢 | [HubHomePhoneChooser](done/HubHomePhoneChooser.md) | **kol-fxr** — HubHome's phone doors as fxr's old chooser: a "Select chrome" eyebrow and full-width stacked buttons with the icon on both sides, no card, in place of the 2 × 2 grid | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 🟢 | [HubAccountRow](done/HubAccountRow.md) | **kol-fxr** — The Hub's Sign in row grows into an account row: signed in it shows the user's avatar and name and opens the app's profile page; signed out it asks email + password in the DS dialog | 2026-10-28 | 🟢 `closed` 2026-10-28 — kol-shell 0.85.0 · kol-component 0.309.0 |
 | 🟢 | [DocumentIndexFilesAndIcons049](done/DocumentIndexFilesAndIcons049.md) | **kol-website** — DocumentIndex lists only .md (the PDFs/images + QuickLook part of MarkdownPage's ticket wasn't shipped); kol-icons 0.49.0 tarball 404 | 2026-10-28 | `filed` — from a kol-website session |
 | 🟢 | [IdentityBrand](done/IdentityBrand.md) | **kol-website** — kol-icons `identity/brand`: brand.kolkrabbi.io's B (Right Grotesk Wide Dark), file attached | 2026-10-28 | `filed` — from a kol-website session |
 | 🟢 | [IdentityStudio](done/IdentityStudio.md) | **kol-website** — kol-icons `identity/studio`: the Sanity studio's S (Right Grotesk Wide Dark), file attached | 2026-10-28 | `filed` — from a kol-website session |
@@ -49,7 +64,7 @@ accrues entries and never closes.
 | 🟢 | [BrandAssetsSocialMocksAndLetterheadB](done/BrandAssetsSocialMocksAndLetterheadB.md) | **kol-website** — `BrandAssets` Social takes only image templates (brand draws PostPhoto · PostEditorial · StoryPhoto) and Stationery has no `LetterheadB` card | 2026-10-27 | `filed` — from a kol-website session |
 | 🟢 | [StationeryFromBranding](done/StationeryFromBranding.md) | **kol-hq** — rebuild apps/stationery from kol-branding's stationery layouts; VOYAGER dispute letter (short) + Brand comparison paper (long) as placeholder copy | 2026-10-27 | `filed` — from a kol-hq session |
 | 🟢 | [BrandAssetsGraphicsAndPatterns](done/BrandAssetsGraphicsAndPatterns.md) | **kol-website** — `BrandAssets` has no Graphics / Patterns sections; brand's Assets page carries both, so it cannot adopt the package yet | 2026-10-27 | `filed` — from a kol-website session |
-| 🔵 | [PdfToolsFromStudio](inbox/PdfToolsFromStudio.md) | **kol-hq** — kol-studio's markdown → A4 → PDF tools (`app/scripts/render-pdf.mjs`, puppeteer CDP) shipped and developed in the DS; relation to `/kol-print` (PDF + DOCX) | 2026-10-27 | `filed` — from a kol-hq session · 🔴 needs-ruling |
+| 🟢 | [PdfToolsFromStudio](done/PdfToolsFromStudio.md) | **kol-hq** — kol-studio's markdown → A4 → PDF tools (`app/scripts/render-pdf.mjs`, puppeteer CDP) shipped and developed in the DS; relation to `/kol-print` (PDF + DOCX) | 2026-10-27 | 🟢 `closed` 2026-10-28 — kol-print 0.1.0 · kol-styleguide 0.14.0 · kol-theme 0.196.0 |
 | 🟢 | [BrandAppStructure](done/BrandAppStructure.md) | **kol-hq** — `apps/brand` has no home and brand-lab sits apart; proposal: `apps/brand` → `apps/brand-sections`, new `apps/brand` homes both | 2026-10-27 | `filed` — from a kol-hq session · 🔴 needs-ruling |
 | 🟢 | [BrandGuideOutlineTwoVersions](done/BrandGuideOutlineTwoVersions.md) | **kol-hq** — kol-branding's brand guide outline as the DS chapter structure, rendered blank (`[client-name]`/`[input]`) and as VOYAGER | 2026-10-27 | `filed` — from a kol-hq session |
 | 🟢 | [BrandHubOnSiteRail](done/BrandHubOnSiteRail.md) | **kol-hq** — brand-hub on the `site` rail (not `app`, which is studio-hub's) with the brand page wash kol-branding uses | 2026-10-27 | `filed` — from a kol-hq session |
@@ -123,7 +138,10 @@ accrues entries and never closes.
 | 🟢 | [identity-fxr-and-app-icon-size](done/identity-fxr-and-app-icon-size.md) | **kol-website** — FXR's mark is not in kol-icons `identity`, and no doc fixes the app-icon size (R2B2 was 75%, FXR 60%; user ruled 60%). Ask: `identity/fxr.svg` from kol-fxr's favicon at the set keyline + the 60% app-icon rule written down | 2026-10-09 | 🟢 `closed` — **@kolkrabbi/kol-icons@0.36.0** |
 | 🟢 | [identity-mirror](done/identity-mirror.md) | **kol-mirror** — Mirror's mark (M R over its reflection, Wide Dark, FXR's cut on the reflected row; live as touch icon + favicon). Ask: `identity/mirror.svg` at the set keyline beside `kol-ds`, `fxr`, `r2b2` — the file is ready in kol-mirror's `_tmp/` | 2026-10-15 ← kol-mirror | 🟢 `closed` — **`@kolkrabbi/kol-icons@0.38.0`**: `mirror` in `identity` beside `kol-ds` · `fxr` · `r2b2`, same optical size; clip ids namespaced `kol-mirror-t` / `-b` like fxr's |
 | 🟢 | [identity-r2b2](done/identity-r2b2.md) | **kol-website** — the media app's new mark (R 2 / B 2, Right Grotesk Wide Dark, live as touch icon + favicon). Ask: `identity/r2b2.svg` at the set keyline beside `kol-ds` and `fxr` | 2026-10-09 | 🟢 `closed` — **`@kolkrabbi/kol-icons@0.37.0`** |
-
+| 🟢 | [AppIdentitySet](done/AppIdentitySet.md) | **kol-mirror** — the KOL owns every app's tile, touch icons, favicon and OG as one set in kol-icons, reviewed on `apps/identity` | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-icons 0.50.0 · kol-component 0.308.0 · kol-shell 0.84.0 · kol-framework 0.60.0 · kol-brand 0.2.0 |
+| 🟢 | [ModulatableControls](done/ModulatableControls.md) | **kol-mirror** — `Knob` (and the sliders) take modulation as props: an expression in the readout (compiled by `kol-hardware/signal`) and a source list + assign gesture + indicator. Mirror's `RotaryDial` wraps the knob only for this | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
+| 🟢 | [TransportAndTimeline](done/TransportAndTimeline.md) | **kol-mirror** — one KOL transport (clock) + the timeline that reads it — scrub, playhead, loop window; fxr's keyframe lanes ride on it. fxr and mirror each carry their own pair | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
+| 🟢 | [UseFloatingHook](done/UseFloatingHook.md) | **kol-mirror** — lift kol-monitor's `useFloating` (drag a panel, scale from a corner) into kol-hardware frames — mirror carries a copy | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
 
 ## Closed
 
@@ -439,6 +457,13 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🟠 | [TransportFromHardware](outbox/TransportFromHardware.md) | **kol-fxr** — `/Users/kolkrabbi/dev/projects/kol-fxr/lobby/INDEX.md` | 🟠 addressed 2026-10-28 — the clock in; the strip back as `TimeStripInADock` | **none** |
+| 🔵 | [FloatingFromHardware](outbox/FloatingFromHardware.md) | **kol-monitor** — `/Users/kolkrabbi/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
+| 🟢 | [KolPrintSkillOnPackage](outbox/KolPrintSkillOnPackage.md) | **dotfiles** — `/Users/kolkrabbi/.dotfiles/lobby/INDEX.md` | 🟢 closed 2026-10-28 — /kol-print on the published package | **none** |
+| 🔵 | [RecordOnKolPrint](outbox/RecordOnKolPrint.md) | **kol-website** — `/Users/kolkrabbi/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
+| 🔵 | [IdentitySetFromPackage-website](outbox/IdentitySetFromPackage-website.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
+| 🔵 | [IdentitySetFromPackage-monitor](outbox/IdentitySetFromPackage-monitor.md) | **kol-monitor** — `~/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
+| 🟢 | [IdentitySetFromPackage-fxr](outbox/IdentitySetFromPackage-fxr.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🟢 closed 2026-10-28 — adopted; plus the manifest's tile SVG | **none** |
 | 🔵 | [RailRolesOnMonitor](outbox/RailRolesOnMonitor.md) | **kol-monitor** — `~/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-25 | **none** — the DS side shipped: kol-component 0.302.0 · kol-theme 0.190.0 |
 | 🔵 | [one-search-modal](outbox/one-search-modal.md) | **kol-branding** — `~/dev/projects/kol-branding/lobby/INDEX.md` | 🔵 `filed` 2026-10-24 | a kol-shell seam for the app's results, only if the Hub's modal has none |
 | 🔵 | [scaffold-vite-server-host-true](outbox/scaffold-vite-server-host-true.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🔵 filed 2026-10-23 | **none** |
@@ -457,6 +482,37 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-28 | **`LayoutsAndWebsiteLayout` filed from kol-website** — the website frame into the DS and a Layouts app for all four frames |
+| 2026-10-28 | **`KolResumeExportNotExecutable` closed** — kol-resume 0.1.1: the export script runs through `bash`, proved from a 644 copy |
+| 2026-10-28 | **`KolResumeExportNotExecutable` filed from kol-website** — the export script lost its exec bit in the published package |
+| 2026-10-28 | **`TimeStripInADock` closed** — hardware 0.9.0: `TimeStrip` `framed={false}` · `span="loop"` · `gutter` for fxr's dock |
+| 2026-10-28 | **`TimeStripInADock` filed from kol-fxr** — the strip half of TransportFromHardware |
+| 2026-10-28 | **`ResumeKit` closed** — kol-resume 0.1.0: record's kit verbatim, the person through `ResumeProvider`, export as `kitExportPlugin`; apps/resume on VOYAGER's invented person |
+| 2026-10-28 | **`ResumeKit` filed from kol-website** — the resume kit into the DS, data as props |
+| 2026-10-28 | **`UseFloatingHook` closed** — kol-hardware 0.8.0 |
+| 2026-10-28 | **`TransportAndTimeline` closed** — kol-hardware 0.8.0 |
+| 2026-10-28 | **`ModulatableControls` closed** — kol-hardware 0.8.0 |
+| 2026-10-28 | **`ModulatableControls`**, **`TransportAndTimeline`**, **`UseFloatingHook`** filed from kol-mirror (its plan 19). |
+| 2026-10-28 | **`PdfToolsFromStudio` closed** — kol-print 0.1.0 · kol-styleguide 0.14.0 · kol-theme 0.196.0: the print engine, PrintStudio, A4Pages, apps/print |
+| 2026-10-28 | **`PhonePillMoreTurnsToClose` closed** — kol-shell 0.87.0 |
+| 2026-10-28 | **`PhonePillMoreTurnsToClose` filed from kol-fxr** — A2's ••• → × on the signed-out phone pill |
+| 2026-10-28 | **`HubHomeSignedOut` closed** — kol-shell 0.86.0 · kol-component 0.311.0 |
+| 2026-10-28 | **`PhoneNavDock` closed** — kol-shell 0.86.0 · kol-component 0.311.0 |
+| 2026-10-28 | **`PublicSansByLink` closed** — kol-theme 0.195.0, Public Sans by link |
+| 2026-10-28 | **`PhoneNavDock`, `HubHomeSignedOut` filed from kol-fxr** — plan 44: the desk pill, Home signed out (frames A2, B2) |
+| 2026-10-28 | **`PublicSansByLink` filed from kol-fxr** — Public Sans by a link, not a self-hosted `@font-face` in core |
+| 2026-10-28 | **`ArticleRendererHomeHeroSelection` closed** — kol-content 0.15.0 · kol-framework 0.61.0 · kol-component 0.310.0: the article map, `SiteHero`, neutral selection, Quick Look credentials |
+| 2026-10-28 | **`ArticleRendererHomeHeroSelection` filed from kol-website** — renderer, home hero, selection default, Quick Look credentials |
+| 2026-10-28 | **`IdentityFaviconIcoAnd96` closed** — kol-icons 0.52.0, `favicon.ico` + `favicon-96.png` per identity |
+| 2026-10-28 | **`PhoneNavVariants` closed** — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 2026-10-28 | **`PhoneMoreWholeNav` closed** — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 2026-10-28 | **`HubHomePhoneChooser` closed** — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 2026-10-28 | **`HubAccountRow` closed** — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 2026-10-28 | **`PromptHoldsWithKeyboard` closed** — kol-shell 0.85.0 · kol-component 0.309.0 |
+| 2026-10-28 | **`IdentityFaviconIcoAnd96` filed from kol-website** — the identity sets lack `favicon.ico` and `favicon-96.png` |
+| 2026-10-28 | **`PhoneNavVariants`, `PhoneMoreWholeNav`, `PromptHoldsWithKeyboard`, `HubHomePhoneChooser`, `HubAccountRow` filed from kol-fxr** — plan 43: PhoneNav variants, More lists the whole nav, the prompt holds with the keyboard, the phone chooser stacked, the Hub's account row |
+| 2026-10-28 | **`AppIdentitySet` closed** — kol-icons 0.50.0 · kol-component 0.308.0 · kol-shell 0.84.0 · kol-framework 0.60.0 · kol-brand 0.2.0; `apps/identity`; adoption filed to kol-fxr, kol-monitor, kol-website; kol-mirror's remainder on its receipt |
+| 2026-10-28 | **`AppIdentitySet`** filed from kol-mirror: the KOL owns app tiles, touch icons, favicons and OG as one set in kol-icons, reviewed in `apps/identity`. |
 | 2026-10-28 | **`DocumentIndexFilesAndIcons049`** filed from kol-website: DocumentIndex files + QuickLook; kol-icons 0.49.0 404. |
 | 2026-10-28 | **`IdentityBrand`** filed from kol-website: kol-icons identity/brand. |
 | 2026-10-28 | **`IdentityStudio`** filed from kol-website: kol-icons identity/studio. |

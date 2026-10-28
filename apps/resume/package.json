@@ -1,0 +1,33 @@
+{
+  "name": "resume",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The resume kit — @kolkrabbi/kol-resume on AppHub with VOYAGER's invented person: three resume treatments, the A4 and continuous kit, letter, portfolio and export. Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-resume": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-styleguide": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "puppeteer-core": "^24.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "voyager-fixture": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { PanZoomViewport, ShortcutsOverlay } from '@kolkrabbi/kol-component'
 import { ThemeToggle, useTheme } from '@kolkrabbi/kol-framework'
-import { MARKS } from 'voyager-fixture'
+import { stationeryBoard } from 'voyager-fixture/stationery'
 
 /* THE STATIONERY DESK — kol-branding's stationery, on VOYAGER (StationeryFromBranding, kol-hq 2026-10-27).
  *
@@ -15,11 +15,8 @@ import { MARKS } from 'voyager-fixture'
  * The desk is the DS PanZoomViewport — Space + drag pans, ⌘ scroll / pinch zooms at the pointer, ⌘0 fits, ⌘= / ⌘−
  * step — over rack's dot grid (`G`), `S` for the sheet, `T` for the ground. */
 
-const FILES = import.meta.glob('./boards/*.html', { query: '?raw', import: 'default', eager: true })
-const mark = (id) => MARKS.find((m) => m.id === id)?.url ?? ''
-/* the boards name the marks by token — the fixture's files are Vite URLs, known only at runtime */
-const TOKENS = { __LOCKUP__: mark('lockup-horizontal-01'), __LOGOMARK__: mark('logomark-01'), __WORDMARK__: mark('wordmark') }
-const html = (name) => Object.entries(TOKENS).reduce((s, [k, v]) => s.replaceAll(k, v), FILES[`./boards/${name}.html`] ?? '')
+/* the boards are the fixture's (voyager-fixture/stationery, 2026-10-28 — apps/print reads the same set); the marks filled in */
+const html = (name) => stationeryBoard(name)
 
 const A4 = [1190, 1684]
 const GROUPS = [

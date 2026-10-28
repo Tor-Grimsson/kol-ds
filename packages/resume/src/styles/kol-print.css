@@ -1,0 +1,88 @@
+/* ── Print / PDF export ───────────────────────────────────────────────
+   The send-able artifact. Each route prints to its own PDF: open the page,
+   Cmd/Ctrl+P → "Save as PDF". App chrome is hidden, the shell collapses to a
+   single full-width column, and KOL colors/backgrounds are preserved so the
+   sent PDF keeps the on-screen designed look (not a stripped white page).
+
+   Per-page scope by design — combining the whole kit (Cover → … → Back) into
+   one PDF is a separate follow-up (SPA routes render one at a time). */
+
+@media print {
+  /* A4 portrait. Cover/Back are already 1:√2 (the A-format ratio). */
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+
+  /* Keep the designed colors — browsers drop backgrounds in print otherwise. */
+  *,
+  *::before,
+  *::after {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  html,
+  body {
+    background: var(--kol-surface-primary) !important;
+  }
+
+  /* Hide app chrome: the rail, its phone trigger and scrim. `.kol-shell-rail` is kol-shell's AppShell / AppHub rail
+     (kol-resume, 2026-10-28) — its page margin is the rail's width, so that goes too. */
+  .kol-sidenav,
+  .kol-shell-rail,
+  .kol-shell-drawer-trigger,
+  .kol-shell-drawer-scrim {
+    display: none !important;
+  }
+
+  .kol-app-shell > div {
+    margin-left: 0 !important;
+  }
+
+  /* Collapse the two-column shell grid to one full-width column. */
+  .kol-brand-layout {
+    display: block !important;
+  }
+
+  /* Drop the screen padding/width caps — the @page margin owns the gutters. */
+  main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  /* Don't strand a section heading at the bottom of a page. */
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+
+  /* Cover / Back A-sheets: fill the page, drop the screen-only frame. */
+  main > div[class*="aspect-"] {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 250mm; /* fill the A4 content box so the flex footer drops down */
+    aspect-ratio: auto !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* ── Plain mode (?plain=1) ──────────────────────────────────────────
+     Ink-on-white export: strip every background fill and shadow so the kit
+     prints as text/images on a white page (no KOL surface colors). Borders
+     and foreground text colors are kept — light theme reads dark-on-white.
+     <img>/SVG content is untouched (those aren't background-color). */
+  html[data-plain],
+  html[data-plain] body {
+    background: #fff !important;
+  }
+
+  html[data-plain] *,
+  html[data-plain] *::before,
+  html[data-plain] *::after {
+    background-color: transparent !important;
+    background-image: none !important;
+    box-shadow: none !important;
+  }
+}

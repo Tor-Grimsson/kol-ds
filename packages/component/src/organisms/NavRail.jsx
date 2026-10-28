@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
-/* taxonomy-ok: organism — nests Button (atom) + Logomark (atom) + Tooltip (utility). Moved
+/* taxonomy-ok: organism — nests Button (atom) + VectorLoader (atom) + Tooltip (utility). Moved
  * from kol-shell 2026-10-22 (the one nav rail, user: "lets go for your recommendation"): the
  * app rail and the site rail are one component, and a site must not install the app shell
  * for its sidebar — the PageHeader precedent. kol-shell re-exports it. */
@@ -13,7 +13,7 @@ import { GRAB } from '../utilities/motion.js'
  * built the gesture itself). It lived here until then. */
 import useGrabEdge from '../hooks/useGrabEdge.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import Logomark from '../atoms/Logomark.jsx'
+import VectorLoader from '../atoms/VectorLoader.jsx'
 import { useRailSlot } from '../hooks/railSlot.jsx'
 import { RAIL_ROW } from '../hooks/railRow.js'
 import NavRailSite from './NavRailSite.jsx'
@@ -408,7 +408,7 @@ function AppRail({
           onClick={() => onNavigate?.('/')}
           className="text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4"
         >
-          <span className="w-8 flex justify-center shrink-0"><Logomark svgUrl={logomark.svgUrl} size={20} /></span>
+          <span className="w-8 flex justify-center shrink-0"><VectorLoader src={logomark.svgUrl} size={20} /></span>
           <span className="kol-helper-12 uppercase flex-1 min-w-0 truncate">{logomark.title}</span>
         </div>
         </Tooltip>

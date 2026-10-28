@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-content
 
+
+## 0.15.0 — 2026-10-28
+
+- **kolkrabbi.io's article renderer, carried** (ArticleRendererHomeHeroSelection, kol-website — *"copy web's, don't redesign"*): `portableTextComponents` and `createPortableTextComponents({ imageUrl })` are web's `PortableTextBlog` map verbatim — code via `CodeBlock`, `h2`/`h3` with slugged ids, links, `segmentTitle`, captions, lists — with its image, video, quote and table blocks inside. The one seam is the image source: `imageUrl(image, { width, height })` is the app's own Sanity builder, so no client lives here; without it the asset's `url` is used. Render it with `@portabletext/react`'s `<PortableText>` in a `.kol-prose` column. **`StickyNavCard`**, the article's scroll-spy card, ships beside it. `PortableTextRenderer` (the simplified block shape) is untouched.
 ## 0.9.0 — 2026-08-26
 
 - **BREAKING — the DS tier is a peer, not a dependency.** kol-component · kol-icons · kol-theme move from

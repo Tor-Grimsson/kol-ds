@@ -42,11 +42,11 @@ The package is grouped (user ruling 2026-09-27), one folder per group under `src
 
 | Group | Exports |
 |---|---|
-| **value** — things you turn, slide or shape | `Knob` · `Fader` · `ParamSheet` · `armLongPress` · `EnvelopeGenerator` |
+| **value** — things you turn, slide or shape | `Knob` · `Fader` · `ParamSheet` · `armLongPress` · `EnvelopeGenerator` · `Modulatable` · `useExpressionValue` |
 | **switches** — hardware switches and buttons | `Toggle` · `FlipToggle` · `RockerSwitch` · `IconButton` |
 | **indicators** — lights, patching, traces | `LED` · `JackSocket` · `LabeledJack` · `SignalScope` |
-| **panel** — panel furniture | `PanelLabel` · `ModuleHeader` · `SignalReference` |
-| **frames** — the shells a module is built in | `ModuleFrame` · `ChannelStrip` · `FlipCard` |
+| **panel** — panel furniture | `PanelLabel` · `ModuleHeader` · `SignalReference` · `TimeStrip` · `Scrubber` · `useTransport` · `useTransportNow` · `useTransportPlaying` |
+| **frames** — the shells a module is built in | `ModuleFrame` · `ChannelStrip` · `FlipCard` · `useFloating` |
 
 | Export | What |
 |---|---|
@@ -54,6 +54,9 @@ The package is grouped (user ruling 2026-09-27), one folder per group under `src
 | `Fader` | 2px track + 8px thumb, horizontal with readout or vertical |
 | `ParamSheet` · `armLongPress` | touch: hold 500ms → a full-width bottom sheet with the DS `Slider` |
 | `EnvelopeGenerator` | a value over time — an equation or an ADSR envelope — filling its parent, mirror's /expressions layout: the scope box (zoom, BPM transport; ADSR with four handles, hold, one-shot + Trigger) and the reference panel. `useEnvelopeGenerator()` + `EnvelopeModeToggle` for a host that arranges the parts (apps/curves) |
+| `Modulatable` | any value control made patchable (0.8.0, kol-mirror's RotaryDial adapter): wraps the panel `Knob` or `Slider` (kol-component); the readout takes a number or an expression (`wave(t)`, `A * 0.5`) that runs on the `clock`, ⌥-click clears; right-click picks a source on the `bus`, a 5px LED dot marks it. A wrapper, because kol-component cannot import the compiler and `Knob` / `Fader` here are ledger aliases |
+| `TimeStrip` · `Scrubber` | the transport's face (0.8.0, kol-mirror's): readout, ruler, head, the loop window with IN marked "1"; drag moves the head and never starts the clock; `children` lie under the bar on its span (fxr's keyframe lanes). Docked in a host panel (0.9.0): `framed={false}` sits in flow, `span="loop"` makes the loop window the full width (or `span={seconds}`), `gutter={px}` gives a label column the ruler, bar and lanes share |
+| `useFloating` | a panel dragged by its body and scaled from a corner grip (`cursor: nwse-resize`), 0.35–2.5 — monitor's and mirror's hook, one copy (0.8.0) |
 | `Toggle` | LED-dot toggle — momentary, blink, long-press, `forceLit` |
 | `FlipToggle` | 2/3-position flip switch, either axis |
 | `RockerSwitch` | I/O rocker, backlit paddle |
@@ -81,6 +84,7 @@ Plain JS, no React. One expression compiler and one ADSR for every scope, envelo
 - `compileExpression(expr, { bus })` → `{ ok, fn(t, f, min, max, busValues) }` — every helper spans `[min, max]` (monitor's semantics; `min = 0` is mirror's and the editor's). Two gates in front of the Function sink (math-only characters, an identifier allowlist), browser globals shadowed, never throws, never non-finite.
 - `fitRange` · `isExpression` · `EXPRESSION_HELPERS`
 - `envelopeAt(t, params, { hold, cycle })` (pure, for scopes) · `createEnvelope()` (the per-frame stage machine, monitor's) · `stageSeconds` (0 → 5 ms, 100 → 2 s) · `toRange`
+- **the transport** — `createTransport(initial)` → one clock: `now()` (shaped seconds: rate, forward · reverse · ping-pong over the loop window, swing, ease, hold), `phase()` 0..1, `epoch` (stop and home only), `play` · `pause` · `toggle` · `stop` · `home` · `end` · `seek` · `seekPhase` · `setLoopSeconds` · `reset` · `set` · `subscribe`; `seekToSeconds(transport, s)` for a scrubber. kol-mirror's clock, a factory, with kol-fxr's phase and epoch (0.8.0)
 - the reference as data — `EXPRESSION_SECTIONS` · `EXPRESSION_TABS` (kol-mirror's, verbatim) · `ADSR_PRESETS` · `ADSR_SECTIONS` · `ADSR_TABS`
 
 `node src/signal/signal.test.mjs` is its check. The reviewable tool is `apps/curves`.

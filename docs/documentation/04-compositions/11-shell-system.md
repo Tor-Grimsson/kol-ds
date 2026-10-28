@@ -234,6 +234,8 @@ values take the rail off the screen:
 | `drawer` | the rail off-canvas behind a hamburger, in over a scrim | an app whose rail carries a tool's own rows — the editor's labs categories ride it |
 | `shell` (default) · `bare` · `overlay` | the rail regardless · no shell on a coarse pointer · the touch-device notice | older consumers, unchanged |
 
+**The pill's look is a variant** (kol-shell 0.85.0, 2026-10-28 — *"if we only ship props then each repo has to tune to the same settiings and we get drift"*): `PhoneNav variant` — `nav` (no hairline, no shadow, the circle; `AppShell navVariant`'s default), `panel` (frame E: on top, foldable, More keeps the panel open), `transport` (the shadow; `TransportPill`'s look). `PHONE_NAV_VARIANTS` is the table; a prop still overrides. **More is the whole nav** — every rail row, the pinned foot included, then the page's actions — filtered by `moreItems` (paths, or a predicate). **`dock`** (kol-shell 0.86.0) is the pill on a desk — md and up, at the content's bottom-left (64 in from the rail, 64 up), no More. **A signed-out Home** (`home.signedOut`, or `home.stage` with no files) has no catalog: the `stage` full-bleed behind, the mark top-left alone, the round + with New, Walkthrough and Sign in, `home.chromes` as the dock on a desk and as the pill on a phone, where More lists the rail — frames A2 · B2 of fxr's plan 44.
+
 Both phone navs ship (2026-10-23 — *"fxr on mobile uses the bottom a lot … we should ship both versions"*). The
 bar's labels wear the rail's row type and ink — `kol-helper-12 uppercase`, oq-64 at rest, oq-96 on the route, the
 20px glyph — from one constant (`hooks/railRow.js`) that `NavRail` and `TabsRow`'s phone tab both read.

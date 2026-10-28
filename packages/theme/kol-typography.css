@@ -1112,21 +1112,11 @@
 
 
 
-/* PUBLIC SANS — the document body (kol-atlas's workspace face; his ruling 2026-10-28). The variable cut in four files,
-   latin and latin-ext, upright and italic, hosted by the consumer at /fonts/public-sans/ as the other faces are
-   (public/fonts/public-sans/ in kol-ds-ui; SIL OFL 1.1, the LICENSE beside them). Unicode ranges are fontsource's. */
-@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 100 900; font-display: swap;
-  src: url('/fonts/public-sans/PublicSans-Variable-latin.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 100 900; font-display: swap;
-  src: url('/fonts/public-sans/PublicSans-Variable-latin-ext.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
-@font-face { font-family: 'Public Sans'; font-style: italic; font-weight: 100 900; font-display: swap;
-  src: url('/fonts/public-sans/PublicSans-Variable-latin-italic.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-italic.woff2') format('woff2');
-  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-@font-face { font-family: 'Public Sans'; font-style: italic; font-weight: 100 900; font-display: swap;
-  src: url('/fonts/public-sans/PublicSans-Variable-latin-ext-italic.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-ext-italic.woff2') format('woff2');
-  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+/* PUBLIC SANS — the document body (kol-atlas's workspace face; his ruling 2026-10-28) — NOT declared here (PublicSansByLink,
+   kol-fxr 2026-10-28 — user: *"its only used in apps/document … we should just import it via link, not via. actual fonts"*).
+   Only the document sheet sets it, so the app that renders one loads it by link, Google Fonts css2, variable weight, italic:
+   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap">
+   Without the link the body falls back to the sans below it. */
 
 /* =============================================================================
  * SHEET (the document voice) — kol-atlas's Research-Spec, class for class
@@ -1152,7 +1142,7 @@
   --accent: var(--kol-color-orange-300); --note: var(--ui-error);
   --edge: 724px;
   /* the body is Public Sans, like the reference (his ruling, Round 23, 2026-10-28: "I already said Public Sans!!! like the
-     reference"); the headings stay on the display face. The faces are declared above, from /fonts/public-sans/ */
+     reference"); the headings stay on the display face. The face comes by the app's Google Fonts link (see PUBLIC SANS above) */
   --display: var(--kol-font-family-sans); --body: 'Public Sans', var(--kol-font-family-sans); --mono: var(--kol-font-family-mono);
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kol-sheet { --accent: var(--kol-color-yellow-300); } }

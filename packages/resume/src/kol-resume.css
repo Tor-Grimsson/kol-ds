@@ -1,0 +1,12 @@
+/* @kolkrabbi/kol-resume — the kit's stylesheet, carried from kol-website apps/record (ResumeKit, 2026-10-28).
+ *
+ * OPT-IN, NOT IN kol-theme: `kol-print.css` styles the whole page for print (every `main`, every heading, the shell's rail
+ * hidden) — right for the app that prints the kit, wrong for every app that loads the theme. Import it in the app that
+ * hosts the kit, after kol-theme:
+ *
+ *   @import "@kolkrabbi/kol-resume/kol-resume.css";
+ *
+ * The A4 sheet itself (`.kol-a4-*`) is kol-theme's (kol-styleguide's A4Pages). */
+@import "./styles/kol-print.css";
+@import "./styles/kol-resume-source.css";
+@import "./styles/kol-kit-preview.css";

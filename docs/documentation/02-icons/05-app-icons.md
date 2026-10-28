@@ -3,7 +3,7 @@ title: App icons
 type: reference
 status: active
 created: 2026-10-09
-updated: 2026-10-26
+updated: 2026-10-28
 description: The home-screen icon every KOL app ships
 aliases:
   - app icon
@@ -20,7 +20,7 @@ related:
 
 # App icons
 
-A KOL app icon (the `apple-touch-icon` / home-screen tile) is the app's mark from the `identity`
+A KOL app icon (the `apple-touch-icon` / home-screen icon) is the app's mark from the `identity`
 group, drawn the same way in every app so they sit together on one home screen.
 
 ## The rule
@@ -42,3 +42,7 @@ FXR's lettering the middle 60 %; side by side on the home screen the 75 % mark r
 The `identity/` glyphs themselves sit on the set keyline like every icon (`kol-ds` at
 `translate(3 3) scale(0.75)`), so they line up in a UI row. The 60 % is applied on top, at export.
 Favicons (tab icons) are not covered here and keep their own fit.
+
+## Where they live (kol-icons ≥ 0.50.0)
+
+Every identity's set ships in `@kolkrabbi/kol-icons`, one folder each: `identity/<id>/` holds the icon (`<id>.svg`), the raw `-logomark`, `-wordmark`, `-favicon`, the `-app-icon` this rule describes and the PNGs rendered from it (180 dark + light, 192, 512, maskable 512) plus `og.png`. `pnpm identity:render` (`scripts/render-identity.mjs`) cuts every app icon by this rule from the logomark, so the family is drawn once; `apps/identity` shows them side by side, light and dark, before they ship. An app copies its folder into `public/` — [[../../operations/07-apps-tier/10-save-to-home-screen|Save to home screen]] step 3.

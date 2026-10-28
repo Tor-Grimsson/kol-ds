@@ -30,6 +30,8 @@ export const TIERS = {
    * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
    * frame plus a mark plus a text block, nesting nothing. */
   AssetCard: 'atoms', Swatch: 'molecules', DocumentIndex: 'organisms',
+  /* print (2026-10-28) */
+  A4Pages: 'molecules', PrintStudio: 'organisms',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
   PostEditorial: 'molecules', StoryPhoto: 'molecules', StoryType: 'molecules',
   BrandAvatar: 'atoms',
@@ -47,6 +49,10 @@ export const TIERS = {
   WorkViewToggle: 'molecules',
   PortableTextRenderer: 'molecules', AuthorLine: 'molecules',
   ShareButtons: 'molecules', StackHero: 'organisms', ArticleHeader: 'organisms', ParallaxShelf: 'organisms',
+  /* kolkrabbi.io's article renderer, carried (2026-10-28) */
+  StickyNavCard: 'molecules',
+  /* a site's landing (2026-10-28) */
+  SiteHero: 'organisms',
   ScrollDriftGallery: 'organisms',
   /* kol-store */
   PriceDisplay: 'atoms', PrintGridCardGsap: 'atoms',
@@ -127,7 +133,7 @@ export const TIERS = {
   /* the document page (plan-2026-10-28-document W5.2) */
   MarkdownPage: 'organisms', LinkPreview: 'molecules',
   /* kol-shell */
-  Logomark: 'atoms',
+  Logomark: 'atoms', VectorLoader: 'atoms',
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
   NavRail: 'organisms', PhoneNav: 'organisms', TransportPill: 'organisms', WalkthroughPanel: 'organisms',
@@ -146,6 +152,8 @@ export const TIERS = {
   FlipCard: 'utilities',
   /* the rack (2026-10-01): the case is a region, a row paints its rails, a slot paints nothing */
   RackCase: 'organisms', RackRow: 'molecules', RackSlot: 'utilities',
+  /* plan 19 of kol-mirror (2026-10-28): the transport's face and the patchable control */
+  TimeStrip: 'organisms', Scrubber: 'molecules', Modulatable: 'utilities',
   /* kol-deck */
   SlideThumb: 'molecules', DeckFile: 'molecules', SlideRenderer: 'molecules',
   SlideStage: 'organisms', SlideInspector: 'organisms', DeckEditor: 'organisms',
@@ -153,6 +161,12 @@ export const TIERS = {
   /* kol-notes */
   NoteThumb: 'molecules',
   NoteEditor: 'organisms', Notes: 'organisms', NotesCatalog: 'organisms',
+  /* kol-resume (ResumeKit, 2026-10-28): the sheets are organisms, the routes that hold them too, the provider a utility */
+  ContactLine: 'molecules', LangToggle: 'molecules', ExportButtons: 'molecules', KitOptions: 'organisms',
+  Cover: 'organisms', Resume: 'organisms', ResumeMarginalia: 'organisms', ResumeRail: 'organisms', ResumeGrid: 'organisms',
+  CoverLetter: 'organisms', Portfolio: 'organisms', Backside: 'organisms',
+  KitPreview: 'organisms', ResumeSource: 'organisms', ResumeLibrary: 'organisms', ResumeTreatment: 'organisms',
+  ResumeProvider: 'utilities',
 }
 
 /* ── Function: closed set — action, input, display, feedback, navigation,
@@ -207,7 +221,7 @@ export const FUNCTIONS_BY_NAME = {
   LoaderIntro: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input', ColorPickerPopover: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
-  ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media',
+  ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media', StickyNavCard: 'navigation', SiteHero: 'structure',
   PortableTextRenderer: 'display', StackHero: 'structure',
   SourcesReferences: 'display',
   GalleryCarousel: 'media', ParallaxShelf: 'media',
@@ -270,6 +284,13 @@ export const FUNCTIONS_BY_NAME = {
   /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
    * in situ, a color with its value, an asset in a frame. */
   AssetCard: 'display', Swatch: 'display', DocumentIndex: 'structure',
+  A4Pages: 'structure', PrintStudio: 'utility',
+  /* kol-resume (2026-10-28) */
+  ContactLine: 'display', LangToggle: 'input', ExportButtons: 'action', KitOptions: 'input',
+  Cover: 'display', Resume: 'display', ResumeMarginalia: 'display', ResumeRail: 'display', ResumeGrid: 'display',
+  CoverLetter: 'display', Portfolio: 'display', Backside: 'display',
+  KitPreview: 'structure', ResumeSource: 'structure', ResumeLibrary: 'structure', ResumeTreatment: 'structure',
+  ResumeProvider: 'utility', useResume: 'utility', useExportDownload: 'utility',
   PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
   PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
   BrandAvatar: 'media',
@@ -294,6 +315,7 @@ export const FUNCTIONS_BY_NAME = {
   RockerSwitch: 'input', ParamSheet: 'overlay',
   EnvelopeGenerator: 'input', SignalScope: 'display', SignalReference: 'display',
   EnvelopeModeToggle: 'input', useEnvelopeGenerator: 'utility',
+  TimeStrip: 'display', Scrubber: 'input', Modulatable: 'input', useExpressionValue: 'utility', useFloating: 'utility', useTransport: 'utility', useTransportNow: 'utility', useTransportPlaying: 'utility',
   ModuleFrame: 'structure', ChannelStrip: 'structure', FlipCard: 'structure',
   RackCase: 'structure', RackRow: 'structure', RackSlot: 'structure',
   /* dashboards */
@@ -319,7 +341,7 @@ export const FUNCTIONS_BY_NAME = {
   PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', StudioCreate: 'structure', StudioDetail: 'display', StudioCreateAction: 'action', CatalogGrid: 'structure', HubHome: 'structure', HubSettings: 'structure', HubDev: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
-  Logomark: 'display',
+  Logomark: 'display', VectorLoader: 'display',
   /* notes — kol-notes (2026-09-27): notes as a tool */
   Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
   /* styleguide — the brand tool (2026-09-27) */
@@ -348,7 +370,7 @@ export const EXEMPT = {
   /* shell — the keymap sheet moved to kol-component 2026-09-28; kol-shell re-exports it */
   ShortcutsOverlay: 're-export:@kolkrabbi/kol-component',
   /* the one nav rail moved to kol-component 2026-10-22; kol-shell re-exports these */
-  NavRail: 're-export:@kolkrabbi/kol-component', Logomark: 're-export:@kolkrabbi/kol-component', useRailSlot: 're-export:@kolkrabbi/kol-component',
+  NavRail: 're-export:@kolkrabbi/kol-component', Logomark: 're-export:@kolkrabbi/kol-component', VectorLoader: 're-export:@kolkrabbi/kol-component', useRailSlot: 're-export:@kolkrabbi/kol-component',
   TypeSample: 're-export:@kolkrabbi/kol-foundry', TypeSpecCard: 're-export:@kolkrabbi/kol-foundry',
   /* chess */
   ChessControlsProvider: 'non-component',
@@ -406,6 +428,8 @@ export const DEPRECATED = [
   'TabChips', 'TabStrip', 'MobileTabBar',
   /* SideNav = NavRail variant="site" (2026-10-22): one nav rail */
   'SideNav',
+  /* Logomark = VectorLoader (2026-10-28): any SVG by URL, named for what it does */
+  'Logomark',
   /* Canvas = CanvasEditor (2026-10-23): the canvas family; PanZoomViewport and PanViewport = CanvasEditor's `panEnabled` on useCanvasViewport */
   'Canvas', 'PanZoomViewport', 'PanViewport',
   /* DropdownTagFilter = SettingsMulti (2026-10-01): its own pill and hardcoded radius, no consumer */

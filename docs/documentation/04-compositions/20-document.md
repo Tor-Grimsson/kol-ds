@@ -25,6 +25,7 @@ related:
   - "[[INDEX|Compositions]]"
   - "[[18-site-frame|Site frame]]"
   - "[[07-content-system|Content system]]"
+  - "[[21-print|Print]]"
   - "[[../../operations/09-phase-log/2026-10-28-document|Phase log: Document space]]"
 ---
 

@@ -10,6 +10,8 @@
     "./guide": "./src/guide.js",
     "./business": "./src/business.js",
     "./assets": "./src/assets.js",
+    "./stationery": "./src/stationery.js",
+    "./resume": "./src/resume.js",
     "./fonts.css": "./src/fonts.css"
   },
   "scripts": {

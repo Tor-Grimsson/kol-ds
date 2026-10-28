@@ -40,6 +40,6 @@ Tailwind v4 **does not scan `node_modules`**, so layout utilities emitted inside
 
 ## Fonts
 
-The typography CSS references the brand fonts at absolute paths (`/fonts/right-grotesk/…`, `/fonts/jetbrains-mono/…`). **The package does not ship the font files** — your app must serve them from `/fonts/` (e.g. drop them in your `public/` dir). The showcase in this repo does exactly that. Without them, type falls back to system fonts.
+The typography CSS references the brand fonts at absolute paths (`/fonts/right-grotesk/…`, `/fonts/jetbrains-mono/…`). **The package does not ship the font files** — your app must serve them from `/fonts/` (e.g. drop them in your `public/` dir). The showcase in this repo does exactly that. Without them, type falls back to system fonts. **Public Sans is not one of them** (0.195.0): only the document sheet (`.kol-sheet`, kol-framework's `MarkdownPage`) sets it, and an app that renders one loads it by Google Fonts link — `https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap`.
 
 Pure CSS — no JS, no dependencies.

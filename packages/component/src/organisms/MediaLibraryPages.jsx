@@ -1,4 +1,5 @@
 import { Fragment, createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { registerCredentialedOrigin } from '../utilities/credentials.js'
 import formatSize from '../utilities/formatSize.js'
 import { ROW_HEIGHT, ROW_FILL } from '../molecules/OptionRow.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
@@ -190,6 +191,8 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
   const buckets = useMemo(() => client?.buckets?.() ?? [], [client])
   const bucketMeta = buckets.find((b) => b.id === bucket) ?? buckets[0] ?? { id: null, label: '', writable: false }
   const bucketId = bucketMeta.id
+  /* a signed-in bucket's files are fetched with the cookie by every preview (utilities/credentials.js, 2026-10-28) */
+  if (bucketMeta.signedIn && bucketMeta.publicBase) registerCredentialedOrigin(bucketMeta.publicBase)
   const base = () => ({ ...SETTINGS_BASE, ...(defaults?.[bucketId] ?? defaults ?? {}) })
   const [own, setOwn] = useState(base)
   /* PERSONALISATION (the media D1 pass, 2026-09-25): an uncontrolled page whose client offers

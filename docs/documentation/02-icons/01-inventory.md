@@ -83,9 +83,28 @@ Twelve rack drawings are **not** here: `chevron-down/left/right/up`, `nav-create
 
 ## Identity set
 
-`kol-icon-set-identity` (kol-icons ≥0.49.0, 2026-10-28 — user: *"identity should be separate from signal and interface"*) — **10 glyphs**, the marks: the studio's own and each app's, every one filled `currentColor` on the identity keyline (`translate(3 3) scale(0.75)`). Interface's `identity` group until 0.48.0; its own set because a mark is not app chrome. `KOL_ICON_SET_IDENTITY` is the keys-only export; `/icons/kol-icon-set-identity` the page.
+`kol-icon-set-identity` (kol-icons ≥0.49.0, 2026-10-28 — user: *"identity should be separate from signal and interface"*) — **9 icons**, the marks: the brand's own and each app's, every one filled `currentColor` on the identity keyline (`translate(3 3) scale(0.75)`). Interface's `identity` group until 0.48.0; its own set because a mark is not app chrome. `KOL_ICON_SET_IDENTITY` is the keys-only export; `/icons/kol-icon-set-identity` the page.
 
-| Group | n | Glyphs |
+**One folder per identity (≥0.50.0, 2026-10-28).** `kol-icon-set-identity/<id>/`. The file named like its folder is the **icon** — the keyline glyph, the one name `<Icon>` resolves. Every other file in the folder is an **asset by role**, read by path through `@kolkrabbi/kol-icons/identity/<id>/<file>` (`?raw` · `?url`), never through `<Icon>`:
+
+| Suffix | What it is | Read by |
 |---|---|---|
-| `kolkrabbi` | 2 | `kol-ds` · `kolkrabbi` |
-| `apps` | 8 | `brand` · `fxr` · `metrics` · `mirror` · `mirror-mir` · `monitor` · `r2b2` · `studio` |
+| *(none)* `<id>.svg` | the icon on the 24 keyline | `<Icon name="<id>">` |
+| `-logomark` | the raw mark in its own box | `VectorLoader` (kol-component), the boot loader, lockups |
+| `-wordmark` | the name set as type | the share card, the boot loader |
+| `-lockup-h` · `-lockup-v` | mark + wordmark, wide and stacked | brand pages |
+| `-favicon` | the tab icon, scheme `<style>` baked in | `<link rel="icon">` |
+| `-app-icon` · `-app-icon-light` | the app icon (Apple's word) on its dark ground, the 60 % rule; `-tile` until 0.51.0, kept to 2026-11-27 | `apple-touch-icon` (the PNGs render from it) |
+| `favicon.ico` · `favicon-96.png` | the dark app icon at 32 and 96 (≥0.52.0) | a host that asks by name — `/favicon.ico`, Sanity Studio's `static/` |
+| `-alt-*` | an alternate drawing kept for a round | `apps/identity` |
+
+| Folder | Icon | Assets |
+|---|---|---|
+| `kolkrabbi` | `kolkrabbi` | `-logomark` · `-wordmark` · `-lockup-h` · `-lockup-v` · `-favicon` |
+| `kol-ds` | `kol-ds` | `-favicon` |
+| `metric` | `metric` (was `metrics`, alias kept) | `-favicon` |
+| `mirror` | `mirror` | `-alt-mir` (was the icon `mirror-mir`) |
+| `fxr` · `monitor` · `r2b2` · `studio` · `brand` | the icon | — |
+| `workshop` | — | `-wordmark` |
+
+The gallery still shows two groups, `kolkrabbi` (kolkrabbi, kol-ds) and `apps` (the rest), from the set's own map.

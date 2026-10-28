@@ -1,5 +1,30 @@
 # @kolkrabbi/kol-shell
 
+## 0.87.0 — 2026-10-28
+
+- **More turns to × while its sheet is open** (PhonePillMoreTurnsToClose, kol-fxr — frame A2: *"[...] that makes a list and nav turns to (X)"*): with `moreKeepsOpen` (the signed-out Home's pill, the `panel` variant) the More slot draws `x` and reads Close while the list is open, and a press closes it; the pill keeps its slots. Walked on studio-hub at iPhone 13.
+
+## 0.86.0 — 2026-10-28
+
+Two kol-fxr tickets from its plan 44, built to frames A2 (phone) and B2 (desk) and walked on studio-hub (`_tmp/2026-10-28-hub-signed-out/`, 6/6).
+
+- **The signed-out Home** (HubHomeSignedOut — user: *"we shouldnt see any files until you've LOGGED-IN. we should rather have something unique to an unlogged experience"*). `home.signedOut` (or `home.stage` with no files): no catalog, views or filters. `home.stage` lies full-bleed behind the page; the app's mark sits top-left alone (48 on a phone, 112 on a desk); the masthead's round button is `+` (× while open) and carries New, Walkthrough and Sign in — the `signIn` row joins the actions while signed out; `home.chromes: [{ icon, label, onPress }]` are the desk's dock and the phone's pill, where More lists the rail: its rows, the page's actions, then the pinned foot. The walkthrough opens over the stage. Signed in, Home is unchanged.
+- **`PhoneNav variant="dock"`** (PhoneNavDock — *"I moved the Phone nav in desktop, that component shoudl probablyget its own variant"*): the `nav` pill on a desk — md and up, at the content's bottom-left (64 in from the rail's edge, 64 up), no More. Needs kol-component ≥0.311.0 (TabsRow `dock`).
+- PhoneNav `sheetItems` (More's rows when they are not the pill's; rows flagged `foot` sit after the actions) and AppShell `phoneNav` (any further PhoneNav prop for the pill).
+
+## 0.85.0 — 2026-10-28
+
+Five kol-fxr tickets from its plan 43, walked on studio-hub at 1440 and at iPhone 13 (`_tmp/2026-10-28-fxr-phone-walk/`, 8/8).
+
+- **`PhoneNav variant="nav" | "panel" | "transport"`** (PhoneNavVariants — user: *"So we should ship variants? or presets? because if we only ship props then each repo has to tune to the same settiings and we get drift"*). A variant is a preset of the pill props, `PHONE_NAV_VARIANTS` the table (exported); props still override. `nav`: no hairline, no shadow, the circle. `panel`: frame E — on top, foldable, More keeps the panel open, no hairline. `transport`: the shadow. New `shadow` passthrough. **`AppShell navVariant` (default `nav`)** passes it to the pill it draws, so Home's pill loses its hairline with no prop set; pass it through `AppHub`/`AppStudio`'s `shell`. `TransportPill` reads its look from the table's `transport` row.
+- **More is the whole nav** (PhoneMoreWholeNav — *"when you press [...] you should get the entire Nav menu list … but also ship with prop so you can customise"*): every rail row, the pill's own and the pinned foot included, then the page's actions. `moreItems` (PhoneNav, `AppShell`) filters it: an allow-list of paths or `(item) => boolean`.
+- **Home's phone chooser is fxr's original stack** (HubHomePhoneChooser — *"I want taht instead of this 2x2 bullshit"* · *"not with the padded container"*): `touch.label` as the eyebrow, then one full-width large button per door, the icon on both ends, the label centred — fxr's `EntryScreen` class for class, without its card. The 2 × 2 grid is gone.
+- **The account row** (HubAccountRow — *"I am the only user. and we will treat me THE ONLY USER as a proper user"* · *"why does it say password for library sync? … stupid."*): `signIn.user: { name, avatar? }` + `signIn.onProfile()`. Signed out, the DS dialog asks Email and Password ("Sign in") and calls `onPress({ email, password })`; signed in, the rail row is the user — the avatar at the glyph's 20 (the initial when none) and the name — and opens `onProfile()`, which owns sign-out. Without `user` the shared-password row is unchanged. Needs kol-component ≥0.309.0 (`modal.form`, `Avatar size="xs"`).
+
+## 0.84.0 — 2026-10-28
+
+- Re-exports **`VectorLoader`** beside `Logomark` (kol-component 0.308.0 renamed the loader; the old name stays an alias on the ledger). Needs `@kolkrabbi/kol-component` ≥0.308.0.
+
 ## 0.83.0 — 2026-10-27
 
 - **`PhoneNav` as the phone panel picker** (PhoneNavTopAndFold, kol-fxr 2026-10-27, frame E): `placement="top"` (the pill on top, More's sheet below it), `border`, `active="circle"`, `foldable` · `folded` · `onFoldChange` (fold to a left edge tab), `moreKeepsOpen` (More opens without collapsing the pill to the ×, lights only while open, and the open panel stays — a clear scrim). An item may carry `onPress` (a panel the app owns, a second tap its call) and `selected`.

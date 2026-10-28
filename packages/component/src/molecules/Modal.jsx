@@ -23,6 +23,15 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
  * masks the field (`autoComplete="current-password"`) for the family's sign-in prompts. The
  * native fallback cannot mask — mount a ModalProvider. `placeholder` sits in the same options.
  *
+ * FORM (HubAccountRow, kol-fxr 2026-10-28 — sign-in asks Email AND Password): `form(title, fields, { okLabel, cancelLabel })`
+ * draws one field per `{ id, placeholder, type?, autoComplete?, defaultValue? }` and resolves `{ [id]: value }` on submit,
+ * `null` on cancel. The first field takes the focus; Enter in any field submits.
+ *
+ * THE PAGE HOLDS STILL UNDER THE KEYBOARD (PromptHoldsWithKeyboard, kol-fxr 2026-10-28 — user: *"does the UI have to move
+ * upp to show keyboard?"*): every dialog sits in the VISUAL viewport (`visualViewport` resize/scroll), so on an iPhone it
+ * rides above the keyboard; a field takes its focus without scrolling (`preventScroll`), and the document's scroll is put
+ * back when the keyboard closes and when the dialog does.
+ *
  * KEYBOARD: the dialog opens focused (prompt → its field, confirm/alert → OK), Tab cycles inside
  * it, and Enter on a focused button presses that button rather than submitting.
  *
@@ -77,8 +86,12 @@ export function ModalProvider({ children }) {
     new Promise((resolve) => setState({ kind: 'alert', title, okLabel, resolve })),
   [])
 
+  const form = useCallback((title, fields = [], { okLabel, cancelLabel } = {}) =>
+    new Promise((resolve) => setState({ kind: 'form', title, fields, okLabel, cancelLabel, resolve })),
+  [])
+
   return (
-    <ModalCtx.Provider value={{ prompt, confirm, alert }}>
+    <ModalCtx.Provider value={{ prompt, confirm, alert, form }}>
       {children}
       {state && typeof document !== 'undefined' && createPortal(
         <ModalView state={state} closeWith={closeWith} />,
@@ -91,18 +104,47 @@ export function ModalProvider({ children }) {
 function ModalView({ state, closeWith }) {
   const [val, setVal] = useState(state.defaultValue ?? '')
   const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
+  const [fieldVals, setFieldVals] = useState(() => Object.fromEntries((state.fields ?? []).map((f) => [f.id, f.defaultValue ?? ''])))
   const inputRef = useRef(null)
   const dialogRef = useRef(null)
+  const overlayRef = useRef(null)
+  const typing = state.kind === 'prompt' || state.kind === 'form'
+
+  /* the visual viewport (PromptHoldsWithKeyboard): the scrim is sized to it, so the dialog centres above the keyboard
+   * instead of the browser scrolling the page to clear it; the scroll the page had is restored when the keyboard goes
+   * (the visual viewport back to full height) and when the dialog closes */
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined
+    const y0 = window.scrollY
+    const vv = window.visualViewport
+    const fit = () => {
+      const el = overlayRef.current
+      if (!vv || !el) return
+      el.style.top = `${vv.offsetTop}px`
+      el.style.left = `${vv.offsetLeft}px`
+      el.style.width = `${vv.width}px`
+      el.style.height = `${vv.height}px`
+      if (vv.height >= window.innerHeight - 1 && window.scrollY !== y0) window.scrollTo(0, y0)
+    }
+    fit()
+    vv?.addEventListener('resize', fit)
+    vv?.addEventListener('scroll', fit)
+    return () => {
+      vv?.removeEventListener('resize', fit)
+      vv?.removeEventListener('scroll', fit)
+      if (window.scrollY !== y0) window.scrollTo(0, y0)
+    }
+  }, [])
 
   /* alert resolves `undefined` whichever way it is dismissed; a confirm with toggles resolves
    * `{ ok, values }` */
   const answer = (ok) => (state.options ? { ok, values } : ok)
-  const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'alert' ? undefined : answer(true))
-  const cancel = () => closeWith(state.kind === 'prompt' ? null : state.kind === 'alert' ? undefined : answer(false))
+  const submit = () => closeWith(state.kind === 'prompt' ? val : state.kind === 'form' ? fieldVals : state.kind === 'alert' ? undefined : answer(true))
+  const cancel = () => closeWith(typing ? null : state.kind === 'alert' ? undefined : answer(false))
 
   /* focus once on open — the key effect below re-runs per keystroke and would steal it back */
   useEffect(() => {
-    if (state.kind === 'prompt') inputRef.current?.focus()
+    if (typing) inputRef.current?.focus({ preventScroll: true })
     else dialogRef.current?.querySelector('[data-modal-ok]')?.focus()
   }, [state.kind])
 
@@ -121,10 +163,11 @@ function ModalView({ state, closeWith }) {
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [state.kind, val, values, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [state.kind, val, values, fieldVals, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div
+      ref={overlayRef}
       onMouseDown={cancel}
       /* THE scrim (overlay-scrim-outliers sweep, 2026-09-03): the docs said Modal
          wore `.kol-overlay-scrim`; the source drew a raw `rgba(0,0,0,0.5)`. The
@@ -137,7 +180,7 @@ function ModalView({ state, closeWith }) {
     >
       <div
         ref={dialogRef}
-        role={state.kind === 'prompt' ? 'dialog' : 'alertdialog'}
+        role={typing ? 'dialog' : 'alertdialog'}
         aria-modal="true"
         aria-labelledby="kol-modal-title"
         onMouseDown={(e) => e.stopPropagation()}
@@ -166,6 +209,21 @@ function ModalView({ state, closeWith }) {
             className="w-full"
           />
         )}
+        {state.kind === 'form' && state.fields.map((f, i) => (
+          <Input
+            key={f.id}
+            ref={i === 0 ? inputRef : undefined}
+            type={f.type ?? 'text'}
+            autoComplete={f.autoComplete}
+            placeholder={f.placeholder}
+            aria-label={f.placeholder ?? f.id}
+            variant="outline"
+            size="sm"
+            value={fieldVals[f.id]}
+            onChange={(e) => setFieldVals((v) => ({ ...v, [f.id]: e.target.value }))}
+            className="w-full"
+          />
+        ))}
         {state.options && (
           <div className="flex flex-col gap-3">
             {state.options.map((o) => (

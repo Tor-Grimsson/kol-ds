@@ -71,7 +71,13 @@ import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kol
  *                                        description. One app, one header — media-hub wore both. NO DEFAULT (user, 2026-09-29): unset,
  *                                        every page renders as its own props say, so a consumer's bump moves nothing
  *                                        (fxr · mirror · monitor are mono by ruling).
- * @param {Array}  [props.barActions]      `[{ label, icon?, onPress }]` — buttons at the top of the bar's More sheet (PhoneNav `actions`)
+ * @param {Array}  [props.barActions]      `[{ label, icon?, onPress }]` — the page's buttons in the bar's More sheet, under the nav (PhoneNav `actions`)
+ * @param {'nav'|'panel'|'transport'} [props.navVariant='nav']  THE PHONE PILL'S PRESET (PhoneNavVariants, kol-fxr 2026-10-28 —
+ *                                        the Home pill kept its hairline while Labs tuned its own by hand): `nav` is no hairline,
+ *                                        no shadow, the circle; PhoneNav's `PHONE_NAV_VARIANTS` is the table
+ * @param {Object} [props.phoneNav]        any further PhoneNav prop for the pill (`sheetItems`, `moreKeepsOpen`, …) — the Hub's
+ *                                        signed-out Home passes the rail as More's rows (2026-10-28)
+ * @param {string[]|Function} [props.moreItems]  which rail rows the More sheet lists (PhoneNav `moreItems`) — unset, all of them
  * @param {Array}  [props.barItems]        the bar's destinations under `touch="bar"` (default items + bottomItems) —
  *                                        a Hub passes Home first, which the rail draws as the mark instead
  * @param {string[]} [props.barHiddenOn=[]]  paths (matched like the rail's active row) where the phone bar STEPS ASIDE
@@ -156,6 +162,9 @@ export default function AppShell({
   drawerOpenOn = NO_PATHS,
   barItems,
   barActions,
+  navVariant = 'nav',
+  moreItems,
+  phoneNav,
   barHiddenOn = NO_PATHS,
   masthead,
   children,
@@ -383,7 +392,7 @@ export default function AppShell({
           onClick={() => setDrawerOpen(false)}
         />
       )}
-      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} actions={barActions} shape={touch === 'pill' ? 'pill' : 'bar'} currentPath={currentPath} onNavigate={navigate} />}
+      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} actions={barActions} shape={touch === 'pill' ? 'pill' : 'bar'} variant={navVariant} moreItems={moreItems} {...phoneNav} currentPath={currentPath} onNavigate={navigate} />}
       {!navHidden && !bar && !barAside && (
         <Rail
           items={items}

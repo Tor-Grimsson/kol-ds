@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from 'react'
 import { HashRouter, Routes, Route, Navigate, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { AppStudio, CatalogPage, RailSlotProvider, useNavHidden } from '@kolkrabbi/kol-shell'
-import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomarkUrl from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
 import { RackProvider } from '../../rack/src/hooks/useRackContext.jsx'
 import { SHORTCUT_SECTIONS } from '../../rack/src/data/shortcuts.js'

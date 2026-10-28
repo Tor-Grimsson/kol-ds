@@ -92,6 +92,14 @@
       "destination": "/apps/rails/index.html"
     },
     {
+      "source": "/apps/identity/(.*)",
+      "destination": "/apps/identity/index.html"
+    },
+    {
+      "source": "/apps/print/(.*)",
+      "destination": "/apps/print/index.html"
+    },
+    {
       "source": "/apps/site-hub/(.*)",
       "destination": "/apps/site-hub/index.html"
     },

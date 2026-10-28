@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AppShell } from '@kolkrabbi/kol-shell'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 /* the editor's OWN panels, state and stylesheets, from its source (see vite.config.js) */
 import 'design-editor-src/index.lib.css'
 import 'design-editor-src/editor/styles/kol-editor.css'

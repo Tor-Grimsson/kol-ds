@@ -3,7 +3,7 @@ import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-d
 import { AppHub, PageShell } from '@kolkrabbi/kol-shell'
 import { SiteLayout } from '@kolkrabbi/kol-framework'
 import { ActionButton, Button, Divider, Dropdown, PageHeader, PopoverPanel, Rail, RailActions, RailHeader, RailHint, RailNav, RailRow, RailSection, SegmentedToggle, SettingsFooter, SettingsPanel, SettingsSections, Table, TabsRow, usePopover, useRailKey } from '@kolkrabbi/kol-component'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 
 /* THE RAILS REFERENCE — every rail on one frame (RailRoles, user 2026-10-25: *"this rails is for all rails, I want to see
  * a regular left navrail then I want P , H all to work on shortcuts, I want all to open on top of each other if you

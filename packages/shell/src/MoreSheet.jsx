@@ -14,9 +14,11 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {Array}    items    `[{ path, label, icon? }]` — destinations, after a divider's worth of nothing
  * @param {string}   active   the item path that is current
  * @param {Function} onPick   `(item | action) => void` — after the row's own press; the sheet closes here
+ * @param {boolean}  itemsFirst  the destinations above the actions (PhoneNav's More, 2026-10-28: the whole nav, then the
+ *                            page's buttons); Home's masthead button keeps actions first
  */
-export default function MoreRows({ actions = [], items = [], active, onPick }) {
-  return (
+export default function MoreRows({ actions = [], items = [], active, onPick, itemsFirst = false }) {
+  const acts = (
     <>
       {actions.map((a) => (
         <Button key={a.label} variant="nav" size="lg" iconLeft={a.checked === undefined ? a.icon : undefined} iconSize={22} className="w-full justify-start h-11 gap-3" onClick={() => { onPick?.(a); a.onPress?.() }}>
@@ -26,9 +28,13 @@ export default function MoreRows({ actions = [], items = [], active, onPick }) {
           {a.label}
         </Button>
       ))}
+    </>
+  )
+  const dests = (
+    <>
       {items.map((i) => (
         <Button
-          key={i.path}
+          key={i.path ?? i.id ?? i.label}
           variant="nav"
           size="lg"
           iconLeft={i.icon}
@@ -42,4 +48,5 @@ export default function MoreRows({ actions = [], items = [], active, onPick }) {
       ))}
     </>
   )
+  return itemsFirst ? <>{dests}{acts}</> : <>{acts}{dests}</>
 }

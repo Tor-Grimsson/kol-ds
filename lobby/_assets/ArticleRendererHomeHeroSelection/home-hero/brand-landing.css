@@ -1,0 +1,31 @@
+/**
+ * landing.css — the Landing hero overlay. One rule, one consumer.
+ *
+ * All that remains of the former kol-site.css (1040 lines of client-era
+ * marketing chrome). It emptied in three passes on 2026-07-30: 75 dead
+ * classes deleted, then .site-anchor* with PortalIndex, then .site-feature*
+ * with FeatureSplit (published twin adopted), then .site-sig* with SigTicker.
+ *
+ * Mirrors apps/web ui.css .stack-hero-overlay — keep the two in step.
+ */
+
+/* ═════════════════════════════════════════════════════════════════
+   LANDING HERO OVERLAY — the /stack hero system (apps/web ui.css
+   .stack-hero-overlay, mirrored 2026-07-29): theme-conditional
+   color-mix wash over the CDN mood image. Light 32% · dark 80%,
+   dark selectors follow the theme law: explicit > system > light.
+   ═════════════════════════════════════════════════════════════════ */
+
+.landing-hero-overlay {
+  --overlay-mix: 32%;
+  background-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) var(--overlay-mix), transparent);
+}
+[data-theme="dark"] .landing-hero-overlay,
+.dark .landing-hero-overlay {
+  --overlay-mix: 80%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .landing-hero-overlay {
+    --overlay-mix: 80%;
+  }
+}

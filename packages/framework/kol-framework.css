@@ -32,8 +32,15 @@ body {
  * law, brand-app ruling): text is selectable everywhere — copyability beats
  * chrome purity. */
 
-/* Selection highlight uses brand-primary so it reads on-brand when it appears. */
+/* SELECTED TEXT IS NEUTRAL BY DEFAULT (ArticleRendererHomeHeroSelection, kol-website 2026-10-28 — user: accents are opt-in,
+ * not default; brand's selections were yellow): the page's own ink pair, inverted — a white highlight with dark ink in dark
+ * mode, its inverse in light. An app (or any subtree) opts into the accent with `.kol-select-accent`. */
 ::selection {
+  background-color: var(--kol-surface-on-primary);
+  color: var(--kol-surface-primary);
+}
+.kol-select-accent::selection,
+.kol-select-accent ::selection {
   background-color: var(--kol-accent-primary);
   color: var(--kol-accent-on-primary);
 }
@@ -210,6 +217,59 @@ body {
   justify-content: center;
   line-height: 1;
   transition: transform 150ms ease, opacity 120ms ease, visibility 0s linear 120ms;
+}
+/* THE SPLIT ROW (user 2026-10-28: "expand anywhere except the title"): a foldernote's row is two targets on one box.
+ * The caret button fills the row under the link (the Tooltip wrapper is the positioned box, so it covers the head and
+ * not the open list below), its chevron where the floated caret sat; the link above passes the pointer through except
+ * on its glyph and title. The row still brightens as one when either half is hovered. */
+.kol-sidenav-hop-caret--row {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  justify-content: flex-end;
+  align-items: flex-start;
+  /* the chevron's 12 from the top and 16 from the edge ride the element as utilities (`pt-3 pr-4`) — a padding here
+   * would lose to the utility layer, which is how the first cut put the chevron 12px high */
+}
+.kol-sidenav-hop-chevron {
+  display: inline-flex;
+  transition: transform 150ms ease;
+}
+.kol-sidenav-hop--split {
+  pointer-events: none;
+}
+.kol-sidenav-hop--split .kol-sidenav-hop-icon,
+.kol-sidenav-hop--split .kol-sidenav-hop-title {
+  pointer-events: auto;
+}
+.kol-sidenav-hop-split:has(> .kol-sidenav-hop-caret--row:hover) .kol-sidenav-hop {
+  color: var(--kol-fg-96);
+}
+.kol-sidenav-hop-split:has(> .kol-sidenav-hop-caret--row:hover) .kol-sidenav-hop-icon {
+  color: var(--kol-surface-on-primary);
+}
+:root[data-sidenav="collapsed"] .kol-sidenav-hop--split { pointer-events: auto; }
+/* THE TREE FADES AT ITS CLIP (user 2026-10-28: "we also are missing a fade when list clips in navrail") — the app rail's
+ * `.kol-shell-rail-list--fade` and the workshop rail's `.shell-rail`, the same 3rem ramp; the element's `pb-12` (a utility,
+ * which a components-layer padding here could not outrank) lets the last row scroll clear of it, so at the end of the list nothing stays faded. `NavRail variant="site" fade={false}` drops it. */
+.kol-sidenav-scroll--fade {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
+}
+/* THE SITE HERO'S WASH (SiteHero, 2026-10-28) — kol-website's `.landing-hero-overlay` and `.stack-hero-overlay`, one rule:
+ * the inverse ink mixed over the image, 32 % light · 80 % dark, the theme law's selectors (explicit > system > light).
+ * SiteHero's `overlay` prop sets the two variables. */
+.kol-site-hero-overlay {
+  background-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) var(--kol-site-hero-mix, 32%), transparent);
+}
+:is([data-theme="dark"], .dark) .kol-site-hero-overlay {
+  background-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) var(--kol-site-hero-mix-dark, 80%), transparent);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .kol-site-hero-overlay {
+    background-color: color-mix(in srgb, var(--kol-surface-on-inverse, currentColor) var(--kol-site-hero-mix-dark, 80%), transparent);
+  }
 }
 .kol-sidenav-list {
   display: flex;

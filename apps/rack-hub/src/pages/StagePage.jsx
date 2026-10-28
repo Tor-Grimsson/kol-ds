@@ -36,7 +36,7 @@ import LabeledJack from '../../../rack/src/modules/parametric/LabeledJack'
 import { usePanZoom } from '../stage/usePanZoom'
 import { useNarrow } from '../hooks/useNarrow.js'
 import Icon from '../../../rack/src/icons/Icon'
-import { useFloating } from '../stage/useFloating'
+import { useFloating } from '@kolkrabbi/kol-hardware'
 import { useDotGrid, DOT_GRID_SIZE, DOT_GRID_IMAGE } from '../../../rack/src/hooks/useDotGrid.js'
 
 // Keying the view on the stage is what resets the marks: `useState` seeds from

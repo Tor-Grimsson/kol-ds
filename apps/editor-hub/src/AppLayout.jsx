@@ -10,7 +10,7 @@ import { useAppSettings, setAppSetting } from '../../../packages/design-editor/s
 import { ASPECTS } from '../../../packages/design-editor/src/editor/shell/aspects.js'
 import { pack } from '../../../packages/design-editor/src/editor/packs.js'
 import { transport } from '../../../packages/design-editor/src/editor/params/transport.js'
-import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomarkUrl from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
 import { cover, title } from '../../studio-hub/src/covers.js'
 import Library from './pages/Library.jsx'

@@ -1,0 +1,122 @@
+/* ── Whole-kit preview (/pdf) ─────────────────────────────────────────
+   Renders the application kit as stacked sheets in the plain ink-on-white look
+   of the PDF export (scripts/export-kit.sh --v2). Screen-only — the real
+   sendable artifact is still the export script. The page components are reused
+   as-is; everything here is layout chrome around them. Two modes:
+     [data-kit-mode="continuous"] — A4-width sheets that grow for their content
+     [data-kit-mode="a4"]         — true A4 sheets (1:√2); content flows across
+                                    as many pages as it needs, at natural size */
+
+.kol-kit-preview {
+  background: #5b5b60; /* PDF-viewer style gray backdrop */
+  min-height: 100dvh;
+  padding: 32px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Continuous mode — one A4-width sheet per section. Width is pinned to A4 @96dpi
+   so line wrapping tracks the print; height grows past A4 for long content. */
+.kol-kit-preview .kol-kit-page {
+  width: 794px;
+  max-width: 100%;
+  min-height: 1123px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  overflow: hidden;
+}
+
+/* One uniform gutter on every continuous sheet. Each page component carries its
+   own main padding + a per-page max-width cap, and Cover/Back nest content in a
+   second-padded aspect card — so side margins differ page to page (Cover/Back
+   read double, Type Specimen's narrow cap strands a wide right gap). Pin a single
+   48px margin: full-width main, and drop the card's extra inner padding (its
+   aspect stays, so the A-page layout with the bottom-pinned nav still holds). */
+.kol-kit-preview[data-kit-mode="continuous"] .kol-kit-page > main {
+  max-width: none !important;
+  padding: 48px !important;
+}
+.kol-kit-preview[data-kit-mode="continuous"] .kol-kit-page > main > div[class*="aspect-"] {
+  padding: 0 !important;
+}
+
+/* A4 sheets — `.kol-a4-sheet` · `-clip` · `-measure` and their print rules are kol-theme's (kol-styleguide A4Pages, 2026-10-28). */
+
+/* In A4 mode the sheet padding owns the page gutters, so drop each section's own
+   page padding (it's there for the standalone routes / continuous mode). */
+.kol-kit-preview[data-kit-mode="a4"] main {
+  padding: 0 !important;
+  max-width: none !important;
+}
+
+/* ── Shared print-look tweaks (both modes) ──────────────────────────── */
+
+/* Plain look: strip KOL surface fills so the sheets read ink-on-white like the
+   --v2 export (no surface tint on the Cover/Back sheets, no placeholder gray
+   behind portfolio cards). */
+.kol-kit-preview :is(.bg-surface-secondary, .bg-surface-primary, .bg-fg-04) {
+  background-color: transparent !important;
+}
+
+/* Portfolio grid: its column count follows the viewport (sm/lg breakpoints),
+   not the sheet — so a wide screen would show 3 columns while the A4 PDF shows
+   2. Pin it to the two-column layout the export renders. */
+.kol-kit-preview ul.grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+/* Cover / Back: their inner A-sheet is a centered 560px card on screen; in the
+   kit it IS the page — let it fill the sheet width and drop the on-screen frame
+   (mirrors what the print stylesheet does for export). Its 1:√2 ratio is kept,
+   so at full width it lands on A4 height. */
+.kol-kit-preview main > div[class*="aspect-"] {
+  max-width: none;
+  border: 0;
+  box-shadow: none;
+}
+
+/* ── Print → PDF (the in-app Download dialog calls window.print) ─────────
+   Maps the preview's sheets to real A4 pages. The viewer chrome (gray
+   backdrop, toolbar, off-screen measurer) drops out; each sheet becomes a page.
+   These rules sit after — and override — the standalone-route rules in
+   kol-print.css for anything inside .kol-kit-preview. */
+@media print {
+  /* kol-print.css (the standalone routes) sets a 14mm @page after kol-theme's — the kit's sheets carry their own margins */
+  @page { size: A4 portrait; margin: 0; }
+
+  /* Pages excluded by the single-page picker. */
+  .kol-kit-preview [data-print-hide="1"] { display: none !important; }
+
+  /* The preview becomes the document: white, no backdrop, no gaps. */
+  .kol-kit-preview {
+    background: #fff !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    display: block !important;
+  }
+
+  /* Continuous mode — each section sheet, flowing across pages as needed. */
+  .kol-kit-preview .kol-kit-page {
+    width: 210mm !important;
+    min-height: 0 !important;
+    margin: 0 auto !important;
+    box-shadow: none !important;
+  }
+  /* Page break between continuous sheets (the A4 sheets' break is kol-theme's). */
+  .kol-kit-preview:not([data-print-scope="single"]) .kol-kit-page:not(:last-child) {
+    break-after: page;
+  }
+
+  /* Undo kol-print.css's standalone-route rules inside the preview. */
+  .kol-kit-preview[data-kit-mode="continuous"] main { padding: 14mm !important; }
+  .kol-kit-preview[data-kit-mode="a4"] main { padding: 0 !important; max-width: none !important; }
+  .kol-kit-preview main > div[class*="aspect-"] {
+    aspect-ratio: 1 / 1.4142 !important;
+    min-height: 0 !important;
+  }
+}
+
+

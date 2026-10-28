@@ -1,7 +1,7 @@
 // ModuloSidebar — sections: Case, Modules, Presets
 
 import { useState, useRef, useEffect } from 'react'
-import logomarkUrl from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomarkUrl from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { useNavigate } from 'react-router-dom'
 import { CATEGORIES, getModulesByCategory, MODULE_DEFS } from '../modules/registry'
 import { patches } from '../data/patches'

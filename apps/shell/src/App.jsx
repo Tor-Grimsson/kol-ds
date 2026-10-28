@@ -3,7 +3,7 @@ import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-d
 import { AppShell, PageShell } from '@kolkrabbi/kol-shell'
 import { SiteLayout } from '@kolkrabbi/kol-framework'
 import { Button, PageHeader, PopoverPanel, SegmentedToggle, usePopover } from '@kolkrabbi/kol-component'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 
 /* THE SHELL'S REFERENCE APP (apps review 2026-09-29) — the frame ALONE around ten placeholder pages, under
  * EITHER RAIL (user 2026-10-24: "is there a apps/* for the siderails? with an action button like in catalog to

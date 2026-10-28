@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon-kol-ds.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Resume</title>
+    <script>
+      // kol-framework THEME_BOOT_SCRIPT — stamps the saved theme before paint (no flash). Dark by default, as the studio apps are.
+      try {
+        if (localStorage.getItem('kol-theme-v') !== '3') {
+          localStorage.removeItem('kol-theme')
+          localStorage.removeItem('theme')
+          localStorage.setItem('kol-theme-v', '3')
+        }
+        var t = localStorage.getItem('kol-theme')
+        document.documentElement.dataset.theme = (t === 'light' || t === 'dark') ? t : 'dark'
+      } catch (e) { document.documentElement.dataset.theme = 'dark' }
+      // kol-resume's export renders ?theme=light|dark and ?plain=1 (ink-on-white) — set before React mounts (record's boot)
+      ;(function () {
+        var q = new URLSearchParams(location.search)
+        var t = q.get('theme')
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+        if (q.get('plain') === '1') document.documentElement.dataset.plain = '1'
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

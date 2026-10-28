@@ -42,6 +42,10 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  * the transport both compose, so the two stay one size and one look):
  * @param {'bottom'|'top'} [edge='bottom']  the pill's edge; `top` sits TABBAR_PILL_INSET under the top safe-area inset
  * @param {boolean} [border=true]   the pill's 1px oq-08 hairline
+ * @param {boolean} [dock=false]  THE DOCK (PhoneNavDock, kol-fxr 2026-10-28, frame B2 — user: *"I moved the Phone nav in desktop,
+ *                                 that component shoudl probablyget its own variant"*): the pill on a DESK — shown from md up, hidden
+ *                                 below (the phone has its own nav), placed at the content's bottom-left, 64 in from the rail's edge
+ *                                 (`--kol-shell-rail-width`) and 64 up, not centred
  * @param {boolean} [shadow=false]  a drop shadow — for a pill that floats over content (the transport), not the nav
  * @param {'fill'|'circle'} [active='fill']  the lit slot: `fill` its whole 56 slot (today), `circle` a 44×44 1:1 circle
  * @param {boolean} [foldable=false]  a sideways swipe (> 40px) folds the pill into a 28×72 edge tab; a tap restores it
@@ -59,11 +63,11 @@ export const tabbarPillWidth = (count) => count * TABBAR_PILL_TAB + 14
 /* the collapse's motion — one duration for the width and the glyph swap (300, user 2026-10-23: 180 read as abrupt) */
 const COLLAPSE_MS = 300
 
-export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, ariaLabel, className, style }) {
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, ariaLabel, className, style }) {
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
   if (look === 'chip') return <ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} ariaLabel={ariaLabel} className={className ?? ''} />
   if (look === 'text') return <TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={className ?? 'gap-6'} style={style} />
-  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} ariaLabel={ariaLabel} className={className ?? ''} />
+  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} ariaLabel={ariaLabel} className={className ?? ''} />
   return <UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} />
 }
 
@@ -106,7 +110,7 @@ function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
 /* the fold: a sideways swipe past this folds the pill, as frame E's prototype measures it */
 const FOLD_SWIPE = 40
 
-function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', ariaLabel = 'Sections', className }) {
+function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, dock = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', ariaLabel = 'Sections', className }) {
   const [foldedOwn, setFoldedOwn] = useState(false)
   const swipe = useRef({ x: null, swiped: false })
   if (tabs.length === 0) return null
@@ -154,7 +158,7 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
     <nav
       {...swipeProps}
       className={`${pill
-        ? 'kol-mobile-tabbar kol-mobile-tabbar-pill md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] rounded-full p-1.5 overflow-hidden '
+        ? `kol-mobile-tabbar kol-mobile-tabbar-pill ${dock ? 'hidden md:flex' : 'md:hidden'} fixed z-[calc(var(--kol-z-sticky)+1)] rounded-full p-1.5 overflow-hidden `
         : phone ? 'kol-mobile-tabbar md:hidden fixed inset-x-0 bottom-0 z-[var(--kol-z-sticky)] ' : ''}flex items-stretch ${className}`.trim()}
       style={pill ? {
         /* THE PILL (user 2026-10-23, iOS Files beside the full-width bar): floats off the bottom edge, hugs its tabs,
@@ -162,8 +166,9 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
          * centre line, so the collapse shrinks it toward where More was and the × lands under the same thumb. */
         height: TABBAR_H,
         width: isCollapsed ? TABBAR_H : W,
-        right: `calc(50% - ${W / 2}px)`,
-        [top ? 'top' : 'bottom']: inset,
+        ...(dock
+          ? { left: 'calc(var(--kol-shell-rail-width, 48px) + 64px)', bottom: 64 }
+          : { right: `calc(50% - ${W / 2}px)`, [top ? 'top' : 'bottom']: inset }),
         background: 'var(--kol-surface-secondary)',
         /* without the hairline the 1px it took stays, transparent, so the slots never move */
         border: `1px solid ${border ? 'var(--kol-oq-08)' : 'transparent'}`,

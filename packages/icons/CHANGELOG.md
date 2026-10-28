@@ -1,5 +1,20 @@
 # @kolkrabbi/kol-icons
 
+## 0.52.0 — 2026-10-28
+
+- **`favicon.ico` and `favicon-96.png` in every identity folder** (IdentityFaviconIcoAnd96, kol-website): the two files a host asks for by name — any browser's `/favicon.ico`, Sanity Studio's `static/favicon.ico` and `static/favicon-96.png` — rendered by `pnpm identity:render` from the dark app icon, as studio's hand-made pair was (pixel-identical to it). The .ico is one 32 × 32 PNG in an ICO wrapper.
+
+## 0.51.0 — 2026-10-28
+
+- **`-tile` → `-app-icon`** (user 2026-10-28: *"if apple uses app icon, why dont we? why are we reinventing a class?"*). The home-screen icon in each identity folder is `<id>-app-icon.svg` and `<id>-app-icon-light.svg`, Apple's word; "tile" came from the `/app-icon` skill's vocabulary and named nothing Apple or the web calls it. `<id>.svg` stays the keyline icon `<Icon>` renders, so the two never share a name. The `-tile` files are written beside the new ones until **2026-11-27**, then drop. The PNGs, favicon, logomark and `og.png` are unchanged.
+
+## 0.50.0 — 2026-10-28
+
+- **One folder per identity** (plan-2026-10-28-identity, kol-mirror's `AppIdentitySet` ticket — user: *"would it be a space?"*, *"the file named like the folder is the icon; every other file is an asset by role"*). `kol-icon-set-identity/<id>/` — `kolkrabbi` · `kol-ds` · `fxr` · `mirror` · `monitor` · `metric` · `r2b2` · `studio` · `brand` · `workshop` — replaces the `kolkrabbi/` and `apps/` sub-folders. **`<id>/<id>.svg` is the icon** (the keyline glyph `<Icon name="<id>">` renders) and the only file the Icon map takes; everything else in the folder is an asset by role suffix, read by path through the new **`./identity/*` export** (`@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-wordmark.svg?raw`): `<id>-logomark.svg` (the raw mark in its own box) · `-wordmark` · `-lockup-h` · `-lockup-v` · `-favicon` (the tab icon) · `-tile` (the touch icon on its ground) and, from 0.51.0, the rendered PNGs and OG card. The gallery's two groups (`kolkrabbi` for the brand's own, `apps` for the rest) are kept by `KOL_ICON_SET_IDENTITY`, from the set's own map now, not the folder.
+- **The brand's marks arrive from kol-brand** (user: *"the only thing about kolkrabbi I want DS to own is the identity system"*): `kolkrabbi/` gains `kolkrabbi-logomark` · `-wordmark` · `-lockup-h` · `-lockup-v` · `-favicon`; `kol-ds/` gains `kol-ds-favicon`; `metric/` gains `metric-favicon`; `workshop/` holds `workshop-wordmark` (no icon). kol-brand 0.2.0 points at them and keeps copies until 2026-11-27.
+- **`metrics` → `metric`** (today's bulletin: one word, singular — `apps/metric`, metric.kolkrabbi.io). `<Icon name="metrics">` still resolves through `RENAMED_ICONS`; `user-interface` chains to `metric` too. **`mirror-mir` leaves the Icon map** — it is `mirror/mirror-alt-mir.svg`, the alternate for the Mirror round on `apps/identity`, an asset by path.
+- **Paths into the files change (BREAKING for a `loaderApp({ graphic })` path):** `…/kol-icon-set-identity/kolkrabbi/kol-ds.svg` → `…/kol-ds/kol-ds.svg`; `…/apps/<app>.svg` → `…/<app>/<app>.svg`; `apps/metrics.svg` → `metric/metric.svg`. The showcase's own loader path followed.
+
 ## 0.49.0 — 2026-10-28
 
 - **`kol-icon-set-identity`, the third set** (user 2026-10-28, on the showcase rail: *"missing is identity, identity should be separate from signal and interface"*). Interface's `identity` group moves out into its own folder with its own index — `KOL_ICON_SET_IDENTITY`, `_NAMES`, `_META`, joined into `KOL_ICON_META` — in two groups, decided for his review: `kolkrabbi` (kolkrabbi, kol-ds — the studio's own marks) and `apps` (fxr, metrics, mirror, mirror-mir, monitor, r2b2, studio, brand — each app's). Every name resolves as before (`Icon name="monitor"`); the resolver reads the three sets. A consumer reading `KOL_ICON_SET_INTERFACE.identity` reads `KOL_ICON_SET_IDENTITY` now, and a path into the files (`loaderApp({ graphic: '…/kol-icon-set-interface/identity/kol-ds.svg' })`) becomes `…/kol-icon-set-identity/kolkrabbi/kol-ds.svg` (`apps/` for an app's mark).

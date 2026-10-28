@@ -14,7 +14,7 @@ export { default as AppShell } from './AppShell.jsx'
 export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { NavRail } from '@kolkrabbi/kol-component' // lives in kol-component since 2026-10-22
-export { default as PhoneNav } from './PhoneNav.jsx'
+export { default as PhoneNav, PHONE_NAV_VARIANTS } from './PhoneNav.jsx'
 export { default as TransportPill } from './TransportPill.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
 /* PageHeader MOVED to @kolkrabbi/kol-component 2026-09-03 (page-header-one-masthead).
@@ -28,7 +28,7 @@ export { default as SettingsScaffold } from './SettingsScaffold.jsx'
 export { default as WalkthroughPanel } from './WalkthroughPanel.jsx'
 /* lives in kol-component since 0.228.0 — re-exported so every kol-shell import keeps resolving */
 export { ShortcutsOverlay, shortcutInScope } from '@kolkrabbi/kol-component'
-export { Logomark } from '@kolkrabbi/kol-component'
+export { VectorLoader, Logomark } from '@kolkrabbi/kol-component'
 // the app tier, shipped once (ShellHomeSystem, kol-fxr 2026-08-27)
 export { default as CatalogPage } from './CatalogPage.jsx'
 export { default as CatalogGrid } from './CatalogGrid.jsx'

@@ -1,6 +1,9 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.14.0 — 2026-10-28
 
+- **`PrintStudio`** (PdfToolsFromStudio — user: *"we have a bunch of stationery, we would like to connect those together with the package"*): markdown to print in the page — a layout picker (Document, then the app's `templates`: finished A4 boards printed as they are), the project fields, the markdown, the A4 sheets on a desk, and PDF (the browser's print of the sheets), DOCX and MD. On `@kolkrabbi/kol-print` (a new peer), the same cut the CLI makes: the same document and studio give identical pages and DOCX body. The studio's details are props.
+- **`A4Pages`** — kol-website apps/record's `A4Page`, carried verbatim: any React content flowed across A4 sheets (794 × 1123, 48 margins), breaks snapped between elements; one sheet per A4 page in print. Its box is kol-theme's `.kol-a4-*` (0.196.0).
 
 ## 0.13.0 — 2026-10-28
 

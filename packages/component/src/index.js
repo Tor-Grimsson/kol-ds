@@ -39,6 +39,8 @@ export { default as IconPlate, KeylineGuide } from './atoms/IconPlate.jsx'
 export { default as IconToggle } from './atoms/IconToggle.jsx'
 export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
+/* which file origins a preview fetches with the sign-in cookie (Quick Look on private files, 2026-10-28) */
+export { registerCredentialedOrigin, credentialsFor } from './utilities/credentials.js'
 export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
 /* the overlay layer stack — which open layer owns Escape; exported so a layer in another package
  * (kol-shell's walkthrough) joins the same stack instead of a second one (2026-10-09) */
@@ -183,7 +185,8 @@ export { default as PageHeader, PAGE_HEADER_ROLES } from './molecules/PageHeader
 /* the one nav rail (2026-10-22) — `variant` app (the flat 48px rail) · site (the grouped site
  * sidebar, kol-framework's SideNav until then). Moved from kol-shell, which re-exports all three. */
 export { default as NavRail, RAIL_PRESETS, registerRailPreset } from './organisms/NavRail.jsx'
-export { default as Logomark } from './atoms/Logomark.jsx'
+/* any SVG by URL, inlined — `Logomark` until 0.308.0 (2026-10-28: "it just has a terrible name"); the alias is on the ledger */
+export { default as VectorLoader, default as Logomark } from './atoms/VectorLoader.jsx'
 export { RailSlotProvider, useRailSlot } from './hooks/railSlot.jsx'
 export { MastheadContext, MASTHEADS, useMasthead, mastheadTitleClass } from './utilities/masthead.js'
 export { default as ErrorBoundary } from './utilities/ErrorBoundary.jsx'

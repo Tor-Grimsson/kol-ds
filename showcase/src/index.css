@@ -17,6 +17,7 @@
 /* styleguide was missing (2026-10-01): ClearspaceDiagram's `[&_svg]:w-full [&_svg]:h-full` was never
    generated, so its layers kept their intrinsic size and the preview rendered offset and clipped */
 @source "../node_modules/@kolkrabbi/kol-styleguide/src";
+@source "../node_modules/@kolkrabbi/kol-resume/src";
 @source "../node_modules/@kolkrabbi/kol-workshop/src";
 /* THE TOOLS' PREVIEWS MOUNT THE APPS' OWN ENTRY FILES (2026-10-01 — previews/Notes · Decks ·
    MediaLibrary · AppHub · AppStudio · Brand), so their classes — and kol-notes' and kol-deck's, which
@@ -35,6 +36,9 @@
 @source "../../apps/mixer/src";
 
 @import "@kolkrabbi/kol-theme";
+/* kol-resume's screen styles for its previews — the kit sheets and the source page; its print rules (kol-resume.css) stay the host app's */
+@import "@kolkrabbi/kol-resume/styles/kol-kit-preview.css";
+@import "@kolkrabbi/kol-resume/styles/kol-resume-source.css";
 /* Dogfoods the shipped @source manifest (DS-CHANGES #9). In the workspace the
    symlinked theme's sibling paths resolve to nothing — which is exactly the
    not-installed case the manifest must tolerate; the explicit @source lines

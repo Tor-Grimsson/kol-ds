@@ -1,4 +1,13 @@
 /**
+ * MIRROR, NOT SOURCE (plan-2026-10-28-identity 3.3 — user 2026-10-28: "website/apps/brand owns kolkrabbi brand as a
+ * source of truth yes? … DS should maybe have a copy if it needs"). The manifest below is brand FACT, and its source is
+ * kol-website `apps/brand/src/brand/` (manifest.js lays the site's own copy over this one today; the turn-around is the
+ * website's session). This package keeps publishing it for the repos that read it — kol-website brand · web, fxr,
+ * monitor, mirror, olina — refreshed FROM the website after the fact, never edited here first (the design-editor
+ * pattern, ARCHITECTURE §3 2026-10-08). Mirrored 2026-10-28. What the DS owns of Kolkrabbi is the identity system
+ * only: the marks live in kol-icons `identity/kolkrabbi/`.
+ */
+/**
  * @kolkrabbi/kol-brand — Kolkrabbi's brand manifest.
  *
  * The first real instance of the brand manifest schema
@@ -145,19 +154,21 @@ export const brand = defineBrand({
     ],
   },
 
-  /* Package-relative SVG assets (src/svg/) — importable via the
-   * "./svg/*" export (Vite: append ?raw for the markup). */
+  /* THE MARKS LIVE IN kol-icons (2026-10-28, plan-2026-10-28-identity — user: "the only thing about kolkrabbi I
+   * want DS to own is the identity system"): `@kolkrabbi/kol-icons/identity/<id>/<file>` (Vite: append ?raw for
+   * the markup, ?url for a path). The copies under this package's `src/svg/` are the 30-day ledger — same bytes,
+   * dropped 2026-11-27 — and `file` here points at the new home. */
   logos: [
-    { id: 'logomark', name: 'Logomark', file: './svg/kol-logomark.svg', use: 'Square/compact contexts, avatars, favicons' },
-    { id: 'wordmark', name: 'Wordmark', file: './svg/kol-wordmark.svg', use: 'Text-led contexts, headers' },
-    { id: 'lockup-hori', name: 'Lockup · horizontal', file: './svg/kol-lockup-hori.svg', use: 'Default lockup, wide formats' },
-    { id: 'lockup-vert', name: 'Lockup · vertical', file: './svg/kol-lockup-vert.svg', use: 'Stacked/narrow formats' },
+    { id: 'logomark', name: 'Logomark', file: '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg', use: 'Square/compact contexts, avatars, favicons' },
+    { id: 'wordmark', name: 'Wordmark', file: '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-wordmark.svg', use: 'Text-led contexts, headers' },
+    { id: 'lockup-h', name: 'Lockup · horizontal', file: '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-lockup-h.svg', use: 'Default lockup, wide formats' },
+    { id: 'lockup-v', name: 'Lockup · vertical', file: '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-lockup-v.svg', use: 'Stacked/narrow formats' },
   ],
 
   favicons: [
-    { id: 'kolkrabbi', name: 'Kolkrabbi', file: './svg/favicon-kolkrabbi.svg', use: 'Default site favicon' },
-    { id: 'kol-ds', name: 'KOL design system', file: './svg/favicon-kol-ds.svg', use: 'The design-system showcase' },
-    { id: 'metrics', name: 'Metrics', file: './svg/favicon-metrics.svg', use: 'The metrics dashboard' },
+    { id: 'kolkrabbi', name: 'Kolkrabbi', file: '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-favicon.svg', use: 'Default site favicon' },
+    { id: 'kol-ds', name: 'KOL design system', file: '@kolkrabbi/kol-icons/identity/kol-ds/kol-ds-favicon.svg', use: 'The design-system showcase' },
+    { id: 'metric', name: 'Metric', file: '@kolkrabbi/kol-icons/identity/metric/metric-favicon.svg', use: 'The metrics dashboard' },
   ],
 
   clearspace: { rule: 'Clearspace equals the logomark height on all sides of any lockup.' },

@@ -16,6 +16,9 @@
 // value
 export { default as Knob } from './value/Knob.jsx'
 export { default as Fader } from './value/Fader.jsx'
+/* any value control made patchable — an expression in its readout, a modulation source on right-click (2026-10-28) */
+export { default as Modulatable } from './value/Modulatable.jsx'
+export { default as useExpressionValue } from './value/useExpressionValue.js'
 export { default as ParamSheet } from './value/ParamSheet.jsx'
 /* moved to kol-component with the controls that arm it (2026-10-01); re-exported so imports hold */
 export { armLongPress } from '@kolkrabbi/kol-component'
@@ -35,6 +38,11 @@ export { default as ModuleHeader } from './panel/ModuleHeader.jsx'
 export { default as ModuleFrame } from './frames/ModuleFrame.jsx'
 export { default as ChannelStrip } from './frames/ChannelStrip.jsx'
 export { default as FlipCard } from './frames/FlipCard.jsx'
+/* a panel dragged by its body and scaled from a corner grip — monitor's and mirror's hook, one copy (2026-10-28) */
+export { useFloating, FLOATING_MIN_SCALE, FLOATING_MAX_SCALE } from './frames/useFloating.js'
+/* the transport's face (2026-10-28): the timeline strip and the scrubber over a `createTransport()` clock, and its hooks */
+export { default as TimeStrip, Scrubber } from './panel/TimeStrip.jsx'
+export { useTransport, useTransportPlaying, useTransportNow } from './panel/useTransport.js'
 /* the rack (2026-10-01, user ruling: it comes into the design system) — the case, its 1U/3U rows
  * and the HP slot, lifted from kol-monitor; what mounts where and routing stay in the consumer */
 export { default as RackCase, RackRow, RackSlot } from './frames/Rack.jsx'

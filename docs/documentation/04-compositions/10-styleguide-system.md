@@ -20,6 +20,7 @@ tags:
   - domain/typography
   - domain/color
 related:
+  - "[[21-print|Print]]"
   - "[[../00-overview/01-package-topology|package topology]]"
   - "[[05-foundry-system|foundry system]]"
   - "[[../01-foundations/02-color|color]]"

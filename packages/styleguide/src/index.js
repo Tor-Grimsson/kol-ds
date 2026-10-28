@@ -27,6 +27,9 @@ export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './c
 export { default as AssetCard } from './AssetCard.jsx'
 /* a folder's pages as the brand book's contents cards (plan-2026-10-28-document W5.2) */
 export { default as DocumentIndex } from './DocumentIndex.jsx'
+/* print (PdfToolsFromStudio, 2026-10-28): A4 sheets for any content, and markdown to PDF · DOCX · MD on @kolkrabbi/kol-print */
+export { default as A4Pages } from './A4Pages.jsx'
+export { default as PrintStudio } from './PrintStudio.jsx'
 export { default as Swatch } from './Swatch.jsx'
 export {
   PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, BrandAvatar, ProfileAvatar,

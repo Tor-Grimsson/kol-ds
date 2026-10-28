@@ -15,3 +15,6 @@ _tmp/
 
 # Ephemeral goal-loop state — one file per session (see /kol-goal).
 .kol/llm-context/.active-goal*.md
+
+# kol-resume export output (apps/resume/out)
+out/

@@ -1,5 +1,16 @@
 # @kolkrabbi/kol-hardware
 
+## 0.9.0 — 2026-10-28
+
+- **`TimeStrip` docks** (TimeStripInADock, kol-fxr): `framed={false}` renders in flow (no absolute position, border, padding, background or z; the host frames it); `span="loop"` makes the loop window the full width, so a lane's `t` 0..1 spans it (or `span={seconds}`); `gutter={px}` puts the readout in a left column that wide, starts the ruler and bar after it, and renders `children` full width beneath, so lanes with their own labels line up. Function children also get `origin`. Defaults are unchanged, so mirror's floating strip draws as before. Walked in the showcase at a 2 s and an 8 s loop: lanes and bar share their left edge and width, the head tracks the clock.
+
+## 0.8.0 — 2026-10-28
+
+kol-mirror's plan 19, three tickets (walked in the showcase and on rack-hub's stage):
+- **The transport** (TransportAndTimeline — user: *"fxr uses the loop from transport controls. so its two components together … this should live in DS"*). `createTransport()` in `./signal`, plain JS: kol-mirror's clock (`now()` shaped seconds — rate, forward · reverse · ping-pong over the loop window, swing, ease, hold; play · pause · stop · home · end · seek · reset) as a factory, with kol-fxr's `phase()` (0..1), `epoch` (stop and home only) and `setLoopSeconds`; `seekToSeconds` for a scrubber. Checked in `signal.test.mjs`. Its face: **`TimeStrip`** and **`Scrubber`** (mirror's, now taking the `transport`; `children` under the bar for fxr's keyframe lanes) and **`useTransport`** · **`useTransportPlaying`** · **`useTransportNow`**.
+- **`Modulatable`** (ModulatableControls — *"expression generator engine lives in DS, rotary dial lives in DS. nothing here is unique to mirror except that it homes modulation source"*): wraps a value control — kol-component's panel `Knob` or `Slider` — with mirror's expression readout (type `wave(t)`, it runs on the `clock`; ⌥-click clears) and its right-click modulation source (None · Expression A–D from the `bus`, the LED dot). **`useExpressionValue`** is the hook under it. A wrapper rather than props on the knob: kol-component cannot import kol-hardware's compiler, and `Knob` / `Fader` here are ledger aliases that may not gain behaviour.
+- **`useFloating`** (UseFloatingHook — *"seems like DS should tho?"*): kol-monitor's floating-panel hook in frames, with mirror's one-line difference (`nwse-resize` passes, for a corner grip); `FLOATING_MIN_SCALE` 0.35 · `FLOATING_MAX_SCALE` 2.5. apps/rack-hub's stage runs on it.
+
 ## 0.7.0 — 2026-10-24
 
 - **`FlipCard` swaps faces by backface, not by a clock** (FlipCardFaceSwap, kol-monitor 2026-10-24 — *"the card flipps, but the image snaps in once its landed. not believable."*). The timed `visibility` swap at duration / 2 left a blank card from edge-on (~a third of an `ease` turn) to the swap, and the back popped in near the end. Both faces hide their backface (`-webkit-` too), the back is pre-rotated in the preserve-3d turner, so the back shows exactly as the card passes edge-on at any `duration`; the face that is away is `inert` and aria-hidden — out of tab order, which is what the visibility had been for.

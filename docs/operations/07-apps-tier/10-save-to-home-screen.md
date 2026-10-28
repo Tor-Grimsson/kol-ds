@@ -3,7 +3,7 @@ title: Save to home screen
 type: playbook
 status: active
 created: 2026-10-26
-updated: 2026-10-26
+updated: 2026-10-28
 audience: internal
 description: Making a KOL app open from the iPhone home screen
 tags:
@@ -27,13 +27,13 @@ How a KOL app opens from the iPhone home screen like an app: no Safari chrome, i
 |---|---|---|
 | Head tags | the app, `index.html` | manifest link, Apple meta, `viewport-fit=cover`, `theme-color` |
 | Manifest | the app, `public/manifest.webmanifest` | `display: standalone`, name, colours, icons |
-| Icons | the app, `public/touch-icons/` | see [[../../documentation/02-icons/05-app-icons\|App icons]] and `/app-icon` |
+| Icons | **kol-icons ≥ 0.50.0**, `identity/<id>/` — the app copies its set into `public/` (step 3) | see [[../../documentation/02-icons/05-app-icons\|App icons]]; reviewed as a family on `apps/identity` |
 | Ground and top inset | **kol-theme ≥ 0.191.0**, `kol-base-tokens.css` | `html` on `--kol-surface-primary`; standalone `body` padded by the top inset |
 
 ## 0. Prerequisites
 
-- `@kolkrabbi/kol-theme` 0.191.0 or later, through `core` or the umbrella. Older themes leave `html` unpainted and the top unpadded (see 4).
-- The app's icon, made with `/app-icon`.
+- `@kolkrabbi/kol-theme` 0.191.0 or later, through `core` or the umbrella. Older themes leave `html` unpainted and the top unpadded (see 5).
+- The app's identity folder in `@kolkrabbi/kol-icons` (`identity/<id>/`). A new or changed mark is drawn in the app with `/app-icon`, ticketed here (`/lobby-icon`), normalised and rendered by the DS (`pnpm identity:render`), and comes back on the next bump.
 
 ## 1. Head tags
 
@@ -47,7 +47,7 @@ How a KOL app opens from the iPhone home screen like an app: no Safari chrome, i
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 ```
 
-`black-translucent` puts the page under the status bar; `viewport-fit=cover` is what lets it reach there. The two go together, and together they make the top inset the page's to pad (step 3).
+`black-translucent` puts the page under the status bar; `viewport-fit=cover` is what lets it reach there. The two go together, and together they make the top inset the page's to pad (step 4).
 
 ## 2. Manifest
 
@@ -72,7 +72,24 @@ How a KOL app opens from the iPhone home screen like an app: no Safari chrome, i
 
 The in-repo tool apps carry theirs at `public/apps/<name>.webmanifest`.
 
-## 3. What the theme does
+## 3. Icons — copy the set out of the package
+
+The app draws nothing and renders nothing: no `sharp`, no `generate-icons.mjs`. Its `pnpm icons` copies its folder out of kol-icons; run it after every `/bump` of `@kolkrabbi/kol-icons`.
+
+```js
+// scripts/icons.mjs — package.json: "icons": "node scripts/icons.mjs"
+import { cpSync, mkdirSync } from 'node:fs'
+const ID = 'mirror' // the app's identity folder
+const SET = `node_modules/@kolkrabbi/kol-icons/src/kol-icon-set-identity/${ID}`
+for (const d of ['public/touch-icons', 'public/svg', 'public/og']) mkdirSync(d, { recursive: true })
+for (const f of ['apple-touch-icon-dark.png', 'icon-192.png', 'icon-512.png', 'icon-512-maskable.png']) cpSync(`${SET}/${f}`, `public/touch-icons/${f}`)
+cpSync(`${SET}/${ID}-favicon.svg`, 'public/svg/favicon.svg')
+cpSync(`${SET}/og.png`, `public/og/${ID}.png`)
+```
+
+The head tags (step 1) and manifest (step 2) keep their paths, so nothing else changes. Same-origin on purpose: the favicon, touch icon and manifest icons must work offline from the home screen, which a CDN copy does not.
+
+## 4. What the theme does
 
 Nothing for the app to write. kol-theme 0.191.0 ships two rules every app loads:
 
@@ -88,14 +105,14 @@ html { background: var(--kol-surface-primary); }
 
 An app that padded the top itself (Mirror's `index.css`, fxr's `kol-editor.css`) drops its copy on the bump. The values are the same, so the two don't stack.
 
-## 4. Before 0.191.0
+## 5. Before 0.191.0
 
 kol-framework painted `html`, so a site on it got the ground; Mirror and Monitor don't import kol-framework and showed a ~62pt white strip at the bottom. fxr looked right only because its editor stylesheet loads on every route. On an older theme, bump it. Don't hand-copy the rules.
 
-## 5. Verification
+## 6. Verification
 
 On the iOS simulator (or a phone), open the app in Safari, Share → Add to Home Screen, open it from the home screen:
 
 - [ ] the title clears the status bar
 - [ ] no white band at the top or the bottom, in both themes
-- [ ] the icon is the app's dark tile, not a screenshot
+- [ ] the icon is the app's dark app icon, not a screenshot

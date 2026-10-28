@@ -57,15 +57,24 @@ export const KOL_ICON_SET_SIGNAL = (() => {
 export const KOL_ICON_SET_SIGNAL_NAMES = Object.values(KOL_ICON_SET_SIGNAL).flat().sort()
 
 /* kol-icon-set-identity — the marks (user 2026-10-28: *"identity should be separate from signal and interface"*): the
- * studio's own (`kolkrabbi`: kolkrabbi, kol-ds) and each app's (`apps`: fxr, metrics, mirror, monitor, r2b2, studio,
- * brand). Same shape, same rules, its own folder; until 0.49.0 these were interface's `identity` group. */
+ * brand's own and each app's. Until 0.49.0 these were interface's `identity` group.
+ *
+ * ONE FOLDER PER IDENTITY (0.50.0, plan-2026-10-28-identity): `kol-icon-set-identity/<id>/` — kolkrabbi · kol-ds ·
+ * fxr · mirror · monitor · metric · r2b2 · studio · brand … The file named like its folder (`mirror/mirror.svg`) is the
+ * ICON, on the keyline, the one name the set ships; every other file in the folder is an asset by role suffix —
+ * `<id>-logomark.svg` (the raw mark in its own box) · `-wordmark` · `-lockup-h` · `-lockup-v` · `-favicon` (the tab
+ * icon) · `-app-icon` (Apple's word: the home-screen icon on its ground; `-tile` until 0.51.0) · the rendered PNGs — read by path through the `./identity/*` export,
+ * never through <Icon>. The gallery's two groups (`kolkrabbi` for the brand's own, `apps` for the rest) are the
+ * set's own call, not the folder: the folder is the identity. */
+const IDENTITY_GROUP = { kolkrabbi: 'kolkrabbi', 'kol-ds': 'kolkrabbi' }
 export const KOL_ICON_SET_IDENTITY = (() => {
   const idx = {}
-  for (const p of Object.keys(import.meta.glob('./kol-icon-set-identity/**/*.svg'))) {
+  for (const p of Object.keys(import.meta.glob('./kol-icon-set-identity/*/*.svg'))) {
     const parts = p.split('/')
     const name = (parts.pop() || '').replace('.svg', '')
-    const group = parts.pop() || 'misc'
-    ;(idx[group] ||= []).push(name)
+    const folder = parts.pop()
+    if (name !== folder) continue
+    ;(idx[IDENTITY_GROUP[name] ?? 'apps'] ||= []).push(name)
   }
   for (const g of Object.values(idx)) g.sort()
   return idx

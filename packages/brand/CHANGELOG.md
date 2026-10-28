@@ -5,6 +5,11 @@
 > breaking or global-surface changes (token renames, default flips, new bare-element
 > rules) are flagged **BREAKING**.
 
+## 0.2.0 — 2026-10-28
+
+- **The marks move to kol-icons** (plan-2026-10-28-identity — user: *"the only thing about kolkrabbi I want DS to own is the fucking identity system, and its just because the favicons have a system that needs to be reviewed as a set"*). Every SVG under `src/svg/` now lives at `@kolkrabbi/kol-icons/identity/<id>/`, one folder per identity, named by role: `kol-logomark` → `kolkrabbi/kolkrabbi-logomark` · `kol-wordmark` → `kolkrabbi-wordmark` · `kol-lockup-hori` → `kolkrabbi-lockup-h` · `kol-lockup-vert` → `kolkrabbi-lockup-v` · `favicon-kolkrabbi` → `kolkrabbi-favicon` · `favicon-01` → `kolkrabbi-logomark` (it was the same drawing at 32) · `favicon-kol-ds` → `kol-ds/kol-ds-favicon` · `favicon-metrics` → `metric/metric-favicon` · `wordmark-workshop` → `workshop/workshop-wordmark`. `brand.logos` and `brand.favicons` point at the new paths (`lockup-hori`/`-vert` ids → `lockup-h`/`-v`, `metrics` → `metric`).
+- **Ledger:** `src/svg/*` and the `./svg` `<Asset>` loader stay as they were until **2026-11-27**, then drop (BREAKING then, not now). Inline a mark with kol-component's loader (`Logomark`, renamed `VectorLoader` in kol-component's next publish) — `<Asset>` only ever globbed this folder.
+
 ## 0.1.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-theme
 
+## 0.196.0 — 2026-10-28
+
+- **`.kol-a4-sheet` · `.kol-a4-clip` · `.kol-a4-measure`** and their print rules (kol-styleguide's `A4Pages`; kol-website apps/record's kit CSS, the generic half carried — the kit's own rules stay in record).
+
+## 0.195.0 — 2026-10-28
+
+- **Public Sans is loaded by link, not declared** (PublicSansByLink, kol-fxr — user: *"its only used in apps/document … we should just import it via link, not via. actual fonts"*). The four `@font-face` rules at `/fonts/public-sans/` (0.194.0) are gone from `kol-typography.css`, so `core` no longer declares a face most apps never serve. The document sheet's `--body` still names `'Public Sans'`; an app that renders one (`MarkdownPage`) adds the Google Fonts css2 link — variable weight, italic — and without it the body falls back to the sans. README says so. kol-ds-ui's `public/fonts/public-sans/` retired to `_tmp/`; apps/document and the showcase load the link.
+
 ## 0.194.0 — 2026-10-28
 
 - **The document body is Public Sans** — his ruling on Round 23 (*"I already said Public Sans!!! like the fucking reference"*): `.kol-sheet`'s `--body` is `'Public Sans'` with the DS sans behind it, the headings stay on the display face. The face is declared here, the variable cut in four `@font-face`s (latin, latin-ext, upright, italic; fontsource's unicode ranges) from `/fonts/public-sans/`, hosted by the consumer as the other faces are — kol-ds-ui's `public/fonts/public-sans/` holds the four woff2 and the OFL licence; a consumer copies that folder. No other rule changed.

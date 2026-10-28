@@ -1,3 +1,4 @@
+import { credentialsFor } from '../utilities/credentials.js'
 import { useEffect, useRef, useState } from 'react'
 
 /* taxonomy-ok: molecule — a renderer KindPreview composes; no DS parts of its own to nest. */
@@ -29,17 +30,18 @@ async function loadPdfjs() {
   return lib
 }
 
-function usePdf(src) {
+function usePdf(src, credentials) {
   const [state, setState] = useState({ src: null, doc: null, failed: false })
   useEffect(() => {
     let cancelled = false
     let loading = null
     loadPdfjs()
-      .then((lib) => { loading = lib.getDocument({ url: src }); return loading.promise })
+      /* the sign-in cookie for a registered origin (utilities/credentials.js) — a private file answers 401 without it */
+      .then((lib) => { loading = lib.getDocument({ url: src, withCredentials: credentialsFor(src, credentials) === 'include' }); return loading.promise })
       .then((doc) => { if (!cancelled) setState({ src, doc, failed: false }) })
       .catch(() => { if (!cancelled) setState({ src, doc: null, failed: true }) })
     return () => { cancelled = true; loading?.destroy() }
-  }, [src])
+  }, [src, credentials])
   return state.src === src ? state : { doc: null, failed: false }
 }
 
@@ -68,14 +70,14 @@ function PdfCanvas({ doc, page, className = '' }) {
   return <canvas ref={ref} className={`kol-pdf-page ${className}`.trim()} />
 }
 
-export default function PdfPage({ src, fallback = null, className = '' }) {
-  const { doc, failed } = usePdf(src)
+export default function PdfPage({ src, fallback = null, className = '', credentials }) {
+  const { doc, failed } = usePdf(src, credentials)
   if (failed) return fallback
   return <PdfCanvas doc={doc} page={1} className={className} />
 }
 
-export function PdfDocument({ src, fallback = null }) {
-  const { doc, failed } = usePdf(src)
+export function PdfDocument({ src, fallback = null, credentials }) {
+  const { doc, failed } = usePdf(src, credentials)
   const [current, setCurrent] = useState(1)
   const mainRef = useRef(null)
   const pages = doc ? Array.from({ length: doc.numPages }, (_, i) => i + 1) : []

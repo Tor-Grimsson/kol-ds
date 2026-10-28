@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "KOL design-system showcase — presentation of every component plus a live, mined usage reference for humans and LLMs.",
+  "description": "KOL design-system showcase \u2014 presentation of every component plus a live, mined usage reference for humans and LLMs.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -25,6 +25,8 @@
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-store": "workspace:*",
     "@kolkrabbi/kol-styleguide": "workspace:*",
+    "@kolkrabbi/kol-resume": "workspace:*",
+    "voyager-fixture": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@kolkrabbi/kol-workshop": "workspace:*",
     "@mdx-js/react": "^3.1.1",
@@ -38,7 +40,8 @@
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.14.2",
-    "tailwindcss": "^4.2.4"
+    "tailwindcss": "^4.2.4",
+    "@kolkrabbi/kol-print": "workspace:*"
   },
   "devDependencies": {
     "@mdx-js/rollup": "^3.1.1",

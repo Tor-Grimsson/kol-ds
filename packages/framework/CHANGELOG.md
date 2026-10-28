@@ -1,5 +1,15 @@
 # @kolkrabbi/kol-framework
 
+## 0.61.0 — 2026-10-28
+
+ArticleRendererHomeHeroSelection (kol-website):
+- **`SiteHero`** — a site's landing, kol-website apps/brand's `Landing` class for class: `image` (`src` · `srcSet` · `sizes` · `position`) or `media`, `mark` (a node, or an SVG url inlined by `VectorLoader`, sized clamp(140px, 16vw, 220px)), `title`, `tagline`, `actions`, `overlay` (the inverse wash, 32 % light · 80 % dark; a number, `{ light, dark }` or `false`), `align` (`center` · `start`), `minHeight` (`100dvh`). `.kol-site-hero-overlay` is the one wash rule for brand's `.landing-hero-overlay` and web's `.stack-hero-overlay`. Needs kol-component ≥0.308.0.
+- **BREAKING (default flip): `::selection` is neutral** — user ruling, accents are opt-in: the page's ink pair inverted (white on near-black in dark mode, its inverse in light) instead of `--kol-accent-primary`. A site that wants the accent puts `.kol-select-accent` on `html` (or any subtree).
+
+## 0.60.0 — 2026-10-28
+
+- The site rail's split row and clip fade (kol-component 0.308.0): `.kol-sidenav-hop-split` · `.kol-sidenav-hop--split` · `.kol-sidenav-hop-caret--row` · `.kol-sidenav-hop-chevron` — the caret fills the category row under the title, which alone takes the pointer, and the row brightens as one; `.kol-sidenav-scroll--fade` — the tree's 3rem mask at its foot.
+
 ## 0.59.0 — 2026-10-28
 
 - **`documentFiles(glob)`** (DocumentIndexFilesAndIcons049, kol-website 2026-10-28 — a point of the MarkdownPage ticket 0.58.0 missed: *"a folder may also hold PDFs and images; the contents index lists them beside the md pages and opens them in the DS QuickLook"*): the files beside a folder's markdown as rows `{ id, title, group, file, ext, kind }` from a `?url` glob, the kind the DS's (`kindOf`). `DocumentIndex` (kol-styleguide 0.13.0) draws them as cards and opens them in Quick Look. `documentTabs` is unchanged, the markdown half.

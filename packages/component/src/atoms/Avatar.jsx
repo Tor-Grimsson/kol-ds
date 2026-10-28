@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 const SIZE_MAP = {
+  /* xs — a rail glyph's 20 (HubAccountRow, kol-fxr 2026-10-28: the signed-in row draws the user where the glyph sits) */
+  xs: 'w-5 h-5 kol-helper-10',
   sm: 'w-8 h-8 kol-helper-12',
   md: 'w-10 h-10 kol-helper-14',
   lg: 'w-14 h-14 kol-helper-16',
@@ -21,7 +23,7 @@ const SIZE_MAP = {
  * @param {string} [src]     resolved image src — the consumer resolves it, this
  *                           atom never builds a URL
  * @param {string} [alt='']  photo alt text
- * @param {'sm'|'md'|'lg'|'xl'} [size='sm']
+ * @param {'xs'|'sm'|'md'|'lg'|'xl'} [size='sm']  `xs` is 20, a rail row's glyph
  */
 export default function Avatar({ initial, src, alt = '', size = 'sm', className = '' }) {
   const sizeCls = SIZE_MAP[size] ?? SIZE_MAP.sm

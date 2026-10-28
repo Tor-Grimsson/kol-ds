@@ -21,6 +21,7 @@
       "support": [
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone"
@@ -42,6 +43,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone",
@@ -70,6 +72,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -92,6 +95,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -109,6 +113,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -129,6 +134,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -155,6 +161,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -179,6 +186,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -211,6 +219,7 @@
       "support": [
         "armLongPress",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -230,6 +239,7 @@
       ],
       "local": {},
       "support": [
+        "iconNames",
         "registerIcons"
       ],
       "external": [
@@ -249,6 +259,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -295,6 +306,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "railRow",
         "registerIcons",
         "tone"
@@ -331,6 +343,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "layerStack",
         "motion",
         "railRow",
@@ -358,6 +371,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -414,6 +428,7 @@
         "getTagColor",
         "glyphLadders",
         "glyphSize",
+        "iconNames",
         "indexGraph",
         "layerStack",
         "matchSearchItems",
@@ -449,6 +464,7 @@
       "support": [
         "glyphLadders",
         "glyphSize",
+        "iconNames",
         "registerIcons",
         "theme",
         "tone"
@@ -465,6 +481,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone"
       ],
@@ -476,6 +493,7 @@
       ],
       "local": {},
       "support": [
+        "iconNames",
         "registerIcons"
       ],
       "external": []
@@ -486,6 +504,7 @@
       ],
       "local": {},
       "support": [
+        "iconNames",
         "registerIcons"
       ],
       "external": []
@@ -531,6 +550,7 @@
       "support": [
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone"
@@ -577,7 +597,6 @@
         "Kbd",
         "KindPreview",
         "LabeledControl",
-        "Logomark",
         "MediaLibraryPages",
         "MediaPlayer",
         "MediaTile",
@@ -621,6 +640,7 @@
         "ToggleCheckbox",
         "ToggleSwitch",
         "Tooltip",
+        "VectorLoader",
         "ViewToggle",
         "WalkthroughPanel"
       ],
@@ -630,6 +650,7 @@
         "createIndex",
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "id3",
         "imageToDataUrl",
         "isTopLayer",
@@ -710,6 +731,7 @@
       "support": [
         "chessFen",
         "glyphLadders",
+        "iconNames",
         "labels",
         "layerStack",
         "parsePgnTree",
@@ -753,6 +775,7 @@
         "createIndex",
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "search",
@@ -787,6 +810,7 @@
       "support": [
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone"
@@ -825,6 +849,7 @@
         "canvasViewport",
         "canvasZoom",
         "glyphLadders",
+        "iconNames",
         "layerTree",
         "motion",
         "railRow",
@@ -868,6 +893,7 @@
         "armLongPress",
         "glyphData",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "tone",
         "useAxisAnimation",
@@ -909,6 +935,7 @@
       "support": [
         "armLongPress",
         "glyphLadders",
+        "iconNames",
         "id3",
         "layerStack",
         "markdownToHtml",
@@ -942,6 +969,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "layerStack",
         "registerIcons",
         "tone",
@@ -1024,6 +1052,7 @@
         "createMediaClient",
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "id3",
         "joinFrontmatter",
         "layerStack",
@@ -1093,6 +1122,7 @@
         "formatB2Size",
         "formatMetric",
         "glyphLadders",
+        "iconNames",
         "metrics-constants",
         "registerIcons",
         "timeAgo",
@@ -1222,6 +1252,7 @@
         "gpuFxShaders",
         "gpuSlitscan",
         "iconCache",
+        "iconNames",
         "isImageType",
         "isVideoType",
         "layerStack",
@@ -1310,6 +1341,7 @@
       },
       "support": [
         "glyphLadders",
+        "iconNames",
         "layerStack",
         "monitor-data",
         "motion",
@@ -1348,6 +1380,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "railRow",
         "registerIcons",
         "tone",
@@ -1505,6 +1538,7 @@
         "eurorack",
         "glyphLadders",
         "hpToPx",
+        "iconNames",
         "layerStack",
         "motion",
         "patches",
@@ -1614,6 +1648,7 @@
         "createIndex",
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "id3",
         "joinFrontmatter",
         "layerStack",
@@ -1674,6 +1709,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -1733,6 +1769,7 @@
         "armLongPress",
         "createIndex",
         "glyphLadders",
+        "iconNames",
         "layerStack",
         "motion",
         "railRow",
@@ -1793,6 +1830,7 @@
       "support": [
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "sectionBleed",
@@ -1860,6 +1898,7 @@
         "comboMath",
         "cssVar",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -1904,6 +1943,7 @@
       "support": [
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "layerStack",
         "motion",
         "registerIcons",
@@ -1942,6 +1982,7 @@
         "card-media",
         "formatSize",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone"
@@ -1964,6 +2005,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "motion",
         "registerIcons",
         "tone",
@@ -1986,6 +2028,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2004,6 +2047,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2022,6 +2066,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2056,6 +2101,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2083,6 +2129,7 @@
       "local": {},
       "support": [
         "card-media",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -2109,6 +2156,7 @@
       "local": {},
       "support": [
         "card-media",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -2137,6 +2185,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -2163,6 +2212,7 @@
       ],
       "local": {},
       "support": [
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -2190,6 +2240,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionSurface",
@@ -2212,6 +2263,7 @@
       "local": {},
       "support": [
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2233,6 +2285,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2270,6 +2323,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2291,6 +2345,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
@@ -2312,6 +2367,7 @@
       "support": [
         "card-media",
         "glyphLadders",
+        "iconNames",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",

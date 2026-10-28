@@ -49,6 +49,7 @@ A site is `SiteLayout` plus a nav tree and routes. That is the whole contract: t
 | `.kol-sheet` | kol-theme | the document voice (kol-atlas's Research-Spec), beside `.kol-prose` the article voice |
 | `MarkdownPage` · `LinkPreview` · `documentTabs` · `documentFiles` | kol-framework | a markdown file as `.kol-sheet`, the hover card for its links, a folder's markdown as page rows and its PDFs and images as file rows — [[20-document\|Document page]] |
 | `DocumentIndex` | kol-styleguide | a folder's pages as the brand book's contents cards |
+| `SiteHero` | kol-framework | a site's landing — image, wash, mark, name, tagline, actions (0.61.0) |
 | `PageHero` · `PageHeader` | kol-framework · kol-component | the brand book's opening band; the page header at the top of every other page |
 | `BrandBook` · `BrandAssets` | kol-styleguide | the brand pages, chapters on the rail |
 

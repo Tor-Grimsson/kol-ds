@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Button, PopoverPanel, usePopover, useMediaQuery } from '@kolkrabbi/kol-component'
+import { Button, PopoverPanel, usePopover, useMediaQuery, VectorLoader } from '@kolkrabbi/kol-component'
+import PhoneNav from './PhoneNav.jsx'
+import WalkthroughPanel from './WalkthroughPanel.jsx'
 import MoreRows from './MoreSheet.jsx'
 import CatalogPage from './CatalogPage.jsx'
 import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
@@ -66,10 +68,12 @@ import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
  *                                An image removed while it was the cover or the back clears it: `onCover(file, null)` · `onBack(file, null)`
  * @param {Object}   touch        QUICK LINKS ON A PHONE, opt-in (studio-hub review 2, § 7.2 — *"fxr would use the quicklinks
  *                                for picking chrome right on mobile, while monitor and mirror wouldn't"*):
- *                                `{ doors: [{ icon, label, onPress }] }` — on a coarse pointer or below `md`, the doors as a
- *                                2 × 2 grid of large buttons ABOVE the catalog, which a phone draws as rows (CatalogPage's
- *                                `phoneLayout`). Nothing else: the separate touch page (doors, recent rows, All files) of
- *                                2026-10-23 is gone. Absent, a phone gets the rows alone
+ *                                `{ label?, doors: [{ icon, label, onPress }] }` — on a coarse pointer or below `md`, ABOVE the
+ *                                catalog: the eyebrow (`label`, fxr's "Select chrome"), then one full-width large button per
+ *                                door, stacked, the icon on BOTH ends and the label centred — fxr's original chooser, carried
+ *                                class for class from its `EntryScreen` (HubHomePhoneChooser, kol-fxr 2026-10-28 — user: *"I
+ *                                want taht instead of this 2x2 bullshit"* · *"not with the padded container"*): no card, no
+ *                                scrim, straight on the page. Absent, a phone gets the rows alone
  * @param {Array}    filterGroups ContentFilters' `[{ label, key, values, exclusive? }]`, opt-in — declare them or
  *                                Home is not a catalog for you (user, 2026-10-23). `exclusive` makes a group's
  *                                chips mutually exclusive. When files carry `tags` and no group claims the key,
@@ -144,6 +148,16 @@ export default function HubHome({
   touring: touringProp,
   onTouringChange,
   actionsInBar = false,
+  /* SIGNED OUT (HubHomeSignedOut, kol-fxr 2026-10-28, frames A2 · B2 — user: *"we shouldnt see any files until you've
+   * LOGGED-IN. we should rather have something unique to an unlogged experience"*): no catalog, no views, no filters. The
+   * `stage` node lies full-bleed behind the page (fxr's live generator); the mark top-left, alone (48 on a phone, 112 on a
+   * desk); the round `+` top-right opening New File, Walkthrough and Sign in (`signInAction`, AppHub's); the app's `chromes`
+   * as the desk's dock pill bottom-left (PhoneNav `variant="dock"`) — the phone's pill is AppHub's, the chromes with the
+   * rail under More. On by `signedOut`, or by a `stage` with no files. Signed in, nothing here changes. */
+  signedOut,
+  stage,
+  chromes = [],
+  signInAction,
   ...unknown
 }) {
   if (import.meta.env.DEV) warnUnknown(unknown)
@@ -218,12 +232,39 @@ export default function HubHome({
    * the variants gate caught the overlap on editor-hub at 390) */
   const headerMenu = menuActions.length ? <HomeMenu actions={menuActions} className={actionsInBar ? 'max-md:hidden' : 'max-md:mr-11'} /> : undefined
 
-  /* the quick links — fxr's chromes, a phone's 2 × 2 above the rows; a desk never sees them */
+  /* the quick links — fxr's chromes, a phone's stack above the rows; a desk never sees them. The stack is fxr's EntryScreen
+   * verbatim (kol-fxr src/editor/mobile/MobileView.jsx): `kol-eyebrow text-body`, `gap-2`, `tone="primary" size="lg"`, the icon
+   * both ends, `SPREAD` (w-full, the inner span spread) — without its card */
   const doors = touch?.doors?.length && (coarse || narrow) ? (
-    <div className="grid grid-cols-2 gap-3 mb-8">
-      {touch.doors.map((d) => <Button key={d.label} tone="grey" size="lg" iconLeft={d.icon} className="w-full justify-start" onClick={d.onPress}>{d.label}</Button>)}
+    <div className="flex flex-col gap-6 mb-8" data-hub-doors>
+      {touch.label && <span className="kol-eyebrow text-body">{touch.label}</span>}
+      <div className="flex flex-col gap-2">
+        {touch.doors.map((d) => <Button key={d.label} tone="primary" size="lg" iconLeft={d.icon} iconRight={d.icon} className="w-full [&>span]:w-full [&>span]:justify-between" onClick={d.onPress}>{d.label}</Button>)}
+      </div>
     </div>
   ) : undefined
+
+  if (signedOut ?? (stage != null && files.length === 0)) {
+    const outActions = [...menuActions, ...(signInAction ? [signInAction] : [])]
+    return (
+      <div className="relative min-h-dvh overflow-hidden" data-hub-signed-out>
+        {stage && <div className="absolute inset-0" aria-hidden="true">{stage}</div>}
+        {app.logomark && (
+          <div className="absolute left-4 top-6 w-12 h-12 md:left-20 md:top-16 md:w-28 md:h-28 text-emphasis">
+            <VectorLoader src={app.logomark} size="100%" role="img" aria-label={app.name} />
+          </div>
+        )}
+        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" className="absolute right-16 top-[72px] max-md:hidden" />}
+        {chromes.length > 0 && <PhoneNav variant="dock" shape="pill" items={chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress }))} />}
+        {/* the walkthrough over the stage, where the catalog's would sit */}
+        {touring && steps.length > 0 && (
+          <div className="absolute inset-x-4 top-24 md:left-20 md:right-auto md:top-52 md:w-[560px]">
+            <WalkthroughPanel steps={steps} iconComponent={iconComponent} onClose={close} />
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <CatalogPage
@@ -250,14 +291,15 @@ export default function HubHome({
 }
 
 /* the masthead's round button and its sheet — the catalog's VariantsButton shape, the phone More's rows */
-function HomeMenu({ actions, className = '' }) {
+function HomeMenu({ actions, icon = 'more', className = '' }) {
   const [open, setOpen] = useState(false)
   /* the sheet opens to the LEFT of the button, top edges on one line (user 2026-10-23) — as the phone's sits beside its × */
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'left-start', offset: 12 })
   return (
     <div className={className}>
       <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        <Button iconOnly="more" size="lg" tone="inverted" radius="full" aria-label="Actions" pressed={open} />
+        {/* `icon` — `more` on Home, `plus` signed out (frame B2), the × while its sheet is open */}
+        <Button iconOnly={icon === 'more' ? 'more' : open ? 'x' : icon} size="lg" tone="inverted" radius="full" aria-label={open ? 'Close' : 'Actions'} pressed={open} />
       </span>
       <PopoverPanel popover={popover} panel={false} className="kol-more-sheet" style={{ minWidth: 220 }}>
         <MoreRows actions={actions} onPick={() => setOpen(false)} />

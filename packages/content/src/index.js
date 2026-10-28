@@ -15,6 +15,12 @@ export { default as ArticleHeader } from './ArticleHeader.jsx'
  * imported them. Sources quarantined to `_tmp/2026-08-30-content-set-exports/`,
  * not deleted. */
 export { default as PortableTextRenderer, slugify } from './PortableTextRenderer.jsx'
+/* kolkrabbi.io's article renderer, carried (ArticleRendererHomeHeroSelection, 2026-10-28): the Portable Text map web's
+ * /stack/:slug runs over Sanity's real blocks, and its blocks. PortableTextRenderer above reads a simplified block shape and
+ * stays for whoever renders that. The blocks (image, video, quote, table) live inside the map — they read Sanity's
+ * block `value`, where kol-component's ImageBlock / VideoBlock take a resolved `src` */
+export { portableTextComponents, createPortableTextComponents, slugifyHeading } from './prose/PortableTextComponents.jsx'
+export { default as StickyNavCard } from './prose/StickyNavCard.jsx'
 export { default as AuthorLine } from './AuthorLine.jsx'
 export { default as ShareButtons } from './ShareButtons.jsx'
 export { default as SourcesReferences } from './SourcesReferences.jsx'

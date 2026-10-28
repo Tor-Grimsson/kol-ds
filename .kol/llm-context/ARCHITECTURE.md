@@ -19,6 +19,16 @@ This repo **maintains**, **hosts**, and **showcases** the KOL design system. The
 
 The `@kolkrabbi/kol-*` packages here are canonical. The older copies in `kol-monorepo` are downstream and migrate onto the published versions. When package code changes, it changes **here** first.
 
+**Amended 2026-10-28 (user ruling, against "this repo is the source of truth" above, for one package):** the
+Kolkrabbi BRAND is kol-website's — *"website/apps/brand owns kolkrabbi brand as a source of truth yes? … the only thing
+about kolkrabbi I want DS to own is the fucking identity system, and its just because the favicons have a system that
+needs to be reviewed as a set"*. `@kolkrabbi/kol-brand`'s manifest (meta, colours, ramps, type, presence, press,
+timeline) is a **mirror refreshed from `kol-website/apps/brand/src/brand/` after the fact**, published from here for
+the repos that read it — the design-editor pattern (§3, 2026-10-08). The DS owns the **identity system**: every mark,
+wordmark, lockup, favicon and home-screen tile, the brand's and each app's, in `kol-icons` `identity/<id>/`, rendered
+by one rule (`pnpm identity:render`) and reviewed as a set on `apps/identity`. `kol-brand-template` (the schema any
+brand fills) stays the DS's.
+
 ## §3 — Twelve UI packages + an app tier + a clients tier
 
 `theme` (CSS only) ← `loader` (Icon) ← `component` (atoms→organisms) ← `framework` (app shell). Cross-package imports use the `@kolkrabbi/*` specifier; **within** a package, imports stay relative file-to-file. The split was derived from the recent single-app source (`_kol-labs-single-init-state`), re-packaged into the monorepo's published topology.
@@ -96,6 +106,20 @@ do not merge engines into one grab-bag — they version on their own contracts, 
 **An engine may depend on another engine, never on a UI package** (2026-09-29): the tag graph is
 the search index's, so `tagGraph` lives in kol-search and kol-markdown's `buildTagCooccurrence`
 adapts onto it (deprecated) — one implementation, not a copy per engine.
+
+**Third engine, `@kolkrabbi/kol-print` (2026-10-28, user's go on PdfToolsFromStudio):** markdown → a Kolkrabbi A4
+document — the sheets, PDF, DOCX, MD — the dotfiles `/kol-print` pipeline moved in, its consumers that skill and kol-website's
+apps/record. **The one DOM in an engine, on purpose:** pagination is measured, so it needs a layout — `paginateInDocument`
+takes the document it runs in (PrintStudio's browser) and the CLI hands the same script to headless Chrome; nothing else
+touches a DOM, and nothing imports React. Its parser is `marked` with kol-print's own rules, carried verbatim for byte-for-byte
+parity with the dotfiles output — moving it onto kol-markdown is a later, measured step, not part of the move. Its app is
+`apps/print`; its UI half (`PrintStudio`, `A4Pages`) is kol-styleguide's.
+
+**UI package `@kolkrabbi/kol-resume` (2026-10-28, ResumeKit from kol-website):** apps/record's resume kit, carried verbatim
+— pages, controls, CSS, the URL-to-PDF export. Its own package, not kol-styleguide, because it is a whole tool with routes
+(react-router), a vite plugin and a bin. **The person is a prop, never data in the package** — `ResumeProvider` is the one
+seam. Its print rules are opt-in (`kol-resume.css`), never in kol-theme: they style the whole page for print. App:
+`apps/resume`, on VOYAGER's invented person (`voyager-fixture/resume`).
 
 **APP TIER — `@kolkrabbi/design-editor` (added 2026-09-03, user ruling).** The
 editor as one embeddable `<DesignEditor />`, moved in from kol-fxr — which had

@@ -35,4 +35,6 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[17-rail-and-overlay\|Rail and overlay]] | The two words for every surface at the edge or over the page |
 | [[18-site-frame\|Site frame]] | `SiteLayout` plus a nav tree and routes — the frame every site on the site rail stands in, its tree contract and its parts |
 | [[20-document\|Document page]] | A markdown file as a document page — `MarkdownPage`, `LinkPreview`, `documentTabs`, `DocumentIndex`, what the file may hold, how a folder is wired |
+| [[21-print\|Print]] | Markdown and stationery to A4 — `@kolkrabbi/kol-print` (flow, pagination, PDF · DOCX · MD, the CLI), `PrintStudio`, `A4Pages`, apps/print |
+| [[22-resume\|Resume]] | The resume kit — `@kolkrabbi/kol-resume`: three treatments, cover · letter · portfolio · back, the A4 kit, PDF export; the person through `ResumeProvider`; apps/resume |
 | [[19-rails\|Rails]] | The rail kit (RailHeader · RailTabs · RailSection · RailRow · RailHint · RailActions · RailFoot), the two tiers' widths and paddings, and the whole rails — settings, inspector, list, bottom — with `apps/rails` as the reference |

@@ -1,6 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { AppShell } from '@kolkrabbi/kol-shell'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { fixtureClient } from 'media-fixture'
 
 /* LABS, ALONE (2026-10-05 — the user: "we can develop it better like this"). `LabsView` from

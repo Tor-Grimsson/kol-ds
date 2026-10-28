@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { AppStudio, CatalogPage, StudioCreate, StudioCreateAction, StudioDetail } from '@kolkrabbi/kol-shell'
 import { Button, CanvasStudio, downloadBlob, useMediaQuery } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
-import logomark from '@kolkrabbi/kol-brand/svg/favicon-01.svg?url'
+import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
 import { cover, title } from './covers.js'
 
@@ -221,7 +221,13 @@ export default function App() {
     filterGroups: [{ label: 'Kind', key: 'kind', values: ['draft', 'final'], exclusive: true }],
     action: { label: 'New', onClick: () => navigate('/create') },
     /* quick links on the phone (review 2, § 7.2): fxr's chromes as four doors above the rows, when he turns them on */
-    ...(quickLinks && { touch: { doors: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })) } }),
+    /* SIGNED OUT (HubHomeSignedOut, 2026-10-28, fxr's frames A2 · B2): no files until you sign in — a live stage behind, the
+     * mark, the round + with Sign in, the chromes as the pill (the dock on a desk). The stand-in stage is a slow gradient; fxr
+     * passes its generator's canvas */
+    signedOut: !signedIn,
+    stage: <div className="h-full w-full" style={{ background: 'radial-gradient(60% 50% at 70% 40%, var(--kol-color-blue-400, #222d3d), transparent), radial-gradient(40% 40% at 25% 70%, var(--kol-color-orange-300, #c4622d), transparent)', opacity: 0.55 }} />,
+    chromes: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })),
+    ...(quickLinks && { touch: { label: 'Select chrome', doors: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })) } }),
   }
 
   /* the walkthrough as DATA (2026-10-24): a `cover` the Hub draws, and the Get started actions as `{ label, onClick }` —
@@ -360,7 +366,14 @@ export default function App() {
       /* the Hub's Dev row, on every rail on a dev server even with nothing in it (user 2026-10-24: "its not optional") */
       dev={{ tabs: [] }}
       media={{ client: fixtureClient }}
-      signIn={{ signedIn, onPress: (password) => setSignedIn(password != null) /* the reference app accepts any password */ }}
+      signIn={{
+        signedIn,
+        /* an account (HubAccountRow, 2026-10-28): signed out the Hub asks email + password; signed in the row is the user and
+         * opens the profile — the reference app has no profile page, so its stand-in signs out */
+        user: { name: 'Tór' },
+        onProfile: () => setSignedIn(false),
+        onPress: (creds) => setSignedIn(creds != null) /* the reference app accepts any email and password */,
+      }}
       /* THE ROWS ARE TYPED DATA (2026-10-24): the Hub draws every control in the rail's tone — no app writes a Dropdown */
       settings={{
         sections: [

@@ -1,0 +1,5 @@
+<svg width="180" height="180" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<!-- brand app icon: dark — the mark in the middle 60 %, the one iOS links. Rendered by scripts/render-identity.mjs from brand-logomark.svg — edit the logomark, not this. -->
+<rect width="24" height="24" fill="#121215"/>
+<g transform="translate(4.80 4.80) scale(0.6)" style="color:#FFFFFF"><path d="M7.631 0C10.114 0 11.331-1.026 11.331-3.087L11.331-3.119C11.331-4.567 10.607-5.443 9.143-5.745L9.143-5.904C10.376-6.183 10.997-6.986 10.997-8.331L10.997-8.363C10.997-10.225 9.827-11.140 7.448-11.140L0.684-11.140L0.684 0M4.273-8.793L6.238-8.793C7.042-8.793 7.432-8.474 7.432-7.806L7.432-7.774C7.432-7.106 7.042-6.779 6.238-6.779L4.273-6.779M4.273-4.679L6.326-4.679C7.169-4.679 7.583-4.305 7.583-3.549L7.583-3.517C7.583-2.737 7.169-2.347 6.326-2.347L4.273-2.347" transform="translate(-0.256 23.363) scale(2.0401)" fill="currentColor"/></g>
+</svg>
