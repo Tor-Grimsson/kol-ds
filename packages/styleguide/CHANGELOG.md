@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-styleguide
 
+
+
+## 0.13.0 — 2026-10-28
+
+- **`DocumentIndex` opens a folder's files in Quick Look** (DocumentIndexFilesAndIcons049, kol-website 2026-10-28 — the MarkdownPage ticket's point 0.12.0 missed). A row with `file` (from kol-framework's `documentFiles(glob)`) is a card in its part with its kind on the small line — PDF, Image — and opens in the DS Quick Look window (`QuickLookFrame` over the dimmed page, `KindPreview fit="sheet"` as the body: a PDF page by page with its thumbnail rail, an image at its size), ‹ › paging through the folder's files. `Contents` lets a row bring its own `href` and `onClick` for it; page rows are untouched.
+## 0.12.0 — 2026-10-28
+
+- **`DocumentIndex`** (plan-2026-10-28-document W5.2): a folder's pages as the brand book's contents cards — `Contents` routed, under a compact `PageHeader` when the index is a page of its own. Born in `apps/document`; it lives here rather than in kol-framework because kol-styleguide peers on kol-framework and the cards are `BrandGuide`'s.
+## 0.11.0 — 2026-10-28
+
+- **One brand renderer** (user 2026-10-28: the brand book's Chapters page and the guide's looked like two things). `BrandBook` and `BrandAssets` now render through `BrandGuide`'s chapters (`GuideChapters` over `BOOK_SECTIONS` · `ASSET_SECTIONS`), on the one chapter model (`guideBook.js` — `brandSections` · `brandToc` read it). What changes on screen: the Brand page's Chapters index is the numbered, grouped cards (Brand overview · Logos · Foundations, the site rail's own groups), the Color chapter is the compact ramp strips (and the manifest's approved pairs, if any) instead of the Swatch grid, the Typography chapter is the brand's families instead of KOL's type system, the stationery cards carry captions, and the Assets index is the same cards. Same ids, same rail entries, same props. The book's own renderer (`typeSpecimen.js` with it) is retired to `_tmp/2026-10-28-brand-book-one-renderer/`.
+
 ## 0.10.0 — 2026-10-27
 
 - **`BrandAssets` takes drawn social mocks and the second letterhead** (BrandAssetsSocialMocksAndLetterheadB, kol-website 2026-10-27). A `brand.social.templates` row may carry `mock` instead of `src`: `'PostPhoto' | 'PostEditorial' | 'StoryPhoto'` (the kol-styleguide mocks, wearing the brand's logomark) or a node; `ratio` boxes a mock that does not size itself, and no wordmark overlay is drawn. `brand.stationery.letterheadB: true` adds the "Letterhead, A4 [B]" card (`LetterheadB`) in its own row under the stationery grid. Photo templates are unchanged.

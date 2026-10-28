@@ -29,7 +29,7 @@ related:
 
 | Page | What it holds |
 |---|---|
-| [[01-inventory\|Icon inventory]] | Every name in both sets, by group |
+| [[01-inventory\|Icon inventory]] | Every name in the three sets, by group |
 | [[02-loader\|Icon loader]] | The `<Icon>` component and the packaged set |
 | [[03-custom\|Custom icons]] | `registerIcons`, the retired legacy trees, the promotion loop |
 | [[04-authoring\|Authoring an icon]] | The keyline guide and `<Graphic>` |

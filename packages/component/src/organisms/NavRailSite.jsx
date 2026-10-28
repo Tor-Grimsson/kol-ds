@@ -108,8 +108,10 @@ import useDragResize from '../hooks/useDragResize.js'
  *                      footer (the shell pins theme → Settings; a Settings row in
  *                      the tree landed above the theme instead — "same rail, two
  *                      bottoms")
- *   `footer`           the footer box's content: undefined = the Kolkrabbi link
- *                      (K / wordmark, as ever); `false` = no footer; a node =
+ *   `footer`           the footer box's content: undefined or `false` = no footer
+ *                      (OPT-IN since 0.307.0, user ruling 2026-10-28 — every site had
+ *                      to remember `footer: false`, record.kolkrabbi.io didn't);
+ *                      `'credit'` = the Kolkrabbi link (K / wordmark); a node =
  *                      that node (the shell's logomark → '/')
  *   `themeToggle`      `false` drops the theme slot (default `true`)
  *   `iconComponent`    the hop glyph's renderer, kol-shell's seam — `(props:
@@ -508,9 +510,9 @@ export default function NavRailSite({
           )}
       </div>
 
-      {footer !== false && footer !== null && (
+      {footer != null && footer !== false && (
         <div className="kol-sidenav-footer flex items-center h-14 border-t border-fg-08 min-w-0">
-          {footer !== undefined ? footer : (
+          {footer !== 'credit' ? footer : (
             <a
               href="https://kolkrabbi.io"
               target="_blank"

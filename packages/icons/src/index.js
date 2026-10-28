@@ -56,6 +56,23 @@ export const KOL_ICON_SET_SIGNAL = (() => {
 
 export const KOL_ICON_SET_SIGNAL_NAMES = Object.values(KOL_ICON_SET_SIGNAL).flat().sort()
 
+/* kol-icon-set-identity — the marks (user 2026-10-28: *"identity should be separate from signal and interface"*): the
+ * studio's own (`kolkrabbi`: kolkrabbi, kol-ds) and each app's (`apps`: fxr, metrics, mirror, monitor, r2b2, studio,
+ * brand). Same shape, same rules, its own folder; until 0.49.0 these were interface's `identity` group. */
+export const KOL_ICON_SET_IDENTITY = (() => {
+  const idx = {}
+  for (const p of Object.keys(import.meta.glob('./kol-icon-set-identity/**/*.svg'))) {
+    const parts = p.split('/')
+    const name = (parts.pop() || '').replace('.svg', '')
+    const group = parts.pop() || 'misc'
+    ;(idx[group] ||= []).push(name)
+  }
+  for (const g of Object.values(idx)) g.sort()
+  return idx
+})()
+
+export const KOL_ICON_SET_IDENTITY_NAMES = Object.values(KOL_ICON_SET_IDENTITY).flat().sort()
+
 /* Per-glyph META — `{ name: { group, cut } }` (IconSetCut, kol-website 2026-08-27):
  * the set carries how each glyph is DRAWN — `cut: 'stroke' | 'solid'` — so a
  * gallery filters by type without globbing the package's SVGs. The cut is
@@ -66,8 +83,9 @@ const metaOf = (index, set) => Object.fromEntries(
 )
 export const KOL_ICON_SET_INTERFACE_META = metaOf(KOL_ICON_SET_INTERFACE, 'interface')
 export const KOL_ICON_SET_SIGNAL_META = metaOf(KOL_ICON_SET_SIGNAL, 'signal')
-/* every glyph the package ships, either set — `{ name: { group, set, cut } }` */
-export const KOL_ICON_META = { ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_INTERFACE_META }
+export const KOL_ICON_SET_IDENTITY_META = metaOf(KOL_ICON_SET_IDENTITY, 'identity')
+/* every glyph the package ships, any set — `{ name: { group, set, cut } }` */
+export const KOL_ICON_META = { ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_IDENTITY_META, ...KOL_ICON_SET_INTERFACE_META }
 export const getCut = (name) => KOL_ICON_META[name]?.cut ?? null
 export const getSet = (name) => KOL_ICON_META[name]?.set ?? null
 

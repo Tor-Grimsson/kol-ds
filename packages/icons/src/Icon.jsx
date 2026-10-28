@@ -1,8 +1,8 @@
 /**
  * Icon Component
  *
- * Dynamically loads and renders SVG icons from kol-icon-set-interface and
- * kol-icon-set-signal (or consumer-registered sets)
+ * Dynamically loads and renders SVG icons from kol-icon-set-interface,
+ * kol-icon-set-signal and kol-icon-set-identity (or consumer-registered sets)
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (matches SVG filename without extension)
@@ -80,7 +80,7 @@ export const registerIcons = (globMap) => {
   }
 }
 
-/* Resolution order: consumer-registered → kol-icon-set-interface → kol-icon-set-signal.
+/* Resolution order: kol-icon-set-interface → kol-icon-set-signal → kol-icon-set-identity (0.49.0) → consumer-registered.
  * That's the whole chain — a miss is a real miss.
  *
  * v1 BEFORE signal, and it decides the twelve names both sets drew (2026-08-28):
@@ -104,7 +104,7 @@ export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'met
 const overridden = new Set()
 const resolveIcon = (name) => {
   const n = RENAMED_ICONS[name] ?? name
-  const shipped = ICONS ? (ICONS.V1[n] ?? ICONS.SIGNAL[n]) : undefined
+  const shipped = ICONS ? (ICONS.V1[n] ?? ICONS.SIGNAL[n] ?? ICONS.IDENTITY?.[n]) : undefined
   if (shipped) {
     if (CUSTOM[name] && import.meta.env?.DEV && !overridden.has(name)) {
       overridden.add(name)

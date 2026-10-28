@@ -1,0 +1,32 @@
+{
+  "name": "document",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The document space — kol-atlas's documents (document-fixture) as pages on the site rail, with the TOC rail and the app-frame switch: the review surface for MarkdownPage, the markdown page for kol-website's brand (plan-2026-10-28-document). Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-markdown": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-styleguide": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "document-fixture": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

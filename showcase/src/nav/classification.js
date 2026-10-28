@@ -29,7 +29,7 @@ export const TIERS = {
   /* the brand-book set both brand apps were maintaining locally
    * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
    * frame plus a mark plus a text block, nesting nothing. */
-  AssetCard: 'atoms', Swatch: 'molecules',
+  AssetCard: 'atoms', Swatch: 'molecules', DocumentIndex: 'organisms',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
   PostEditorial: 'molecules', StoryPhoto: 'molecules', StoryType: 'molecules',
   BrandAvatar: 'atoms',
@@ -124,6 +124,8 @@ export const TIERS = {
   ThemeToggle: 'atoms',
   SideNav: 'organisms', ShellHeader: 'organisms', PortalFooter: 'organisms', CategoryPage: 'organisms',
   PageHero: 'organisms', PageSection: 'organisms',
+  /* the document page (plan-2026-10-28-document W5.2) */
+  MarkdownPage: 'organisms', LinkPreview: 'molecules',
   /* kol-shell */
   Logomark: 'atoms',
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
@@ -259,6 +261,7 @@ export const FUNCTIONS_BY_NAME = {
   useMediaQuery: 'utility', useRailKey: 'utility',
   /* framework */
   AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', CategoryPage: 'structure',
+  MarkdownPage: 'structure', LinkPreview: 'overlay', documentTabs: 'utility', documentFiles: 'utility',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', TypeBlock: 'display', AssetTable: 'display',
   LogoCard: 'display', ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
@@ -266,7 +269,7 @@ export const FUNCTIONS_BY_NAME = {
   CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
   /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
    * in situ, a color with its value, an asset in a frame. */
-  AssetCard: 'display', Swatch: 'display',
+  AssetCard: 'display', Swatch: 'display', DocumentIndex: 'structure',
   PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
   PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
   BrandAvatar: 'media',

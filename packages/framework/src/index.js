@@ -27,3 +27,9 @@ export { default as PortalFooter } from './PortalFooter.jsx'
 export { default as ScrollToTop } from './ScrollToTop.jsx'
 export { default as PageHero, default as BrandHero, default as SubPageHero } from './PageHero.jsx'
 export { default as CategoryPage } from './CategoryPage.jsx'
+/* the document page (plan-2026-10-28-document W5.2): a markdown file as `.kol-sheet`, the hover card for its links,
+ * a folder of files as page rows */
+export { default as MarkdownPage } from './MarkdownPage.jsx'
+export { default as LinkPreview } from './LinkPreview.jsx'
+export { default as documentTabs } from './documentTabs.js'
+export { default as documentFiles } from './documentFiles.js'

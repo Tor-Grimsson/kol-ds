@@ -58,4 +58,4 @@ Hardware is theme-INVARIANT — a knob cap is black on a white panel too — so 
 ## Consumer requirements
 
 - **CSS** ships in `@kolkrabbi/kol-theme` (`kol-components-controls.css`, in the theme umbrella; a `core` consumer imports it as a domain pack) — this package ships JS only.
-- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-hardware/src"` for the utility classes inside — or `@import "@kolkrabbi/kol-theme/kol-sources.css"`, which lists it since kol-theme 0.152.0.
+- Tailwind v4 `@source "…/node_modules/@kolkrabbi/kol-hardware/src"` for the utility classes inside — the explicit line, not kol-theme's `kol-sources.css`, which reaches nothing in a pnpm workspace.

@@ -1633,6 +1633,12 @@
       "desc": ""
     },
     {
+      "prop": "preset",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "chars",
       "type": "—",
       "def": "—",
@@ -4915,6 +4921,24 @@
       "desc": ""
     },
     {
+      "prop": "backReveal",
+      "type": "—",
+      "def": "'flip-image'",
+      "desc": ""
+    },
+    {
+      "prop": "flipped",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "backHover",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "expanded",
       "type": "—",
       "def": "false",
@@ -5000,6 +5024,12 @@
     },
     {
       "prop": "fade",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "back",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5603,6 +5633,14 @@
   ],
   "Rail": [
     {
+      "prop": "role",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RAIL_ROLES": [
+    {
       "prop": "side",
       "type": "—",
       "def": "'left'",
@@ -5675,6 +5713,24 @@
       "desc": ""
     },
     {
+      "prop": "data-rail-role",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "nav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "open",
       "type": "—",
       "def": "—",
@@ -5682,6 +5738,18 @@
     },
     {
       "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5964,6 +6032,12 @@
     },
     {
       "prop": "formatValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "readoutPreset",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6629,6 +6703,54 @@
       "desc": ""
     },
     {
+      "prop": "edge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "border",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shadow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foldable",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFoldChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foldSide",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "size",
       "type": "—",
       "def": "—",
@@ -6730,6 +6852,110 @@
     },
     {
       "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TABBAR_PILL_TAB": [
+    {
+      "prop": "shape",
+      "type": "—",
+      "def": "'bar'",
+      "desc": ""
+    },
+    {
+      "prop": "collapsed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "edge",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "border",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "shadow",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "'fill'",
+      "desc": ""
+    },
+    {
+      "prop": "foldable",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "foldSide",
+      "type": "—",
+      "def": "'left'",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Sections'",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placement",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExpand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFoldChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "className",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -7045,6 +7271,12 @@
       "desc": ""
     },
     {
+      "prop": "snapKeys",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -7106,6 +7338,12 @@
     },
     {
       "prop": "onSpaceTap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "snapRef",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -9235,6 +9473,24 @@
       "desc": ""
     },
     {
+      "prop": "tier",
+      "type": "—",
+      "def": "'app'",
+      "desc": ""
+    },
+    {
+      "prop": "role",
+      "type": "—",
+      "def": "'settings'",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'over'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -9278,6 +9534,12 @@
     },
     {
       "prop": "headerActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backdrop",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -9582,6 +9844,168 @@
     },
     {
       "prop": "align",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailHeader": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailTabs": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Tabs'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailHint": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailActions": [
+    {
+      "prop": "row",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailFoot": [
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Foot tabs'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailNav": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Views'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -12527,7 +12951,7 @@
       "desc": ""
     }
   ],
-  "PageLayout": [
+  "SiteLayout": [
     {
       "prop": "navTree",
       "type": "—",
@@ -12874,6 +13298,70 @@
     },
     {
       "prop": "id",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MarkdownPage": [
+    {
+      "prop": "source",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "numbered",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "toc",
+      "type": "—",
+      "def": "'frame'",
+      "desc": ""
+    },
+    {
+      "prop": "linkNotes",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "'cover'",
+      "desc": ""
+    },
+    {
+      "prop": "resolveLink",
+      "type": "—",
+      "def": "(u) => u",
+      "desc": ""
+    },
+    {
+      "prop": "assetUrl",
+      "type": "—",
+      "def": "() => null",
+      "desc": ""
+    },
+    {
+      "prop": "ratio",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LinkPreview": [
+    {
+      "prop": "root",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cardFor",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -13999,7 +14487,87 @@
       "desc": ""
     },
     {
+      "prop": "placement",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "border",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "foldable",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "moreKeepsOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFoldChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TransportPill": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "sheetFor",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "placement",
+      "type": "—",
+      "def": "'bottom'",
+      "desc": ""
+    },
+    {
+      "prop": "foldable",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFoldChange",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14365,6 +14933,18 @@
       "desc": ""
     },
     {
+      "prop": "flipped",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "children",
       "type": "—",
       "def": "—",
@@ -14596,6 +15176,36 @@
     },
     {
       "prop": "onCover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onImages",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "flipped",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backHover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "backReveal",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15857,6 +16467,32 @@
       "desc": ""
     }
   ],
+  "DocumentIndex": [
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lede",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "Swatch": [
     {
       "prop": "anchor",
@@ -15962,6 +16598,44 @@
     },
     {
       "prop": "logoSources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "BrandGuide": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "brand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "Logo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logoSources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "structure",
       "type": "—",
       "def": "—",
       "desc": ""

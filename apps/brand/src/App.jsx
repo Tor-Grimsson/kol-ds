@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { PageHero, SiteLayout } from '@kolkrabbi/kol-framework'
+import { PageHero, PageSection, SiteLayout } from '@kolkrabbi/kol-framework'
 import { ContentCard, ContentCollection } from '@kolkrabbi/kol-component'
 import { VOYAGER } from 'voyager-fixture'
 
@@ -27,8 +27,11 @@ const NAV = [
 
 function Home() {
   return (
-    <div className="kol-page flex flex-col gap-10">
+    /* the hero and the cards are sibling sections, as the brand book's are — a hero inside `.kol-page` stacks
+       two insets (the hero off centre, the cards under the fold) */
+    <>
       <PageHero label="Brand" title={VOYAGER.brand.meta.name} lede="The brand's building blocks, and the lab it is made in." />
+      <PageSection id="apps">
       <ContentCollection min="280px">
         {APPS.map((a) => (
           <ContentCard key={a.id} variant="article" ratio="16 / 9" eyebrow={a.eyebrow} title={a.label} body={a.body}
@@ -36,7 +39,8 @@ function Home() {
             onClick={() => location.assign(href(a))} />
         ))}
       </ContentCollection>
-    </div>
+      </PageSection>
+    </>
   )
 }
 

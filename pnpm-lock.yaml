@@ -367,6 +367,64 @@ importers:
         specifier: ^8.0.10
         version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
 
+  apps/document:
+    dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.19
+        version: 0.27.19(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      '@kolkrabbi/kol-component':
+        specifier: workspace:*
+        version: link:../../packages/component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:*
+        version: link:../../packages/framework
+      '@kolkrabbi/kol-icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../../packages/markdown
+      '@kolkrabbi/kol-shell':
+        specifier: workspace:*
+        version: link:../../packages/shell
+      '@kolkrabbi/kol-styleguide':
+        specifier: workspace:*
+        version: link:../../packages/styleguide
+      '@kolkrabbi/kol-theme':
+        specifier: workspace:*
+        version: link:../../packages/theme
+      '@tailwindcss/vite':
+        specifier: ^4.2.4
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))
+      document-fixture:
+        specifier: workspace:*
+        version: link:../document-fixture
+      react:
+        specifier: ^19.2.0
+        version: 19.2.7
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.7(react@19.2.7)
+      react-router-dom:
+        specifier: ^7.14.2
+        version: 7.17.0(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+      tailwindcss:
+        specifier: ^4.2.4
+        version: 4.3.1
+    devDependencies:
+      '@vitejs/plugin-react':
+        specifier: ^6.0.1
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))
+      vite:
+        specifier: ^8.0.10
+        version: 8.0.16(@types/node@22.20.4)(jiti@2.7.0)
+
+  apps/document-fixture:
+    dependencies:
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../../packages/markdown
+
   apps/editor:
     dependencies:
       '@kolkrabbi/design-editor':
@@ -659,6 +717,9 @@ importers:
       '@tailwindcss/vite':
         specifier: ^4.2.4
         version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+      document-fixture:
+        specifier: workspace:*
+        version: link:../document-fixture
       react:
         specifier: ^19.2.0
         version: 19.2.7
@@ -2151,6 +2212,9 @@ importers:
       '@kolkrabbi/kol-icons':
         specifier: workspace:^
         version: link:../icons
+      '@kolkrabbi/kol-markdown':
+        specifier: workspace:*
+        version: link:../markdown
 
   packages/hardware:
     dependencies:
@@ -2383,10 +2447,13 @@ importers:
         version: 3.1.1(@types/react@19.2.17)(react@19.2.7)
       '@tailwindcss/vite':
         specifier: ^4.2.4
-        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+        version: 4.3.1(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))
       chess.js:
         specifier: ^1.4.0
         version: 1.4.0
+      document-fixture:
+        specifier: workspace:*
+        version: link:../apps/document-fixture
       framer-motion:
         specifier: ^12.23.22
         version: 12.42.2(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -2417,16 +2484,16 @@ importers:
         version: 3.1.1(rollup@4.62.2)
       '@vitejs/plugin-react':
         specifier: ^6.0.1
-        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+        version: 6.0.2(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))
       remark-gfm:
         specifier: ^4.0.1
         version: 4.0.1
       vite:
         specifier: ^8.0.10
-        version: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+        version: 8.0.16(@types/node@22.20.4)(jiti@2.7.0)
       vite-plugin-svgr:
         specifier: ^5.2.0
-        version: 5.2.0(rollup@4.62.2)(vite@8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0))
+        version: 5.2.0(rollup@4.62.2)(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))
 
   workbench:
     dependencies:
@@ -6745,6 +6812,13 @@ snapshots:
       tailwindcss: 4.3.1
       vite: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
 
+  '@tailwindcss/vite@4.3.1(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))':
+    dependencies:
+      '@tailwindcss/node': 4.3.1
+      '@tailwindcss/oxide': 4.3.1
+      tailwindcss: 4.3.1
+      vite: 8.0.16(@types/node@22.20.4)(jiti@2.7.0)
+
   '@tybys/wasm-util@0.10.2':
     dependencies:
       tslib: 2.8.1
@@ -6857,6 +6931,11 @@ snapshots:
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       vite: 8.0.16(@types/node@22.20.4)(esbuild@0.25.12)(jiti@2.7.0)
+
+  '@vitejs/plugin-react@6.0.2(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0))':
+    dependencies:
+      '@rolldown/pluginutils': 1.0.1
+      vite: 8.0.16(@types/node@22.20.4)(jiti@2.7.0)
 
   '@webgpu/types@0.1.72': {}
 
@@ -9170,6 +9249,17 @@ snapshots:
       - supports-color
       - typescript
 
+  vite-plugin-svgr@5.2.0(rollup@4.62.2)(vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0)):
+    dependencies:
+      '@rollup/pluginutils': 5.4.0(rollup@4.62.2)
+      '@svgr/core': 8.1.0
+      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0)
+      vite: 8.0.16(@types/node@22.20.4)(jiti@2.7.0)
+    transitivePeerDependencies:
+      - rollup
+      - supports-color
+      - typescript
+
   vite-tsconfig-paths@5.1.4(vite@6.4.3(@types/node@22.20.4)(jiti@2.7.0)(lightningcss@1.32.0)):
     dependencies:
       debug: 4.4.3
@@ -9205,6 +9295,18 @@ snapshots:
     optionalDependencies:
       '@types/node': 22.20.4
       esbuild: 0.25.12
+      fsevents: 2.3.3
+      jiti: 2.7.0
+
+  vite@8.0.16(@types/node@22.20.4)(jiti@2.7.0):
+    dependencies:
+      lightningcss: 1.32.0
+      picomatch: 4.0.4
+      postcss: 8.5.15
+      rolldown: 1.0.3
+      tinyglobby: 0.2.17
+    optionalDependencies:
+      '@types/node': 22.20.4
       fsevents: 2.3.3
       jiti: 2.7.0
 

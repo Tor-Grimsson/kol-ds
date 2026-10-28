@@ -13,7 +13,7 @@ export const ICON_CATEGORIES = {
     { slug: 'design-tools', name: 'Design tools', groups: ['tools', 'editing', 'typography'] },
     { slug: 'media', name: 'Media', groups: ['playback', 'device'] },
     { slug: 'shapes', name: 'Shapes', groups: ['shape-primitives', 'shape-forms', 'pattern'] },
-    { slug: 'brand', name: 'Brand', groups: ['identity', 'social'] },
+    { slug: 'brand', name: 'Brand', groups: ['social'] },
     { slug: 'other', name: 'Other', groups: ['misc'] },
   ],
   'kol-icon-set-signal': [
@@ -23,6 +23,8 @@ export const ICON_CATEGORIES = {
     { slug: 'control', name: 'Control', groups: ['logic', 'sequence', 'transport', 'cable'] },
     { slug: 'geometry', name: 'Geometry', groups: ['shape', 'cap'] },
   ],
+  /* identity (kol-icons 0.49.0): two groups, each its own page — no category layer over two rows */
+  'kol-icon-set-identity': [],
 }
 
 export const findCategory = (set, slug) => ICON_CATEGORIES[set]?.find((c) => c.slug === slug) ?? null

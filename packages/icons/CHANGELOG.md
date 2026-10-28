@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-icons
 
+## 0.49.0 — 2026-10-28
+
+- **`kol-icon-set-identity`, the third set** (user 2026-10-28, on the showcase rail: *"missing is identity, identity should be separate from signal and interface"*). Interface's `identity` group moves out into its own folder with its own index — `KOL_ICON_SET_IDENTITY`, `_NAMES`, `_META`, joined into `KOL_ICON_META` — in two groups, decided for his review: `kolkrabbi` (kolkrabbi, kol-ds — the studio's own marks) and `apps` (fxr, metrics, mirror, mirror-mir, monitor, r2b2, studio, brand — each app's). Every name resolves as before (`Icon name="monitor"`); the resolver reads the three sets. A consumer reading `KOL_ICON_SET_INTERFACE.identity` reads `KOL_ICON_SET_IDENTITY` now, and a path into the files (`loaderApp({ graphic: '…/kol-icon-set-interface/identity/kol-ds.svg' })`) becomes `…/kol-icon-set-identity/kolkrabbi/kol-ds.svg` (`apps/` for an app's mark).
+- **New:** `brand` in `identity/apps` (kol-website's `IdentityBrand` ticket, 2026-10-28) — brand.kolkrabbi.io's B (Right Grotesk Wide Dark, the user's pick `b-widedark`), `currentColor` on the identity keyline, the ticket's file as filed.
+
+## 0.48.0 — 2026-10-28
+
+- **New:** `studio` in `identity` (kol-website's `IdentityStudio` ticket, 2026-10-28) — the Sanity studio's app-icon S (Right Grotesk Wide Dark, the user's pick `s-widedark` in kol-website's app-icon round), filled `currentColor` on the identity keyline (`translate(3 3) scale(0.75)`) like `fxr`, `monitor` and `mirror`. The file is the ticket's attachment as filed.
+
 ## 0.47.0 — 2026-10-27
 
 - **New:** `stopwatch-solid` in `playback` (TransportPill, kol-fxr 2026-10-27) — the loop-length slot of the phone transport, filled like `play` and `stop` so the transport row reads as one set. The outline `misc/stopwatch` stays for its own uses.

@@ -229,13 +229,16 @@
     "composes": [
       "MenuCtx",
       "MenuDropdownItem",
+      "ActionButton",
       "Tag",
       "Input",
       "Textarea",
       "IconFrame",
       "Button",
       "Tooltip",
-      "SettingsSections"
+      "SettingsSections",
+      "MediaInspector",
+      "Icon"
     ]
   },
   "ProsePreview": {
@@ -937,7 +940,15 @@
   "Rail": {
     "typeClasses": [],
     "composes": [
-      "CloseButton"
+      "CloseButton",
+      "Divider"
+    ]
+  },
+  "RAIL_ROLES": {
+    "typeClasses": [],
+    "composes": [
+      "CloseButton",
+      "Divider"
     ]
   },
   "ShellDrawer": {
@@ -1130,6 +1141,19 @@
       "Icon"
     ]
   },
+  "TABBAR_PILL_TAB": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
+      "Icon"
+    ]
+  },
   "TabChips": {
     "typeClasses": [],
     "composes": [
@@ -1229,6 +1253,10 @@
     ]
   },
   "CANVAS_KEYS": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "SNAP_PADDING": {
     "typeClasses": [],
     "composes": []
   },
@@ -1708,7 +1736,6 @@
   "SettingsPanel": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1721,13 +1748,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "LabeledControlSection": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1740,13 +1767,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsRow": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1759,13 +1786,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsSwitch": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1778,13 +1805,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsChoice": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1797,13 +1824,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsMulti": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1816,13 +1843,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsChipRow": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1835,13 +1862,13 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsFooter": {
     "typeClasses": [
       "kol-helper-10",
-      "kol-helper-14",
       "kol-mono-12"
     ],
     "composes": [
@@ -1854,7 +1881,8 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
-      "Tooltip"
+      "Tooltip",
+      "RailHeader"
     ]
   },
   "SettingsSections": {
@@ -1865,7 +1893,86 @@
       "LabeledControlSection",
       "SettingsChoice",
       "SettingsRow",
-      "SettingsSwitch"
+      "SettingsSwitch",
+      "Slider"
+    ]
+  },
+  "RailHeader": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
+    ]
+  },
+  "RailTabs": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
+    ]
+  },
+  "RailHint": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
+    ]
+  },
+  "RailActions": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
+    ]
+  },
+  "RailFoot": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
+    ]
+  },
+  "RailNav": {
+    "typeClasses": [
+      "kol-helper-14",
+      "kol-mono-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SegmentedToggle",
+      "Button",
+      "Tooltip",
+      "RAIL_ROW"
     ]
   },
   "SectionNewsletter": {
@@ -2119,32 +2226,34 @@
     "typeClasses": [],
     "composes": []
   },
+  "SiteLayout": {
+    "typeClasses": [],
+    "composes": [
+      "SideNav"
+    ]
+  },
   "PageLayout": {
     "typeClasses": [],
     "composes": [
-      "SideNav",
-      "Icon"
+      "SideNav"
     ]
   },
   "AppShell": {
     "typeClasses": [],
     "composes": [
-      "SideNav",
-      "Icon"
+      "SideNav"
     ]
   },
   "ShellTocContext": {
     "typeClasses": [],
     "composes": [
-      "SideNav",
-      "Icon"
+      "SideNav"
     ]
   },
   "ShellTocCollapsedContext": {
     "typeClasses": [],
     "composes": [
-      "SideNav",
-      "Icon"
+      "SideNav"
     ]
   },
   "SideNav": {
@@ -2246,6 +2355,19 @@
     "composes": [
       "PageHero"
     ]
+  },
+  "MarkdownPage": {
+    "typeClasses": [],
+    "composes": [
+      "ShellTocContext"
+    ]
+  },
+  "LinkPreview": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": []
   },
   "SpecimenSectionHeader": {
     "typeClasses": [

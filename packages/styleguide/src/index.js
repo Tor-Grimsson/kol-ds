@@ -25,6 +25,8 @@ export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './c
 // The brand-book set the two brand apps were both maintaining locally
 // (brand-book-mocks-two-consumers, 2026-09-03).
 export { default as AssetCard } from './AssetCard.jsx'
+/* a folder's pages as the brand book's contents cards (plan-2026-10-28-document W5.2) */
+export { default as DocumentIndex } from './DocumentIndex.jsx'
 export { default as Swatch } from './Swatch.jsx'
 export {
   PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, BrandAvatar, ProfileAvatar,

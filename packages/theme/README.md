@@ -36,6 +36,8 @@ Tailwind v4 **does not scan `node_modules`**, so layout utilities emitted inside
 
 (Adjust the relative path to your CSS file's location. Component-load-bearing *chrome* lives in this package's CSS and needs no `@source` — the contract covers the remaining per-render utilities.)
 
+**Not `kol-sources.css`.** The manifest resolves its paths from the theme's own folder and reaches nothing in a pnpm workspace — no warning, no utilities. It works only in a standalone repo; the explicit lines above work everywhere.
+
 ## Fonts
 
 The typography CSS references the brand fonts at absolute paths (`/fonts/right-grotesk/…`, `/fonts/jetbrains-mono/…`). **The package does not ship the font files** — your app must serve them from `/fonts/` (e.g. drop them in your `public/` dir). The showcase in this repo does exactly that. Without them, type falls back to system fonts.

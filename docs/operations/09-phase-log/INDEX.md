@@ -3,7 +3,7 @@ title: Phase log
 type: index
 status: active
 created: 2026-09-30
-updated: 2026-10-24
+updated: 2026-10-28
 description: Every run of work, newest first
 tags:
   - domain/workflow
@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-10-28 | [[2026-10-28-document\|Document space]] | kol-atlas's documents as pages on the site rail — `apps/document-fixture`, the kol-markdown additions proved in `apps/markdown`, `apps/document` with `MarkdownPage` (born there) and the index, Round 23 on the body face | built · his review of the app and the round; nothing published |
 | 2026-10-24 | [[2026-10-24-site-hub\|Site hub]] | the site-rail shape made once — `apps/site-hub` on `PageLayout` and `NavRail variant="site"` with Home, Brand and Assets on VOYAGER, the rest of the rail as rows; the render gate clean, the walk 33/33 | built · the look and the pages wait on the user |
 | 2026-10-24 | [[2026-10-24-home-library-one-card\|Home + Library]] | Home is the user's saves, Library is what ships; one card everywhere (modules and shipped presets too); `StudioDetail` and one slug scheme; the file rail's Date · Size and Upload image; covers are the output — DS wave published, fxr · mirror · monitor taken through by step message, closed by the extended pass | published · the three repos adopted |
 | 2026-10-05 | [[2026-10-05-labs-and-generator\|Labs + generator]] | fxr rehearsed as `apps/editor-hub`; five regressions fixed; `apps/panels` rebuilt; `apps/labs` and `apps/generator`; one frame for both — a rail at a desk, a sheet on a phone | published · review by eye |

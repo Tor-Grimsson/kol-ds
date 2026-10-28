@@ -1,21 +1,26 @@
-/* The brand guide's chapter model — kol-branding's src/template/book/brandBook.js (2026-10-24), carried for `BrandGuide`
- * (BrandGuideOutlineTwoVersions, 2026-10-27). The book owns no chapter list: it renders the one it is handed —
- * `@kolkrabbi/kol-brand-template`'s `GUIDE_SECTIONS`, or a client's own. The helpers the identity book already
- * exports (brandInfo, the stationery marks, the anchor scroll, the svg helpers) stay in ./brandBook.js. */
+/* The chapter model behind every brand page — kol-branding's src/template/book/brandBook.js (2026-10-24), carried for
+ * `BrandGuide` (2026-10-27) and, since 0.11.0, the one model `BrandBook` and `BrandAssets` read too (the book had its own
+ * `shows` and renderer beside this one; user 2026-10-28: two looks for one thing). A page is a chapter list — `BOOK_SECTIONS`,
+ * `ASSET_SECTIONS`, kol-brand-template's `GUIDE_SECTIONS`, a client's own — merged with the manifest's `book`. The manifest
+ * helpers (brandInfo, the stationery marks, the anchor scroll, the svg helpers) stay in ./brandBook.js. */
 
-const hasCopy = (s) => Boolean(s.lede || s.blocks?.length || s.after?.length || s.rules?.length || s.spec || s.dos?.length || s.donts?.length || s.words || s.pairs?.length)
+/* copy beyond the lede — what makes a specimen chapter worth drawing without its data (the brand book's rule, olina:
+ * "their default lede is not enough to show empty frames") */
+const hasBody = (s) => Boolean(s.blocks?.length || s.after?.length || s.rules?.length || s.spec || s.dos?.length || s.donts?.length || s.words || s.pairs?.length)
+const hasCopy = (s) => Boolean(s.lede) || hasBody(s)
 
-/* Whether a chapter has anything to show for this manifest. The specimen kinds need the data they draw;
- * everything else shows when it has copy. */
+/* Whether a chapter has anything to show for this manifest. The specimen kinds need the data they draw or body copy;
+ * a prose row shows with any copy, the lede included. */
 export function shows(s, brand) {
+  if (s.category) return Boolean(brand?.graphics?.[s.category]?.length)
   const kind = s.kind ?? 'prose'
   if (kind === 'hero' || kind === 'contents' || kind === 'branded' || kind === 'stationery') return true
   if (kind === 'logos-table') return Boolean(brand?.logos?.length)
-  if (kind === 'logo' || kind === 'lockups') return Boolean(brand?.logos?.length) || hasCopy(s)
-  if (kind === 'color') return Boolean(brand?.ramps?.length) || hasCopy(s)
-  if (kind === 'typography') return Boolean(brand?.type?.families?.length) || hasCopy(s)
-  if (kind === 'social') return Boolean(brand?.social?.templates?.length) || hasCopy(s)
-  if (kind === 'profile') return Boolean(brand?.social?.avatars?.length) || hasCopy(s)
+  if (kind === 'logo' || kind === 'lockups') return Boolean(brand?.logos?.length) || hasBody(s)
+  if (kind === 'color') return Boolean(brand?.ramps?.length) || hasBody(s)
+  if (kind === 'typography') return Boolean(brand?.type?.families?.length) || hasBody(s)
+  if (kind === 'social') return Boolean(brand?.social?.templates?.length) || hasBody(s)
+  if (kind === 'profile') return Boolean(brand?.social?.avatars?.length) || hasBody(s)
   return hasCopy(s)
 }
 

@@ -349,6 +349,11 @@
     "source": "kol-r2b2/src/AudioTile.jsx (PlayDisc)",
     "date": null
   },
+  "PhoneNavTopAndFold": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr proposal frame E — https://claude.ai/artifact/KRTF3jBpfpHUsEpyroDqRD (ProtoE.dc.html); built on kol-shell/src/PhoneNav.jsx + kol-component/src/molecules/TabsRow.jsx (StackedTabs, pill)",
+    "date": null
+  },
   "PlayDisc · VideoSheet · kol-icons playback/tools variants": {
     "repo": "kol-r2b2",
     "source": "kol-r2b2/src/AudioTile.jsx (PlayDisc, AudioTile, VideoTile, VideoSheet) · kol-r2b2/src/index.css (.r2b2-play)",
@@ -584,6 +589,11 @@
     "source": "kol-mirror/src/components/hall-of-mirrors/ExpressionReference.jsx#L191-L218",
     "date": null
   },
+  "SiteRailTitleNavigatesOnly": {
+    "repo": "kol-ds-ui",
+    "source": "kol-ds-ui/packages/component/src/organisms/NavRailSite.jsx#L346-L363",
+    "date": null
+  },
   "Slider · RotaryDial": {
     "repo": "kol-mirror",
     "source": "kol-mirror/src/components/atoms/Slider.jsx (the whole local component) · kol-mirror/src/styles/components.css#L36-L181 (its skin) · consumers at kol-mirror/src/components/hall-of-mirrors/RecorderUnit.jsx + SymphonyMixer.jsx",
@@ -642,6 +652,11 @@
   "TransportIcons (kol-icons set additions)": {
     "repo": "kol-ds-fxr",
     "source": "kol-ds-fxr/src/editor/params/TransportBar.jsx#L75-L76",
+    "date": null
+  },
+  "TransportPill": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr proposal frame E — https://claude.ai/artifact/KRTF3jBpfpHUsEpyroDqRD (ProtoE.dc.html); today's bar is kol-fxr/src/editor/params/TransportBar.jsx",
     "date": null
   },
   "TypefaceCardAndRow": {

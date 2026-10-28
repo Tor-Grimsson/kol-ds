@@ -1111,6 +1111,23 @@
 .kol-prose blockquote cite::before { content: '— '; opacity: 0.6; }
 
 
+
+/* PUBLIC SANS — the document body (kol-atlas's workspace face; his ruling 2026-10-28). The variable cut in four files,
+   latin and latin-ext, upright and italic, hosted by the consumer at /fonts/public-sans/ as the other faces are
+   (public/fonts/public-sans/ in kol-ds-ui; SIL OFL 1.1, the LICENSE beside them). Unicode ranges are fontsource's. */
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/public-sans/PublicSans-Variable-latin.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Public Sans'; font-style: normal; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/public-sans/PublicSans-Variable-latin-ext.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Public Sans'; font-style: italic; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/public-sans/PublicSans-Variable-latin-italic.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-italic.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Public Sans'; font-style: italic; font-weight: 100 900; font-display: swap;
+  src: url('/fonts/public-sans/PublicSans-Variable-latin-ext-italic.woff2') format('woff2-variations'), url('/fonts/public-sans/PublicSans-Variable-latin-ext-italic.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
 /* =============================================================================
  * SHEET (the document voice) — kol-atlas's Research-Spec, class for class
  * (site-hub W4, user 2026-10-24: "I would like to use kol-atlas styles at least in part").
@@ -1129,10 +1146,17 @@
 .kol-sheet {
   --bg: var(--kol-surface-primary); --surface: var(--kol-surface-primary); --ink: var(--kol-surface-on-primary);
   --muted: var(--kol-fg-64); --line: var(--kol-fg-12); --soft: var(--kol-fg-04);
-  --accent: var(--kol-accent-primary); --note: var(--ui-error);
+  /* the accent is kol-atlas's own (apps/workspace/src/index.css, 2026-10-28): orange-300, yellow-300 in the dark — the ramps
+     in kol-framework's kol-brand-color.css, which every sheet consumer loads (ARCHITECTURE §5's cascade); not the DS accent,
+     which is the ink and left every number and quote mark unmarked */
+  --accent: var(--kol-color-orange-300); --note: var(--ui-error);
   --edge: 724px;
-  --display: var(--kol-font-family-sans); --body: var(--kol-font-family-sans); --mono: var(--kol-font-family-mono);
+  /* the body is Public Sans, like the reference (his ruling, Round 23, 2026-10-28: "I already said Public Sans!!! like the
+     reference"); the headings stay on the display face. The faces are declared above, from /fonts/public-sans/ */
+  --display: var(--kol-font-family-sans); --body: 'Public Sans', var(--kol-font-family-sans); --mono: var(--kol-font-family-mono);
 }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .kol-sheet { --accent: var(--kol-color-yellow-300); } }
+:root[data-theme="dark"] .kol-sheet { --accent: var(--kol-color-yellow-300); }
 .kol-sheet{padding:16px 0 28px;min-width:0;color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.6}
 .kol-sheet h1,.kol-sheet h2,.kol-sheet h3,.kol-sheet h4{font-family:var(--display);line-height:1.2;text-wrap:balance;letter-spacing:-.005em;font-weight:700}
 .kol-sheet h1{font-size:36px;margin:0 0 12px}
@@ -1171,8 +1195,11 @@
 .kol-sheet .term.missing{border:0;color:var(--note);background:var(--soft);padding:0 4px;border-radius:3px}
 .kol-sheet .media{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;margin:16px 0}
 .kol-sheet .media figure{margin:0}
-.kol-sheet .media img,.kol-sheet .media video{display:block;width:100%;aspect-ratio:4/3;object-fit:contain;background:var(--soft);border:1px solid var(--line);border-radius:4px}
-.kol-sheet .media .doc{display:flex;align-items:center;justify-content:center;aspect-ratio:4/3;background:var(--soft);border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:12px;text-decoration:none}
+/* a figure fills its frame (user 2026-10-28: "should SHIP scale to fill, no margins, empty space"); `data-fit="contain"` on the grid
+   shows the whole image on the plate instead, `--media-ratio` sets the frame (4/3 by default) — both are the page's props */
+.kol-sheet .media img,.kol-sheet .media video{display:block;width:100%;aspect-ratio:var(--media-ratio,4/3);object-fit:cover;background:var(--soft);border:1px solid var(--line);border-radius:4px}
+.kol-sheet .media[data-fit="contain"] img,.kol-sheet .media[data-fit="contain"] video{object-fit:contain}
+.kol-sheet .media .doc{display:flex;align-items:center;justify-content:center;aspect-ratio:var(--media-ratio,4/3);background:var(--soft);border:1px solid var(--line);border-radius:4px;font-family:var(--mono);font-size:12px;text-decoration:none}
 .kol-sheet .media figcaption{margin-top:6px;font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
 .kol-sheet .why{font-family:var(--body);font-size:12px;font-weight:400;color:var(--muted);margin-left:6px}
 .kol-sheet p.when,.kol-sheet p.dw{font-size:13px;color:var(--muted);margin:0}
@@ -1187,6 +1214,10 @@
 .kol-sheet ol.fns li{margin:2px 0}
 .kol-sheet ol.fns .fnn{margin-right:.4em}
 .kol-sheet ol.fns .url{color:color-mix(in srgb,var(--ink) 36%,transparent);overflow-wrap:anywhere}
+/* a link in the note list is a plain source: the list's ink, no underline; the Sources list stands a step larger (kol-atlas
+   workspace.css, carried 2026-10-28 for apps/document — the port had missed these two) */
+.kol-sheet ol.fns a{color:inherit;text-decoration:none}
+.kol-sheet ol.fns.src{font-size:12px;margin-top:8px}
 .kol-sheet .ol .ms{margin-top:20px}
 .kol-sheet .ol .ms>summary.mh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;font-family:var(--display);font-weight:700;font-size:20px;padding:2px 8px;line-height:1.3}
 .kol-sheet .ol .mh a{color:var(--ink);text-decoration:none}

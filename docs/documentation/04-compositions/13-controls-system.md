@@ -87,7 +87,7 @@ Plain JS, no React. One expression compiler and one ADSR for every scope, envelo
 
 ## Consumer
 
-Modules, the rack, the registry, routing (drag-to-patch, pending cable), the render loop. The package is presentational with seams: `ModuleHeader powered`, `JackSocket`'s `active · pending · dimPending · cablesHidden · color · onPointerDown`, and `iconComponent` on the icon-bearing controls. Consumers pick up its utilities through `kol-sources.css`, which lists kol-hardware since kol-theme 0.152.0 (the manifest never listed kol-controls).
+Modules, the rack, the registry, routing (drag-to-patch, pending cable), the render loop. The package is presentational with seams: `ModuleHeader powered`, `JackSocket`'s `active · pending · dimPending · cablesHidden · color · onPointerDown`, and `iconComponent` on the icon-bearing controls. Consumers pick up its utilities with an explicit `@source "../node_modules/@kolkrabbi/kol-hardware/src"` line; kol-theme's `kol-sources.css` lists it too but reaches nothing in a pnpm workspace (standalone repos only, 2026-10-28).
 
 ## Tokens
 

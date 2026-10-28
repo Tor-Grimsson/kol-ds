@@ -48,7 +48,7 @@ Registered icons are keyed by filename (basename), win over the packaged set (ad
 @source "../node_modules/@kolkrabbi/kol-icons/src";
 ```
 
-(Or import `@kolkrabbi/kol-theme/kol-sources.css` once — it carries the `@source` line for every raw-JSX KOL package.)
+(The explicit line is the way. kol-theme's `kol-sources.css` manifest reaches nothing in a pnpm workspace; it is for standalone repos only.)
 
 ## Vite consumers: exclude from prebundling
 

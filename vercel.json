@@ -96,6 +96,10 @@
       "destination": "/apps/site-hub/index.html"
     },
     {
+      "source": "/apps/document/(.*)",
+      "destination": "/apps/document/index.html"
+    },
+    {
       "source": "/apps/studio-hub/(.*)",
       "destination": "/apps/studio-hub/index.html"
     },

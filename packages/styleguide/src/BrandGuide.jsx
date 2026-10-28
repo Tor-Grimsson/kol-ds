@@ -1,9 +1,11 @@
-/* BrandGuide — kol-branding's guide renderer (src/template/book/BrandBook.jsx + Brand.jsx, 2026-10-24), carried
- * class-for-class for the brand guide outline (BrandGuideOutlineTwoVersions, kol-hq 2026-10-27). Two changes, both
- * because a package cannot carry them: the research line under each chapter (`Source`, kol-branding's own citations)
- * stays there, and the Contents card is an in-page anchor only (no router in this package). */
+/* THE ONE BRAND RENDERER. kol-branding's guide renderer (src/template/book/BrandBook.jsx + Brand.jsx, 2026-10-24),
+ * carried class-for-class for the brand guide outline (BrandGuideOutlineTwoVersions, kol-hq 2026-10-27) — and since
+ * 0.11.0 what `BrandBook` and `BrandAssets` draw through too (user 2026-10-28, two contents pages for one thing: "if
+ * you can't maintain it, it's too complicated"). The old book's own renderer, with its Swatch palette and KOL-type
+ * chapters, is in `_tmp/2026-10-28-brand-book-one-renderer/`. Two things stay in kol-branding because a package cannot
+ * carry them: the research line under each chapter (its own citations) and the router on the Contents card. */
 import { useState } from 'react'
-import { ColorRamp, ContentCollection, DocsToc, FullscreenOverlay, Table } from '@kolkrabbi/kol-component'
+import { ColorRamp, ContentCollection, DocsToc, FullscreenOverlay, Graphic, GRAPHIC_RAW, Table } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import PageHero from '@kolkrabbi/kol-framework/src/PageHero.jsx'
 import PageSection from '@kolkrabbi/kol-framework/src/PageSection.jsx'
@@ -11,8 +13,8 @@ import LogoCard from './LogoCard.jsx'
 import AssetTable from './AssetTable.jsx'
 import AssetCard from './AssetCard.jsx'
 import BrandMark from './BrandMark.jsx'
-import { BrandAvatar } from './SocialMocks.jsx'
-import { BusinessCardBack, BusinessCardFront, EmailSignature, Envelope, Letterhead } from './StationeryMocks.jsx'
+import { BrandAvatar, PostEditorial, PostPhoto, StoryPhoto } from './SocialMocks.jsx'
+import { BusinessCardBack, BusinessCardFront, EmailSignature, Envelope, Letterhead, LetterheadB } from './StationeryMocks.jsx'
 import { brandInfo, STATIONERY_MARKS, BRANDED_ASSET_ROWS, scrollToAnchor, svgDims, downloadRecolored } from './brandBook.js'
 import { guideSections, guideToc, stopHex, contrast } from './guideBook.js'
 
@@ -32,19 +34,25 @@ import { guideSections, guideToc, stopHex, contrast } from './guideBook.js'
  * @param {string}   className    classes on the root
  */
 export default function BrandGuide({ brand, sections, Logo, logoSources, structure, className = '' }) {
-  const list = guideSections(brand, sections)
-  const mark = (id, props) => <BrandMark id={id} Logo={Logo} sources={logoSources} {...props} />
-  const index = list.filter((s) => s.nav)
   return (
     /* `xl:pr-32` — the rail is `position: fixed` on the right edge from xl up, and the pages' grids
        run to the frame's edge; the padding keeps the last column out from under it */
     <div className={`xl:pr-32 ${className}`.trim()}>
-      {list.map((s) => (s.kind === 'hero'
-        ? <PageHero key={s.key} id={s.id} label={s.label} title={s.title} lede={s.lede} />
-        : <Chapter key={s.key} s={s} brand={brand} mark={mark} index={index} logoSources={logoSources} structure={structure} />))}
+      <GuideChapters brand={brand} sections={sections} Logo={Logo} logoSources={logoSources} structure={structure} />
       <DocsToc variant="rail" toc={guideToc(brand, sections)} onNavigate={scrollToAnchor} className="hidden xl:flex" />
     </div>
   )
+}
+
+/** GuideChapters — the chapters alone, no rail: the hero, then one Chapter per row that shows for this manifest.
+ *  `BrandBook` and `BrandAssets` are this over `BOOK_SECTIONS` and `ASSET_SECTIONS`; `Brand` puts the rail beside them. */
+export function GuideChapters({ brand, sections, Logo, logoSources, structure }) {
+  const list = guideSections(brand, sections)
+  const mark = (id, props) => <BrandMark id={id} Logo={Logo} sources={logoSources} {...props} />
+  const index = list.filter((s) => s.nav)
+  return list.map((s) => (s.kind === 'hero'
+    ? <PageHero key={s.key} id={s.id} label={s.label} title={s.title} lede={s.lede} />
+    : <Chapter key={s.key} s={s} brand={brand} mark={mark} index={index} logoSources={logoSources} structure={structure} />))
 }
 
 function Chapter({ s, brand, mark, index, logoSources, structure }) {
@@ -107,13 +115,16 @@ function Spec({ spec }) {
   return <Table variant="simple" caption={spec.caption ?? 'Specification'} columns={columns} rows={rows} className="mt-8" />
 }
 
-/* The contents: every indexed chapter as a row, its eyebrow carrying the number; grouped by `part` when the list has parts. */
-function Contents({ index }) {
+/* The contents: every indexed chapter as a row, its eyebrow carrying the number; grouped by `part` when the list has parts.
+ * A row with `to` is a route, opened through `onNavigate` (a plain link otherwise); without one it is an in-page anchor
+ * — apps/document's index reads it this way (plan-2026-10-28-document W3.3). */
+export function Contents({ index, onNavigate }) {
   if (!index.length) return null
   const parts = [...new Set(index.map((s) => s.part ?? ''))]
+  const go = (to) => (e) => { if (!onNavigate || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; e.preventDefault(); onNavigate(to) }
   const row = (s) => (
-    <li key={s.id}>
-      <IndexCard href={`#${s.id}`} onClick={scrollToAnchor} label={s.label} title={s.title ?? s.nav} />
+    <li key={s.to ?? s.id}>
+      <IndexCard href={s.href ?? s.to ?? `#${s.id}`} onClick={s.onClick ?? (s.to ? go(s.to) : scrollToAnchor)} label={s.label} title={s.title ?? s.nav} meta={s.meta} />
     </li>
   )
   return (
@@ -263,17 +274,37 @@ function Stationery({ brand, mark }) {
         <AssetCard caption="Email signature"><EmailSignature mark={mark(marks.signature)} info={info} /></AssetCard>
       </div>
       <div className="col-span-2"><AssetCard caption="Letterhead"><div className="aspect-[210/297]"><Letterhead mark={mark(marks.letter, { style: { height: '100%', width: 'auto' } })} info={info} /></div></AssetCard></div>
+      {/* the second letterhead, its own row (kol-website's Stationery page): `stationery.letterheadB: true` */}
+      {brand?.stationery?.letterheadB && (
+        <div className="col-span-2">
+          <AssetCard caption="Letterhead, A4 [B]"><LetterheadB mark={mark(marks.letter, { style: { display: 'inline-block', height: 48, width: 'auto' } })} info={info} /></AssetCard>
+        </div>
+      )}
     </div>
   )
 }
 
-/* Social — one frame per template at its ratio; the image when the manifest has one, the mark on a plain ground when not. */
+/* the drawn social mocks a template may name instead of a photo (kol-website's Social page, 2026-10-14) */
+const SOCIAL_MOCKS = { PostPhoto, PostEditorial, StoryPhoto }
+
+/* Social — one frame per template at its ratio: a drawn mock when the row names one (`mock` — a SOCIAL_MOCKS name or a
+ * node; it carries the brand's logomark itself, so no overlay; `ratio` boxes one that does not size itself), the image
+ * when it has `src`, the mark on a plain ground when it has neither. */
 function Social({ brand, mark }) {
   const templates = brand?.social?.templates ?? []
+  const marks = { ...STATIONERY_MARKS, ...(brand?.stationery?.marks ?? {}) }
   if (!templates.length) return null
   return (
     <ContentCollection cols={3} className="mt-8 items-start">
-      {templates.map(({ caption, ratio, src }) => (
+      {templates.map(({ caption, ratio, src, mock }) => mock ? (
+        <AssetCard key={caption ?? String(mock)} caption={caption}>
+          {(() => {
+            const Mock = typeof mock === 'string' ? SOCIAL_MOCKS[mock] : null
+            const node = Mock ? <Mock mark={mark(marks.avatar)} /> : mock
+            return ratio ? <div className="overflow-hidden rounded-sm" style={{ aspectRatio: ratio }}>{node}</div> : node
+          })()}
+        </AssetCard>
+      ) : (
         <AssetCard key={caption ?? src} caption={caption}>
           <div className={`relative overflow-hidden ${src ? '' : 'bg-fg-08'}`} style={{ aspectRatio: ratio }}>
             {src && <img src={src} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" />}
@@ -299,8 +330,41 @@ function Profile({ brand, mark }) {
   )
 }
 
+/* a graphic from kol-component's set as an asset row — kol-website's graphicRows, its 80px preview */
+const graphicRows = (category, names = []) => names.map((name) => {
+  const raw = GRAPHIC_RAW[category]?.[name]
+  return {
+    id: `${category}/${name}`, name, preview: <Graphic category={category} name={name} />, previewWidth: 80,
+    path: `packages/component/src/graphics/svg/${category}/${name}.svg`, format: 'SVG', dimensions: svgDims(raw), raw,
+    onDownload: raw ? (row, ink) => downloadRecolored(row.raw, ink, `${name}.svg`) : undefined,
+  }
+})
+
+/* Graphics · Patterns — the manifest's `graphics[category]` names on the asset table, ink toggle and recoloured download */
+function Graphics({ s, brand }) {
+  return <AssetTable caption={s.title} rows={graphicRows(s.category, brand?.graphics?.[s.category])} inkTokens={INK_TOKENS} className="mt-8" />
+}
+
+/* the same names as square tiles with their category / name — kol-website's GraphicCard grid */
+function GraphicCards({ s, brand }) {
+  return (
+    <div className="kol-grid mt-8">
+      {(brand?.graphics?.[s.category] ?? []).map((name) => (
+        <figure key={name}>
+          <div className="aspect-square flex items-center justify-center rounded-[4px] overflow-hidden bg-surface-inverse">
+            <Graphic category={s.category} name={name} />
+          </div>
+          <figcaption className="kol-helper-12 uppercase tracking-wider text-meta mt-2">{s.category} / {name}</figcaption>
+        </figure>
+      ))}
+    </div>
+  )
+}
+
 const SPECIMENS = {
   contents: Contents,
+  graphics: Graphics,
+  'graphics-cards': GraphicCards,
   logo: Marks,
   lockups: Lockups,
   color: Color,

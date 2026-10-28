@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "kol-markdown alone, in the tool frame, over workshop-fixture — pick or paste a doc and see what the engine reads: the rendered page, frontmatter (and its lossless round-trip), structure, tags, the inventory entry, and the corpus-wide counts. Never published.",
+  "description": "kol-markdown alone, in the tool frame, over workshop-fixture and document-fixture (kol-atlas’s documents and reviews, the examples for the document additions) — pick or paste a doc and see what the engine reads: the rendered page, frontmatter (and its lossless round-trip), structure, tags, the inventory entry, and the corpus-wide counts. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -20,6 +20,7 @@
     "@kolkrabbi/kol-theme": "workspace:*",
     "@kolkrabbi/kol-workshop": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
+    "document-fixture": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.14.2",

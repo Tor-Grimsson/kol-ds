@@ -8,42 +8,49 @@
  * left for its manifest to set; anything that was the CLIENT's copy (About, Tone, Look, the logo concept,
  * the color concept) is not here — it comes from the manifest's `book` field, section by section
  * (`@kolkrabbi/kol-brand-template` schema). A manifest key overrides the default of the same name.
+ *
+ * Since 0.11.0 the two pages render through `BrandGuide`'s chapters (user 2026-10-28: one renderer) — this file is the
+ * two lists and the manifest helpers; the model is ./guideBook.js.
  */
+import { guideSections, guideToc } from './guideBook.js'
 
-/* `nav` is the sidebar / rail label; a section without one (the hero, the overviews) is not indexed.
- * `copy` marks a section that is ONLY its copy — with none in the manifest it is not rendered. */
+/* `nav` is the sidebar / rail label; a section without one (the hero, the overviews) is not indexed. `kind` names the
+ * specimen BrandGuide draws (its SPECIMENS table); a row without one is prose and shows only with copy in the manifest.
+ * `part` groups the overview's cards — Brand's three, the groups the site rail already uses (apps/site-hub, 2026-10-24). */
+const OVERVIEW = 'Brand overview', LOGOS = 'Logos', FOUNDATIONS = 'Foundations'
+
 export const BOOK_SECTIONS = [
-  { key: 'hero', id: 'hero', label: 'brand guidelines', lede: 'Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.' },
-  { key: 'overview', id: 'brand-overview', label: 'Overview', title: 'Chapters', lede: 'Each chapter is its own page. They read in order, but every one stands alone for handoff.' },
-  { key: 'about', id: 'about', nav: 'About', label: '01 — about', copy: true },
-  { key: 'messages', id: 'key-messages', nav: 'Key messages', label: '01 — about · key messages', title: 'Key messages', copy: true },
-  { key: 'tone', id: 'voice', nav: 'Tone', label: '02 — tone', title: 'Tone', copy: true },
-  { key: 'look', id: 'look', nav: 'Look', label: '03 — look', title: 'Look', copy: true },
-  { key: 'logo', id: 'logos-concept', nav: 'Logo', label: '04 — logos · concept', title: 'The mark', marks: ['wordmark', 'logomark'] },
-  { key: 'lockups', id: 'logos-types', nav: 'Lockups', label: '05 — logos · types', title: 'Marks and lockups', lede: 'Logomark, wordmark, and two primary lockups.', marks: ['logomark', 'wordmark', 'lockup-hori', 'lockup-vert'] },
-  { key: 'color', id: 'color', nav: 'Color', label: '06 — color', title: 'Palette' },
-  { key: 'typography', id: 'typography', nav: 'Typography', label: '07 — typography', title: 'Type' },
+  { key: 'hero', id: 'hero', kind: 'hero', label: 'brand guidelines', lede: 'Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.' },
+  { key: 'overview', id: 'brand-overview', kind: 'contents', label: 'Overview', title: 'Chapters', lede: 'Each chapter is its own page. They read in order, but every one stands alone for handoff.' },
+  { key: 'about', id: 'about', part: OVERVIEW, nav: 'About', label: '01 — about' },
+  { key: 'messages', id: 'key-messages', part: OVERVIEW, nav: 'Key messages', label: '01 — about · key messages', title: 'Key messages' },
+  { key: 'tone', id: 'voice', part: OVERVIEW, nav: 'Tone', label: '02 — tone', title: 'Tone' },
+  { key: 'look', id: 'look', part: OVERVIEW, nav: 'Look', label: '03 — look', title: 'Look' },
+  { key: 'logo', id: 'logos-concept', part: LOGOS, kind: 'logo', nav: 'Logo', label: '04 — logos · concept', title: 'The mark', marks: ['wordmark', 'logomark'] },
+  { key: 'lockups', id: 'logos-types', part: LOGOS, kind: 'lockups', nav: 'Lockups', label: '05 — logos · types', title: 'Marks and lockups', lede: 'Logomark, wordmark, and two primary lockups.', marks: ['logomark', 'wordmark', 'lockup-hori', 'lockup-vert'] },
+  { key: 'color', id: 'color', part: FOUNDATIONS, kind: 'color', nav: 'Color', label: '06 — color', title: 'Palette' },
+  { key: 'typography', id: 'typography', part: FOUNDATIONS, kind: 'typography', nav: 'Typography', label: '07 — typography', title: 'Type' },
 ]
 
 export const ASSET_SECTIONS = [
-  { key: 'assetsOverview', id: 'assets-overview', label: 'Assets', title: 'Downloads and reproduction', lede: 'Everything you download or reproduce. Brand documents the identity; this holds the files and the specs for making them.' },
-  { key: 'logos', id: 'logos', nav: 'Logos', label: '01 — logos', title: 'Logos' },
+  { key: 'assetsOverview', id: 'assets-overview', kind: 'contents', label: 'Assets', title: 'Downloads and reproduction', lede: 'Everything you download or reproduce. Brand documents the identity; this holds the files and the specs for making them.' },
+  { key: 'logos', id: 'logos', kind: 'logos-table', nav: 'Logos', label: '01 — logos', title: 'Logos' },
   /* kol-website's Assets page (BrandAssetsGraphicsAndPatterns, 2026-10-27): the manifest's `graphics` — names from
      kol-component's set by category, `{ abstract: [...], patterns: [...] }`. The Patterns page there carried a second
      block, the cards (`graphics-patterns`); it rides under Patterns, off the rail, as it did. Ledes named repo paths,
      so they are the manifest's to set, as Logos' is. */
-  { key: 'graphics', id: 'graphics', nav: 'Graphics', label: '02 — graphics', title: 'Graphics', category: 'abstract' },
-  { key: 'patterns', id: 'patterns', nav: 'Patterns', label: '03 — patterns', title: 'Patterns', category: 'patterns' },
-  { key: 'graphicsPatterns', id: 'graphics-patterns', label: '16 — graphics · patterns', title: 'Patterns', category: 'patterns' },
-  { key: 'branded', id: 'branded-assets', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
-  { key: 'stationery', id: 'assets-stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
-  { key: 'labels', id: 'labels', nav: 'Labels', label: '09 — labels', title: 'Labels', copy: true },
-  { key: 'packaging', id: 'packaging', nav: 'Packaging', label: '10 — packaging', title: 'Packaging', copy: true },
-  { key: 'mockups', id: 'mockups', nav: 'Mockups', label: '11 — mockups', title: 'Mockups', copy: true },
-  { key: 'social', id: 'social-sizes', nav: 'Social', label: '12 — social · sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
-  { key: 'profile', id: 'social-profile', nav: 'Profile', label: '13 — social · profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },
-  { key: 'generators', id: 'generators', nav: 'Generators', label: '14 — generators', title: 'Generators', copy: true },
-  { key: 'deck', id: 'slide-deck', nav: 'Slide deck', label: '15 — slide deck', title: 'Slide deck', copy: true },
+  { key: 'graphics', id: 'graphics', kind: 'graphics', category: 'abstract', nav: 'Graphics', label: '02 — graphics', title: 'Graphics' },
+  { key: 'patterns', id: 'patterns', kind: 'graphics', category: 'patterns', nav: 'Patterns', label: '03 — patterns', title: 'Patterns' },
+  { key: 'graphicsPatterns', id: 'graphics-patterns', kind: 'graphics-cards', category: 'patterns', label: '16 — graphics · patterns', title: 'Patterns' },
+  { key: 'branded', id: 'branded-assets', kind: 'branded', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
+  { key: 'stationery', id: 'assets-stationery', kind: 'stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
+  { key: 'labels', id: 'labels', nav: 'Labels', label: '09 — labels', title: 'Labels' },
+  { key: 'packaging', id: 'packaging', nav: 'Packaging', label: '10 — packaging', title: 'Packaging' },
+  { key: 'mockups', id: 'mockups', nav: 'Mockups', label: '11 — mockups', title: 'Mockups' },
+  { key: 'social', id: 'social-sizes', kind: 'social', nav: 'Social', label: '12 — social · sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
+  { key: 'profile', id: 'social-profile', kind: 'profile', nav: 'Profile', label: '13 — social · profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },
+  { key: 'generators', id: 'generators', nav: 'Generators', label: '14 — generators', title: 'Generators' },
+  { key: 'deck', id: 'slide-deck', nav: 'Slide deck', label: '15 — slide deck', title: 'Slide deck' },
 ]
 
 /* the two pages, for a view switch */
@@ -52,40 +59,11 @@ export const BRAND_VIEWS = [
   { value: 'assets', label: 'Assets' },
 ]
 
-const hasCopy = (s) => Boolean(s.lede || s.blocks?.length || s.after?.length)
-
-/* Whether a section has anything to show for this manifest. Copy-only sections need copy; the
- * specimen sections need the data they render. */
-function shows(s, brand) {
-  if (s.copy) return hasCopy(s)
-  if (s.key === 'color') return Boolean(brand?.ramps?.length) || hasCopy(s)
-  if (s.key === 'logos') return Boolean(brand?.logos?.length)
-  if (s.category) return Boolean(brand?.graphics?.[s.category]?.length)
-  /* the marks sections draw the manifest's logos — their default lede is not enough to show empty frames */
-  if (s.key === 'logo' || s.key === 'lockups') return Boolean(brand?.logos?.length || s.blocks?.length || s.after?.length)
-  if (s.key === 'social') return Boolean(brand?.social?.templates?.length)
-  if (s.key === 'profile') return Boolean(brand?.social?.avatars?.length)
-  return true
-}
-
-/** One page's sections for a manifest — defaults merged with `brand.book`, the empty ones dropped.
- *  `[{ key, id, nav?, label, title, lede, blocks, after, marks }]` */
-export function brandSections(brand, page = 'brand') {
-  const defaults = page === 'assets' ? ASSET_SECTIONS : BOOK_SECTIONS
-  const name = brand?.meta?.name
-  return defaults
-    .map((d) => {
-      const s = { ...d, ...(brand?.book?.[d.key] ?? {}) }
-      if (d.key === 'hero' && !s.title) s.title = name
-      if (d.key === 'about' && !s.title && name) s.title = `About ${name}`
-      return s
-    })
-    .filter((s) => shows(s, brand))
-}
+/** One page's sections for a manifest — the page's list on the guide's one model (guideBook.js), the empty ones dropped. */
+export const brandSections = (brand, page = 'brand') => guideSections(brand, page === 'assets' ? ASSET_SECTIONS : BOOK_SECTIONS)
 
 /** A page's rail / index entries — `[{ id, label }]`. */
-export const brandToc = (brand, page) =>
-  brandSections(brand, page).filter((s) => s.nav).map((s) => ({ id: s.id, label: s.nav }))
+export const brandToc = (brand, page) => guideToc(brand, page === 'assets' ? ASSET_SECTIONS : BOOK_SECTIONS)
 
 /** The manifest's `meta` in the shape the stationery mocks read (`DEFAULT_BRAND_INFO`). A field the
  *  manifest does not carry is an EMPTY STRING, so the mocks render it blank rather than falling back

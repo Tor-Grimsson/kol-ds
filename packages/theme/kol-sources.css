@@ -1,6 +1,17 @@
 /**
  * kol-sources.css — the @source manifest for every raw-JSX @kolkrabbi package.
  *
+ * ⚠ STANDALONE REPOS ONLY — IT REACHES NOTHING IN A PNPM WORKSPACE (KolSourcesManifestDeadInWorkspace,
+ * kol-website 2026-10-28). Its paths resolve from this file's own folder. In a workspace the theme sits
+ * alone in node_modules/.pnpm/@kolkrabbi+kol-theme@x/node_modules/@kolkrabbi/kol-theme and the workspace
+ * root has no node_modules/@kolkrabbi, so both lines of every pair miss and Tailwind scans no package —
+ * silently (record.kolkrabbi.io: 56 of kol-framework's 90 rail utilities). The way to wire an app is the
+ * explicit lines in the app's own CSS, one per installed package, which resolve in every layout:
+ *
+ *   @source "../node_modules/@kolkrabbi/kol-component/src";
+ *
+ * Keep this file only in a standalone (non-workspace) repo, beside those lines or not at all.
+ *
  * KOL packages publish raw .jsx, and Tailwind v4 skips node_modules during
  * auto-detection — so utilities used INSIDE package components are never
  * generated unless the consumer declares each package as a source. Forgetting

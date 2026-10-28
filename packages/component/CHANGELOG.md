@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.307.0 — 2026-10-28
+
+- **BREAKING (default flip): the site rail's Kolkrabbi credit is opt-in** (NavRailSiteCreditOptIn, kol-website — user ruling 2026-10-28). `NavRail preset="site"` with no `footer` draws no footer box; the "Kolkrabbi Vinnustofa · <year>" link renders only on `footer="credit"` (through `SiteLayout`'s `sideNav={{ footer: 'credit' }}`). A node still renders as before and `false` stays valid. A site that wants the credit passes the opt-in; one that passed `footer: false` can drop it.
+
 ## 0.306.0 — 2026-10-28
 
 - **`MediaLibrary` asks the client's session once** (MediaClientOneSignInAndPrivateBucket, kol-website). A client with `session()` (kol-media-client 0.7.0) is asked on mount and its `buckets()` read again when it answers, so the Store dropdown shows a signed-in-only bucket (Private) only when signed in. A client without `session()` is unchanged.

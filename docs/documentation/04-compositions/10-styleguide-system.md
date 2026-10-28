@@ -3,7 +3,7 @@ title: Style-guide system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-10-27
+updated: 2026-10-28
 verified: 2026-07-10
 description: Brand-guide specimens for color, logo and type
 aliases:
@@ -72,7 +72,7 @@ import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-stylegui
 | Component | What it is |
 |-----------|-----------|
 | `BrandGuide` | a brand guide, one scrolling page: `PageHero`, then one chapter per row of the `sections` it is handed (eyebrow · title · lede · prose · rules · the `kind`'s specimen · spec table · do / don't · words · closing prose), the chapters on a rail. kol-branding's renderer, carried. The outline is `kol-brand-template`'s `GUIDE_SECTIONS`; blank copy `GUIDE_TEMPLATE`; a client passes its own manifest with a `book` keyed the same. Live: apps/brand-hub `/guide/blank` · `/guide/voyager` |
-| `guideSections` · `guideToc` | the chapter list merged with `brand.book`, empty chapters dropped; the rail's entries (`guideBook.js`) |
+| `guideSections` · `guideToc` | the chapter list merged with `brand.book`, empty chapters dropped; the rail's entries (`guideBook.js`) — the one chapter model: `BrandBook` and `BrandAssets` are `BrandGuide`'s chapters over `BOOK_SECTIONS` and `ASSET_SECTIONS` since 0.11.0 (one renderer, user 2026-10-28) |
 
 ### Re-exported primitives (live in the core packages, surfaced here)
 `AssetGrid` · `FeatureSplit` · `ProsePreview` · `SpectrumGrid` (from `kol-component`) · `TypeSample` · `TypeSpecCard` (from `kol-foundry`). **Not duplicated** — the same modules, re-exported so a brand guide imports from one place.

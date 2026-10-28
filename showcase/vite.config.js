@@ -11,7 +11,7 @@ export default defineConfig({
   // mdx MUST precede react: it compiles .mdx → JSX, which react then transforms.
   // `providerImportSource` lets MDXProvider inject the shared component map, so
   // a doc gets <Preview>, <ApiTable> etc. without importing them per file.
-  plugins: [devFavicon({ label: 'K' }), loaderApp({ graphic: '../packages/icons/src/kol-icon-set-interface/identity/kol-ds.svg' }), 
+  plugins: [devFavicon({ label: 'K' }), loaderApp({ graphic: '../packages/icons/src/kol-icon-set-identity/kolkrabbi/kol-ds.svg' }), 
     /* include: .mdx ONLY — the plugin also claims .md by default, which turns
        every `?raw` markdown import (the docs vault, the lobby queue) into a
        compiled module and breaks the markdown engine downstream. */

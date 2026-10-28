@@ -31,10 +31,10 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.191.0** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.47.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.306.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
-| `@kolkrabbi/kol-framework` | **0.57.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
+| `@kolkrabbi/kol-theme` | **0.194.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.49.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal + kol-icon-set-identity, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.307.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
+| `@kolkrabbi/kol-framework` | **0.59.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
 | `@kolkrabbi/kol-shell` | **0.83.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.41.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
 | `@kolkrabbi/kol-dashboards` | **0.5.0** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
@@ -44,7 +44,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.13.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.1** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.10.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — the brand tool (`Brand`: the brand book over one manifest) and `BrandGuide` (the guide outline over a manifest) |
+| `@kolkrabbi/kol-styleguide` | **0.13.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — the brand tool (`Brand`: the brand book over one manifest) and `BrandGuide` (the guide outline over a manifest) |
 | `@kolkrabbi/kol-notes` | **0.2.0** | Notes — a note is a database row with a markdown body: the catalog, the editor in the page, the whole tool over a consumer-injected client. Opens on a blank note (`NEW_NOTE`) |
 | `@kolkrabbi/kol-deck` | **0.2.1** | Decks — the shelf, the deck editor, present and export (PDF · PNG · PPTX) over a consumer-injected client. Opens on a blank deck (`NEW_DECK`) |
 
@@ -54,7 +54,7 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-markdown` | **0.1.3** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
+| `@kolkrabbi/kol-markdown` | **0.2.0** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
 | `@kolkrabbi/kol-search` | **0.3.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets, the tag graph (`tagGraph`) |
 
 ## Other tiers

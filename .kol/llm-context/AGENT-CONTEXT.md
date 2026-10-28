@@ -11,7 +11,11 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` is on `AppHub`, the app rail; `apps/site-hub` (2026-10-24) is the site rail's reference beside it, and `apps/shell` shows both rails on one set of pages. The specimens exist; the call is his, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-10-28 — brand estate split and a day of lobby tickets)
+## 🏁 Current state (2026-10-28 evening — the document space, the identity set, Public Sans)
+
+- **Published** kol-markdown 0.2.0 · kol-theme 0.193.0 / 0.194.0 · kol-framework 0.58.0 / 0.59.0 · kol-styleguide 0.12.0 / 0.13.0 · kol-icons 0.48.0 / 0.49.0. kol-website's MarkdownPage ticket became `apps/document` (5208, `document-fixture` = kol-atlas's documents): `MarkdownPage` · `LinkPreview` · `documentTabs` · `documentFiles` in kol-framework, `DocumentIndex` (files open in Quick Look) in kol-styleguide, the parser additions in kol-markdown, `.kol-sheet`'s accent, figure fill and Public Sans body (his ruling, Round 23) in kol-theme — proved block for block against kol-atlas's own engine. `kol-icon-set-identity` is the third icon set (`kolkrabbi` · `apps`; studio and brand glyphs by ticket). Four tickets closed with receipts; PdfToolsFromStudio waits. Push is his. Log: `session-log/2026-10-28-document-space-identity-set-public-sans.md`.
+
+## Current state (2026-10-28 — brand estate split and a day of lobby tickets)
 
 - **Published** kol-brand-template 0.4.0 (`GUIDE_SECTIONS` · `GUIDE_TEMPLATE`, the guide outline) · kol-styleguide 0.8.0–0.10.0 (`BrandGuide`; `BrandAssets` Graphics/Patterns, drawn social mocks, LetterheadB — kol-website's /assets runs on it) · kol-media-client 0.7.0 (private bucket, one sign-in) · kol-component 0.306.0 (MediaLibrary asks the session). brand-hub is on `SiteLayout`; `apps/brand` → `apps/brand-sections` (5207) and a new `apps/brand` home (5179); `apps/stationery` rebuilt on kol-branding's layouts, VOYAGER, placeholders. Eight tickets closed; PdfToolsFromStudio waits. Push is his. Log: `session-log/2026-10-28-brand-estate-split-and-lobby-tickets.md`.
 
@@ -26,10 +30,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-24 late evening — HubHomeBackReveal)
 
 - **Published** kol-shell 0.82.0: `HubHome` takes a page-level `backReveal`, a file's own winning, so Home's cards turn whole with `flip-card` like the Library's; rack-hub's Home and Library pass it. Ticket closed, receipt to kol-monitor (its remainder: bump, pass `backReveal` on `home`). Push is his. Log: `session-log/2026-10-24-hubhome-back-reveal.md`.
-
-## Current state (2026-10-24 evening — the lobby day: fourteen tickets, four waves, the rail kit)
-
-- **Published** kol-theme 0.189.0 · kol-component 0.301.0 · kol-shell 0.81.0 · kol-framework 0.55.0 · kol-hardware 0.7.0 (four waves; push is his). Built from tickets: the card's **back cover** (`back` · `backReveal`, `flipped` · `backHover` — hover opt-in, the whole card turns), the File Rail's **Files section** (`images`, quicklook, `onImages`, Cover · Back picked), `SettingsPanel backdrop` · `mode` · `tier`, the **rail kit** (`RailHeader` · `RailTabs` · `RailSection` · `RailRow` · `RailHint` · `RailActions` · `RailFoot`, `Rail variant` + `footer`, `--kol-rail-w-app` 320 · `-site` 380) with **`apps/rails`** (5206) and `04-compositions/19-rails.md`; `CatalogPage` keeps its place on Back; the settings rail's **Docs tab** (`app.docs`, Repo under About); **`AppHub defaultTheme`**; `FlipCard` by backface; kol-studio's dot · `Table wrap` · TOC cap; the **AppShell adoption playbook** `07-apps-tier/09-app-adoption.md`. rack-hub's patch previews are the real outputs now, racks at `public/previews/racks/`. **In flight:** the last wave at the registry — RailKit · FlipCardFaceSwap · AppCardWholeFlip · AppHubDefaultTheme close on it. **His calls:** round 17 (the back's treatment, `flip-image` default) and round 18 (the app rail's width, 320). Log: `session-log/2026-10-24-lobby-day-fourteen-tickets-four-waves.md`.
 
 ## Repo standup (2026-06-15)
 

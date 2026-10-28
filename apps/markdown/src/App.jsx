@@ -16,13 +16,24 @@ import {
   getTagColor,
 } from '@kolkrabbi/kol-markdown'
 import { CORPUS, DOC_MODULES } from 'workshop-fixture'
+import { DOC_MODULES as ATLAS_MODULES, REVIEW_MODULES, TABS } from 'document-fixture'
 
 /* KOL-MARKDOWN, ALONE, IN THE TOOL FRAME — the source on the left, what the engine reads on the
  * right. Pick a fixture doc or type; every view recomputes from the text as it stands. Rendering is
  * kol-workshop's reader (the engine returns tokens, never elements). */
 
-const PATHS = Object.keys(DOC_MODULES).sort()
-const label = (p) => p.replace(/^\.\/docs\//, '').replace(/\.md$/, '')
+/* THE TWO CORPORA (plan-2026-10-28-document W2.2): workshop-fixture's docs as before, and document-fixture — kol-atlas's
+ * documents under ./atlas, its research reviews under ./reviews — the examples the document additions are read against */
+const SOURCES = {
+  ...DOC_MODULES,
+  ...Object.fromEntries(Object.entries(ATLAS_MODULES).map(([k, v]) => [k.replace(/^\.\/docs\//, './atlas/'), v])),
+  ...Object.fromEntries(Object.entries(REVIEW_MODULES).map(([k, v]) => [k.replace(/^\.\/research\//, './reviews/'), v])),
+}
+const PATHS = Object.keys(SOURCES).sort()
+const TAB_TITLE = Object.fromEntries(TABS.map((t) => [`./atlas/${t.file}`, `${t.group ? `${t.group} · ` : ''}${t.title}`]))
+const label = (p) => p.startsWith('./atlas/') ? `atlas · ${TAB_TITLE[p] ?? p.slice(8)}`
+  : p.startsWith('./reviews/') ? `review · ${p.slice(10).replace(/\.md$/, '')}`
+  : p.replace(/^\.\/docs\//, '').replace(/\.md$/, '')
 const DOC_OPTIONS = [...PATHS.map((p) => ({ value: p, label: label(p) })), { value: '', label: 'Blank' }]
 
 const VIEWS = [
@@ -90,9 +101,16 @@ function Structure({ parsed }) {
   return (
     <>
       <Section title="Table of contents">
-        <Table width="column" columns={[{ accessor: 'id', header: 'Anchor' }, { accessor: 'label', header: 'Heading' }]}
-          rows={parsed.toc.map((t) => ({ id: t.id, label: t.label }))} />
+        <Table width="column" columns={[{ accessor: 'num', header: 'No.' }, { accessor: 'id', header: 'Anchor' }, { accessor: 'label', header: 'Heading' }]}
+          rows={parsed.toc.map((t) => ({ id: t.id, num: t.num ?? '', label: t.label }))} />
       </Section>
+      {/* the document additions (2026-10-28): what the numbered headings and marks came out as */}
+      {blocks.some((b) => b.num || b.marks?.length) && (
+        <Section title="Numbered headings and marks">
+          <Table width="column" columns={[{ accessor: 'num', header: 'No.' }, { accessor: 'title', header: 'Heading' }, { accessor: 'marks', header: 'Marks' }]}
+            rows={blocks.filter((b) => b.num || b.marks?.length).map((b, i) => ({ id: `${b.id}-${i}`, num: b.num ?? '', title: b.content, marks: (b.marks ?? []).map((m) => m.kind + (m.reason ? ` (${m.reason})` : '')).join(', ') }))} />
+        </Section>
+      )}
       <Section title="Blocks by type">
         <Table width="column" columns={[{ accessor: 'type', header: 'Type' }, { accessor: 'count', header: 'Count' }]}
           rows={[...counts].map(([type, count]) => ({ id: type, type, count }))} />
@@ -166,14 +184,14 @@ function Corpus() {
 
 export default function App() {
   const [path, setPath] = useState(PATHS.find((p) => p.includes('01-tokens')) ?? PATHS[0])
-  const [raw, setRaw] = useState(DOC_MODULES[path] ?? '')
+  const [raw, setRaw] = useState(SOURCES[path] ?? '')
   const [view, setView] = useState('rendered')
   const [sheet, setSheet] = useState(false)
   const parsed = useMemo(() => parseDocsMarkdown(raw), [raw])
 
   const pick = (p) => {
     setPath(p)
-    setRaw(p ? DOC_MODULES[p] : '---\ntitle: Untitled\ntags: [scratch]\n---\n\n# Untitled\n\n## A section\n\nType here. #draft\n')
+    setRaw(p ? SOURCES[p] : '---\ntitle: Untitled\ntags: [scratch]\n---\n\n# Untitled\n\n## A section\n\nType here. #draft\n')
   }
 
   /* S — the sheet; 1–6 — the views. Ignored while typing in the source. */

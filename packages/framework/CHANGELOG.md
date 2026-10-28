@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-framework
 
+## 0.59.0 — 2026-10-28
+
+- **`documentFiles(glob)`** (DocumentIndexFilesAndIcons049, kol-website 2026-10-28 — a point of the MarkdownPage ticket 0.58.0 missed: *"a folder may also hold PDFs and images; the contents index lists them beside the md pages and opens them in the DS QuickLook"*): the files beside a folder's markdown as rows `{ id, title, group, file, ext, kind }` from a `?url` glob, the kind the DS's (`kindOf`). `DocumentIndex` (kol-styleguide 0.13.0) draws them as cards and opens them in Quick Look. `documentTabs` is unchanged, the markdown half.
+
+## 0.58.0 — 2026-10-28
+
+- **The document page** (plan-2026-10-28-document W5.2; kol-website's MarkdownPage ticket — *"a folder of .md files rendered as pages inside SiteLayout, with a contents page"*). Born in `apps/document` and proved against kol-atlas's own engine (its Project, SEO + GEO, Brief and Naming system render block for block the same), home here beside `CategoryPage`: `MarkdownPage` — a markdown file as `.kol-sheet` through kol-markdown's `parseDocsMarkdown` (`source`, `numbered`, `notes` as `linkNotes`, `toc` frame · rail · false, `fit` cover · contain, `ratio`, `resolveLink`, `assetUrl`); `LinkPreview` — kol-atlas's hover card for the sheet's links on DS parts (`cardFor(anchor)` is the app's, from its corpus); `documentTabs(glob)` — a folder of files as page rows (id, title, group, file, source). `@kolkrabbi/kol-markdown >=0.2.0` is a new peer. The contents cards (`DocumentIndex`) are kol-styleguide's, which peers on this package.
+
 ## 0.57.0 — 2026-10-27
 
 - **The site rail's chevron sits 16 from the edge** (Round 21, user 2026-10-27 — *"a bit padding right missing"*). `.kol-sidenav-hop-caret` is `right: 1rem` (was 0.75rem, 12), where the app rail's chevron glyph ends. Nothing else on the rail moves.

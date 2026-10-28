@@ -5,6 +5,16 @@
  * (`renderInlineTokens` lives with the docs viewer in Phase 2).
  *
  * `parseDocsMarkdown(md)` → { sections, toc, introBlocks, inlineTags }
+ *
+ * THE DOCUMENT ADDITIONS (plan-2026-10-28-document W2, for kol-website's brand pages; the examples are
+ * kol-atlas's documents, apps/document-fixture): heading anchors `{#id}`; numbered headings (`## M1 Title`,
+ * `### 1.1 Title`, `####` items numbered `1.1.n`) → `num`; status marks ✋ 🅿️ (with their reason) 📍 ✓ →
+ * `marks`; `Key: value` lines at the top of a section → one `meta` block; footnotes (`[^key]` inline,
+ * `[^key]: text` → `footnote-def`); a `## Sources` / `## Heimildir` section → `sources: true`;
+ * `> quote — who` → blockquote `cite`; `![[file|caption]]` → `media`; `\.` escapes; `%%` comment lines,
+ * a `:::tabs` filmstrip is a `media` block too, its `::tab` labels the captions; generated lines (`@name`, `::name`,
+ * `{{name}}`) dropped, `%% thumb:` kept as `thumb`; `{ numbered }` lets a `###` carry a bare integer; a line that is only `![caption](src)` is `media` too (a web link card when
+ * `src` is a URL); headings carry `tokens` too; table `align` and `kv`.
  */
 
 /** Extract #hashtags from markdown content. */
@@ -54,6 +64,13 @@ export const processInlineMarkdown = (text) => {
       continue
     }
 
+    // Footnote reference: [^key]
+    const fnMatch = remaining.match(/^\[\^([a-z0-9-]+)\]/i)
+    if (fnMatch) {
+      tokens.push({ type: 'footnote', key: fnMatch[1] })
+      remaining = remaining.slice(fnMatch[0].length)
+      continue
+    }
     // Link: [text](url)
     const linkMatch = remaining.match(/^\[([^\]]+)\]\(([^)]+)\)/)
     if (linkMatch) {
@@ -79,9 +96,11 @@ export const processInlineMarkdown = (text) => {
     }
 
     // Bold: **text** (must check before italic)
+    // a link or code inside bold or italic (`*see [Implementation](#x) below*`) rides along as nested `tokens`
+    const nested = (content) => (/[[`]/.test(content) ? { tokens: processInlineMarkdown(content) } : {})
     const boldMatch = remaining.match(/^\*\*([^*]+)\*\*/)
     if (boldMatch) {
-      tokens.push({ type: 'bold', content: boldMatch[1] })
+      tokens.push({ type: 'bold', content: boldMatch[1], ...nested(boldMatch[1]) })
       remaining = remaining.slice(boldMatch[0].length)
       continue
     }
@@ -89,7 +108,7 @@ export const processInlineMarkdown = (text) => {
     // Italic: *text* (must not match list markers)
     const italicMatch = remaining.match(/^\*([^*\s][^*]*)\*/)
     if (italicMatch) {
-      tokens.push({ type: 'italic', content: italicMatch[1] })
+      tokens.push({ type: 'italic', content: italicMatch[1], ...nested(italicMatch[1]) })
       remaining = remaining.slice(italicMatch[0].length)
       continue
     }
@@ -126,14 +145,17 @@ export const processInlineMarkdown = (text) => {
     remaining = remaining.slice(1)
   }
 
-  return tokens
+  /* backslash escapes read as the plain character (`18\. nóv` is a date, not a list) — in text only, never in code */
+  return tokens.map((t) => (t.type === 'text' ? { ...t, content: t.content.replace(/\\([\\`*_{}[\]()#+\-.!|])/g, '$1') } : t))
 }
 
 /**
  * Parse markdown text into structured blocks.
  * Returns { sections, toc, introBlocks, inlineTags }.
  */
-export const parseDocsMarkdown = (markdown) => {
+/* options — numbered: a numbered document (kol-atlas's Project and SEO + GEO, the engine's `proj` tabs): a `###` may be
+ * numbered with a bare integer (`### 1 Search basics`) and its `####` items count `1.1`, `1.2`… */
+export const parseDocsMarkdown = (markdown, { numbered = false } = {}) => {
   if (!markdown) {
     return { sections: [], toc: [], introBlocks: [], inlineTags: [] }
   }
@@ -150,6 +172,30 @@ export const parseDocsMarkdown = (markdown) => {
 
   const getTargetBlocks = () => (current ? current.blocks : introBlocks)
 
+  /* a heading's parts: `{#id}` anchor, leading number (M1 · 1.1 · 1.), status marks and their reasons, the title */
+  const MARKS = { '✋': 'hand', '🅿️': 'park', '📍': 'pin', '✓': 'done', '✅': 'done' }
+  const parseHeading = (raw, level) => {
+    let text = raw.trim()
+    const anchor = /\s*\{#([a-z0-9-]+)\}\s*$/i.exec(text)
+    if (anchor) text = text.slice(0, anchor.index).trim()
+    const marks = []
+    /* a mark at the start names the item (📍 Sync); a mark after the title carries its reason (✋ to confirm) */
+    const lead = /^(✋|🅿️|📍|✓|✅)\s*/.exec(text)
+    if (lead) { marks.push({ kind: MARKS[lead[1]], reason: '' }); text = text.slice(lead[0].length) }
+    const tail = /\s+(✋|🅿️|📍|✓|✅)\s*(.*)$/.exec(text)
+    if (tail) { marks.push({ kind: MARKS[tail[1]], reason: tail[2].trim() }); text = text.slice(0, tail.index).trim() }
+    const numRe = numbered && level === 3 ? /^(M\d+|\d+(?:\.\d+)*|\d+[a-z]?[.)])\s+(.*)$/ : /^(M\d+|\d+(?:\.\d+)+|\d+[a-z]?[.)])\s+(.*)$/
+    const n = numRe.exec(text)
+    const num = n ? n[1].replace(/[.)]$/, '') : null
+    const title = n ? n[2].trim() : text
+    return { id: anchor?.[1] ?? null, num, marks, title }
+  }
+  let phaseNum = null   // the last numbered ### — #### items count under it
+  let itemCount = 0
+  let inTabs = false
+  let tabLabel = ''
+  let thumb = null   // the page's `%% thumb:`
+
   const flushParagraph = () => {
     if (paragraphBuffer.length > 0) {
       const text = paragraphBuffer.join(' ').trim()
@@ -164,29 +210,35 @@ export const parseDocsMarkdown = (markdown) => {
     }
   }
 
-  const startNewSection = (level, heading) => {
+  const startNewSection = (level, raw) => {
     flushParagraph()
+    const h = parseHeading(raw, level)
+    const slug = (t) => t.replace(/\[([^\]]+)\]\([^)]*\)/g, '$1').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
 
     // H2 starts new section
     if (level === 2) {
       if (current) {
         sections.push(current)
       }
-      const id = heading.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-      const tocLabel = heading.replace(/^[\d]+[a-z]?[.)]\s*/i, '')
-      toc.push({ id, label: tocLabel, level: 2 })
-      current = { heading, id, level: 2, blocks: [] }
+      const id = h.id ?? slug(h.title)
+      toc.push({ id, label: h.title, level: 2, ...(h.num ? { num: h.num } : {}) })
+      current = { heading: h.title, id, level: 2, blocks: [], num: h.num, marks: h.marks, tokens: processInlineMarkdown(h.title), sources: /^(sources|heimildir)$/i.test(h.title) }
+      phaseNum = null; itemCount = 0
       return
     }
 
     // H3/H4 added as blocks within current section (not in TOC)
     if (level === 3 || level === 4) {
-      const id = heading.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      let num = h.num
+      if (level === 3) { phaseNum = num; itemCount = 0 }
+      else if (phaseNum) { itemCount += 1; num = num ?? `${phaseNum}.${itemCount}` }
+      const id = h.id ?? slug(h.title)
+      const block = { type: level === 3 ? 'heading3' : 'heading4', id, content: h.title, num, marks: h.marks, tokens: processInlineMarkdown(h.title) }
       if (current) {
-        current.blocks.push({ type: level === 3 ? 'heading3' : 'heading4', id, content: heading })
+        current.blocks.push(block)
       } else {
         // H3/H4 before any H2 goes to intro
-        introBlocks.push({ type: level === 3 ? 'heading3' : 'heading4', id, content: heading })
+        introBlocks.push(block)
       }
     }
   }
@@ -216,6 +268,29 @@ export const parseDocsMarkdown = (markdown) => {
       }
       return
     }
+
+    // Comments, the image-tab fences and generated lines are not content: `%% …`, `:::tabs … :::`, `@name`, `::name`, `{{name}}`
+    // — except `%% thumb: file`, the page's (or the current section's) thumbnail for hover previews
+    if (trimmed.startsWith('%%')) {
+      const th = /^%%\s*thumb:\s*(\S+)/.exec(trimmed)
+      if (th) { if (current) current.thumb = th[1]; else thumb = th[1] }
+      return
+    }
+    if (trimmed.startsWith(':::')) { flushParagraph(); inTabs = trimmed !== ':::'; tabLabel = ''; return }
+    /* inside `:::tabs`: `::tab Label` names the next images, every `![[file]]` is one; the fences and anything else are dropped */
+    if (inTabs) {
+      const tab = /^::tab\s+(.*)$/.exec(trimmed)
+      if (tab) { tabLabel = tab[1].trim(); return }
+      const items = [...trimmed.matchAll(/!\[\[([^\]|]+)(?:\|(.*?))?\]\](?=\s*(?:!\[\[|$))/g)].map((m) => { const c = (m[2] ?? tabLabel).trim(); return { file: m[1].trim(), caption: c, ...(c ? { captionTokens: processInlineMarkdown(c) } : {}) } })
+      if (items.length) {
+        const blocks = getTargetBlocks()
+        const lastBlock = blocks[blocks.length - 1]
+        if (lastBlock && lastBlock.type === 'media') lastBlock.items.push(...items)
+        else blocks.push({ type: 'media', items })
+      }
+      return
+    }
+    if (/^(@[a-z][a-z-]*(\s|$)|::[a-z]|\{\{[^}]+\}\}\s*$)/.test(trimmed)) { flushParagraph(); return }
 
     // Handle frontmatter (skip it) - only when not in code block
     if (trimmed === '---') {
@@ -262,9 +337,58 @@ export const parseDocsMarkdown = (markdown) => {
       return
     }
 
-    // Empty line
+    // Empty line — ends a paragraph, a table (two tables with a blank line between them are two tables) and a meta run
     if (trimmed === '') {
       flushParagraph()
+      const blocks = getTargetBlocks()
+      const lastBlock = blocks[blocks.length - 1]
+      if (lastBlock && (lastBlock.type === 'table' || lastBlock.type === 'meta')) lastBlock.closed = true
+      return
+    }
+
+    // Pop-out definition: [+key]: Title (its list follows; a page shows neither)
+    const popMatch = trimmed.match(/^\[\+([a-z0-9-]+)\]:\s*(.*)$/i)
+    if (popMatch) {
+      flushParagraph()
+      getTargetBlocks().push({ type: 'popout-def', key: popMatch[1], title: popMatch[2] })
+      return
+    }
+
+    // Footnote definition: [^key]: text
+    const fnDefMatch = trimmed.match(/^\[\^([a-z0-9-]+)\]:\s*(.*)$/i)
+    if (fnDefMatch) {
+      flushParagraph()
+      getTargetBlocks().push({ type: 'footnote-def', key: fnDefMatch[1], content: fnDefMatch[2], tokens: processInlineMarkdown(fnDefMatch[2]) })
+      return
+    }
+
+    // Media embeds: ![[file|caption]], or a line that is only ![caption](src) (kol-atlas's web link cards), one or more on a
+    // line; a run of lines is one grid
+    const wikiEmbeds = /^(!\[\[[^\]|]+(?:\|.*?)?\]\](?=\s*(?:!\[\[|$))\s*)+$/.test(trimmed)
+    if (wikiEmbeds || /^(!\[[^\]]*\]\([^)\s]+\)\s*)+$/.test(trimmed)) {
+      flushParagraph()
+      const blocks = getTargetBlocks()
+      const embed = (file, caption) => ({ file: file.trim(), caption: caption.trim(), ...(caption.trim() ? { captionTokens: processInlineMarkdown(caption.trim()) } : {}) })
+      const items = wikiEmbeds
+        ? [...trimmed.matchAll(/!\[\[([^\]|]+)(?:\|(.*?))?\]\](?=\s*(?:!\[\[|$))/g)].map((m) => embed(m[1], m[2] ?? ''))
+        : [...trimmed.matchAll(/!\[([^\]]*)\]\(([^)\s]+)\)/g)].map((m) => embed(m[2], m[1]))
+      const lastBlock = blocks[blocks.length - 1]
+      if (lastBlock && lastBlock.type === 'media') lastBlock.items.push(...items)
+      else blocks.push({ type: 'media', items })
+      return
+    }
+
+    // Meta lines (kol-atlas's engine rule, render.js): a paragraph whose FIRST line is `Dates:` `Date:` `Phases:` `Pages:`
+    // `Covers:` or `Acceptance:` is one `meta` block — every line of that paragraph a row, its leading `Key:` the key
+    // (`Client:` and `Contact:` ride along under `Dates:`); a blank line ends it, the next such paragraph is a block of its own
+    const metaStart = paragraphBuffer.length === 0 && /^(Dates|Date|Phases|Pages|Covers|Acceptance):\s+\S/.test(line)
+    const blocksHere = getTargetBlocks()
+    const openMeta = blocksHere[blocksHere.length - 1]?.type === 'meta' && !blocksHere[blocksHere.length - 1].closed ? blocksHere[blocksHere.length - 1] : null
+    if (metaStart || (openMeta && paragraphBuffer.length === 0 && !/^(#{1,4}\s|>|```|\s*([-*]|\d+\.)\s+|\s*\|)/.test(line))) {
+      const m = /^([^:]+):\s*(.*)$/.exec(line)
+      const row = m ? { key: m[1].trim(), value: m[2].trim(), tokens: processInlineMarkdown(m[2].trim()) } : { key: '', value: line.trim(), tokens: processInlineMarkdown(line.trim()) }
+      if (openMeta && !metaStart) openMeta.rows.push(row)
+      else blocksHere.push({ type: 'meta', rows: [row] })
       return
     }
 
@@ -309,8 +433,12 @@ export const parseDocsMarkdown = (markdown) => {
     // Blockquote
     if (line.startsWith('>')) {
       flushParagraph()
-      const content = line.replace(/^>\s?/, '')
-      getTargetBlocks().push({ type: 'blockquote', content, tokens: processInlineMarkdown(content) })
+      const whole = line.replace(/^>\s?/, '')
+      /* `> quote — who` is a pull quote with its cite */
+      const dash = whole.lastIndexOf(' — ')
+      const content = dash > 0 ? whole.slice(0, dash).trim() : whole
+      const cite = dash > 0 ? whole.slice(dash + 3).trim() : undefined
+      getTargetBlocks().push({ type: 'blockquote', content, tokens: processInlineMarkdown(content), ...(cite ? { cite, citeTokens: processInlineMarkdown(cite) } : {}) })
       return
     }
 
@@ -333,13 +461,16 @@ export const parseDocsMarkdown = (markdown) => {
       const isSeparator = cells.every((cell) => /^:?-+:?$/.test(cell))
 
       if (isSeparator) {
-        if (lastBlock && lastBlock.type === 'table') {
+        if (lastBlock && lastBlock.type === 'table' && !lastBlock.closed) {
           lastBlock.hasSeparator = true
+          lastBlock.align = cells.map((c) => (/^:-+:$/.test(c) ? 'center' : /-+:$/.test(c) ? 'right' : 'left'))
+          /* an empty header row is a key–value table (kol-atlas's rule) */
+          lastBlock.kv = lastBlock.headers.every((h) => h === '')
         }
         return
       }
 
-      if (lastBlock && lastBlock.type === 'table') {
+      if (lastBlock && lastBlock.type === 'table' && !lastBlock.closed) {
         if (!lastBlock.hasSeparator) {
           lastBlock.headers = cells
         } else {
@@ -368,7 +499,7 @@ export const parseDocsMarkdown = (markdown) => {
   ].join(' ')
   const inlineTags = extractHashtags(allContent)
 
-  return { sections, toc, introBlocks, inlineTags }
+  return { sections, toc, introBlocks, inlineTags, ...(thumb ? { thumb } : {}) }
 }
 
 export default parseDocsMarkdown

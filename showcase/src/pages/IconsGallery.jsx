@@ -7,10 +7,10 @@ import { DocHeader } from '@kolkrabbi/kol-workshop'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { ICON_CATEGORIES, findCategory } from '../nav/icon-categories.js'
 import ChapterHome from '../lib/ChapterHome.jsx'
-import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, getCut } from '@kolkrabbi/kol-icons'
+import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, KOL_ICON_SET_IDENTITY, getCut } from '@kolkrabbi/kol-icons'
 
-/* Icon-set registry — BOTH shipped sets (kol-icons ≥0.25.0): interface is app
- * chrome, signal is the instrument vocabulary. The route's `:set` segment
+/* Icon-set registry — the shipped sets: interface is app chrome (kol-icons ≥0.25.0), signal is the instrument
+ * vocabulary, identity the marks (≥0.49.0, 2026-10-28 — user: "identity should be separate from signal and interface"). The route's `:set` segment
  * names one; a route that carries none falls back to interface.
  *
  * The group index comes FROM the package (`KOL_ICON_SET_INTERFACE`, built by
@@ -28,6 +28,11 @@ export const ICON_SETS = {
     label: 'kol-icon-set-signal',
     title: 'Signal',
     groups: KOL_ICON_SET_SIGNAL,
+  },
+  'kol-icon-set-identity': {
+    label: 'kol-icon-set-identity',
+    title: 'Identity',
+    groups: KOL_ICON_SET_IDENTITY,
   },
 }
 

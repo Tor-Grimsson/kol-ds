@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-theme
 
+## 0.194.0 — 2026-10-28
+
+- **The document body is Public Sans** — his ruling on Round 23 (*"I already said Public Sans!!! like the fucking reference"*): `.kol-sheet`'s `--body` is `'Public Sans'` with the DS sans behind it, the headings stay on the display face. The face is declared here, the variable cut in four `@font-face`s (latin, latin-ext, upright, italic; fontsource's unicode ranges) from `/fonts/public-sans/`, hosted by the consumer as the other faces are — kol-ds-ui's `public/fonts/public-sans/` holds the four woff2 and the OFL licence; a consumer copies that folder. No other rule changed.
+
+## 0.193.0 — 2026-10-28
+
+- **`.kol-sheet` for the document page** (plan-2026-10-28-document W5.1, kol-website's MarkdownPage ticket). The sheet's accent is kol-atlas's own — `--kol-color-orange-300`, `--kol-color-yellow-300` in the dark (its `index.css`), not the DS ink, which left every number and quote mark unmarked; the ramps come from kol-framework's `kol-brand-color.css`, which a sheet consumer loads. A figure in `.media` fills its frame (`object-fit: cover`; user 2026-10-28: *"should SHIP scale to fill, no margins, empty space"*), `.media[data-fit="contain"]` shows the whole image and `--media-ratio` sets the frame — the page's `fit` and `ratio` props. The two rules the port missed: `ol.fns a` plain (the note's text is the link, the address a span), `ol.fns.src` a step larger.
+
+## 0.192.0 — 2026-10-28
+
+- **`kol-sources.css` is standalone-repo only** (KolSourcesManifestDeadInWorkspace, kol-website 2026-10-28). Its paths resolve from the theme's own folder; in a pnpm workspace that folder is alone in the store and the workspace root has no `node_modules/@kolkrabbi`, so every line misses and Tailwind scans no package, with no warning (record.kolkrabbi.io: 56 of kol-framework's 90 rail utilities). The file and the README now say so; the way to wire an app is explicit `@source "../node_modules/@kolkrabbi/<pkg>/src"` lines in the app's own CSS. No rule changed.
+
 ## 0.191.0 — 2026-10-26
 
 - **Every app has a ground and clears the status bar on the home screen** (StandaloneSafeAreaAndPageGround, kol-mirror 2026-10-26 — Mirror's title sat under the iOS status bar and a white strip showed below the shell, standalone). `kol-base-tokens.css`, so `core` and the umbrella both carry it: `html` paints `--kol-surface-primary` (kol-framework did, so apps without it showed the bare canvas), and `@media (display-mode: standalone)` pads `body` by `env(safe-area-inset-top)` — the overflow that padding makes covers the bottom, on purpose. A browser tab is unchanged.
