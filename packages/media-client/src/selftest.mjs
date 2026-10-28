@@ -52,6 +52,33 @@ eq((await prepareUpload(new File(['<svg/>'], 'Logo.svg', { type: 'image/svg+xml'
 const mp4 = await prepareUpload(new File([new Uint8Array(8)], 'clip.mp4', { type: 'video/mp4' }))
 eq([mp4.length, mp4[0].key, 'thumb' in mp4[0]], [1, 'clip.mp4', true], 'video passes through with a thumb slot')
 
+/* THE ONE SIGN-IN (0.7.0): the private row hides until the session says signed in; only its list sends the cookie */
+{
+  const calls = []
+  let answer = false
+  const realFetch = globalThis.fetch
+  globalThis.fetch = async (url, init = {}) => {
+    calls.push([String(url), init.method ?? 'GET', init.credentials])
+    if (String(url).endsWith('/api/login')) return new Response(JSON.stringify({ signedIn: answer }), { status: 200 })
+    return new Response(JSON.stringify({ objects: [] }), { status: 200 })
+  }
+  try {
+    const c = createMediaClient({ buckets: true })
+    eq(c.buckets().map((b) => b.id), ['r2', 'b2', 'b2vault'], 'private hidden before any session')
+    eq(await c.session(), { signedIn: false }, 'signed out')
+    answer = true
+    eq(await c.session(), { signedIn: true }, 'signed in')
+    eq(c.buckets().map((b) => b.id), ['r2', 'b2', 'b2vault', 'private'], 'private shows signed in')
+    await c.listMedia('', { bucket: 'private' })
+    await c.listMedia('', { bucket: 'r2' })
+    eq(calls.slice(-2).map((x) => x[2]), ['include', 'same-origin'], 'only the private list carries the cookie')
+    eq(c.signInUrl('https://brand.kolkrabbi.io/x'), 'https://media.kolkrabbi.io/signin?next=https%3A%2F%2Fbrand.kolkrabbi.io%2Fx', 'signInUrl')
+    const before = calls.length
+    eq(await createMediaClient().session(), { signedIn: false }, 'no table, no session call')
+    eq(calls.length, before, 'a client without a private bucket never calls the API')
+  } finally { globalThis.fetch = realFetch }
+}
+
 /* THE BROWSER CASE — the one that would have caught 0.3.0. Re-import the module
  * with `process` removed from the global scope, exactly as a browser has it. */
 const savedProcess = globalThis.process
@@ -63,4 +90,4 @@ try {
   globalThis.process = savedProcess
 }
 
-console.log('kol-media-client: 15 checks passed (including a no-`process` import)')
+console.log('kol-media-client: 23 checks passed (including a no-`process` import)')

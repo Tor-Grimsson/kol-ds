@@ -60,7 +60,7 @@ const SITE = {
   topHosts: [
     { label: 'kolkrabbi.io', value: '2,102', percent: 76, color: 'var(--kol-palette-yellow)', delta: '+9%' },
     { label: 'stack.kolkrabbi.io', value: '486', percent: 18, color: 'var(--kol-palette-teal)', delta: '+21%' },
-    { label: 'metrics.kolkrabbi.io', value: '189', percent: 6, color: 'var(--kol-palette-blue)', delta: '+4%' },
+    { label: 'metric.kolkrabbi.io', value: '189', percent: 6, color: 'var(--kol-palette-blue)', delta: '+4%' },
   ],
   blogPosts: [
     { label: 'Severing a design system from its monorepo', value: '312' },
@@ -78,13 +78,13 @@ const SITE = {
 const ALL_HOSTS = [
   { label: 'kolkrabbi.io' },
   { label: 'stack.kolkrabbi.io' },
-  { label: 'metrics.kolkrabbi.io' },
+  { label: 'metric.kolkrabbi.io' },
 ]
 
 const HOST_SUMMARIES = {
   'kolkrabbi.io': { visitors: '2,102', visitorsDelta: '+9%', trend: [52, 61, 58, 70, 66, 79, 84] },
   'stack.kolkrabbi.io': { visitors: '486', visitorsDelta: '+21%', trend: [12, 18, 15, 22, 26, 24, 31] },
-  'metrics.kolkrabbi.io': { visitors: '189', visitorsDelta: '+4%', trend: [6, 8, 7, 9, 8, 11, 10] },
+  'metric.kolkrabbi.io': { visitors: '189', visitorsDelta: '+4%', trend: [6, 8, 7, 9, 8, 11, 10] },
 }
 
 // --- Project + CMS --------------------------------------------------------

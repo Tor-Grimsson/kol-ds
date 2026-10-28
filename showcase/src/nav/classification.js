@@ -37,6 +37,8 @@ export const TIERS = {
   Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
   /* the brand tool (2026-09-27): the two brand-book pages are page regions, the tool is both of them */
   Brand: 'organisms', BrandBook: 'organisms', BrandAssets: 'organisms',
+  /* the brand guide (2026-10-27): kol-branding's guide renderer over the outline it is handed */
+  BrandGuide: 'organisms',
   /* the brand lab (2026-10-20): the generators a brand is made with, carried from kol-atlas */
   ColorLab: 'organisms', TypeScaleLab: 'organisms', LockupBuilder: 'organisms', Lockup: 'molecules',
   /* kol-content */
@@ -319,6 +321,7 @@ export const FUNCTIONS_BY_NAME = {
   Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
   /* styleguide — the brand tool (2026-09-27) */
   Brand: 'structure', BrandBook: 'structure', BrandAssets: 'structure',
+  BrandGuide: 'structure',
   /* styleguide — the brand lab (2026-10-20): each one sets a brand's values */
   ColorLab: 'input', TypeScaleLab: 'input', LockupBuilder: 'input', Lockup: 'display',
   /* deck — kol-deck (2026-09-27): presentations as a tool */
@@ -472,6 +475,8 @@ export const NO_PREVIEW = (() => {
       + 'tool\'s client, so it is shown inside the Notes preview (the apps/notes entry on the fixture, 2026-10-01)'])),
     ...Object.fromEntries(['BrandBook', 'BrandAssets'].map((n) => [n, 'one of the brand tool\'s two pages — it renders a '
       + 'whole brand manifest, so it is shown inside the Brand preview (the apps/brand-hub entry on Voyager, 2026-10-01)'])),
+    BrandGuide: 'a whole brand guide over a manifest and a chapter list — it is shown on apps/brand-hub\'s Guide pages, '
+      + 'the outline blank and filled with VOYAGER (2026-10-27)',
     ...Object.fromEntries(['DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
       'SlideStage', 'SlideInspector'].map((n) => [n, 'a part of the presentation tool — it runs against a deck document, '
       + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),

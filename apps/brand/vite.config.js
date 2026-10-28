@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 
-// An apps/* member: runs locally on `pnpm brand` (the brand tool alone on the fixture, 2026-09-27), and publishes into the
+// An apps/* member: runs locally on `pnpm brand` (the home over brand-sections and brand-lab, 2026-10-27), and publishes into the
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/brand.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({

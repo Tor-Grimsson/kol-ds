@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.306.0 — 2026-10-28
+
+- **`MediaLibrary` asks the client's session once** (MediaClientOneSignInAndPrivateBucket, kol-website). A client with `session()` (kol-media-client 0.7.0) is asked on mount and its `buckets()` read again when it answers, so the Store dropdown shows a signed-in-only bucket (Private) only when signed in. A client without `session()` is unchanged.
+
 ## 0.305.0 — 2026-10-27
 
 - **The site rail's title navigates, the chevron expands** (SiteRailTitleNavigatesOnly, kol-branding 2026-10-27 — user: *"clicking on title shouldnt also expand, that is what the chevron is for"*). `NavRail preset="site"`: a foldernote's title opens its page and no longer discloses it; **`discloseOnTitle`** brings the old coupling back. Two more behaviours that were hardcoded are now props, so a consumer adjusts in its own repo: **`defaultOpen`** (category ids open on first render; default none) and **`openOnRoute`** (open the route's category on each arrival, adding only; default off). Through `SiteLayout`'s `sideNav`.

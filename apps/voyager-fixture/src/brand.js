@@ -63,7 +63,16 @@ export const VOYAGER_BRAND = {
   logos: LOGOS.map(({ file, ...l }) => ({ ...l, file: `./marks/${file}.svg` })),
   favicons: [{ id: 'logomark', name: 'Voyager', file: './marks/logomark-01.svg', use: 'Site favicon' }],
   clearspace: { rule: 'Clearspace equals the height of one logomark blade on every side of a lockup.' },
-  stationery: { assets: [] },
+  /* the second letterhead and the drawn social mocks — kol-styleguide BrandAssets' seams (2026-10-27) */
+  stationery: { assets: [], letterheadB: true },
+  social: {
+    mark: 'wordmark',
+    templates: [
+      { caption: 'Post · 1:1 square', mock: 'PostPhoto' },
+      { caption: 'Post · 4:5 portrait', mock: 'PostEditorial', ratio: '4 / 5' },
+      { caption: 'Story · 9:16', mock: 'StoryPhoto' },
+    ],
+  },
   presence: { site: `https://${BRAND_INFO.contact.web}`, pages: [], profiles: { instagram: 'https://social.example/voyager.expeditions', youtube: 'https://video.example/@voyager' }, feeds: [] },
   press: PRESS.map((p) => ({ date: String(p.year ?? ''), title: p.title, outlet: p.org, url: p.href })),
   timeline: TIMELINE.filter((t) => t.kind === 'milestone').map((t) => ({ date: String(t.year), title: t.title, note: t.notes })),

@@ -3,7 +3,7 @@ title: Stationery desk
 type: plan
 status: active
 created: 2026-10-20
-updated: 2026-10-20
+updated: 2026-10-27
 description: Quote, invoice and letter layouts for print
 tags:
   - domain/workflow
@@ -45,13 +45,21 @@ related:
 
 ## Desk
 
-| Row | Pieces | Source |
-|---|---|---|
-| References | the brand sheets (`01-sheet`, `01-Brand-sheet-M`, `01-logo-display`) · the Aftra and Studio 16 invoices, page one | iCloud `Workbox/kol-images/kol-brand` served in dev only via `/@fs/` · the PDFs rendered by `qlmanage` into the app's gitignored `_tmp/refs/` |
-| Brand book | business card front · back · DL envelope · email signature, at print size | kol-styleguide `StationeryMocks` wearing kol-brand's marks and `brandInfo(brand)`, navy ink on white |
-| A4 | letterhead · correspondence letterhead · quote v1 · v2 · v3 · a blank invoice | the two letterheads from kol-styleguide; the quotes are the ticket's mockups in iframes (`lobby/_assets/2026-10-20-quote-document/`), their `file://` fonts rewritten to `/fonts/` |
+Rebuilt 2026-10-27 (StationeryFromBranding, kol-hq): every layout on kol-branding's `/guide/stationery` canvas page, as plain HTML in `apps/stationery/src/boards/`, each in its own iframe on the desk, in the canvas's row groups. The layouts are kept; the content is VOYAGER's (`apps/voyager-fixture`). No Kolkrabbi or personal detail is on the desk. The 2026-10-20 desk (the iCloud brand sheets, the real invoices, the quote mockups) is in `_tmp/2026-10-27-stationery-desk/`.
 
-Every sheet is A4: the mockups' `.page` is forced to 297 mm and what does not fit hangs off the paper past a red dashed line. The mockups' all-orange lockup is recolored to the brand's two-tone one (orange mark, navy wordmark).
+| Row | Boards |
+|---|---|
+| Foundations — document elements | F1 Text · F2 Lists and blocks · F3 Tables, notes and sign-off |
+| Quote A | A 1/4–4/4 · C Template 1/2–2/2 |
+| Header | variants · component |
+| Letterhead, letter, envelope and slip | letterhead · letter · DL envelope · compliment slip |
+| Letter styles | A Clean · B Centered header · C Official letter · D Marks and stamps |
+| Cards | business cards · name badge · email signature |
+| Documents | invoice A · invoice B · contract · NDA |
+| Research — document template | R0–R8, from kol-atlas |
+| Long document | the "Brand comparison" research paper, 16 A4 sheets, from the Branding research print canvas |
+
+Content: the letters carry the VOYAGER dispute letter (VOYAGER ehf. to Orbital Freight Partners ehf., the short document); the counterparty everywhere else is Orbital Freight Partners ehf.; marks are VOYAGER's (`__LOCKUP__` · `__LOGOMARK__` · `__WORDMARK__` tokens in the boards, swapped for the fixture's URLs at runtime); the accent is VOYAGER's burgundy; fonts are the repo's `/fonts/`.
 
 ## Why
 

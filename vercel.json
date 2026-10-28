@@ -52,6 +52,10 @@
       "destination": "/apps/brand/index.html"
     },
     {
+      "source": "/apps/brand-sections/(.*)",
+      "destination": "/apps/brand-sections/index.html"
+    },
+    {
       "source": "/apps/editor/(.*)",
       "destination": "/apps/editor/index.html"
     },

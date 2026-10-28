@@ -5,6 +5,10 @@
 > breaking or global-surface changes (token renames, default flips, new bare-element
 > rules) are flagged **BREAKING**.
 
+## 0.4.0 — 2026-10-27
+
+- **The brand guide outline** (BrandGuideOutlineTwoVersions, kol-hq 2026-10-27): `GUIDE_SECTIONS`, the chapter list of kol-branding's `/template/general`, and `GUIDE_TEMPLATE`, its copy on a blank manifest — `[client-name]` for the name, `[input]` for every value. Also at `./guide`. kol-styleguide 0.8.0's `BrandGuide` renders it; a client fills it with its own `book` under the same keys.
+
 ## 0.3.0
 
 ### Minor Changes

@@ -50,6 +50,11 @@ export { default as BrandBook } from './BrandBook.jsx'
 export { default as BrandAssets } from './BrandAssets.jsx'
 export { brandSections, brandToc, brandInfo, BRAND_VIEWS, BOOK_SECTIONS, ASSET_SECTIONS } from './brandBook.js'
 
+// The brand guide (2026-10-27): kol-branding's guide renderer over a chapter list it is handed —
+// kol-brand-template's GUIDE_SECTIONS, blank (GUIDE_TEMPLATE) or filled by a client's manifest.
+export { default as BrandGuide } from './BrandGuide.jsx'
+export { guideSections, guideToc } from './guideBook.js'
+
 // The brand lab (2026-10-20): the generators a brand is MADE with — carried from kol-atlas's Assets pages.
 // Each is controlled by one value, and the math is exported so a brand can be emitted without the UI.
 export { default as ColorLab } from './ColorLab.jsx'

@@ -3,7 +3,7 @@ title: App anatomy
 type: reference
 status: draft
 created: 2026-09-26
-updated: 2026-10-24
+updated: 2026-10-28
 description: An app's six layers, engine to fixture
 aliases:
   - app anatomy
@@ -104,8 +104,8 @@ mirror · monitor each hand-build, monitor.kolkrabbi.io the reference. `AppStudi
 The **order** is the Studio's; each slot renames with `{ path, label, icon }` (monitor's Use is
 "Rack" at `/rack`), and an omitted slot is not there. **The rail is `NavRail preset="app"`** (2026-10-24): the pill below `md`, collapsing into its × beside the More sheet; sections that enter and expand; the bar away on Use and on any page with `bar: false`; Media, Sign in, Settings at the foot — an app passes nothing about the rail, and `shell` overrides only on purpose. The parity checklist every Studio app is read against is `docs/operations/07-apps-tier/05-studio-parity.md` — a pass that diffs each hub against studio-hub directly (2026-10-24). **Mono by default** — fxr · mirror · monitor
 are mono by ruling; `masthead="display"` overrides. Everything else is `AppHub`'s: keys, the bar,
-the sheet. Notes, presentation and brand are create tools and can ride it too; a home-shaped app
-(brand-hub) stays on `AppHub`.
+the sheet. Notes, presentation and brand are create tools and can ride it too. brand-hub is a
+site, not an app: it runs `SiteLayout` and the site rail since 2026-10-27, as every brand.<client> site does.
 
 ## Apps tier
 
@@ -164,10 +164,13 @@ The page a tool gets (user ruling 2026-09-27, `plan-2026-09-27-app-frame-and-cur
 
 ## The tools
 
+An app that ships to kolkrabbi.io takes a subdomain that is one word, singular, naming the thing, the same word as its folder and hosting project (user ruling 2026-10-28; the law is kol-website `docs/operations/02-infrastructure/01-hosting-dns.md` § Subdomain law).
+
+
 Known tools that ride this anatomy — the roster to be sorted next session:
 
 - **media** — the media browser (`apps/media`)
-- **brand** — two apps since 2026-09-29, both on VOYAGER (`apps/voyager-fixture`): `apps/brand` is the CATALOGUE of brand building blocks (kol-styleguide's blocks in kol-framework's `PageLayout`), and `apps/brand-hub` is a client's HOME — kol-styleguide's `Brand` (BRAND and ASSETS over one manifest) on `AppHub`, with notes · decks · media as opt-in tools and the editor as an opt-in app. That home is what the DS offers the `brand.<domain>` sites (brand.kolkrabbi.io, brand.olina-productions.xyz)
+- **brand** — on VOYAGER (`apps/voyager-fixture`): `apps/brand` is the HOME over the catalogue and `apps/brand-lab` (2026-10-27); `apps/brand-sections` (apps/brand until then) is the CATALOGUE of brand building blocks (kol-styleguide's blocks in kol-framework's `PageLayout`), and `apps/brand-hub` is a client's HOME — kol-styleguide's `Brand` (BRAND and ASSETS over one manifest) and `BrandGuide` (the guide outline, blank and filled) on kol-framework's `SiteLayout` and the site rail (2026-10-27; it was `AppHub`), with notes · decks · media as opt-in tools and the editor as an opt-in app. That home is what the DS offers the `brand.<domain>` sites (brand.kolkrabbi.io, brand.olina-productions.xyz)
 - **presentation editor** — the deck editor (`apps/presentation`, `apps/presentation-hub`)
 - **note editor** — notes (kol-olina's brand notes page; `DocumentEditor` is its file-shaped sibling; `apps/notes`, `apps/notes-hub`)
 - **the fxr editor** — `@kolkrabbi/design-editor`

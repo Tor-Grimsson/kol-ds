@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { ContentCollection, FullscreenOverlay, Table } from '@kolkrabbi/kol-component'
+import { ContentCollection, FullscreenOverlay, Graphic, GRAPHIC_RAW, Table } from '@kolkrabbi/kol-component'
 import PageSection from '@kolkrabbi/kol-framework/src/PageSection.jsx'
 import AssetTable from './AssetTable.jsx'
 import AssetCard from './AssetCard.jsx'
-import { BrandAvatar } from './SocialMocks.jsx'
-import { BusinessCardBack, BusinessCardFront, EmailSignature, Envelope, Letterhead } from './StationeryMocks.jsx'
+import { BrandAvatar, PostEditorial, PostPhoto, StoryPhoto } from './SocialMocks.jsx'
+import { BusinessCardBack, BusinessCardFront, EmailSignature, Envelope, Letterhead, LetterheadB } from './StationeryMocks.jsx'
 import BrandMark from './BrandMark.jsx'
 import { Prose, SectionIndex } from './BrandBook.jsx'
 import {
@@ -20,6 +20,34 @@ const TokenName = ({ children }) => (
   <code className="kol-helper-12 text-emphasis">{children}</code>
 )
 
+/* a graphic from kol-component's set as an asset row — kol-website's graphicRows, its 80px preview */
+const graphicRows = (category, names = []) => names.map((name) => {
+  const raw = GRAPHIC_RAW[category]?.[name]
+  return {
+    id: `${category}/${name}`, name, preview: <Graphic category={category} name={name} />, previewWidth: 80,
+    path: `packages/component/src/graphics/svg/${category}/${name}.svg`, format: 'SVG', dimensions: svgDims(raw), raw,
+    onDownload: raw ? (row, ink) => downloadRecolored(row.raw, ink, `${name}.svg`) : undefined,
+  }
+})
+
+/* the drawn social mocks a template may name instead of a photo (kol-website's Social page, 2026-10-14) */
+const SOCIAL_MOCKS = { PostPhoto, PostEditorial, StoryPhoto }
+
+/* square preview tile with its category / name — kol-website's GraphicCard */
+function GraphicCard({ category, name, polarity = 'dark' }) {
+  const bg = polarity === 'dark' ? 'bg-surface-inverse' : 'bg-surface-primary'
+  return (
+    <figure>
+      <div className={`aspect-square flex items-center justify-center rounded-[4px] overflow-hidden ${bg}`}>
+        <Graphic category={category} name={name} />
+      </div>
+      <figcaption className="kol-helper-12 uppercase tracking-wider text-meta mt-2">
+        {category} / {name}
+      </figcaption>
+    </figure>
+  )
+}
+
 const brandedAssetCols = [
   { accessor: 'item',   header: 'Item',   render: (r) => <TokenName>{r.item}</TokenName> },
   { accessor: 'aspect', header: 'Aspect' },
@@ -30,7 +58,8 @@ const brandedAssetCols = [
 
 /**
  * BrandAssets — The brand book's assets page. the ASSETS page of the brand tool: what you download or reproduce. Logos (the
- * mark table, with the ink toggle, zoom and recoloured download), the branded-asset register,
+ * mark table, with the ink toggle, zoom and recoloured download), Graphics and Patterns (the manifest's `graphics`, names
+ * from kol-component's set by category, on the same table), the branded-asset register,
  * stationery, social post sizes and profile avatars.
  *
  * kol-olina's apps/brand `pages/assets/*`, carried class-for-class; the client's marks, contact
@@ -95,6 +124,19 @@ export default function BrandAssets({ brand, Logo, logoSources }) {
               </FullscreenOverlay>
             </PageSection>
           )
+          case 'graphics':
+          case 'patterns': return (
+            <PageSection key={s.key} {...head}>
+              <AssetTable caption={s.title} rows={graphicRows(s.category, brand.graphics[s.category])} inkTokens={INK_TOKENS} />
+            </PageSection>
+          )
+          case 'graphicsPatterns': return (
+            <PageSection key={s.key} {...head}>
+              <div className="kol-grid mt-8">
+                {brand.graphics[s.category].map((name) => <GraphicCard key={name} category={s.category} name={name} />)}
+              </div>
+            </PageSection>
+          )
           case 'branded': return (
             <PageSection key={s.key} {...head}>
               <Table caption="Branded assets" columns={brandedAssetCols} rows={BRANDED_ASSET_ROWS} className="mt-8" />
@@ -111,12 +153,31 @@ export default function BrandAssets({ brand, Logo, logoSources }) {
                 </div>
                 <div className="col-span-2"><AssetCard><Letterhead mark={mark(marks.letter, { style: { height: '100%', width: 'auto' } })} info={info} /></AssetCard></div>
               </div>
+              {/* the second letterhead, its own row (kol-website's Stationery page): `stationery.letterheadB: true` */}
+              {brand?.stationery?.letterheadB && (
+                <div className="kol-grid mt-12">
+                  <div className="col-span-2">
+                    <AssetCard caption="Letterhead, A4 [B]"><LetterheadB mark={mark(marks.letter, { style: { display: 'inline-block', height: 48, width: 'auto' } })} info={info} /></AssetCard>
+                  </div>
+                </div>
+              )}
             </PageSection>
           )
           case 'social': return (
             <PageSection key={s.key} {...head}>
               <ContentCollection cols={3} className="mt-8 items-start">
-                {brand.social.templates.map(({ caption, ratio, src }) => (
+                {brand.social.templates.map(({ caption, ratio, src, mock }) => mock ? (
+                  /* A DRAWN MOCK (BrandAssetsSocialMocksAndLetterheadB, kol-website 2026-10-27): `mock` names one of
+                     kol-styleguide's social mocks, or is a node; it carries the brand's logomark itself, so no
+                     overlay. `ratio` boxes a mock that does not size itself (PostEditorial), as kol-website does. */
+                  <AssetCard key={caption ?? String(mock)} caption={caption}>
+                    {(() => {
+                      const Mock = typeof mock === 'string' ? SOCIAL_MOCKS[mock] : null
+                      const node = Mock ? <Mock mark={mark(marks.avatar)} /> : mock
+                      return ratio ? <div className="overflow-hidden rounded-sm" style={{ aspectRatio: ratio }}>{node}</div> : node
+                    })()}
+                  </AssetCard>
+                ) : (
                   <AssetCard key={caption ?? src} caption={caption}>
                     <div className="relative overflow-hidden" style={{ aspectRatio: ratio }}>
                       <img src={src} alt="" loading="lazy" className="absolute inset-0 w-full h-full object-cover" />

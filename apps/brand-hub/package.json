@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The client's home on VOYAGER \u2014 Shell + Hub + kol-styleguide's Brand (the book and the assets) over the voyager-fixture, with notes \u00b7 decks \u00b7 media as opt-in tools and the editor as an opt-in app. Never published.",
+  "description": "The client's home on VOYAGER \u2014 kol-framework's SiteLayout (the site rail) + kol-styleguide's Brand (the book and the assets) and BrandGuide (the guide outline, blank and filled) over the voyager-fixture, with notes \u00b7 decks \u00b7 media as opt-in tools and the editor as an opt-in app. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -21,12 +21,14 @@
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-styleguide": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-brand-template": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",
     "gsap": "^3.15.0",
     "hls.js": "^1.7.0",
     "media-fixture": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
     "tailwindcss": "^4.2.4",
     "voyager-fixture": "workspace:*"
   },

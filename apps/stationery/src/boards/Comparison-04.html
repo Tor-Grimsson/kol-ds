@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand comparison 4 of 16</title>
+<style>
+body{margin:0}
+.c{color:#111111;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:18px;line-height:27px;font-variant-numeric:tabular-nums;text-wrap:pretty}
+.c>:first-child{margin-top:0 !important}
+.c .eyebrow{font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888;margin:0}
+.c h1,.c h2,.c h3,.c h4{text-wrap:balance;margin:0;font-weight:700}
+.c h1,.c h2.chap{font-size:44px;line-height:52px;margin:8px 0 0;display:flex;gap:16px;align-items:baseline;letter-spacing:-0.005em}
+.c h2.chap .num{color:#850F36}
+.c .parties{margin:34px 0 0;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));column-gap:22.7px}
+.c .parties .lbl{font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888}
+.c h2{font-size:30px;line-height:38px;margin:56px 0 16px;display:flex;gap:14px;align-items:baseline}
+.c h2 .num{color:#850F36}
+.c h3{font-size:20px;line-height:30px;margin:44px 0 8px;display:grid;grid-template-columns:56px 1fr}
+.c h3 .num{color:#888888}
+.c h4{font-size:18px;line-height:27px;margin:26px 0 4px 56px;display:grid;grid-template-columns:56px 1fr}
+.c h4 .num{color:#888888;font-weight:400}
+.c h3 .t,.c h4 .t{display:block}
+.c .mk{display:inline-flex;gap:12px;align-items:center;margin-left:14px;font-weight:400}
+.c .why{font-size:17px;line-height:25.5px;color:#666666;font-weight:400;margin-left:12px}
+.c p{margin:12px 0;max-width:839px}
+.c p.lead{font-size:22px;line-height:32px;margin:40px 0 12px;max-width:840px}
+.c h1+p.lead,.c .parties+p.lead{margin-top:46px}
+.c p.when,.c p.dw{font-size:17px;line-height:25.5px;color:#666666;margin:8px 0}
+.c p.when .k,.c p.dw .k{color:#111111;font-weight:700}
+.c h2.chap+p.when{margin-top:16px}
+.c p.note{font-size:15px;line-height:22.5px;font-style:italic;color:#666666}
+.c p.tb,.c ul.tb,.c ol.tb{margin-left:112px;max-width:727px;color:#444444}
+.c p.tb{margin-top:4px}
+.c ul,.c ol{margin:8px 0 14px;padding-left:34px;max-width:839px}
+.c ul{list-style-type:disc}
+.c ul ul{list-style-type:'–  '}
+.c ul ul ul{list-style-type:circle;color:#666666;font-size:17px;line-height:25.5px}
+.c ol{list-style-type:decimal}
+.c li{margin:3px 0}
+.c strong,.c b{font-weight:700}
+.c em{font-style:italic}
+.c code{font-family:ui-monospace,Menlo,monospace;font-size:16px;background:#F4F4F4;padding:1px 6px}
+.c hr{border:0;border-top:1.5px solid #E2E2E2;margin:34px 0}
+.c blockquote{margin:18px 0;padding-left:56px;position:relative;font-size:22px;line-height:32px;font-style:italic;max-width:839px}
+.c blockquote::before{content:"\201C";position:absolute;left:16px;top:-4px;font-size:44px;line-height:44px;font-style:normal;color:#850F36}
+/* marks (Foundations F2 · Tags and status): hand → "To confirm" dot, parked → Optional tag, pin → checkpoint square */
+.c .st{display:inline-flex;gap:8px;align-items:center;font-size:15px;line-height:20px;color:#666666;font-weight:400;white-space:nowrap;vertical-align:1px}
+.c .st i{width:8px;height:8px;border-radius:50%;background:#850F36;display:inline-block}
+.c .tag{display:inline-block;font-size:15px;line-height:20px;font-weight:700;padding:3px 10px;background:#850F36;color:#FFFFFF;vertical-align:1px;white-space:nowrap}
+.c .cp{display:inline-block;width:12px;height:12px;background:#111111;margin-right:10px;vertical-align:1px}
+/* footnotes: short ink rule, 7.5/11 pt grey */
+.c ol.fns{list-style:none;padding:14px 0 0;margin:20px 0 28px;font-size:15px;line-height:22px;color:#666666;max-width:839px;position:relative}
+.c ol.fns::before{content:"";position:absolute;left:0;top:0;width:120px;height:1.5px;background:#111111}
+.c ol.fns.cont{padding-top:0}
+.c ol.fns.cont::before{display:none}
+.c ol.fns li{position:relative;padding-left:34px;margin:0 0 2px}
+.c ol.fns .fnn{position:absolute;left:0;top:0}
+.c ol.fns .url{color:#888888;margin-left:8px}
+.c sup.fn{font-size:12px;line-height:0;vertical-align:9px;color:#850F36;font-weight:700;margin-left:1px}
+/* tables: caps header over an ink rule, grey row rules (F3 · the NDA's rows) */
+.c table{border-collapse:collapse;width:100%;margin:20px 0 30px}
+.c table.cont{margin-top:0}
+.c th{text-align:left;font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888;padding:0 22px 14px 0;border-bottom:1.5px solid #111111;vertical-align:bottom}
+.c td{text-align:left;padding:14px 22px 14px 0;border-bottom:1.5px solid #E2E2E2;vertical-align:top}
+.c th:last-child,.c td:last-child{padding-right:0}
+.c td.num,.c th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c td:first-child.num{text-align:left;color:#888888;width:56px}
+.c tr.group td{font-weight:700}
+.c tr.total td{font-weight:700;border-bottom:0;border-top:1.5px solid #111111}
+.c table.kv{border-top:1.5px solid #111111}
+.c table.kv td:first-child{width:192.8px;color:#888888}
+/* the Overview outline, flattened: phase rows on the Contract's number column, item rows under them */
+.c .phh{display:grid;grid-template-columns:56px 1fr auto;align-items:baseline;font-weight:700;margin:20px 0 0;padding-bottom:8px}
+.c .phh .num{color:#888888}
+.c .phh .cnt{font-size:17px;line-height:25.5px;color:#888888;font-weight:400}
+.c ul.phl{list-style:none;padding:0 0 14px;margin:0 0 6px;max-width:none;border-bottom:1.5px solid #E2E2E2}
+.c ul.phl.cont{margin-top:0}
+.c ul.phl li{display:block;position:relative;padding-left:112px;margin:0}
+.c ul.phl li .tn{position:absolute;left:56px;top:0;color:#888888}
+
+.c a{color:inherit;text-decoration:underline;text-decoration-color:#BBBBBB;text-underline-offset:3px}
+.c h3.pl{display:block}
+.c td{overflow-wrap:break-word}
+.c table{table-layout:auto}
+</style>
+</head>
+<body>
+<div style="width: 1190px; height: 1684px; position: relative; box-sizing: border-box; padding: 64px 64px 140px; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 18px; line-height: 27px; font-variant-numeric: tabular-nums;">
+  <div style="position: absolute; left: 0; top: 0; width: 1190px; height: 200px;">
+    <div style="position: absolute; left: 64px; right: 64px; top: 64px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 22.7px; align-items: start; font-size: 20px; line-height: 30px; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;">
+      <img src="__LOCKUP__" alt="VOYAGER" style="grid-column: 1 / 4; height: 71.4px; width: auto; display: block;">
+      <div style="grid-column: 10 / 13;">voyager.example<br>hello@voyager.example<br>+354 555 0142</div>
+    </div>
+  </div>
+  <div class="c" style="position: absolute; left: 64px; right: 64px; top: 226px; height: 1318px; overflow: hidden;">
+<h2>Design rationale and perception</h2><h3 class="pl">The stated reasons are almost always about the type or the symbol, and almost never about the colour.</h3><p>Design rationale was <code>partial</code> for all five brands, the only question where that happened. Vercel's stated reasons cover Geist (Swiss modernism, "simplicity, minimalism, and speed") and the logo redraw, but "none has been published for the colour choice or the triangle itself." Rijksmuseum's cover Boom's "predominantly typographical solution" and the revived Dutch IJ digraph. Sanity's are unsigned Bleed case-study prose. Cloudflare's cover the logo (Leader changed the 'E' so it would not echo Oracle) and the 2020 system, with nothing for the current site. W+K has none for the master wordmark.</p><p>Sources: Cloudflare: <a href="https://web.archive.org/web/20201102102653/https://allati.medium.com/creating-a-brand-refresh-and-design-system-for-a-technical-yet-spirited-global-internet-4e6449588ae5">Medium, 2020</a> · Rijksmuseum: <a href="https://atypi.org/presentation/the-new-rijksmuseum-identity-and-typeface-family/">ATypI 2013</a> · Sanity: <a href="https://bleed.com/work/sanity">Bleed</a> · Vercel: <a href="https://basement.studio/post/the-birth-of-geist-a-typeface-crafted-for-the-web">Basement</a> · W+K: <a href="https://www.underconsideration.com/brandnew/wp/wp-content/uploads/2023/03/BN_Podcast_Transcript_Ep_065.pdf">Brand New Ep. 065</a></p><h3 class="pl">Real design criticism exists for one brand in five; the others get awards, forums or no review.</h3><p>The Rijksmuseum (<code>found</code>) got the full treatment: Brand New (23 Aug 2012) called it "a vast typographic improvement" but "a fine design. But nothing more"; Frieze (11 Jan 2013) "a hard-to-dislike sans serif"; hundreds of complaints about the space reached a Dutch spelling watchdog. Sanity (<code>partial</code>) has Norwegian juries only: Visuelt 2026 gold and Best of Show ("annerledes og ekspressiv uten å miste teknisk troverdighet"), no critique. Vercel (<code>partial</code>) was judged on the rename by Hacker News ("2020 Toyota Vercel") and on the font by Pimp my Type. Cloudflare (<code>partial</code>): Brand New noted the 2016 flat redraw but the verdict is paywalled, and press centres on the lava-lamp wall. W+K (<code>found</code>) is judged as an agency (Cannes Agency of the Year 2019, "the greatest ad agency of this era" per Bob Hoffman), not as a brand identity.</p><p>Sources: Rijksmuseum: <a href="https://www.frieze.com/article/new-identity">Frieze</a> · Sanity: <a href="https://www.grafill.no/visuelt/vinnere/2026/grafisk-design/identitetsdesign-stor/identitet-for-innholdsplattform-sanity">Grafill</a> · Vercel: <a href="https://pimpmytype.com/font/geist/">Pimp my Type</a> · Cloudflare: <a href="https://www.fastcompany.com/90137157/the-hardest-working-office-design-in-america-encrypts-your-data-with-lava-lamps">Fast Company</a> · W+K: <a href="https://www.dandad.org/insights/features/death-giant-dan-wieden">D&amp;AD</a></p><h2>Campaigns and off-screen</h2><h3 class="pl">Developer brands market through their own events; the two non-tech brands rely on partners and clients.</h3><p>Vercel (<code>found</code>): "no named ad campaign, TV spot or out-of-home campaign turned up"; conferences and launch weeks (Ship, Next.js Conf) carry the brand, with Basement doing site, stage, motion and collateral. Sanity (<code>found</code>): the identity launched alongside the Content OS, with screens in the New York Stock Exchange and Times Square, then the Everything *[NYC] conference (30 Sep 2025, Pioneer Works). Cloudflare is the only platform brand with named ad campaigns: #BetterInternet (Oct 2018, tested in San Francisco and New York) and #BuiltForThis (2020). The Rijksmuseum's 2013 reopening was driven by sponsors: ING's Night Watch flash mob (1.5 million views per Banken.nl) and Albert Heijn cartons. W+K's marketing is its clients' (Nike "So Win", Super Bowl LIX, Feb 2025).</p><table><thead>
+<tr>
+<th>Brand</th>
+<th>Main vehicle</th>
+<th>Source</th>
+</tr>
+</thead><tbody><tr>
+<td>Cloudflare</td>
+<td>Ad campaigns 2018 and 2020</td>
+<td><a href="https://blog.cloudflare.com/betterinternet-join-the-movement">Cloudflare blog</a></td>
+</tr></tbody></table>
+  </div>
+  <div style="position: absolute; left: 64px; right: 64px; bottom: 64px; display: flex; justify-content: space-between; font-size: 15px; line-height: 22px; color: #888888; border-top: 1.5px solid #E2E2E2; padding-top: 17px;">
+    <span>VOYAGER ehf., Branding Research — Brand comparison</span>
+    <span>4 / 16</span>
+  </div>
+</div>
+</body>
+</html>

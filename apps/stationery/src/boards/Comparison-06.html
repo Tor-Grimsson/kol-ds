@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Brand comparison 6 of 16</title>
+<style>
+body{margin:0}
+.c{color:#111111;font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:18px;line-height:27px;font-variant-numeric:tabular-nums;text-wrap:pretty}
+.c>:first-child{margin-top:0 !important}
+.c .eyebrow{font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888;margin:0}
+.c h1,.c h2,.c h3,.c h4{text-wrap:balance;margin:0;font-weight:700}
+.c h1,.c h2.chap{font-size:44px;line-height:52px;margin:8px 0 0;display:flex;gap:16px;align-items:baseline;letter-spacing:-0.005em}
+.c h2.chap .num{color:#850F36}
+.c .parties{margin:34px 0 0;display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));column-gap:22.7px}
+.c .parties .lbl{font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888}
+.c h2{font-size:30px;line-height:38px;margin:56px 0 16px;display:flex;gap:14px;align-items:baseline}
+.c h2 .num{color:#850F36}
+.c h3{font-size:20px;line-height:30px;margin:44px 0 8px;display:grid;grid-template-columns:56px 1fr}
+.c h3 .num{color:#888888}
+.c h4{font-size:18px;line-height:27px;margin:26px 0 4px 56px;display:grid;grid-template-columns:56px 1fr}
+.c h4 .num{color:#888888;font-weight:400}
+.c h3 .t,.c h4 .t{display:block}
+.c .mk{display:inline-flex;gap:12px;align-items:center;margin-left:14px;font-weight:400}
+.c .why{font-size:17px;line-height:25.5px;color:#666666;font-weight:400;margin-left:12px}
+.c p{margin:12px 0;max-width:839px}
+.c p.lead{font-size:22px;line-height:32px;margin:40px 0 12px;max-width:840px}
+.c h1+p.lead,.c .parties+p.lead{margin-top:46px}
+.c p.when,.c p.dw{font-size:17px;line-height:25.5px;color:#666666;margin:8px 0}
+.c p.when .k,.c p.dw .k{color:#111111;font-weight:700}
+.c h2.chap+p.when{margin-top:16px}
+.c p.note{font-size:15px;line-height:22.5px;font-style:italic;color:#666666}
+.c p.tb,.c ul.tb,.c ol.tb{margin-left:112px;max-width:727px;color:#444444}
+.c p.tb{margin-top:4px}
+.c ul,.c ol{margin:8px 0 14px;padding-left:34px;max-width:839px}
+.c ul{list-style-type:disc}
+.c ul ul{list-style-type:'–  '}
+.c ul ul ul{list-style-type:circle;color:#666666;font-size:17px;line-height:25.5px}
+.c ol{list-style-type:decimal}
+.c li{margin:3px 0}
+.c strong,.c b{font-weight:700}
+.c em{font-style:italic}
+.c code{font-family:ui-monospace,Menlo,monospace;font-size:16px;background:#F4F4F4;padding:1px 6px}
+.c hr{border:0;border-top:1.5px solid #E2E2E2;margin:34px 0}
+.c blockquote{margin:18px 0;padding-left:56px;position:relative;font-size:22px;line-height:32px;font-style:italic;max-width:839px}
+.c blockquote::before{content:"\201C";position:absolute;left:16px;top:-4px;font-size:44px;line-height:44px;font-style:normal;color:#850F36}
+/* marks (Foundations F2 · Tags and status): hand → "To confirm" dot, parked → Optional tag, pin → checkpoint square */
+.c .st{display:inline-flex;gap:8px;align-items:center;font-size:15px;line-height:20px;color:#666666;font-weight:400;white-space:nowrap;vertical-align:1px}
+.c .st i{width:8px;height:8px;border-radius:50%;background:#850F36;display:inline-block}
+.c .tag{display:inline-block;font-size:15px;line-height:20px;font-weight:700;padding:3px 10px;background:#850F36;color:#FFFFFF;vertical-align:1px;white-space:nowrap}
+.c .cp{display:inline-block;width:12px;height:12px;background:#111111;margin-right:10px;vertical-align:1px}
+/* footnotes: short ink rule, 7.5/11 pt grey */
+.c ol.fns{list-style:none;padding:14px 0 0;margin:20px 0 28px;font-size:15px;line-height:22px;color:#666666;max-width:839px;position:relative}
+.c ol.fns::before{content:"";position:absolute;left:0;top:0;width:120px;height:1.5px;background:#111111}
+.c ol.fns.cont{padding-top:0}
+.c ol.fns.cont::before{display:none}
+.c ol.fns li{position:relative;padding-left:34px;margin:0 0 2px}
+.c ol.fns .fnn{position:absolute;left:0;top:0}
+.c ol.fns .url{color:#888888;margin-left:8px}
+.c sup.fn{font-size:12px;line-height:0;vertical-align:9px;color:#850F36;font-weight:700;margin-left:1px}
+/* tables: caps header over an ink rule, grey row rules (F3 · the NDA's rows) */
+.c table{border-collapse:collapse;width:100%;margin:20px 0 30px}
+.c table.cont{margin-top:0}
+.c th{text-align:left;font-size:15px;line-height:22px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#888888;padding:0 22px 14px 0;border-bottom:1.5px solid #111111;vertical-align:bottom}
+.c td{text-align:left;padding:14px 22px 14px 0;border-bottom:1.5px solid #E2E2E2;vertical-align:top}
+.c th:last-child,.c td:last-child{padding-right:0}
+.c td.num,.c th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.c td:first-child.num{text-align:left;color:#888888;width:56px}
+.c tr.group td{font-weight:700}
+.c tr.total td{font-weight:700;border-bottom:0;border-top:1.5px solid #111111}
+.c table.kv{border-top:1.5px solid #111111}
+.c table.kv td:first-child{width:192.8px;color:#888888}
+/* the Overview outline, flattened: phase rows on the Contract's number column, item rows under them */
+.c .phh{display:grid;grid-template-columns:56px 1fr auto;align-items:baseline;font-weight:700;margin:20px 0 0;padding-bottom:8px}
+.c .phh .num{color:#888888}
+.c .phh .cnt{font-size:17px;line-height:25.5px;color:#888888;font-weight:400}
+.c ul.phl{list-style:none;padding:0 0 14px;margin:0 0 6px;max-width:none;border-bottom:1.5px solid #E2E2E2}
+.c ul.phl.cont{margin-top:0}
+.c ul.phl li{display:block;position:relative;padding-left:112px;margin:0}
+.c ul.phl li .tn{position:absolute;left:56px;top:0;color:#888888}
+
+.c a{color:inherit;text-decoration:underline;text-decoration-color:#BBBBBB;text-underline-offset:3px}
+.c h3.pl{display:block}
+.c td{overflow-wrap:break-word}
+.c table{table-layout:auto}
+</style>
+</head>
+<body>
+<div style="width: 1190px; height: 1684px; position: relative; box-sizing: border-box; padding: 64px 64px 140px; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 18px; line-height: 27px; font-variant-numeric: tabular-nums;">
+  <div style="position: absolute; left: 0; top: 0; width: 1190px; height: 200px;">
+    <div style="position: absolute; left: 64px; right: 64px; top: 64px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 22.7px; align-items: start; font-size: 20px; line-height: 30px; font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;">
+      <img src="__LOCKUP__" alt="VOYAGER" style="grid-column: 1 / 4; height: 71.4px; width: auto; display: block;">
+      <div style="grid-column: 10 / 13;">voyager.example<br>hello@voyager.example<br>+354 555 0142</div>
+    </div>
+  </div>
+  <div class="c" style="position: absolute; left: 64px; right: 64px; top: 226px; height: 1318px; overflow: hidden;">
+<h2>Guidelines, design systems and tokens</h2><h3 class="pl">The marketing brand guide is rare, and the UI design system is common: the opposite of what you might expect a branding project to need.</h3><p>Two of five publish a marketing brand guide: Cloudflare (<code>found</code>, 7 sections plus a 44-page Content Style Guide) and Vercel (<code>found</code>, one page with trademarks, symbol rules, spacing, a misuse list and six downloadable packs). Rijksmuseum (<code>partial</code>) has no brand guide and no press logo kit; its closest document is a UI styleguide. Sanity (<code>partial</code>) has no guide, only an MIT logo package (<code>@sanity/logos</code>) with two colours and no rules. W+K (<code>not-found</code>) has nothing: no /brand, /press or /media route in a 776-URL sitemap. The design system is the opposite: Cloudflare Kumo (MIT, 49 component folders), Sanity UI (24 primitives), Vercel Geist (72 component pages) and the Rijksmuseum styleguide (built by Q42 and Fabrique, but atoms and molecules pages returned HTTP 500 on the day checked). W+K has none; wk.com is Bootstrap 4 plus a hand-written layer.</p><table>
+<thead>
+<tr>
+<th>Brand</th>
+<th>Brand guide</th>
+<th>UI design system</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cloudflare</td>
+<td>Found, 7 sections</td>
+<td>Kumo (React, Base UI, Tailwind v4)</td>
+<td><a href="https://www.cloudflare.com/brand/">Brand</a>, <a href="https://kumo-ui.com/">Kumo</a></td>
+</tr>
+<tr>
+<td>Rijksmuseum</td>
+<td>Partial: UI only</td>
+<td>Styleguide, no repo</td>
+<td><a href="https://www.rijksmuseum.nl/styleguide">Styleguide</a></td>
+</tr>
+<tr>
+<td>Sanity</td>
+<td>Partial: logos package</td>
+<td>Sanity UI v4</td>
+<td><a href="https://www.sanity.io/ui">Sanity UI</a></td>
+</tr>
+<tr>
+<td>Vercel</td>
+<td>Found</td>
+<td>Geist, 72 components</td>
+<td><a href="https://vercel.com/geist/introduction">Geist</a></td>
+</tr>
+<tr>
+<td>W+K</td>
+<td>Not found</td>
+<td>None (Bootstrap 4)</td>
+<td><a href="https://www.wk.com/styles.f7eaa11e636b15dd91cc.css">CSS</a></td>
+</tr>
+</tbody></table><h3 class="pl">Token naming splits into role-first, step-first and none.</h3><p>Cloudflare (<code>found</code>) uses three layers: Tailwind v4 OKLCH primitives, then <code>--{property}-kumo-{role}[-{state}]</code> (for example <code>--text-color-kumo-subtle</code>) and a surface ladder (canvas, base, elevated, recessed, tint, contrast). Sanity (<code>found</code>) names by role then emphasis: <code>--color-{fg|bg|border}[-inverse]-{base|dim|faint}</code>. Vercel (<code>found</code>) names by hue and step, <code>--ds-{hue}-{100…1000}</code>, then gives the steps roles (100-300 component backgrounds, 400-600 borders, 900-1000 text), and switches themes by redefining the same names. Rijksmuseum (<code>partial</code>) has eight Dutch-named colours in the styleguide (Wilmotteblauw, Rood "Activation") that appear nowhere in its CSS. W+K (<code>partial</code>) has zero custom-property declarations in a 223 KB stylesheet; its colours are Bootstrap 4 defaults.</p><p>Sources: Cloudflare: <a href="https://kumo-ui.com/colors">kumo-ui.com/colors</a> · Sanity: <a href="https://www.sanity.io/_astro/global.HguIwUx6.css">global.css</a> · Vercel: <a href="https://vercel.com/geist/colors">Geist Colors</a> · Rijksmuseum: <a href="https://www.rijksmuseum.nl/styleguide">Styleguide</a> · W+K: <a href="https://www.wk.com/styles.f7eaa11e636b15dd91cc.css">styles.css</a></p>
+  </div>
+  <div style="position: absolute; left: 64px; right: 64px; bottom: 64px; display: flex; justify-content: space-between; font-size: 15px; line-height: 22px; color: #888888; border-top: 1.5px solid #E2E2E2; padding-top: 17px;">
+    <span>VOYAGER ehf., Branding Research — Brand comparison</span>
+    <span>6 / 16</span>
+  </div>
+</div>
+</body>
+</html>

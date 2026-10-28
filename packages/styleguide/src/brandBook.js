@@ -28,6 +28,13 @@ export const BOOK_SECTIONS = [
 export const ASSET_SECTIONS = [
   { key: 'assetsOverview', id: 'assets-overview', label: 'Assets', title: 'Downloads and reproduction', lede: 'Everything you download or reproduce. Brand documents the identity; this holds the files and the specs for making them.' },
   { key: 'logos', id: 'logos', nav: 'Logos', label: '01 — logos', title: 'Logos' },
+  /* kol-website's Assets page (BrandAssetsGraphicsAndPatterns, 2026-10-27): the manifest's `graphics` — names from
+     kol-component's set by category, `{ abstract: [...], patterns: [...] }`. The Patterns page there carried a second
+     block, the cards (`graphics-patterns`); it rides under Patterns, off the rail, as it did. Ledes named repo paths,
+     so they are the manifest's to set, as Logos' is. */
+  { key: 'graphics', id: 'graphics', nav: 'Graphics', label: '02 — graphics', title: 'Graphics', category: 'abstract' },
+  { key: 'patterns', id: 'patterns', nav: 'Patterns', label: '03 — patterns', title: 'Patterns', category: 'patterns' },
+  { key: 'graphicsPatterns', id: 'graphics-patterns', label: '16 — graphics · patterns', title: 'Patterns', category: 'patterns' },
   { key: 'branded', id: 'branded-assets', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
   { key: 'stationery', id: 'assets-stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
   { key: 'labels', id: 'labels', nav: 'Labels', label: '09 — labels', title: 'Labels', copy: true },
@@ -53,6 +60,7 @@ function shows(s, brand) {
   if (s.copy) return hasCopy(s)
   if (s.key === 'color') return Boolean(brand?.ramps?.length) || hasCopy(s)
   if (s.key === 'logos') return Boolean(brand?.logos?.length)
+  if (s.category) return Boolean(brand?.graphics?.[s.category]?.length)
   /* the marks sections draw the manifest's logos — their default lede is not enough to show empty frames */
   if (s.key === 'logo' || s.key === 'lockups') return Boolean(brand?.logos?.length || s.blocks?.length || s.after?.length)
   if (s.key === 'social') return Boolean(brand?.social?.templates?.length)

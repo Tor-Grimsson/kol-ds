@@ -1,13 +1,16 @@
-import { useEffect, useState } from 'react'
-import { AppHub, PageShell } from '@kolkrabbi/kol-shell'
-import { Button, MEDIA_SETTINGS_BASE, PageHeader, SettingsSwitch } from '@kolkrabbi/kol-component'
+import { useState, useSyncExternalStore } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import { SiteLayout } from '@kolkrabbi/kol-framework'
+import { PageShell } from '@kolkrabbi/kol-shell'
+import { Button, MEDIA_SETTINGS_BASE, PageHeader, SettingsSections } from '@kolkrabbi/kol-component'
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
-import { Brand } from '@kolkrabbi/kol-styleguide'
+import { Brand, BrandGuide } from '@kolkrabbi/kol-styleguide'
+import { GUIDE_SECTIONS, GUIDE_TEMPLATE } from '@kolkrabbi/kol-brand-template'
 import { Notes, NEW_NOTE } from '@kolkrabbi/kol-notes'
 import { Decks, NEW_DECK } from '@kolkrabbi/kol-deck'
 import { createFixtureClient } from 'media-fixture'
 import { useFixtureMedia, useMediaTool, useNotesTool, useDecksTool, DEFAULTS } from 'media-fixture/wiring'
-import { VOYAGER } from 'voyager-fixture'
+import { VOYAGER, VOYAGER_GUIDE } from 'voyager-fixture'
 
 /* THE CLIENT'S HOME, ON VOYAGER (apps review §6c-8, 2026-09-29). What apps/brand used to show — a
  * client's brand walked through, kol-styleguide's `Brand` — moved here and onto VOYAGER, the fake
@@ -15,17 +18,18 @@ import { VOYAGER } from 'voyager-fixture'
  *
  *   Brand    /                 the book (BrandBook) — the landing, the mark goes here
  *   Assets   /assets           the files (BrandAssets)
+ *   Guide    /guide/blank      the brand guide outline, blank (kol-brand-template's GUIDE_TEMPLATE)
+ *            /guide/voyager    the same chapters, filled with VOYAGER (voyager-fixture's VOYAGER_GUIDE)
  *   Notes    /notes            opt-in TOOL — kol-notes on the fixture bucket
  *   Decks    /decks            opt-in TOOL — kol-deck
  *   Media    /media            opt-in TOOL — MediaLibrary
- *   Editor   (link)            opt-in APP — the design editor opens as its own app
- *   Settings /settings         which opt-ins this client has, and the theme
+ *   Editor   /editor           opt-in APP — the design editor opens as its own app
+ *   Settings /settings         which opt-ins this client has
  *
- * A home, not a Studio: brand-hub is read far more than it is made in, so it stays on `AppHub`
- * (16-app-anatomy § The Studio). The opt-ins persist in this browser. Routing is the hash. */
+ * A home, not a Studio, and a SITE (2026-10-27): brand runs the site rail (`SiteLayout`), as kol-branding and every
+ * brand.client.* does; the app rail is studio-hub's. The opt-ins persist in this browser. Routing is the browser's. */
 
 const client = createFixtureClient()
-const parse = () => decodeURIComponent(location.hash.slice(1)) || '/'
 
 const OPT_INS = [
   { id: 'notes', label: 'Notes', icon: 'edit', kind: 'tool' },
@@ -40,98 +44,93 @@ const loadOpts = () => {
 /* the editor is an APP beside this one, not a page inside it — built at /apps/editor/ */
 const EDITOR_URL = `${import.meta.env.BASE_URL.replace(/brand-hub\/$/, '')}editor/`
 
-const SHORTCUTS = [
-  { section: 'Navigate', items: [
-    { id: 'home', label: 'Brand, then the rail', combo: '⌥ 1–9' },
-    { id: 'settings', label: 'Settings', combo: ',' },
-    { id: 'rail', label: 'Hide the rail', combo: '\\' },
-  ] },
-  { section: 'Help', items: [{ id: 'sheet', label: 'This sheet', combo: 'S' }] },
-]
-
 export default function App() {
-  const [path, setPath] = useState(parse)
-  useEffect(() => {
-    const on = () => setPath(parse())
-    window.addEventListener('hashchange', on)
-    return () => window.removeEventListener('hashchange', on)
-  }, [])
-  const navigate = (p) => { location.hash = encodeURI(p) }
-  const [opts, setOpts] = useState(loadOpts)
-  const setOpt = (id) => (on) => setOpts((o) => {
-    const next = { ...o, [id]: on }
-    try { localStorage.setItem(OPT_KEY, JSON.stringify(next)) } catch { /* storage blocked */ }
-    return next
-  })
-
-  const items = [
-    { icon: 'book-open', path: '/', label: 'Brand' },
-    { icon: 'download', path: '/assets', label: 'Assets' },
-    ...OPT_INS.filter((o) => opts[o.id]).map((o) => ({ icon: o.icon, path: `/${o.id}`, label: o.label })),
-  ]
-  const section = `/${path.split('/')[1] ?? ''}`
-  const on = (id) => opts[id] && section === `/${id}`
-
-  const brand = (
-    <Brand
-      brand={VOYAGER.brand}
-      logoSources={VOYAGER.logoSources}
-      view={section === '/assets' ? 'assets' : 'brand'}
-      onViewChange={(v) => navigate(v === 'assets' ? '/assets' : '/')}
-    />
-  )
-
-  const settings = {
-    sections: [
-      { label: 'Tools', rows: OPT_INS.filter((o) => o.kind === 'tool').map((o) => ({ label: o.label, render: () => <SettingsSwitch on={opts[o.id]} onChange={setOpt(o.id)} /> })) },
-      { label: 'Apps', rows: OPT_INS.filter((o) => o.kind === 'app').map((o) => ({ label: o.label, render: () => <SettingsSwitch on={opts[o.id]} onChange={setOpt(o.id)} /> })) },
-    ],
-    tone: 'secondary',
-    themeIn: 'drawer',
-    /* the page tier with its filters — this app's page as it was (settings tiers, 2026-10-23) */
-    page: true,
-    filters: true,
-  }
-
   return (
-    <AppHub
-      app={{
-        name: VOYAGER.brand.meta.name,
-        subtitle: VOYAGER.business.BRAND_INFO.labels.manifesto,
-        about: VOYAGER.business.BIO.companyBio,
-        links: [
-          { label: 'Site', url: VOYAGER.brand.meta.url },
-          { label: 'Design system', url: 'https://ui.kolkrabbi.io' },
-        ],
-      }}
-      items={items}
-      currentPath={section}
-      onNavigate={navigate}
-      shortcuts={SHORTCUTS}
-      settings={settings}
-    >
-      {section === '/' || section === '/assets' ? brand
-        : on('notes') ? <NotesTool path={path} navigate={navigate} />
-        : on('decks') ? <DecksTool path={path} navigate={navigate} />
-        : on('media') ? <MediaTool />
-        : on('editor') ? <EditorDoor />
-        : brand}
-    </AppHub>
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      <Routes>
+        <Route element={<Frame />}>
+          <Route path="/" element={<BrandPage view="brand" />} />
+          <Route path="/assets" element={<BrandPage view="assets" />} />
+          <Route path="/guide" element={<Navigate to="/guide/blank" replace />} />
+          <Route path="/guide/blank" element={<BrandGuide key="blank" brand={GUIDE_TEMPLATE} sections={GUIDE_SECTIONS} />} />
+          <Route path="/guide/voyager" element={<BrandGuide key="voyager" brand={VOYAGER_GUIDE} sections={GUIDE_SECTIONS} logoSources={VOYAGER.logoSources} />} />
+          <Route path="/notes/*" element={<OptIn id="notes"><NotesTool /></OptIn>} />
+          <Route path="/decks/*" element={<OptIn id="decks"><DecksTool /></OptIn>} />
+          <Route path="/media" element={<OptIn id="media"><MediaTool /></OptIn>} />
+          <Route path="/editor" element={<OptIn id="editor"><EditorDoor /></OptIn>} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
-function NotesTool({ path, navigate }) {
+/* the opt-ins, shared by the rail and the Settings page — one store, persisted in this browser */
+let optsState = loadOpts()
+const listeners = new Set()
+const subscribe = (l) => { listeners.add(l); return () => listeners.delete(l) }
+const setOpt = (id) => (on) => {
+  optsState = { ...optsState, [id]: on }
+  try { localStorage.setItem(OPT_KEY, JSON.stringify(optsState)) } catch { /* storage blocked */ }
+  listeners.forEach((l) => l())
+}
+const useOpts = () => [useSyncExternalStore(subscribe, () => optsState), setOpt]
+
+/* THE SITE RAIL (BrandHubOnSiteRail, kol-hq 2026-10-27): brand is a site type, so brand-hub runs `SiteLayout` with the
+   site rail as kol-branding does; the app rail is studio-hub's. The plane wears the sites' wash. The guide outline's two
+   versions — blank and VOYAGER — are one category; the opt-ins are rows; Settings sits under the theme row. */
+function Frame() {
+  const [opts] = useOpts()
+  const NAV = [
+    { id: 'brand', label: 'Brand', icon: 'book-open', to: '/' },
+    { id: 'assets', label: 'Assets', icon: 'download', to: '/assets' },
+    { id: 'guide', label: 'Guide', icon: 'bookmark', pages: [{ to: '/guide/blank', label: 'Blank' }, { to: '/guide/voyager', label: VOYAGER.brand.meta.name }] },
+    ...OPT_INS.filter((o) => opts[o.id]).map((o) => ({ id: o.id, label: o.label, icon: o.icon, to: `/${o.id}` })),
+  ]
+  const BOTTOM = [{ id: 'settings', label: 'Settings', icon: 'nav-settings', to: '/settings' }]
+  return <SiteLayout navTree={NAV} sideNav={{ bottomItems: BOTTOM, footer: false }} pageWash="var(--kol-fg-02)" />
+}
+
+/* the book and the assets — kol-styleguide's `Brand`, its view switch routed */
+function BrandPage({ view }) {
+  const navigate = useNavigate()
+  return <Brand brand={VOYAGER.brand} logoSources={VOYAGER.logoSources} view={view} onViewChange={(v) => navigate(v === 'assets' ? '/assets' : '/')} />
+}
+
+/* an opt-in that is off is not a page */
+function OptIn({ id, children }) {
+  const [opts] = useOpts()
+  return opts[id] ? children : <Navigate to="/" replace />
+}
+
+function Settings() {
+  const [opts, setOpt] = useOpts()
+  const rows = (kind) => OPT_INS.filter((o) => o.kind === kind).map((o) => ({ label: o.label, type: 'switch', on: opts[o.id], onChange: setOpt(o.id) }))
+  return (
+    <div className="kol-page">
+      <PageHeader title="Settings" subtitle="Which tools and apps this client has." size="sm" voice="mono" />
+      <SettingsSections sections={[{ label: 'Tools', rows: rows('tool') }, { label: 'Apps', rows: rows('app') }]} className="max-w-panel" />
+    </div>
+  )
+}
+
+function NotesTool() {
+  const { pathname: path } = useLocation()
+  const navigate = useNavigate()
   const notes = useNotesTool({ client })
   const slug = path.match(/^\/notes\/(.+)$/)?.[1]
   const open = slug === 'new' ? NEW_NOTE : slug ? decodeURIComponent(slug) : null
   return <Notes {...notes.props} open={open} onOpenChange={(s) => navigate(s === NEW_NOTE ? '/notes/new' : s ? `/notes/${encodeURIComponent(s)}` : '/notes')} />
 }
 
-function DecksTool({ path, navigate }) {
+function DecksTool() {
+  const { pathname: path } = useLocation()
+  const navigate = useNavigate()
   const decks = useDecksTool({ client })
   const slug = path.match(/^\/decks\/(.+)$/)?.[1]
   const open = slug === 'new' ? NEW_DECK : slug ? decodeURIComponent(slug) : null
-  return <Decks {...decks.props} open={open} onOpenChange={(s) => navigate(s === NEW_DECK ? '/decks/new' : s ? `/decks/${encodeURIComponent(s)}` : '/decks')} railLeft="var(--kol-shell-rail-width, 48px)" />
+  return <Decks {...decks.props} open={open} onOpenChange={(s) => navigate(s === NEW_DECK ? '/decks/new' : s ? `/decks/${encodeURIComponent(s)}` : '/decks')} railLeft="var(--kol-sidenav-w)" />
 }
 
 function MediaTool() {

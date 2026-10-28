@@ -6,6 +6,7 @@ import * as assets from './assets.js'
 import { VOYAGER_BRAND, VOYAGER_LOGO_SOURCES } from './brand.js'
 
 export { VOYAGER_BRAND, VOYAGER_LOGO_SOURCES }
+export { VOYAGER_GUIDE } from './guide.js'
 export * from './business.js'
 export * from './assets.js'
 

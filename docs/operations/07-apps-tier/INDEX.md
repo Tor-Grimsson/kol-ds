@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-10-26
+updated: 2026-10-28
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -21,6 +21,8 @@ related:
 
 What lives here is this repo's depth: which app is being built, in what order, and which are queued behind it.
 
+**Subdomains are one word, singular, naming the thing** (user ruling 2026-10-28): the app folder, the hosting project and the subdomain carry the same word (`apps/metric` · `kol-metric` · `metric.kolkrabbi.io`), and a renamed subdomain keeps its old name as a permanent redirect. `labs.` is kol-labs' own call. A new app takes its name from the law, which lives in kol-website `docs/operations/02-infrastructure/01-hosting-dns.md` § Subdomain law.
+
 | Page | What it holds |
 |---|---|
 | [[01-tier-rules\|Tier rules]] | How an app is wired here — shape, publishing, ownership, data, gotchas. Outlives any one app |
@@ -32,7 +34,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | [[10-save-to-home-screen\|Save to home screen]] | What an app ships to open from the iPhone home screen — head tags, manifest, icon — and what kol-theme does for it (the ground and the top inset, 0.191.0) |
 | [[02-media-app-plan\|Media app plan]] | The first app — phases, acceptance, and the one decision still held |
 | [[03-candidate-apps\|Candidate apps]] | The roster the tier will absorb, one at a time. Only media is committed |
-| [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — the quote, invoice and letter layouts designed on a canvas against the brand book's set; where they ship |
+| [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — every kol-branding stationery layout on a pan-and-zoom desk, on VOYAGER (2026-10-27): documents, quote, header, letterhead set, letter styles, cards, invoices and agreements, the research template, and the Brand comparison paper as the long document |
 
 ## The apps
 
@@ -46,8 +48,9 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/notes-hub` | `pnpm notes-hub` (5187) · `/apps/notes-hub` | Shell + Hub + notes — Write (a blank note, `/`) and Notes (`/notes`) on one rail |
 | `apps/presentation` | `pnpm presentation` (5178) · `/apps/presentation` | the decks tool alone — kol-deck over the fake D1 `decks` table, through `useDecksTool`; exports PNG · PDF · PPTX · `.deck.json`. Opens on a blank deck (`NEW_DECK`); the shelf is `#list` |
 | `apps/presentation-hub` | `pnpm presentation-hub` (5188) · `/apps/presentation-hub` | Shell + Hub + decks — Edit (a blank deck, `/`) and Decks (`/decks`) on one rail |
-| `apps/brand` | `pnpm brand` (5179) · `/apps/brand` | **the brand catalogue** (2026-09-29) — every building block a brand is made of, one route each, on VOYAGER: color (ramps · swatches · anchors · combinations), type (families · scale), logo (displays · clearspace · scaling), stationery (business card · set), assets (downloads · imagery · business data). kol-framework's `PageLayout` is its frame, so the brand-book frame is proved here too. Real paths under the Vite base |
-| `apps/brand-hub` | `pnpm brand-hub` (5193) · `/apps/brand-hub` | **a client's home on VOYAGER** — what `apps/brand` showed until 2026-09-29: kol-styleguide's `Brand` (the book at `/`, the assets at `/assets`) on `AppHub`, with notes · decks · media as opt-in tools and the editor as an opt-in app, switched in Settings (per browser). What a `brand.<domain>` site is made of |
+| `apps/brand` | `pnpm brand` (5179) · `/apps/brand` | **the brand home** (2026-10-27) — the front door over `apps/brand-sections` and `apps/brand-lab`: kol-framework's `SiteLayout`, a Home of two cards, and a rail row per app that hands over to it |
+| `apps/brand-sections` | `pnpm brand-sections` (5207) · `/apps/brand-sections` | **the brand catalogue** (2026-09-29; `apps/brand` until 2026-10-27) — every building block a brand is made of, one route each, on VOYAGER: color (ramps · swatches · anchors · combinations), type (families · scale), logo (displays · clearspace · scaling), stationery (business card · set), assets (downloads · imagery · business data). kol-framework's `PageLayout` is its frame, so the brand-book frame is proved here too. Real paths under the Vite base |
+| `apps/brand-hub` | `pnpm brand-hub` (5193) · `/apps/brand-hub` | **a client's home on VOYAGER** — what `apps/brand` showed until 2026-09-29: kol-styleguide's `Brand` (the book at `/`, the assets at `/assets`) on kol-framework's `SiteLayout` and the site rail (2026-10-27; it was `AppHub`), with the guide outline blank and filled at `/guide`, notes · decks · media as opt-in tools and the editor as an opt-in app, switched in Settings (per browser). What a `brand.<domain>` site is made of |
 | `apps/site-hub` | `pnpm site-hub` (5205) · `/apps/site-hub` | **the site-rail shape made once** (2026-10-24) — kol-framework's `PageLayout` with `NavRail variant="site"` around a client's brand site on VOYAGER: Home (the landing hero), Brand (kol-styleguide's `BrandBook`, its chapters as the rail's sub-rows), Assets (`BrandAssets`), Research — three shapes of a research page: Compare (`PageControls` over columns), Sheet (`.kol-sheet`, the Research-Spec on itself, its headings on the TOC rail), Boards (a gallery by set), its overview the foldernote `CategoryPage` — and the rest of the rail as rows. The reference for brand.kolkrabbi.io and every `brand.<domain>` site, as studio-hub is for the Studio apps; which pages and how they look is the user's (plan-2026-10-24-site-hub W2) |
 | `apps/brand-lab` | `pnpm brand-lab` (5203) · `/apps/brand-lab` | **where a brand is made** (2026-10-20) — kol-styleguide's ColorLab, TypeScaleLab and LockupBuilder (carried from kol-atlas's Assets pages) over one draft; Guide draws the draft's brand book in its own colors and faces, Export prints the draft and its CSS. The Kolkrabbi revamp is the first draft (`src/drafts/kolkrabbi.js`), separate from `@kolkrabbi/kol-brand` |
 | `apps/shell` | `pnpm shell` (5186) · `/apps/shell` | the frame alone, under either rail (2026-10-24): the Variants button's one axis, Rail — app (`AppShell`, the phone bar, ten pages so the bar's More overflow is always on screen) · site (`SiteLayout`, the grab edge, the phone drawer) — the same pages and hash routes under both |

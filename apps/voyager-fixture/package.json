@@ -7,6 +7,7 @@
   "exports": {
     ".": "./src/index.js",
     "./brand": "./src/brand.js",
+    "./guide": "./src/guide.js",
     "./business": "./src/business.js",
     "./assets": "./src/assets.js",
     "./fonts.css": "./src/fonts.css"

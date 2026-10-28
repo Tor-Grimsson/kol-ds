@@ -29,6 +29,7 @@ export {
   RAMP_ORDER, withHouseDefaults,
 } from './defaults.js'
 export { emitBrandColorCss } from './emit-css.js'
+export { GUIDE_SECTIONS, GUIDE_TEMPLATE } from './guide.js'
 
 /* The deltas this dummy client declares. Everything else — the 7 hue ramps,
  * cream, the fixed grey, the Right Grotesk + JetBrains Mono type — is inherited

@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-media-client
 
+## 0.7.0 — 2026-10-28
+
+- **The one sign-in and the private bucket** (MediaClientOneSignInAndPrivateBucket, kol-website). `KOL_BUCKETS.private`: R2 `kol-private` at `https://private.kolkrabbi.io`, writable, `signedIn: true`. The client grows `session()` → `{ signedIn }`, `signIn(password)`, `signOut()` and `signInUrl(next)` against `<adminBase>/api/login` and `/signin` (the `kol_session` cookie on .kolkrabbi.io). `buckets()` leaves out signed-in-only rows until `session()` says signed in. `listMedia` sends the cookie (`credentials: 'include'`) for a signed-in-only bucket only: a credentialed request to a host that answers `Access-Control-Allow-Origin: *` fails in the browser, and every public list works as before. A client whose table has no signed-in bucket never calls the login API.
+
 ## 0.6.0 — 2026-10-13
 
 - **New: `mediaUrl` takes a listed row** (MediaLibraryUrlOnStorageKey, kol-website). `mediaUrl(row)` builds on `row.storageKey`, the permanent R2 key the bytes live at. `row.key` is the PATH, and rename and move change it. A row without `storageKey`, or a plain key string, builds exactly as before. Pass the row, not `row.key`.

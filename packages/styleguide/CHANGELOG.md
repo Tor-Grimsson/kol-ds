@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.10.0 — 2026-10-27
+
+- **`BrandAssets` takes drawn social mocks and the second letterhead** (BrandAssetsSocialMocksAndLetterheadB, kol-website 2026-10-27). A `brand.social.templates` row may carry `mock` instead of `src`: `'PostPhoto' | 'PostEditorial' | 'StoryPhoto'` (the kol-styleguide mocks, wearing the brand's logomark) or a node; `ratio` boxes a mock that does not size itself, and no wordmark overlay is drawn. `brand.stationery.letterheadB: true` adds the "Letterhead, A4 [B]" card (`LetterheadB`) in its own row under the stationery grid. Photo templates are unchanged.
+
+## 0.9.0 — 2026-10-27
+
+- **`BrandAssets` carries Graphics and Patterns** (BrandAssetsGraphicsAndPatterns, kol-website 2026-10-27) — kol-website's Assets page, so it adopts `BrandAssets` with no section lost. A manifest's `graphics: { abstract: [...], patterns: [...] }` (names from kol-component's `GRAPHICS`) turns on `#graphics` and `#patterns` between Logos and Branded, each an `AssetTable` with the ink toggle and recoloured download, plus `#graphics-patterns` (the cards, off the rail) under Patterns. No `graphics` → nothing changes. Ledes are the manifest's to set (`book.graphics` · `book.patterns` · `book.graphicsPatterns`), as Logos' is.
+
+## 0.8.0 — 2026-10-27
+
+- **`BrandGuide`** (BrandGuideOutlineTwoVersions, kol-hq 2026-10-27) — kol-branding's guide renderer, carried: one scrolling page, one chapter per row of the `sections` it is handed, every chapter the same anatomy, the specimen by `kind` (contents · logo · lockups · color · typography · logos-table · branded · stationery · social · profile), the chapters on the rail. With `guideSections` · `guideToc`. The outline is kol-brand-template 0.4.0's `GUIDE_SECTIONS`. kol-branding's research line under each chapter stays in kol-branding.
+
 ## 0.7.0 — 2026-10-24
 
 - **`./src/*` is open in `exports`** (StyleguideSrcExports, kol-branding 2026-10-24) — the kol-framework pattern, so a forked brand-book composition deep-imports `BrandMark.jsx`, `typeSpecimen.js`, `SocialMocks.jsx` and `StationeryMocks.jsx` by path instead of aliasing `node_modules` in Vite. The raw-JSX contract is unchanged.

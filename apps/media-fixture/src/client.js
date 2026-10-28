@@ -24,10 +24,18 @@ const isDir = (p) => p.endsWith('/')
 /* a stored settings object without its height (see loadSettings) — `null` stays `null` (reset) */
 const noHeight = (s) => { if (!s) return s; const { columnHeight: _h, ...rest } = s; return rest }
 
+/* THE FAKE SESSION — kol-media-client's one sign-in, no network: signed in by default so the private row shows */
+let signedIn = true
+
 export function createFixtureClient({ settings } = {}) {
   return {
+    // ── the session ─────────────────────────────────────────────────────
+    session: async () => ({ signedIn }),
+    signIn: async () => { signedIn = true; return { signedIn } },
+    signOut: async () => { signedIn = false; return { signedIn } },
+    signInUrl: () => '#signin',
     // ── the bucket: read ────────────────────────────────────────────────
-    buckets: () => bucket.buckets(),
+    buckets: () => bucket.buckets().filter((b) => !b.signedIn || signedIn),
     /* the listing, with the D1 rows joined on — as olina's /api/list joins `files` to its tags */
     async listMedia(prefix = '', { bucket: b } = {}) {
       return bucket.list(B(b), prefix).map((o) => ({ ...o, tags: d1.tagsOfFile(o.id), favourite: d1.isFavourite(o.id) }))

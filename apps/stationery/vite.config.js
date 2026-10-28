@@ -31,10 +31,8 @@ export default defineConfig(({ command }) => ({
   // crashes at runtime with a null dispatcher. Force one.
   resolve: { dedupe: ['react', 'react-dom'] },
 
-  // its own port after apps/overlays (5201). The desk lays the user's brand sheets beside the
-  // stationery as references (2026-10-20): they stay in iCloud and are served in dev only, as
-  // `/@fs/` URLs — nothing is copied into the repo and the build never sees them.
-  server: { port: 5202, fs: { allow: ['../..', '/Users/kolkrabbi/Library/Mobile Documents/com~apple~CloudDocs/Workbox/kol-images'] } },
+  // its own port after apps/overlays (5201)
+  server: { port: 5202 },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

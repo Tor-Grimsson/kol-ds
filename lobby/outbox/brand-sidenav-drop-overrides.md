@@ -3,7 +3,7 @@
 **Filed:** 2026-10-22 → **kol-website**
 **Entry:** `~/dev/projects/kol-website/lobby/inbox/brand-sidenav-drop-overrides.md`
 **Ledger:** `~/dev/projects/kol-website/lobby/INDEX.md` — **the truth about this ticket**
-**Last known:** 🔵 `filed` · synced 2026-10-22
+**Last known:** 🟢 `closed` · synced 2026-10-27 — brand on kol-framework 0.57 `SiteLayout`, both overrides retired to `_tmp/`
 
 ## Why it went there
 Brand's `sidenav-collapse.css` repaints the rail surface and the active icon. kol-theme now makes the active icon ink by default (`--kol-sidenav-active-icon` to change it), and the package already paints the surface — the removal is brand's.

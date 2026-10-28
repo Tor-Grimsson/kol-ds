@@ -63,6 +63,10 @@ export const KOL_BUCKETS = {
   r2:      { id: 'r2',      label: 'R2 · media',   publicBase: 'https://r2.kolkrabbi.io',  proxy: true  },
   b2:      { id: 'b2',      label: 'B2 · website', publicBase: 'https://b2.kolkrabbi.io',  proxy: false },
   b2vault: { id: 'b2vault', label: 'B2 · vault',   publicBase: 'https://b2v.kolkrabbi.io', proxy: false },
+  /* THE PRIVATE BUCKET (MediaClientOneSignInAndPrivateBucket, kol-website 2026-10-28): R2 `kol-private`, the
+   * same D1 rows and permanent keys as r2, served signed-in only. `signedIn: true` keeps it out of
+   * `buckets()` until `session()` says so, and makes `listMedia` send the `kol_session` cookie. */
+  private: { id: 'private', label: 'R2 · private', publicBase: 'https://private.kolkrabbi.io', proxy: false, writable: true, signedIn: true },
 }
 
 // ── Pure helpers (base-independent) ───────────────────────────────
@@ -151,8 +155,35 @@ export function createMediaClient({
     return `${table[bucket]?.publicBase ?? publicBase}/${key}`
   }
 
-  /** The buckets this client can list — `[]` without a table. */
-  const bucketList = () => Object.values(table)
+  /* THE ONE SIGN-IN (kol-website 2026-10-28): `POST <adminBase>/api/login { password }` sets `kol_session` on
+   * .kolkrabbi.io, `GET` answers `{ signedIn }`, `DELETE` signs out; signed-out pages go to `<adminBase>/signin`.
+   * The client remembers the last answer, so `buckets()` can leave out the signed-in-only rows. A client whose
+   * table has none never calls the API. */
+  let signedIn = false
+  const hasPrivate = () => Object.values(table).some((b) => b.signedIn)
+  const login = (init) => fetch(`${adminBase}/api/login`, { credentials: 'include', ...init })
+  async function session() {
+    if (!hasPrivate()) return { signedIn: false }
+    try {
+      const res = await login()
+      signedIn = res.ok ? Boolean((await res.json()).signedIn) : false
+    } catch { signedIn = false }
+    return { signedIn }
+  }
+  async function signIn(password) {
+    const res = await login({ method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password }) })
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    return session()
+  }
+  async function signOut() {
+    await login({ method: 'DELETE' })
+    signedIn = false
+    return { signedIn }
+  }
+  const signInUrl = (next = '') => `${adminBase}/signin${next ? `?next=${encodeURIComponent(next)}` : ''}`
+
+  /** The buckets this client can list — `[]` without a table; a signed-in-only bucket only once signed in. */
+  const bucketList = () => Object.values(table).filter((b) => !b.signedIn || signedIn)
 
   /* Rewrite a public CDN URL to the same-origin proxy path so canvas
    * consumers aren't CORS-tainted. Non-CDN URLs (data:, blob:, already
@@ -173,13 +204,15 @@ export function createMediaClient({
     const params = new URLSearchParams()
     if (prefix) params.set('prefix', prefix)
     if (bucket) params.set('bucket', bucket)
-    const res = await fetch(`${adminBase}/api/list?${params}`, { signal })
+    /* the session cookie goes only with a signed-in-only bucket: a credentialed request to a host that answers
+     * `Access-Control-Allow-Origin: *` fails in the browser, and every public list works without it */
+    const res = await fetch(`${adminBase}/api/list?${params}`, { signal, credentials: table[bucket]?.signedIn ? 'include' : 'same-origin' })
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
     return data.objects || []
   }
 
-  return { adminBase, publicBase, mediaUrl, proxied, listMedia, buckets: bucketList }
+  return { adminBase, publicBase, mediaUrl, proxied, listMedia, buckets: bucketList, session, signIn, signOut, signInUrl }
 }
 
 // Default instance on the production hosts — existing consumers migrate by

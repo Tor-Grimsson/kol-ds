@@ -33,7 +33,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 |---|---|---|
 | `@kolkrabbi/kol-theme` | **0.191.0** | Foundation CSS — tokens, type classes, all component chrome |
 | `@kolkrabbi/kol-icons` | **0.47.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.305.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
+| `@kolkrabbi/kol-component` | **0.306.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
 | `@kolkrabbi/kol-framework` | **0.57.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer |
 | `@kolkrabbi/kol-shell` | **0.83.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.41.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, settings, the S sheet), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
@@ -44,7 +44,7 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 | `@kolkrabbi/kol-content` | **0.14.0** | CMS — `/stack` (blog) + `/work` (portfolio) streams |
 | `@kolkrabbi/kol-foundry` | **0.13.0** | Type-specimen apparatus — typeface hero, variable-axis playground, glyph metrics |
 | `@kolkrabbi/kol-store` | **0.3.1** | Commerce — product-detail layout, price display, marquee river |
-| `@kolkrabbi/kol-styleguide` | **0.7.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — and the brand tool (`Brand`: the brand book over one manifest) |
+| `@kolkrabbi/kol-styleguide` | **0.10.0** | Brand-guide specimens — color anatomy, combo lab, logo construction, type blocks — the brand tool (`Brand`: the brand book over one manifest) and `BrandGuide` (the guide outline over a manifest) |
 | `@kolkrabbi/kol-notes` | **0.2.0** | Notes — a note is a database row with a markdown body: the catalog, the editor in the page, the whole tool over a consumer-injected client. Opens on a blank note (`NEW_NOTE`) |
 | `@kolkrabbi/kol-deck` | **0.2.1** | Decks — the shelf, the deck editor, present and export (PDF · PNG · PPTX) over a consumer-injected client. Opens on a blank deck (`NEW_DECK`) |
 
@@ -62,8 +62,8 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 | Package | Version | Job |
 |---|---|---|
 | `@kolkrabbi/design-editor` | **0.23.0** | **App tier — the one BUILT package** (ARCHITECTURE §4 exception, 2026-09-03). The whole editor as `<DesignEditor />`; moved in from kol-fxr, which had published it unversioned by any gate. Since 0.14.0 also `/core` (no layer packs) and one subpath per pack — `/generators` · `/effects` · `/motion` |
-| `@kolkrabbi/kol-media-client` | **0.6.0** | Client for the kol-media CDN — read, plus `prepareUpload` |
-| `@kolkrabbi/kol-brand-template` | **0.3.0** | Brand-manifest schema + house defaults + CSS generator |
+| `@kolkrabbi/kol-media-client` | **0.7.0** | Client for the kol-media CDN — read, plus `prepareUpload` |
+| `@kolkrabbi/kol-brand-template` | **0.4.0** | Brand-manifest schema + house defaults + CSS generator + the brand guide outline |
 | `@kolkrabbi/kol-brand` | **0.1.3** | Kolkrabbi's own brand manifest (ramps, type, logo SVGs) |
 | `@kolkrabbi/kol-scrape` | **0.1.0** | Presence/press scraper CLI |
 

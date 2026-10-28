@@ -16,7 +16,7 @@ related:
 
 The contract a brand is expressed in — the schema, and what generates from it.
 
-`@kolkrabbi/kol-brand-template` defines `BrandManifest` (JSDoc-typed): `meta` (declared identity) · `identity` (role→ramp bindings — which stop is primary/secondary + the ink pairs) · `colors.anchors` · `ramps` (literal hex per stop) · `type` (families + cuts + scale) · `logos` (package-relative SVGs) · `clearspace` · `stationery` · `presence` (observed footprint, scraper-fed) · `press` · `timeline`.
+`@kolkrabbi/kol-brand-template` defines `BrandManifest` (JSDoc-typed): `meta` (declared identity) · `identity` (role→ramp bindings — which stop is primary/secondary + the ink pairs) · `colors.anchors` · `ramps` (literal hex per stop) · `type` (families + cuts + scale) · `logos` (package-relative SVGs) · `clearspace` · `stationery` · `graphics` (names from kol-component's set by category, `{ abstract, patterns }` — kol-styleguide's Assets page draws them, 2026-10-27) · `presence` (observed footprint, scraper-fed) · `press` · `timeline`.
 
 **Every field is optional** — fill or leave empty; renderers must degrade gracefully. `defineBrand()` is the type anchor; `validateBrand()` checks types of present fields only.
 

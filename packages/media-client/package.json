@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-media-client",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Client for the kol-media CDN",
   "license": "MIT",
   "type": "module",

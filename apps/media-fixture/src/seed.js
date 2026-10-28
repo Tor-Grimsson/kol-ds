@@ -12,6 +12,8 @@ import { SEED_FILES } from './assets.js'
 export const BUCKETS = [
   { id: 'r2', label: 'R2 · kol-media', publicBase: 'fixture://r2', writable: true },
   { id: 'b2', label: 'B2 · website', publicBase: 'fixture://b2', writable: false },
+  /* the private bucket behind the fake session (kol-media-client 0.7.0) — `signedIn: true` rows show only signed in */
+  { id: 'private', label: 'R2 · private', publicBase: 'fixture://private', writable: true, signedIn: true },
 ]
 
 export const SEED = {
@@ -34,6 +36,10 @@ export const SEED = {
   b2: {
     folders: ['website/', 'website/hero/', 'website/icons/'],
     files: SEED_FILES.b2,
+  },
+  private: {
+    folders: ['contracts/', 'invoices/'],
+    files: [],
   },
 }
 

@@ -18,6 +18,6 @@ The packages that carry the brand tier and what each one owns.
 
 | Package | Role | Registry |
 |---|---|---|
-| `kol-brand-template` | Schema + baked **house defaults** (`withHouseDefaults`) + the **emit-css** generator (`emitBrandColorCss`) + placeholder "Norðurljós" **slate** (dev fixture for generic styleguide renderers). Also ships the scrape **adapter**. | public |
+| `kol-brand-template` | Schema + baked **house defaults** (`withHouseDefaults`) + the **emit-css** generator (`emitBrandColorCss`) + placeholder "Norðurljós" **slate** (dev fixture for generic styleguide renderers). Also ships the scrape **adapter**, and the **brand guide outline** (`GUIDE_SECTIONS` · `GUIDE_TEMPLATE`, `./guide`) that kol-styleguide's `BrandGuide` renders. | public |
 | `kol-brand` | Kolkrabbi's real manifest — identity, 4 anchors, 7 ramps, type; plus the brand SVG assets (logos, wordmark, favicons) in `src/svg/` with an `<Asset>` loader (`./svg` + `./svg/*` raw). Public-appropriate facts only. | public |
 | per-client instances | Copy of the template, filled. | **NEVER public npm** — local package in the client's repo |

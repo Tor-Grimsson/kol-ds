@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Foundations: lists and blocks</title>
+<style>
+@font-face{font-family:"JetBrains Mono";src:url("/fonts/jetbrains-mono/JetBrainsMono-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+body{margin:0}
+a{color:#111111}a:hover{color:#850F36}
+</style>
+<style>
+@font-face{font-family:"Right Grotesk";src:url("/fonts/right-grotesk/PPRightGrotesk-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Right Grotesk";src:url("/fonts/right-grotesk/PPRightGrotesk-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+body{margin:0}
+</style>
+</head>
+<body>
+<div style="width: 1190px; height: 1684px; position: relative; box-sizing: border-box; padding: 64px 64px 140px; background: #FFFFFF; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 20px; line-height: 30px; font-variant-numeric: tabular-nums;">
+  <div style="position: absolute; left: 0; top: 0; width: 1190px; height: 200px;">
+    <div style="width: 1190px; height: 200px; position: relative; box-sizing: border-box; color: #111111; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;">
+  
+    <div style="position: absolute; left: 64px; right: 64px; top: 64px; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: 22.7px; align-items: start; font-size: 20px; line-height: 30px; font-family: Helvetica Neue, Helvetica, Arial, sans-serif;">
+      <img src="__LOCKUP__" alt="VOYAGER" style="grid-column: 1 / 4; height: 71.4px; width: auto; display: block;">
+      <div style="grid-column: 10 / 13;">voyager.example<br>hello@voyager.example<br>+354 555 0142</div>
+    </div>
+  
+  
+  
+</div>
+  </div>
+  <div style="height: 90px;"></div>
+  <div style="margin-top: 72px; display: flex; flex-direction: column; gap: 30px;">
+    <div style="display: grid; grid-template-columns: 1fr 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <ul style="margin: 0; padding-left: 34px; list-style-type: disc;">
+        <li>Identity</li>
+        <li>Verbal identity</li>
+        <li>[Deliverable]</li>
+      </ul>
+      <ul style="margin: 0; padding-left: 34px; list-style-type: '–  ';">
+        <li>[Deliverable]</li>
+        <li>[Deliverable]</li>
+        <li>[Deliverable]</li>
+      </ul>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Bullet · dot / dash<br>Indent 17 pt, text 10/15</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <ol style="margin: 0; padding-left: 34px; list-style-type: decimal;">
+        <li>Kickoff workshop</li>
+        <li>Naming round</li>
+        <li>Identity concepts</li>
+      </ol>
+      <ol style="margin: 0; padding-left: 34px; list-style-type: lower-alpha;">
+        <li>Starter tier</li>
+        <li>Full tier</li>
+        <li>Extension later</li>
+      </ol>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Numbered / lettered<br>Same indent as bullets</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <ul style="margin: 0; padding-left: 34px; list-style-type: disc;">
+        <li>M1 Foundation
+          <ul style="margin: 0; padding-left: 34px; list-style-type: '–  ';">
+            <li>Identity
+              <ul style="margin: 0; padding-left: 34px; list-style-type: circle; color: #666666; font-size: 17px; line-height: 25.5px;">
+                <li>Logo, color, type</li>
+                <li>Icon system</li>
+              </ul>
+            </li>
+            <li>[Deliverable]</li>
+          </ul>
+        </li>
+        <li>M2 Applications</li>
+      </ul>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Nested · 3 levels<br>Dot → dash → ring<br>Level 3 drops to small gray</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <ul style="margin: 0; padding-left: 34px; list-style-type: disc;">
+        <li><b>Producer:</b> realistic names for products and services</li>
+        <li><b>Reserves:</b> names kept back for later use</li>
+        <li><b>Programs:</b> how internal initiatives are named</li>
+      </ul>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Bold lead-in<br>Term bold, colon, body</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px;">
+        <li style="display: flex; gap: 14px; align-items: center;"><span style="width: 18px; height: 18px; box-sizing: border-box; background: #111111; display: inline-flex; align-items: center; justify-content: center;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5 L5 9 L10 3" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg></span><span>Signed quote received</span></li>
+        <li style="display: flex; gap: 14px; align-items: center;"><span style="width: 18px; height: 18px; box-sizing: border-box; background: #111111; display: inline-flex; align-items: center; justify-content: center;"><svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 6.5 L5 9 L10 3" fill="none" stroke="#FFFFFF" stroke-width="2"></path></svg></span><span>First payment received</span></li>
+        <li style="display: flex; gap: 14px; align-items: center;"><span style="width: 18px; height: 18px; box-sizing: border-box; border: 1.5px solid #111111;"></span><span>Kickoff booked</span></li>
+      </ul>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Checklist<br>Box 9 pt, ink fill when done</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <div style="display: flex; flex-direction: column; font-size: 18px; line-height: 26px;">
+        <div style="display: grid; grid-template-columns: 192.8px 1fr; padding: 10.2px 0; border-bottom: 1.5px solid #E2E2E2;"><span style="color: #888888;">Revisions</span><span>Two consolidated feedback rounds per milestone</span></div>
+        <div style="display: grid; grid-template-columns: 192.8px 1fr; padding: 10.2px 0; border-bottom: 1.5px solid #E2E2E2;"><span style="color: #888888;">Invoices</span><span>Due within 14 days</span></div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Definition list · 9 pt<br>Term column 34 mm gray</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: center;">
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; font-size: 15px; line-height: 20px; font-weight: 700;">
+        <span style="border: 1.5px solid #850F36; color: #850F36; padding: 3px 10px;">M1</span>
+        <span style="border: 1.5px solid #850F36; color: #850F36; padding: 3px 10px;">M2</span>
+        <span style="background: #850F36; color: #FFFFFF; padding: 4.5px 11.5px;">Optional</span>
+        <span style="display: inline-flex; gap: 8px; align-items: center; color: #666666; font-weight: 400;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #850F36;"></span>To confirm</span>
+        <span style="display: inline-flex; gap: 8px; align-items: center; color: #666666; font-weight: 400;"><span style="width: 8px; height: 8px; border-radius: 50%; background: #111111;"></span>Confirmed</span>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Tags and status · 7.5 pt</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: start;">
+      <div style="background: #F6F6F6; padding: 22.7px 28px;">
+        <div style="font-size: 15px; line-height: 22px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #850F36;">Note</div>
+        <p style="margin: 6px 0 0; font-size: 18px; line-height: 26px;">If the name is replaced, the naming round is quoted separately.</p>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Callout<br>Tint #F6F6F6, rust label</div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 248.7px; column-gap: 22.7px; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 22px;">
+        <div style="height: 1.5px; background: #111111;"></div>
+        <div style="height: 1.5px; background: #E2E2E2;"></div>
+        <div style="width: 120px; height: 1.5px; background: #111111;"></div>
+      </div>
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 18px; color: #888888;">Rules · 0.75 pt<br>Ink: headers · gray: rows<br>Short: above footnotes</div>
+    </div>
+  </div>
+  <div style="position: absolute; left: 64px; right: 64px; bottom: 64px; display: flex; justify-content: space-between; font-size: 15px; line-height: 22px; color: #888888; border-top: 1.5px solid #E2E2E2; padding-top: 17px;">
+    <span>VOYAGER ehf., Foundations</span>
+    <span>F2 · Lists and blocks</span>
+  </div>
+</div>
+</body>
+</html>

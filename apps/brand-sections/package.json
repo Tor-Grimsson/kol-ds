@@ -1,0 +1,31 @@
+{
+  "name": "brand-sections",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The brand catalogue \u2014 every building block a brand is made of (colour, ramps, swatches, type, clearspace, logo displays, business card, stationery, downloads, business data), one route each, on VOYAGER, in kol-framework's PageLayout. Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-brand": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-styleguide": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "voyager-fixture": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

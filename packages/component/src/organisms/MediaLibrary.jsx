@@ -306,7 +306,17 @@ export function MediaLibraryProvider({
    * `buckets()` lists one at a time and the modal's header switches it — the browse page's
    * rule, "a client with none is one bucket and no dropdown". Switching lands at the root:
    * a prefix is one bucket's path. */
-  const buckets = useMemo(() => client?.buckets?.() ?? [], [client])
+  /* a client with a session (kol-media-client 0.7.0) hides its signed-in-only buckets until it knows: ask once,
+   * then read the list again */
+  const [sessionRev, setSessionRev] = useState(0)
+  useEffect(() => {
+    if (!client?.session) return undefined
+    let live = true
+    client.session().then(() => { if (live) setSessionRev((n) => n + 1) }, () => {})
+    return () => { live = false }
+  }, [client])
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- sessionRev re-reads the client's list
+  const buckets = useMemo(() => client?.buckets?.() ?? [], [client, sessionRev])
   const [bucket, setBucketState] = useState(() => buckets[0]?.id ?? null)
   const setBucket = (id) => { setBucketState(id); setPrefix('') }
 
