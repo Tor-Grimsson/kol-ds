@@ -36,7 +36,7 @@ export default function HubDev({ tabs = [], title = 'Dev', subtitle = 'Experimen
       {tabs.length > 1 && (
         /* chip tabs — the ones ui.kolkrabbi.io's component pages use — and nothing between them and the
          * content (HubDevChrome, kol-monitor 2026-10-18 — user: *"why are we puttin sub description below the tabs?"*) */
-        <TabsRow look="chip" tabs={tabs.map(({ value, label }) => ({ value, label }))} value={active?.value} onChange={pick} ariaLabel={title} />
+        <TabsRow variant="chip" tabs={tabs.map(({ value, label }) => ({ value, label }))} value={active?.value} onChange={pick} ariaLabel={title} />
       )}
       {active && <div className="min-w-0">{active.content}</div>}
     </PageShell>

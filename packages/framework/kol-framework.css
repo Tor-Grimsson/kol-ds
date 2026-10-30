@@ -47,6 +47,9 @@ body {
 
 :root {
   --kol-topnav-h: 0px;
+  /* WebsiteLayout's top bar (LayoutsAndWebsiteLayout, 2026-10-28; kolkrabbi.io's `--kol-nav-h`): the bar is fixed and floats
+     over the page, so a full-bleed hero reserves this. Measured 68px at 390 and 1280 — one value everywhere. */
+  --kol-nav-h: 68px;
   /* 16rem — the rail width, one number (2026-07-31). It read 260 while every
      grid track that had to line up with it read 256, so the shell header's
      brand block sat 4 off the sidebar column it exists to align to. */
@@ -253,10 +256,7 @@ body {
 /* THE TREE FADES AT ITS CLIP (user 2026-10-28: "we also are missing a fade when list clips in navrail") — the app rail's
  * `.kol-shell-rail-list--fade` and the workshop rail's `.shell-rail`, the same 3rem ramp; the element's `pb-12` (a utility,
  * which a components-layer padding here could not outrank) lets the last row scroll clear of it, so at the end of the list nothing stays faded. `NavRail variant="site" fade={false}` drops it. */
-.kol-sidenav-scroll--fade {
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
-}
+/* the site rail's fade is kol-theme's `.kol-scroll-fade` now (head and foot, by scroll state — TimeSetAndSiteRailFade) */
 /* THE SITE HERO'S WASH (SiteHero, 2026-10-28) — kol-website's `.landing-hero-overlay` and `.stack-hero-overlay`, one rule:
  * the inverse ink mixed over the image, 32 % light · 80 % dark, the theme law's selectors (explicit > system > light).
  * SiteHero's `overlay` prop sets the two variables. */

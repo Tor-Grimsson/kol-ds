@@ -1,0 +1,52 @@
+{
+  "name": "layouts",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "The Layouts app — the four frames (SiteLayout, AppShell, ShellLayout, WebsiteLayout), and under each every page type that fits it, live on VOYAGER's fixture (LayoutsAndWebsiteLayout, 2026-10-28). Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@gsap/react": "^2.1.2",
+    "@kolkrabbi/kol-brand": "workspace:^",
+    "@kolkrabbi/kol-brand-template": "workspace:*",
+    "@kolkrabbi/kol-chess": "workspace:*",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-content": "workspace:*",
+    "@kolkrabbi/kol-dashboards": "workspace:*",
+    "@kolkrabbi/kol-foundry": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-hardware": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-markdown": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
+    "@kolkrabbi/kol-print": "workspace:*",
+    "@kolkrabbi/kol-resume": "workspace:*",
+    "@kolkrabbi/kol-search": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-store": "workspace:*",
+    "@kolkrabbi/kol-styleguide": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-workshop": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "chess.js": "^1.4.0",
+    "document-fixture": "workspace:*",
+    "framer-motion": "^12.23.22",
+    "gsap": "^3.13.0",
+    "hls.js": "^1.6.15",
+    "opentype.js": "^1.3.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
+    "tailwindcss": "^4.2.4",
+    "voyager-fixture": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

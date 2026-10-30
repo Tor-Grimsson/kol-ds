@@ -44,6 +44,9 @@ import PageShell from './PageShell.jsx'
  * @param {Object} [media]      AppHub's `media` — the Media row at the rail's foot, the DS modal library over a client
  * @param {Object} [signIn]     AppHub's `signIn` — the user row at the rail's foot; the press is the consumer's
  * @param {Object} [dev]        HubDev's props — AppHub's `dev`: a dev server's `code` page at `/dev`
+ * @param {Object} [phoneNav]   AppHub's `phoneNav` — `{ more: (defaults) => rows }`, the phone's More sheet as the app edits it.
+ *                              Forwarded since HubSignedOutGutterAndSeams (kol-fxr 2026-10-29): it was not, so a Studio app
+ *                              could not reach the phone's rows at all
  * @param {'mono'|'display'} [masthead='mono']
  * @param {Object} [shell]      any AppShell prop, spread last. The rail is `NavRail preset="app"` (AppHub's), so an app
  *                              passes nothing about it; the Studio adds `barHiddenOn` — Use and every `bar: false` page
@@ -65,6 +68,7 @@ export default function AppStudio({
   media,
   signIn,
   dev,
+  phoneNav,
   walkthrough,
   shortcuts,
   themeToggle,
@@ -118,6 +122,7 @@ export default function AppStudio({
       media={media}
       signIn={signIn}
       dev={dev}
+      phoneNav={phoneNav}
       shortcuts={shortcuts}
       themeToggle={themeToggle}
       shortcutsKey={shortcutsKey}

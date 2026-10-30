@@ -42,6 +42,9 @@ import ThemeToggle from './ThemeToggle.jsx'
  * @param {Function}  onTocToggle    dock-right click → toggle TOC rail; button renders only when set (lg+)
  * @param {boolean}   navCollapsed   tints the dock-left button
  * @param {boolean}   tocCollapsed   tints the dock-right button
+ * @param {boolean}   hideTop        drop Row 1 (WorkshopSettingsRailAndBars, kol-hq 2026-10-29 — the workshop's `<` key)
+ * @param {boolean}   hideTabs       drop Row 2 (the workshop's `>` key); both hidden, the header is not drawn and the
+ *                                   content takes its height
  * @param {string}    className      extra classes on the outer bar
  */
 
@@ -89,9 +92,11 @@ export default function ShellHeader({
   onTocToggle,
   navCollapsed,
   tocCollapsed,
+  hideTop = false,
+  hideTabs = false,
   className = '',
 }) {
-  const hasTabRow = nav.length > 0 || Boolean(search) || Boolean(onNavToggle) || Boolean(onTocToggle)
+  const hasTabRow = !hideTabs && (nav.length > 0 || Boolean(search) || Boolean(onNavToggle) || Boolean(onTocToggle))
 
   /* The current tab must be ON SCREEN (WorkshopShellMobile, kol-website
    * 2026-08-25). The strip scrolls (.kol-shell-header-tabs) — but on a phone
@@ -113,9 +118,12 @@ export default function ShellHeader({
     strip.scrollLeft += t.left - s.left
   }, [activeHref])
 
+  if (hideTop && !hasTabRow) return null
+
   return (
     <header className={`kol-shell-header sticky top-0 z-50 shrink-0 bg-surface-primary ${className}`.trim()}>
       {/* Row 1: brand block + controls */}
+      {!hideTop && (
       <div className="border-b border-fg-08">
         {/* Chrome inset from --kol-pad-chrome-x, not Tailwind steps
           * (2026-07-31): the header sat on its own improvised steps while the
@@ -159,6 +167,7 @@ export default function ShellHeader({
           </div>
         </div>
       </div>
+      )}
 
       {/* Row 2: section tabs + inline search + rail toggles */}
       {hasTabRow && (

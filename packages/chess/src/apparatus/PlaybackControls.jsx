@@ -1,5 +1,5 @@
 import { Button } from '@kolkrabbi/kol-component'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 const PlaybackControls = () => {
   const {

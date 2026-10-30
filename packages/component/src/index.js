@@ -67,6 +67,8 @@ export { default as InspectorSection, default as Section } from './molecules/Ins
 export { default as SectionText, SECTION_TEXT_LEVELS } from './molecules/SectionText.jsx'
 export { default as SectionLabel } from './atoms/SectionLabel.jsx'
 export { default as SegmentedToggle } from './atoms/SegmentedToggle.jsx'
+/* a page's variants — the pinned slider button and its panel of segmented rows (OneVariantsControl, 2026-10-29; catalog's) */
+export { default as VariantsControl } from './molecules/VariantsControl.jsx'
 export { default as Stepper } from './molecules/Stepper.jsx'
 export { default as Kbd } from './atoms/Kbd.jsx'
 export { default as OptionRow } from './molecules/OptionRow.jsx'
@@ -148,7 +150,7 @@ export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
 export { default as TabsRow, TABBAR_H, TABBAR_PILL_INSET, TABBAR_PILL_TAB, tabbarPillWidth } from './molecules/TabsRow.jsx'
-/** @deprecated 2026-10-17 — alias of `TabsRow look="chip"` */
+/** @deprecated 2026-10-17 — alias of `TabsRow variant="chip"` */
 export { default as TabChips } from './molecules/TabChips.jsx'
 
 // organisms
@@ -178,7 +180,7 @@ export { default as Carousel } from './molecules/Carousel.jsx'
  * stage reaches for it instead of re-typing the button markup, which is how the
  * three in-package copies (and kol-website's CarouselNavigation) happened. */
 export { default as EmblaNav } from './molecules/EmblaNav.jsx'
-/** @deprecated 2026-10-17 — alias of `TabsRow look="stacked" placement="phone"` */
+/** @deprecated 2026-10-17 — alias of `TabsRow variant="stacked" placement="phone"` */
 export { default as MobileTabBar } from './molecules/MobileTabBar.jsx'
 export { default as ContentFilters } from './organisms/ContentFilters.jsx'
 export { default as PageHeader, PAGE_HEADER_ROLES } from './molecules/PageHeader.jsx'
@@ -228,6 +230,12 @@ export { default as MediaPlayer, VideoSheet, AudioSheet, AudioPreview, AudioPlay
 export { AudioTile, VideoTile, formatLength } from './molecules/PlayTile.jsx'
 export { default as PlaybackBar } from './molecules/PlaybackBar.jsx'
 export { default as QuickLookFrame } from './molecules/QuickLookFrame.jsx'
+export { default as FileQuickLook } from './organisms/FileQuickLook.jsx'
+export { default as FlipCard } from './utilities/FlipCard.jsx'
+export { default as Kanban } from './organisms/Kanban.jsx'
+export { default as SortableGrid } from './organisms/SortableGrid.jsx'
+export { default as ProgressBar } from './atoms/ProgressBar.jsx'
+export { default as formatAge } from './utilities/formatAge.js'
 export { default as MediaTile } from './molecules/MediaTile.jsx'
 export { default as RowMenuButton } from './molecules/RowMenuButton.jsx'
 export { default as DocPage } from './molecules/DocPage.jsx'
@@ -266,6 +274,11 @@ export { SOLO, ADJACENT, INDICATOR, glyphSize, indicatorSize } from './hooks/gly
 export { default as usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'
 export { default as useReveal } from './hooks/useReveal.js'
 export { default as useScrollSpy } from './hooks/useScrollSpy.js'
+export { default as useScrollFade } from './hooks/useScrollFade.js'
+/* the time set — Timeline · Month · Week · Day over one model (TimeSetAndSiteRailFade, 2026-10-29; kol-atlas's views) */
+export { default as TimeSet } from './organisms/TimeSet.jsx'
+export { timelineModel } from './organisms/time/model.js'
+export { renderTimeline, mountTimeline, printTimeline } from './organisms/time/view.js'
 export { default as useTilt } from './hooks/useTilt.js'
 export { default as usePlayback } from './hooks/usePlayback.js'
 export { default as useCoarsePointer } from './hooks/useCoarsePointer.js'

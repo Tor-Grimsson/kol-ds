@@ -1,8 +1,8 @@
 // Pass a `chessData` adapter (see chess/index.js) — forwarded to the table + board.
 import { useEffect, useState } from 'react'
 import { Button, FullscreenOverlay } from '@kolkrabbi/kol-component'
-import GameArchiveTable from './GameArchiveTable'
-import ChessBoardWithControls from './ChessBoardWithControls'
+import GameArchiveTable from './GameArchiveTable.jsx'
+import ChessBoardWithControls from './ChessBoardWithControls.jsx'
 
 /* The 100dvh stage (2026-07-15 ruling): the BOARD is the anchor — everything
  * fits beside it or overlays it, nothing pushes, the page never scrolls.

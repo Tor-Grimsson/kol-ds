@@ -121,6 +121,12 @@ parity with the dotfiles output — moving it onto kol-markdown is a later, meas
 seam. Its print rules are opt-in (`kol-resume.css`), never in kol-theme: they style the whole page for print. App:
 `apps/resume`, on VOYAGER's invented person (`voyager-fixture/resume`).
 
+**Four frames (2026-10-28, LayoutsAndWebsiteLayout):** `SiteLayout` (kol-framework), `AppShell` (kol-shell, with the AppHub
+and AppStudio page sets), `ShellLayout` (kol-workshop) and `WebsiteLayout` (kol-framework — kolkrabbi.io's frame, carried
+verbatim, its content as props). **Which pages fit which frame is one list, `showcase/src/nav/placements.js`**, read by
+apps/layouts, the four frame docs' `## Pages` tables and `validate-placements`, which fails a page (a `structure` organism)
+under no frame and a doc whose table differs.
+
 **APP TIER — `@kolkrabbi/design-editor` (added 2026-09-03, user ruling).** The
 editor as one embeddable `<DesignEditor />`, moved in from kol-fxr — which had
 been publishing it from its own `package.json`, so no gate, roster or taxonomy

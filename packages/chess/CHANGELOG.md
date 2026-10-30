@@ -4,6 +4,14 @@
 > lives in the repo's session logs). From here every publish adds an entry, and
 > breaking or global-surface changes are flagged **BREAKING**.
 
+## 0.10.2 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
+## 0.10.1 — 2026-10-28
+
+- **Relative imports name their file** (WebsiteFrameDuplicateModules, kol-website): every `./x` import now carries its extension. Vite serves raw source by the URL it was imported with, so `./Ctx` and `./Ctx.jsx` were two modules in dev and a provider and its hook held two contexts. `validate-relative-imports` keeps it from coming back. No behaviour change.
+
 ## 0.10.0 — 2026-08-31
 
 - **`ChessBoard dests` — legality from outside.** `Map<from, to[]>` (a plain

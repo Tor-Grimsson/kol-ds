@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-deck
 
+## 0.2.2 — 2026-10-29
+
+- **The filmstrip clears the frame's rail by itself** (LayoutsAppPages): with no `railLeft` it starts where the editor does, measured, so it never covers a site rail or an app rail, dragged or collapsed. A `railLeft` still wins.
+
 ## Unreleased — 2026-10-23
 
 - **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.

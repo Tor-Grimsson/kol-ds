@@ -2193,6 +2193,28 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   --kol-tone-pressed-image: none;
   --kol-tone-pressed-fg: var(--kol-fg-emphasis);
 }
+/* THE FILLED TAB (user 2026-10-29, on the lab rail's text tabs: *"its not so clear that these are selectable tabs"*):
+ * the tab bundle with its chip showing at rest — oq-04 in meta ink, oq-08 in full ink under the pointer, oq-16 when
+ * selected — so a row of them reads as choices before one is hovered. `TabsRow look="chip" filled`. */
+:where(.kol-btn-tab-filled) {
+  --kol-tone-bg: var(--kol-oq-04);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-fg-meta);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-fg-emphasis);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-active-bg: var(--kol-oq-12);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-oq-16);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-fg-emphasis);
+}
+.kol-btn.kol-btn-tab-filled.kol-btn-pressed:not(.kol-dd-trigger):hover {
+  background-color: var(--kol-tone-pressed-bg);
+  color: var(--kol-tone-pressed-fg);
+}
 /* the selected tab keeps its chip under the pointer — hover is for the tabs you are not on (the
  * shared hover rule would repaint it with the bundle's transparent hover ground) */
 .kol-btn.kol-btn-tab.kol-btn-pressed:not(.kol-dd-trigger):hover {

@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-10-24
+updated: 2026-10-29
 verified: 2026-07-04
 description: Every exported component by tier
 aliases:
@@ -65,13 +65,14 @@ One row per source file — a component's compositional sub-parts are members of
 | `Label` | A form-field label. |
 | `OverlayGlassPanel` | A frosted-glass content card floating over hero or carousel media. |
 | `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change. |
+| `ProgressBar` | A thin track and its fill, `value / max`, a caption (`true` → `3/7`), the ink or a status tone (2026-10-29). |
 | `Pill` | A compact rounded label — outline, subtle, inverse. |
 | `Popover` | The floating-primitive module — usePopover, PopoverPanel, and Tooltip on Floating UI. |
 | `PriceDisplay` | A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note. |
 | `ProsePreview` | A full rich-text specimen exercising the whole kol-prose stylesheet in one view. |
 | `Knob` | A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping — `variant` dial · panel. `RotaryDial` is its alias (2026-10-02). |
 | `SectionLabel` | A label with an icon affordance for collapsible sections. |
-| `SegmentedToggle` | A joined N-way segmented control. |
+| `SegmentedToggle` | A joined N-way segmented control. **Borderless by default** (the sunken tone, 2026-10-29); `variant="outlined"` draws the stroke and only where he has approved a border. A choice is a Dropdown or text tabs (`TabsRow variant="text"`) first; a toggle that stays is the borderless one. |
 | `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
 | `Tag` | A removable, optionally hashed keyword chip. |
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
@@ -110,6 +111,7 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `Dropdown` | A single-select menu with size and minimal/subtle variants. |
 | `DropdownTagFilter` | A multi-select tag filter (all selected by default). |
 | `ErrorBoundary` | Catches render errors in its subtree and shows a recovery fallback with retry and go-home. |
+| `FlipCard` | A face that turns over in place to show its back — controlled or `defaultFlipped`, faces as nodes or `({ flip }) => node`, `height` for a fixed tile whose faces scroll (from kol-hardware, 2026-10-29; `formatAge` beside it: `now` · `5h` · `3d`). |
 | `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
 | `LabeledControl` | A label-and-hint wrapper around any control. `inline text` (also on `SettingsRow`): a text value — the same tracked meta label on a 16px line, on the baseline, as tall as its text. |
@@ -130,9 +132,10 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `SplitToolButton` | A single-trigger split tool button — one click arms the last-picked variant and opens the variant menu. |
 | `Stepper` | Increment or decrement a number with +/− controls (editable field). |
 | `SwatchControls` | A paint-chip stack + eyedropper — swatch slots on ColorSwatch with an EyeDropper-API pick affordance. |
-| `TabsRow` | THE tab component — `look` underline (default) · chip (was `TabChips`) · text (was kol-shell's `TabStrip`) · stacked icon-over-label (was `MobileTabBar`); `placement="phone"` floats the stacked bar at the bottom below `md`. |
+| `TabsRow` | THE tab component — `variant` underline (the one word for a look; `look` is the 2026-10-17 spelling, read as an alias, 2026-10-30; `type="mono" | "sans" | "mono-light"` picks the row's type — `mono-light` is the sans row on JetBrains Mono at 300, 2026-10-30) (default; a tab's `icon` sits before its label, 2026-10-29) · chip (was `TabChips`; `filled` shows every chip at rest, Button `variant="tab-filled"`, 2026-10-29) · text (was kol-shell's `TabStrip`) · stacked icon-over-label (was `MobileTabBar`); `placement="phone"` floats the stacked bar at the bottom below `md`. A row wider than its column (2026-10-29): `overflow="scroll"` (default) scrolls one line sideways with a fade at the clipped edge and the active tab kept in view; `"wrap"` breaks to a second line. |
 | `VideoBlock` | A prose video block on the Figure shell — embed or poster with a caption. |
 | `InspectorRail` | The selection-routing shell of an inspector panel — nothing / canvas / one / many, with canvas winning over multi-select. The panels are the consumer's, passed as renderers. |
+| `FileQuickLook` | Quick Look over a list of files — `FullscreenOverlay` dims, `QuickLookFrame` holds the file, ‹ › pages, a download in the header; an image directly, anything else through `KindPreview` (2026-10-29). |
 | `QuickLookFrame` | Quick Look's window — one opaque raised surface for every kind that HUGS its body: header (close · pager · name · meta · actions), body, optional footer, a corner grip to resize. The body sets the width at its own ratio. |
 | `MediaTile` | One tile of the media grid — the caller's preview node over a name, selected / drop-over states, double-click opens; on a coarse pointer it carries the `···` menu. |
 | `RowMenuButton` | The `···` that opens a row's or tile's own context menu on a touch device — renders only under a coarse pointer; the menu is the caller's. |
@@ -157,7 +160,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `FeaturedCarousel` | A full-width carousel of featured media — wide image/HLS-video slides with a glass panel, prev/next, optional autoplay. |
 | `FeaturesCardSection` | The N-up feature-cards band — heading + lede over a responsive row of CardFeatureItem, capped by a CTA row. |
 | `FramedMediaBand` | A full-width media breather band — a centered, aspect-locked bordered frame around one cover image. |
-| `NavRail` | THE nav rail, three **presets** (`preset`, 2026-10-24): `app` the studio rail — the flat 48px rail that grabs open, sections enter and expand, the pill on the phone, Media · Sign in · Settings at the foot; `site` the brand rail (kol-framework's `SideNav` until 2026-10-22); `workshop` the workshop rail (kol-workshop's `ShellSidebar`, registered through `registerRailPreset`). A section whose rows hold sections enters (and exits on Back); one whose rows are leaves expands (and collapses) in place — the expanded rows a group (`.kol-rail-group`, the sm rung on a 4px gap, 2026-10-24). Moved from kol-shell 2026-10-22, which re-exports it. |
+| `NavRail` | THE nav rail, three **presets** (`preset`, 2026-10-24): `app` the studio rail — the flat 48px rail that grabs open, sections enter and expand, the pill on the phone, Media · Sign in · Settings at the foot; `site` the brand rail (kol-framework's `SideNav` until 2026-10-22; every row overridable since 0.317.0 — `case`, `caseCategory` / `caseGroup` / `casePage`, `icon` and `iconSize` at any depth, `alignIcons`, `collapsedIcons`, and per node `trailing`, `className`, `title`, `external`; [[../04-compositions/18-site-frame|Site frame]] has the table); `workshop` the workshop rail (kol-workshop's `ShellSidebar`, registered through `registerRailPreset`). A section whose rows hold sections enters (and exits on Back); one whose rows are leaves expands (and collapses) in place — the expanded rows a group (`.kol-rail-group`, the sm rung on a 4px gap, 2026-10-24). Moved from kol-shell 2026-10-22, which re-exports it. |
 | `SectionText` | **The section family's text block** (SectionSet, 2026-08-26): label · headline · body · actions, each opt-in; type by role (`headlineSize`), every default class a seam. The section-tier twin of `ContentText`. **A base** (2026-09-03): `PageHeader` is a composition of it. `actionsPlacement="inline"` (0.175.0) puts the cluster on the body's first baseline at no height; `style` reaches the root. Molecule. |
 | `SectionHero` (alias `FullBleedHero`) | Cover media + scrim; text props render as `SectionText` in its own glass panel, or `panel` renders the caller's node verbatim. |
 | `SectionSplit` (alias `FeatureSplit`) | `SectionText` beside the media frame; `align: 'right' \| 'left' \| 'center'` — media side, or one centred column. |
@@ -198,6 +201,8 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `ColorPickerPopover` | A swatch that opens a colour picker — saturation square, hue and opacity strips, hex; ⌥-click resets to `defaultValue`. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
 | `StackHero` | A blog hero on FullBleedHero — cover media + title/lede, with a tall variant. |
+| `Kanban` | Cards in columns: controlled (`columns`, `cards`, `onMove(id, column, beforeId)`), drag within or between columns or ‹ ›, outside drops by a `dataTransfer` key (`externalType` · `onExternalDrop`); `renderCard` · `cardActions` · `columnActions` · `footer`; stacks at 390 (2026-10-29). |
+| `SortableGrid` | `auto-fill` tracks at least `min` (280) wide, each item reordered by its handle — drag, or arrows on the focused grip; `is-dragging` · `is-drop-target` (2026-10-29). |
 | `Table` | THE data table. Columns opt into sorting with `sortable` (header is a real button, cycles asc→desc→none, sets `aria-sort`); `width="panel"` (default) \| `"column"` is the cap contract — see [[../01-foundations/05-layout-systems\|layout systems]]. Cells wear `.kol-table-pill` / `.kol-table-token`, never bare text. |
 | `WorkViewToggle` | A sliding-pill grid/list toggle with inline search (controlled). |
 | `CurveEditor` | Curve authoring — kind picker, per-kind ranges and expression fields, the epicycle term list. Fork-on-edit: the first commit forks a stock clip, the shared table is never mutated. |
@@ -242,10 +247,10 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 | `ShellHeader` | chrome | The shell top bar — brand slot, nav anchors, search field, theme toggle, trailing actions. |
 | `ThemeToggle` | chrome | A light/dark switcher persisted to localStorage. |
 | `Layout` | chrome | The outer page layout wrapper. |
-| `PageHero` (aliases `BrandHero` · `SubPageHero`) | structure | The page kit's opening band — label · title · lede, `mark` beside the text, `backTo` / `backLabel` above it — a composition of `SectionText` in the `kol-prose-*` voices (0.39.0, page-family-is-not-a-set). One hero: the two old names were one core with one optional slot each. |
+| `PageHero` (aliases `BrandHero` · `SubPageHero`) | structure | The page kit's opening band — label · title · lede, `mark` beside the text, `backTo` / `backLabel` above it — a composition of `SectionText` in the `kol-prose-*` voices (0.39.0, page-family-is-not-a-set). One hero: the two old names were one core with one optional slot each. `size`: `intro` (default, the 72dvh band) · `compact` (no min-height, `--kol-page-header-mb` below) — 0.65.0. |
 | `SiteHero` | structure | A site's landing: the full-screen image (or any media), the 32 % / 80 % inverse wash, the mark, the name, a tagline and actions, every part optional — brand's Landing class for class (2026-10-28) |
-| `CategoryPage` | structure | The foldernote — a rail category's overview from the nav tree: `PageHero` (its label, lede) over a `ContentCollection` of its pages as the article card, each page's `card` on its tree row; nothing listed by hand (2026-10-24, site-hub W4). |
-| `PageSection` | structure | A titled, labeled content section with anchor support; its head composes `SectionText` since 0.39.0 (internals only — the `kol-prose-*` voices are the base's seams). |
+| `CategoryPage` | structure | The foldernote — a rail category's overview from the nav tree: `PageHero` (its label, lede) over a `ContentCollection` of its pages as the article card, each page's `card` on its tree row; nothing listed by hand (2026-10-24, site-hub W4). `view`: `cards` (default) · `toc` (every page in the rail's order, groups as sub-headings, card or not) · `list` (the rows as a `Table`); `head`: `hero` (default) · `section` · `none` · a node; seams `pages` · `filter` · `renderItem` · `columns` (0.65.0, OverviewTocAndLibraryIcons). |
+| `PageSection` | structure | A titled, labeled content section with anchor support; its head composes `SectionText` since 0.39.0 (internals only — the `kol-prose-*` voices are the base's seams). `level`: `section` (default, h2) · `page` (the title as the page's h1) — 0.65.0. |
 | `ScrollToTop` | behavior | Resets scroll position on route change. |
 | `useTheme` | behavior | Theme-state hook — live light/dark state synced across consumers; ships with `applyTheme`, `getInitialTheme`, `THEME_STORAGE_KEY`. ThemeToggle is its UI. |
 

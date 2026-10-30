@@ -3,8 +3,8 @@ title: Print
 type: reference
 status: active
 created: 2026-10-28
-updated: 2026-10-28
-description: Markdown and stationery to A4, as PDF, DOCX and MD
+updated: 2026-10-29
+description: Markdown and stationery printed to A4
 aliases:
   - print
   - kol-print
@@ -36,7 +36,7 @@ One engine turns a kol-docs markdown file into a Kolkrabbi A4 document — the s
 | `flow` · `paginateInDocument` · `paginateHtml` · `printHtml` · `toDocxBlob` / `toDocxBuffer` · `toMarkdown` | `@kolkrabbi/kol-print` | the engine: markdown → the sheet's HTML → pages → PDF (Chrome, or the browser's print) · DOCX (`docx`) · MD |
 | `kol-print <doc.md> --studio studio.json` | `@kolkrabbi/kol-print` (bin) | the CLI: headless Chrome cuts the pages and prints the PDF; writes `NN-<slug>-<doc>.{pdf,docx,md}` |
 | `PrintStudio` | kol-styleguide | the tool: layout · project fields · markdown · the A4 sheets · PDF · DOCX · MD; templates (finished A4 boards) print as they are |
-| `A4Pages` | kol-styleguide | any React content flowed across A4 sheets (794 × 1123, 48 margins), breaks between elements |
+| `A4Pages` | kol-styleguide | any React content flowed across A4 sheets (794 × 1123, 48 margins), breaks between elements; `paged` shows one sheet at a time with QuickLookFrame's ‹ › and `n / N` |
 | `apps/print` (5210) | app | PrintStudio on AppHub over VOYAGER's studio and stationery |
 
 ## The rules

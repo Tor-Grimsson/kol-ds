@@ -7,12 +7,12 @@ import { Button, ModalProvider } from '@kolkrabbi/kol-component'
  * Usage: const setTocContent = useContext(ShellTocContext)
  * useLayoutEffect(() => { setTocContent(<MyToc />); return () => setTocContent(null) }, [])
  * No page registered + no defaultTocContent prop → no rail, layout unchanged. */
-export const ShellTocContext = createContext(null)
+export const ShellTocContext = (globalThis[Symbol.for('@kolkrabbi/kol-framework/ShellTocContext')] ??= createContext(null))
 
 /* Pages can suppress the TOC rail (e.g. hide an app-level defaultTocContent).
  * Usage: const setTocCollapsed = useContext(ShellTocCollapsedContext)
  * useLayoutEffect(() => { setTocCollapsed(true); return () => setTocCollapsed(false) }, [setTocCollapsed]) */
-export const ShellTocCollapsedContext = createContext(null)
+export const ShellTocCollapsedContext = (globalThis[Symbol.for('@kolkrabbi/kol-framework/ShellTocCollapsedContext')] ??= createContext(null))
 
 /* `getActivePage` — inert since the 2026-08-09 SideNav port (the two-level
  * elder model derives the active category from the route). No longer

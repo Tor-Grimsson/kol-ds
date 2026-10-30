@@ -26,7 +26,7 @@ export const TITLE_ROLES = {
   mono: { sm: 'kol-mono-heading-03', md: 'kol-mono-display-03', lg: 'kol-mono-display-02', xl: 'kol-mono-display-02' },
 }
 
-export const MastheadContext = createContext(null)
+export const MastheadContext = (globalThis[Symbol.for('@kolkrabbi/kol-component/MastheadContext')] ??= createContext(null))
 
 /** the masthead in effect — the page's own `masthead` prop, else the Shell's, else null */
 export function useMasthead(own) {

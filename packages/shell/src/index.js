@@ -39,6 +39,7 @@ export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOve
 export { default as AppHub } from './AppHub.jsx'
 export { default as HubHome } from './HubHome.jsx'
 export { default as HubSettings } from './HubSettings.jsx'
+export { default as HubSettingsRail, hubThemeToggle } from './HubSettingsRail.jsx'
 export { default as HubDev } from './HubDev.jsx'
 // the Studio — the Hub + Home · Library · Create · Use · pages · Settings, the workstation (apps review §6c, 2026-09-29)
 export { default as AppStudio } from './AppStudio.jsx'

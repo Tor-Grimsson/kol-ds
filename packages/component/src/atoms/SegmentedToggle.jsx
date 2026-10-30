@@ -35,8 +35,11 @@
  *               (`aria-disabled`, not the attribute — the tooltip still gives the reason),
  *               refuses the press, and ←/→ step over it. It may still be the current `value`
  *               (the ground changed under it): selected + disabled, no throw.
- *   variant   — 'default' (shipped chrome: shared outer stroke + dividers,
- *               filled active cell) | 'filled' (the state law's tiles: every
+ *   variant   — 'default' — BORDERLESS (2026-10-29, the user: *"WE DONT USE BORDER, almost NEVER … DONT USE FUCKING
+ *               BORDER unless I APPROVE it"*): the `sunken` tone, no outer stroke, the selected cell on the sunken
+ *               ground. A choice is a Dropdown or text tabs first; a toggle that stays is this one |
+ *               'outlined' (the old default: shared outer stroke + dividers, filled active cell — only where he has
+ *               approved a border) | 'filled' (the state law's tiles: every
  *               cell a surface-secondary tile with 1px transparent gaps, NO
  *               outline shell; the inset ring marks ONLY the selected cell) |
  *               'tonal' (filled tiles, but the clicked cell marks itself by
@@ -80,6 +83,8 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
     e.currentTarget.children[next]?.focus()
   }
 
+  /* the default draws borderless — the sunken tone — unless a tone is asked for; `outlined` keeps the stroke */
+  const resolvedTone = variant === 'default' && tone === 'default' ? 'sunken' : tone
   return (
     <div
       role={stateless ? 'group' : 'radiogroup'}
@@ -90,7 +95,7 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
         (variant === 'filled' || variant === 'tonal') && 'kol-seg--filled',
         variant === 'tonal' && 'kol-seg--tonal',
         size !== 'md' && `kol-seg--${size}`,
-        toneClass(tone),
+        toneClass(resolvedTone),
         className,
       ].filter(Boolean).join(' ')}
     >

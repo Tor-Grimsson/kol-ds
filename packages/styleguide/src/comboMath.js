@@ -264,6 +264,8 @@ function pickBgFromSeed(layoutColors, baseColor) {
  * @param {boolean[]} locks         Per-slot lock flags.
  * @param {string}  [baseColor]     Seed hex — switches to the seed path.
  */
+/** @deprecated 2026-10-29 — `generateColors` (colorLab.js, the one colour engine: OKLCH, base is colour 1, 2–8 colours,
+ *  jobs by look). Color Lab and Combo Lab no longer call this; it drops when nobody imports it (04-retirements.md). */
 export function generatePalette(pool, mode, currentColors, locks, baseColor) {
   let layoutColors
   let bgColor

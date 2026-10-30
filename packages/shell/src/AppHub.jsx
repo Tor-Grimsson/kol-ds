@@ -1,21 +1,16 @@
 import { useEffect, useMemo, useState } from 'react'
-/* THE TOGGLE IS THE HUB'S (user 2026-10-24: *"THIS SHOULDNT BE POSSIBLE if you were using a preset"*): kol-framework's
-   ThemeToggle, imported by its file so the framework's router-bound chrome never rides along, drawn here with the Hub's
-   props on every rail — no app passes a toggle. kol-framework is kol-shell's peer for this (ARCHITECTURE §3: the shell
-   consumes component + framework). `useTheme` is the Hub's own setting: reset hands the theme back to the system. */
-import ThemeToggle from '@kolkrabbi/kol-framework/src/ThemeToggle.jsx'
-import { useTheme } from '@kolkrabbi/kol-framework/src/theme.js'
+/* THE TOGGLE IS THE HUB'S (user 2026-10-24): kol-framework's ThemeToggle with the Hub's props, drawn by HubSettingsRail
+   (`hubThemeToggle`) and used on the page tier too — no app passes a toggle. */
 import AppShell from './AppShell.jsx'
 import HubHome from './HubHome.jsx'
 import HubSettings from './HubSettings.jsx'
+import HubSettingsRail, { hubThemeToggle } from './HubSettingsRail.jsx'
 import HubDev from './HubDev.jsx'
-import SettingsLinks, { SettingsColophon } from './SettingsLinks.jsx'
-import About from './About.jsx'
 import { warnJsx } from './warnJsx.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { Avatar, CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvider, RAIL_PRESETS, SettingsFooter, SettingsPanel, SettingsSections, ShortcutsOverlay, TabsRow, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
+import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, ShortcutsOverlay, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
 
-/* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubDev (relative) + kol-component's CommandOverlay */
+/* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubSettingsRail / HubDev (relative) + kol-component's CommandOverlay */
 
 /**
  * AppHub — An app's shell and hub in one. Shell + Hub in one call; the app passes its Tool as children (the app anatomy,
@@ -59,7 +54,9 @@ import { Avatar, CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvi
  * @param {Object}   home       HubHome's props — Home's DATA (`files`, `template`, `onOpen`, the verbs, `action`,
  *                              `filterGroups`, `views`, …; HubHomeContract 2026-10-23: the Hub draws every card).
  *                              OPT-IN (apps review 2026-09-29): no `home`, no Home page — `homePath` renders the
- *                              tool and the mark goes there (media-hub: the column browser IS the app)
+ *                              tool and the mark goes there (media-hub: the column browser IS the app).
+ *                              `home.railHidden` (HubSignedOutGutterAndSeams, 2026-10-29): the rail starts hidden on Home —
+ *                              unset, it does while Home is signed out; `\` brings it back, signing in returns it
  * @param {Array}    walkthrough  the steps Home's Walkthrough button opens
  * @param {Object}   settings   OPT-IN like AppShell's `bottomItems` (apps review 2026-09-29: *"not sure it makes sense
  *                              to neccessarily have settings manditory part of the rail"*) — no `settings`, no rail
@@ -92,12 +89,25 @@ import { Avatar, CommandOverlay, LabeledControlSection, MediaLibrary, ModalProvi
  *                              foot, opening `MediaLibrary variant="picker"` (the column browser with the preview pane,
  *                              Cancel and Use — mirror's) over `client` (kol-media-client's shape, or the media
  *                              fixture's). OPT-IN: no `media`, no row
- * @param {Object}   signIn     `{ signedIn, user?, onProfile?, onPress }` — the user row at the rail's foot. OPT-IN: no
+ * @param {Object}   phoneNav   `{ more: (defaults) => rows }` — the phone pill's More sheet, edited by the app (HubAppOwnsItsRows).
+ *                              With `home.menu` · `home.signedOutActions` · `shell.foot`, the four places the Hub draws
+ *                              rows: each takes a function of its default rows, `{ icon, label, onPress | path, avatar? }`
+ * @param {Object}   signIn     `{ signedIn, user?, onProfile?, onPress, account?, page? }` — the user row at the rail's foot. OPT-IN: no
+ *                              `page` (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user: *"we already choose which sign in to
+ *                              use, we made a artifact!!!"*): a path, or a function — signed out, every Sign in the Hub draws goes
+ *                              there instead of the DS dialog: the rail's foot row, the signed-out + and the phone's More (fxr's
+ *                              `/signin`, frame C). Signed in, nothing changes
+ *                              `account: { sections, content?, footer? }` (SettingsAccountTab, kol-fxr 2026-10-29 — *"why isnt
+ *                              account just in settings in account tab?"*): an Account tab, first in the settings rail while
+ *                              signed in — typed rows (`sections`), a node for what rows cannot say (`content`: the
+ *                              picture, Upload), and `footer: { label, onPress }` (Sign out). Without `onProfile` the
+ *                              account row opens the rail on that tab
  *                              `signIn`, no row. THE ACCOUNT (HubAccountRow, kol-fxr 2026-10-28 — user: *"I am the only user.
  *                              and we will treat me THE ONLY USER as a proper user"* · *"why does it say password for library
  *                              sync? … stupid."*): with `user: { name, avatar? }` the row is an account — signed out it reads
  *                              Sign in and the DS dialog asks Email and Password, then `onPress({ email, password })`; signed
- *                              in it draws the avatar (the initial when none) and the name, and opens `onProfile()` (the
+ *                              in it draws the picture (`avatar`) or, with none, the outline `user` glyph like every other
+ *                              row (AccountRowNoPictureIsTheIcon — *"if no image then just use outline"*), and the name, and opens `onProfile()` (the
  *                              app's profile page, which owns sign-out). Without `user` it is the shared-password row it was:
  *                              a `user` glyph and "Sign in" out, `cloud` and "Signed in" in; the password prompt, then
  *                              `onPress(password)`; signed in, the sign-out confirm, then `onPress(null)`
@@ -120,8 +130,9 @@ const SETTINGS_ROW = (path) => [{ icon: 'nav-settings', path, label: 'Settings' 
 /* the foot's two sentinels (fxr's `#media` and `#sign-in`, made the Hub's) — a press opens, never routes */
 const MEDIA_PATH = '#media'
 const SIGN_IN_PATH = '#sign-in'
-/* the signed-in account row's glyph is the user (HubAccountRow): a name no set ships, drawn by the rail's icon component as
- * the Avatar at the glyph's 20; a phone's pill and More draw the `user` glyph in its place */
+/* the signed-in account row's glyph (HubAccountRow): a name no set ships, drawn by the rail's icon component as the
+ * picture at the glyph's 20 when the user has one, else the outline `user` glyph (AccountRowNoPictureIsTheIcon, 2026-10-29 —
+ * the initial disc read as a foreign icon set); a phone's pill and More draw the `user` glyph in its place */
 const ACCOUNT_GLYPH = '__hub-account'
 /* the drawer tier's Settings row — a sentinel too: it opens the drawer, it never routes */
 const SETTINGS_DRAWER = '#settings'
@@ -129,39 +140,9 @@ const SETTINGS_DRAWER = '#settings'
 const typing = (t) => t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName)
 const match = (label, q) => !q || String(label ?? '').toLowerCase().includes(q.toLowerCase())
 
-/* THE TOGGLE'S PROPS ARE THE HUB'S — studio-hub's `fill="none" label={false} size="sm"`, nothing else */
-const toggle = <ThemeToggle variant="button" fill="none" label={false} size="sm" tone="default" />
+/* the Hub's toggle — HubSettingsRail's, so the page and the rail draw one */
+const toggle = hubThemeToggle
 
-/* THE RAIL'S NAMED TABS — drawn here, from what the Hub already holds, so a consumer passes a word and no JSX */
-const RAIL_TABS = {
-  shortcuts: {
-    label: 'Shortcuts',
-    draw: ({ shortcuts }) => <SettingsSections divided sections={shortcuts.map((s) => ({ label: s.section, rows: (s.items ?? []).map((k, i) => ({ id: k.id ?? `${i}:${k.label}`, label: k.label, value: k.combo ?? k.keys })) }))} />,
-  },
-  about: {
-    label: 'About',
-    /* the links draw under About (SettingsRailDocsTab, kol-mirror 2026-10-24): Repo's list folds in here, so the row's
-     * fourth word can be Docs and it stays one line */
-    draw: ({ app }) => (
-      <div className="flex flex-col gap-8">
-        {app.about && <LabeledControlSection label={app.name}><About about={app.about} /></LabeledControlSection>}
-        {app.links?.length > 0 && <LabeledControlSection label="Links"><SettingsLinks links={app.links} /></LabeledControlSection>}
-        <SettingsColophon />
-      </div>
-    ),
-  },
-  docs: {
-    label: 'Docs',
-    /* an app's explanatory prose AS DATA — `app.docs: [{ label, paragraphs }]`, each a section in About's voice, out of
-     * the settings sections' notes (user, on mirror's rail: *"settings are so overloaded with information that its hard to
-     * navigate … we should just start a documentation tab for it"*). No JSX: `About` warns on a node */
-    draw: ({ app }) => (
-      <div className="flex flex-col gap-8">
-        {app.docs.map((d, i) => <LabeledControlSection key={d.label ?? i} label={d.label}><About about={d.paragraphs ?? d.text} /></LabeledControlSection>)}
-      </div>
-    ),
-  },
-}
 /* the rail's rows: typed, text, or nothing — a `render` row is JSX and is dropped here with a warning */
 const railSections = (sections = []) => sections.map((s) => ({
   ...s,
@@ -195,8 +176,12 @@ function HubFrame({
   shortcutsRailKey = 'S',
   masthead,
   shell,
+  /* `{ more: (defaults) => rows }` — the phone pill's More sheet, the app's edit of the Hub's rows (HubAppOwnsItsRows) */
+  phoneNav: phoneNavEdit,
   children,
 }) {
+  /* `shell.foot`: the rail's pinned foot as the app edits it — the rest of `shell` is AppShell's */
+  const { foot: footEdit, ...shellProps } = shell ?? {}
   const [sheet, setSheet] = useState(false)
   const [rail, setRail] = useState(false)
   const [search, setSearch] = useState(false)
@@ -209,8 +194,8 @@ function HubFrame({
   const { page: settingsPage = false, filters: settingsFilters = false, ...settingsProps } = settings ?? {}
   const settingsDrawer = !!settings && !settingsPage
   const [settingsTab, setSettingsTab] = useState('settings')
+  const account = signIn?.signedIn && signIn.account ? signIn.account : null
   const modal = useModal()
-  const theme = useTheme()
   /* THE DEFAULT THEME IS A ROOT ATTRIBUTE kol-framework's theme reads (`data-theme-default`): reset (`theme.clear()`)
    * and the toggle's alt-click hand the page to it, not to the OS — a dark-first app stays dark on a light-mode Mac */
   const themeDefault = defaultTheme ?? app.defaultTheme
@@ -220,27 +205,29 @@ function HubFrame({
     return () => { delete document.documentElement.dataset.themeDefault }
   }, [themeDefault])
   if (themeToggle != null) warnJsx('themeToggle', 'The Hub draws the theme toggle itself; drop the prop.')
-  /* THE RAIL'S TABS, the same four on every hub: Settings · Shortcuts · About · Docs, the three from what the app already
-   * passes — Repo's links sit under About since SettingsRailDocsTab (kol-mirror 2026-10-24: *"settings are so overloaded with
-   * information … we should just start a documentation tab for it"*), so the fourth word is the app's prose, `app.docs`, drawn
-   * when it has any; an app's `tabs` are not drawn — its rows belong under Settings (dev warns) */
+  /* the rail's tabs are HubSettingsRail's (Settings · Shortcuts · About · Docs); an app's `tabs` are not drawn — its rows
+   * belong under Settings (dev warns) */
   if (settingsDrawer && settings.tabs?.length) warnJsx('settings.tabs', 'The rail has no app tabs — put the rows under settings.sections.')
-  const railTabs = settingsDrawer ? [
-    ...(shortcuts.length ? [{ value: 'shortcuts', label: RAIL_TABS.shortcuts.label, named: RAIL_TABS.shortcuts }] : []),
-    ...((app.about || app.links?.length) ? [{ value: 'about', label: RAIL_TABS.about.label, named: RAIL_TABS.about }] : []),
-    ...(app.docs?.length ? [{ value: 'docs', label: RAIL_TABS.docs.label, named: RAIL_TABS.docs }] : []),
-  ] : []
   if (settingsDrawer && settings.content != null) warnRailJsx('content')
   const railRows = settingsDrawer ? railSections(settings.sections) : []
-  /* reset, live everywhere: the theme back to the system, then the app's own */
-  const reset = () => { theme.clear(); settings.drawer?.onReset?.() }
   /* SIGN IN ASKS IN THE DS DIALOG (review 2, § 5.2 — fxr's RailSignIn, verbatim copy): signed out, the password prompt —
    * empty cancels — then `onPress(password)`; signed in, the sign-out confirm, then `onPress(null)` */
   const askSignIn = async () => {
     if (!signIn) return
+    /* SIGN IN CAN BE A PAGE (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — frame C): every Sign in the Hub draws comes
+     * through here — the rail's foot row, the signed-out +, the phone's More — so one seam routes them all */
+    if (!signIn.signedIn && signIn.page) {
+      if (typeof signIn.page === 'function') signIn.page()
+      else onNavigate?.(signIn.page)
+      return
+    }
     /* an account: signed in opens the profile; signed out asks email and password */
-    if (signIn.user || signIn.onProfile) {
-      if (signIn.signedIn) { signIn.onProfile?.(); return }
+    if (signIn.user || signIn.onProfile || signIn.account) {
+      if (signIn.signedIn) {
+        if (signIn.onProfile) { signIn.onProfile(); return }
+        if (signIn.account) { setSettingsTab('account'); setSettingsOpen(true) }
+        return
+      }
       const got = await modal.form('Sign in', [
         { id: 'email', placeholder: 'Email', type: 'email', autoComplete: 'username' },
         { id: 'password', placeholder: 'Password', type: 'password', autoComplete: 'current-password' },
@@ -316,16 +303,27 @@ function HubFrame({
    * (no More), they stay on the page */
   const barOn = ['bar', 'pill'].includes(shell?.touch ?? RAIL_PRESETS.app.phone)
   const onHome = home && currentPath === homePath
-  const homeActions = onHome && barOn ? [
+  /* the signed-in account as a row — Home's menu and the phone's More end on it (HomeMenuAccountRow) */
+  const accountAction = signIn?.signedIn && (signIn.user || signIn.account || signIn.onProfile)
+    ? { label: signIn.user?.name ?? 'Account', icon: 'user', avatar: signIn.user?.avatar, onPress: () => askSignIn() }
+    : undefined
+  const homeDefaults = onHome && barOn ? [
     ...(home.action ? [{ label: home.action.label, icon: 'plus', onPress: home.action.onClick }] : []),
     ...(walkthrough?.length ? [{ label: touring ? 'Close walkthrough' : 'Walkthrough', icon: 'book-open', onPress: () => setTouring((t) => !t) }] : []),
+    ...(accountAction ? [accountAction] : []),
   ] : []
+  const homeActions = onHome && barOn && typeof home.menu === 'function' ? home.menu(homeDefaults) ?? [] : homeDefaults
   /* SIGNED OUT (HubHomeSignedOut, 2026-10-28): Home is the stage, no files; the desk's round + carries Sign in beside New File
    * and Walkthrough; on a phone the pill is the app's chromes and More is the rail (frame A2) */
   const signedOutHome = onHome && (home.signedOut ?? (home.stage != null && !(home.files?.length)))
+  /* THE RAIL STARTS HIDDEN WHILE SIGNED OUT (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user: *"when you are signed out, we
+   * should have the rail already hidden"*): `home.railHidden` says it outright; unset, the signed-out Home hides it. `\` still
+   * brings it back, and signing in (the stage going) returns it — AppShell's `railHidden`, so no consumer hides it a frame late */
+  const { railHidden: railHiddenOpt, ...homeData } = home ?? {}
+  const railHidden = !!onHome && (railHiddenOpt ?? signedOutHome)
   const signInAction = signIn && !signIn.signedIn ? { label: 'Sign in', icon: 'user', onPress: () => askSignIn() } : undefined
   const page = onHome
-    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...home} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} signInAction={signInAction} />
+    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...homeData} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} signInAction={signInAction} accountAction={accountAction} />
     : settingsPage && currentPath === settingsPath
       ? <HubSettings app={app} shortcuts={shortcuts} themeToggle={toggle} filters={settingsFilters} {...settingsProps} drawer={settingsProps.drawer ?? true} />
       : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
@@ -335,13 +333,22 @@ function HubFrame({
    * *"why did the dev tab move? it was fine where it was. below stage"*); Settings keeps the bottom alone */
   const rows = devOn ? [...items, { icon: 'code', path: devPath, label: 'Dev' }] : items
   /* the pinned foot: Media, Sign in, Settings — each only when the app passes it */
-  const bottom = [
+  const bottomDefaults = [
     ...(media ? [{ icon: 'image', path: MEDIA_PATH, label: 'Media' }] : []),
     ...(signIn ? [signIn.signedIn && signIn.user
       ? { icon: ACCOUNT_GLYPH, path: SIGN_IN_PATH, label: signIn.user.name ?? 'Account' }
       : { icon: signIn.signedIn ? 'cloud' : 'user', path: SIGN_IN_PATH, label: signIn.signedIn ? 'Signed in' : 'Sign in' }] : []),
     ...(settings ? SETTINGS_ROW(settingsDrawer ? SETTINGS_DRAWER : settingsPath) : []),
   ]
+  /* an app's row may press rather than route (`onPress`): it travels the rail as a sentinel path, and `go` presses it */
+  const pressed = {}
+  const asRows = (list) => (list ?? []).map((r, i) => {
+    if (r.path || !r.onPress) return r
+    const path = `#row:${i}:${r.label}`
+    pressed[path] = r.onPress
+    return { ...r, path }
+  })
+  const bottom = typeof footEdit === 'function' ? asRows(footEdit(bottomDefaults)) : bottomDefaults
   /* the phone bar lists Home as a tab — the rail draws it as the mark, the bar has no mark */
   const barItems = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...rows, ...bottom.map((r) => (r.icon === ACCOUNT_GLYPH ? { ...r, icon: 'user' } : r))]
   /* the rail's glyphs, with the account's avatar where its row is */
@@ -349,9 +356,9 @@ function HubFrame({
   const railIcon = useMemo(() => {
     if (!user) return iconComponent
     const Base = iconComponent ?? Icon
-    const initial = (user.name ?? '?').trim().charAt(0).toUpperCase()
     return function HubRailIcon({ name, ...rest }) {
-      return name === ACCOUNT_GLYPH ? <Avatar initial={initial} src={user.avatar} alt="" size="xs" /> : <Base name={name} {...rest} />
+      if (name !== ACCOUNT_GLYPH) return <Base name={name} {...rest} />
+      return user.avatar ? <Avatar src={user.avatar} alt="" size="xs" /> : <Base name="user" {...rest} />
     }
   }, [iconComponent, user?.name, user?.avatar]) // eslint-disable-line react-hooks/exhaustive-deps
   /* the two sentinels open, everything else routes — the rail, the bar, ⌥-digits and ⌘K all come through here */
@@ -359,6 +366,7 @@ function HubFrame({
     if (path === MEDIA_PATH) { setMediaOpen(true); return }
     if (path === SIGN_IN_PATH) { askSignIn(); return }
     if (path === SETTINGS_DRAWER) { setSettingsOpen((v) => !v); return }
+    if (pressed[path]) { pressed[path](); return }
     return onNavigate?.(path, ...rest)
   }
 
@@ -390,13 +398,18 @@ function HubFrame({
       bottomItems={bottom}
       barItems={signedOutHome && home.chromes?.length ? home.chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress })) : barItems}
       barActions={homeActions}
-      phoneNav={signedOutHome && home.chromes?.length ? { sheetItems: [...rows, ...bottom.map((r) => ({ ...r, icon: r.icon === ACCOUNT_GLYPH ? 'user' : r.icon, foot: true }))], moreKeepsOpen: true } : undefined}
+      phoneNav={(() => {
+        const sheet = [...rows, ...bottom.map((r) => ({ ...r, icon: r.icon === ACCOUNT_GLYPH ? 'user' : r.icon, foot: true }))]
+        if (typeof phoneNavEdit?.more === 'function') return { sheetItems: asRows(phoneNavEdit.more(sheet)), moreKeepsOpen: signedOutHome || undefined }
+        return signedOutHome && home.chromes?.length ? { sheetItems: sheet, moreKeepsOpen: true } : undefined
+      })()}
       logomark={app.logomark ? { svgUrl: app.logomark, title: app.name } : undefined}
       currentPath={currentPath}
       onNavigate={go}
       iconComponent={railIcon}
       appName={app.name}
       railToggleKey={'\\'}
+      railHidden={railHidden}
       settingsPath={settingsPage ? settingsPath : undefined}
       settingsKey={settingsPage ? ',' : undefined}
       navKeys
@@ -406,7 +419,7 @@ function HubFrame({
       touch={RAIL_PRESETS.app.phone}
       masthead={masthead}
       pageWash="var(--kol-fg-02)"
-      {...shell}
+      {...shellProps}
     >
       {page}
       {/* THE SHEET IS THE ⌘K MODAL WITH NO FIELD (ShortcutsOverlayCategories, kol-monitor 2026-10-18 — user: *"I said
@@ -421,28 +434,20 @@ function HubFrame({
       {media && (
         <MediaLibrary variant="picker" open={mediaOpen} client={media.client} accept={media.accept} onClose={() => setMediaOpen(false)} onSelect={(url, meta) => { setMediaOpen(false); media.onSelect?.(url, meta) }} />
       )}
-      {/* THE RAIL tier — studio-hub's, the template (user 2026-10-24: *"In studio what kind of settings tier is there? ITS A
-        * RAIL"*): `sections` in the rail, the theme toggle (the Hub's props) and reset in its footer; with `tabs`, a text
-        * TabsRow under the header — Settings first, then the app's (Monitor: Shortcuts, About, Repo; Mirror: Performance)
-        * — like the labs rail's levels, never a page. Rows only: the Hub draws every string, so no rail can wear a class
-        * the template does not */}
-      {settingsDrawer && (
-        <SettingsPanel
+      {/* THE RAIL tier — studio-hub's, the template: HubSettingsRail (lifted out of here for kol-workshop, 2026-10-29) */}
+      {(settingsDrawer || account) && (
+        <HubSettingsRail
           open={settingsOpen}
-          variant="rail"
-          title={settings.drawer?.title ?? 'Settings'}
           onClose={() => setSettingsOpen(false)}
-          /* the footer on every rail: the toggle, and a live reset */
-          footer={<SettingsFooter onReset={reset}>{toggle}</SettingsFooter>}
-        >
-          {/* the tab row wraps in the 380 rail — five tabs (Mirror's Performance beside the Hub's three) overran it */}
-          {railTabs.length > 0 && (
-            <TabsRow look="text" size={12} tracked className="flex-wrap gap-x-6 gap-y-2" tabs={[{ id: 'settings', label: 'Settings' }, ...railTabs.map((t) => ({ id: t.value, label: t.label }))]} value={settingsTab} onChange={setSettingsTab} ariaLabel="Settings tabs" />
-          )}
-          {settingsTab === 'settings'
-            ? (railRows.length > 0 && <SettingsSections sections={railRows} divided />)
-            : railTabs.find((x) => x.value === settingsTab)?.named?.draw({ app, shortcuts })}
-        </SettingsPanel>
+          title={settings?.drawer?.title ?? 'Settings'}
+          sections={settingsDrawer ? railRows : undefined}
+          app={app}
+          shortcuts={shortcuts}
+          account={account ? { ...account, sections: account.sections && railSections(account.sections) } : undefined}
+          tab={settingsTab}
+          onTabChange={setSettingsTab}
+          onReset={settings?.drawer?.onReset}
+        />
       )}
     </AppShell>
   )

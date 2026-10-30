@@ -20,6 +20,8 @@ const GATES = [
   ['syntax', 'validate-syntax.mjs'],
   ['roster', 'validate-roster.mjs'],
   ['preview-files', 'validate-preview-files.mjs'],
+  ['placements', 'validate-placements.mjs'],
+  ['relative-imports', 'validate-relative-imports.mjs'],
   ['homes', 'validate-homes.mjs'],
   ['imports', 'validate-imports.mjs'],
   ['taxonomy', 'validate-taxonomy.mjs'],

@@ -3,8 +3,8 @@ title: Resume
 type: reference
 status: active
 created: 2026-10-28
-updated: 2026-10-28
-description: The resume kit — three treatments, cover, letter, portfolio, back, the A4 kit and its PDF export
+updated: 2026-10-29
+description: The resume kit as a package
 aliases:
   - resume
   - kol-resume
@@ -36,8 +36,8 @@ The resume kit from kol-website's apps/record, carried verbatim into `@kolkrabbi
 | `Cover` · `CoverLetter` · `Portfolio` · `Backside` | the kit's other sheets |
 | `KitPreview` | the whole kit, `mode="a4"` (true A4 sheets) or `"continuous"` (fit-to-length) |
 | `ResumeLibrary` · `ResumeSource` · `ResumeTreatment` | the host's routes: `/resume/library` · `/resume/source` · `/resume/t/:slug` |
-| `KitOptions` · `ExportButtons` · `ContactLine` · `LangToggle` | the controls; options live in the URL (`?lang` · `?pages` · `?role` · `?company`) |
-| `kitExportPlugin({ name })` | from `@kolkrabbi/kol-resume/vite`: GET `/api/export` builds the app, previews it, prints the route in headless Chrome, merges with `pdfunite` |
+| `KitOptions` · `ExportButtons` · `ContactLine` · `LangToggle` | the controls, on the system's parts (`ToggleCheckbox`, `Input`, `Button`, `PopoverPanel`); options live in the URL (`?lang` · `?pages` · `?role` · `?company`); a treatment carries them in a sticky toolbar at its top |
+| `kitExportPlugin({ name })` | from `@kolkrabbi/kol-resume/vite`: GET `/api/export` builds the app, previews it, prints the route in headless Chrome, merges with `pdfunite`; GET `/api/out` lists the files it wrote (the Library's wall) |
 | `kol-resume.css` | the print rules, opt-in for the host app (they style the whole page for print) |
 | `apps/resume` (5211) | the kit on AppHub with VOYAGER's invented person |
 

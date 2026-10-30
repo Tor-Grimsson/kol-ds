@@ -2,7 +2,8 @@ import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspen
 import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
 import ShellSidebar, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellSidebar.jsx'
-import { FullscreenOverlay, IconFrame, Rail, CommandOverlay, ShortcutsOverlay, SettingsPanel, SettingsSections, SettingsSwitch, Tooltip, useDragResize } from '@kolkrabbi/kol-component'
+import { FullscreenOverlay, IconFrame, Rail, CommandOverlay, Tooltip, useDragResize, useScrollFade } from '@kolkrabbi/kol-component'
+import { HubSettingsRail } from '@kolkrabbi/kol-shell'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { useTagMode } from '../tags/TagModeContext.jsx'
 import TagModeOverlay from '../tags/TagModeOverlay.jsx'
@@ -11,12 +12,12 @@ import { Asset } from '@kolkrabbi/kol-brand/svg'
 // Pages can register right-rail TOC content via this context.
 // Usage: const setTocContent = useContext(ShellTocContext)
 // useLayoutEffect(() => { setTocContent(<MyToc />) ; return () => setTocContent(null) }, [])
-export const ShellTocContext = createContext(null)
+export const ShellTocContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellTocContext')] ??= createContext(null))
 
 // Pages that need to fill the viewport (e.g. iframe embeds) can opt into full-height mode.
 // Usage: const setFullHeight = useContext(ShellFullHeightContext)
 // useLayoutEffect(() => { setFullHeight(true) ; return () => setFullHeight(false) }, [setFullHeight])
-export const ShellFullHeightContext = createContext(null)
+export const ShellFullHeightContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellFullHeightContext')] ??= createContext(null))
 
 // WIDTH IS THE PAGE'S DECISION (user, 2026-08-26 — "there isnt one size fits
 // all … what I want is consistency, sometimes that is done by left align …
@@ -29,12 +30,12 @@ export const ShellFullHeightContext = createContext(null)
 //                        hero, a wall that should use the room it is given
 // Usage: const setContentWidth = useContext(ShellContentWidthContext)
 // useLayoutEffect(() => { setContentWidth('none') ; return () => setContentWidth('canvas') }, [setContentWidth])
-export const ShellContentWidthContext = createContext(null)
+export const ShellContentWidthContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellContentWidthContext')] ??= createContext(null))
 
 // Pages can request the right sidebar to start collapsed.
 // Usage: const setTocCollapsed = useContext(ShellTocCollapsedContext)
 // useLayoutEffect(() => { setTocCollapsed(true) ; return () => setTocCollapsed(false) }, [setTocCollapsed])
-export const ShellTocCollapsedContext = createContext(null)
+export const ShellTocCollapsedContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellTocCollapsedContext')] ??= createContext(null))
 
 // THE LEFT RAIL IS THE PAGE'S CALL TOO (2026-09-01). The TOC had this seam and
 // the nav did not, so a landing page could shed one rail and not the other —
@@ -43,7 +44,7 @@ export const ShellTocCollapsedContext = createContext(null)
 // the header's own toggles keep working on top of it.
 // Usage: const setNavCollapsed = useContext(ShellNavCollapsedContext)
 // useLayoutEffect(() => { setNavCollapsed(true) ; return () => setNavCollapsed(false) }, [setNavCollapsed])
-export const ShellNavCollapsedContext = createContext(null)
+export const ShellNavCollapsedContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellNavCollapsedContext')] ??= createContext(null))
 
 /* THE PAGE TELLS THE RAIL WHAT IT IS ABOUT (2026-09-28, user: "the purpose of
  * the right sidebar is to list that pages content and context"). The right
@@ -54,7 +55,12 @@ export const ShellNavCollapsedContext = createContext(null)
  *   const meta = usePageMetaValue()                  — in a rail
  * Cleared on unmount, so a page that says nothing gets an empty context, never
  * the previous page's. */
-const ShellPageMetaContext = createContext({ meta: null, setMeta: null })
+/* THE SEARCH SCOPE REACHES THE RESULTS PAGE (WorkshopSearchScope, kol-hq 2026-10-29 — user: let the user choose which
+ * repos' docs are in view, *"I dont want any reinventions"*). The shell provides the space ids Settings › Search has in
+ * scope, or null for all; `SearchPage` reads it so the page and quick search cover the same spaces. */
+export const ShellSearchScopeContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellSearchScopeContext')] ??= createContext(null))
+
+const ShellPageMetaContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellPageMetaContext')] ??= createContext({ meta: null, setMeta: null }))
 
 export function usePageMeta(meta) {
   const { setMeta } = useContext(ShellPageMetaContext)
@@ -123,7 +129,7 @@ export function ShellNavColumn({ mode = 'open', children, grip, railRef }) {
     <aside
       ref={railRef}
       aria-label="Navigation"
-      className={`shell-rail shell-rail--nav shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-14 ${icons ? `shell-rail--icons ${peek ? 'is-peek' : ''}` : ''}`.trim()}
+      className={`shell-rail shell-rail--nav kol-scroll-fade shell-sidebar-sticky hidden lg:block pt-6 md:pt-6 lg:pt-8 pb-14 ${icons ? `shell-rail--icons ${peek ? 'is-peek' : ''}` : ''}`.trim()}
       onMouseEnter={icons ? () => setPeek(true) : undefined}
       onMouseLeave={icons ? () => setPeek(false) : undefined}
     >
@@ -169,7 +175,7 @@ const MainColumn = ({ children, fullHeight, width = 'canvas', padStart, padEnd }
  * below). The breakpoint here and the one in gridCols are one decision and
  * must not be stated twice differently. */
 const TocColumn = ({ children, grip, railRef }) => (
-  <aside ref={railRef} aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-14">
+  <aside ref={railRef} aria-label="Table of contents" className="shell-rail shell-rail--toc kol-scroll-fade shell-sidebar-sticky hidden xl:block pt-6 md:pt-6 lg:pt-8 pb-14">
     {grip}
     {/* The width is the grid track (--kol-shell-toc-w). An empty rail still
       * holds its column (user ruling 2026-08-01): a rail that disappears
@@ -203,7 +209,9 @@ const toSearchItem = (item, i) => ({
  *                               shared results page (kol-workshop `SearchPage`). Omitted,
  *                               Enter keeps the older behaviour: the tag browser in place.
  * @param {Array}  [settings]    extra settings sections (`SettingsSections` shape) the
- *                               consumer adds to the shell's settings drawer
+ *                               consumer adds to the Settings tab of the hub's rail
+ * @param {Object} [app]         `{ name, about, links, docs }` — the rail's About and Docs tabs, as on AppHub
+ *                               (WorkshopSettingsRailAndBars, 2026-10-29)
  * @param {string|Function} [brandLabel]  a TYPED label in the second wordmark slot instead of
  *                               the drawn WORKSHOP mark — a string, or `({ activeRoute }) => string`
  *                               so it names the space you are in
@@ -214,10 +222,17 @@ const toSearchItem = (item, i) => ({
  *                               2026-10-02): every `ShellSidebar` reads it by itself, so `mode`
  *                               is only for what else the consumer puts in the rail
  */
-const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], brandLabel, defaultTocContent, isActive: isActiveProp, actions, shortcuts = [] }) => {
+const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], app, brandLabel, defaultTocContent, isActive: isActiveProp, actions, shortcuts = [] }) => {
   const [isNavDrawerOpen, setIsNavDrawerOpen] = useState(false)
   const [prefs, setPrefs] = useState(readSettings)
-  const setPref = (key, value) => setPrefs((p) => { const next = { ...p, [key]: value }; writeSettings(next); return next })
+  /* the store is the truth — the rail keys write it directly, so a pref merges onto what is stored, never onto a stale copy */
+  const setPref = (key, value) => setPrefs(() => { const next = { ...readSettings(), [key]: value }; writeSettings(next); return next })
+  /* THE TWO BARS (WorkshopSettingsRailAndBars, kol-hq 2026-10-29 — user: *"we need ways to show hide these both and
+   * individually"*, keys *"< top, > tabs, | both"*): persisted like navHidden / tocHidden; a hidden bar is not drawn, so
+   * the scroll region below it takes its height */
+  const topHidden = prefs.topHidden === true
+  const tabsHidden = prefs.tabsHidden === true
+  const setBars = (patch) => setPrefs(() => { const next = { ...readSettings(), ...patch }; writeSettings(next); return next })
   const [navCollapsed, setNavCollapsed] = useState(() => readSettings().navHidden === true)
   /* the left rail's third state — a strip of icons that opens on hover (see ShellNavColumn) */
   const navIcons = prefs.navIcons === true
@@ -225,6 +240,9 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const [tocCollapsed, setTocCollapsed] = useState(() => readSettings().tocHidden === true)
   const navGrab = useRailGrab('kol-shell-nav', 'left', () => { setNavCollapsed(true); writeSettings({ ...readSettings(), navHidden: true }) })
   const tocGrab = useRailGrab('kol-shell-toc', 'right', () => { setTocCollapsed(true); writeSettings({ ...readSettings(), tocHidden: true }) })
+  /* both rails fade where they clip — the head once scrolled, the foot while more lies below (kol-theme `.kol-scroll-fade`) */
+  useScrollFade(navGrab.ref)
+  useScrollFade(tocGrab.ref)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
   /* ONE QUERY (user ruling 2026-08-01). The search modal's text used to live here
    * while tags lived in TagModeContext — two states, and therefore two
@@ -300,11 +318,11 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname, location.hash, location.key])
 
-  /* THE shortcut map. One list, rendered by the `S` sheet AND bound by the
-   * handler below — a shortcut that isn't in this array doesn't exist, so the
-   * sheet can never drift from the bindings. The sheet is kol-component's
-   * ShortcutsOverlay (2026-09-28): the same sheet, on the same key, as every
-   * app — it was a `?` sheet of its own here. `?` still opens it. */
+  /* THE shortcut map. One list, rendered by the `S` modal, the rail's Shortcuts
+   * tab AND bound by the handler below — a shortcut that isn't in this array
+   * doesn't exist, so neither can drift from the bindings. The modal is AppHub's
+   * (`CommandOverlay mode="shortcuts"`, WorkshopSettingsRailAndBars 2026-10-29) —
+   * it was ShortcutsOverlay's flat sheet here. `?` still opens it. */
   /* FEWEST WORDS (the showcase review W16, 2026-09-30 — user: "shortcuts overlay, too wordy"):
    * a label names the thing the key does, nothing more. `\\` hides or shows both rails at once. */
   const SHORTCUTS = [
@@ -318,6 +336,9 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       { id: 'nav', label: 'Left rail', combo: '[' },
       { id: 'toc', label: 'Right rail', combo: ']' },
       { id: 'rails', label: 'Both rails', combo: '\\' },
+      { id: 'top', label: 'Top bar', combo: '<' },
+      { id: 'tabs', label: 'Tab bar', combo: '>' },
+      { id: 'bars', label: 'Both bars', combo: '|' },
       { id: 'fold', label: 'Fold / expand all', combo: 'C' },
       { id: 'tree', label: 'Whole tree', combo: 'T' },
       { id: 'esc', label: 'Close', combo: 'Esc' },
@@ -364,6 +385,18 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
         setNavCollapsed(hide)
         setTocCollapsed(hide)
         writeSettings({ ...s, navHidden: hide, tocHidden: hide })
+      } else if (e.key === '<') {
+        e.preventDefault()
+        setBars({ topHidden: readSettings().topHidden !== true })
+      } else if (e.key === '>') {
+        e.preventDefault()
+        setBars({ tabsHidden: readSettings().tabsHidden !== true })
+      } else if (e.key === '|') {
+        /* BOTH BARS, as `\\` does the rails: any bar showing → hide both; both hidden → show both */
+        e.preventDefault()
+        const s = readSettings()
+        const hide = !(s.topHidden && s.tabsHidden)
+        setBars({ topHidden: hide, tabsHidden: hide })
       } else if (e.key === 'c' || e.key === 'C') {
         e.preventDefault()
         foldedRef.current = !foldedRef.current
@@ -432,7 +465,12 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
 
   // Adapt the old flat `routes` + callbacks to the DS ShellHeader API
   // (brand node · nav[{label,href,icon}] · isActive · onNavigate · actions slot).
-  const navItems = routes.map((r) => ({
+  /* THE SCOPE (WorkshopSearchScope, kol-hq 2026-10-29): `scope` is 'all' · 'this' · the picked space ids, and it
+   * replaces `limitToSpace` (an old `true` reads as 'this'). Search and the tab bar follow it; the active space's tab
+   * always stays, so the page you are on never disappears. null = every space; a Pick with nothing ticked reads as This. */
+  const scope = prefs.scope ?? (prefs.limitToSpace ? 'this' : 'all')
+  const scopedIds = Array.isArray(scope) && scope.length ? scope : scope !== 'all' && activeRoute ? [activeRoute.id] : null
+  const navItems = routes.filter((r) => !scopedIds || r === activeRoute || scopedIds.includes(r.id)).map((r) => ({
     label: r.label,
     href: r.path ? joinPath(r.path) : basePath,
     icon: r.icon,
@@ -491,10 +529,10 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   /* THE ENGINE IS kol-search (2026-09-28) — the search modal ran a first-substring
    * match, so `atom` ranked AppHub first on a word in its description and only
    * one row lit its match. Ranked now, every hit highlighted, and a word that
-   * names a category (`atom`) filters by it. `limitToSpace` (settings) scopes
-   * quick search to the space you are in. */
+   * names a category (`atom`) filters by it. The scope (settings) narrows quick
+   * search to the spaces in view. */
   const searchIndex = useMemo(() => createIndex((searchItems ?? []).map(toSearchItem)), [searchItems])
-  const quickScope = prefs.limitToSpace && activeRoute ? { space: activeRoute.id } : {}
+  const quickScope = scopedIds ? { space: scopedIds } : {}
   const searchResults = searchQuery
     ? search(searchIndex, searchQuery, { scope: quickScope, limit: 12 }).results.map(({ item, reasons, highlights }) => {
       const titleHit = reasons.some((r) => r.field === 'title')
@@ -517,23 +555,35 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
     navigate(q ? `${searchPath}?q=${encodeURIComponent(q)}` : searchPath)
   }
 
+  /* typed rows, the rail's shape (`type: 'switch'`) — the consumer's `settings` follow; the keys are the Shortcuts tab */
   const settingsSections = [
     { label: 'Layout', rows: [
-      { id: 'nav', label: 'Left rail', render: () => <SettingsSwitch on={!navCollapsed} onChange={(on) => { setNavCollapsed(!on); setPref('navHidden', !on) }} /> },
-      { id: 'nav-icons', label: 'Icons only', render: () => <SettingsSwitch on={navIcons} onChange={(on) => setPref('navIcons', on)} /> },
-      { id: 'toc', label: 'Right rail', render: () => <SettingsSwitch on={!tocCollapsed} onChange={(on) => { setTocCollapsed(!on); setPref('tocHidden', !on) }} /> },
+      { id: 'top', label: 'Top bar', type: 'switch', on: !topHidden, onChange: (on) => setBars({ topHidden: !on }) },
+      { id: 'tabs', label: 'Tab bar', type: 'switch', on: !tabsHidden, onChange: (on) => setBars({ tabsHidden: !on }) },
+      { id: 'nav', label: 'Left rail', type: 'switch', on: !navCollapsed, onChange: (on) => { setNavCollapsed(!on); setPref('navHidden', !on) } },
+      { id: 'nav-icons', label: 'Icons only', type: 'switch', on: navIcons, onChange: (on) => setPref('navIcons', on) },
+      { id: 'toc', label: 'Right rail', type: 'switch', on: !tocCollapsed, onChange: (on) => { setTocCollapsed(!on); setPref('tocHidden', !on) } },
     ] },
     { label: 'Search', rows: [
-      { id: 'scope', label: 'This space only', render: () => <SettingsSwitch on={!!prefs.limitToSpace} onChange={(on) => setPref('limitToSpace', on)} /> },
+      /* Pick starts from what was in view — This → the active space, All → every space */
+      { id: 'scope', label: 'Scope', type: 'choice', value: Array.isArray(scope) ? 'pick' : scope,
+        options: [{ value: 'all', label: 'All' }, { value: 'this', label: 'This' }, { value: 'pick', label: 'Pick' }],
+        onChange: (v) => setPref('scope', v !== 'pick' ? v : scopedIds ?? routes.map((r) => r.id)) },
+      ...(Array.isArray(scope) ? routes.map((r) => ({ id: `scope-${r.id}`, label: r.label, type: 'switch', on: scope.includes(r.id),
+        onChange: (on) => setPref('scope', on ? [...scope, r.id] : scope.filter((id) => id !== r.id)) })) : []),
     ] },
     ...settings,
-    { label: 'Keys', rowGap: 1, rows: SHORTCUTS.flatMap((sec) => sec.items).map((k) => ({
-      id: `key-${k.id}`, label: k.label, labelWidth: 'auto', align: 'fill',
-      value: <span className="kol-helper-12 text-fg-48 whitespace-nowrap">{k.combo}</span>,
-    })) },
   ]
+  /* the rail's reset: the theme (the rail's own), then the shell's settings back to their defaults */
+  const resetSettings = () => {
+    writeSettings({})
+    setPrefs({})
+    setNavCollapsed(false)
+    setTocCollapsed(false)
+  }
 
   return (
+    <ShellSearchScopeContext.Provider value={scopedIds}>
     <ShellPageMetaContext.Provider value={{ meta: pageMeta, setMeta: setPageMeta }}>
     <ShellTocContext.Provider value={setTocContent}>
       <ShellFullHeightContext.Provider value={setIsFullHeight}>
@@ -564,6 +614,8 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             onTocToggle={hasToc ? () => setTocCollapsed((p) => !p) : null}
             navCollapsed={navCollapsed}
             tocCollapsed={tocCollapsed}
+            hideTop={topHidden}
+            hideTabs={tabsHidden}
           />
 
           {/* ONE scroll region, edge to edge (see SHELL_SCROLL_ROOT). The chrome
@@ -660,7 +712,8 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             {tagMode.isProvided && tagMode.expanded ? <TagModeOverlay /> : null}
           </CommandOverlay>
 
-          {isShortcutsOpen && <ShortcutsOverlay shortcuts={SHORTCUTS} onClose={() => setIsShortcutsOpen(false)} />}
+          {/* `S` — AppHub's shortcuts modal: the ⌘K overlay with no field, the map's sections as open folds */}
+          <CommandOverlay open={isShortcutsOpen} mode="shortcuts" shortcuts={SHORTCUTS} currentPath={location.pathname} onClose={() => setIsShortcutsOpen(false)} />
 
           {/* THE WHOLE TREE, FROM ANY PAGE (`T`, 2026-10-02): every space's rail side by side, every
             * fold open, over the page like the search modal. Each column is the consumer's own rail
@@ -681,16 +734,18 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
             </div>
           </FullscreenOverlay>
 
-          {/* THE SHELL'S SETTINGS (2026-09-28, user: "might we also want to utilize a
-            * settings page or settings sidebar … to offload some functional
-            * settings, search settings, sidenav settings"). A right drawer over
-            * the page, the same rows the apps' settings use (SettingsSections). */}
-          {/* THE APPROVED DRAWER (2026-09-30): kol-component's `SettingsPanel` — the composition locked
-            * 2026-08-27 that media's Display settings and Trash already wear: title header, divided
-            * sections. This was a hand-built ShellDrawer + eyebrow + undivided sections. */}
-          <SettingsPanel open={isSettingsOpen} variant="rail" title="Settings" onClose={() => setIsSettingsOpen(false)}>
-            <SettingsSections sections={settingsSections} divided />
-          </SettingsPanel>
+          {/* THE SHELL'S SETTINGS ARE THE HUB'S RAIL (WorkshopSettingsRailAndBars, kol-hq 2026-10-29 — user: *"studio-hub
+            * settings have tabs … this should be implemented on workshop as well"*): kol-shell's HubSettingsRail, the one
+            * AppHub opens — Settings · Shortcuts · About · Docs, the theme toggle and reset in the footer. It was
+            * kol-component's SettingsPanel with a Keys section of its own. */}
+          <HubSettingsRail
+            open={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+            sections={settingsSections}
+            app={app}
+            shortcuts={SHORTCUTS}
+            onReset={resetSettings}
+          />
         </div>
         </ShellNavCollapsedContext.Provider>
         </ShellTocCollapsedContext.Provider>
@@ -698,6 +753,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
       </ShellFullHeightContext.Provider>
     </ShellTocContext.Provider>
     </ShellPageMetaContext.Provider>
+    </ShellSearchScopeContext.Provider>
   )
 }
 

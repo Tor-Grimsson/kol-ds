@@ -1,8 +1,8 @@
 import { useSearchParams } from 'react-router-dom'
-import LangToggle from '../components/LangToggle'
-import { kitSections } from '../lib/kitSections'
-import { KIT_PAGES } from '../lib/kitOptions'
-import { readLang } from '../lib/i18n'
+import LangToggle from '../components/LangToggle.jsx'
+import { kitSections } from '../lib/kitSections.jsx'
+import { KIT_PAGES } from '../lib/kitOptions.js'
+import { readLang } from '../lib/i18n.js'
 
 /* The kit as plain text: every section on one page, in kit order, no sheet
  * framing — the source every Library treatment renders. Section labels come

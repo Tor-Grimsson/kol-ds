@@ -3,7 +3,7 @@ title: Workshop system
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-09-28
+updated: 2026-10-28
 description: The handrolled docs subsystem in kol-workshop
 aliases:
   - workshop system
@@ -13,12 +13,14 @@ aliases:
 sources:
   - packages/workshop/src
   - packages/theme/kol-components-workshop.css
+  - showcase/src/nav/placements.js
 tags:
   - domain/compositions
   - pattern/app-shell
 related:
   - "[[01-blocks-and-sets|blocks & sets]]"
   - "[[02-shells|shells]]"
+  - "[[23-website-frame|Website frame]]"
   - "[[../03-components/01-inventory|components]]"
 ---
 
@@ -37,6 +39,21 @@ This doc is the map: what it is, what the package owns vs. reuses, the engine AP
 | **Tag system** | `TagMode` context/overlay/gate + `TagGraph` (force-directed, **the only heavy dep — `d3`**). Frontmatter `tags:` + inline `#hashtags` merged. | `kol-workshop/src/tags/` |
 | **Shell composition** | `ShellLayout` (grid + 3 contexts) + `ShellSidebar`. Composes the DS shell primitives; owns the docs-specific `FullHeight` context. Grid gutter is theme-owned (0.3.1): `.shell-content-grid` gap 32px / 48px ≥1600 — no `gap-*` utility on the element (§5: a utility outranks the layered rule and killed the wide step). | `kol-workshop/src/shell/` |
 | **Compositions** | `WorkshopSidebar` (primary + docs nav) + `WorkshopDefaultSidebar` (right rail) — example consumers copy. | `kol-workshop/src/compositions/` |
+
+## Pages
+
+<!-- placements: shell -->
+Every page that fits ShellLayout, from `showcase/src/nav/placements.js` (the list apps/layouts and `validate-placements` read).
+
+| Page | Placement |
+|---|---|
+| `DocumentationReader` | runs here today |
+| `MarkdownPage` | fits, placed for review |
+| `DocumentIndex` | fits, placed for review |
+| `SearchPage` | runs here today |
+| `ExhibitOverview` | runs here today |
+| `ExhibitPage` | runs here today |
+<!-- /placements: shell -->
 
 ## Package law
 
@@ -79,9 +96,15 @@ and `apps/search`.
   state and lives in the URL; the scope row and the facets (kind · category · tags) write `in:` ·
   `kind:` · `cat:` · `tag:` tokens back into it; "read as" chips remove a token. Without
   `searchPath`, Enter keeps the older in-place tag browser.
-- **`settings`** — sections the consumer adds to the shell's settings drawer (gear, `,`), under the
-  shell's own: the rails, quick search in this space only, the keymap. Remembered per viewer.
-- **Keys** — ⌘K and `/` search; `S` (and `?`) the sheet, kol-component's `ShortcutsOverlay`; `,` settings.
+- **`settings`** — sections the consumer adds to the Settings tab of the hub's rail (gear, `,`), under the
+  shell's own: the two bars, the rails, the search **Scope** (All · This · Pick, Pick a switch per space; 2026-10-29,
+  `kol-workshop` 0.44.0) — quick search, `SearchPage` and the tab bar cover only the scoped spaces, the active space's
+  tab always stays, an old `limitToSpace` reads as This. Remembered per viewer. The rail is
+  kol-shell's **`HubSettingsRail`**, the one AppHub opens (2026-10-29, `kol-workshop` 0.42.0): Settings · Shortcuts ·
+  About · Docs, the theme toggle and reset in its footer; **`app`** (`{ name, about, links, docs }`) feeds About and Docs.
+- **Keys** — ⌘K and `/` search; `S` (and `?`) AppHub's shortcuts modal (`CommandOverlay mode="shortcuts"`); `,` settings;
+  `<` the top bar, `>` the tab bar, `|` both — a hidden bar gives its height to the content and the rails.
+- **`DocumentationReader blocks`** — a consumer's own drawing for a block type, `{ [type]: (block, { docId, file, metadata, key }) => node | null }`; asked first, `null` falls through to the reader's own (2026-10-29, kol-hq's keycap ref cards).
 - **`brandLabel`**, **`usePageMeta`**, per-space rails, the one scroll region — [[02-shells|shells § The space table]].
 
 ## Injection seam
@@ -139,7 +162,7 @@ Lifted from `kol-monorepo/apps/web`: `components/shell/*`, `components/workshop/
 
 ## Shell keys
 
-`ShellLayout` binds one shortcut map, rendered by the `S` sheet and bound by the same handler
+`ShellLayout` binds one shortcut map, rendered by the `S` modal and the rail's Shortcuts tab and bound by the same handler
 (2026-09-30, `kol-workshop` 0.31.0). A consumer adds its own through the `shortcuts` prop
 (`{ id, label, combo, key, run }`) and they appear in the sheet under *Page*.
 

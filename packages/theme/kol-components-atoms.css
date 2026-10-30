@@ -1431,3 +1431,46 @@ a.kol-icon-frame {
   background: var(--kol-oq-08);
   color: var(--kol-fg-emphasis);
 }
+
+/* ───── THE SCROLL FADE — one rule for every box that scrolls vertically and clips (TimeSetAndSiteRailFade, 2026-10-29 —
+   user: "FADE WHAT VERTICALLY SCROLLS into clipping!!!"). The head fades once the box is scrolled, the foot while more lies
+   below; kol-component's `useScrollFade` sets the two attributes. The site rail, the app rail and the workshop's rails
+   wear it; their foot-only masks (2026-10-01, 2026-10-28) are this rule now. ───── */
+.kol-scroll-fade {
+  --kol-scroll-fade-top: 0px;
+  --kol-scroll-fade-bottom: 0px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--kol-scroll-fade-top), #000 calc(100% - var(--kol-scroll-fade-bottom)), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 var(--kol-scroll-fade-top), #000 calc(100% - var(--kol-scroll-fade-bottom)), transparent 100%);
+}
+.kol-scroll-fade[data-fade-top] { --kol-scroll-fade-top: 3rem; }
+.kol-scroll-fade[data-fade-bottom] { --kol-scroll-fade-bottom: 3rem; }
+/* sideways (TabsRowOverflow, 2026-10-29): a row that scrolls fades its clipped edge(s) — `useScrollFade(ref, true, 'x')` */
+.kol-scroll-fade--x {
+  --kol-scroll-fade-left: 0px;
+  --kol-scroll-fade-right: 0px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--kol-scroll-fade-left), #000 calc(100% - var(--kol-scroll-fade-right)), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 var(--kol-scroll-fade-left), #000 calc(100% - var(--kol-scroll-fade-right)), transparent 100%);
+}
+.kol-scroll-fade--x[data-fade-left] { --kol-scroll-fade-left: 2rem; }
+.kol-scroll-fade--x[data-fade-right] { --kol-scroll-fade-right: 2rem; }
+/* a tab row wider than its column (TabsRow `overflow="scroll"`): one line, scrolled sideways, no scrollbar; the row
+ * takes its own width and at least the column's, so a trailing control still sits at the right */
+/* THE SANS TAB (TabsRow `type="sans"`): the neutral sans he asked to try (*"try public sans?"*), 14px. Its glyph keeps the
+ * set's 1.5 stroke (his word, 2026-10-30 — a 2 stroke was tried in 0.200.2 and read heavy against the 300 text). */
+.kol-tab-sans { font-family: var(--kol-font-family-sans-neutral); }
+/* …and the same row on the mono (TabsRow `type="mono-light"`, his word 2026-10-30: *"just like this one but mono, JetBrains Mono, keep it light"*) */
+.kol-tab-mono-light { font-family: var(--kol-font-family-mono); }
+.kol-tabs-scroll {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* scrolling sideways clips vertically too — room for the text tabs' ascenders and the underline, given back by the
+   * margin so the row keeps its height (review 3, 2026-10-29: *"something is clipping"*) */
+  padding-block: 4px;
+  margin-block: -4px;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  min-width: 0; /* a flex item shrinks to its column instead of growing to the row */
+}
+.kol-tabs-scroll::-webkit-scrollbar { display: none; }
+.kol-tabs-scroll > * { flex: none; min-width: 100%; }

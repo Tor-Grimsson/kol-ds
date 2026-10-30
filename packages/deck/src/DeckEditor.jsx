@@ -32,8 +32,9 @@ import { duplicateLayers, pasteLayers, applyDeckSettings, duplicateSlide } from 
  * @param {Function} onClose   back to the decks
  * @param {Object}   mediaClient  the DS picker's client, for image layers
  * @param {Function} onUpload  (file) => Promise<url>, for image layers
- * @param {string}   railLeft  where the fixed filmstrip starts — `0` alone; a site with a sidenav passes
- *                             `var(--kol-sidenav-w)` (olina), so a dragged sidebar carries the rail
+ * @param {string}   railLeft  where the fixed filmstrip starts. Leave it out: the strip starts where the editor does,
+ *                             measured, so it clears whatever rail the frame has, dragged or collapsed (LayoutsAppPages
+ *                             2026-10-29 — a host passing nothing put the strip over the site rail). A value still wins.
  * @param {boolean}  unsaved   a deck with no row yet (Decks' NEW_DECK) — Save is live before the first edit
  */
 const TILE_W = 160
@@ -73,7 +74,20 @@ function FloatingPanel({ title, children }) {
   )
 }
 
-export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaClient, onUpload, railLeft = 0, unsaved = false }) {
+export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaClient, onUpload, railLeft, unsaved = false }) {
+  /* the frame's left edge, read off the editor's own box — the strip starts there unless the host says otherwise */
+  const edgeRef = useRef(null)
+  const [edge, setEdge] = useState(0)
+  useEffect(() => {
+    const box = edgeRef.current?.parentElement
+    if (!box || railLeft != null) return undefined
+    const read = () => setEdge(Math.round(box.getBoundingClientRect().left))
+    read()
+    const ro = new ResizeObserver(read)
+    ro.observe(box)
+    window.addEventListener('resize', read)
+    return () => { ro.disconnect(); window.removeEventListener('resize', read) }
+  }, [railLeft])
   const slug = deck.slug
   const savedAt = deck.updated_at ? Date.parse(deck.updated_at) : 0
   const [restored] = useState(() => { const d = readDraft(slug); return d && d.at > savedAt ? d.slides : null })
@@ -209,6 +223,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
        gets. It was `capped` — the site tier's container and 64px block padding — so the editor sat
        narrower and lower than the list it opens from, and scrolled past the fold under the rail. */
     <PageShell mode="fixed">
+      <span ref={edgeRef} aria-hidden="true" className="block h-0" />
       {/* WRAPS on a phone (validate:render R2, 2026-09-29): at 390 the right cluster rode over the
           left — Deck settings on Edit, File on Lock. It drops to its own line instead. */}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -243,7 +258,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
 
       {/* the filmstrip — a fixed rail on the floor */}
       <div className="fixed bottom-0 right-0 bg-oq-04 border-t border-oq-08"
-        style={{ left: railLeft, zIndex: 'var(--kol-z-sticky, 20)' }}>
+        style={{ left: railLeft ?? edge, zIndex: 'var(--kol-z-sticky, 20)' }}>
         <div className="flex items-stretch gap-3 overflow-x-auto px-6 py-4">
           {slides.map((s, i) => (
             <div key={s.id} className={`group relative shrink-0 ${dragI === i ? 'opacity-30' : ''}`} style={{ width: TILE_W }}

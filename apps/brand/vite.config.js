@@ -32,7 +32,7 @@ export default defineConfig(({ command }) => ({
   resolve: { dedupe: ['react', 'react-dom'] },
 
   // its own port beside media-hub (5175), shell (5176), notes (5177) and presentation (5178)
-  server: { port: 5179 },
+  server: { host: true, port: 5179 },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

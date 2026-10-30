@@ -1,5 +1,79 @@
 # @kolkrabbi/kol-component
 
+## 0.317.4 — 2026-10-30
+
+- **`TabsRow type="mono-light"`** — the `sans` row exactly (14px at 300, 20px glyphs at the set's 1.5 stroke, a 1px underline, the 40px row, 24 between tabs) on JetBrains Mono instead of Public Sans (the user, 2026-10-30: *"make another variant just like this one but mono, JetBrains Mono, keep it light"*). The face class is kol-theme 0.200.4's `.kol-tab-mono-light`.
+- **The underline tab's ink is the opaque ladder, label and glyph together**: oq-48 at rest, oq-80 under the pointer, oq-96 active (the user, 2026-10-30: *"hover state 80, active state 100, like the icons"*) — it was fg meta and emphasis on the label with the glyph on its own steps.
+- **`MediaLibrary infoKey="mod+i"`** (MediaLibraryInfoKey, kol-website — picking a folder in Columns showed nothing beside the list, and no key opened its facts): ⌘I (Ctrl+I elsewhere) opens the info overlay Space opens, on the pick — a file's Quick Look, a folder's facts — in Columns, Rows and Grid; in the columns the open folder is the pick. Esc closes; `false` turns it off. It shares `settingsKey`'s guard (now one `useHotkey` — no other modifiers, no repeat, not while typing). Also **`columnFolderInfo`** (default on): Columns draws the open folder's facts pane in the preview column, as the rows do for a picked folder, through a new `ColumnBrowser renderFolderPreview(level, width)`; `false` leaves the column empty as before. The library page has no pick, so it takes neither.
+
+## 0.317.3 — 2026-10-30
+
+- **`MediaLibrary previewFrame="native" | "preset"`** (MediaPreviewNativeRatio, kol-website — a certificate taller than its nearest preset lost its top and bottom): the preview pane and the column / Quick Look frame take the file's own ratio and show it whole, a very tall one capped at the media box's height; `preset` is the older look, snapped to the nearest preset and filled. Grid tiles are untouched. Also **`settingsKey`** (`','`, AppHub's guard — no modifiers, no repeat, not while typing; off when `onOpenSettings` hands the gear to a host, or on a library page without its header) toggles the settings drawer, and **`settingsOpen` / `onSettingsOpenChange`** let a host drive it, on both pages.
+- **`TabsRow type="mono" | "sans"`** names the underline row's type (his word, 2026-10-30): `mono` the default row, `sans` the neutral sans at 300 with the set's 1.5-stroke glyph, a 1px underline and the 40px row (his word, 2026-10-30). It replaces `size="md"` (0.317.1–0.317.3), a flag wearing a size's name that only `LabWindow` passed — the theme class is `.kol-tab-sans` (kol-theme 0.200.3).
+- **`TabsRow variant`** is the prop for the look — underline · chip · text · stacked — the DS's one word for it (control-chrome: "variant is the look"; the user, 2026-10-30: *"USE VARIANT"*). `look`, the 2026-10-17 coinage, is read as a silent alias so published call sites keep working; every call site in the repo says `variant`. The three deprecated aliases (`TabChips` · `MobileTabBar` · kol-shell's `TabStrip`) spell it the same.
+- **`ColorPickerPopover inline`** mode picker is the plain `Dropdown` — `variant="nav"` was a Button tone pushed through a prop Dropdown never documented (the user, 2026-10-30: *"USE REGULAR DROPDOWN"*).
+- **`ColorPickerPopover`** channel number boxes are 56 wide by the Input's own `width` — in 0.317.2 `chars` alone did not hold against the row's flex and the box stretched to the rail (caught in the review-8 pass).
+- **`TabsRow type="sans"`** wears the neutral sans (`--kol-font-family-sans-neutral`, kol-theme 0.200.3) — the user's reference, Adobe's tab strip.
+
+## 0.317.2 — 2026-10-29
+
+- **`TabsRow size="md"`** is medium weight with its glyph at a 2 stroke (review 8 — *"the problem … was thickness and stroke"*).
+- **`ColorPickerPopover inline`**: the label is the eyebrow (the rail's label style); the channel strips' number box hugs three characters by the Input's own `chars` (the utility width was not honoured in a consumer and the box ran past the rail — ref 81).
+
+## 0.317.1 — 2026-10-29
+
+- **`ColorPickerPopover inline` is Adobe's Base color panel** (BrandLabToolWindow review 7 — the user: *"MISSING ELEMENTS"*): the label row with the mode as plain text at the right (`Dropdown variant="nav"`); in HEX one field — the swatch, the hex and `hexEnd` inside the Input (`slotLeft` · `slotRight`); the square, then the hue strip; the mode's channels; and brightness, the ☀ ramp, in HEX and RGB. The eyedropper button is gone (not in the reference).
+- **`TabsRow` underline `size="md"`**: the sans body face, a 20px glyph, a 48px row, 24 between tabs (the user's ref, Adobe's tab strip). The lab window's rails wear it.
+
+## 0.317.0 — 2026-10-29
+
+- **`SegmentedToggle` is borderless by default** (the user: *"WE DONT USE BORDER, almost NEVER … DONT USE FUCKING BORDER unless I APPROVE it"*): the default variant draws the `sunken` tone, with no outer stroke. The old bordered chrome is `variant="outlined"`, for where he has approved a border. Every caller in the estate goes borderless with this release.
+- **`ColorPickerPopover trigger`**: any node opens the same panel (the lab's hex, Adobe's Edit color). Also `placement`, `alpha={false}`, and `brightness`, a brightness row with its number.
+- **`Button variant="tab-filled"`** and **`TabsRow look="chip" filled`**: the tab chip visible at rest (oq-04, meta ink), oq-08 in full ink on hover, oq-12 pressed down, oq-16 selected. The lab window's rail tabs wear it.
+- **`ColorPickerPopover inline`** takes the editor colour panel's shape: swatch, eyedropper (where the browser has `EyeDropper`), the `#` hex at six characters and `hexEnd` on top; the mode a full-width Dropdown; the hue strip over the square.
+- **`TabsRow` underline tabs take `icon`** before the label, in opaque ink (oq-96 active, oq-48 otherwise — icons take oq, never fg); `filled` chips sit 8px apart.
+- **`ColorPickerPopover modes`**: a head row (`title` and a mode Dropdown) and HEX · RGB · HSB · Lab, each channel a gradient strip with its number. Its hex field takes the wrapper's tone (no forced `filled`).
+- **`ColorPickerPopover inline`** (the same panel in the page, with a `hexEnd` slot), and **`PaletteHarmonyWheel`** scales its ring, margin and dots with `size`, where a small wheel used to throw on a negative radius.
+- **`NavRail variant="site"`: every row is overridable** (NavRailRowProps, kol-website — *"props are good … props make things flexible"*). Label case per rail (`case`), per level (`caseCategory` / `caseGroup` / `casePage`, defaults upper / upper / as-written) and per node (`case`): `as-written`, `upper`, `lower`, `title`, `sentence`, in CSS so the label stays the authored string. `icon` on any node at any depth, through `iconComponent`; `iconSize` per level (`{ category, group, page }`, 16 / 12 / 12) and per node; `alignIcons` (default on) holds one icon column across a level; `collapsedIcons: 'all'` shows an open category's icon pages on the collapsed rail (default `'category'`). Per node: `trailing`, `className`, `title`, `external`. With none passed every rail renders as before (site-hub's rail: same DOM, same pixels).
+- **`Stepper` takes its wrapper's tone**, as Input does. It forced `kol-control--filled`, so in a toned rail it drew a second tone beside a Dropdown (BrandLabToolWindow — *"2 different dropdown tones"*). Without a wrapper it is filled, as before.
+
+## 0.316.0 — 2026-10-29
+
+- **`TabsRow overflow`** (TabsRowOverflow, kol-website — six underline tabs are 394px, so record wrapped the row itself): `scroll` (default) keeps one line that scrolls sideways, no scrollbar, the clipped edge(s) fading, the active tab kept in view on change and on arrow keys; `wrap` breaks onto a second line. Every look but `stacked`. `useScrollFade(ref, enabled, 'x')` fades sideways.
+
+## 0.315.0 — 2026-10-29
+
+- **The board parts and one Quick Look** (DocumentLibraryAndBoardParts, kol-website — *"DASHBOARD NEEDS TO CONSUME DS COMPONENTS"*). `Kanban` (controlled columns and cards, drag within and between columns, ‹ ›, outside drops by a `dataTransfer` key, card/column action slots, stacks on a phone). `SortableGrid` (auto-fill tracks, reorder by a grip, drag or arrow keys). `FlipCard` moves here from kol-hardware and gains `height` (a fixed tile, each face scrolling), `defaultFlipped` and faces as `({ flip }) => node`. `ProgressBar`. `StatusChip cycle` (a click steps to the next option; `placeholder`). `formatAge`. `FileQuickLook` — the dim, the window, ‹ ›, a download: the composition DocumentIndex and record each drew by hand.
+
+## 0.314.0 — 2026-10-29
+
+- **`TimeSet`** (TimeSetAndSiteRailFade, kol-website — *"we might just need day? and then we have a full 'time' set?"*): kol-atlas's Timeline · Month · Week views, carried verbatim (`organisms/time/model.js`, `view.js`), and a new **Day**: one day by hour. It shows the phases running that day and its untimed checkpoints in an all-day lane, timed checkpoints (`time: "14:00"`) on their hour, and the Today line at the hour now. One switch, one legend, one model (`timelineModel`), a phase's detail on click; `renderTimeline` · `mountTimeline` · `printTimeline` are exported too. Its styles are kol-theme's.
+- **`useScrollFade(ref)`**: the scroll state kol-theme's `.kol-scroll-fade` fades by. It sets `data-fade-top` once a box is scrolled and `data-fade-bottom` while more lies below. The site rail (`NavRail variant="site"`) and the app rail wear it: both edges now fade where the list clips, not only a permanent foot.
+
+## 0.313.1 — 2026-10-29
+
+- **A tilted card's edge stays smooth** (TiltCardEdgeBanding, kol-website — *"banding on the type foundry card — didn't we fix this already?"*). kolkrabbi.io fixed this on 2026-08-27, but the fix was lost when the site moved onto the package. `useTilt`'s style now carries `backface-visibility: hidden`, `will-change: transform` and a 1px transparent outline, so the browser anti-aliases the rotated edge and the box keeps its own layer: no stair-stepped edge, no shimmering text. It sits in the hook, so TiltCard, TiltBento's tiles and the shelf's cards all get it; TiltCard's static branch carries it too. Checked mid-tilt on TiltCard and TiltBento.
+
+## 0.313.0 — 2026-10-29
+
+- **`VariantsControl` drags, carries a page's facts, and fits a phone** (LayoutsAppPages, kol-website). Drag the button anywhere and it stays there, remembered per app; a double-click puts it back; a drag never opens the panel, a click does. `children` render under the rows, the place for what the current variant is. A row wider than the panel scrolls sideways in its cell, so every option stays one tap away at 390.
+
+## 0.312.0 — 2026-10-29
+
+- **`VariantsControl`** (OneVariantsControl, kol-website — user: *"why are they reinventing the wheel? we already have a component for this"*): apps/catalog's `VariantsButton`, shipped as it was. It is the round `slider-01` button pinned top-right at the shell's page pad, with its shadow, opening a `PopoverPanel` of labelled `SegmentedToggle` rows. `axes = [{ key, label, values | options }]`, `value` by key, `onChange(key, value)`, and `style` lets a host whose chrome holds that corner move it. catalog, shell and rails each had a hand copy and now run on it; apps/layouts' invented pill is gone in its favour.
+
+## 0.311.3 — 2026-10-29
+
+- **`AsciiCursor` carries kolkrabbi.io's 2026-08-25 fixes** (AsciiCursorFireworkSetStateInRender, kol-website). `Firework` advances its frames on the interval and reports done from an effect guarded by a ref, so there's no `setState` in render on a click burst and the interval no longer restarts while the cursor moves. A right-click spawns the invader without swallowing the browser's context menu. The crosshair reads 0.9 in light and 0.5 in dark, where it was one washed-out 0.5. Walked: four bursts, no warning.
+
+## 0.311.2 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
+## 0.311.1 — 2026-10-28
+
+- **Relative imports name their file** (WebsiteFrameDuplicateModules, kol-website): every `./x` import now carries its extension. Vite serves raw source by the URL it was imported with, so `./Ctx` and `./Ctx.jsx` were two modules in dev and a provider and its hook held two contexts. `validate-relative-imports` keeps it from coming back. No behaviour change.
+
 ## 0.311.0 — 2026-10-28
 
 - **TabsRow `dock`** (PhoneNavDock, kol-fxr 2026-10-28): the stacked pill on a desk — shown from md up, hidden below, placed at the content's bottom-left (`--kol-shell-rail-width` + 64, 64 up) instead of centred. kol-shell's `PhoneNav variant="dock"` sets it.

@@ -993,3 +993,51 @@
 .kol-tool-palette .kol-btn-quiet { opacity: 1; }
 .kol-tool-palette .kol-btn:disabled { opacity: var(--kol-opacity-disabled); }
 .kol-tool-palette .kol-btn:not(:disabled):not(.kol-dd-trigger):active { transform: scale(0.92); }
+
+/* ── Kanban — .kol-kanban (DocumentLibraryAndBoardParts, kol-website 2026-10-29) ─────────────────
+ * record's board: one column per stage from md, stacked on a phone. The column count is the
+ * component's (`--kol-kanban-cols`); the drop states are the card's and the column's. */
+.kol-kanban {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr);
+}
+@media (min-width: 768px) {
+  .kol-kanban { grid-template-columns: repeat(var(--kol-kanban-cols, 4), minmax(0, 1fr)); }
+}
+.kol-kanban-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 10rem;
+  padding: 8px;
+  border: 1px solid var(--kol-fg-08);
+  border-radius: 4px;
+  transition: background-color 150ms;
+}
+.kol-kanban-column.is-over { background-color: var(--kol-fg-04); }
+.kol-kanban-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid var(--kol-fg-08);
+  border-radius: 4px;
+  background-color: var(--kol-surface-secondary);
+  cursor: grab;
+}
+.kol-kanban-card:active { cursor: grabbing; }
+.kol-kanban-card.is-drop-target { box-shadow: 0 -2px 0 0 var(--kol-fg-64); }
+
+/* ── SortableGrid — .kol-sortable-grid (the same ticket) ─────────────────────────────────────────
+ * record's Projects grid: auto-fill tracks at least `--kol-sortable-min` wide; the item being dragged
+ * fades, the one under it takes a dashed ring (record's kol-dashboard.css, carried). */
+.kol-sortable-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(var(--kol-sortable-min, 280px), 100%), 1fr));
+}
+.kol-sortable-item.is-dragging { opacity: 0.35; }
+.kol-sortable-item.is-drop-target { outline: 2px dashed currentColor; outline-offset: 3px; border-radius: 4px; }
+.kol-sortable-handle { cursor: grab; }
+.kol-sortable-handle:active { cursor: grabbing; }

@@ -37,4 +37,5 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[20-document\|Document page]] | A markdown file as a document page — `MarkdownPage`, `LinkPreview`, `documentTabs`, `DocumentIndex`, what the file may hold, how a folder is wired |
 | [[21-print\|Print]] | Markdown and stationery to A4 — `@kolkrabbi/kol-print` (flow, pagination, PDF · DOCX · MD, the CLI), `PrintStudio`, `A4Pages`, apps/print |
 | [[22-resume\|Resume]] | The resume kit — `@kolkrabbi/kol-resume`: three treatments, cover · letter · portfolio · back, the A4 kit, PDF export; the person through `ResumeProvider`; apps/resume |
+| [[23-website-frame\|Website frame]] | kolkrabbi.io's frame as `WebsiteLayout` — the bar, takeover, footer, intro and cursor layer, content as props; the pages it holds; apps/layouts shows all four frames |
 | [[19-rails\|Rails]] | The rail kit (RailHeader · RailTabs · RailSection · RailRow · RailHint · RailActions · RailFoot), the two tiers' widths and paddings, and the whole rails — settings, inspector, list, bottom — with `apps/rails` as the reference |

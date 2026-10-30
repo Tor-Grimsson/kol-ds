@@ -5,5 +5,5 @@ import { createContext, useContext } from 'react'
 // sidebar of their own (monitor's rack, mirror's studio) set this to replace
 // the global rail with their own nav header row. Load-bearing seam — keep it
 // a context.
-export const NavHiddenContext = createContext(null)
+export const NavHiddenContext = (globalThis[Symbol.for('@kolkrabbi/kol-shell/NavHiddenContext')] ??= createContext(null))
 export const useNavHidden = () => useContext(NavHiddenContext)

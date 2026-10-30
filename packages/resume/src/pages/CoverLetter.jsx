@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useResume } from '../data.jsx'
-import { pick } from '../lib/i18n'
-import { readKitOptions } from '../lib/kitOptions'
+import { pick } from '../lib/i18n.js'
+import { readKitOptions } from '../lib/kitOptions.js'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
 
 // The letter markdown carries `[Role]` / `[Company]` tokens. Left blank they

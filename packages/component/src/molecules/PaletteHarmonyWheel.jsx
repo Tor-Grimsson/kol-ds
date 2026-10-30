@@ -86,8 +86,11 @@ export default function PaletteHarmonyWheel({
     onHueChange?.(h)
   }
 
-  const outerR = size / 2 - 8
-  const innerR = outerR - 22
+  /* the ring, its margin and the dots were pixels tuned at the 248 default; they scale with `size` so a small wheel (the lab's
+   * harmony tiles, 2026-10-29) draws the same wheel instead of a negative radius. 248 is unchanged */
+  const k = size / 248
+  const outerR = size / 2 - 8 * k
+  const innerR = outerR - 22 * k
   const midR   = (outerR + innerR) / 2
 
   useEffect(() => {
@@ -134,7 +137,7 @@ export default function PaletteHarmonyWheel({
       const x = cx + Math.cos(a) * midR
       const y = cy + Math.sin(a) * midR
       ctx.beginPath()
-      ctx.arc(x, y, 5, 0, Math.PI * 2)
+      ctx.arc(x, y, 5 * k, 0, Math.PI * 2)
       ctx.fillStyle = `hsl(${h}, 100%, 50%)`
       ctx.fill()
       ctx.strokeStyle = MARKER_STROKE
@@ -147,14 +150,14 @@ export default function PaletteHarmonyWheel({
     const bx = cx + Math.cos(ba) * midR
     const by = cy + Math.sin(ba) * midR
     ctx.beginPath()
-    ctx.arc(bx, by, 9, 0, Math.PI * 2)
+    ctx.arc(bx, by, 9 * k, 0, Math.PI * 2)
     ctx.fillStyle = `hsl(${baseHue}, 100%, 50%)`
     ctx.fill()
     ctx.strokeStyle = MARKER_STROKE
     ctx.lineWidth = 2
     ctx.stroke()
     ctx.beginPath()
-    ctx.arc(bx, by, 10.5, 0, Math.PI * 2)
+    ctx.arc(bx, by, 10.5 * k, 0, Math.PI * 2)
     ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)'
     ctx.lineWidth = 1
     ctx.stroke()

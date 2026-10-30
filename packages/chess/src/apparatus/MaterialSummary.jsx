@@ -1,7 +1,7 @@
 import React from 'react'
 import ChessPiece from '../ChessPiece.jsx'
-import { BOARD_THEMES } from './ChessBoard'
-import { useChessControls } from '../context/ChessControlsContext'
+import { BOARD_THEMES } from './ChessBoard.jsx'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 const PIECE_MAP = {
   p: 'pawn',

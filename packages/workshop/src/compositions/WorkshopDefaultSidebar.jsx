@@ -1,6 +1,6 @@
 import { useLocation, Link } from 'react-router-dom'
 import { Icon } from '@kolkrabbi/kol-component'
-import { RailRow } from '../shell'
+import { RailRow } from '../shell/index.js'
 
 /**
  * WorkshopDefaultSidebar — EXAMPLE composition. The contextual right rail:

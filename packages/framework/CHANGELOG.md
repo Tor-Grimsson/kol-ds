@@ -1,5 +1,44 @@
 # @kolkrabbi/kol-framework
 
+## 0.65.0 — 2026-10-29
+
+- **`CategoryPage` lists its category as a TOC, its head a choice** (OverviewTocAndLibraryIcons, kol-website 2026-10-29 — user: *"I think they should just TOC the sub pages"* · *"props are good. we use variants and presets to define how things ship, but props make things flexible"*). `view`: `cards` (default, today's) · `toc` (every page of the category in the rail's order, card or not: label, `lede` or `card.body`, `trailing`; `{ label, children }` groups as sub-headings, as deep as the rail goes; the overview's own row left out) · `list` (the same rows as a `Table`, `columns` on DocumentLibrary's contract: `title · group · body · trailing`). `head`: `hero` (default) · `section` (PageSection's chapter head as the page's h1) · `none` · a node. New seams: `pages` (wins over the tree), `filter(page)`, `renderItem(page, defaultNode)`.
+- **`PageHero size`**: `intro` (default, the 72dvh brand-intro band) · `compact` (the same voices, no min-height or vertical pad, `--kol-page-header-mb` below) — user: *"the hero literally was designed to INTRO BRAND GUIDE, not to be a every goddamn page standard"*.
+- **`PageSection level`**: `section` (default, h2) · `page` (the head's title as the page's h1, same voice) for a page that opens on a section head.
+- Every current caller renders unchanged (site-hub `/research`, `/research/compare`, `/brand`: identical DOM metrics and a 0-pixel screenshot diff before/after).
+
+## 0.64.0 — 2026-10-29
+
+- **`documentLibrary`** (DocumentLibraryAndBoardParts, kol-website — *"Record and brand should treat markdown parsing and render the SAME WAY"*): record's `library()` made the DS's — rows with kind, clean title, date, language and their originals (`files` from any source, `matchOriginals` by default), folders, rail pages. Also `kindAndTitle`, `libraryLinks`, `DOCUMENT_KINDS`, `DOCUMENT_LANGS`.
+
+## 0.63.0 — 2026-10-29
+
+- **`ShellHeader` hides either row** (WorkshopSettingsRailAndBars, kol-hq): `hideTop` drops the brand row, `hideTabs` the tab row; both hidden, the header is not drawn. Absent, nothing changes.
+
+## 0.62.5 — 2026-10-29
+
+- The site rail's foot-only mask (`.kol-sidenav-scroll--fade`) is retired: the rail fades at both edges through kol-theme's `.kol-scroll-fade` (TimeSetAndSiteRailFade).
+
+## 0.62.4 — 2026-10-29
+
+- **`CategoryPage`'s header shares the cards' left edge** (LayoutsAppPages). Its `PageHero` sat in `.kol-page` with its own pad and auto margins, a flex item that shrank to its text and centred about 330px in. The hero now takes the column's edge and no 72dvh, so the title, the lede and the cards line up. record and brand get it on bump.
+
+## 0.62.3 — 2026-10-29
+
+- **`WebsiteLayout cursor` hides the native cursor** under the ASCII one (`hideCursor`), as kolkrabbi.io always did (AsciiCursorFireworkSetStateInRender).
+
+## 0.62.2 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
+## 0.62.1 — 2026-10-28
+
+- **Relative imports name their file** (WebsiteFrameDuplicateModules, kol-website): every `./x` import now carries its extension. Vite serves raw source by the URL it was imported with, so `./Ctx` and `./Ctx.jsx` were two modules in dev and a provider and its hook held two contexts. `validate-relative-imports` keeps it from coming back. No behaviour change.
+
+## 0.62.0 — 2026-10-28
+
+- **`WebsiteLayout`** (LayoutsAndWebsiteLayout, kol-website): kolkrabbi.io's frame carried verbatim — the frame, `WebsiteNavbar` (one top bar, hides on scroll), `TakeoverMenu` (the full-bleed menu, gsap in and out), `WebsiteFooter`, `RouteLoader`, the cursor layer (`CursorProvider` · `useCursor` · `CursorOverlay` · `CursorTrail`) and `WorkViewProvider` · `useWorkView`. The seams are props: `wordmark` · `logomark` · `name`, `navItems`, `takeover` (`lines` · `blurb` · `social`), `owner` (the footer line), `hideChrome` (prefixes or a function), `tools` (`routes` + `node` for the bar's tools slot, so the frame needs no kol-content), `cursor` (opt-in). Two of the site's copies were older twins of DS parts and are not duplicated: the ASCII cursor is kol-component's `AsciiCursor`, and the intro is kol-foundry's `WebsiteIntroLoader` (on foundry's `TextPressure`). `--kol-nav-h: 68px` joins kol-framework.css. gsap and framer-motion are peers (kol-component already requires them); `@gsap/react` is a dependency.
+
 ## 0.61.0 — 2026-10-28
 
 ArticleRendererHomeHeroSelection (kol-website):

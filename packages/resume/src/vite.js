@@ -7,12 +7,15 @@
  *   import { kitExportPlugin } from '@kolkrabbi/kol-resume/vite'
  *   plugins: [react(), tailwindcss(), kitExportPlugin({ name: 'ada-voyager' })]
  *
+ * It also serves the files it writes (record's `outLibraryPlugin`, carried 2026-10-29): GET /api/out lists `./out`,
+ * GET /api/out/file/<key> returns one — the Library's wall of rendered files.
+ *
  * `name` is the file stem (`<name>-kit.pdf`), the person's — nothing is baked in. The app must route the kit's treatments
  * at `/resume/t/:slug` (ResumeTreatment). `format=svg` needs the app's own `scripts/render-svg.mjs` (record's), not
  * shipped. Needs Google Chrome and poppler (`pdfunite`).
  */
 import { spawn } from 'node:child_process'
-import { readFile } from 'node:fs/promises'
+import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -20,12 +23,48 @@ import { fileURLToPath } from 'node:url'
 // (KolResumeExportNotExecutable)
 const SCRIPT = join(dirname(fileURLToPath(import.meta.url)), '..', 'bin', 'export-kit.sh')
 
+const OUT_TYPES = { pdf: 'application/pdf', svg: 'image/svg+xml', zip: 'application/zip', md: 'text/markdown' }
+const walk = async (dir, rel = '') => {
+  const rows = []
+  for (const d of await readdir(dir, { withFileTypes: true })) {
+    if (d.name.startsWith('.')) continue
+    const key = rel ? `${rel}/${d.name}` : d.name
+    if (d.isDirectory()) rows.push(...(await walk(join(dir, d.name), key)))
+    else {
+      const st = await stat(join(dir, d.name))
+      const ext = d.name.split('.').pop().toLowerCase()
+      rows.push({ key, size: st.size, uploaded: st.mtime.toISOString(), contentType: OUT_TYPES[ext] ?? 'application/octet-stream' })
+    }
+  }
+  return rows
+}
+
 export function kitExportPlugin({ name = 'kit' } = {}) {
   return {
     name: 'kit-pdf-export',
     apply: 'serve',
     configureServer(server) {
       const root = server.config.root
+      const OUT_DIR = join(server.config.root, 'out')
+      server.middlewares.use('/api/out', async (req, res) => {
+        const path = decodeURIComponent(new URL(req.url, 'http://x').pathname)
+        try {
+          if (path.startsWith('/file/')) {
+            const key = path.slice('/file/'.length)
+            const file = join(OUT_DIR, key)
+            if (!file.startsWith(OUT_DIR + '/')) { res.statusCode = 400; return res.end('bad key') }
+            res.setHeader('Content-Type', OUT_TYPES[key.split('.').pop().toLowerCase()] ?? 'application/octet-stream')
+            return res.end(await readFile(file))
+          }
+          res.setHeader('Content-Type', 'application/json')
+          /* no out/ yet (a fresh checkout — it is gitignored) is an empty wall, not an error */
+          const objects = await walk(OUT_DIR).catch((e) => { if (e?.code === 'ENOENT') return []; throw e })
+          res.end(JSON.stringify({ objects }))
+        } catch (e) {
+          res.statusCode = e?.code === 'ENOENT' ? 404 : 500
+          res.end(JSON.stringify({ objects: [], error: String(e?.message || e) }))
+        }
+      })
       server.middlewares.use('/api/export', (req, res) => {
         const params = new URL(req.url, 'http://x').searchParams
         const lang = params.get('lang') === 'is' ? 'is' : 'en'

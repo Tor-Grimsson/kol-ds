@@ -1,6 +1,6 @@
 import { useResume } from '../data.jsx'
-import { pick as f } from '../lib/i18n'
-import { yearLabel } from '../lib/resume'
+import { pick as f } from '../lib/i18n.js'
+import { yearLabel } from '../lib/resume.js'
 
 /* Layout 4 — modular Swiss grid. Numbered experience index with a date gutter,
    and a four-cell footer for the supporting facts. KOL tokens. */
@@ -22,7 +22,8 @@ export default function ResumeGrid({ lang = 'en' }) {
 
   return (
     <>
-    <div className="min-h-screen bg-[#5b5b60] print:bg-transparent">
+    {/* flow-root: the sheet's my-8 no longer collapses through the backdrop and leaves a band of page wash (LayoutsAppPages) */}
+    <div className="flow-root min-h-screen bg-[#5b5b60] print:bg-transparent">
     <main data-theme="light" className="select-text mx-auto my-8 w-[794px] max-w-full min-h-[1123px] bg-surface-primary border border-fg-08 px-14 pt-12 pb-0 print:m-0 print:w-full print:min-h-0 print:border-0">
       {/* masthead */}
       <div className="flex items-start justify-between gap-6 pb-5 border-b-2 border-fg-80">

@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-10-24
+updated: 2026-10-29
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -37,15 +37,23 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `PageHeader` | component | `SectionText` with `level` (page · app · section · content) — `title` → `headline`, `subtitle` → `body`, `titleClass` → `headlineClass` | 2026-10-22 |
 | `PAGE_HEADER_ROLES` | component | `SECTION_TEXT_LEVELS` | 2026-10-22 |
 | `SideNav` | framework | `NavRail variant="site"` from kol-component (same props; kol-framework's `SideNav` keeps the react-router read and the ThemeToggle) | 2026-10-22 |
+| `TypeScaleLab` | styleguide | `TypeLab` — the lab family's name (kol-styleguide/lab); same value, plus roles and leading | 2026-10-29 |
+| `typeScale` | styleguide | `typeLab(value).steps` | 2026-10-29 |
+| `typeScaleCss` | styleguide | `typeLabCss` (which also emits the faces, the roles and a `.type-<role>` class each) | 2026-10-29 |
+| `DEFAULT_TYPE_SCALE` | styleguide | `DEFAULT_TYPE_LAB` | 2026-10-29 |
+| `deriveColorLab` | styleguide | `colorLab` | 2026-10-29 |
+| `DEFAULT_PALETTE` | styleguide | `DEFAULT_COMBO_LAB` | 2026-10-29 |
+| `generatePalette` | styleguide | `generateColors` (colorLab.js — the one colour engine: OKLCH, base is colour 1, 2–8 colours, jobs by look) | 2026-10-29 |
+| `LockupBuilder` | styleguide | `LockupLab` — same props | 2026-10-29 |
 | `Logomark` | component | `VectorLoader` — the same component, any SVG by URL; `src` is the URL (`svgUrl` still works) | 2026-10-28 |
 | `BrandHero` | framework | `PageHero` | 2026-09-03 |
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `PageLayout` | framework | `SiteLayout` — the same frame, named for the rail variant it frames (`variant="site"`); `AppShell` now aliases `SiteLayout` too | 2026-10-24 |
 | `MenuPopover` | component | `MenuItem` | 2026-07-02 |
-| `TabChips` | component | `TabsRow look="chip"` (same props) | 2026-10-17 |
-| `MobileTabBar` | component | `TabsRow look="stacked" placement="phone"` (same props; `TABBAR_H` from TabsRow) | 2026-10-17 |
-| `TabStrip` | shell | kol-component's `TabsRow look="text"` (`options` → `tabs`) | 2026-10-17 |
+| `TabChips` | component | `TabsRow variant="chip"` (same props) | 2026-10-17 |
+| `MobileTabBar` | component | `TabsRow variant="stacked" placement="phone"` (same props; `TABBAR_H` from TabsRow) | 2026-10-17 |
+| `TabStrip` | shell | kol-component's `TabsRow variant="text"` (`options` → `tabs`) | 2026-10-17 |
 | `ShellDrawer` | component | `Rail` (same props, plus `side="top"` · `mode="push"` · `resizable`) | 2026-10-17 |
 | `ShellSearchOverlay` | component | `CommandOverlay` (same props, plus `mode` · `shortcuts` · `currentPath`) | 2026-10-17 |
 | `ColorLoader` | foundry | `LoaderIntro` | 2026-09-30 |

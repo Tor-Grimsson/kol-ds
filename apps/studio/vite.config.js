@@ -33,7 +33,7 @@ export default defineConfig(({ command }) => ({
   resolve: { dedupe: ['react', 'react-dom'] },
 
   // its own port after apps/brand-lab (5203), so they run at once
-  server: { port: 5204 },
+  server: { host: true, port: 5204 },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

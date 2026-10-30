@@ -35,7 +35,7 @@ export default defineConfig(({ command }) => ({
   },
 
   // its own port after apps/studio (5190)
-  server: { port: 5191 },
+  server: { host: true, port: 5191 },
 
   optimizeDeps: {
     include: [

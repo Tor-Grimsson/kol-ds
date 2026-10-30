@@ -41,7 +41,7 @@ export default function TiltCard({
 
   if (coarse || reduced) {
     return (
-      <div className={`relative ${className}`}>
+      <div className={`relative backface-hidden will-change-transform outline-1 outline-transparent ${className}`}>
         <div className="absolute inset-0 overflow-hidden rounded-[inherit]">
           <img src={src} alt={alt} className="w-full h-full object-cover" />
         </div>

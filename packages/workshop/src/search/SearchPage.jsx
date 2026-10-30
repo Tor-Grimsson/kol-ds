@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { getTagColor } from '@kolkrabbi/kol-markdown'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { EmptyState, Input, Tag } from '@kolkrabbi/kol-component'
 import ResultRow from './ResultRow.jsx'
+import { ShellSearchScopeContext } from '../shell/ShellLayout.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 
@@ -48,12 +49,16 @@ const readToken = (t) => (t.kind === 'term'
     ? `${t.field} ${t.value}`
     : `${t.negate ? 'not ' : ''}${t.field === 'tags' ? 'tag' : t.field}: ${t.value}${t.via === 'smart' ? ' (from the word)' : ''}`)
 
-export default function SearchPage({ items = [], spaces = [], facets = DEFAULT_FACETS, limit = 60, rowVariant = 'underline', rowMeta = 'facts', kindIcons, resultsPath }) {
+export default function SearchPage({ items = [], spaces: allSpaces = [], facets = DEFAULT_FACETS, limit = 60, rowVariant = 'underline', rowMeta = 'facts', kindIcons, resultsPath }) {
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
   const q = params.get('q') ?? ''
   const index = useMemo(() => createIndex(items), [items])
-  const out = useMemo(() => search(index, q, { limit }), [index, q, limit])
+  /* the shell's Settings › Search scope (WorkshopSearchScope, 2026-10-29): results and the scope row cover only the
+   * spaces in view; null (outside a shell, or All) = every space */
+  const inScope = useContext(ShellSearchScopeContext)
+  const spaces = inScope ? allSpaces.filter((sp) => inScope.includes(sp.value)) : allSpaces
+  const out = useMemo(() => search(index, q, { scope: inScope ? { space: inScope } : {}, limit }), [index, q, limit, inScope?.join('\n')])
 
   /* `resultsPath`: the query is written to THAT route — a box on a search home sends its first
    * keystroke straight to the results page instead of filtering in place */

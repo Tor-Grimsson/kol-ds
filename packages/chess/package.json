@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-chess",
-  "version": "0.10.0",
+  "version": "0.10.2",
   "private": false,
   "description": "Chess board, pieces and analysis",
   "license": "MIT",

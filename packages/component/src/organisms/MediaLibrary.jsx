@@ -58,7 +58,7 @@ import { filterMedia } from '../utilities/mediaSearch.js'
  * write auth does not belong in a browser-shipped package.
  */
 
-const MediaLibraryContext = createContext(null)
+const MediaLibraryContext = (globalThis[Symbol.for('@kolkrabbi/kol-component/MediaLibraryContext')] ??= createContext(null))
 
 const isImage = (ct) => !!ct && ct.startsWith('image/')
 const isVideo = (ct) => !!ct && ct.startsWith('video/')

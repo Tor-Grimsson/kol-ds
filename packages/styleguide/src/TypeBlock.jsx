@@ -1,4 +1,4 @@
-import { familyFor } from './typographyCuts'
+import { familyFor } from './typographyCuts.js'
 
 /**
  * TypeBlock — typography specimen primitive.

@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
-import { readLang } from '../lib/i18n'
+import { readLang } from '../lib/i18n.js'
 
 /** EN / IS, written to `?lang` — the one value every resume surface (source,
  * library, treatment preview, headless export) reads. English clears the param. */

@@ -1,5 +1,5 @@
 import { useResume } from '../data.jsx'
-import { pick as f } from '../lib/i18n'
+import { pick as f } from '../lib/i18n.js'
 
 /* Section labels + the "–Present" word per language. Content (bio, titles,
    bullets, …) comes from the data via `f()` below — labels are chrome. */

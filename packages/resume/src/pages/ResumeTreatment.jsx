@@ -1,13 +1,13 @@
 import { Navigate, useParams, useSearchParams } from 'react-router-dom'
-import KitPreview from './KitPreview'
-import ResumeMarginalia from './ResumeMarginalia'
-import ResumeRail from './ResumeRail'
-import ResumeGrid from './ResumeGrid'
-import ExportButtons from '../components/ExportButtons'
-import KitOptions from '../components/KitOptions'
-import { TREATMENTS } from '../lib/treatments'
-import { readKitOptions } from '../lib/kitOptions'
-import { readLang } from '../lib/i18n'
+import KitPreview from './KitPreview.jsx'
+import ResumeMarginalia from './ResumeMarginalia.jsx'
+import ResumeRail from './ResumeRail.jsx'
+import ResumeGrid from './ResumeGrid.jsx'
+import ExportButtons from '../components/ExportButtons.jsx'
+import KitOptions from '../components/KitOptions.jsx'
+import { TREATMENTS } from '../lib/treatments.js'
+import { readKitOptions } from '../lib/kitOptions.js'
+import { readLang } from '../lib/i18n.js'
 
 const LAYOUTS = { marginalia: ResumeMarginalia, rail: ResumeRail, grid: ResumeGrid }
 
@@ -28,9 +28,15 @@ export default function ResumeTreatment() {
 
   return (
     <>
-      <ExportButtons treatment={t} lang={lang} options={readKitOptions(params)} />
-      <KitOptions kit={isKit} />
-      {isKit ? <KitPreview mode={t.mode} lang={lang} /> : <Layout lang={lang} />}
+      {/* THE TOOLBAR, in flow at the treatment's top (LayoutsAppPages, 2026-10-29): record pinned the two controls over the
+        * page's top-right corner, where a host's own controls live (they sat on the variants control). Sticky, so it stays
+        * at hand as the sheet scrolls; out of the print. */}
+      <div className="sticky top-0 z-20 flex flex-wrap items-center gap-2 border-b border-fg-08 bg-surface-primary px-6 py-3 print:hidden">
+        <KitOptions kit={isKit} />
+        <ExportButtons treatment={t} lang={lang} options={readKitOptions(params)} />
+      </div>
+      {/* a sheet is print-sized: on a phone it scrolls sideways in its own box, never the whole page */}
+      <div className="overflow-x-auto">{isKit ? <KitPreview mode={t.mode} lang={lang} /> : <Layout lang={lang} />}</div>
     </>
   )
 }

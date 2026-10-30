@@ -1,6 +1,6 @@
 import { Badge } from '@kolkrabbi/kol-component'
-import CardHeader from './_shared/CardHeader'
-import LegendRow from './_shared/LegendRow'
+import CardHeader from './_shared/CardHeader.jsx'
+import LegendRow from './_shared/LegendRow.jsx'
 
 const DashFeaturedCard = ({
   badge,

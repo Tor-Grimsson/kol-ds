@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { KIT_PAGES, KIT_PAGE_IDS, readKitOptions } from '../lib/kitOptions'
-import LangToggle from './LangToggle'
+import { Button, Input, PopoverPanel, ToggleCheckbox, usePopover } from '@kolkrabbi/kol-component'
+import { KIT_PAGES, KIT_PAGE_IDS, readKitOptions } from '../lib/kitOptions.js'
+import LangToggle from './LangToggle.jsx'
 
 /**
  * The export options — language, which numbered sections compile into the
@@ -13,8 +14,11 @@ import LangToggle from './LangToggle'
  * exactly what compiles. `kit` = false (a layout treatment) shows language only.
  *
  * Two shells: `KitOptionsFields` is the bare form (the Library renders it
- * inline); the default export floats it as a light-scoped overlay over a
- * treatment preview.
+ * inline); the default export is its button and popover, in a treatment's toolbar.
+ *
+ * ON THE SYSTEM'S PARTS (LayoutsAppPages, 2026-10-29 — user: *"nothing here is DS, all inline"*): record had hand-built
+ * the checkboxes, inputs and the floating panel; they are `ToggleCheckbox`, `Input`, `Button` and the `PopoverPanel` now.
+ * The logic (everything in the URL) is record's, unchanged.
  */
 export function KitOptionsFields({ kit = true }) {
   const [params, setParams] = useSearchParams()
@@ -34,8 +38,6 @@ export function KitOptionsFields({ kit = true }) {
     set({ pages: KIT_PAGE_IDS.filter((p) => (p === id ? !pages.includes(id) : pages.includes(p))) })
 
   const head = 'kol-helper-10 text-meta uppercase'
-  const field =
-    'kol-mono-12 w-full bg-surface-primary text-emphasis border border-fg-16 rounded px-2 py-1 outline-none focus:border-fg-64'
 
   return (
     <div className="flex flex-col gap-4">
@@ -49,23 +51,14 @@ export function KitOptionsFields({ kit = true }) {
           <div className="flex flex-col gap-1.5">
             <p className={head}>Pages in PDF</p>
             {KIT_PAGES.map((p, i) => (
-              <label key={p.id} className="kol-mono-12 flex items-center gap-2 text-emphasis cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={pages.includes(p.id)}
-                  onChange={() => togglePage(p.id)}
-                  className="accent-current"
-                />
-                <span className="text-subtle">{String(i + 1).padStart(2, '0')}</span>
-                {p.label}
-              </label>
+              <ToggleCheckbox key={p.id} checked={pages.includes(p.id)} onChange={() => togglePage(p.id)} label={`${String(i + 1).padStart(2, '0')}  ${p.label}`} />
             ))}
           </div>
 
           <div className="flex flex-col gap-1.5">
             <p className={head}>Cover letter</p>
-            <input className={field} placeholder="Role" value={role} onChange={(e) => set({ role: e.target.value })} />
-            <input className={field} placeholder="Company" value={company} onChange={(e) => set({ company: e.target.value })} />
+            <Input size="sm" placeholder="Role" value={role} onChange={(e) => set({ role: e.target.value })} />
+            <Input size="sm" placeholder="Company" value={company} onChange={(e) => set({ company: e.target.value })} />
           </div>
         </>
       )}
@@ -77,22 +70,18 @@ export default function KitOptions({ kit = true }) {
   const [params] = useSearchParams()
   const { pages } = readKitOptions(params)
   const [open, setOpen] = useState(false)
+  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-start', offset: 8 })
 
   return (
-    <div className="fixed top-16 right-4 z-50 print:hidden flex flex-col items-end gap-2" data-theme="light">
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="kol-mono-12 px-3 py-1.5 rounded bg-[#121215] text-white cursor-pointer"
-      >
-        {open ? 'Close options' : kit ? `Options · ${pages.length}/${KIT_PAGE_IDS.length}` : 'Options'}
-      </button>
-
-      {open && (
-        <div className="w-64 bg-surface-tertiary border border-fg-08 rounded p-3 shadow-lg">
-          <KitOptionsFields kit={kit} />
-        </div>
-      )}
-    </div>
+    <>
+      <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex print:hidden">
+        <Button size="sm" tone="outline" pressed={open}>
+          {kit ? `Options · ${pages.length}/${KIT_PAGE_IDS.length}` : 'Options'}
+        </Button>
+      </span>
+      <PopoverPanel popover={popover} className="w-72 p-4">
+        <KitOptionsFields kit={kit} />
+      </PopoverPanel>
+    </>
   )
 }

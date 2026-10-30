@@ -61,7 +61,7 @@ export default function TransportPill({ items = [], sheetFor = {}, placement = '
         </div>
       )}
       <TabsRow
-        look="stacked"
+        variant="stacked"
         placement="phone"
         shape="pill"
         edge={top ? 'top' : 'bottom'}

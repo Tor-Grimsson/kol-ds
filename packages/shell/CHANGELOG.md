@@ -1,5 +1,36 @@
 # @kolkrabbi/kol-shell
 
+## 0.90.0 — 2026-10-29
+
+- **The signed-out Home on one gutter, the rail hidden, Sign in as a page, Sign out in the foot** (HubSignedOutGutterAndSeams, kol-fxr — *"cavnas 'padding' is a bit off"* · *"when you are signed out, we should have the rail already hidden"* · *"we already choose which sign in to use, we made a artifact!!!"* · *"wrong button for sign out, wrong sizes"*). Walked on studio-hub (`_tmp/2026-10-29-hub-signed-out/`).
+  - **One 64 gutter** on the signed-out Home's desk: the mark 64 in and 64 down (was 80 and 64), the + 64 in and 64 down on the mark's line (was 64 and 72), the dock unchanged; the walkthrough on the mark's line.
+  - **`AppShell railHidden`** — the rail's resting state: hidden on first paint and on every route entry, `railToggleKey` still toggles it, flipping the prop lands the rail on the new rest. **`home.railHidden`** says it on the Hub; unset, the signed-out Home hides the rail and signing in returns it. No consumer hides it a frame late any more.
+  - **`signIn.page`** — a path, or a function: signed out, every Sign in the Hub draws goes there instead of the DS dialog — the rail's foot row, the signed-out + and the phone's More. **`AppStudio` forwards `phoneNav`** to AppHub (it did not).
+  - **`account.footer` is the rail's foot** on the Account tab: a full-width `Button size="md"` in `RailFoot`, where the toggle and reset sit on the other tabs (frame D2) — it was an outline sm chip at the end of the tab body.
+
+## 0.89.1 — 2026-10-29
+
+- `HubSettingsRail`'s tab row asks for `overflow="wrap"` (TabsRow scrolls by default since kol-component 0.316.0), so five tabs still break to a second line in the 380 rail.
+
+## 0.89.0 — 2026-10-29
+
+- **`HubSettingsRail`** (WorkshopSettingsRailAndBars, kol-hq — *"I dont want any reinventions"*): AppHub's settings rail, lifted out as it was and exported (with `hubThemeToggle`) so kol-workshop opens the same rail — Settings · Shortcuts · About · Docs, the toggle and reset in the footer. AppHub draws it unchanged.
+
+## 0.88.0 — 2026-10-29
+
+Three kol-fxr tickets, walked on studio-hub:
+- **The app owns its rows** (HubAppOwnsItsRows — *"I dont wanna file every goddamn change"*). `home.menu`, `home.signedOutActions`, `shell.foot` and `AppHub phoneNav.more` each take `(defaults) => rows`, so an app keeps the Hub's rows and edits them, or replaces them. Rows are `{ icon, label, onPress | path, avatar? }`, and the Hub still draws them; a pressing row travels the rail as a sentinel. Absent, nothing changes.
+- **The account in Home's menu** (HomeMenuAccountRow — *"here is supposed to be user space as well"*). Signed in, the masthead's menu and the phone's More end on the account row, with the picture or the outline `user` glyph and the name. It opens the profile, or the Account tab.
+- **An Account tab in Settings** (SettingsAccountTab — *"why isnt account just in settings in account tab?"*). `signIn.account: { sections, content?, footer? }` is a tab first in the settings rail while signed in: typed rows, a node for the picture and Upload, and Sign out in its foot. Without `onProfile` the account row opens the rail on it. `MoreRows` actions take an `avatar`.
+
+## 0.87.2 — 2026-10-29
+
+- **The account row's no-picture glyph is the outline `user` icon** (AccountRowNoPictureIsTheIcon, kol-fxr — *"gross icon why are you introducing a new icon style? if no image then just use outline"*). Signed in, `HubAccountRow` drew `Avatar size="xs"`, so with no `avatar` it showed a filled disc with the initial among outline glyphs. It now draws the picture when `user.avatar` is set, and otherwise the rail's own `user` glyph, drawn like every other row. Walked on studio-hub, signed in with no picture.
+
+## 0.87.1 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
 ## 0.87.0 — 2026-10-28
 
 - **More turns to × while its sheet is open** (PhonePillMoreTurnsToClose, kol-fxr — frame A2: *"[...] that makes a list and nav turns to (X)"*): with `moreKeepsOpen` (the signed-out Home's pill, the `panel` variant) the More slot draws `x` and reads Close while the list is open, and a press closes it; the pill keeps its slots. Walked on studio-hub at iPhone 13.

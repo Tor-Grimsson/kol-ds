@@ -1,11 +1,11 @@
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { Button, MediaLibrary } from '@kolkrabbi/kol-component'
-import { KitOptionsFields } from '../components/KitOptions'
-import { TREATMENTS, exportRequest } from '../lib/treatments'
-import { useExportDownload } from '../lib/exportDownload'
-import { readKitOptions } from '../lib/kitOptions'
-import { readLang } from '../lib/i18n'
+import { Button, ContentCard, ContentCollection, LabeledControlSection, MediaLibrary, SectionText } from '@kolkrabbi/kol-component'
+import { KitOptionsFields } from '../components/KitOptions.jsx'
+import { TREATMENTS, exportRequest } from '../lib/treatments.js'
+import { useExportDownload } from '../lib/exportDownload.js'
+import { readKitOptions } from '../lib/kitOptions.js'
+import { readLang } from '../lib/i18n.js'
 
 /* Every treatment of the source, as cards: open one to preview it at
  * /resume/t/:slug, or export it from here. The options panel writes the URL
@@ -34,6 +34,14 @@ export default function ResumeLibrary() {
   const lang = readLang(params)
   const options = readKitOptions(params)
   const { busy, err, download } = useExportDownload()
+  /* the wall of rendered files needs the host's /api/out (kitExportPlugin serves it); a host without it shows no wall,
+     never an error */
+  const [hasOut, setHasOut] = useState(false)
+  useEffect(() => {
+    let live = true
+    fetch('/api/out').then((r) => (r.ok && /json/.test(r.headers.get('content-type') ?? '') ? setHasOut(live) : null)).catch(() => {})
+    return () => { live = false }
+  }, [])
   /* an export writes into ../out — re-list the wall when one finishes */
   const [refreshKey, setRefreshKey] = useState(0)
   useEffect(() => { if (!busy) setRefreshKey((k) => k + 1) }, [busy])
@@ -45,50 +53,49 @@ export default function ResumeLibrary() {
 
   return (
     <main className="p-8 md:p-12 max-w-5xl">
-      <header className="mb-8">
-        <p className="kol-helper-12 text-meta uppercase mb-2">Resume</p>
-        <h1 className="kol-sans-display-03 text-emphasis mb-2">Library</h1>
-        <p className="kol-sans-body-02 text-body max-w-prose">
-          Every treatment of the source. Open one to preview it, or export it straight from here — the options apply to every card.
-        </p>
-      </header>
+      {/* ON THE SYSTEM'S PARTS (LayoutsAppPages, 2026-10-29 — user: *"nothing here is DS, all inline"*): the page header is
+        * `SectionText`, the options a `LabeledControlSection`, the treatments the catalog's `ContentCard` in a
+        * `ContentCollection` — record had hand-built each; its logic is unchanged */}
+      <SectionText
+        level="page"
+        eyebrow="Resume"
+        headline="Library"
+        body="Every treatment of the source. Open one to preview it, or export it straight from here — the options apply to every card."
+      />
 
-      <section className="border border-fg-08 rounded p-5 mb-10 max-w-md" aria-label="Export options">
+      <LabeledControlSection label="Export options" className="my-10 max-w-md">
         <KitOptionsFields />
-      </section>
+      </LabeledControlSection>
 
-      {err && (
-        <pre className="kol-mono-10 whitespace-pre-wrap text-red-700 bg-white/95 border border-red-200 rounded p-2 mb-6">
-          {err}
-        </pre>
-      )}
+      {err && <pre className="kol-mono-10 whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-sm)] p-2 mb-6">{err}</pre>}
 
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <ContentCollection min="320px">
         {TREATMENTS.map((t) => (
-          <li key={t.slug} className="border border-fg-08 rounded p-5 flex flex-col gap-2">
-            <p className="kol-helper-10 text-subtle uppercase">{t.kind === 'kit' ? 'Kit' : 'Layout'}</p>
-            <h2 className="kol-sans-heading-04 text-emphasis">{t.label}</h2>
-            <p className="kol-sans-body-03 text-body mb-3">{t.blurb}</p>
-            <div className="mt-auto flex flex-wrap gap-2">
-              <Button tone="outline" size="sm" onClick={() => navigate({ pathname: `/resume/t/${t.slug}`, search })}>
-                Open
-              </Button>
-              <Button tone="outline" size="sm" disabled={!!busy} onClick={() => run(t, 'pdf')}>
-                {busy === `${t.slug}:pdf` ? 'Generating…' : 'Download PDF'}
-              </Button>
-              {t.kind === 'kit' && (
-                <Button tone="outline" size="sm" disabled={!!busy} onClick={() => run(t, 'svg')}>
-                  {busy === `${t.slug}:svg` ? 'Generating…' : 'SVG (.zip)'}
-                </Button>
-              )}
-            </div>
-          </li>
+          <ContentCard
+            key={t.slug}
+            variant="article"
+            /* a treatment has no cover: no media slot, never the MISSING plate */
+            media={false}
+            eyebrow={t.kind === 'kit' ? 'Kit' : 'Layout'}
+            title={t.label}
+            body={t.blurb}
+            onClick={() => navigate({ pathname: `/resume/t/${t.slug}`, search })}
+            /* the card opens the treatment; its downloads are the card's icon actions, as a catalog card's are */
+            actions={
+              <span className="inline-flex gap-1" onClick={(e) => e.stopPropagation()}>
+                <Button size="sm" iconOnly="download" aria-label={busy === `${t.slug}:pdf` ? 'Generating PDF…' : 'Download PDF'} title={busy === `${t.slug}:pdf` ? 'Generating PDF…' : 'Download PDF'} disabled={!!busy} onClick={() => run(t, 'pdf')} />
+                {t.kind === 'kit' && <Button size="sm" iconOnly="code" aria-label={busy === `${t.slug}:svg` ? 'Generating SVG…' : 'SVG (.zip)'} title={busy === `${t.slug}:svg` ? 'Generating SVG…' : 'SVG (.zip)'} disabled={!!busy} onClick={() => run(t, 'svg')} />}
+              </span>
+            }
+          />
         ))}
-      </ul>
+      </ContentCollection>
 
-      <section className="mt-12" aria-label="Rendered files">
-        <MediaLibrary variant="library" client={outClient} header={false} refreshKey={refreshKey} defaults={OUT_DEFAULTS} />
-      </section>
+      {hasOut && (
+        <section className="mt-12" aria-label="Rendered files">
+          <MediaLibrary variant="library" client={outClient} header={false} refreshKey={refreshKey} defaults={OUT_DEFAULTS} />
+        </section>
+      )}
     </main>
   )
 }

@@ -1,4 +1,4 @@
-import CardHeader from './_shared/CardHeader'
+import CardHeader from './_shared/CardHeader.jsx'
 
 const DashSlotCard = ({
   title,

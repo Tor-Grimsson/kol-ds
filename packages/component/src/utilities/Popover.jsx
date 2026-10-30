@@ -148,7 +148,7 @@ export function usePopover({
 /* A tooltip inside a tooltip's trigger (a disabled switch's reason inside its
  * row's hint) hides the outer one while it is open, and hands it back on leave
  * — the innermost wins, as the native `title` it replaced behaved. */
-const TooltipNest = createContext(null)
+const TooltipNest = (globalThis[Symbol.for('@kolkrabbi/kol-component/TooltipNest')] ??= createContext(null))
 
 /* `asChild` (the native-title sweep, 2026-09-26): the tooltip attaches to its one child element
  * instead of wrapping it in a span — for a trigger whose box IS the layout (a grid cell, a rail row,
@@ -260,7 +260,7 @@ function TooltipOn({
  *   style           — extra inline styles merged with floatingStyles
  */
 /* how many floats this one is opened from inside — context crosses portals, the DOM order does not */
-const FloatDepth = createContext(0)
+const FloatDepth = (globalThis[Symbol.for('@kolkrabbi/kol-component/FloatDepth')] ??= createContext(0))
 
 export function PopoverPanel({
   popover,

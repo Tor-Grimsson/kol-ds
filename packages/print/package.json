@@ -1,7 +1,7 @@
 {
   "name": "@kolkrabbi/kol-print",
-  "version": "0.1.0",
-  "description": "Markdown to a Kolkrabbi A4 document: the sheets, PDF, DOCX and MD",
+  "version": "0.1.1",
+  "description": "Markdown to Kolkrabbi A4 documents",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -25,7 +25,16 @@
     "marked": "^16.0.0",
     "node-html-parser": "^9.0.5"
   },
-  "keywords": ["kol", "kolkrabbi", "design-system", "print", "pdf", "docx", "markdown", "a4"],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "print",
+    "pdf",
+    "docx",
+    "markdown",
+    "a4"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",

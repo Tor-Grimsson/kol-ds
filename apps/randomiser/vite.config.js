@@ -38,7 +38,7 @@ export default defineConfig(({ command }) => ({
   },
 
   // its own port after labs (5199)
-  server: { port: 5200 },
+  server: { host: true, port: 5200 },
 
   optimizeDeps: {
     include: [

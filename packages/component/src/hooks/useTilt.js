@@ -66,6 +66,13 @@ export default function useTilt({
       rotateY,
       transformStyle: 'preserve-3d',
       transformPerspective: perspective,
+      /* THE EDGE STAYS SMOOTH (TiltCardEdgeBanding, kol-website 2026-10-29 — kolkrabbi.io's 2026-08-27 fix, lost when the
+       * site moved onto this hook): a 1px transparent outline makes the browser anti-alias the rotated edge, and a hidden
+       * backface plus `will-change` keep the tilted box on its own layer — no stair-stepped edge, no shimmering text.
+       * Here, so every tilting card (TiltCard, TiltBento's tiles, the shelf's cards) gets it */
+      backfaceVisibility: 'hidden',
+      willChange: 'transform',
+      outline: '1px solid transparent',
       ...(grounded ? { transformOrigin: 'center bottom' } : null),
     },
     onMouseMove,

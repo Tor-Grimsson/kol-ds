@@ -149,17 +149,23 @@ function Firework({ x, y, type, onDone }) {
   const frames = allFrameSets[type]
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFrame((f) => {
-        if (f >= frames.length - 1) {
-          onDone()
-          return f
-        }
-        return f + 1
-      })
-    }, 130)
+    // Advance frames on a clock; report completion from an effect. `onDone` used
+    // to be called inside the setFrame updater — React runs updaters during the
+    // child's render, so the parent's setFireworks fired mid-render ("Cannot
+    // update a component (AsciiCursorOverlay) while rendering Firework") on every
+    // burst. The updater also restarted the interval on each parent re-render
+    // (onDone is a fresh closure per render), stalling the burst while the
+    // cursor moved. (kolkrabbi.io's mobile audit 2026-08-25, lost in the DS copy —
+    // AsciiCursorFireworkSetStateInRender 2026-10-29)
+    const interval = setInterval(() => setFrame((f) => Math.min(f + 1, frames.length - 1)), 130)
     return () => clearInterval(interval)
-  }, [frames, onDone])
+  }, [frames])
+  const doneRef = useRef(false)
+  useEffect(() => {
+    if (doneRef.current || frame < frames.length - 1) return
+    doneRef.current = true
+    onDone()
+  }, [frame, frames, onDone])
 
   return (
     <div
@@ -387,8 +393,9 @@ function AsciiCrosshair({ overlayRef }) {
           </div>
         ))
       )}
-      {/* Foreground layer */}
-      <div style={{ color: 'var(--kol-surface-on-primary)', opacity: 0.5, position: 'relative' }}>
+      {/* Foreground layer — 0.9 in light, 0.5 in dark (kolkrabbi.io's `.ascii-cursor-fg`, carried 2026-10-29): at one 0.5
+        * the glyphs washed out on light surfaces */}
+      <div className="opacity-90 [:is([data-theme=dark],.dark)_&]:opacity-50" style={{ color: 'var(--kol-surface-on-primary)', position: 'relative' }}>
         {crosshair.map((line, i) => (
           <div key={i}>{line}</div>
         ))}
@@ -460,7 +467,6 @@ function AsciiCursorOverlay({ hideCursor }) {
     }
 
     const handleContextMenu = (e) => {
-      e.preventDefault()
       const now = Date.now()
       if (now - lastInvaderTime.current < 2500) return
       lastInvaderTime.current = now
@@ -499,8 +505,10 @@ function AsciiCursorOverlay({ hideCursor }) {
  * with an ASCII crosshair (diamond variant over interactive elements) and
  * layers ambient effects on top of the page: drifting cursor stars,
  * click-triggered ASCII fireworks, and a right-click Space Invader that
- * drops in, fires, and exits (rate-limited to one per 2.5s; contextmenu is
- * suppressed while mounted).
+ * drops in, fires, and exits (rate-limited to one per 2.5s). The context menu
+ * still opens — the invader is an easter egg, the menu is the browser's
+ * (kolkrabbi.io 2026-08-25: swallowing it took copy, open-in-new-tab and
+ * inspect off every page).
  *
  * Singleton — mount once at the app root. Portals into `document.body` so
  * it floats above any scroll context. Pure decoration, so it hard-gates:

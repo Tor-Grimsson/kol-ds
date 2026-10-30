@@ -1,4 +1,4 @@
-import { kitOptionsQuery } from './kitOptions'
+import { kitOptionsQuery } from './kitOptions.js'
 
 /**
  * Every treatment of the resume source, in Library order. A treatment is one

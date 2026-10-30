@@ -1,6 +1,6 @@
 import React from 'react'
 import ChessPiece from '../ChessPiece.jsx'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 /* the six real piece types — the old rook…rook mirror row was decorative
  * (mock era) and had no pawn, which made removed pawns unrecoverable */

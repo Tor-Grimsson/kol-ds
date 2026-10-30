@@ -30,7 +30,8 @@ import { BLANK_LAYOUT, clone, newId } from './slideDoc.js'
  * @param {Function} onUpload     (file) => Promise<url>
  * @param {string}   open · onOpenChange   controlled open deck slug (`null` = the shelf, `NEW_DECK` = a
  *                                          blank deck); or internal
- * @param {string}   railLeft     where the editor's filmstrip starts (DeckEditor) — an app with a rail passes its width
+ * @param {string}   railLeft     where the editor's filmstrip starts (DeckEditor) — leave it out and it starts where the
+ *                                 editor does, clearing the frame's rail
  */
 export const NEW_DECK = '+new'
 const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')

@@ -114,7 +114,7 @@ export function CardRow({ palette, logo }) {
 }
 
 /* ────────── Stripe row — Method 01 / 02 proportion bars ────────── */
-export function StripeRow({ palette }) {
+export function StripeRow({ palette, logo }) {
   const { primary, secondary, light, dark, accent } = palette
   /* Rule color = dark at ~12% alpha, passed via CSS custom prop so the
      .kol-combo-stripe-neutral class owns the border declarations. */
@@ -127,6 +127,8 @@ export function StripeRow({ palette }) {
         '--stripe-accent': accent,
       }}
     >
+      {/* the mark slot, like every other layout's (BrandLabToolWindow: the toggle did nothing here) */}
+      {logo && <span style={{ color: dark }}><LogoSlot logo={logo} size={40} /></span>}
       {/* Method 01 — single-row proportion bar */}
       <div className="kol-combo-stripe-row">
         <div className="kol-combo-stripe-bar">

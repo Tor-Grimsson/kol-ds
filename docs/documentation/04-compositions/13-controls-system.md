@@ -69,7 +69,7 @@ The package is grouped (user ruling 2026-09-27), one folder per group under `src
 | `SignalReference` | the reference for an expression or envelope tool — `variant` panel (mirror's box) · tabs · popover (monitor's EX / REF) · sheet (labs' shortcuts) |
 | `ModuleFrame` | a module's front panel — header pinned, body below (kol-monitor's `Module.jsx`) |
 | `ChannelStrip` | a mixer channel's face — power, control grid, action column, faders, footer, as slots (kol-mirror's strip) |
-| `FlipCard` | a face that turns over in place to its back (kol-mirror's channel flip) |
+| `FlipCard` | a face that turns over in place to its back (kol-mirror's channel flip) — kol-component's since 2026-10-29, re-exported here on the racks' path; `height` makes it a fixed tile whose faces scroll |
 
 ## Frames
 

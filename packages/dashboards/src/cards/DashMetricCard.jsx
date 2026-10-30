@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import useCountUp from '../shared/useCountUp'
+import useCountUp from '../shared/useCountUp.js'
 
 const DashMetricCard = ({
   label,

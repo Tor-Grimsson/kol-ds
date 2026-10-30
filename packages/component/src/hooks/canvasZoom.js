@@ -16,4 +16,4 @@ import { createContext } from 'react'
  * `@kolkrabbi/kol-component` exports it from the barrel as `CanvasZoomContext`,
  * and `Canvas.jsx` re-exports it under the same name it always had.
  */
-export const CanvasZoomContext = createContext(1)
+export const CanvasZoomContext = (globalThis[Symbol.for('@kolkrabbi/kol-component/CanvasZoomContext')] ??= createContext(1))

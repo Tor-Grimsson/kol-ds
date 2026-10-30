@@ -3,7 +3,7 @@ title: App anatomy
 type: reference
 status: draft
 created: 2026-09-26
-updated: 2026-10-28
+updated: 2026-10-29
 description: An app's six layers, engine to fixture
 aliases:
   - app anatomy
@@ -20,6 +20,7 @@ sources:
   - apps/media-hub/src/App.jsx
   - packages/shell/src/PageShell.jsx
   - apps/curves/src/App.jsx
+  - showcase/src/nav/placements.js
 tags:
   - domain/compositions
   - domain/architecture
@@ -27,6 +28,7 @@ related:
   - "[[../00-overview/05-names|names]]"
   - "[[11-shell-system|shell system]]"
   - "[[../../operations/07-apps-tier/INDEX|apps tier]]"
+  - "[[23-website-frame|Website frame]]"
   - "[[17-rail-and-overlay|rail and overlay]]"
 ---
 
@@ -61,10 +63,41 @@ Read off monitor, mirror and fxr (2026-09-26) — each assembled the same Hub by
 | Settings | `SettingsScaffold` with SETTINGS · ABOUT · REPO, the same subtitles and theme toggle, About = prose + colophon, Repo = links, shortcuts at the foot | `HubSettings`: fxr's page as the reference, every feature opt-in — `sections` (rows as data, searched) · `drawer` (the gear opens the same sections) · `picker` · `splitShortcuts` (OPTIONS / SHORTCUTS) · `content` · extra `tabs`; ABOUT · REPO below the rule. **Three tiers on `AppHub settings`, opt-in (2026-10-23):** the rail by default — the Settings row and `,` open `SettingsPanel` over `sections` as TYPED rows (`choice` · `switch` · a text value · a section note; the Hub draws every control and string; the tab row is exactly Settings · Shortcuts · About · Repo on every app, no app tab; no JSX reaches the rail, 2026-10-24), the theme toggle (kol-framework's, drawn by the Hub) and a live reset (the theme back to the system, then the app's) in its footer, no route; `page: true` — the page at `settingsPath`, two columns from `lg` (sections left, the shortcuts, About and Repo right), no filter bar, its gear opening the drawer; `filters: true` — the page keeps its filter bar, tabs and search |
 | Shortcuts sheet | `S` in monitor and mirror, `?` in media-hub (now `S`) | `S` toggles it, Esc closes, off with `shortcutsKey={null}`; `⇧S` toggles the same keymap as the right rail (`ShortcutsOverlay variant="rail"`), off with `shortcutsRailKey={null}`; the ⌘K modal (`CommandOverlay mode="shortcuts"`) with no field — this page's sections as categories under "Shortcuts", every one open on arrival and Collapse all folding them (2026-10-23), ← / Backspace back, no Run; a section with `routes` shows only on its pages; every mode is on apps/hub's Dev → Overlays — bind its keys with `shortcutInScope` |
 | Search | each app's ⌘K was its own, or absent | ⌘K / Ctrl+K opens the one `CommandOverlay` in search mode from any Hub page, over Files (Home's `files`, Enter opens through `home.onOpen`), Pages (the rail as drawn, mark first) and Shortcuts (the keymap as folds, read-only); Esc closes (2026-10-23) |
-| Media, Sign in | fxr, mirror and monitor each hand-wired both through `shell.bottomItems` | `media` (`{ client, accept?, onSelect? }`) and `signIn` (`{ signedIn, onPress }`) on `AppHub` and `AppStudio`: Media opens the picker over the app's client (`MediaLibrary variant="picker"`, mirror's), Sign in shows a person while out and a cloud while in and asks in the DS dialog — the password, then `onPress(password)`; the sign-out confirm, then `onPress(null)`; pinned Media, Sign in, Settings, sentinels never routes (2026-10-23) |
-| Dev | a hand-built `/dev` page apiece, gated differently (monitor localhost-only with `code`, mirror always with `component`) | `HubDev` from `dev={{ tabs }}`: a dev server only, the `code` row after the app's own rows, `/dev`; chip tabs (`TabsRow look="chip"`), then the content full width; a comparison is a `CompareGrid` tab |
+| Media, Sign in | fxr, mirror and monitor each hand-wired both through `shell.bottomItems` | `media` (`{ client, accept?, onSelect? }`) and `signIn` (`{ signedIn, onPress }`) on `AppHub` and `AppStudio`: Media opens the picker over the app's client (`MediaLibrary variant="picker"`, mirror's), Sign in shows a person while out and a cloud while in and asks in the DS dialog — the password, then `onPress(password)`; the sign-out confirm, then `onPress(null)`; pinned Media, Sign in, Settings, sentinels never routes (2026-10-23). `signIn.page` (a path or a function, 2026-10-29) sends every Sign in the Hub draws — the rail's foot row, the signed-out +, the phone's More — to the app's own page instead of the dialog; `AppStudio` forwards `phoneNav` |
+| Dev | a hand-built `/dev` page apiece, gated differently (monitor localhost-only with `code`, mirror always with `component`) | `HubDev` from `dev={{ tabs }}`: a dev server only, the `code` row after the app's own rows, `/dev`; chip tabs (`TabsRow variant="chip"`), then the content full width; a comparison is a `CompareGrid` tab |
+| Account | fxr kept the account in a second rail of its own (`AccountRail`), reached only from the rail's foot | `signIn.user` draws the account row (the picture, or the outline `user` glyph); signed in, Home's menu and the phone's More end on it (HomeMenuAccountRow). `signIn.account: { sections, content?, footer? }` is an **Account** tab, first in the settings rail: typed rows, a node for what rows cannot say (the picture, Upload), and `footer: { label, onPress }` (Sign out — frame D2's full-width md Button in the rail's foot on that tab, where the toggle and reset sit on the others, 2026-10-29). Without `onProfile` the account row opens the rail on that tab (SettingsAccountTab, 2026-10-29). Reference: `apps/studio-hub` |
+| Rows | every new row in a Hub menu was a DS round trip | **The app owns its rows** (HubAppOwnsItsRows, 2026-10-29): `home.menu` (the masthead's button), `home.signedOutActions` (the + signed out), `shell.foot` (the rail's pinned foot) and `phoneNav.more` (the phone's More sheet) each take `(defaults) => rows` — keep the Hub's rows and edit, or replace them. Rows are `{ icon, label, onPress \| path, avatar? }`; the Hub draws them |
 
 **Routes.** `/` is Home, `/settings` is Settings when the app asks for the page tier, any other path is the tool. Router-agnostic, like `AppShell`.
+
+## Pages
+
+<!-- placements: app -->
+Every page that fits AppShell, from `showcase/src/nav/placements.js` (the list apps/layouts and `validate-placements` read).
+
+| Page | Placement |
+|---|---|
+| `HubHome` | runs here today |
+| `HubSettings` | runs here today |
+| `HubDev` | runs here today |
+| `StudioCreate` | runs here today |
+| `StudioDetail` | runs here today |
+| `CatalogPage` | runs here today |
+| `SettingsScaffold` | fits, placed for review |
+| `EditorShell` | fits, placed for review |
+| `MediaLibrary` | runs here today |
+| `Decks` | runs here today |
+| `DeckEditor` | runs here today |
+| `Notes` | runs here today |
+| `PrintStudio` | runs here today |
+| `MetricsDashboard` | runs here today |
+| `ChessAnalysisLayout` | fits, placed for review |
+| `TimeSet` | fits, placed for review |
+| `ResumeLibrary` | runs here today |
+| `ResumeSource` | runs here today |
+| `ResumeTreatment` | runs here today |
+| `KitPreview` | fits, placed for review |
+<!-- /placements: app -->
 
 ## Dev favicon
 

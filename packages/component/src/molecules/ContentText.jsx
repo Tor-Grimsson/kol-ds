@@ -33,7 +33,7 @@
  * @param {'subtle'|'meta'|'body'|'lede'|'strong'|'shout'|'scream'|'emphasis'} text - ONE ink role for every slot, replacing the ink each ramp hardcodes (`text-emphasis` on a title, `text-meta` on a date). It also re-inks a `<slot>Class` override, which is the point: an override replaces the ramp string WHOLE, so `kickerClass="kol-sans-body-01"` silently drops the `text-meta` the ramp carried and the kicker jumps to inherited ink (kol-client-hrafn, `contentcard-bg-and-text-props` 2026-09-03). `text` sets the level once instead of re-specifying eight ramps. It FLATTENS the hierarchy by design — every slot lands on the same role — so a card that wants its own relative steps still passes per-slot classes
  */
 
-import Tag from '../atoms/Tag'
+import Tag from '../atoms/Tag.jsx'
 
 /* THE ROW INK LADDER — three rungs, and only three (2026-08-15).
  *

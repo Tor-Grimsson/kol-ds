@@ -32,7 +32,7 @@ export const RAIL_FOLD_EVENT = 'kol-rail-fold'
  * provides the state; every ShellSidebar inside it reads it, so a consumer's rail takes the state
  * without passing a prop. Outside a provider a rail is `open`, as it always was. A third value,
  * `full`, is the whole-tree sheet's: an open rail with every fold open. */
-export const ShellRailModeContext = createContext('open')
+export const ShellRailModeContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellRailModeContext')] ??= createContext('open'))
 
 const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
   const location = useLocation()

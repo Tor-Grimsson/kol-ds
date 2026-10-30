@@ -158,6 +158,15 @@ export default function HubHome({
   stage,
   chromes = [],
   signInAction,
+  /* AppHub's: the signed-in account row (HomeMenuAccountRow, kol-fxr 2026-10-29 — *"here is supposed to be user space as
+   * well"*), the menu's last row */
+  accountAction,
+  /* THE APP OWNS ITS ROWS (HubAppOwnsItsRows, kol-fxr 2026-10-29 — *"I dont wanna file every goddamn change"*): each a
+   * function of the Hub's rows, `(defaults) => rows` — keep them and edit, or replace them. Rows keep the Hub's shape
+   * `{ icon, label, onPress, avatar? }` and the Hub still draws them. `menu` is the masthead's round button signed in,
+   * `signedOutActions` the + on the signed-out page. */
+  menu,
+  signedOutActions,
   ...unknown
 }) {
   if (import.meta.env.DEV) warnUnknown(unknown)
@@ -224,10 +233,12 @@ export default function HubHome({
    * the phone bar's More draws (MoreRows in `.kol-more-sheet`). The foot row it replaces was a row of buttons under the
    * catalog, hence a bottom pad that read as a clipped last row. With the bar on a phone the bar's More carries both
    * and the button hides below `md`; with the drawer it stays on every width. */
-  const menuActions = [
+  const baseActions = [
     ...(action ? [{ label: action.label, icon: 'plus', onPress: action.onClick }] : []),
     ...(steps.length ? [{ label: touring ? 'Close walkthrough' : 'Walkthrough', icon: 'book-open', onPress: () => setTouring((t) => !t) }] : []),
   ]
+  const menuDefaults = [...baseActions, ...(accountAction ? [accountAction] : [])]
+  const menuActions = typeof menu === 'function' ? menu(menuDefaults) ?? [] : menuDefaults
   /* with the drawer the button stays on the phone, stepped left of the shell's drawer trigger (fixed top-right, 32 at 12;
    * the variants gate caught the overlap on editor-hub at 390) */
   const headerMenu = menuActions.length ? <HomeMenu actions={menuActions} className={actionsInBar ? 'max-md:hidden' : 'max-md:mr-11'} /> : undefined
@@ -245,20 +256,24 @@ export default function HubHome({
   ) : undefined
 
   if (signedOut ?? (stage != null && files.length === 0)) {
-    const outActions = [...menuActions, ...(signInAction ? [signInAction] : [])]
+    const outDefaults = [...baseActions, ...(signInAction ? [signInAction] : [])]
+    const outActions = typeof signedOutActions === 'function' ? signedOutActions(outDefaults) ?? [] : outDefaults
     return (
       <div className="relative min-h-dvh overflow-hidden" data-hub-signed-out>
         {stage && <div className="absolute inset-0" aria-hidden="true">{stage}</div>}
+        {/* ONE 64 GUTTER ON A DESK (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user: *"cavnas 'padding' is a bit off"*): the
+          * mark 64 in and 64 down, the + 64 in and 64 down on the mark's line, the dock 64 in and 64 up — the mark sat at 80 and
+          * the + at 72. The phone's values are not part of it */}
         {app.logomark && (
-          <div className="absolute left-4 top-6 w-12 h-12 md:left-20 md:top-16 md:w-28 md:h-28 text-emphasis">
+          <div className="absolute left-4 top-6 w-12 h-12 md:left-16 md:top-16 md:w-28 md:h-28 text-emphasis">
             <VectorLoader src={app.logomark} size="100%" role="img" aria-label={app.name} />
           </div>
         )}
-        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" className="absolute right-16 top-[72px] max-md:hidden" />}
+        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" className="absolute right-16 top-16 max-md:hidden" />}
         {chromes.length > 0 && <PhoneNav variant="dock" shape="pill" items={chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress }))} />}
-        {/* the walkthrough over the stage, where the catalog's would sit */}
+        {/* the walkthrough over the stage, where the catalog's would sit — on the mark's left line */}
         {touring && steps.length > 0 && (
-          <div className="absolute inset-x-4 top-24 md:left-20 md:right-auto md:top-52 md:w-[560px]">
+          <div className="absolute inset-x-4 top-24 md:left-16 md:right-auto md:top-52 md:w-[560px]">
             <WalkthroughPanel steps={steps} iconComponent={iconComponent} onClose={close} />
           </div>
         )}

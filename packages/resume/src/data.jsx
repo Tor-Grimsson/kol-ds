@@ -24,7 +24,7 @@ import { parsePortfolio } from './lib/portfolio.js'
  *               { en: { kicker, title, intro }, is } }` — each key overrides the kit's default
  *   fileStem    the exports' file stem (`<stem>-kit.pdf`); defaults to the person's name, slugged
  */
-const ResumeContext = createContext(null)
+const ResumeContext = (globalThis[Symbol.for('@kolkrabbi/kol-resume/ResumeContext')] ??= createContext(null))
 
 export function ResumeProvider({ person = {}, records = {}, contact = {}, letters = {}, portfolio = {}, media = {}, workBase = '', workUrl, assetUrl = (k) => k, portrait, fileStem, copy = {}, children }) {
   const value = useMemo(() => {

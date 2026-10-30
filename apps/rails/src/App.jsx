@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppHub, PageShell } from '@kolkrabbi/kol-shell'
 import { SiteLayout } from '@kolkrabbi/kol-framework'
-import { ActionButton, Button, Divider, Dropdown, PageHeader, PopoverPanel, Rail, RailActions, RailHeader, RailHint, RailNav, RailRow, RailSection, SegmentedToggle, SettingsFooter, SettingsPanel, SettingsSections, Table, TabsRow, usePopover, useRailKey } from '@kolkrabbi/kol-component'
+import { ActionButton, Button, Divider, Dropdown, PageHeader, Rail, RailActions, RailHeader, RailHint, RailNav, RailRow, RailSection, SettingsFooter, SettingsPanel, SettingsSections, Table, TabsRow, useRailKey, VariantsControl } from '@kolkrabbi/kol-component'
 import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 
 /* THE RAILS REFERENCE — every rail on one frame (RailRoles, user 2026-10-25: *"this rails is for all rails, I want to see
@@ -148,8 +148,8 @@ function PageRail({ open, onClose, tier, title }) {
   ]
   return (
     <SettingsPanel open={open} onClose={onClose} variant="rail" tier={tier} role="page" title={title} footer={<SettingsFooter onReset={reset} />}>
-      {/* the settings rail's tab row, prop for prop (AppHub.jsx: `look="text" size={12} tracked`) — never a second style */}
-      {stage && <TabsRow look="text" size={12} tracked className="flex-wrap gap-x-6 gap-y-2" tabs={[{ value: 'stage', label: 'Stage' }, { value: 'marks', label: 'Marks' }]} value={tab} onChange={setTab} ariaLabel="Page tabs" />}
+      {/* the settings rail's tab row, prop for prop (AppHub.jsx: `variant="text" size={12} tracked`) — never a second style */}
+      {stage && <TabsRow variant="text" size={12} tracked overflow="wrap" className="gap-x-6" tabs={[{ value: 'stage', label: 'Stage' }, { value: 'marks', label: 'Marks' }]} value={tab} onChange={setTab} ariaLabel="Page tabs" />}
       <SettingsSections divided sections={stage ? stageSections : rackSections} />
     </SettingsPanel>
   )
@@ -232,21 +232,6 @@ function PageRails({ open, close, tier, label }) {
 /* catalog's Variants button, one axis: Rail */
 const RAIL_KEY = 'rails:rail'
 const loadRail = () => { try { return localStorage.getItem(RAIL_KEY) === 'site' ? 'site' : 'app' } catch { return 'app' } }
-function VariantsButton({ rail, onChange }) {
-  const [open, setOpen] = useState(false)
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-end', offset: 8 })
-  return (
-    <div className="fixed z-10" style={{ top: 'var(--kol-shell-page-pad, 24px)', right: 'var(--kol-shell-page-pad, 24px)' }}>
-      <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        <Button iconOnly="slider-01" size="lg" tone="inverted" radius="full" aria-label="Variants" style={{ boxShadow: 'var(--kol-shadow-lg)' }} pressed={open} />
-      </span>
-      <PopoverPanel popover={popover} className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2 p-3">
-        <span className="kol-mono-12 text-fg-64">Rail</span>
-        <SegmentedToggle size="sm" ariaLabel="Rail" value={rail} onChange={onChange} options={['app', 'site'].map((v) => ({ value: v, label: cap(v) }))} />
-      </PopoverPanel>
-    </div>
-  )
-}
 
 /* ── the app rail: AppHub on the hash, studio-hub's frame ── */
 function AppFrame() {
@@ -336,7 +321,7 @@ export default function App() {
   return (
     <>
       {rail === 'site' ? <SiteFrame /> : <AppFrame />}
-      <VariantsButton rail={rail} onChange={setRail} />
+      <VariantsControl axes={[{ key: 'rail', label: 'Rail', values: ['app', 'site'] }]} value={{ rail }} onChange={(_, v) => setRail(v)} />
     </>
   )
 }

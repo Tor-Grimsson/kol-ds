@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 /**
  * useChessKeyboardShortcuts — the board's global keyboard map: ←/→ step,

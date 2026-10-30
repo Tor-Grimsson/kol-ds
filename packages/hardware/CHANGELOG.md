@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-hardware
 
+## 0.10.0 — 2026-10-29
+
+- `FlipCard` is kol-component's now (DocumentLibraryAndBoardParts); this path re-exports it, same props plus `height`, `defaultFlipped` and faces as functions. Needs kol-component ≥0.315.0.
+
+## 0.9.1 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
 ## 0.9.0 — 2026-10-28
 
 - **`TimeStrip` docks** (TimeStripInADock, kol-fxr): `framed={false}` renders in flow (no absolute position, border, padding, background or z; the host frames it); `span="loop"` makes the loop window the full width, so a lane's `t` 0..1 spans it (or `span={seconds}`); `gutter={px}` puts the readout in a left column that wide, starts the ruler and bar after it, and renders `children` full width beneath, so lanes with their own labels line up. Function children also get `origin`. Defaults are unchanged, so mirror's floating strip draws as before. Walked in the showcase at a 2 s and an 8 s loop: lanes and bar share their left edge and width, the head tracks the clock.

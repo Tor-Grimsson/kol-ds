@@ -1,4 +1,4 @@
-import Image from '../atoms/Image'
+import Image from '../atoms/Image.jsx'
 
 /**
  * FramedMediaBand — A full-width band with one framed image. full-width media breather band: a centered, aspect-locked

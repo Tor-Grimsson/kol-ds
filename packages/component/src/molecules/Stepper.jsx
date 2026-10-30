@@ -92,7 +92,9 @@ export default function Stepper({
 
   const shellCls = [
     'kol-control',
-    'kol-control--filled',
+    /* NO MODIFIER, as Input (2026-09-03): the shell takes a `kol-tone-*` wrapper's tone, else the filled default. It
+     * forced `--filled`, so beside an Input or a Dropdown in a toned rail it drew a second tone (BrandLabToolWindow,
+     * 2026-10-29 — the user: *"2 different dropdown tones"*) */
     `kol-control-${size}`,
     SIZE_TYPE[size],
     'relative',

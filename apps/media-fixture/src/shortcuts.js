@@ -43,6 +43,7 @@ export const SHORTCUTS = [
       { id: 'band', label: 'Drag-select', combo: 'Drag from empty space (rows: beside the name)' },
       { id: 'clear', label: 'Clear the selection', combo: 'Click empty space' },
       { id: 'quicklook', label: 'Quick Look', combo: 'Space — pages the selection when there is one' },
+      { id: 'info', label: 'Get Info — the pick, a file or a folder', combo: '⌘I' },
       { id: 'ql-step', label: 'Quick Look: next / previous', combo: '← → or ‹ › in the window' },
       { id: 'ql-size', label: 'Quick Look: resize the window', combo: 'Drag its bottom-right corner' },
     ],

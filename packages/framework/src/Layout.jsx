@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import ScrollToTop from './ScrollToTop'
+import ScrollToTop from './ScrollToTop.jsx'
 import { ExitPreview } from '@kolkrabbi/kol-component'
 
 const clientSurfacePatterns = [/^\/site/]

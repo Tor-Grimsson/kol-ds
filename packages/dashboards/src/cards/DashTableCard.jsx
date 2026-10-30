@@ -1,4 +1,4 @@
-import CardHeader from './_shared/CardHeader'
+import CardHeader from './_shared/CardHeader.jsx'
 import { Badge, Table } from '@kolkrabbi/kol-component'
 
 const DashTableCard = ({

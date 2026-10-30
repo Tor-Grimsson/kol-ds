@@ -1,8 +1,8 @@
-import { ChessControlsProvider, useChessControls } from '../context/ChessControlsContext'
+import { ChessControlsProvider, useChessControls } from '../context/ChessControlsContext.jsx'
 import { Button } from '@kolkrabbi/kol-component'
-import ChessBoard from './ChessBoard'
-import ChessBoardFullscreen from './ChessBoardFullscreen'
-import ChessSidebar from './ChessSidebar'
+import ChessBoard from './ChessBoard.jsx'
+import ChessBoardFullscreen from './ChessBoardFullscreen.jsx'
+import ChessSidebar from './ChessSidebar.jsx'
 
 // Map the legacy glyph labels to KOL icon names + accessible labels (icon names
 // reused verbatim from PlaybackControls, which renders the same controls).

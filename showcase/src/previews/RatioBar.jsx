@@ -1,4 +1,4 @@
-import { RatioBar, DEFAULT_PALETTE } from '@kolkrabbi/kol-styleguide'
+import { RatioBar, DEFAULT_COMBO_LAB } from '@kolkrabbi/kol-styleguide'
 
 export const stage = 'lg'
 
@@ -37,7 +37,7 @@ const DUSK = {
 export default function RatioBarPreview() {
   return (
     <>
-      <RatioBar palette={DEFAULT_PALETTE} logo={WORDMARK} />
+      <RatioBar palette={DEFAULT_COMBO_LAB} logo={WORDMARK} />
       <RatioBar palette={DUSK} />
     </>
   )

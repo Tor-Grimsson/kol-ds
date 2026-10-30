@@ -1,9 +1,9 @@
-import { CardRow, DEFAULT_PALETTE } from '@kolkrabbi/kol-styleguide'
+import { CardRow, DEFAULT_COMBO_LAB } from '@kolkrabbi/kol-styleguide'
 import { WORDMARK } from '../demo-data/wordmark.jsx'
 
 export const stage = 'lg'
 
 /* One combo layout on the default palette, the KOL wordmark in its logo slot. */
 export default function CardRowPreview() {
-  return <CardRow palette={DEFAULT_PALETTE} logo={WORDMARK} />
+  return <CardRow palette={DEFAULT_COMBO_LAB} logo={WORDMARK} />
 }

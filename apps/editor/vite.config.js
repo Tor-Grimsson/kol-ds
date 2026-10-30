@@ -39,7 +39,7 @@ export default defineConfig(({ command }) => ({
   },
 
   // its own port beside media-hub (5175) … brand (5179)
-  server: { port: 5180 },
+  server: { host: true, port: 5180 },
 
   optimizeDeps: {
     include: [

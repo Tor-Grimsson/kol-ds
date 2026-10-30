@@ -285,6 +285,20 @@ export default function App() {
     )
   })()
 
+  /* THE SIGN-IN PAGE's stand-in (`signIn.page`, 2026-10-29) — outside the Hub, as fxr's /signin sits; the reference accepts anyone */
+  if (path === '/signin') {
+    return (
+      <div className="min-h-dvh flex flex-col items-start justify-center gap-6 p-16 bg-surface-primary">
+        <span className="kol-eyebrow text-body">Sign in</span>
+        <p className="kol-mono-12 text-meta">The app's own sign-in page, where every Sign in the Hub draws lands.</p>
+        <div className="flex gap-2">
+          <Button size="md" onClick={() => { setSignedIn(true); navigate('/') }}>Sign in</Button>
+          <Button size="md" tone="grey" onClick={() => navigate('/')}>Back</Button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <AppStudio
       app={APP}
@@ -371,8 +385,16 @@ export default function App() {
         /* an account (HubAccountRow, 2026-10-28): signed out the Hub asks email + password; signed in the row is the user and
          * opens the profile — the reference app has no profile page, so its stand-in signs out */
         user: { name: 'Tór' },
-        onProfile: () => setSignedIn(false),
+        /* the account is a tab in the settings rail (SettingsAccountTab, 2026-10-29): no `onProfile`, so the account row
+         * opens Settings on Account — the reference app's rows, and Sign out in the tab's foot */
+        account: {
+          sections: [{ label: 'Profile', rows: [{ label: 'Name', value: 'Tór' }, { label: 'Library', value: 'Synced on this device' }] }],
+          footer: { label: 'Sign out', onPress: () => setSignedIn(false) },
+        },
         onPress: (creds) => setSignedIn(creds != null) /* the reference app accepts any email and password */,
+        /* SIGN IN IS A PAGE (HubSignedOutGutterAndSeams, 2026-10-29): every Sign in the Hub draws — the rail's foot row, the
+         * signed-out +, the phone's More — opens the app's own page instead of the dialog (fxr's /signin, frame C) */
+        page: '/signin',
       }}
       /* THE ROWS ARE TYPED DATA (2026-10-24): the Hub draws every control in the rail's tone — no app writes a Dropdown */
       settings={{

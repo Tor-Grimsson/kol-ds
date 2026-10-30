@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import Input from '../atoms/Input'
-import { usePopover, PopoverPanel } from '../utilities/Popover'
-import Dropdown from './Dropdown'
+import Input from '../atoms/Input.jsx'
+import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
+import Dropdown from './Dropdown.jsx'
 import OptionRow from './OptionRow.jsx'
 
 /**
@@ -37,11 +37,15 @@ import OptionRow from './OptionRow.jsx'
  * info maps onto the --ui-* ladder (.kol-status-chip--* in kol-theme); the
  * chip wears the ACTIVE option's tone. No tone → the plain Tag look.
  *
+ * `cycle` (DocumentLibraryAndBoardParts, kol-website 2026-10-29 — record's project status and card size): a click steps
+ * to the next option, no menu and no chevron — the same chip, so a status that cycles and one that opens a list look
+ * alike. `placeholder` is the label while `value` matches no option (record's `·` for an unsized card).
+ *
  * variant="primary" — the toneless pill wears the Dropdown-primary fill
  * instead of the neutral mix (RecordManager's select columns, user frame
  * 2026-08-09: "use status pill, but same look as dropdown primary"). An
  * option's tone always outranks the variant. */
-export function StatusChip({ value, options = [], onChange, variant = 'neutral', size = 'sm' }) {
+export function StatusChip({ value, options = [], onChange, variant = 'neutral', size = 'sm', cycle = false, placeholder, ariaLabel }) {
   const [open, setOpen] = useState(false)
   const popover = usePopover({
     open,
@@ -61,6 +65,19 @@ export function StatusChip({ value, options = [], onChange, variant = 'neutral',
    * this?") carries visible air; 2px is the minimum that restores it.
    * mono-12 at its own 16px leading. The chevron is a direct child of the flex
    * row, centred by items-center; it cannot sit off the label's middle. */
+  if (cycle) {
+    const next = norm[(norm.findIndex((o) => o.value === value) + 1) % (norm.length || 1)]
+    return (
+      <button
+        type="button"
+        aria-label={ariaLabel}
+        className={`kol-status-chip${toneCls} kol-mono-12 inline-flex items-center gap-2 rounded-full border-0 px-2 py-0.5 cursor-pointer`}
+        onClick={() => next && onChange?.(next.value)}
+      >
+        {activeOpt?.label ?? placeholder ?? value}
+      </button>
+    )
+  }
   const chip = (interactive) => (
     <button
       type="button"

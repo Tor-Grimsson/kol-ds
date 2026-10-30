@@ -16,6 +16,7 @@
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-markdown": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@kolkrabbi/kol-workshop": "workspace:*",
     "@tailwindcss/vite": "^4.2.4",

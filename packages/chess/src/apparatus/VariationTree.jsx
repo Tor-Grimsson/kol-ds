@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 const VariationTree = () => {
   const { moveTree, sidelines, activeSideline, goToSidelineMove, removeSideline, moveIndex, setMoveIndex, isLoading } =

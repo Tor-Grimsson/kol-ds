@@ -1,5 +1,5 @@
-import useChartTooltip from '../shared/useChartTooltip'
-import DashTooltip from '../shared/DashTooltip'
+import useChartTooltip from '../shared/useChartTooltip.js'
+import DashTooltip from '../shared/DashTooltip.jsx'
 
 const candlestickColors = {
   accent: 'var(--kol-palette-yellow)',

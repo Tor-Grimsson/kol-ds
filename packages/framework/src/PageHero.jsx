@@ -26,11 +26,18 @@ import { SectionText } from '@kolkrabbi/kol-component'
  * @param {ReactNode} title      the h1
  * @param {ReactNode} lede       standfirst under the title, measured at 60ch
  * @param {ReactNode} mark       a node beside the text column (a logo); the text sits right of it
+ * @param {'intro'|'compact'} size  `intro` (default) the brand-intro band, 72dvh · `compact` the same voices with no
+ *                               min-height and `--kol-page-header-mb` below — a hero as an ordinary page head
  * @param {string}    className  extra classes on the section
+ *
+ * NO TALL BAND UNLESS ASKED (OverviewTocAndLibraryIcons, kol-website 2026-10-29 — user: *"the hero literally was designed
+ * to INTRO BRAND GUIDE, not to be a every goddamn page standard"*). `size="compact"` drops the band's height and pad
+ * so the content starts under the lede; `intro` stays the default, so nothing that passes nothing moves.
  */
-export default function PageHero({ id = 'hero', backTo, backLabel, label, title, lede, mark, className = '' }) {
+const SIZES = { intro: '', compact: 'min-h-0 py-0 mb-[var(--kol-page-header-mb,40px)]' }
+export default function PageHero({ id = 'hero', backTo, backLabel, label, title, lede, mark, size = 'intro', className = '' }) {
   return (
-    <section id={id} className={`kol-page-hero ${className}`.trim()}>
+    <section id={id} className={['kol-page-hero', SIZES[size], className].filter(Boolean).join(' ')}>
       {backTo && (
         <Link
           to={backTo}

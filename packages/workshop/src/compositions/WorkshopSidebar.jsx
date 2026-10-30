@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ShellSidebar, RailSection, RailRow } from '../shell'
+import { ShellSidebar, RailSection, RailRow } from '../shell/index.js'
 import { Icon } from '@kolkrabbi/kol-component'
 import {
   extractDocNumber,
   cleanTitle,
   categoryLabels,
   groupDocsByMajor,
-} from '../engine'
+} from '../engine/index.js'
 
 /**
  * WorkshopSidebar — EXAMPLE composition. This is the app-specific glue that

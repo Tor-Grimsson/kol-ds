@@ -1,7 +1,7 @@
 import { useSearchParams } from 'react-router-dom'
 import { A4Pages as A4Page } from '@kolkrabbi/kol-styleguide'
-import { kitSections } from '../lib/kitSections'
-import { KIT_PAGES, readKitOptions } from '../lib/kitOptions'
+import { kitSections } from '../lib/kitSections.jsx'
+import { KIT_PAGES, readKitOptions } from '../lib/kitOptions.js'
 
 /**
  * Whole-kit preview — stacks the application kit (Cover → Resume → Cover Letter

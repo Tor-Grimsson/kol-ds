@@ -32,7 +32,16 @@ export default defineConfig(({ command }) => ({
   resolve: { dedupe: ['react', 'react-dom'] },
 
   // its own port beside brand (5179) and editor (5180)
-  server: { port: 5203 },
+  server: {
+    host: true,
+    port: 5203,
+    /* R2 media, same-origin (kol-mirror's proxy, apps/mixer): `r2.kolkrabbi.io` sends no Access-Control-Allow-Origin, so
+       the Color Lab's image tab reads its sample images through `/media/` — kol-media-client's `proxied(url)`. The built
+       copy under ui.kolkrabbi.io gets the same path from the root vercel.json's `/media/(.*)` rewrite. */
+    proxy: {
+      '/media': { target: 'https://r2.kolkrabbi.io', changeOrigin: true, rewrite: (p) => p.replace(/^\/media/, '') },
+    },
+  },
 
   optimizeDeps: {
     // The DS packages ship raw JSX, so vite's scanner doesn't crawl them for

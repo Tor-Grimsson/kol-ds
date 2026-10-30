@@ -43,6 +43,8 @@ export { default as TextPressure } from './TextPressure.jsx'
  * It stays in kol-foundry: it is drawn by `TextPressure`, a live-font component, and kol-component may not
  * import foundry. `IntroLoader` and `ColorLoader` are aliases on the retirement ledger. */
 export { default as LoaderIntro, default as IntroLoader, default as ColorLoader } from './IntroLoader.jsx'
+/* kolkrabbi.io's intro with its scroll / touch / key gestures — the website frame's (LayoutsAndWebsiteLayout, 2026-10-28) */
+export { default as WebsiteIntroLoader } from './WebsiteIntroLoader.jsx'
 
 // reference composition (severed page — data via props, no router/SEO/data-fetch)
 export { default as TypefaceSpecimenPage } from './TypefaceSpecimenPage.jsx'

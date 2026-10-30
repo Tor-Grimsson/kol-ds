@@ -2,7 +2,7 @@ import { createContext, memo, useContext } from 'react'
 import { HP_PX, TOTAL_HP, ROW_HEIGHT, RAIL_HEIGHT, hpToPx } from './eurorack.js'
 
 /* the case's width in HP, handed to its rows */
-const RackHpContext = createContext(TOTAL_HP)
+const RackHpContext = (globalThis[Symbol.for('@kolkrabbi/kol-hardware/RackHpContext')] ??= createContext(TOTAL_HP))
 
 const Rail = memo(function Rail({ hp }) {
   return (

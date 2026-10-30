@@ -14,6 +14,7 @@
     "@kolkrabbi/kol-component": "workspace:*",
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-media-client": "workspace:*",
     "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-styleguide": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",

@@ -1,7 +1,7 @@
 {
   "name": "@kolkrabbi/kol-resume",
-  "version": "0.1.1",
-  "description": "The resume kit: a resume in three treatments, cover, letter, portfolio and back pages, the A4 kit and its PDF export",
+  "version": "0.2.0",
+  "description": "A resume kit that prints to PDF",
   "license": "MIT",
   "type": "module",
   "main": "./src/index.js",
@@ -15,7 +15,11 @@
   "bin": {
     "kol-resume-pdf": "./bin/render-pdf.mjs"
   },
-  "files": ["src", "bin", "README.md"],
+  "files": [
+    "src",
+    "bin",
+    "README.md"
+  ],
   "dependencies": {
     "yaml": "^2.9.0"
   },
@@ -29,14 +33,30 @@
     "react-router-dom": ">=6.20.0"
   },
   "peerDependenciesMeta": {
-    "puppeteer-core": { "optional": true }
+    "puppeteer-core": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@kolkrabbi/kol-component": "workspace:^",
     "@kolkrabbi/kol-styleguide": "workspace:^",
     "@kolkrabbi/kol-theme": "workspace:^"
   },
-  "keywords": ["kol", "kolkrabbi", "design-system", "resume", "cv", "print", "a4"],
-  "repository": { "type": "git", "url": "git+https://github.com/Tor-Grimsson/kol-ds.git", "directory": "packages/resume" },
-  "publishConfig": { "access": "public" }
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "resume",
+    "cv",
+    "print",
+    "a4"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/resume"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
 }

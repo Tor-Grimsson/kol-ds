@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-framework",
-  "version": "0.61.0",
+  "version": "0.65.0",
   "description": "Site shell and page layout",
   "license": "MIT",
   "type": "module",
@@ -20,12 +20,16 @@
     "@kolkrabbi/kol-theme": ">=0.186.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
-    "react-router-dom": "^6.0.0 || ^7.0.0"
+    "react-router-dom": "^6.0.0 || ^7.0.0",
+    "framer-motion": "^12.0.0",
+    "gsap": "^3.13.0"
   },
   "devDependencies": {
     "@kolkrabbi/kol-component": "workspace:^",
     "@kolkrabbi/kol-icons": "workspace:^",
-    "@kolkrabbi/kol-markdown": "workspace:*"
+    "@kolkrabbi/kol-markdown": "workspace:*",
+    "framer-motion": "^12.0.0",
+    "gsap": "^3.13.0"
   },
   "files": [
     "src",
@@ -49,5 +53,8 @@
   },
   "sideEffects": [
     "*.css"
-  ]
+  ],
+  "dependencies": {
+    "@gsap/react": "^2.1.2"
+  }
 }

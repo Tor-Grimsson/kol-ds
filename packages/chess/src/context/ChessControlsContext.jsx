@@ -2,10 +2,10 @@
 // Required: chessData.getSampleGames() → array of games (each with a .pgn).
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { Chess } from 'chess.js'
-import buildMoveTree from '../utils/parsePgnTree'
-import buildChessFromFen from '../utils/chessFen'
+import buildMoveTree from '../utils/parsePgnTree.js'
+import buildChessFromFen from '../utils/chessFen.js'
 
-const ChessControlsContext = createContext(null)
+const ChessControlsContext = (globalThis[Symbol.for('@kolkrabbi/kol-chess/ChessControlsContext')] ??= createContext(null))
 
 const PIECE_LETTER = {
   pawn: 'p', rook: 'r', knight: 'n', bishop: 'b', queen: 'q', king: 'k'

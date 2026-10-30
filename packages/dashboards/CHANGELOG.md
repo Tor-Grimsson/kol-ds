@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.5.1 — 2026-10-28
+
+- **Relative imports name their file** (WebsiteFrameDuplicateModules, kol-website): every `./x` import now carries its extension. Vite serves raw source by the URL it was imported with, so `./Ctx` and `./Ctx.jsx` were two modules in dev and a provider and its hook held two contexts. `validate-relative-imports` keeps it from coming back. No behaviour change.
+
 ## 0.5.0 — 2026-10-09
 
 - **Phone layout for `MetricsDashboard`** (kol-website, measured at 390): the section tabs scroll sideways inside their own strip; below md the deploy timeline takes its own line under the range control, and the status line drops the build duration so the ref has room. Desk unchanged. Pairs with kol-theme 0.172.0.

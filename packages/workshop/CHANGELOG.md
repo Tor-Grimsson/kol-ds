@@ -1,5 +1,29 @@
 # @kolkrabbi/kol-workshop
 
+## 0.44.0 — 2026-10-29
+
+- **Settings › Search › Scope** (WorkshopSearchScope, kol-hq): the This space only switch is now a `type: 'choice'` row, **All · This · Pick**; Pick lists one switch per space. One pref, `scope: 'all' | 'this' | string[]`, replaces `limitToSpace` (an old `true` reads as This). Quick search, `SearchPage` (through the new `ShellSearchScopeContext`) and the tab bar cover only the scoped spaces; the active space's tab always stays. A Pick with nothing ticked reads as This.
+
+## 0.43.0 — 2026-10-29
+
+- **`DocumentationReader blocks`** (ReaderBlockRenderers, kol-hq): `{ [blockType]: (block, ctx) => node | null }`, where `ctx` is `{ docId, file, metadata, key }`. The consumer's renderer is asked first; a missing entry or `null` falls through to the reader's own. Without the prop nothing changes. The prop only, no views.
+
+## 0.42.0 — 2026-10-29
+
+- **The hub's settings rail and shortcuts modal, and the two bars can hide** (WorkshopSettingsRailAndBars, kol-hq). `,` opens kol-shell's `HubSettingsRail` (Settings · Shortcuts · About · Docs; new `app` prop for About and Docs) instead of `SettingsPanel` and its Keys section; `S` opens AppHub's `CommandOverlay mode="shortcuts"` instead of `ShortcutsOverlay`. `<` hides the top bar, `>` the tab bar, `|` both — in the map and as switches in Settings, remembered like the rails. Needs `kol-shell` ≥0.89.0 and `kol-framework` ≥0.63.0.
+
+## 0.41.3 — 2026-10-29
+
+- ShellLayout's two rails fade at both edges where they clip (`kol-scroll-fade` + `useScrollFade`), not a permanent foot mask (TimeSetAndSiteRailFade).
+
+## 0.41.2 — 2026-10-29
+
+- **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.
+
+## 0.41.1 — 2026-10-28
+
+- **Relative imports name their file** (WebsiteFrameDuplicateModules, kol-website): every `./x` import now carries its extension. Vite serves raw source by the URL it was imported with, so `./Ctx` and `./Ctx.jsx` were two modules in dev and a provider and its hook held two contexts. `validate-relative-imports` keeps it from coming back. No behaviour change.
+
 ## Unreleased — 2026-10-23
 
 - **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.

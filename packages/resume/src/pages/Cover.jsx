@@ -1,6 +1,6 @@
-import ContactLine from '../components/ContactLine'
+import ContactLine from '../components/ContactLine.jsx'
 import { useResume } from '../data.jsx'
-import { pick } from '../lib/i18n'
+import { pick } from '../lib/i18n.js'
 
 const LABELS = {
   en: { kicker: 'Portfolio & CV · 2026' },

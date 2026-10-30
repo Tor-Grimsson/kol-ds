@@ -202,6 +202,24 @@
 .hover\:text-oq-88:hover { color: var(--kol-oq-88); }
 .hover\:text-oq-96:hover { color: var(--kol-oq-96); }
 
+/* group-hover (2026-10-30): the same steps lit by a `.group` ancestor — a tab's glyph brightening with its label.
+ * Tailwind cannot write these for a colour it does not own; the `hover:` set above had them, this set did not. */
+.group:hover .group-hover\:text-oq-01 { color: var(--kol-oq-01); }
+.group:hover .group-hover\:text-oq-02 { color: var(--kol-oq-02); }
+.group:hover .group-hover\:text-oq-04 { color: var(--kol-oq-04); }
+.group:hover .group-hover\:text-oq-08 { color: var(--kol-oq-08); }
+.group:hover .group-hover\:text-oq-12 { color: var(--kol-oq-12); }
+.group:hover .group-hover\:text-oq-16 { color: var(--kol-oq-16); }
+.group:hover .group-hover\:text-oq-24 { color: var(--kol-oq-24); }
+.group:hover .group-hover\:text-oq-32 { color: var(--kol-oq-32); }
+.group:hover .group-hover\:text-oq-40 { color: var(--kol-oq-40); }
+.group:hover .group-hover\:text-oq-48 { color: var(--kol-oq-48); }
+.group:hover .group-hover\:text-oq-64 { color: var(--kol-oq-64); }
+.group:hover .group-hover\:text-oq-72 { color: var(--kol-oq-72); }
+.group:hover .group-hover\:text-oq-80 { color: var(--kol-oq-80); }
+.group:hover .group-hover\:text-oq-88 { color: var(--kol-oq-88); }
+.group:hover .group-hover\:text-oq-96 { color: var(--kol-oq-96); }
+
 .hover\:text-oq-inverse-01:hover { color: var(--kol-oq-inverse-01); }
 .hover\:text-oq-inverse-02:hover { color: var(--kol-oq-inverse-02); }
 .hover\:text-oq-inverse-04:hover { color: var(--kol-oq-inverse-04); }

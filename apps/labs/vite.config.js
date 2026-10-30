@@ -38,7 +38,7 @@ export default defineConfig(({ command }) => ({
   },
 
   // its own port after editor-hub (5198)
-  server: { port: 5199 },
+  server: { host: true, port: 5199 },
 
   optimizeDeps: {
     include: [

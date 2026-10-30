@@ -13,7 +13,7 @@ import TabsRow from './TabsRow.jsx'
  *
  * The slots, in the order they are drawn — an empty slot is not there:
  *   row 1   toggles · views · count     the series chips (Tag), the view switches (SegmentedToggle), the readout
- *   row 2   jump                        the section tabs (TabsRow look="chip"), scrolling sideways when long
+ *   row 2   jump                        the section tabs (TabsRow variant="chip"), scrolling sideways when long
  *   row 3   legend                      a dot and a name per series, as many columns as series
  *
  * STICKY by default: `sticky top-0` on the page's z-sticky rung, a hairline under it, the surface painted so the
@@ -51,7 +51,7 @@ export default function PageControls({ toggles, views = [], count, jump, legend,
       )}
       {jump && (
         <div className="overflow-x-auto">
-          <TabsRow look="chip" size="sm" ariaLabel={jump.label} value={jump.value} onChange={jump.onChange} tabs={jump.tabs} />
+          <TabsRow variant="chip" size="sm" ariaLabel={jump.label} value={jump.value} onChange={jump.onChange} tabs={jump.tabs} />
         </div>
       )}
       {legend && legend.length > 0 && (

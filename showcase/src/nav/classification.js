@@ -29,7 +29,7 @@ export const TIERS = {
   /* the brand-book set both brand apps were maintaining locally
    * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
    * frame plus a mark plus a text block, nesting nothing. */
-  AssetCard: 'atoms', Swatch: 'molecules', DocumentIndex: 'organisms',
+  AssetCard: 'atoms', Swatch: 'molecules', DocumentIndex: 'organisms', DocumentLibrary: 'organisms', DocumentView: 'organisms', LabWindow: 'organisms', LabOutput: 'molecules', BrandLockup: 'molecules', DocumentFiles: 'molecules', DocumentMarkdown: 'atoms',
   /* print (2026-10-28) */
   A4Pages: 'molecules', PrintStudio: 'organisms',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
@@ -42,7 +42,7 @@ export const TIERS = {
   /* the brand guide (2026-10-27): kol-branding's guide renderer over the outline it is handed */
   BrandGuide: 'organisms',
   /* the brand lab (2026-10-20): the generators a brand is made with, carried from kol-atlas */
-  ColorLab: 'organisms', TypeScaleLab: 'organisms', LockupBuilder: 'organisms', Lockup: 'molecules',
+  ColorLab: 'organisms', TypeLab: 'organisms', LockupLab: 'organisms', Lockup: 'molecules',
   /* kol-content */
   SourcesReferences: 'atoms',
   /* WorkViewToggle: atom→molecule 2026-07-15 — now nests SearchInput (expanding) */
@@ -137,7 +137,7 @@ export const TIERS = {
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
   NavRail: 'organisms', PhoneNav: 'organisms', TransportPill: 'organisms', WalkthroughPanel: 'organisms',
-  SettingsScaffold: 'organisms', HubSettings: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
+  SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
   PageShell: 'utilities',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
@@ -161,6 +161,10 @@ export const TIERS = {
   /* kol-notes */
   NoteThumb: 'molecules',
   NoteEditor: 'organisms', Notes: 'organisms', NotesCatalog: 'organisms',
+  /* kol-framework's website frame (LayoutsAndWebsiteLayout, 2026-10-28) — the bar, its takeover, the footer; the cursor layer */
+  WebsiteNavbar: 'organisms', TakeoverMenu: 'organisms', WebsiteFooter: 'organisms', WebsiteIntroLoader: 'organisms',
+  /* the time set (2026-10-29) — kol-component organisms, by folder; listed for the function below */
+  CursorOverlay: 'utilities', CursorTrail: 'utilities',
   /* kol-resume (ResumeKit, 2026-10-28): the sheets are organisms, the routes that hold them too, the provider a utility */
   ContactLine: 'molecules', LangToggle: 'molecules', ExportButtons: 'molecules', KitOptions: 'organisms',
   Cover: 'organisms', Resume: 'organisms', ResumeMarginalia: 'organisms', ResumeRail: 'organisms', ResumeGrid: 'organisms',
@@ -283,7 +287,12 @@ export const FUNCTIONS_BY_NAME = {
   CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
   /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
    * in situ, a color with its value, an asset in a frame. */
-  AssetCard: 'display', Swatch: 'display', DocumentIndex: 'structure',
+  AssetCard: 'display', Swatch: 'display', DocumentIndex: 'structure', DocumentLibrary: 'structure',
+  /* DocumentLibraryAndBoardParts (2026-10-29) */
+  FileQuickLook: 'overlay', Kanban: 'display', SortableGrid: 'display', ProgressBar: 'feedback',
+  DocumentView: 'display', DocumentFiles: 'action', DocumentMarkdown: 'action', useFileQuickLook: 'overlay',
+  /* the lab window (BrandLabToolWindow, 2026-10-29) */
+  LabWindow: 'display', LabOutput: 'display', BrandLockup: 'display', useLabValue: 'utility',
   A4Pages: 'structure', PrintStudio: 'utility',
   /* kol-resume (2026-10-28) */
   ContactLine: 'display', LangToggle: 'input', ExportButtons: 'action', KitOptions: 'input',
@@ -291,6 +300,13 @@ export const FUNCTIONS_BY_NAME = {
   CoverLetter: 'display', Portfolio: 'display', Backside: 'display',
   KitPreview: 'structure', ResumeSource: 'structure', ResumeLibrary: 'structure', ResumeTreatment: 'structure',
   ResumeProvider: 'utility', useResume: 'utility', useExportDownload: 'utility',
+  /* a page's variants (OneVariantsControl, 2026-10-29 — catalog's VariantsButton, shipped) */
+  VariantsControl: 'input',
+  /* the time set — a project's phases and checkpoints in time (TimeSetAndSiteRailFade, 2026-10-29) */
+  TimeSet: 'display', useScrollFade: 'utility',
+  /* kol-framework's website frame (2026-10-28) */
+  WebsiteNavbar: 'navigation', TakeoverMenu: 'navigation', WebsiteFooter: 'wayfinding', WebsiteIntroLoader: 'display',
+  CursorOverlay: 'utility', CursorTrail: 'utility', useCursor: 'utility', useWorkView: 'utility',
   PostPhoto: 'media', PostType: 'display', PostProduct: 'media',
   PostEditorial: 'media', StoryPhoto: 'media', StoryType: 'display',
   BrandAvatar: 'media',
@@ -338,7 +354,7 @@ export const FUNCTIONS_BY_NAME = {
   TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
-  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', StudioCreate: 'structure', StudioDetail: 'display', StudioCreateAction: 'action', CatalogGrid: 'structure', HubHome: 'structure', HubSettings: 'structure', HubDev: 'structure',
+  PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', StudioCreate: 'structure', StudioDetail: 'display', StudioCreateAction: 'action', CatalogGrid: 'structure', HubHome: 'structure', HubSettings: 'structure', HubSettingsRail: 'overlay', HubDev: 'structure',
   PageHeader: 'wayfinding',
   WalkthroughPanel: 'overlay', ShortcutsOverlay: 'overlay',
   Logomark: 'display', VectorLoader: 'display',
@@ -348,7 +364,7 @@ export const FUNCTIONS_BY_NAME = {
   Brand: 'structure', BrandBook: 'structure', BrandAssets: 'structure',
   BrandGuide: 'structure',
   /* styleguide — the brand lab (2026-10-20): each one sets a brand's values */
-  ColorLab: 'input', TypeScaleLab: 'input', LockupBuilder: 'input', Lockup: 'display',
+  ColorLab: 'input', TypeLab: 'input', LockupLab: 'input', Lockup: 'display',
   /* deck — kol-deck (2026-09-27): presentations as a tool */
   Decks: 'structure', DecksCatalog: 'wayfinding', DeckEditor: 'structure', DeckFile: 'overlay', DeckSettings: 'overlay',
   SlideRenderer: 'display', SlideThumb: 'display', SlideStage: 'input', SlideInspector: 'input', useDeckHistory: 'utility',
@@ -365,6 +381,8 @@ export const EXEMPT = {
   /* ONE Knob (2026-10-02): kol-hardware's export is kol-component's Knob at `variant="panel"`, kept on
    * the path the racks import — a deprecated wrapper, on the ledger */
   Knob: 're-export:@kolkrabbi/kol-component',
+  /* ONE FlipCard (2026-10-29, DocumentLibraryAndBoardParts): kol-component's; kol-hardware keeps the racks' path */
+  FlipCard: 're-export:@kolkrabbi/kol-component',
   AssetGrid: 're-export:@kolkrabbi/kol-component', FeatureSplit: 're-export:@kolkrabbi/kol-component',
   ProsePreview: 're-export:@kolkrabbi/kol-component', SpectrumGrid: 're-export:@kolkrabbi/kol-component',
   /* shell — the keymap sheet moved to kol-component 2026-09-28; kol-shell re-exports it */
@@ -376,7 +394,7 @@ export const EXEMPT = {
   ChessControlsProvider: 'non-component',
   /* workshop — contexts, providers, single-parent doc/tag sub-parts */
   ShellTocContext: 'non-component', ShellFullHeightContext: 'non-component', ShellContentWidthContext: 'non-component',
-  ShellTocCollapsedContext: 'non-component', ShellNavCollapsedContext: 'non-component', ShellRailModeContext: 'non-component', TagModeProvider: 'non-component',
+  ShellTocCollapsedContext: 'non-component', ShellNavCollapsedContext: 'non-component', ShellSearchScopeContext: 'non-component', ShellRailModeContext: 'non-component', TagModeProvider: 'non-component',
   DocsArticle: 'member-of:DocumentationReader', DocsHeader: 'member-of:DocumentationReader',
   DocsFrontmatter: 'member-of:DocumentationReader',
   TagModeOverlay: 'member-of:TagModeGate', TagGraph: 'member-of:TagModeOverlay',
@@ -414,17 +432,21 @@ export const EXEMPT = {
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
   'Layout', 'SiteLayout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
-  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext',
+  /* the website frame and what it provides (2026-10-28): a frame, like SiteLayout; providers and the no-op RouteLoader render nothing */
+  'WebsiteLayout', 'CursorProvider', 'WorkViewProvider', 'RouteLoader',
+  'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext', 'ShellSearchScopeContext',
 ]
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* the lab family's names (2026-10-29, BrandLabToolGaps): TypeScaleLab = TypeLab, LockupBuilder = LockupLab */
+  'TypeScaleLab', 'LockupBuilder',
   /* ShellSearchOverlay = CommandOverlay (2026-10-17): one overlay with modes */
   'ShellSearchOverlay',
   /* ShellDrawer = Rail (2026-10-17): two words, rail and overlay */
   'ShellDrawer',
-  /* TabChips · TabStrip · MobileTabBar = TabsRow `look` (2026-10-17): one tab component */
+  /* TabChips · TabStrip · MobileTabBar = TabsRow `variant` (2026-10-17): one tab component */
   'TabChips', 'TabStrip', 'MobileTabBar',
   /* SideNav = NavRail variant="site" (2026-10-22): one nav rail */
   'SideNav',
@@ -489,6 +511,13 @@ export const NO_PREVIEW = (() => {
       'chess apparatus parts; the board previews cover the system, these never got their own'),
     /* MediaLibrary has a preview since 2026-10-01 (the apps/media entry in a frame); the provider and
      * the explorer dispatch are shown inside it (SHOWN_IN) */
+    /* DocumentLibrary's parts (2026-10-29): drawn by its preview — the cells in every row — and DocumentView is
+     * apps/document's /library/<file> */
+    LabWindow: "the lab's window — every lab draws in it; TypeLab, ColorLab, ComboLab and LockupLab's previews are its preview",
+    LabOutput: "the table and CSS every lab ends on; drawn under each lab's preview",
+    DocumentView: 'the open document — MarkdownPage under the library buttons; live in apps/document /library',
+    DocumentFiles: "DocumentLibrary's Assets cell; drawn in every row of its preview",
+    DocumentMarkdown: "DocumentLibrary's Markdown cell; drawn in every row of its preview",
     MediaLibraryProvider: 'a context provider — it draws nothing of its own; shown inside MediaLibrary',
     RowMenuButton: 'renders only on a coarse-pointer device, inside a row or tile that has a context '
       + 'menu (MediaTile, ColumnBrowser, the media pages); nothing to show on a desktop preview (2026-09-23)',

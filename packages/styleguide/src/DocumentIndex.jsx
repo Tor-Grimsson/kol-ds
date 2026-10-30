@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FullscreenOverlay, KindPreview, PageHeader, QuickLookFrame, KIND_LABEL } from '@kolkrabbi/kol-component'
+import { FileQuickLook, PageHeader, KIND_LABEL } from '@kolkrabbi/kol-component'
 import { Contents } from './BrandGuide.jsx'
 
 /* DOCUMENT INDEX — a folder's pages as the brand book's contents cards (BrandGuide's `Contents`, routed), grouped by
@@ -24,22 +24,19 @@ export default function DocumentIndex({ rows, title, lede, onNavigate }) {
   const index = rows.map((r) => (r.file
     ? { ...r, href: r.file, meta: r.meta ?? fileLabel(r), onClick: (e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; e.preventDefault(); setOpen(files.indexOf(r)) } }
     : r))
-  const cur = open === null ? null : files[open]
-  const step = (d) => setOpen((i) => (i + d + files.length) % files.length)
   return (
     <div className="kol-page flex flex-col gap-6">
       {title && <PageHeader title={title} subtitle={lede} size="sm" voice="mono" />}
       <Contents index={index} onNavigate={onNavigate} />
-      {cur && (
-        /* QUICK LOOK DIMS, it does not black out — the list stays in view (MediaLibraryPages' rule) */
-        <FullscreenOverlay open onClose={() => setOpen(null)} closeButton={false} scrim>
-          <QuickLookFrame title={cur.title} meta={fileLabel(cur)} onClose={() => setOpen(null)} nav={files.length > 1 ? { index: open, total: files.length, onPrev: () => step(-1), onNext: () => step(1) } : undefined}>
-            {cur.kind === 'image' || /^(png|jpe?g|webp|gif|svg|avif)$/i.test(cur.ext ?? '')
-              ? <img src={cur.file} alt={cur.title} className="kol-quicklook-media" />
-              : <KindPreview key={cur.file} o={{ key: cur.file.split('?')[0], url: cur.file }} fit="sheet" urlOf={(x) => x.url} />}
-          </QuickLookFrame>
-        </FullscreenOverlay>
-      )}
+      {/* the DS Quick Look over the folder's files (kol-component FileQuickLook, 2026-10-29 — the composition this file drew
+        * by hand: dims, pages ‹ ›, a download) */}
+      <FileQuickLook
+        files={files.map((f) => ({ key: f.file.split('?')[0], name: f.title, url: f.file, type: f.kind === 'image' ? 'image/' : undefined }))}
+        index={open}
+        onIndex={setOpen}
+        onClose={() => setOpen(null)}
+        meta={(x) => fileLabel(files.find((f) => f.file === x.url))}
+      />
     </div>
   )
 }

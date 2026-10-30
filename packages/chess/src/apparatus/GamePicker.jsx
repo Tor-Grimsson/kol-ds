@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Dropdown, PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import { TIME_CLASS_LABELS, RESULT_LABELS } from './labels.js'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 /**
  * GamePicker — Pick a game and see its details. the game-selection row: filtered-games dropdown + opening

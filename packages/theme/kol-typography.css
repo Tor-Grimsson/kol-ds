@@ -732,6 +732,7 @@
    * headings, lede), base for body, Tight for display 01–04 (since 0.59.0).
    * Atomic classes follow the same convention. */
   --kol-font-family-sans:         'Right Grotesk', sans-serif;
+  --kol-font-family-sans-neutral: 'Public Sans', sans-serif; /* TabsRow type="sans" (2026-10-29). Declared nowhere in kol-theme: the app that renders it adds the Google Fonts css2 link (PublicSansByLink, his ruling 2026-10-28 — hosted cuts were wrong, 2026-10-30) */
   --kol-font-family-sans-narrow:  'Right Grotesk Narrow', 'Right Grotesk', sans-serif;
   --kol-font-family-sans-compact: 'Right Grotesk Compact', 'Right Grotesk', sans-serif;
   --kol-font-family-sans-tight:   'Right Grotesk Tight', 'Right Grotesk', sans-serif;

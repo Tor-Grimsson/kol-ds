@@ -1,5 +1,44 @@
 # @kolkrabbi/kol-theme
 
+## 0.200.4 — 2026-10-30
+
+- `.kol-tab-mono-light` — the sans tab row's face rule on the mono (`--kol-font-family-mono`), for TabsRow `type="mono-light"` (kol-component 0.317.4).
+
+## 0.200.3 — 2026-10-30
+
+- **`group-hover:text-oq-*`** exists (kol-opaque.css): the fifteen oq text steps lit by a `.group` ancestor, beside the `hover:` set that was already there. TabsRow's underline glyph passed the class since 0.317.1 and nothing answered it — Tailwind writes no variant for a colour it does not own — so a tab's label brightened under the pointer and its icon did not (the user, 2026-10-30).
+- **`--kol-font-family-sans-neutral`** is Public Sans, worn by `.kol-tab-sans` — TabsRow `type="sans"` (was `size="md"`, renamed on his word 2026-10-30) — on the user's word (*"try public sans?"*). **No files, no `@font-face`**: the face is loaded by the Google Fonts css2 link in the app that renders it, as the document body already is (PublicSansByLink, his ruling 2026-10-28). The four hosted cuts this entry first shipped with were wrong and are retired to `_tmp/`.
+
+## 0.200.2 — 2026-10-29
+
+- `.kol-tab-sans` (was `.kol-tab-md`, renamed 2026-10-30) sets the face only; the 2-stroke glyph rule of 0.200.2 is gone — the glyph keeps the set's 1.5 stroke (his word, 2026-10-30).
+
+## 0.200.1 — 2026-10-29
+
+- `.kol-lab-drop`: the checker on its own `::before` plane, faded in over 160ms (a gradient cannot tween).
+
+## 0.200.0 — 2026-10-29
+
+- `.kol-lab-drop`: the Color Lab's image drop zone — a faint ground, the opaque checker under the pointer or a drag.
+- `.kol-lab-window--max`: the maximized lab window, fixed 16px off every edge.
+- `.kol-btn-tab-filled`: the tab bundle with its chip showing at rest (Button `tab-filled`).
+- `.kol-tabs-scroll` gives the text tabs room (4px block padding, given back by margin): TabsRow's scroller was clipping ascenders.
+- `.kol-lab-rail-*` drag tokens (snap, step) for the lab rail's grab.
+- `.kol-lab-window`, `.kol-lab-rail`, `.kol-lab-stage`: the lab window on QuickLookFrame (fills its column, capped to the viewport, one `--kol-lab-pad`) — BrandLabToolWindow.
+
+## 0.199.0 — 2026-10-29
+
+- `.kol-scroll-fade--x` (the sideways fade, by `data-fade-left` / `data-fade-right`) and `.kol-tabs-scroll` (TabsRow's scroller) — TabsRowOverflow.
+
+## 0.198.0 — 2026-10-29
+
+- `.kol-kanban` (columns, cards, drop states) and `.kol-sortable-grid` (auto-fill tracks, `is-dragging` · `is-drop-target`) for kol-component's `Kanban` and `SortableGrid` (DocumentLibraryAndBoardParts).
+
+## 0.197.0 — 2026-10-29
+
+- **`kol-components-time.css`**: kol-atlas's timeline CSS, verbatim, with its `--tl-*` tokens mapped to KOL's (three milestone steps: the accent, 64 % ink, 14 % ink; Today on `--kol-status-danger`), and the Day view's rules.
+- **`.kol-scroll-fade`**: one rule for every box that scrolls vertically and clips. The head fades once scrolled and the foot while more lies below (`useScrollFade` sets them). The app rail's and the workshop rail's foot-only masks are this rule now.
+
 ## 0.196.0 — 2026-10-28
 
 - **`.kol-a4-sheet` · `.kol-a4-clip` · `.kol-a4-measure`** and their print rules (kol-styleguide's `A4Pages`; kol-website apps/record's kit CSS, the generic half carried — the kit's own rules stay in record).

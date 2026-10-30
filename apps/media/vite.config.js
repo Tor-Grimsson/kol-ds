@@ -13,6 +13,8 @@ export default defineConfig(({ command }) => ({
   // on its own port, so `pnpm media` stays an ordinary localhost root.
   base: command === 'build' ? '/apps/media/' : '/',
 
+  server: { host: true },
+
   build: {
     // Vercel's outputDirectory is showcase/dist, so the app lands inside it
     // under its slug. Root build order runs the showcase FIRST — its own

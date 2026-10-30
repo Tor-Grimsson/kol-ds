@@ -1,9 +1,10 @@
-import { useExportDownload } from '../lib/exportDownload'
-import { exportRequest } from '../lib/treatments'
+import { useExportDownload } from '../lib/exportDownload.js'
+import { Button } from '@kolkrabbi/kol-component'
+import { exportRequest } from '../lib/treatments.js'
 import { useResume } from '../data.jsx'
 
 /**
- * Fixed top-right download controls for a treatment preview. Kit treatments
+ * A treatment's download controls, in its toolbar. Kit treatments
  * offer the flat PDF and the editable-text SVG zip; layouts the PDF only. Both
  * go through /api/export (~30–45s: build + headless render), so the running
  * button shows progress. `print:hidden` keeps the chrome out of the file.
@@ -16,26 +17,19 @@ export default function ExportButtons({ treatment, lang = 'en', options }) {
     download(format, url, filename)
   }
 
-  const btn =
-    'kol-mono-12 px-3 py-1.5 rounded bg-[#121215] text-white cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-wait'
-
+  /* in a treatment's toolbar, in flow — never pinned over the page's corner (LayoutsAppPages: the floating pair sat on the
+     variants control); `Button`, not record's hand-styled buttons */
   return (
-    <div className="fixed top-4 right-4 z-50 print:hidden flex flex-col items-end gap-2">
-      <div className="flex gap-2">
-        <button type="button" disabled={!!busy} onClick={() => run('pdf')} className={btn}>
-          {busy === 'pdf' ? 'Generating…' : 'Download PDF'}
-        </button>
-        {treatment.kind === 'kit' && (
-          <button type="button" disabled={!!busy} onClick={() => run('svg')} className={btn}>
-            {busy === 'svg' ? 'Generating…' : 'SVG (.zip)'}
-          </button>
-        )}
-      </div>
-      {err && (
-        <pre className="kol-mono-10 max-w-xs whitespace-pre-wrap text-right text-red-700 bg-white/95 border border-red-200 rounded p-2">
-          {err}
-        </pre>
+    <div className="flex flex-wrap items-center gap-2 print:hidden">
+      <Button size="sm" tone="inverted" disabled={!!busy} onClick={() => run('pdf')}>
+        {busy === 'pdf' ? 'Generating…' : 'Download PDF'}
+      </Button>
+      {treatment.kind === 'kit' && (
+        <Button size="sm" tone="outline" disabled={!!busy} onClick={() => run('svg')}>
+          {busy === 'svg' ? 'Generating…' : 'SVG (.zip)'}
+        </Button>
       )}
+      {err && <pre className="basis-full kol-mono-10 max-w-md whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-sm)] p-2">{err}</pre>}
     </div>
   )
 }

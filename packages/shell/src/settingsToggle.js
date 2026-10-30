@@ -18,5 +18,5 @@ import { createContext, useContext } from 'react'
  * No-op when `settingsPath` is unset, and safe outside an AppShell — a hook
  * that throws on a missing provider would make it unusable in exactly the
  * conditional places it is for. */
-export const SettingsToggleContext = createContext(null)
+export const SettingsToggleContext = (globalThis[Symbol.for('@kolkrabbi/kol-shell/SettingsToggleContext')] ??= createContext(null))
 export const useSettingsToggle = () => useContext(SettingsToggleContext) ?? (() => {})

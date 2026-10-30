@@ -11,7 +11,17 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` is on `AppHub`, the app rail; `apps/site-hub` (2026-10-24) is the site rail's reference beside it, and `apps/shell` shows both rails on one set of pages. The specimens exist; the call is his, his session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-10-28 evening — the document space, the identity set, Public Sans)
+## 🏁 Current state (2026-10-30 — the Brand Lab to approval, the icon rounds, two website tickets)
+
+- **Published** kol-icons 0.53.3–0.53.5 (lock/unlock, shuffle, the harmony set on Adobe's constructions, `color-wheel` · `color-palette` · `color-swatch` from Figma) · kol-theme 0.200.3 / 0.200.4 · kol-component 0.317.3 / 0.317.4 (TabsRow `variant` + `type="mono" | "sans" | "mono-light"`, the oq ink ladder, the plain Dropdown in ColorPickerPopover, MediaLibrary `previewFrame` · `settingsKey` · `infoKey` · `columnFolderInfo`) · kol-styleguide 0.18.3 / 0.18.4 (the contrast rail on SettingsSections, KOL vector forms on the stage, Combo and Lockup fixes). Log: `session-log/2026-10-30-brand-lab-review-icons-and-tickets.md`.
+- **Rulings:** `variant` is the one word for a look (`look` and `preset` were agent drift); every icon round is BUILT by `~/.claude/skills/app-icon/bin/propose.cjs` with `"glyphs": true` from a spec (kol-icon skill `example-spec.json`), never drawn; a glyph fills one of the three keyline rectangles and a pair's parts never move between states but the one that opens; lobby tickets go to background agents, never the main thread; the Brand Lab's header is two groups — the four generators, then Guide and Export.
+- **Open:** the Type lab review; BrandLabToolWindow closes when he calls the review done; ClaudeListIconSet waits for him.
+
+## Current state (2026-10-29 — resume kit, the Layouts app, the website frame)
+
+- **Published** kol-resume 0.2.0 (new) · kol-framework 0.62.5 (`WebsiteLayout`) · kol-foundry 0.14.0 · kol-component 0.314.0 (`VariantsControl`, `TimeSet`, `useScrollFade`) · kol-shell 0.88.0 (editable Hub rows, Account tab) · kol-styleguide 0.15.0 · kol-theme 0.197.0 · kol-hardware 0.9.1. Fifteen tickets closed with receipts; inbox empty. `apps/layouts` shows four frames and every page that fits (one list: `showcase/src/nav/placements.js`, guarded by `validate-placements`); `validate-relative-imports` keeps contexts single. Push is his. Log: `session-log/2026-10-29-resume-kit-layouts-app-website-frame.md`.
+
+## Current state (2026-10-28 evening — the document space, the identity set, Public Sans)
 
 - **Published** kol-markdown 0.2.0 · kol-theme 0.193.0 / 0.194.0 · kol-framework 0.58.0 / 0.59.0 · kol-styleguide 0.12.0 / 0.13.0 · kol-icons 0.48.0 / 0.49.0. kol-website's MarkdownPage ticket became `apps/document` (5208, `document-fixture` = kol-atlas's documents): `MarkdownPage` · `LinkPreview` · `documentTabs` · `documentFiles` in kol-framework, `DocumentIndex` (files open in Quick Look) in kol-styleguide, the parser additions in kol-markdown, `.kol-sheet`'s accent, figure fill and Public Sans body (his ruling, Round 23) in kol-theme — proved block for block against kol-atlas's own engine. `kol-icon-set-identity` is the third icon set (`kolkrabbi` · `apps`; studio and brand glyphs by ticket). Four tickets closed with receipts; PdfToolsFromStudio waits. Push is his. Log: `session-log/2026-10-28-document-space-identity-set-public-sans.md`.
 
@@ -22,14 +32,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-27 — home screen, the site rail, the phone pills)
 
 - **Published** kol-theme 0.191.0 (the `html` ground + standalone top inset) · kol-icons 0.46.0 / 0.47.0 (mirror's glyphs, `stopwatch-solid`) · kol-framework 0.57.0 (site chevron 16) · kol-component 0.303.0 / 0.304.0 (site pages 2px right of the title; the phone pill's edge · fold · circle) · kol-shell 0.83.0 (`PhoneNav` top · fold · `moreKeepsOpen`, `TransportPill`). Four tickets closed with receipts. Round 20 rejected, 21 approved, 22 open (the phone Labs layout). Showcase previews: one MultiSelect with Background. Later: SiteRailTitleNavigatesOnly closed in kol-component 0.305.0 (the title navigates, the chevron expands; `discloseOnTitle` · `defaultOpen` · `openOnRoute`). New playbook `07-apps-tier/10-save-to-home-screen.md`. Push is his. Log: `session-log/2026-10-27-home-screen-site-rail-phone-pills.md`.
-
-## Current state (2026-10-25 — rails: the four roles on one frame)
-
-- **Published** kol-theme 0.190.0 · kol-framework 0.56.0 · kol-component 0.302.0 (+ kol-shell 0.82.0 in the morning). `Rail role="patch | page | settings | bottom"` carries one shell per job (P · H · , · E via `useRailKey`): 380 wide, 16 inset, the standard header (title · × · hairline), the foot as a full-width band, no edge (`edge` the opt-in), only `settings` with the scrim; the bottom rail runs over the nav rail with `RailNav` (the 48 icon column) inside; the DS grab pill on every resizable rail; the phone rule. `SettingsSections` slider rows, `Input preset="rail"`, CanvasStudio `1–9`, the site rail's 20 gutter, the nav rail open at 380. `apps/rails` (5206) is the reference on AppHub. Rounds 18 (380) and 19 (no edge) answered. Filed `RailRolesOnMonitor` into kol-monitor; mirror's snap ticket closed. Push is his. Log: `session-log/2026-10-25-rails-the-four-roles.md`.
-
-## Current state (2026-10-24 late evening — HubHomeBackReveal)
-
-- **Published** kol-shell 0.82.0: `HubHome` takes a page-level `backReveal`, a file's own winning, so Home's cards turn whole with `flip-card` like the Library's; rack-hub's Home and Library pass it. Ticket closed, receipt to kol-monitor (its remainder: bump, pass `backReveal` on `home`). Push is his. Log: `session-log/2026-10-24-hubhome-back-reveal.md`.
 
 ## Repo standup (2026-06-15)
 

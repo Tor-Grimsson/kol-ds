@@ -521,6 +521,10 @@ export default function ColumnBrowser({
   /* `renderDetails(file)` — extra rows under the preview column's facts (tags, an Edit action);
    * absent, the column is exactly what it was */
   renderDetails,
+  /* `renderFolderPreview(level, width)` — the preview column when NO file is shown: the open
+   * folder's own pane (MediaLibraryInfoKey, kol-website 2026-10-30 — the media page's folder facts,
+   * as its rows draw them). Null for a level with nothing to say; absent, the column is empty. */
+  renderFolderPreview,
   height,
   defaultHeight = 528,
   onHeightChange,
@@ -798,6 +802,8 @@ export default function ColumnBrowser({
   const levels = levelsOf(prefix) // '' → ['']; 'a/b/' → ['', 'a/', 'a/b/']
   // While Quick Look is open the overlay's index is the truth for the highlight.
   const shown = quickLook ? quickLook.files[quickLook.index] : picked
+  /* no file shown: the open folder's pane, when the caller has one for this level */
+  const folderPane = !shown && renderFolderPreview ? renderFolderPreview(prefix, widthOf('preview')) : null
 
   /* ── THE STACK MODE (ColumnBrowserStackMode, kol-r2b2 2026-09-03) ─────────
    *
@@ -1093,9 +1099,11 @@ export default function ColumnBrowser({
           <SelectionPreview keys={[...selectedKeys]} objects={objects} urlOf={urlOf} kindOf={kindOf} formatSize={formatSize} formatDate={formatDate} width={widthOf('preview')} />
           <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
         </>
-      ) : shown && (
+      ) : (shown || folderPane) && (
         <>
-          <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} renderDetails={renderDetails} width={widthOf('preview')} />
+          {shown
+            ? <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} renderDetails={renderDetails} width={widthOf('preview')} />
+            : folderPane}
           <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
         </>
       )}

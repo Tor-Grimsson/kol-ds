@@ -14,7 +14,7 @@ import { createContext, useContext, useMemo, useState } from 'react'
  *
  * Monitor's shape (`src/hooks/useRailSlot.jsx`), shipped so its NavRail fork can retire.
  */
-const RailSlotContext = createContext(null)
+const RailSlotContext = (globalThis[Symbol.for('@kolkrabbi/kol-component/RailSlotContext')] ??= createContext(null))
 
 export function useRailSlot() {
   return useContext(RailSlotContext)

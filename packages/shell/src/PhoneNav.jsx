@@ -145,7 +145,7 @@ export default function PhoneNav({ items = [], currentPath = '/', onNavigate, ac
         </div>
       )}
       <TabsRow
-        look="stacked"
+        variant="stacked"
         placement="phone"
         shape={shape}
         collapsed={open && !moreKeepsOpen}

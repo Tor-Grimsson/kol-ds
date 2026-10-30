@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-workshop",
-  "version": "0.41.0",
+  "version": "0.44.0",
   "private": false,
   "description": "Docs viewer, shell and tag system",
   "license": "MIT",
@@ -19,7 +19,8 @@
   },
   "peerDependencies": {
     "@kolkrabbi/kol-component": ">=0.296.0",
-    "@kolkrabbi/kol-framework": ">=0.45.0",
+    "@kolkrabbi/kol-framework": ">=0.63.0",
+    "@kolkrabbi/kol-shell": ">=0.89.0",
     "@kolkrabbi/kol-theme": ">=0.165.0",
     "@kolkrabbi/kol-icons": ">=0.18.0",
     "gsap": "^3.13.0",
@@ -31,6 +32,7 @@
     "@kolkrabbi/kol-component": "workspace:^",
     "@kolkrabbi/kol-icons": "workspace:^",
     "@kolkrabbi/kol-framework": "workspace:^",
+    "@kolkrabbi/kol-shell": "workspace:^",
     "@kolkrabbi/kol-theme": "workspace:^"
   },
   "files": [

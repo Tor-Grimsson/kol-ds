@@ -1,5 +1,34 @@
 # @kolkrabbi/kol-icons
 
+## 0.53.5 — 2026-10-30
+
+- **The harmony set on Adobe's constructions, his approval 2026-10-30** (https://claude.ai/artifact/1jPWD2qGPmzxf5xCSAFstu): `clr-mono` three dots on one radius; `clr-shd` the radius with one dot at the edge; `clr-cmpd` the Y with its lower dots 25° either side; `clr-tet` a square with corner dots; `clr-anl` three dots at the top on spokes; `clr-split` the Y at 40°. `clr-tri` · `clr-comp` · `clr-rnd` unchanged. The 0.53.4 files are in `_tmp/2026-10-30-harmony-before/`.
+- **`color-wheel` · `color-palette` · `color-swatch`** into `tools`, from the Figma library (kol-icon, node 148:7702), brought onto the set's treatment: the wheel and palette from fills to 1.5 strokes on the 2–22 keyline, the swatch from stroke 2 to 1.5. `color-wheel` is the Color Lab's Wheel tab.
+
+## 0.53.4 — 2026-10-30
+
+- **`shuffle` redrawn, his approval 2026-10-30** (https://claude.ai/artifact/4uXUHPA7ummwnXahfvuZ5U): Adobe's construction — two S-curves crossing at the centre, 3 to 22 on the wide keyline, the heads at the right with their tips at 22 — in place of the straight diagonals drawn on 2026-10-29. The Color Lab's Randomise button wears it by name. The 0.53.3 file is in `_tmp/2026-10-30-shuffle-before/`.
+
+## 0.53.3 — 2026-10-30
+
+- **`lock` and `unlock` redrawn as a pair, his approval 2026-10-30** (the lock-pair round, https://claude.ai/artifact/DmzGBep2pcarV98PoB8nj4): the shipped drawing scaled to the inner keyline square (0.9 about the centre, 4.8–19.2 by 3–21), the body 0.95 of that height on its base (10.74–21), stroke 1.5. Nothing moves between states but the shackle: in `unlock` it is lifted to the tall keyline's top at 2, its left leg still in the body, the right leg cut at the arc's shoulder at 4.7, a six-unit bite to the body — the two read apart at 16. The 0.53.2 files are in `_tmp/2026-10-30-lock-pair-before/`.
+- **`unlock` is the original again** — 0.53.2 overwrote the user's icon in place with a redraw instead of adding a version beside it (the user: *"you just OVERWROTE A CRUCIAL icon that I OWN"*). The set's file is byte-for-byte 0.52.0's; the redraw is parked at `_tmp/2026-10-30-unlock-redraw/unlock-v2.svg`, out of the set, for his ruling. `expand` was new in 0.53.2, not an overwrite, and stays.
+
+## 0.53.2 — 2026-10-29
+
+- **`unlock` and `expand` redrawn on the keyline plate** (review 8 — *"did you even take it through keylines?!"*; the plate: `_tmp/2026-10-29-lab-window/glyphs.html`, candidates beside Adobe's). `unlock`: the body 5–16 and the shackle hinged inside it, swung to 20 with its free leg lifted — the mass centred on the keyline, the opening unmistakable at 16. `expand`: a 17 shaft from 6,18 to 18,6 with 5-long heads (the shipped 0.53.1 heads were 43% of a short shaft and blurred into it). Both CANDIDATES for his review.
+
+## 0.53.1 — 2026-10-29
+
+- **`unlock` redrawn, CANDIDATE for the user's review:** the shackle swung open — its free leg outside the body with a gap, the body narrowed to 4–15 so the two read apart at 16px (review 7, Adobe's pair — the user: *"Locked and unlocked in our kol-icons is so similar its almost impossible to see the difference"*). `lock` is untouched.
+
+## 0.53.0 — 2026-10-29
+
+- **New, CANDIDATES for the user's review:** the file-type family in `files` (OverviewTocAndLibraryIcons, kol-website 2026-10-29 — user: *"file type and language, can use icons? the table is deadboring like this"*) — `file-pdf` (a P) · `file-doc` (a paragraph: a short head line over two full ones) · `file-image` (a ridge under a sun, `image`'s mark at file size) · `file-svg` (a vector node: square anchor, two handles, the curve through it) · `file-video` (play) · `file-audio` (a note) · `file-zip` (a zipper down the spine and its pull) · `file-md` (the Markdown mark, M↓) · `file-text` (a T). Each is `file`'s outline and fold verbatim plus one mark inside the body (x 7.5–16.5, y 10.5–18.5, clear of the fold), the 1.5 stroke, `currentColor`, round caps and joins. kol-styleguide's `DocumentLibrary assetsView="icon"` draws them. Not yet seen by him: a redraw or a cull is his call.
+
+- **New, CANDIDATES for the user's review:** three harmony glyphs in the signal set's `color` group, drawn to the existing `clr-anl` · `clr-comp` · `clr-mono` · `clr-tri` (BrandLabToolWindow review 3, 2026-10-29 — the user: *"I know we have some icons for this in DS"*): `clr-split` (split complementary: a Y from the top dot to two at 150° and 210°), `clr-tet` (tetradic: a square through four dots) and `clr-rnd` (custom: three scattered dots), all with the 8.5 ring, 1.5 stroke and 1.5 dots. Color Lab's harmony tiles draw them. Two more after review 5 (Adobe's set): `clr-cmpd` (compound: the top dot and a lopsided Y to 150° and 195°) and `clr-shd` (shades: a radius from the centre dot to one at 90°).
+- **New, CANDIDATES for the user's review (review 6, 2026-10-29):** `expand` in `arrow-diagonal` — the diagonal with a head at each end, `arrow-upright`'s family (Adobe's Maximize, the user: *"wrong maximize icon, should look like this"*); `shuffle` in `playback` — two crossing paths, each ending in its head (Adobe's shuffle, for the Color Lab's Randomise).
+
 ## 0.52.0 — 2026-10-28
 
 - **`favicon.ico` and `favicon-96.png` in every identity folder** (IdentityFaviconIcoAnd96, kol-website): the two files a host asks for by name — any browser's `/favicon.ico`, Sanity Studio's `static/favicon.ico` and `static/favicon-96.png` — rendered by `pnpm identity:render` from the dark app icon, as studio's hand-made pair was (pixel-identical to it). The .ico is one 32 × 32 PNG in an ICO wrapper.

@@ -47,6 +47,7 @@
 @import "./kol-components-workshop.css" layer(components);
 @import "./kol-components-foundry.css" layer(components);
 @import "./kol-components-styleguide.css" layer(components);
+@import "./kol-components-time.css" layer(components);
 @import "./kol-components-shell.css" layer(components);
 @import "./kol-components-controls.css" layer(components);
 

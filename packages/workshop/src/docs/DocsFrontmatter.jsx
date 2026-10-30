@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Badge, Icon, Tag } from '@kolkrabbi/kol-component'
 import { getTagColor } from '@kolkrabbi/kol-markdown'
-import { useTagMode } from '../tags'
+import { useTagMode } from '../tags/index.js'
 import TagPath from '../tags/TagPath.jsx'
 
 /* EVERY field carries an icon (user ruling 2026-08-01). Ten of these were

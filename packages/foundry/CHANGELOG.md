@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-foundry
 
+## 0.14.0 — 2026-10-28
+
+- **`WebsiteIntroLoader`** (LayoutsAndWebsiteLayout, kol-website): kolkrabbi.io's intro curtain carried verbatim beside `LoaderIntro` — the word in a variable font on this package's `TextPressure`, the arrow, and the scroll · touch · key gestures `LoaderIntro` dropped. Its own name because `IntroLoader` is a ledger alias of `LoaderIntro`. The word and font are props (`text` · `fontFamily` · `fontUrl`); the cursor trail is kol-framework's, so kol-framework ≥ 0.62.0 is a peer.
+
 ## 0.13.0 — 2026-10-17
 
 - **`LoaderIntro`** — `IntroLoader` renamed to the `Loader<Job>` convention beside `LoaderOverlay` · `LoaderApp` (AppLoader, kol-monitor). It stays in kol-foundry: it is drawn by `TextPressure`, a live-font component, and kol-component may not import foundry. `IntroLoader` and the name before it stay as aliases (ledger).

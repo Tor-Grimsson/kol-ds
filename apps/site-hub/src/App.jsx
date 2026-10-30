@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
-import { SiteHero, CategoryPage, SiteLayout } from '@kolkrabbi/kol-framework'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { SiteHero, CategoryPage, PageHero, PageSection, SiteLayout } from '@kolkrabbi/kol-framework'
 import { Button, PageHeader, useScrollSpy } from '@kolkrabbi/kol-component'
 import { BrandAssets, BrandBook, brandToc } from '@kolkrabbi/kol-styleguide'
 import { VOYAGER } from 'voyager-fixture'
@@ -59,6 +59,19 @@ const NAV = [
     { to: '/research/sheet', label: 'Sheet', card: RESEARCH_CARDS.sheet },
     { to: '/research/boards', label: 'Boards', card: RESEARCH_CARDS.boards },
   ] },
+  /* THE ROW PROPS (NavRailRowProps, 2026-10-29): the reference for the site rail's per-row seams, on VOYAGER — a page row
+     in `upper` beside rows as written, rows with icons beside ones without (the column held, `alignIcons`), a group label
+     with an icon, `trailing` counts. Collapsed, the icon pages show under the open category (`collapsedIcons="all"`). */
+  { id: 'log', label: 'Mission log', icon: 'flag', eyebrow: 'Voyager', lede: 'The mission as it flew: the plan, the crew, the record it carries, the worlds it passed.', pages: [
+    { to: '/log', label: 'Overview', case: 'upper', trailing: 12 },
+    { to: '/log/flight-plan', label: 'Flight plan', icon: 'globe', lede: 'Launch windows, gravity assists and the long arc out of the plane.' },
+    { to: '/log/crew', label: 'Crew', lede: 'Who flew the mission from the ground, shift by shift.' },
+    { to: '/log/golden-record', label: 'Golden record', icon: 'camera', trailing: 27 },
+    { label: 'Encounters', icon: 'star', children: [
+      { to: '/log/jupiter', label: 'Jupiter', icon: 'globe' },
+      { to: '/log/saturn', label: 'Saturn' },
+    ] },
+  ] },
   /* the rest of the rail — a row each, on a placeholder page, so the tree reads whole; which rows is his (plan W2) */
   { id: 'slide-deck', label: 'Slide deck', icon: 'maximize', to: '/slide-deck' },
   { id: 'library', label: 'Library', icon: 'library', to: '/library' },
@@ -89,6 +102,28 @@ const Placeholder = ({ label }) => (
   <div className="kol-page">
     <PageHeader title={label} subtitle="A row on the rail. The page is the site's own." size="sm" voice="mono" />
   </div>
+)
+
+/* THE OVERVIEW AS A TOC (OverviewTocAndLibraryIcons, kol-website 2026-10-29 — user: *"I think they should just TOC the sub
+   pages"*): the Mission log's overview lists every page of the category, none with a card, Encounters as a sub-heading,
+   under PageSection's chapter head. `?view=list|cards` and `?head=hero|none` show the same category the other ways. */
+function LogOverview() {
+  const [q] = useSearchParams()
+  return <CategoryPage navTree={NAV} id="log" view={q.get('view') ?? 'toc'} head={q.get('head') ?? 'section'} />
+}
+
+/* a page that opens on a head instead of the brand-intro band — Crew on the compact hero, Flight plan on a section head as
+   its h1 — beside Research's pages, which keep today's intro hero */
+const Crew = () => (
+  <div className="kol-page">
+    <PageHero size="compact" label="Mission log" title="Crew" lede="Who flew the mission from the ground, shift by shift." className="mx-0 px-0" />
+    <p className="kol-sans-body-02 text-body max-w-[64ch]">The flight team ran three shifts through the planetary encounters: navigation, sequencing and the science teams, each handing the spacecraft on to the next.</p>
+  </div>
+)
+const FlightPlan = () => (
+  <PageSection level="page" id="flight-plan" label="Mission log" title="Flight plan" body="Launch windows, gravity assists and the long arc out of the plane.">
+    <p className="kol-sans-body-02 text-body max-w-[64ch]">A launch in late summer, Jupiter eighteen months later, Saturn two years after that, then out of the plane of the planets for good.</p>
+  </PageSection>
 )
 
 /* the opening section of each chaptered page — the brand book's hero, the assets page's overview (kol-styleguide's
@@ -124,7 +159,7 @@ function Frame() {
 
   /* Home is the image page — the hero owns its ground, no wash (the sites' line). No credit box under the rail
      (user 2026-10-24: "I dont think we need the credit below"). */
-  return <SiteLayout navTree={NAV} sideNav={{ isActive, footer: false }} pageWash={pathname === '/' ? undefined : 'var(--kol-fg-02)'} />
+  return <SiteLayout navTree={NAV} sideNav={{ isActive, footer: false, collapsedIcons: 'all' }} pageWash={pathname === '/' ? undefined : 'var(--kol-fg-02)'} />
 }
 
 export default function App() {
@@ -140,6 +175,10 @@ export default function App() {
           <Route path="/research/sheet" element={<Sheet />} />
           <Route path="/research/boards" element={<Boards />} />
           {NAV.filter((c) => c.to && c.to !== '/').map((c) => <Route key={c.id} path={c.to} element={<Placeholder label={c.label} />} />)}
+          <Route path="/log/crew" element={<Crew />} />
+          <Route path="/log/flight-plan" element={<FlightPlan />} />
+          <Route path="/log/*" element={<Placeholder label="Mission log" />} />
+          <Route path="/log" element={<LogOverview />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

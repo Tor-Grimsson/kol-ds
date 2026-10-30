@@ -6,7 +6,7 @@
  * visible at its intended size (aspect-ratio preserved).
  */
 import { useState } from 'react'
-import AssetPlaceholder from '../utilities/AssetPlaceholder'
+import AssetPlaceholder from '../utilities/AssetPlaceholder.jsx'
 
 export default function Image({
   src,

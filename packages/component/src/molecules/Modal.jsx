@@ -62,7 +62,7 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
  * via portal, so it floats above any rail / scroll-context.
  */
 
-const ModalCtx = createContext(null)
+const ModalCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/ModalCtx')] ??= createContext(null))
 
 export function ModalProvider({ children }) {
   const [state, setState] = useState(null)

@@ -4,8 +4,12 @@ import { Divider, SectionText } from '@kolkrabbi/kol-component'
  * · `SiteLayout`. Its head COMPOSES `SectionText` (page-family-is-not-a-set,
  * 2026-09-03) instead of hand-stacking label / title / lede: the voices are the
  * same `.kol-prose-*` trio as before, passed as the base's seams, and each class
- * carries its own bottom margin, so the block's gap is 0 and nothing moved. */
-export default function PageSection({ id, label, title, body, children, className = '', fullbleed = false, divider = false }) {
+ * carries its own bottom margin, so the block's gap is 0 and nothing moved.
+ *
+ * `level`: `section` (default) the head's title is an h2 · `page` the same voice as the page's h1, for a page that opens
+ * on a section head instead of a hero — one h1 per page (OverviewTocAndLibraryIcons, kol-website 2026-10-29: *"the hero
+ * literally was designed to INTRO BRAND GUIDE, not to be a every goddamn page standard"*). */
+export default function PageSection({ id, label, title, body, children, className = '', fullbleed = false, divider = false, level = 'section' }) {
   const hasHead = label || title || body
   const cls = [
     'kol-page',
@@ -25,7 +29,7 @@ export default function PageSection({ id, label, title, body, children, classNam
             eyebrow={label}
             eyebrowClass="kol-prose-label"
             headline={title}
-            headlineAs="h2"
+            headlineAs={level === 'page' ? 'h1' : 'h2'}
             headlineClass="kol-prose-title"
             body={body}
             bodyClass="kol-prose-lede"

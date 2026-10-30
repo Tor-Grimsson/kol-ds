@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react'
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useOutletContext, useParams } from 'react-router-dom'
-import { SiteLayout, MarkdownPage, LinkPreview } from '@kolkrabbi/kol-framework'
+import { SiteLayout, MarkdownPage, LinkPreview, documentLibrary } from '@kolkrabbi/kol-framework'
 import { AppShell } from '@kolkrabbi/kol-shell'
-import { MenuItem, SegmentedToggle, TabsRow } from '@kolkrabbi/kol-component'
+import { MenuItem, TabsRow } from '@kolkrabbi/kol-component'
 import { TABS, CLIENT, LINK_CARDS, tabPath, docSource, REVIEW_MODULES, assetUrl, cardImage } from 'document-fixture'
 import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
-import { DocumentIndex } from '@kolkrabbi/kol-styleguide'
+import { DocumentIndex, DocumentLibrary, DocumentView } from '@kolkrabbi/kol-styleguide'
+import { LIBRARY_MODULES, LIBRARY_FILES, LIBRARY_ROOT } from 'voyager-fixture/library'
 
 /* THE DOCUMENT SPACE (plan-2026-10-28-document W3) — kol-atlas's documents as pages. THE LAYOUT (user 2026-10-28, on
  * review): the site rail on the left, kol-atlas's tabs header on top of the page (the client's name, a tabs row with the
@@ -32,6 +33,11 @@ const REVIEW_FOLDERS = [['reviews', 'Brands'], ['branding/reviews', 'Branding'],
 const reviewName = (p) => p.replace(/^\.\/research\//, '').replace(/\.md$/, '')
 const reviews = Object.keys(REVIEW_MODULES).sort().map((p) => { const name = reviewName(p); const folder = name.slice(0, name.lastIndexOf('/')); return { name, folder, slug: name.slice(name.lastIndexOf('/') + 1), to: `/reviews/${name}` } })
 
+/* THE LIBRARY (DocumentLibraryAndBoardParts, kol-website 2026-10-29): VOYAGER's press, letters and poster beside their
+ * originals, read by kol-framework's documentLibrary and drawn by kol-styleguide's DocumentLibrary — the table per
+ * folder, Quick Look on the originals, the markdown download. /library · /library/<folder> · /library/<folder>/<file> */
+const LIBRARY = documentLibrary(LIBRARY_MODULES, { base: 'library', root: LIBRARY_ROOT, files: LIBRARY_FILES })
+
 const ICON = { overview: 'file', project: 'library', plan: 'grid', quote: 'download', assets: 'folder', reference: 'bookmark' }
 const row = (t) => ({ to: tabPath(t), label: t.title })
 /* a page with entries is a group in the rail: the page first, its entries under it */
@@ -41,6 +47,7 @@ const NAV = [
   ...top.map((t) => ({ id: t.id, label: t.title, icon: ICON[t.id] ?? 'file', to: tabPath(t) })),
   ...single.map((t) => ({ id: t.id, label: t.title, icon: ICON[t.id] ?? 'file', to: tabPath(t) })),
   ...folders.map((f) => ({ id: f.group.toLowerCase(), label: f.group, icon: ICON[f.group.toLowerCase()] ?? 'folder', to: tabPath(f), pages: inGroup(f.group).map(withEntries) })),
+  { id: 'library', label: 'Library', icon: 'folder', to: '/library', pages: LIBRARY.pages },
   { id: 'reviews', label: 'Reviews', icon: 'book-open', to: '/reviews', pages: REVIEW_FOLDERS.map(([folder, label]) => ({ label, children: reviews.filter((r) => r.folder === folder).map((r) => ({ to: r.to, label: r.slug })) })) },
 ]
 /* the app rail is flat: one row per top-level thing */
@@ -145,6 +152,21 @@ function Review() {
   return <MarkdownPage key={name} source={src} toc={toc} resolveLink={resolveLink} assetUrl={assetOf('')} />
 }
 
+/* THE CELL PROPS (OverviewTocAndLibraryIcons, kol-website 2026-10-29): `?assets=icon|icon-label` and `?lang=chips|icon` draw
+ * the library with kol-icons' file glyphs and a Tag per language, beside today's label and text at the bare URL */
+function Library() {
+  const navigate = useNavigate()
+  const toc = useToc()
+  const id = useParams()['*'] ?? ''
+  const q = new URLSearchParams(useLocation().search)
+  const cells = { assetsView: q.get('assets') ?? undefined, langView: q.get('lang') ?? undefined }
+  const row = LIBRARY.rows.find((r) => r.id === id)
+  if (row) return <DocumentView row={row} library={LIBRARY} toc={toc} assetsView={cells.assetsView} />
+  const folder = LIBRARY.folders.find((f) => f.id === id)
+  if (id && !folder) return <Navigate to="/library" replace />
+  return <DocumentLibrary library={LIBRARY} folder={folder?.id} onNavigate={navigate} {...cells} />
+}
+
 /* ── the frames ── */
 /* kol-atlas's tabs header on DS parts, on top of every page: the client's name, TabsRow for the plain tabs, the groups as
  * MenuItems at the row's right end (their rows are links). A group reads as selected when one of its pages is open. */
@@ -207,6 +229,7 @@ export default function App() {
         <Route element={<Frame />}>
           <Route path="/" element={<Navigate to="/project" replace />} />
           {folders.map((f) => <Route key={f.id} path={tabPath(f)} element={<Folder group={f.group} />} />)}
+          <Route path="/library/*" element={<Library />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/reviews/*" element={<Review />} />
           <Route path="/:id" element={<Doc />} />
@@ -216,7 +239,7 @@ export default function App() {
       <LinkPreview cardFor={cardFor} />
       {/* the frame switch — apps/shell's rail axis, one toggle */}
       <div className="fixed bottom-3 right-3 z-[3]">
-        <SegmentedToggle size="sm" ariaLabel="Frame" value={rail} onChange={pick} options={options} />
+        <TabsRow variant="text" size={12} tracked tabs={options} value={rail} onChange={pick} ariaLabel="Frame" />
       </div>
     </BrowserRouter>
   )

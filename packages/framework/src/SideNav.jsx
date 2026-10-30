@@ -1,6 +1,6 @@
 import { useHref, useLocation, useNavigate } from 'react-router-dom'
 import { NavRail } from '@kolkrabbi/kol-component'
-import ThemeToggle from './ThemeToggle'
+import ThemeToggle from './ThemeToggle.jsx'
 
 /**
  * SideNav — The grouped navigation rail. `NavRail variant="site"` under its old name (2026-10-22, the one nav rail).

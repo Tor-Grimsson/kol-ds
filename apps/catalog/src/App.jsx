@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ActionButton, Button, PopoverPanel, SegmentedToggle, SizeOrDownload, ToggleCheckbox, usePopover } from '@kolkrabbi/kol-component'
+import { ActionButton, SizeOrDownload, ToggleCheckbox, VariantsControl } from '@kolkrabbi/kol-component'
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 
 /* THE CATALOG'S REFERENCE APP (apps review 2026-09-29 — the user: *"that layout and arrangement is
@@ -50,7 +50,6 @@ const AXES = [
   /* the cover's hover zoom — ContentCard's opt-in `zoom` prop (off by default on file) */
   { key: 'zoom', label: 'Zoom', values: ['off', 'on'] },
 ]
-const cap = (v) => v[0].toUpperCase() + v.slice(1)
 /* a plain colour in the slot — inline, because the build ships no public/ */
 const PLACEHOLDER = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 4"><rect width="4" height="4" fill="#6b7280"/></svg>')
 const placeholder = <img src={PLACEHOLDER} alt="" />
@@ -85,26 +84,6 @@ const fileSlots = (it, selected, toggle) => ({
   onClick: toggle,
 })
 
-function VariantsButton({ axes, onChange }) {
-  const [open, setOpen] = useState(false)
-  /* each axis is a SEGMENTED row, not a dropdown (user 2026-10-22, on a dropdown list opening over the panel
-   * in the panel's own color): every option visible, one click, nothing floats over the panel */
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-end', offset: 8 })
-  return (
-    <div className="fixed z-10" style={{ top: 'var(--kol-shell-page-pad)', right: 'var(--kol-shell-page-pad)' }}>
-      <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        <Button iconOnly="slider-01" size="lg" tone="inverted" radius="full" aria-label="Variants" style={{ boxShadow: 'var(--kol-shadow-lg)' }} pressed={open} />
-      </span>
-      <PopoverPanel popover={popover} className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2 p-3">
-        {AXES.map((a) => [
-          <span key={`${a.key}-l`} className="kol-mono-12 text-fg-64">{a.label}</span>,
-          <SegmentedToggle key={a.key} size="sm" ariaLabel={a.label} value={axes[a.key]} onChange={(v) => onChange(a.key, v)}
-            options={a.values.map((v) => ({ value: v, label: cap(v) }))} />,
-        ])}
-      </PopoverPanel>
-    </div>
-  )
-}
 
 export default function App() {
   const [view, setView] = useState('recent')
@@ -137,7 +116,7 @@ export default function App() {
         onViewChange={setView}
         toCard={(it) => ({ key: it.name, title: it.title, detail: `${it.kind} · ${it.tags.map((t) => `#${t}`).join(' ')}`, date: it.date, size: it.size, zoom: axes.zoom === 'on', ...(axes.media === 'image' ? { media: placeholder } : axes.media === 'pattern' ? { media: pattern } : axes.media === 'none' ? { media: false } : null), ...(axes.preset === 'shelf' ? SHELF_SLOTS : null), ...(axes.card === 'file' ? fileSlots(it, picked.has(it.name), () => toggle(it.name)) : null), ...(axes.card === 'app' || axes.row === 'app' ? { ...APP_SLOTS, tags: it.tags, details: [{ label: 'Kind', value: it.kind }] } : null) })}
       />
-      <VariantsButton axes={axes} onChange={change} />
+      <VariantsControl axes={AXES} value={axes} onChange={change} />
     </>
   )
 }

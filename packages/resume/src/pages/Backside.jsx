@@ -1,4 +1,4 @@
-import ContactLine from '../components/ContactLine'
+import ContactLine from '../components/ContactLine.jsx'
 import { useResume } from '../data.jsx'
 
 const LABELS = {

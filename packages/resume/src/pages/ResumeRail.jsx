@@ -1,6 +1,6 @@
 import { useResume } from '../data.jsx'
-import { pick as f } from '../lib/i18n'
-import { yearLabel } from '../lib/resume'
+import { pick as f } from '../lib/i18n.js'
+import { yearLabel } from '../lib/resume.js'
 
 /* Layout 3 — sidebar rail. Facts (contact, profile, skills, education,
    languages) fill a tinted left rail; experience runs down the wide right
@@ -31,7 +31,8 @@ export default function ResumeRail({ lang = 'en' }) {
 
   return (
     <>
-    <div className="min-h-screen bg-[#5b5b60] print:bg-transparent">
+    {/* flow-root: the sheet's my-8 no longer collapses through the backdrop and leaves a band of page wash (LayoutsAppPages) */}
+    <div className="flow-root min-h-screen bg-[#5b5b60] print:bg-transparent">
     <main data-theme="light" className="select-text mx-auto my-8 flex w-[794px] max-w-full min-h-[1123px] bg-surface-primary border border-fg-08 print:m-0 print:w-full print:min-h-0 print:border-0">
       {/* left rail */}
       <aside className="w-[288px] shrink-0 bg-surface-secondary border-r border-fg-12 px-8 py-12 flex flex-col gap-7">

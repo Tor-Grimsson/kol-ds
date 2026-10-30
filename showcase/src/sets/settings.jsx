@@ -47,7 +47,7 @@ function RailTier({ sections }) {
       <p className="kol-mono-14 text-meta">Tier 1, the rail. <code>SettingsPanel variant="rail"</code> over <code>SettingsSections</code>; a text <code>TabsRow</code> under the header when the content is big. studio-hub's tier, and AppHub's default.</p>
       <Button tone="grey" size="md" onClick={() => setOpen(true)}>Open the rail</Button>
       <SettingsPanel open={open} variant="rail" title="Settings" onClose={() => setOpen(false)} footer={<SettingsFooter onReset={() => {}} />}>
-        <TabsRow look="text" size={12} tracked tabs={[{ id: 'settings', label: 'Settings' }, { id: 'shortcuts', label: 'Shortcuts' }, { id: 'about', label: 'About' }]} value={tab} onChange={setTab} ariaLabel="Settings tabs" />
+        <TabsRow variant="text" size={12} tracked tabs={[{ id: 'settings', label: 'Settings' }, { id: 'shortcuts', label: 'Shortcuts' }, { id: 'about', label: 'About' }]} value={tab} onChange={setTab} ariaLabel="Settings tabs" />
         {tab === 'settings' && <SettingsSections sections={sections} divided />}
         {/* a string value is drawn by SettingsSections itself — mono-12 on the baseline (2026-10-24) */}
         {tab === 'shortcuts' && <SettingsSections sections={SHORTCUTS.map((s) => ({ label: s.section, rows: s.items.map((k) => ({ label: k.label, value: k.combo })) }))} divided />}

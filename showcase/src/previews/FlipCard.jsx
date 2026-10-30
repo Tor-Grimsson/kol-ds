@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { FlipCard } from '@kolkrabbi/kol-hardware'
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, FlipCard } from '@kolkrabbi/kol-component'
+
 
 export const stage = 'md'
 

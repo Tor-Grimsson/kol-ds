@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ChessPiece } from '../index.js'
-import buildChessFromFen from '../utils/chessFen'
+import buildChessFromFen from '../utils/chessFen.js'
 
 const FILES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
 // no text-transform (casing law) — coordinate labels are authored in-case

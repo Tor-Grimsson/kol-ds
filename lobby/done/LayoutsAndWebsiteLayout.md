@@ -48,3 +48,17 @@ A new app on ui.kolkrabbi.io (`apps/layouts`, name yours):
 - [ ] published
 
 **Remainder at kol-website once it ships:** web on the package's `WebsiteLayout` (its nav, links, footer line and mark as props); `components/layout/`, `cursor/`, `AsciiCursor`, `TextPressure` and `WorkViewContext` to `_tmp/` where nothing else uses them; bump.
+
+
+---
+
+## ✅ RESOLVED — 2026-10-28
+
+Shipped **kol-framework 0.62.0 · kol-foundry 0.14.0** (and kol-resume 0.1.2, a description fix).
+- **`WebsiteLayout`** in kol-framework, verbatim apart from the seams: `wordmark` · `logomark` · `name`, `navItems`, `takeover` (`lines` · `blurb` · `social`), `owner`, `hideChrome`, and `cursor` (opt-in). One seam beyond the list: the bar's tools slot is `tools={{ routes, node }}`, because the frame would otherwise import kol-content for `WorkViewToggle`. With it come `WebsiteNavbar` · `TakeoverMenu` · `WebsiteFooter` · `RouteLoader` · the cursor layer · `WorkViewProvider`, and `--kol-nav-h` in kol-framework.css.
+- **Not duplicated:** the site's `AsciiCursor` and `TextPressure` are older twins of kol-component's and kol-foundry's (no touch or reduced-motion gating). The frame uses the DS ones, and the site's copies are in `_tmp/2026-10-28-website-frame-dupes/`.
+- **The intro** ships as `WebsiteIntroLoader` in kol-foundry, beside `LoaderIntro`, on foundry's `TextPressure`. `IntroLoader` is already a ledger alias of `LoaderIntro`, and this one keeps the gesture engine that one dropped.
+- **apps/layouts** (5212, `pnpm layouts`): pick a frame, its own nav lists every page that fits, each the real component on VOYAGER, inside the real frame. 63 placements walked, all render, no console errors.
+- **One list:** `showcase/src/nav/placements.js`. The four frame docs carry its `## Pages` table: 18-site-frame, 16-app-anatomy, 04-workshop-system and the new 23-website-frame. **`validate-placements`** (in `pnpm validate`) fails a page under no frame, a placed name that isn't exported, and a doc table that differs. It was checked both ways by breaking each on purpose.
+- Two names in the ticket's evidence changed. `ListingCard` was dropped 2026-08-30, so its successor `ContentCollection` is placed. `PageHeader` is retired, so `SectionText` is placed.
+- New previews: `WebsiteNavbar` · `TakeoverMenu` · `WebsiteFooter` · `CursorOverlay` · `CursorTrail` · `WebsiteIntroLoader`, and `StudioDetail` (the old gap).

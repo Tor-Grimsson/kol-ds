@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Button, Input, Dropdown } from '@kolkrabbi/kol-component'
-import { useChessControls } from '../context/ChessControlsContext'
+import { useChessControls } from '../context/ChessControlsContext.jsx'
 
 /**
  * SetupPanel — Set up a chess position. the SETUP POSITION block: header + icon actions (search, flip,

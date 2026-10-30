@@ -107,7 +107,9 @@ if (ANY_CONTENT_CAP.test(outsideMain)) {
  * SPECIMENS — a 420px glass panel or a 520px card is that component's own
  * size, not a content frame, and forcing those onto the content scale would
  * be the improvisation this gate exists to stop, pointed the other way. */
-const SKIP = /showcase\/src\/(previews|blocks|sets)\//
+/* packages/framework/src/website/ is kolkrabbi.io's frame CARRIED VERBATIM (LayoutsAndWebsiteLayout, 2026-10-28): a port keeps
+ * its values class for class — the takeover's 520px column is the site's, not a page cap this law governs */
+const SKIP = /showcase\/src\/(previews|blocks|sets)\/|packages\/framework\/src\/website\//
 const SCOPES = ['showcase/src', 'packages/workshop/src', 'packages/framework/src']
 for (const scope of SCOPES) {
   for (const file of walk(join(REPO, scope))) {

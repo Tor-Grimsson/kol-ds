@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* THE WORKSPACE FORM — point at this app's own node_modules symlinks (same reason as apps/brand). */
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@source "../node_modules/@kolkrabbi/kol-shell/src";
+@source "../node_modules/@kolkrabbi/kol-styleguide/src";
+/* every package a page comes from, and the showcase previews this app mounts */
+@source "../node_modules/@kolkrabbi/kol-workshop/src";
+@source "../node_modules/@kolkrabbi/kol-content/src";
+@source "../node_modules/@kolkrabbi/kol-store/src";
+@source "../node_modules/@kolkrabbi/kol-foundry/src";
+@source "../node_modules/@kolkrabbi/kol-chess/src";
+@source "../node_modules/@kolkrabbi/kol-dashboards/src";
+@source "../node_modules/@kolkrabbi/kol-resume/src";
+@source "../../../packages/deck/src";
+@source "../../../packages/notes/src";
+@source "../../../showcase/src/previews";
+@source "../../../showcase/src/lib";
+@source "../../presentation/src";
+@source "../../notes/src";
+@source "../../media/src";
+
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-theme/kol-type-roles.css";
+/* ARCHITECTURE §5 — framework chrome in the components layer */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-sources.css";
+/* kol-resume's screen styles (the kit pages) — its print rules stay the printing app's */
+@import "@kolkrabbi/kol-resume/styles/kol-kit-preview.css";
+@import "@kolkrabbi/kol-resume/styles/kol-resume-source.css";
+
+body {
+  background-color: var(--kol-surface-primary);
+  color: var(--kol-surface-on-primary);
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+html,
+body {
+  overscroll-behavior: none;
+}

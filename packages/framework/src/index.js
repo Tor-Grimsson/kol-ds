@@ -35,3 +35,17 @@ export { default as MarkdownPage } from './MarkdownPage.jsx'
 export { default as LinkPreview } from './LinkPreview.jsx'
 export { default as documentTabs } from './documentTabs.js'
 export { default as documentFiles } from './documentFiles.js'
+export { default as documentLibrary, matchOriginals, kindAndTitle, libraryLinks, KINDS as DOCUMENT_KINDS, LANGS as DOCUMENT_LANGS } from './documentLibrary.js'
+
+/* a website's frame — kolkrabbi.io's top bar, takeover menu, footer and cursor layer, carried verbatim
+ * (LayoutsAndWebsiteLayout, 2026-10-28); what the site says comes in as props. Its intro is kol-foundry's
+ * `WebsiteIntroLoader` (drawn by TextPressure); its ASCII cursor is kol-component's `AsciiCursor`. */
+export { default as WebsiteLayout } from './website/WebsiteLayout.jsx'
+export { default as WebsiteNavbar } from './website/Navbar.jsx'
+export { default as TakeoverMenu } from './website/TakeoverMenu.jsx'
+export { default as WebsiteFooter } from './website/Footer.jsx'
+export { default as RouteLoader } from './website/RouteLoader.jsx'
+export { CursorProvider, useCursor } from './website/CursorContext.jsx'
+export { default as CursorOverlay } from './website/CursorOverlay.jsx'
+export { default as CursorTrail } from './website/CursorTrail.jsx'
+export { WorkViewProvider, useWorkView } from './website/WorkViewContext.jsx'

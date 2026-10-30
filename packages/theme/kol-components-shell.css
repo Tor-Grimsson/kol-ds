@@ -130,9 +130,9 @@
 .kol-shell-rail-list::-webkit-scrollbar {
   display: none;
 }
+/* the fade itself is `.kol-scroll-fade` (kol-components-atoms.css) — head and foot by scroll state; this keeps the last
+   row clear of it */
 .kol-shell-rail-list--fade {
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 3rem), transparent);
   padding-bottom: 3rem;
 }
 

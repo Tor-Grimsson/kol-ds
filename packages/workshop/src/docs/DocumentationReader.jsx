@@ -1,8 +1,8 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { CodeBlock, Divider, Icon, Table, useScrollSpy } from '@kolkrabbi/kol-component'
-import { ShellTocContext, RightRail, SHELL_SCROLL_ROOT } from '../shell'
-import { useTagMode } from '../tags'
+import { ShellTocContext, RightRail, SHELL_SCROLL_ROOT } from '../shell/index.js'
+import { useTagMode } from '../tags/index.js'
 import TagPath from '../tags/TagPath.jsx'
 import { parseDocsMarkdown, isIndexFile } from '@kolkrabbi/kol-markdown'
 import { buildTagCounts } from '@kolkrabbi/kol-markdown'
@@ -82,6 +82,10 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
  * @param {node}     [props.actions]      the page's own actions (a button to the live app),
  *                                        rendered under the title and before the intro; absent,
  *                                        nothing (2026-10-05, kol-website /workshop)
+ * @param {Object}   [props.blocks]       a consumer's own drawing for a block type — `{ [type]: (block, ctx) => node | null }`,
+ *                                        `ctx` `{ docId, file, metadata, key }`. Asked first; a missing entry or `null` falls
+ *                                        through to the reader's own (ReaderBlockRenderers, kol-hq 2026-10-29 — a ref card's
+ *                                        keys table drawn as keycaps). The views are the consumer's; the reader adds none
  */
 const DocumentationReader = ({
   inventory = [],
@@ -92,6 +96,7 @@ const DocumentationReader = ({
   showFrontmatter = true,
   fields,
   actions,
+  blocks: blockRenderers,
   /* false → render the article only and leave the right rail to the page (a HOME sits on top of
    * a page whose sections the rail must list — 2026-09-30, "This page (0)" on every home) */
   rail = true,
@@ -152,7 +157,12 @@ const DocumentationReader = ({
    * prose-h4 precedent), panel-capped furniture (width law: tables/code cap
    * at --kol-content-panel), markdown tables through THE kol-component Table
    * as a dynamic-column DocTable sibling (no parallel table markup). */
+  /* the consumer's renderer first (`blocks`), the reader's own when it has none or returns null */
   const renderBlock = (block, blockKey) => {
+    const own = blockRenderers?.[block.type]?.(block, { docId, file: doc?.file, metadata: doc?.metadata, key: blockKey })
+    return own != null ? <Fragment key={blockKey}>{own}</Fragment> : renderOwnBlock(block, blockKey)
+  }
+  const renderOwnBlock = (block, blockKey) => {
     switch (block.type) {
       case 'paragraph':
         return (

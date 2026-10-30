@@ -1,7 +1,7 @@
-import { useChessControls, ChessControlsProvider } from '../context/ChessControlsContext'
-import ChessBoard from './ChessBoard'
-import AlternativeControlsMock from './AlternativeControlsMock'
-import PlaybackControls from './PlaybackControls'
+import { useChessControls, ChessControlsProvider } from '../context/ChessControlsContext.jsx'
+import ChessBoard from './ChessBoard.jsx'
+import AlternativeControlsMock from './AlternativeControlsMock.jsx'
+import PlaybackControls from './PlaybackControls.jsx'
 
 const ChessBoardView = () => {
   const { activeFen, orientation, lastMove, pieceSet, boardTheme, playMove, isEditMode, placePiece } = useChessControls()

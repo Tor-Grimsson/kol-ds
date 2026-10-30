@@ -101,40 +101,49 @@ export default function AssetTable({
          against the table's own ground — the consumer's behaviour, kept. */
       className: (row) =>
         `kol-table-cell-text${inkTokens && tokenFor(row.id) !== inkTokens.ink ? ' bg-fg-04' : ''}`,
-      style: { minWidth: 160 },
+      style: { minWidth: 112 },
       render: (row) => <PreviewCell row={row} token={tokenFor(row.id)} onZoom={onPreviewZoom} />,
     },
     {
       accessor: 'name',
       header: 'Name',
-      className: 'kol-table-cell-text',
+      /* a name wraps at its words (`lockup / hori / wide`); a path never does */
+      className: 'kol-table-cell-text kol-table-cell-text--wrap',
+      style: { minWidth: 80 },
     },
     hasPath && {
       accessor: 'path',
       header: 'Path',
-      className: 'kol-table-cell-meta',
+      /* a path never wraps at its slash (LayoutsAppPages, 2026-10-29: `marks/` ⏎ `logomark-01.svg`) — it takes the width it
+         needs, from Preview, which has more than it uses */
+      className: 'kol-table-cell-meta whitespace-nowrap',
       render: (row) => (row.path ? <code>{row.path}</code> : null),
     },
     {
       accessor: 'format',
       header: 'Format',
-      className: 'kol-table-cell-meta',
+      className: 'kol-table-cell-meta whitespace-nowrap',
+      /* the meta cell's 160px floor is for prose; `SVG` needs a word's width — the room goes to Path (LayoutsAppPages) */
+      style: { minWidth: 0 },
     },
     {
       accessor: 'dimensions',
       header: 'Dimensions',
-      className: 'kol-table-cell-meta',
+      className: 'kol-table-cell-meta whitespace-nowrap',
+      style: { minWidth: 0 },
     },
     inkTokens && {
       accessor: 'color',
       header: 'Color',
-      className: 'kol-table-cell-meta',
+      className: 'kol-table-cell-meta whitespace-nowrap',
+      style: { minWidth: 0 },
       render: (row) => <code>{tokenFor(row.id)}</code>,
     },
     hasDownload && {
       accessor: 'download',
       header: 'Download',
-      style: { width: 96 },
+      /* no fixed 96px: the chips are wider than that, and the column was clipped ("Co…") */
+      className: 'whitespace-nowrap',
       render: (row) => (
         <DownloadControl
           row={row}
@@ -145,7 +154,8 @@ export default function AssetTable({
     },
   ].filter(Boolean)
 
-  return <Table caption={caption} columns={columns} rows={withId} variant={variant} className={className} />
+  /* a DATA table: it runs the content column (Table `width="column"`), not the prose panel cap it stopped at */
+  return <Table caption={caption} columns={columns} rows={withId} variant={variant} className={className} width="column" />
 }
 
 /* Preview cell. With `onZoom` it is a zoom button; without, the bare node —
@@ -156,7 +166,8 @@ function PreviewCell({ row, token, onZoom }) {
 
   const style = {
     ...(token ? { color: `var(${token})` } : {}),
-    ...(row.previewWidth ? { width: row.previewWidth } : {}),
+    /* up to its width, down to the column's — the preview scales before the table runs out of its column */
+    ...(row.previewWidth ? { width: '100%', maxWidth: row.previewWidth } : {}),
   }
 
   if (!onZoom) {

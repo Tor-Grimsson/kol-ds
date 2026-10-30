@@ -25,7 +25,7 @@ import formatSize from '../utilities/formatSize.js'
  * rail and no right-click menu.
  */
 
-export const MenuCtx = createContext(null)
+export const MenuCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/MenuCtx')] ??= createContext(null))
 
 export const useAsk = () => {
   const modal = useModal()

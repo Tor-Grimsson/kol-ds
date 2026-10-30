@@ -431,3 +431,54 @@
   }
   .kol-a4-sheet:not(:last-child) { break-after: page; }
 }
+
+/* ── LabWindow — .kol-lab-window (BrandLabToolWindow, 2026-10-29) ───────────────────────────────────────
+ * The lab's window is kol-component's QuickLookFrame (the established window): it fills its column instead of
+ * hugging media, is never taller than the viewport, and keeps the frame's corner grip. One padding for the
+ * header, the rail and the stage. */
+.kol-lab-window {
+  --kol-lab-pad: 16px;
+  width: 100%;
+  max-width: none;
+  height: min(720px, calc(100dvh - 4rem));
+}
+/* THE IMAGE DROP ZONE (review 6, Adobe's refs 56 · 57): a faint ground at rest; under the pointer, or while a file is
+ * dragged over it, the transparency checker — in the opaque ramp so it reads on either theme */
+.kol-lab-drop { background: var(--kol-oq-02); }
+/* the checker on its own plane, faded in — a gradient cannot tween, so the plane's opacity does (review 7) */
+.kol-lab-drop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-conic-gradient(var(--kol-oq-08) 0% 25%, transparent 0% 50%) 0 0 / 12px 12px;
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+.kol-lab-drop:hover::before,
+.kol-lab-drop.is-dropping::before { opacity: 1; }
+/* maximized (review 5): the window over the page, 16px off every edge, above the scrim */
+.kol-lab-window.kol-lab-window--max { position: fixed; inset: 16px; z-index: 200; width: auto; height: auto; max-height: none; }
+.kol-lab-window.kol-quicklook--sized { max-height: calc(100dvh - 2rem); }
+.kol-lab-window .kol-quicklook-header { padding-inline: var(--kol-lab-pad); border-bottom: 1px solid var(--kol-oq-08); }
+.kol-lab-window .kol-quicklook-body { flex: 1 1 auto; min-height: 0; align-items: stretch; justify-content: stretch; }
+.kol-lab-stage { padding: var(--kol-lab-pad); }
+/* the rail pads as kol-component's Rail does (review 4) */
+.kol-lab-rail { padding: var(--kol-pad-rail, 16px); }
+/* the rail's width is the DS grab's (`useDragResize`, token kol-lab-rail): 380 by default (the rail law), 320 → 560 by drag */
+:root {
+  /* the rail law's 380 (the settings rail's width, review 4) */
+  --kol-lab-rail-w: 380px;
+  --kol-lab-rail-w-collapsed: 320px;
+  /* the hook's own tokens (useDragResize buildNames): without them the grab is inert */
+  --kol-lab-rail-snap: 280px;
+  --kol-lab-rail-step: 16px;
+  --kol-lab-rail-snap-default: 16px;
+}
+.kol-lab-grid { grid-template-rows: auto minmax(0, 1fr); }
+@media (min-width: 768px) {
+  .kol-lab-grid { grid-template-rows: 1fr; grid-template-columns: clamp(320px, var(--kol-lab-rail-w), 560px) minmax(0, 1fr); }
+}
+/* the colour column's hex IS the "Edit color" button (review 1, Adobe's ref 2): bare, a wash of the column's own ink on hover */
+.kol-lab-hex { border-radius: var(--kol-radius-sm, 4px); color: inherit; }
+.kol-lab-hex:hover,
+.kol-lab-hex[aria-expanded="true"] { background: color-mix(in srgb, currentColor 14%, transparent); }

@@ -28,7 +28,7 @@ import {
 import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
 import {
   ComboLab,
-  DEFAULT_PALETTE,
+  DEFAULT_COMBO_LAB,
   MoodTile,
   LogoCard,
   LogoScaling,
@@ -162,7 +162,7 @@ const KEYLINE = (
 /* Named palette set for ComboLab — a Palette toggle appears and Randomize
  * picks among these. Literal hex is content, mirroring the DS brand tokens. */
 const COMBO_PALETTES = [
-  DEFAULT_PALETTE,
+  DEFAULT_COMBO_LAB,
   {
     id: 'teal-rise',
     label: 'Teal rise',
@@ -323,7 +323,7 @@ export default function StyleguideSet() {
 
       {/* 5 — COMBINATION LAB */}
       <Section title="Combination lab">
-        <ComboLab palettes={COMBO_PALETTES} layout="applied-card" logo={WORDMARK} />
+        <ComboLab color={{ base: '#FFCF33', relation: 'complementary', count: 5 }} value={{ layout: 'applied-card', logo: true }} logo={WORDMARK} />
       </Section>
 
       {/* 6 — LOGO CONSTRUCTION & SCALING */}

@@ -1,194 +1,86 @@
 import { useState } from 'react'
-import { ViewToggle } from '@kolkrabbi/kol-component'
+import { SettingsSections } from '@kolkrabbi/kol-component'
 import { LAYOUT_COMPONENTS, COMBO_LAYOUTS } from './comboLayouts.jsx'
-import { generatePalette } from './comboMath.js'
+import { COMBO_ROLES, DEFAULT_COMBO_LAB, comboLab, comboLabCss } from './comboLab.js'
+import { colorLab } from './colorLab.js'
+import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.jsx'
+
+/* taxonomy-ok: organism — the combination lab in the lab window: layout, mark and parts in the rail, the layout on the stage */
 
 /**
- * ComboLab — the 60 / 30 / 10 color-combination playground.
+ * ComboLab — Color Lab's palette, combined. It generates no colours of its own (BrandLabToolWindow, kol-atlas 2026-10-29 —
+ * the user: *"why would combo lab output palette and not the color lab?"*): it takes Color Lab's value, gives each of the
+ * 60/30/10 composition's parts a palette colour — from their jobs by default, reassignable — draws them in a layout, and
+ * checks each part on the light and the dark ground. Unbranded: the mark slot is an empty shape unless a `logo` is passed.
  *
- * A layout picker + logo toggle + randomize over a role-palette
- * (primary / secondary / light / dark / accent), a live stage that renders the
- * selected layout primitive, and a hex readout. The "Applied card" layout is
- * the brand-application ("business card") mockup.
+ *   rail     Layout (the layout, the mark slot) · Parts (which colour plays each part)
+ *   output   the parts as a table with their contrast, and the CSS
  *
- * Fully data-injected — nothing is read from an editor store:
- *   - `palette`  — the initial role-palette (defaults to the Kolkrabbi comp).
- *   - `palettes` — optional named set; when present a Palette toggle appears
- *                  and Randomize picks among them.
- *   - `pool`     — optional hex array; when present Randomize *generates* a new
- *                  palette by sampling it (see comboMath). With neither
- *                  `palettes` nor `pool`, Randomize derives a fresh palette from
- *                  the current primary (seed mode).
- *   - `logo`     — a React node dropped into the logo slots.
- *
- * Chrome (borders, type, state) is DS-owned via `.kol-combo-*` +
- * `kol-helper-*` + `text-*` utilities; the only inline values are the palette's
- * literal hex, which are content, not tokens.
- *
- * See the monorepo severance notes in lobby/ComboLab.md.
+ * @param {Object}    color     Color Lab's value (or its `colorLab` result) — the palette it combines
+ * @param {Object}    value     `{ layout, logo, assign }` — controlled; omit for internal
+ * @param {Function}  onChange  `(next) => void`
+ * @param {ReactNode} logo      the brand's mark for the mark slot; absent, a plain shape
+ * @param {string}    className classes on the root
  */
+/* the empty mark: a rounded square in the part's ink — the slot is shown without dressing it as anyone's brand */
+const PLAIN_MARK = <span className="block aspect-square w-full rounded-[22%] bg-current" />
+const PART_LABEL = { primary: 'Primary', secondary: 'Secondary', light: 'Light', dark: 'Dark', accent: 'Accent' }
+const ratioText = (r) => (Math.floor(r * 10) / 10).toFixed(1)
 
-/* Canonical Kolkrabbi composition. Literal hex (this is a plain module with no
-   CSS-var resolver) mirroring the DS brand tokens:
-   yellow-300 / red-200 / cream-100 / blue-400 / orange-300. */
-export const DEFAULT_PALETTE = {
-  id: 'kolkrabbi',
-  label: 'Kolkrabbi',
-  description: 'Yellow hero · rust secondary · navy ink on cream — the canonical composition',
-  primary:   '#FFCF33',
-  secondary: '#AD5038',
-  light:     '#FAF7F0',
-  dark:      '#222D3D',
-  accent:    '#DF760B',
-}
+/** @deprecated 2026-10-29 — DEFAULT_COMBO_LAB (the combo lab no longer holds a palette; Color Lab's is combined) */
+export const DEFAULT_PALETTE = { id: 'kolkrabbi', label: 'Kolkrabbi', primary: '#FFCF33', secondary: '#AD5038', light: '#FAF7F0', dark: '#222D3D', accent: '#DF760B' }
 
-const ROLE_LABELS = ['Primary', 'Secondary', 'Light', 'Dark', 'Accent']
+export default function ComboLab({ color, value: valueProp, onChange, logo, className = '' }) {
+  const h = useLabValue(valueProp, onChange, DEFAULT_COMBO_LAB)
+  const { value, set } = h
+  const c = color?.swatches ? color : colorLab(color)
+  const combo = comboLab(value, c)
+  const [tab, setTab] = useState('layout')
+  const Layout = LAYOUT_COMPONENTS[combo.layout] ?? LAYOUT_COMPONENTS[COMBO_LAYOUTS[0].id]
+  const css = comboLabCss(value, c)
+  const colourOptions = c.swatches.map((s) => ({ value: String(s.index), label: s.roleLabel }))
 
-const toOptions = (items) => items.map((i) => ({ value: i.id, label: i.label }))
-const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)]
-
-/* Pick a random item whose id differs from `currentId` where possible. */
-const pickDifferent = (arr, currentId) => {
-  const others = arr.filter((i) => i.id !== currentId)
-  return others.length ? pickRandom(others) : arr[0]
-}
-
-/* [primary, secondary, light, dark, accent, bg?] → role-palette object. */
-const toPalette = (colors) => ({
-  id: 'generated',
-  label: 'Generated',
-  description: 'Generated combination',
-  primary:   colors[0],
-  secondary: colors[1],
-  light:     colors[2],
-  dark:      colors[3],
-  accent:    colors[4],
-  bg:        colors[5],
-})
-
-const paletteToColors = (p) => [p.primary, p.secondary, p.light, p.dark, p.accent, p.bg ?? p.light]
-
-function Row({ label, children }) {
-  return (
-    <div className="kol-combo-row">
-      <span className="kol-combo-row-label kol-helper-10 text-meta">{label}</span>
-      <div className="kol-combo-row-controls">{children}</div>
-    </div>
-  )
-}
-
-function SwatchRow({ label, hex }) {
-  return (
-    <div className="kol-combo-swatch-row">
-      <span className="kol-combo-swatch-chip" style={{ background: hex }} />
-      <span className="kol-combo-swatch-label kol-helper-12 text-auto">{label}</span>
-      <span className="kol-combo-swatch-hex kol-helper-12 text-meta">{hex.toUpperCase()}</span>
-    </div>
-  )
-}
-
-export default function ComboLab({
-  palette,
-  palettes,
-  layout,
-  layouts = COMBO_LAYOUTS,
-  logo = null,
-  pool,
-  mode = 'random',
-  className = '',
-}) {
-  const initialPalette = palette ?? palettes?.[0] ?? DEFAULT_PALETTE
-
-  const [layoutId, setLayoutId] = useState(layout ?? layouts[0]?.id ?? COMBO_LAYOUTS[0].id)
-  const [active, setActive]     = useState(initialPalette)
-  const [logoOn, setLogoOn]     = useState(Boolean(logo))
-
-  const LayoutComponent = LAYOUT_COMPONENTS[layoutId] ?? LAYOUT_COMPONENTS[COMBO_LAYOUTS[0].id]
-  const activeLayout    = layouts.find((l) => l.id === layoutId) ?? layouts[0] ?? COMBO_LAYOUTS[0]
-  const colorsKey       = paletteToColors(active).join('')
-
-  const randomize = () => {
-    setLayoutId(pickDifferent(layouts, layoutId).id)
-
-    if (Array.isArray(palettes) && palettes.length) {
-      setActive(pickDifferent(palettes, active.id))
-      return
-    }
-
-    const noLocks = [false, false, false, false, false, false]
-    const current = paletteToColors(active)
-    const colors = Array.isArray(pool) && pool.length
-      ? generatePalette(pool, mode, current, noLocks)            // pool path
-      : generatePalette([], mode, current, noLocks, active.primary) // seed path
-    setActive(toPalette(colors))
-  }
+  /* THE SETTINGS RAIL'S ROWS (review 4) */
+  const tabs = [
+    { id: 'layout', label: 'Layout', content: (
+      <SettingsSections divided sections={[{ rows: [
+        { id: 'layout', label: 'Preset', type: 'choice', value: combo.layout, onChange: (v) => set({ layout: v }), options: COMBO_LAYOUTS.map((l) => ({ value: l.id, label: l.label })) },
+        { id: 'mark', label: logo ? 'Brand mark' : 'Mark slot', type: 'switch', on: !!combo.logo, onChange: (on) => set({ logo: on }) },
+      ] }]} />
+    ) },
+    { id: 'parts', label: 'Parts', content: (
+      <SettingsSections divided sections={[{ label: 'Parts', rows: COMBO_ROLES.map((p) => (
+        { id: p, label: PART_LABEL[p], type: 'choice', value: String(combo.parts.find((x) => x.id === p).index), onChange: (v) => set({ assign: { ...value.assign, [p]: Number(v) } }), options: colourOptions }
+      )) }]} />
+    ) },
+  ]
 
   return (
-    <div className={`kol-combo-lab ${className}`.trim()}>
-      <div className="kol-combo-controls">
-        <Row label="Layout">
-          <ViewToggle
-            viewMode={layoutId}
-            onViewChange={setLayoutId}
-            options={toOptions(layouts)}
-          />
-        </Row>
-
-        {Array.isArray(palettes) && palettes.length > 0 && (
-          <Row label="Palette">
-            <ViewToggle
-              viewMode={active.id}
-              onViewChange={(id) => setActive(palettes.find((p) => p.id === id) ?? active)}
-              options={toOptions(palettes)}
-            />
-          </Row>
-        )}
-
-        {logo && (
-          <Row label="Logo">
-            <ViewToggle
-              variant="single"
-              viewMode={logoOn ? 'on' : 'off'}
-              onViewChange={(v) => setLogoOn(v === 'on')}
-              options={[
-                { value: 'off', label: 'No logo' },
-                { value: 'on', label: 'Logo' },
-              ]}
-            />
-          </Row>
-        )}
-
-        <div className="kol-combo-footer">
-          <button type="button" className="kol-combo-randomize kol-helper-10" onClick={randomize}>
-            ↻ Randomize
-          </button>
-          {active.description && (
-            <span className="kol-combo-footer-desc kol-helper-10 text-meta">
-              {active.description}
-            </span>
-          )}
+    <LabWindow
+      className={className}
+      title="Combo Lab"
+      tabs={tabs}
+      tab={tab}
+      onTabChange={setTab}
+      actions={<><LabHistory h={h} /><CopyAction text={css} /></>}
+      output={{
+        columns: [
+          { header: 'Part', accessor: 'name', render: (r) => <span className="flex items-center gap-3"><span className="size-4 shrink-0 rounded-[3px] border border-oq-12" style={{ background: r.hex }} />{r.name}</span> },
+          { header: 'Colour', accessor: 'colour' },
+          { header: 'Hex', accessor: 'hex' },
+          { header: 'On light', accessor: 'onLight', render: (r) => `${r.onLight} ${r.gradeLight}` },
+          { header: 'On dark', accessor: 'onDark', render: (r) => `${r.onDark} ${r.gradeDark}` },
+        ],
+        rows: combo.parts.map((p) => ({ id: p.id, name: PART_LABEL[p.id], colour: `${p.index + 1} ${c.swatches[p.index]?.roleLabel ?? ''}`, hex: p.hex, onLight: ratioText(p.onLight), gradeLight: p.gradeLight, onDark: ratioText(p.onDark), gradeDark: p.gradeDark })),
+        css,
+        filename: 'brand-combo.css',
+      }}
+    >
+      <div className="flex h-full items-center justify-center">
+        <div className="w-full max-w-[1200px]">
+          <Layout palette={combo.palette} logo={combo.logo ? (logo ?? PLAIN_MARK) : null} />
         </div>
       </div>
-
-      <div className="kol-combo-stage-wrap">
-        <div key={`${layoutId}-${colorsKey}`} className="kol-combo-stage-anim">
-          <LayoutComponent palette={active} logo={logoOn ? logo : null} />
-        </div>
-      </div>
-
-      <div className="kol-combo-readout">
-        {ROLE_LABELS.map((label) => (
-          <SwatchRow key={label} label={label} hex={active[label.toLowerCase()]} />
-        ))}
-      </div>
-
-      <p className="kol-combo-summary kol-helper-10 text-meta">
-        <span className="text-emphasis">{activeLayout.label}</span>
-        {' × '}
-        <span className="text-emphasis">{active.label}</span>
-        {' × '}
-        <span className="text-emphasis">{logoOn ? 'Logo' : 'No logo'}</span>
-      </p>
-    </div>
+    </LabWindow>
   )
 }

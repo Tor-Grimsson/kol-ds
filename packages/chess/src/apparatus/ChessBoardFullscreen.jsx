@@ -1,5 +1,5 @@
-import ChessBoard from './ChessBoard'
-import ChessSidebar from './ChessSidebar'
+import ChessBoard from './ChessBoard.jsx'
+import ChessSidebar from './ChessSidebar.jsx'
 
 const ChessBoardFullscreen = ({
   boardProps = {},

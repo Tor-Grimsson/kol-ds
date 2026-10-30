@@ -1,8 +1,8 @@
-import Cover from '../pages/Cover'
-import Resume from '../pages/Resume'
-import CoverLetter from '../pages/CoverLetter'
-import Portfolio from '../pages/Portfolio'
-import Backside from '../pages/Backside'
+import Cover from '../pages/Cover.jsx'
+import Resume from '../pages/Resume.jsx'
+import CoverLetter from '../pages/CoverLetter.jsx'
+import Portfolio from '../pages/Portfolio.jsx'
+import Backside from '../pages/Backside.jsx'
 
 /** The five kit sections keyed by KIT_PAGES id, rendered from `data/` for one
  * language. The source page renders them plain; the kit treatments pass

@@ -15,7 +15,7 @@ export { WEIGHTS, CUTS, CASES, familyFor } from './typographyCuts.js'
 export { default as LogoCard } from './LogoCard.jsx'
 export { default as ClearspaceDiagram, hasFramework } from './ClearspaceDiagram.jsx'
 export { default as LogoScaling } from './LogoScaling.jsx'
-export { default as ComboLab, DEFAULT_PALETTE } from './ComboLab.jsx'
+export { DEFAULT_PALETTE } from './ComboLab.jsx'
 export {
   RatioBar, Tower, QuadSplit, CardRow, StripeRow, AppliedCard,
   LAYOUT_COMPONENTS, COMBO_LAYOUTS,
@@ -27,6 +27,7 @@ export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './c
 export { default as AssetCard } from './AssetCard.jsx'
 /* a folder's pages as the brand book's contents cards (plan-2026-10-28-document W5.2) */
 export { default as DocumentIndex } from './DocumentIndex.jsx'
+export { default as DocumentLibrary, DocumentView, DocumentFiles, DocumentMarkdown, kindIcon, useFileQuickLook } from './DocumentLibrary.jsx'
 /* print (PdfToolsFromStudio, 2026-10-28): A4 sheets for any content, and markdown to PDF · DOCX · MD on @kolkrabbi/kol-print */
 export { default as A4Pages } from './A4Pages.jsx'
 export { default as PrintStudio } from './PrintStudio.jsx'
@@ -60,11 +61,20 @@ export { brandSections, brandToc, brandInfo, BRAND_VIEWS, BOOK_SECTIONS, ASSET_S
 export { default as BrandGuide } from './BrandGuide.jsx'
 export { guideSections, guideToc } from './guideBook.js'
 
-// The brand lab (2026-10-20): the generators a brand is MADE with — carried from kol-atlas's Assets pages.
-// Each is controlled by one value, and the math is exported so a brand can be emitted without the UI.
-export { default as ColorLab } from './ColorLab.jsx'
-export { deriveColorLab, colorLabCss, blendRamp, neutralRamp, DEFAULT_COLOR_LAB, COLOR_ROLES, COLOR_SLOTS, COLOR_MIX } from './colorLab.js'
+// THE LAB (2026-10-20; one name system and its own subpath 2026-10-29, BrandLabToolGaps): the generators a brand is MADE
+// with — TypeLab · ColorLab · ComboLab · LockupLab, each `<x>Lab(value)` · `<x>LabCss` · `DEFAULT_<X>_LAB`. The same
+// names ship from `@kolkrabbi/kol-styleguide/lab`.
+export {
+  LabWindow, LabOutput, useLabValue,
+  TypeLab, typeLab, typeLabCss, DEFAULT_TYPE_LAB, TYPE_RATIOS, TYPE_STEPS, TYPE_ROLES, TYPE_FACES, TYPE_CASES, TYPE_INKS,
+  ColorLab, colorLab, colorLabCss, rollColorLab, DEFAULT_COLOR_LAB, COLOR_ROLES, COLOR_RELATIONS, INK_LEVELS, TEXT_STOPS,
+  generateColors, assignRoles, tintLadder, midColor, simulateCvd, CVD_TYPES, paletteFromPixels, seededRng, oklchToHex, hexToOklch, contrastRatio, contrastGrade, inkOn, blendRamp,
+  ComboLab, comboLab, comboLabCss, DEFAULT_COMBO_LAB, COMBO_ROLES,
+  LockupLab, BrandLockup, lockupLab, DEFAULT_LOCKUP_LAB, LOCKUP_PARTS, LOCKUP_TYPES, LOCKUP_SHAPES, LOCKUP_CASES, LOCKUP_GRID, LOCKUP_SUB_PRESETS,
+  Lockup, LOCKUP_SCALES,
+} from './lab/index.js'
+// the names before the lab family (deprecated 2026-10-29, 04-retirements.md)
 export { default as TypeScaleLab } from './TypeScaleLab.jsx'
-export { typeScale, typeScaleCss, TYPE_RATIOS, TYPE_STEPS, DEFAULT_TYPE_SCALE } from './typeScale.js'
-export { default as Lockup, LOCKUP_SCALES } from './Lockup.jsx'
+export { typeScale, typeScaleCss, DEFAULT_TYPE_SCALE } from './typeLab.js'
+export { deriveColorLab } from './colorLab.js'
 export { default as LockupBuilder } from './LockupBuilder.jsx'

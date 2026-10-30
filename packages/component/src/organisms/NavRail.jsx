@@ -5,6 +5,7 @@ import gsap from 'gsap'
  * app rail and the site rail are one component, and a site must not install the app shell
  * for its sidebar — the PageHeader precedent. kol-shell re-exports it. */
 import Button from '../atoms/Button.jsx'
+import useScrollFade from '../hooks/useScrollFade.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 import { GRAB } from '../utilities/motion.js'
 /* the grab pill's proximity wake, travel and dwell — ONE implementation, shared
@@ -339,6 +340,9 @@ function AppRail({
   const snapOpenRef = useRef(null)
   const slotRef = useRef(null)
   const ctx = useRailSlot()
+  /* the list fades where it clips — the head once scrolled, the foot while more lies below (kol-theme `.kol-scroll-fade`) */
+  const listRef = useRef(null)
+  useScrollFade(listRef, fade)
   const setSlot = ctx?.setSlot
   const setCtxOpen = ctx?.setRailOpen
   const slotOpen = drawer || railOpen
@@ -416,7 +420,7 @@ function AppRail({
       {/* THE LIST IS ITS OWN REGION (2026-10-02): it takes the room between the mark and the pinned
         * bottom rows — what the bare spacer used to hold — scrolls when the rows outrun the window,
         * and fades at its foot unless `fade={false}`. Same column, same gap, as the rail's own. */}
-      <div style={ctx && slotOpen ? { flex: '0 1 auto' } : undefined} className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade' : ''}`.trim()}>
+      <div ref={listRef} style={ctx && slotOpen ? { flex: '0 1 auto' } : undefined} className={`kol-shell-rail-list flex min-h-0 w-full flex-1 flex-col items-start gap-2 overflow-y-auto overflow-x-hidden ${fade ? 'kol-shell-rail-list--fade kol-scroll-fade' : ''}`.trim()}>
         {section ? (
           <>
             <RailItem icon="arrow-left" path={section.path} label={section.label} currentPath="" onNavigate={() => setEntered(trail.slice(0, -1).map((t) => t.path))} iconComponent={iconComponent} railOpen={drawer || railOpen} />

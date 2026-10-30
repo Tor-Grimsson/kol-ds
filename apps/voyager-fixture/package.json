@@ -12,6 +12,9 @@
     "./assets": "./src/assets.js",
     "./stationery": "./src/stationery.js",
     "./resume": "./src/resume.js",
+    "./documents/*": "./src/documents/*",
+    "./timeline": "./src/timeline.js",
+    "./library": "./src/library.js",
     "./fonts.css": "./src/fonts.css"
   },
   "scripts": {

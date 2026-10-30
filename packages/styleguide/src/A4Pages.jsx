@@ -1,4 +1,5 @@
 import { useRef, useState, useLayoutEffect } from 'react'
+import { QuickLookFrame } from '@kolkrabbi/kol-component'
 
 /* A4 portrait @96dpi, with print-style page margins. */
 const A4_W = 794
@@ -22,7 +23,11 @@ const CONTENT_H = A4_H - MARGIN * 2 - PRINT_SAFETY
  *
  * Re-measured on resize and as images (heroes) finish loading.
  */
-export default function A4Pages({ children, label }) {
+/* `paged` (LayoutsAppPages, 2026-10-29 — user: *"one in view at a time, then next … we are not reinventing anything, just LOOK
+ * AROUND"*): one sheet in view, centred, paged with QuickLookFrame's `nav` (‹ › and `n / N`, as MediaLibrary and
+ * DocumentIndex page a PDF). Print still prints every sheet. */
+export default function A4Pages({ children, label, paged = false }) {
+  const [at, setAt] = useState(0)
   const measureRef = useRef(null)
   // breaks[k]..breaks[k+1] is page k's vertical slice of the content.
   const [breaks, setBreaks] = useState([0, CONTENT_H])
@@ -74,6 +79,37 @@ export default function A4Pages({ children, label }) {
   }, [])
 
   const pageCount = Math.max(1, breaks.length - 1)
+  const page = Math.min(at, pageCount - 1)
+
+  const sheets = Array.from({ length: pageCount }, (_, k) => {
+    const from = breaks[k] ?? 0
+    const to = breaks[k + 1] ?? from + CONTENT_H
+    return (
+      <section key={k} className={`kol-a4-sheet${paged && k !== page ? ' hidden print:block' : ''}`} aria-label={`${label} — page ${k + 1} of ${pageCount}`}>
+        <div className="kol-a4-clip" style={{ height: to - from }}>
+          {/* Negative margin (not transform) shifts the slice — Chrome's
+              print engine drops images inside transformed containers. */}
+          <div style={{ marginTop: -from }}>{children}</div>
+        </div>
+      </section>
+    )
+  })
+
+  if (paged) {
+    return (
+      <>
+        <div ref={measureRef} className="kol-a4-measure" aria-hidden="true">{children}</div>
+        <div className="flex justify-center print:block">
+          <QuickLookFrame
+            title={label}
+            nav={{ index: page, total: pageCount, onPrev: () => setAt((i) => (i - 1 + pageCount) % pageCount), onNext: () => setAt((i) => (i + 1) % pageCount) }}
+          >
+            <div className="flex justify-center p-6 print:p-0">{sheets}</div>
+          </QuickLookFrame>
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
@@ -82,19 +118,7 @@ export default function A4Pages({ children, label }) {
         {children}
       </div>
 
-      {Array.from({ length: pageCount }, (_, k) => {
-        const from = breaks[k] ?? 0
-        const to = breaks[k + 1] ?? from + CONTENT_H
-        return (
-          <section key={k} className="kol-a4-sheet" aria-label={`${label} — page ${k + 1} of ${pageCount}`}>
-            <div className="kol-a4-clip" style={{ height: to - from }}>
-              {/* Negative margin (not transform) shifts the slice — Chrome's
-                  print engine drops images inside transformed containers. */}
-              <div style={{ marginTop: -from }}>{children}</div>
-            </div>
-          </section>
-        )
-      })}
+      {sheets}
     </>
   )
 }

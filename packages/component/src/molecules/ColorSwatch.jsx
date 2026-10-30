@@ -39,7 +39,7 @@
  *   onClick         — if provided, renders as <button>; else <span>.
  *   title           — passes through.
  */
-import TransparentX from '../utilities/TransparentX'
+import TransparentX from '../utilities/TransparentX.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
 const SIZE_CLASSES = {

@@ -262,21 +262,51 @@ function useBucketLibrary({ client, bucket, defaults, settings: controlled, onSe
 
 /* ── shared pieces, kol-r2b2's ─────────────────────────────────────────────── */
 
-/* The frame is square until the file reports its size, then snaps to its nearest preset. A photo
- * near a preset fills it (`cover`, a few percent cropped); a vector or anything past the ladder's
- * ends — a 2.8:1 wordmark, an 11:1 nav logo — shows whole (`contain`, kol-client-olina 2026-09-25). */
-function ImageFrame({ src, vector }) {
+/* The frame is square until the file reports its size. `mode="native"` (the default since
+ * MediaPreviewNativeRatio, kol-website 2026-10-30 — a certificate lost its top and bottom) then takes
+ * the file's own ratio and shows it whole, a very tall one capped at the media box's height (the pane
+ * shrinks that box to what is left under the facts) so it never runs off. `mode="preset"` is the older look: snap to
+ * the nearest preset; a photo near one fills it (`cover`, a few percent cropped); a vector or anything
+ * past the ladder's ends — a 2.8:1 wordmark, an 11:1 nav logo — shows whole (`contain`,
+ * kol-client-olina 2026-09-25). */
+function ImageFrame({ src, vector, mode = 'native' }) {
   const [frame, setFrame] = useState({ ratio: '1 / 1', contain: !!vector })
+  const native = mode !== 'preset'
   const onLoad = (e) => {
     const { naturalWidth: w, naturalHeight: h } = e.target
     const r = w && h ? w / h : 1
-    setFrame({ ratio: nearestRatio(w, h), contain: vector || r > 16 / 9 || r < 9 / 16 })
+    if (native) setFrame({ ratio: w && h ? `${w} / ${h}` : '1 / 1', contain: true })
+    else setFrame({ ratio: nearestRatio(w, h), contain: vector || r > 16 / 9 || r < 9 / 16 })
   }
   return (
-    <div className="w-full rounded overflow-hidden flex items-center justify-center" style={{ aspectRatio: frame.ratio }}>
+    <div className={`w-full rounded overflow-hidden flex items-center justify-center${native ? ' max-h-full' : ''}`} style={{ aspectRatio: frame.ratio }}>
       <img src={src} alt="" className={`w-full h-full ${frame.contain ? 'object-contain' : 'object-cover'}`} loading="lazy" onLoad={onLoad} />
     </div>
   )
+}
+
+/* THE PAGE'S OWN KEYS, ONE GUARD. `,` toggles the settings drawer (MediaPreviewNativeRatio,
+ * kol-website 2026-10-30: the media app is not on AppHub, which binds its own); `mod+i` opens Get
+ * Info (MediaLibraryInfoKey, kol-website 2026-10-30). AppHub's guard — no other modifiers, no
+ * repeat, not while typing. A bare key takes no modifier at all; `mod` is ⌘ or Ctrl. `on` false
+ * hands the key to the host (the gear's `onOpenSettings`), or holds it while an overlay is up. */
+function useHotkey(combo, on, run) {
+  useEffect(() => {
+    if (!combo || !on) return undefined
+    const parts = combo.toLowerCase().split('+')
+    const key = parts.pop()
+    const mod = parts.includes('mod')
+    const onKey = (e) => {
+      if (!(e.key?.toLowerCase() === key || (key === ',' && e.code === 'Comma')) || e.altKey || e.repeat) return
+      if (mod ? !(e.metaKey || e.ctrlKey) : (e.metaKey || e.ctrlKey)) return
+      const el = e.target
+      if (el?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el?.tagName ?? '')) return
+      e.preventDefault()
+      run()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [combo, on, run])
 }
 
 
@@ -316,7 +346,7 @@ function TagEditor({ tags = [], onChange, suggestions = [] }) {
  * own anatomy (twisty, drag hit, table columns) and take the ramp's box and glyph, OptionRow's
  * fills (picked = the pressed white, the folder you are in = the trail) and the one item type,
  * `kol-item-name`, that the columns and the grid use. */
-const RowSize = createContext('md')
+const RowSize = (globalThis[Symbol.for('@kolkrabbi/kol-component/RowSize')] ??= createContext('md'))
 
 /* `depth` indents a row under the folder it was expanded from; `expanded`/`onToggle` draw the
  * disclosure twisty. A folder row without `onToggle` keeps the old behaviour exactly — one chevron
@@ -1127,6 +1157,21 @@ export function MediaLibraryBrowse({
   searchPlaceholder = 'Search this bucket',
   /* `o.displayName` on a listed object is its LABEL in every view, Quick Look and search (kol-fxr
    * 2026-10-08: names not unique, so the key is an id). Absent, the label is the key, as before. */
+  /* `previewFrame` — how the preview pane and the column / Quick Look frame an image
+   * (MediaPreviewNativeRatio, kol-website 2026-10-30): `'native'` the file's own ratio, shown whole;
+   * `'preset'` snapped to the nearest preset and filled. Grid tiles are not part of it. */
+  previewFrame = 'native',
+  /* `settingsKey` — the key that toggles the settings drawer (`','`, AppHub's; `null` for none).
+   * `settingsOpen` / `onSettingsOpenChange` — the drawer, controlled, so a host can drive it. */
+  settingsKey = ',',
+  settingsOpen: settingsOpenProp,
+  onSettingsOpenChange,
+  /* `infoKey` — Get Info on the pick, file or folder, in every view (MediaLibraryInfoKey, kol-website
+   * 2026-10-30; Finder's ⌘I): the same overlay Space opens, Esc closes. `'mod+i'`; `false` for none.
+   * `columnFolderInfo` — Columns: the open folder's facts pane in the preview column, as the rows
+   * draw a picked folder's; `false` leaves the column empty, as before. */
+  infoKey = 'mod+i',
+  columnFolderInfo = true,
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
@@ -1141,7 +1186,10 @@ export function MediaLibraryBrowse({
    * say it is writable. */
   const writable = lib.writable || (!!fileActions && !!bucketMeta.writable)
   const switchBucket = (id, pfx = '') => { if (bucket == null) setOwnBucket(id); onBucketChange?.(id); setPrefix(pfx) }
-  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [ownSettingsOpen, setOwnSettingsOpen] = useState(false)
+  const settingsOpen = settingsOpenProp ?? ownSettingsOpen
+  const setSettingsOpen = (v) => { if (settingsOpenProp == null) setOwnSettingsOpen(v); onSettingsOpenChange?.(v) }
+  useHotkey(settingsKey, !onOpenSettings, () => setSettingsOpen(!settingsOpen))
   const [trashOpen, setTrashOpen] = useState(false)
   const [pickedFile, setPickedFile] = useState(null)
   useEffect(() => { onPickFile?.(pickedFile) }, [pickedFile]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -1644,7 +1692,9 @@ export function MediaLibraryBrowse({
     }
   }
   const spaceQuickLook = () => {
-    const key = pickedFile?.key ?? pickedFolder ?? (rowSelection.size === 1 ? [...rowSelection][0] : null)
+    /* in the columns a folder is picked by being OPEN — the deepest level (MediaLibraryInfoKey: ⌘I
+     * is the only caller there; the columns keep their own Space) */
+    const key = pickedFile?.key ?? (view === 'columns' ? (prefix || null) : pickedFolder ?? (rowSelection.size === 1 ? [...rowSelection][0] : null))
     /* a picked bucket or the title Quick-Looks like any folder (user 2026-09-25) */
     if (!key && previewRoot) { setQuickLookFolder(ROOT_KEY); return }
     if (!key) return
@@ -1807,6 +1857,9 @@ export function MediaLibraryBrowse({
 
   const [quickLook, setQuickLook] = useState(null)
   const [quickLookFolder, setQuickLookFolder] = useState(null)
+  /* ⌘I — GET INFO (MediaLibraryInfoKey): what Space opens, from every view; inert over an open
+   * overlay (Esc closes it) and over the search modal */
+  useHotkey(infoKey, !quickLook && !quickLookFolder && !searchOpen, spaceQuickLook)
   /* …and the open window takes the new selection as its set, on the file the cursor reached */
   useEffect(() => {
     if (!quickLook || rowSelection.size < 2) return
@@ -1886,7 +1939,7 @@ export function MediaLibraryBrowse({
         formatSize={formatSize} formatDate={formatDate} width={previewWidth}
         renderDetails={detailsFor}
         renderPreview={(o) => {
-          if (isImage(o.contentType)) return <ImageFrame src={mediaUrl(o.key)} vector={o.contentType === 'image/svg+xml'} />
+          if (isImage(o.contentType)) return <ImageFrame src={mediaUrl(o.key)} vector={o.contentType === 'image/svg+xml'} mode={previewFrame} />
           const poster = posterFor(o.key, keySet)
           return <KindPreview o={o} urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} kindOf={kindOf} kindLabel={KIND_LABEL} />
         }} />
@@ -2100,9 +2153,18 @@ export function MediaLibraryBrowse({
                    owns it through settings (item 15) */
                 stackView={stackView ?? settings.stackView ?? 'list'}
                 renderDetails={(o) => detailsFor({ ...o, key: o.key.slice(VROOT.length) })}
+                /* THE OPEN FOLDER'S FACTS IN THE PREVIEW COLUMN (MediaLibraryInfoKey, kol-website
+                 * 2026-10-30: picking a folder showed nothing beside the list) — the rows' pane, drawn
+                 * where the columns put a file's. A level above the bucket (the title, a bucket) has
+                 * no pane here, as before. */
+                renderFolderPreview={columnFolderInfo ? (level, width) => {
+                  const real = unroot(level)
+                  if (!real || (VROOT && real === level)) return null
+                  return <FolderPreview key={real} path={real} objects={objects} width={width} formatDate={formatDate} details={detailsFor(real)} />
+                } : undefined}
                 renderPreview={(o) => {
                   const real = { ...o, key: o.key.slice(VROOT.length) }
-                  if (isImage(real.contentType)) return <ImageFrame src={mediaUrl(real.key)} vector={real.contentType === 'image/svg+xml'} />
+                  if (isImage(real.contentType)) return <ImageFrame src={mediaUrl(real.key)} vector={real.contentType === 'image/svg+xml'} mode={previewFrame} />
                   const poster = posterFor(real.key, keySet)
                   return <KindPreview o={real} urlOf={(x) => mediaUrl(x.key)} poster={poster ? mediaUrl(poster) : undefined} kindOf={kindOf} kindLabel={KIND_LABEL} />
                 }}
@@ -2808,7 +2870,7 @@ export function MediaLibraryBrowse({
         {tabs?.length > 0 && (
           <>
             <div className="md:hidden" aria-hidden="true" style={{ height: TABBAR_H }} />
-            <TabsRow look="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
+            <TabsRow variant="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
           </>
         )}
       </div>
@@ -3014,6 +3076,11 @@ export function MediaLibraryLibrary({
    * concept only one page has stay put — `thumbnailFor`, `folderMeta` and
    * `stackView` are folder and stack concepts and are correctly absent here. */
   formatDate = defaultFormatDate,
+  /* the settings drawer's key and its controlled state — the same seam as the browse page (the
+   * drawer is on both; MediaPreviewNativeRatio, kol-website 2026-10-30) */
+  settingsKey = ',',
+  settingsOpen: settingsOpenProp,
+  onSettingsOpenChange,
 }) {
   const [ownBucket, setOwnBucket] = useState(bucket)
   const bucketId = bucket ?? ownBucket
@@ -3021,7 +3088,10 @@ export function MediaLibraryLibrary({
   const { buckets, bucketMeta, settings, setSettings, objects, setObjects, error, mediaUrl, downloadUrl, writable } = lib
   /* the same one dialog idiom as the browse page — see its note on `useModal()` */
   const modal = useModal()
-  const [settingsOpen, setSettingsOpen] = useState(false)
+  const [ownSettingsOpen, setOwnSettingsOpen] = useState(false)
+  const settingsOpen = settingsOpenProp ?? ownSettingsOpen
+  const setSettingsOpen = (v) => { if (settingsOpenProp == null) setOwnSettingsOpen(v); onSettingsOpenChange?.(v) }
+  useHotkey(settingsKey, header, () => setSettingsOpen(!settingsOpen))
   const [editingKey, setEditingKey] = useState(null)
   const [editingValue, setEditingValue] = useState('')
   const [renaming, setRenaming] = useState(false)
@@ -3238,7 +3308,7 @@ export function MediaLibraryLibrary({
       {tabs?.length > 0 && (
         <>
           <div className="md:hidden" aria-hidden="true" style={{ height: TABBAR_H }} />
-          <TabsRow look="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
+          <TabsRow variant="stacked" placement="phone" tabs={tabs} value={activeTab} onChange={onTabChange} />
         </>
       )}
     </div>

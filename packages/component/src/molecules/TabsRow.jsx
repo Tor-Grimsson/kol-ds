@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
+import useScrollFade from '../hooks/useScrollFade.js'
 import CloseButton from '../atoms/CloseButton.jsx'
 import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -23,9 +24,21 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  * @param {Function} onClose    () => void — show + wire the leading close button
  * @param {Function} onMinimise () => void — show + wire the trailing minimise chevron
  *
- * ONE TAB COMPONENT, FOUR LOOKS (TabsStackedLayout, kol-monitor 2026-10-17 — four components drew one control):
- * @param {'underline'|'chip'|'text'|'stacked'} [look='underline']
- *        underline — this row, as it always was
+ * ONE TAB COMPONENT, FOUR VARIANTS (TabsStackedLayout, kol-monitor 2026-10-17 — four components drew one control). The prop
+ * is `variant`, the one word the DS uses for a look (control-chrome: "variant is the look"); `look` was an agent's coinage
+ * on the merge and is read as a silent alias until no published consumer passes it (the user, 2026-10-30: *"USE VARIANT"*).
+ * @param {'scroll'|'wrap'} [overflow='scroll']  A ROW WIDER THAN ITS COLUMN (TabsRowOverflow, kol-website 2026-10-29 — six
+ *   underline tabs are 394px, so at 390 the page scrolled sideways and record wrapped the row in its own div): `scroll`
+ *   keeps one line that scrolls sideways with no scrollbar, `.kol-scroll-fade--x` fading the clipped edge(s), and the
+ *   active tab scrolled into view when it changes — arrow keys included; `wrap` breaks the tabs onto a second line.
+ *   Every variant but `stacked`, which has its phone bar
+ * @param {'underline'|'chip'|'text'|'stacked'} [variant='underline']
+ * @param {string} [look]  @deprecated 2026-10-30 — the old spelling of `variant`; `variant` wins when both are passed
+ * @param {'mono'|'sans'|'mono-light'} [type='mono']  `underline` only: the tab's type — `mono-light` is `sans`'s row on JetBrains Mono at 300 (his word, 2026-10-30)
+ * @param {boolean} [filled=false] - `chip` only: every chip shows at rest (Button `tab-filled`), so the row reads as choices
+ *        underline — this row, as it always was; a tab's `icon` sits before its label. `type` picks its type: `mono`
+ *                    (default, the mono-12 row) or `sans` (the neutral sans at 300, a 20px glyph in a 40px row — the
+ *                    user's ref, Adobe's tab strip, 2026-10-29; named `type` by him, 2026-10-30)
  *        chip      — the active tab a filled chip, the rest quiet (was `TabChips`); `size` is the control rung
  *        text      — flat helper-type tabs, the active one bright (was kol-shell's `TabStrip`); `size` is the
  *                    helper size (default 14), `tracked` adds 1px tracking
@@ -63,23 +76,44 @@ export const tabbarPillWidth = (count) => count * TABBAR_PILL_TAB + 14
 /* the collapse's motion — one duration for the width and the glyph swap (300, user 2026-10-23: 180 read as abrupt) */
 const COLLAPSE_MS = 300
 
-export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, look = 'underline', placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, ariaLabel, className, style }) {
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type = 'mono', filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
-  if (look === 'chip') return <ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} ariaLabel={ariaLabel} className={className ?? ''} />
-  if (look === 'text') return <TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={className ?? 'gap-6'} style={style} />
+  const look = variant ?? lookLegacy ?? 'underline'
+  const wrap = overflow === 'wrap'
+  if (look === 'chip') return <Overflow mode={overflow} value={value}><ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} filled={filled} ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${className ?? ''}`} /></Overflow>
+  if (look === 'text') return <Overflow mode={overflow} value={value}><TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={`${wrap ? 'flex-wrap gap-y-2 ' : ''}${className ?? 'gap-6'}`} style={style} /></Overflow>
   if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} ariaLabel={ariaLabel} className={className ?? ''} />
-  return <UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} />
+  return <Overflow mode={overflow} value={value}><UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} wrap={wrap} type={type} /></Overflow>
+}
+
+/* `overflow="scroll"`: the row in a sideways scroller that fades its clipped edges and keeps the active tab (`data-active`)
+ * in view — by the scroller's own scrollLeft, never scrollIntoView, which would scroll the page too. `wrap` draws as is. */
+function Overflow({ mode, value, children }) {
+  const ref = useRef(null)
+  const scroll = mode !== 'wrap'
+  useScrollFade(ref, scroll, 'x')
+  useLayoutEffect(() => {
+    const strip = ref.current
+    const tab = strip?.querySelector('[data-active]')
+    if (!scroll || !strip || !tab) return
+    const s = strip.getBoundingClientRect()
+    const t = tab.getBoundingClientRect()
+    if (t.left < s.left) strip.scrollLeft += t.left - s.left
+    else if (t.right > s.right) strip.scrollLeft += t.right - s.right
+  }, [value, scroll])
+  if (!scroll) return children
+  return <div ref={ref} className="kol-tabs-scroll kol-scroll-fade--x">{children}</div>
 }
 
 /* chip — TabChips verbatim */
-function ChipTabs({ tabs, value, onChange, size, ariaLabel, className }) {
+function ChipTabs({ tabs, value, onChange, size, filled, ariaLabel, className }) {
   return (
-    <div className={`flex items-center gap-1 ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
+    <div className={`flex items-center ${filled ? 'gap-2' : 'gap-1'} ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
       {tabs.map((t) => {
         const active = t.id === value
         return (
           /* a tab is selected, not pressed — the role's own attribute replaces Button's aria-pressed */
-          <Button key={t.id} variant="tab" size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} onClick={() => onChange?.(t.id)}>
+          <Button key={t.id} variant={filled ? 'tab-filled' : 'tab'} size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} data-active={active || undefined} onClick={() => onChange?.(t.id)}>
             {t.label}
           </Button>
         )
@@ -95,6 +129,7 @@ function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
       {tabs.map((opt) => (
         <span
           key={opt.id}
+          data-active={value === opt.id || undefined}
           onClick={() => onChange?.(opt.id)}
           className={`kol-helper-${size} cursor-pointer select-none ${value === opt.id ? 'text-fg-96' : 'text-fg-32 hover:text-fg-48'}`}
           style={tracked ? { letterSpacing: 1 } : undefined}
@@ -236,7 +271,10 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
   )
 }
 
-function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise }) {
+function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise, wrap, type }) {
+  /* `type="sans"` (2026-10-29, the user's ref — Adobe's tab strip): the neutral sans at 300 (his word, 2026-10-30), a 20px glyph at the
+   * set's 1.5 stroke and a 1px underline (his word, 2026-10-30), a 40px row (his word, 2026-10-30), 24 between tabs — review 8: *"the problem … was thickness and stroke"* */
+  const md = type === 'sans' || type === 'mono-light'
   const listRef = useRef(null)
   const activeIdx = tabs.findIndex((t) => t.id === value)
 
@@ -250,14 +288,14 @@ function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise }) {
   }
 
   return (
-    <div className="flex items-stretch gap-4 h-10">
+    <div className={`flex items-stretch gap-4 ${wrap ? 'min-h-10' : 'h-10'}`}>
       {onClose && (
         /* the one close, at the rung whose glyph is the 12 this hand-rolled
          * (2026-09-03) — xs SOLO is 12, so the drawing does not move */
         <CloseButton onClick={onClose} size="xs" className="self-center" />
       )}
 
-      <div ref={listRef} role="tablist" onKeyDown={onKeyDown} className="flex items-stretch gap-4">
+      <div ref={listRef} role="tablist" onKeyDown={onKeyDown} className={`flex items-stretch ${md ? 'gap-6' : 'gap-4'}${wrap ? ' flex-wrap gap-y-1' : ''}`}>
         {tabs.map((t, i) => {
           const isActive = t.id === value
           return (
@@ -266,15 +304,19 @@ function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise }) {
               type="button"
               role="tab"
               aria-selected={isActive}
+              data-active={isActive || undefined}
               tabIndex={isActive || (activeIdx === -1 && i === 0) ? 0 : -1}
               onClick={() => onChange?.(t.id)}
               className={[
-                'kol-mono-12 flex items-center cursor-pointer border-b-2',
+                `group ${md ? `${type === 'sans' ? 'kol-tab-sans' : 'kol-tab-mono-light'} kol-sans-body-02 font-light gap-2.5 border-b` : 'kol-mono-12 gap-2 border-b-2'} flex items-center cursor-pointer`,
                 isActive
-                  ? 'text-emphasis border-fg'
-                  : 'text-meta hover:text-emphasis border-transparent',
+                  ? 'text-oq-96 border-fg'
+                  : 'text-oq-48 hover:text-oq-80 border-transparent',
               ].join(' ')}
             >
+              {/* a tab may carry its glyph before the label (2026-10-29, Adobe's Base color · Image · Color wheel) */}
+              {/* the glyph in OPAQUE ink (icons take oq, never fg) — full when active, meta otherwise, full under the pointer */}
+              {t.icon && <Icon name={t.icon} size={md ? 20 : 16} className={isActive ? 'text-oq-96' : 'text-oq-48 group-hover:text-oq-80'} />}
               {t.label}
             </button>
           )

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { HashRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { AppShell, PageShell } from '@kolkrabbi/kol-shell'
 import { SiteLayout } from '@kolkrabbi/kol-framework'
-import { Button, PageHeader, PopoverPanel, SegmentedToggle, usePopover } from '@kolkrabbi/kol-component'
+import { PageHeader, VariantsControl } from '@kolkrabbi/kol-component'
 import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 
 /* THE SHELL'S REFERENCE APP (apps review 2026-09-29) — the frame ALONE around ten placeholder pages, under
@@ -34,7 +34,6 @@ const TREE = PAGES.map((p) => ({ id: p.path.slice(1), label: p.label, icon: p.ic
 const BOTTOM = SETTINGS.map((p) => ({ id: p.path.slice(1), label: p.label, icon: p.icon, to: p.path }))
 
 const AXES = [{ key: 'rail', label: 'Rail', values: ['app', 'site'] }]
-const cap = (v) => v[0].toUpperCase() + v.slice(1)
 const RAIL_KEY = 'shell:rail'
 const loadRail = () => { try { return localStorage.getItem(RAIL_KEY) === 'site' ? 'site' : 'app' } catch { return 'app' } }
 
@@ -48,25 +47,6 @@ function Page({ label }) {
   )
 }
 
-/* catalog's Variants button, one axis */
-function VariantsButton({ axes, onChange }) {
-  const [open, setOpen] = useState(false)
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-end', offset: 8 })
-  return (
-    <div className="fixed z-10" style={{ top: 'var(--kol-shell-page-pad, 24px)', right: 'var(--kol-shell-page-pad, 24px)' }}>
-      <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        <Button iconOnly="slider-01" size="lg" tone="inverted" radius="full" aria-label="Variants" style={{ boxShadow: 'var(--kol-shadow-lg)' }} pressed={open} />
-      </span>
-      <PopoverPanel popover={popover} className="grid grid-cols-[auto_1fr] items-center gap-x-4 gap-y-2 p-3">
-        {AXES.map((a) => [
-          <span key={`${a.key}-l`} className="kol-mono-12 text-fg-64">{a.label}</span>,
-          <SegmentedToggle key={a.key} size="sm" ariaLabel={a.label} value={axes[a.key]} onChange={(v) => onChange(a.key, v)}
-            options={a.values.map((v) => ({ value: v, label: cap(v) }))} />,
-        ])}
-      </PopoverPanel>
-    </div>
-  )
-}
 
 /* ── the app rail: AppShell on the hash, as it always was ── */
 const parse = () => decodeURIComponent(location.hash.slice(1)) || '/'
@@ -124,7 +104,7 @@ export default function App() {
   return (
     <>
       {axes.rail === 'site' ? <SiteRail /> : <AppRail />}
-      <VariantsButton axes={axes} onChange={onChange} />
+      <VariantsControl axes={AXES} value={axes} onChange={onChange} />
     </>
   )
 }

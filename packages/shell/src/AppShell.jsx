@@ -51,6 +51,13 @@ import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kol
  *                                        (`NavRail sections`, 2026-10-06 — labs' catalog)
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
+ * @param {boolean} [props.railHidden=false]  THE RAIL'S RESTING STATE (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user:
+ *                                        *"when you are signed out, we should have the rail already hidden"*): `true` starts the
+ *                                        rail hidden and keeps it hidden on every route entry, where `false` (the default) brings
+ *                                        it back; `railToggleKey` still toggles it either way, and flipping the prop (signing in)
+ *                                        lands the rail on the new rest. Fixed here, not in a consumer: the route-entry effect
+ *                                        below runs after its children's, so a consumer could only hide the rail a frame late
+ *                                        (fxr's `HomeStage` rAF). The Hub passes it for the signed-out Home
  * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'|'pill'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
  *                                        'drawer' takes the rail OFF-CANVAS below `drawerBelow`, hands its width
  *                                        back to the content, and renders a trigger that brings it in over a scrim.
@@ -152,6 +159,7 @@ export default function AppShell({
   rail = 'app',
   railSections,
   railToggleKey,
+  railHidden = false,
   touch: touchProp,
   appName,
   pageWash,
@@ -169,7 +177,8 @@ export default function AppShell({
   masthead,
   children,
 }) {
-  const [navHidden, setNavHidden] = useState(false)
+  /* the rail's rest — hidden on first paint when `railHidden` says so, never a frame late */
+  const [navHidden, setNavHidden] = useState(!!railHidden)
   const coarse = useTouchPrimary()
 
   /* DRAWER MODE. A width query, not a pointer one — see `drawerBelow`. */
@@ -277,11 +286,13 @@ export default function AppShell({
   /* Keyed on the BOOLEAN, not the array: a consumer's inline `['/']` is a new
    * identity every render too (the showcase set passes one), and the effect
    * must fire on route entry only — never on a re-render, or it undoes the tap. */
+  /* …and the entry lands on the rail's REST, not always on shown (HubSignedOutGutterAndSeams, 2026-10-29): `railHidden`
+   * keeps it hidden on entry, and the prop flipping (signing in) moves the rail to the new rest on the spot */
   const opensHere = opensOn(currentPath)
   useEffect(() => {
     if (drawer) setDrawerOpen(opensHere)
-    else setNavHidden(false)
-  }, [currentPath, drawer, opensHere])
+    else setNavHidden(!!railHidden)
+  }, [currentPath, drawer, opensHere, railHidden])
 
   /* THE WASH ALSO GOES ON THE ROOT (2026-08-30). It is set on the content
    * wrapper below, which every page inherits — but a PORTALLED surface does

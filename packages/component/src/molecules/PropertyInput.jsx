@@ -5,9 +5,9 @@
  *
  * Use in a `grid grid-cols-2 gap-4` for x/y/width/height/rotation row pairs.
  */
-import Label from '../atoms/Label'
+import Label from '../atoms/Label.jsx'
 import Input from '../atoms/Input.jsx'
-import Stepper from './Stepper'
+import Stepper from './Stepper.jsx'
 
 export default function PropertyInput({
   label,
