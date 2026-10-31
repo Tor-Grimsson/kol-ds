@@ -43,10 +43,9 @@ export const ICON_SETS = {
 
 /* The gallery's own group order and display names — folder slugs are the data,
  * these are what a reader sees on the filter chips. */
-const ORDER = ['chevron', 'arrow', 'arrow-diagonal', 'caret', 'add-remove', 'transfer', 'traffic', 'nav', 'singletons',
-  'layout', 'files', 'device', 'components', 'code', 'tools', 'notify', 'eye-lock', 'atomic',
-  'shape-primitives', 'shape-forms', 'misc']
-const LABELS = { 'add-remove': 'Add / remove', 'eye-lock': 'Eye · lock', 'shape-primitives': 'Shape primitives', 'shape-forms': 'Shape forms' }
+const ORDER = ['direction', 'actions', 'navigation', 'status', 'layout', 'files', 'charts', 'flow', 'design', 'shapes',
+  'typography', 'media', 'devices', 'code', 'people', 'commerce', 'places', 'planning']
+const LABELS = {}
 const label = (f) => LABELS[f] ?? f.replace(/-/g, ' ').replace(/^\w/, (c) => c.toUpperCase())
 const byOrder = (a, b) => {
   const ia = ORDER.indexOf(a), ib = ORDER.indexOf(b)

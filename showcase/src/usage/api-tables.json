@@ -3247,6 +3247,168 @@
       "desc": ""
     }
   ],
+  "BezierPathEditor": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "closed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "aspect",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "minPoints",
+      "type": "—",
+      "def": "2",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Path editor'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FunctionPlot": [
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "64",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Function plot'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fn",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "samples",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cursor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ParamBindDot": [
+    {
+      "prop": "bound",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "minWidth",
+      "type": "—",
+      "def": "180",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tooltip",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "InspectorRail": [
     {
       "prop": "selectedIds",
@@ -3586,6 +3748,12 @@
     },
     {
       "prop": "onMove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleShown",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -4477,6 +4645,12 @@
       "desc": ""
     },
     {
+      "prop": "multiple",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -4532,6 +4706,12 @@
     },
     {
       "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6898,6 +7078,12 @@
     },
     {
       "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -20242,6 +20428,12 @@
     },
     {
       "prop": "onContextMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "persistKey",
       "type": "—",
       "def": "—",
       "desc": ""

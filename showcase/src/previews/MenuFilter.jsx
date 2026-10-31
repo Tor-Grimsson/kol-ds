@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MenuFilter } from '@kolkrabbi/kol-component'
+import { CONTROL_TONES, ALIGNS, toneWrap } from '../lib/controls.js'
 
 export function Card() {
   return <MenuFilter groups={[]} />
@@ -14,11 +15,14 @@ const GROUPS = [
   { key: 'goal', label: 'Goal', icon: 'check', fields: [{ key: 'event', label: 'Goal' }] },
 ]
 
-export default function MenuFilterPreview() {
+export const tones = CONTROL_TONES
+export const aligns = ALIGNS
+
+export default function MenuFilterPreview({ tone, align = 'start' }) {
   const [active, setActive] = useState([{ key: 'browser', label: 'Browser is Chrome' }, { key: 'country', label: 'Country is Iceland' }])
   return (
-    <div className="flex min-h-[120px] w-full items-start justify-center pb-10">
-      <MenuFilter groups={GROUPS} onPick={() => {}} active={active}
+    <div className={`flex min-h-[120px] w-full items-start justify-center pb-10 ${toneWrap(tone)}`}>
+      <MenuFilter key={align} align={align} groups={GROUPS} onPick={() => {}} active={active}
         onRemove={(c) => setActive((a) => a.filter((x) => x.key !== c.key))} onClear={() => setActive([])} />
     </div>
   )

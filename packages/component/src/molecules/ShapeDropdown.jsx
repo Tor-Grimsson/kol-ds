@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
-import { MenuDropdownItem } from './MenuItem.jsx'
+import { MenuRow } from './MenuItem.jsx'
 
 /**
  * ShapeDropdown — A tool button with a shape menu. split icon-button + variant-menu molecule (the tool-palette
@@ -11,7 +11,7 @@ import { MenuDropdownItem } from './MenuItem.jsx'
  * menu of all variants — picking one fires `onChange` and closes.
  *
  * Composed from Button (both trigger halves), usePopover/PopoverPanel (menu
- * positioning, dismiss, portal) and MenuDropdownItem (rows — same rows as the
+ * positioning, dismiss, portal) and MenuRow (rows — same rows as the
  * Dropdown molecule, ✓ marks the active variant).
  *
  * For single-value list selection with a text trigger use `Dropdown`; this is
@@ -80,14 +80,14 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
         className="w-max bg-surface-secondary border border-fg-08 rounded shadow-lg"
       >
         {options.map((option) => (
-          <MenuDropdownItem
+          <MenuRow
             key={option.id}
             onClick={() => handleSelect(option)}
             iconLeft={option.icon ? <Icon name={option.icon} size={14} /> : undefined}
-            shortcut={option.id === current?.id ? <Icon name="check" size={11} /> : undefined}
+            indicator={option.id === current?.id ? 'dot' : undefined}
           >
             {option.label}
-          </MenuDropdownItem>
+          </MenuRow>
         ))}
       </PopoverPanel>
     </div>

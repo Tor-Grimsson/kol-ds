@@ -10,16 +10,16 @@ export default function MenuDropdownItemPreview() {
   return (
     <MenuItem label="Edit" defaultOpen>
       <div className="min-w-[200px] py-1">
-        <MenuDropdownItem iconLeft={<Icon name="cut" size={14} />} shortcut="⌘X" onClick={() => {}}>
+        <MenuDropdownItem iconLeft={<Icon name="cut" size={14} />} kbd="⌘X" onClick={() => {}}>
           Cut
         </MenuDropdownItem>
-        <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} shortcut="⌘C" onClick={() => {}}>
+        <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} kbd="⌘C" onClick={() => {}}>
           Copy
         </MenuDropdownItem>
-        <MenuDropdownItem iconLeft={<Icon name="clipboard" size={14} />} shortcut="⌘V" onClick={() => {}}>
+        <MenuDropdownItem iconLeft={<Icon name="clipboard" size={14} />} kbd="⌘V" onClick={() => {}}>
           Paste
         </MenuDropdownItem>
-        <MenuDropdownItem shortcut={<Icon name="check" size={11} />} onClick={() => {}}>
+        <MenuDropdownItem indicator="check" onClick={() => {}}>
           Track changes
         </MenuDropdownItem>
         <MenuDropdownItem disabled onClick={() => {}}>

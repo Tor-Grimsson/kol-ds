@@ -222,7 +222,7 @@ export const chipCls = (on) => `${CHIP_CLS} ${on ? 'kol-control--filled' : 'text
 /**
  * SettingsMulti — A many-of-many setting in one dropdown. a many-of-N control as ONE Dropdown (SettingsPanelApproved,
  * 2026-08-27 — the kinds row): the trigger reads `N of M <noun>`, every entry
- * toggles and `✓` marks the ones that are on. No grouping.
+ * toggles with the list held open, the check icon marks the ones that are on (Dropdown `multiple`). No grouping.
  * @param {Array}  options   [{ value, label }]
  * @param {Array|Set} selected
  * @param {Function} onToggle (value) => void
@@ -233,11 +233,8 @@ export const chipCls = (on) => `${CHIP_CLS} ${on ? 'kol-control--filled' : 'text
  */
 export function SettingsMulti({ options = [], selected = [], onToggle, noun = 'kinds', tone = 'default', size = 'sm', variant, className = '' }) {
   const on = selected instanceof Set ? selected : new Set(selected)
-  const opts = [
-    { value: '__summary', label: `${on.size} of ${options.length} ${noun}` },
-    ...options.map((o) => ({ value: o.value, label: `${on.has(o.value) ? '✓ ' : ''}${o.label ?? String(o.value)}` })),
-  ]
-  return <Dropdown size={size} variant={variant} tone={tone} value="__summary" options={opts} onChange={(v) => (v === '__summary' ? null : onToggle?.(v))} className={`w-full ${className}`.trim()} />
+  const opts = options.map((o) => ({ value: o.value, label: o.label ?? String(o.value) }))
+  return <Dropdown multiple label={`${on.size} of ${options.length} ${noun}`} size={size} variant={variant} tone={tone} value={on} options={opts} onChange={(v) => onToggle?.(v)} className={`w-full ${className}`.trim()} />
 }
 
 /**

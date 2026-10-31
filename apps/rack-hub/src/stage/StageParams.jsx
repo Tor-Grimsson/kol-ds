@@ -7,7 +7,7 @@
 // with the module's own knob exactly as a cable would.
 //
 // And it renders that set through kol-component: `MenuItem`'s trigger + popover
-// panel, DS `Slider` rows, `MenuDropdownNest` for the mark list. No hand-rolled
+// panel, DS `Slider` rows, `MenuFlyout` for the mark list. No hand-rolled
 // panel, no inline chrome (user, 2026-08-28).
 //
 // MARKING reads the LIVE REGISTRY: every module descriptor carries its declared
@@ -16,7 +16,7 @@
 // the list the moment it is in the patch.
 
 import { useEffect, useRef, useState } from 'react'
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from '@kolkrabbi/kol-component/molecules/MenuItem'
+import { MenuItem, MenuRow, MenuDivider, MenuFlyout } from '@kolkrabbi/kol-component/molecules/MenuItem'
 import Slider from '@kolkrabbi/kol-component/molecules/Slider'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useModuleRegistry } from '../../../rack/src/hooks/useModuleRegistry.jsx'
@@ -98,22 +98,22 @@ export default function StageParams({ marks, onMarks, rows }) {
         </div>
       ))}
 
-      {marks.length > 0 && <MenuDropdownDivider />}
+      {marks.length > 0 && <MenuDivider />}
 
-      <MenuDropdownNest label="Mark parameters">
+      <MenuFlyout label="Mark parameters">
         {available().map(c => {
           const marked = marks.some(m => markKey(m) === markKey(c))
           return (
-            <MenuDropdownItem
+            <MenuRow
               key={markKey(c)}
               onClick={() => toggleMark(c)}
-              shortcut={marked ? <Icon name="check" size={11} /> : undefined}
+              indicator={marked ? 'check' : undefined}
             >
               {c.label}
-            </MenuDropdownItem>
+            </MenuRow>
           )
         })}
-      </MenuDropdownNest>
+      </MenuFlyout>
     </MenuItem>
   )
 }

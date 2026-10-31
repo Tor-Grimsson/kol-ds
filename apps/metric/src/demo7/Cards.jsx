@@ -166,7 +166,7 @@ export function PagesCard({ period, comparison, filters, total, onFilter }) {
       tab={tab}
       setTab={setTab}
       onExpand={() => details.open({ path: 'Top pages', entry: 'Entry pages', exit: 'Exit pages' }[tab], { label: col, cols: EXPANDED[tab] }, () => expanded(tab, period, filters, (r) => ({ label: r.x, value: r.y })))}
-      menu={<MenuMore label="Break down by" minWidth={200} items={[{ heading: 'Break down by' }, ...[{ key: 'path', label: 'Path' }, { key: 'url', label: 'URL' }].map((o) => ({ key: o.key, label: o.label, current: o.key === by, checked: o.key === by, onClick: () => setBy(o.key) }))]} />}
+      menu={<MenuMore label="Break down by" minWidth={200} items={[{ heading: 'Break down by' }, ...[{ key: 'path', label: 'Path' }, { key: 'url', label: 'URL' }].map((o) => ({ key: o.key, label: o.label, current: o.key === by, indicator: o.key === by ? 'dot' : undefined, onClick: () => setBy(o.key) }))]} />}
     >
       <List rows={data?.rows} prev={data?.prev} total={total} column={col} valueLabel={val} loading={loading} onFilter={onFilter} />
       {details.el}

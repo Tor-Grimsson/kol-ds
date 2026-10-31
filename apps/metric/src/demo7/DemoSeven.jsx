@@ -167,10 +167,10 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
         {nine && !ten && <Dropdown className="min-w-0 max-w-[45vw]" value={section} onChange={setSection} options={SECTIONS} ariaLabel="Dashboard section" />}
         {/* /demo-11 (16.4): the gear where media keeps it — the title row's right, KOL IconFrame as LibraryHeader's */}
         {eleven && (
-          <div className="flex items-center gap-2 min-w-0">
+          <div className="kol-tone-faint flex items-center gap-2 min-w-0">
           <SitesPicker period={period} sites={sites} setSites={setSites} />
           <Tooltip label="Settings">
-            <IconFrame name="settings-01" variant="primary" size="sm" onClick={() => setSettings(true)} aria-label="Settings" />
+            <IconFrame name="settings-01" size="sm" onClick={() => setSettings(true)} aria-label="Settings" />
           </Tooltip>
           </div>
         )}
@@ -243,7 +243,7 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
         )}
         <MenuMore label="Graph settings" items={[
           { heading: 'Graph interval' },
-          ...intervals.map((u) => ({ key: u, label: UNIT_LABEL[u], current: u === unit, checked: u === unit, onClick: () => setInterval_(u) })),
+          ...intervals.map((u) => ({ key: u, label: UNIT_LABEL[u], current: u === unit, indicator: u === unit ? 'dot' : undefined, onClick: () => setInterval_(u) })),
           { divider: true },
           { key: 'export', label: 'Export stats', trailing: 'download', onClick: exportStats },
         ]} />
@@ -540,7 +540,7 @@ function SitesPicker({ period, sites, setSites }) {
   const hosts = useAsync(() => umami('/metrics', { startAt: period.start, endAt: period.end, type: 'hostname' }), JSON.stringify(period))
   const list = (Array.isArray(hosts.data) ? hosts.data : []).map((h) => h.x).filter((h) => !isDevHost(h))
   return (
-    <SettingsMulti noun="sites" variant="raised" className="min-w-0 max-w-[45vw] md:w-48 md:max-w-none" options={list.map((h) => ({ value: h, label: h }))} selected={sites}
+    <SettingsMulti noun="sites" className="min-w-0 max-w-[45vw] md:w-48 md:max-w-none" options={list.map((h) => ({ value: h, label: h }))} selected={sites}
       onToggle={(h) => setSites((s) => (s.includes(h) ? s.filter((x) => x !== h) : [...s, h]))} />
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MenuDatePicker } from '@kolkrabbi/kol-component'
+import { CONTROL_TONES, ALIGNS, toneWrap } from '../lib/controls.js'
 
 const GROUPS = [
   [{ key: 'day', label: 'Today', kbd: 'D' }, { key: 'yesterday', label: 'Yesterday', kbd: 'E' }],
@@ -12,12 +13,15 @@ export function Card() {
   return <MenuDatePicker groups={GROUPS} value="28d" label={labelOf('28d')} />
 }
 
-export default function MenuDatePickerPreview() {
+export const tones = CONTROL_TONES
+export const aligns = ALIGNS
+
+export default function MenuDatePickerPreview({ tone, align = 'start' }) {
   const [value, setValue] = useState('28d')
   const [compare, setCompare] = useState(false)
   return (
-    <div className="flex min-h-[120px] w-full items-start justify-center">
-      <MenuDatePicker groups={GROUPS} value={value} onChange={setValue} label={labelOf(value)}
+    <div className={`flex min-h-[120px] w-full items-start justify-center ${toneWrap(tone)}`}>
+      <MenuDatePicker key={align} align={align} groups={GROUPS} value={value} onChange={setValue} label={labelOf(value)}
         compare={{ label: compare ? 'Disable comparison' : 'Compare', kbd: 'X', onClick: () => setCompare((c) => !c) }} />
     </div>
   )

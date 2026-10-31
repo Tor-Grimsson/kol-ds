@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, MenuDropdownItem } from '@kolkrabbi/kol-component'
+import { Button, MenuRow } from '@kolkrabbi/kol-component'
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 
 export const stage = 'full'
@@ -55,7 +55,7 @@ export default function CatalogPagePreview({ variant = 'catalog' }) {
             duplicate: () => write(f.id, (fs, i) => [...fs.slice(0, i + 1), { ...fs[i], id: `${f.id}-${Date.now()}`, name: `${f.name} copy` }, ...fs.slice(i + 1)]),
             remove: () => write(f.id, (fs, i) => fs.filter((_, j) => j !== i)),
           },
-          menuItems: <MenuDropdownItem onClick={() => {}}>Export</MenuDropdownItem>,
+          menuItems: <MenuRow onClick={() => {}}>Export</MenuRow>,
           onClick: () => {},
         })}
       />

@@ -12,7 +12,15 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Phasing out Right Grotesk** (2026-10-31, parked). He wants to compare a replacement: Schibsted Grotesk or another Google face, and a plain system-like sans (Inter, Noto Sans, Montserrat, Red Hat Display/Text; Proxima Nova is Adobe Fonts, not Google). The tool already exists: the Figma library's `13-ui-font` sheet switches six fonts by the `ui-font` mode (Inter · Geist · IBM Plex Sans · Public Sans · Noto Sans · Montserrat) — add Schibsted Grotesk and Red Hat as modes there; the `type` collection's Right Grotesk / Schibsted modes switch every text style at once. A pick becomes a kol-theme `--kol-font-family-sans*` change and its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-10-31 evening — the Figma library from the code, metric on KOL, the Menu family)
+## 🏁 Current state (2026-10-31 late — interface icons in 18 categories, the batch landed)
+
+- **Published** kol-icons 0.57.0–0.59.0: `social` → external; kol-icon-set-interface foldered by the user's 18 categories (plan-2026-10-31-icon-categories); the 559-icon batch (atlas · website · Claude list) in, every drawing kept, 814 icons. Solid is a variant (the Type chips), not a category. Closed ClaudeListIconSet and the five fxr tickets (kol-component 0.330.0). Open: culling duplicates with him. Log: `session-log/2026-10-31-interface-icon-categories-and-the-batch.md`.
+
+## Current state (2026-10-31 night — one menu engine, tone faint, the Controls set)
+
+- **Published** kol-theme 0.210.0 · kol-component 0.330.0 · kol-styleguide 0.20.0 · design-editor 0.24.0: `Menu` is the one engine (Dropdown fused, MultiSelect columns, MenuItem, ContextMenu on it), `MenuRow` `indicator` dot/check/chevron + `kbd` (• single pick, check many-of-N — his ruling), `tone="faint"` (oq-06) retires Dropdown `variant="raised"`, showcase Controls set = apps/controls (new Menus page). 0.330.0 also carries the five fxr tickets — close them once it is live. Open: W5 (two row looks, two radii — TALK), Combobox + SplitToolButton onto Menu. Plan: `plan-2026-10-31-menu-engine.md`. Log: `session-log/2026-10-31-one-menu-engine-faint-tone-controls-set.md`.
+
+## Current state (2026-10-31 evening — the Figma library from the code, metric on KOL, the Menu family)
 
 - **Published** kol-component 0.320–0.328 · kol-theme 0.202–0.209 · kol-dashboards 0.6.0–0.7.1 · kol-framework 0.68.0 · kol-shell 0.92–0.96 · kol-icons 0.54–0.55. The Menu* family (Menu, MenuTrigger, MenuPanel, MenuRow/Label/Divider/Flyout, MenuFilter/DatePicker/More; MenuDropdown* are aliases), Dropdown `variant="raised"`, Modal `variant` lift|bordered, Button `bare`, SectionText `variant` (was `level`) + `lede`, NavRail `variant="top"`, DocumentHeader, apps/metric (the reference dashboard, nine logged rounds).
 - **Figma library** (n48kE2bJtrFjl7wxst30xH) built from the code, W1–W32 in `plan-2026-10-31-figma-library.md`: `ink-roles` collection (role = the node's mode), `tone` collection, breakpoint type sizes, 27-document-system, application pages, Code Connect on everything. **Rule: a look/API change lands in Figma the same turn** (memory). Log: `session-log/2026-10-31-figma-library-metric-rebuild-menu-family.md`.
@@ -24,16 +32,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-30 night — float rounds, sign-in over Home, GrowthLineStage)
 
 - **Published** kol-component 0.317.7–0.319.0 · kol-theme 0.200.6 / 0.201.0 · kol-shell 0.91.0 / 0.91.1 · kol-foundry 0.15.0 · kol-growth 0.1.0 (new engine package): DocsToc rail children, TextPressure intro, provisional float (`variant="float"`, AppFloatNav, AccountForm, sign-in over Home), GrowthLineStage. Float style is still under review as artifacts (round 3 is the latest); FloatingStyleAndSignInDemos stays 🟠. Log: `session-log/2026-10-30-float-style-rounds-sign-in-and-growth-line.md`.
-
-## Current state (2026-10-30 later — MediaLibrary Columns dock, the Get Info modal)
-
-- **Published** kol-component 0.317.5 / 0.317.6 · kol-theme 0.200.5: ColumnBrowser `previewPlacement` (`dock` default in MediaLibrary), ⌘I as a Get Info modal in Quick Look's frame, the file preview capped at 32vh. ColumnPreviewDocked, MediaGetInfoModal, MediaGetInfoFileBody closed with receipts. Open: Type lab review; BrandLabToolWindow and ClaudeListIconSet wait for him. Log: `session-log/2026-10-30-media-library-columns-dock-and-get-info.md`.
-
-## Current state (2026-10-30 — the Brand Lab to approval, the icon rounds, two website tickets)
-
-- **Published** kol-icons 0.53.3–0.53.5 (lock/unlock, shuffle, the harmony set on Adobe's constructions, `color-wheel` · `color-palette` · `color-swatch` from Figma) · kol-theme 0.200.3 / 0.200.4 · kol-component 0.317.3 / 0.317.4 (TabsRow `variant` + `type="mono" | "sans" | "mono-light"`, the oq ink ladder, the plain Dropdown in ColorPickerPopover, MediaLibrary `previewFrame` · `settingsKey` · `infoKey` · `columnFolderInfo`) · kol-styleguide 0.18.3 / 0.18.4 (the contrast rail on SettingsSections, KOL vector forms on the stage, Combo and Lockup fixes). Log: `session-log/2026-10-30-brand-lab-review-icons-and-tickets.md`.
-- **Rulings:** `variant` is the one word for a look (`look` and `preset` were agent drift); every icon round is BUILT by `~/.claude/skills/app-icon/bin/propose.cjs` with `"glyphs": true` from a spec (kol-icon skill `example-spec.json`), never drawn; a glyph fills one of the three keyline rectangles and a pair's parts never move between states but the one that opens; lobby tickets go to background agents, never the main thread; the Brand Lab's header is two groups — the four generators, then Guide and Export.
-- **Open:** the Type lab review; BrandLabToolWindow closes when he calls the review done; ClaudeListIconSet waits for him.
 
 ## Repo standup (2026-06-15)
 

@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
-import Kbd from '../atoms/Kbd.jsx'
 import SearchInput from './SearchInput.jsx'
 import { MenuRow, MenuDivider, MenuFlyout } from './MenuItem.jsx'
 import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
+import { TONE_VARS } from '../utilities/tone.js'
 
 /**
  * The Menu* family (metric Round 4, 2026-10-31) — one family, one prefix.
@@ -25,8 +25,8 @@ import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
  *     { label: 'Export stats', trailing: 'download', onClick },
  *   ]} />
  *
- *   row keys: `icon` (kol-icons name or node) · `trailing` (+ `trailingSize`) · `current` fills the row · `checked` ✓
- *   (before the `kbd` cap) · `kbd` · `disabled` + `tooltip` (why) · `items` (a flyout of the same rows).
+ *   row keys: `icon` (kol-icons name or node) · `trailing` (+ `trailingSize`) · `current` fills the row · `indicator`
+ *   'dot' (single pick) | 'check' (many-of-N) | 'chevron' · `checked` = 'check' (before the `kbd` cap) · `kbd` · `disabled` + `tooltip` (why) · `items` (a flyout of the same rows).
  *   `search` ({ placeholder, empty }) puts a search field above the rows and filters them by label.
  *   `children` sit above the rows.
  */
@@ -50,20 +50,9 @@ export const MenuPanel = ({ className = '', children, ...rest }) => (
 export const MenuLabel = ({ children }) => <div className="kol-menu-label kol-helper-12">{children}</div>
 
 const glyph = (icon, size) => (typeof icon === 'string' ? <Icon name={icon} size={size} /> : icon)
-const Check = () => <Icon name="check" size={14} className="text-oq-88" />
-
-function trailingOf(it) {
-  if (it.kbd != null) {
-    return (
-      <span className="inline-flex items-center gap-2">
-        {it.checked && <Check />}
-        <Kbd size="md" className="kol-menu-kbd">{it.kbd}</Kbd>
-      </span>
-    )
-  }
-  if (it.checked) return <Check />
-  return it.trailing ? <span className="text-oq-88 inline-flex">{glyph(it.trailing, it.trailingSize ?? 14)}</span> : undefined
-}
+/* a row's trailing marks — real icons and Kbd only (W2): `indicator` 'dot' | 'check' | 'chevron', `checked` = 'check',
+ * `kbd` a key cap, `trailing` an icon name for an action (download) */
+const indicatorOf = (it) => it.indicator ?? (it.checked ? 'check' : undefined)
 
 function Rows({ items }) {
   return items.map((it, i) => {
@@ -76,7 +65,8 @@ function Rows({ items }) {
         <Rows items={it.items} />
       </MenuFlyout>
     ) : (
-      <MenuRow href={it.href} disabled={it.disabled} rowClass={cls} onClick={it.onClick} iconLeft={icon} shortcut={trailingOf(it)}>
+      <MenuRow href={it.href} disabled={it.disabled} rowClass={cls} onClick={it.onClick} iconLeft={icon} indicator={indicatorOf(it)} kbd={it.kbd}
+        shortcut={it.trailing ? <span className="text-oq-88 inline-flex">{glyph(it.trailing, it.trailingSize ?? 14)}</span> : undefined}>
         {it.label}
       </MenuRow>
     )
@@ -87,38 +77,87 @@ function Rows({ items }) {
   })
 }
 
-export function Menu({ items = [], trigger, align = 'start', minWidth, offset = 4, defaultOpen = false, stayOpen = false, search, className = '', children }) {
-  const [open, setOpen] = useState(defaultOpen)
+/**
+ * Menu — THE menu engine (plan-2026-10-31-menu-engine W1). Every list that floats over a trigger is this: the Menu*
+ * menus, Dropdown (a `fused` select), MultiSelect (columns), MenuItem (a menubar entry), ContextMenu (a point).
+ *
+ *   trigger   render prop `({ open, props })` — any trigger: MenuTrigger chip, a select, the ⋮, a menubar button
+ *   anchor    `{ x, y }` instead of a trigger — the panel opens at a point (right-click)
+ *   align     'start' | 'end' — the panel's edge flush with the trigger's
+ *   fused     the panel continues the trigger: no gap, its width, top corners squared, never flips
+ *   tone      nothing to pass: the trigger's resolved `--kol-tone-*` ride onto the portalled panel, so a menu in a
+ *             `kol-tone-*` wrapper floats on that tone's surface
+ *   closeOnSelect  false keeps the panel open while rows toggle (a multiselect)
+ *   open / onOpenChange  controlled, when the caller needs the state
+ */
+export function Menu({
+  items, trigger, anchor, align = 'start', minWidth, offset = 4, defaultOpen = false, open: openProp, onOpenChange,
+  stayOpen = false, closeOnSelect = true, fused = false, search, role = 'menu',
+  panelClassName = '', panelStyle, rootClassName, className = '', children,
+}) {
+  const [own, setOwn] = useState(defaultOpen)
+  const controlled = openProp !== undefined
+  const open = controlled ? openProp : own
+  const setOpen = (v) => { if (!controlled) setOwn(v); onOpenChange?.(v) }
   const [q, setQ] = useState('')
   const popover = usePopover({
     open,
     onOpenChange: setOpen,
-    placement: align === 'end' ? 'bottom-end' : 'bottom-start',
-    offset,
-    role: 'menu',
+    placement: anchor ? 'right-start' : align === 'end' ? 'bottom-end' : 'bottom-start',
+    offset: fused ? -1 : anchor ? 2 : offset,
+    flip: !fused,
+    matchReferenceWidth: fused,
+    click: !anchor,
+    role,
     dismiss: stayOpen ? { outsidePress: false } : true,
   })
-  let rows = items
+
+  /* a point anchor is a zero-size virtual rect — `setPositionReference`, never `elements.reference` (ContextMenu) */
+  const { setPositionReference } = popover.refs
+  useEffect(() => {
+    if (!anchor) return
+    const { x, y } = anchor
+    setPositionReference({ getBoundingClientRect: () => ({ width: 0, height: 0, x, y, top: y, left: x, right: x, bottom: y }) })
+  }, [anchor?.x, anchor?.y, setPositionReference]) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* THE PANEL IS PORTALLED, so a tone the trigger inherits never reaches it through the cascade — copy it on open */
+  const rootRef = useRef(null)
+  const [ambient, setAmbient] = useState(null)
+  useLayoutEffect(() => {
+    if (!open || !rootRef.current) return
+    const cs = getComputedStyle(rootRef.current.firstElementChild ?? rootRef.current)
+    const vars = {}
+    for (const v of TONE_VARS) { const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val }
+    setAmbient(vars)
+  }, [open])
+
+  let rows = items ?? []
   if (search) {
     const s = q.toLowerCase()
-    rows = items.filter((it) => it.label == null || String(it.label).toLowerCase().includes(s))
+    rows = rows.filter((it) => it.label == null || String(it.label).toLowerCase().includes(s))
     if (!rows.some((it) => it.label != null)) rows = [...rows, { key: 'empty', label: search.empty || 'Nothing matches', disabled: true }]
   }
   /* the wrapper takes the ref (a Button need not forward one); the trigger takes the handlers and the aria —
    * `aria-pressed` cleared, an open menu is `aria-expanded`, its fill is the trigger's `pressed` */
   return (
     <>
-      <span ref={popover.refs.setReference} className={`inline-flex align-middle ${className}`.trim()}>
-        {trigger({ open, props: { ...popover.getReferenceProps(), 'aria-pressed': undefined } })}
-      </span>
-      <PopoverPanel popover={popover} panel={false} focus={false} className="kol-menu-panel w-max" style={minWidth ? { minWidth } : undefined}>
-        {/* a row's click closes the menu (it bubbles from `[data-menu-item]`); a flyout row only toggles */}
-        <div onClick={(e) => { if (e.target.closest('[data-menu-item]')) setOpen(false) }}>
-          {search && <div className="pb-1"><SearchInput variant="outline" size="sm" value={q} onChange={(e) => setQ(e.target?.value ?? e)} onClear={() => setQ('')} placeholder={search.placeholder || 'Search'} /></div>}
-          {children}
-          <Rows items={rows} />
-        </div>
-      </PopoverPanel>
+      {trigger && (
+        <span ref={(el) => { rootRef.current = el; popover.refs.setReference(el) }} className={rootClassName ?? `inline-flex align-middle ${className}`.trim()}>
+          {trigger({ open, props: { ...popover.getReferenceProps(), 'aria-pressed': undefined } })}
+        </span>
+      )}
+      {open && (
+        <PopoverPanel popover={popover} panel={false} focus={false}
+          className={`kol-menu-panel${fused ? ' kol-menu-panel--fused' : ' w-max'} ${panelClassName}`.trim()}
+          style={{ ...ambient, ...(minWidth ? { minWidth } : null), ...panelStyle }}>
+          {/* a row's click closes the menu (it bubbles from `[data-menu-item]`); a flyout row only toggles */}
+          <div role="none" className="flex flex-col min-h-0" onClick={(e) => { if (closeOnSelect && e.target.closest('[data-menu-item]')) setOpen(false) }}>
+            {search && <div className="pb-1"><SearchInput variant="outline" size="sm" value={q} onChange={(e) => setQ(e.target?.value ?? e)} onClear={() => setQ('')} placeholder={search.placeholder || 'Search'} /></div>}
+            {typeof children === 'function' ? children({ close: () => setOpen(false) }) : children}
+            {rows.length > 0 && <Rows items={rows} />}
+          </div>
+        </PopoverPanel>
+      )}
     </>
   )
 }
@@ -179,7 +218,7 @@ export function MenuDatePicker({ groups = [], value, onChange, label, icon = 'ca
   const items = [
     ...groups.flatMap((g, i) => [
       ...(i > 0 ? [{ divider: true }] : []),
-      ...g.map((r) => ({ key: r.key, label: r.label, current: r.key === value, checked: r.key === value, kbd: r.kbd, onClick: () => onChange?.(r.key) })),
+      ...g.map((r) => ({ key: r.key, label: r.label, current: r.key === value, indicator: r.key === value ? 'dot' : undefined, kbd: r.kbd, onClick: () => onChange?.(r.key) })),
     ]),
     ...(compare ? [{ divider: true }, { key: 'compare', label: compare.label, kbd: compare.kbd, onClick: compare.onClick }] : []),
   ]

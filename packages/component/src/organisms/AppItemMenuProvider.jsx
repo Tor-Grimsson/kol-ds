@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuCtx, useAsk, glyph } from '../molecules/AppItem.jsx'
 import ContextMenu, { useContextMenu } from '../molecules/ContextMenu.jsx'
-import { MenuDropdownItem } from '../molecules/MenuItem.jsx'
+import { MenuRow } from '../molecules/MenuItem.jsx'
 import ActionButton from '../molecules/ActionButton.jsx'
 import Tag from '../atoms/Tag.jsx'
 import Input from '../atoms/Input.jsx'
@@ -256,9 +256,9 @@ export default function AppItemMenuProvider({ children }) {
       <ContextMenu menu={menu}>
         {(item) => item && (
           <>
-            {item.verbs?.rename && <MenuDropdownItem iconLeft={glyph('edit')} onClick={() => ask.rename(item.name, item.verbs)}>Rename</MenuDropdownItem>}
-            {item.verbs?.duplicate && <MenuDropdownItem iconLeft={glyph('copy')} onClick={item.verbs.duplicate}>Duplicate</MenuDropdownItem>}
-            {item.verbs?.remove && <MenuDropdownItem iconLeft={glyph('trash')} onClick={() => ask.remove(item.name, item.verbs)}>Delete</MenuDropdownItem>}
+            {item.verbs?.rename && <MenuRow iconLeft={glyph('edit')} onClick={() => ask.rename(item.name, item.verbs)}>Rename</MenuRow>}
+            {item.verbs?.duplicate && <MenuRow iconLeft={glyph('copy')} onClick={item.verbs.duplicate}>Duplicate</MenuRow>}
+            {item.verbs?.remove && <MenuRow iconLeft={glyph('trash')} onClick={() => ask.remove(item.name, item.verbs)}>Delete</MenuRow>}
             {item.menuItems}
           </>
         )}

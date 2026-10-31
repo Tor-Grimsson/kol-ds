@@ -83,7 +83,7 @@ export const KOL_ICON_SET_IDENTITY = (() => {
 export const KOL_ICON_SET_IDENTITY_NAMES = Object.values(KOL_ICON_SET_IDENTITY).flat().sort()
 
 /* kol-icon-set-external (2026-10-31, IconSetExternal) — marks drawn by others, grouped by folder: `flags` (round
- * country flags, `flag-<iso>`) · `brands` (browsers, OS, socials, services). Colour, never recoloured — the set is
+ * country flags, `flag-<iso>`) · `brands` (browsers, OS, socials, services) · `social` (the mono `social-*` marks, moved from interface in 0.57.0). Colour, never recoloured — the set is
  * exempt from `currentColor`; its solid members (apple · github · openai · windows) already use it. Cut `color`. */
 export const KOL_ICON_SET_EXTERNAL = (() => {
   const idx = {}

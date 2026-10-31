@@ -1,5 +1,9 @@
 # @kolkrabbi/design-editor
 
+
+## 0.24.0 — 2026-10-31
+
+- Menus on kol-component 0.330's `MenuRow` indicators: the editor mode, aspect and view menus wear the dot, fx-in-chain, snap and kinetic tags the check, undo/redo show `Kbd` caps; `BindDot`'s source list is `MenuRow` rows with the dot (no typed ✓).
 ## Unreleased — 2026-10-23
 
 - **No `kol-helper-*` on a sentence** (kol-ds-ui `validate:helper-text`, 2026-10-23 — the helper scale is single-line chrome, 01-foundations/03-typography.md:29). Empty states and notes that are sentences wear `kol-mono-*` at the same size; labels are untouched.

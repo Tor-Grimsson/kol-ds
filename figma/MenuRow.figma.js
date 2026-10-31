@@ -11,6 +11,7 @@ const iconOn = instance.getBoolean('icon')
 const iconSwap = instance.getInstanceSwap('iconName')
 const icon = (iconSwap && typeof iconSwap.codeConnectId === 'function' && iconSwap.codeConnectId()) || 'layout'
 const check = instance.getBoolean('check')
+const dot = instance.getBoolean('dot')
 const kbd = instance.getBoolean('kbd')
 const trailOn = instance.getBoolean('trailing')
 const trailSwap = instance.getInstanceSwap('trailingName')
@@ -19,7 +20,8 @@ const trailing = (trailSwap && typeof trailSwap.codeConnectId === 'function' && 
 const keys = [`label: '${label}'`]
 if (iconOn) keys.push(`icon: '${icon}'`)
 if (current === 'true') keys.push('current: true')
-if (check) keys.push('checked: true')
+if (dot) keys.push("indicator: 'dot'")
+else if (check) keys.push("indicator: 'check'")
 if (kbd) keys.push("kbd: 'D'")
 if (trailOn) keys.push(`trailing: '${trailing}'`)
 if (disabled === 'true') keys.push('disabled: true')

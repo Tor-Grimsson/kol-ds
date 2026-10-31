@@ -85,6 +85,10 @@ export { default as ViewToggle } from './atoms/ViewToggle.jsx'
 export { default as XYPad } from './atoms/XYPad.jsx'
 /* lobby OriginPicker (kol-fxr, 2026-10-31) — the 3×3 origin / anchor value picker */
 export { default as OriginPicker } from './atoms/OriginPicker.jsx'
+/* lobby kol-fxr plan 51 4.4 (2026-10-31) — the bezier node editor, the function plot, the param bind dot */
+export { default as BezierPathEditor } from './atoms/BezierPathEditor.jsx'
+export { default as FunctionPlot } from './atoms/FunctionPlot.jsx'
+export { default as ParamBindDot } from './molecules/ParamBindDot.jsx'
 export { default as InspectorRail } from './molecules/InspectorRail.jsx'
 /* SelectionOverlay's two siblings — same 1080-virtual contract, same zoom
  * division (editor-panels-the-held-specs B2). `pathMath` is their geometry,

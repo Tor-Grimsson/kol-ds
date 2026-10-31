@@ -102,6 +102,9 @@ export default function PreviewCard({
    * CurveOverlay's empty · handles · both */
   const [ground, setGroundState] = useState(readGround)
   const setGround = (v) => { setGroundState(v); try { localStorage.setItem(GROUND_KEY, v) } catch { /* private window */ } }
+  /* align (plan-2026-10-31-menu-engine W3.1): a floating menu's panel edge — start or end of its trigger */
+  const aligns = entry?.aligns ?? null
+  const [align, setAlign] = useState(aligns?.[0] ?? null)
   const states = entry?.states ?? null
   const [state, setState] = useState(states?.[0] ?? null)
   /* the axes that have more than one value, in toolbar order — what the MultiSelect picker shows */
@@ -109,6 +112,7 @@ export default function PreviewCard({
     { id: 'variant', label: 'Variant', options: variants, value: variant, set: setVariant },
     { id: 'tone', label: 'Tone', options: tones, value: tone, set: setTone },
     { id: 'size', label: 'Size', options: sizes && byRamp(sizes), value: size, set: setSize },
+    { id: 'align', label: 'Align', options: aligns, value: align, set: setAlign },
     { id: 'state', label: 'State', options: states, value: state, set: setState },
     /* the background rides only the plain canvas — a block's iframe or a custom body paints its own */
     { id: 'ground', label: 'Background', options: !renderTab && !renderBody && !entry?.frame ? Object.keys(GROUNDS) : null, labels: GROUND_LABELS, value: ground, set: setGround },
@@ -158,7 +162,7 @@ export default function PreviewCard({
         tab === 'preview' && (
           <div className={`flex ${minH} items-center justify-center ${GROUNDS[ground]} p-10`}>
             {entry?.Component ? (
-              <PreviewStage entry={entry} variant={variant} tone={tone} size={size} state={state} />
+              <PreviewStage entry={entry} variant={variant} tone={tone} size={size} align={align} state={state} />
             ) : children || (
               <span className="kol-mono-12 text-meta">no live preview — see usage below</span>
             )}

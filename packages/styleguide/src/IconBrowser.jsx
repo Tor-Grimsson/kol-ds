@@ -146,7 +146,6 @@ function RowGlyph({ item, size, ground, guide }) {
  * could toggle away the group Im trying to sort into"). The Menu family's panel and rows with its ✓; a row's click
  * stops at the row so the panel stays open for the next one (Menu closes on a click bubbling from a row). The trigger
  * wears the Dropdown's own classes, so the row of facets looks as it did. */
-const CHECK = <Icon name="check" size={14} className="text-oq-88" />
 const ROW = 'kol-menu-row kol-helper-12'
 function FacetMenu({ group: g, off, onOff }) {
   const offSet = new Set(off)
@@ -165,11 +164,11 @@ function FacetMenu({ group: g, off, onOff }) {
         </button>
       )}
     >
-      <MenuRow rowClass={ROW} onClick={keep(() => onOff(on.length === g.values.length ? [...g.values] : []))} shortcut={on.length === g.values.length ? CHECK : null}>{g.all ?? 'All'}</MenuRow>
+      <MenuRow rowClass={ROW} onClick={keep(() => onOff(on.length === g.values.length ? [...g.values] : []))} indicator={on.length === g.values.length ? 'check' : undefined}>{g.all ?? 'All'}</MenuRow>
       <MenuDivider className="kol-menu-rule" />
       <div className="max-h-[60vh] overflow-y-auto">
         {g.values.map((v) => (
-          <MenuRow key={v} rowClass={ROW} onClick={keep(() => onOff(offSet.has(v) ? off.filter((x) => x !== v) : [...off, v]))} shortcut={offSet.has(v) ? null : CHECK}>{v}</MenuRow>
+          <MenuRow key={v} rowClass={ROW} onClick={keep(() => onOff(offSet.has(v) ? off.filter((x) => x !== v) : [...off, v]))} indicator={offSet.has(v) ? undefined : 'check'}>{v}</MenuRow>
         ))}
       </div>
     </Menu>

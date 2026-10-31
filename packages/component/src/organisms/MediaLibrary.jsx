@@ -11,7 +11,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
 import MediaTile from '../molecules/MediaTile.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
 import ContentFilters from './ContentFilters.jsx'
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
+import { MenuItem, MenuRow, MenuDivider } from '../molecules/MenuItem.jsx'
 import MediaViewer from './MediaViewer.jsx'
 import { MediaLibraryBrowse, MediaLibraryLibrary, SETTINGS_BASE } from './MediaLibraryPages.jsx'
 import MediaLibraryExplorer from './MediaLibraryExplorer.jsx'
@@ -949,11 +949,11 @@ function LibraryChrome({ onOpen, onPick }) {
                 {({ close }) => (
                   <div className="py-1 w-[200px]">
                     {VIEW_OPTIONS.map((opt) => (
-                      <MenuDropdownItem key={opt.value} onClick={() => { setViewMode(opt.value); close() }} shortcut={viewMode === opt.value ? <Icon name="check" size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                      <MenuRow key={opt.value} onClick={() => { setViewMode(opt.value); close() }} indicator={viewMode === opt.value ? 'dot' : undefined}>{opt.label}</MenuRow>
                     ))}
-                    <MenuDropdownDivider />
+                    <MenuDivider />
                     {SORT_OPTIONS.map((opt) => (
-                      <MenuDropdownItem key={opt.value} onClick={() => { sortBy(opt.value); close() }} shortcut={sort.by === opt.value ? <Icon name={sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                      <MenuRow key={opt.value} onClick={() => { sortBy(opt.value); close() }} shortcut={sort.by === opt.value ? <Icon name={sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
                     ))}
                   </div>
                 )}

@@ -1,5 +1,24 @@
 # @kolkrabbi/kol-component
 
+## 0.330.0 — 2026-10-31
+
+**One menu engine** (plan-2026-10-31-menu-engine), minor — public props unchanged:
+
+- **`Menu` is the engine** — `trigger` slot or `anchor={{ x, y }}`, `align`, `fused` (a select's list), `closeOnSelect`, controlled `open` / `onOpenChange`, `panelClassName` / `panelStyle` / `rootClassName`. The trigger's resolved `--kol-tone-*` ride onto the portalled panel, so a menu inside a `kol-tone-*` wrapper floats on that tone.
+- **Rebuilt on it:** `Dropdown` (fused), `MultiSelect` (columns; + `align`), `MenuItem` (menubar), `ContextMenu` (anchor; `useContextMenu()` drops `popover`, adds `x` / `y`).
+- **`MenuRow` `indicator`** `'dot' | 'check' | 'chevron'` (kol-icons, never typed) and **`kbd`** (a `Kbd` cap). `shortcut` is deprecated; a string renders as `Kbd`. Single picks wear the dot, many-of-N the check — Dropdown, MultiSelect, MenuDatePicker, SplitToolButton, MediaLibrary's menus.
+- **`Dropdown multiple`** + `label`; `SettingsMulti` on it (no summary row, no typed ✓, the list stays open).
+- **`tone="faint"`** (oq-06) in `TONES`; Dropdown `variant="raised"` is its retiring alias.
+- `Combobox` panel on the fused menu panel; `AppItemMenuProvider` on `MenuRow`.
+
+kol-fxr plan 51 4.4 — four lobby tickets, minor:
+
+- **`BezierPathEditor`** (new atom — lobby BezierPathEditor) — a 2D bezier node editor. `value: [{ x, y, hl?, hr? }]` normalised 0–1 (handles are offsets from the anchor; a missing one is a corner), `onChange(points)`, `closed`, `aspect` (the box fills its width), `size` xs · sm · md (knob sizes), `minPoints`. Drag anchors and handles; double-click splits the nearest segment shape-preserving (`pathMath`'s `splitSegment`); alt-click deletes. Control ground, path oq-80, leashes oq-24, handles oq-48, anchors the accent; no border.
+- **`FunctionPlot`** (new atom — lobby FunctionPlot) — y = f(u) over u 0–1 in SVG: `fn` or `samples`, `min` / `max` (auto), `cursor` (line + dot, the curve solid behind it, faint ahead), `height`, `labels`. Ground oq-04, zero line oq-24, labels oq-48, curve the accent.
+- **`ParamBindDot`** (new molecule — lobby ParamBindDot) — the dot beside a param row on `Menu`: `bound` (the accent fill), `mode` (tooltip + name), `items` (every Menu row key), `label`, `size` (hit box a field's height). Rest oq-48 ring, hover oq-80.
+- **`StepList` rows take the layers list's slots** (lobby ItemList) — optional per-row `swatch`, `shown` (an eye; `onToggleShown(i)`), `control` (an inline node after the name) and `actions` (`[{ icon, label, onClick, hidden }]`, a hidden one keeps its slot). The whole row selects; a plain list renders as before.
+- **`ColorPickerPopover footer`** (lobby ColorPickerPopoverExtras) — a node or `({ close }) => node` under the hex row (inline: last), so palette swatches and quick states can close the panel.
+
 ## 0.329.0 — 2026-10-31
 
 - **`OriginPicker`** (new atom — lobby OriginPicker, kol-fxr) — the 3×3 transform-origin / anchor picker. `value: [x, y]` (each 0 · 0.5 · 1), `onChange([x, y])`; a radiogroup of nine radios ("left top" … "center" … "right bottom", `ariaLabel` for the group), roving tabindex, ←/→/↑/↓ move selection and focus. `size` xs · sm · md: the square is a field's height (22 · 26 · 32; touch 32 · 32 · 36), on the control ground (`--kol-tone-bg`, `tone` accepted), no border. Dots oq-24, hover oq-48, selected the accent; focus the quiet ring. Replaces fxr's hand-built `AnchorPicker`.

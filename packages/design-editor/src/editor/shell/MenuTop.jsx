@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useState } from 'react'
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, Tooltip } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuRow, MenuDivider, MenuFlyout, Tooltip } from '@kolkrabbi/kol-component'
 import { IconFrame, Input, useModal } from '@kolkrabbi/kol-component'
 import { ASPECTS } from './aspects'
 import { useComposeState } from '../compose/state'
@@ -140,9 +140,9 @@ export default function MenuTop() {
         )
       }
       out.push(
-        <MenuDropdownItem key={p.id} onClick={() => addGenerative(p, groupId)}>
+        <MenuRow key={p.id} onClick={() => addGenerative(p, groupId)}>
           {p.label}
-        </MenuDropdownItem>,
+        </MenuRow>,
       )
     }
     return out
@@ -226,13 +226,13 @@ export default function MenuTop() {
       <MenuItem label="Editor" panelClassName="z-[var(--kol-z-tooltip)]">
         <div className="py-1 w-[200px]">
           {MODES.map((m) => (
-            <MenuDropdownItem
+            <MenuRow
               key={m.id}
               onClick={() => goMode(m.id)}
-              shortcut={m.id === 'editor' ? <Icon name="check" size={11} /> : undefined}
+              indicator={m.id === 'editor' ? 'dot' : undefined}
             >
               {m.label}
-            </MenuDropdownItem>
+            </MenuRow>
           ))}
         </div>
       </MenuItem>
@@ -245,15 +245,15 @@ export default function MenuTop() {
         {gen() && <MenuItem label="Generative" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
           <div className="py-1 w-[260px]">
             {gen().GENERATIVE_TREE.map((parent) => (
-              <MenuDropdownNest key={parent.label} label={parent.label}>
+              <MenuFlyout key={parent.label} label={parent.label}>
                 {parent.groups.length === 1
                   ? generativeItems(parent.groups[0])
                   : parent.groups.map((gid) => (
-                      <MenuDropdownNest key={gid} label={parent.labels?.[gid] ?? groupById(gid).label}>
+                      <MenuFlyout key={gid} label={parent.labels?.[gid] ?? groupById(gid).label}>
                         {generativeItems(gid)}
-                      </MenuDropdownNest>
+                      </MenuFlyout>
                     ))}
-              </MenuDropdownNest>
+              </MenuFlyout>
             ))}
           </div>
         </MenuItem>}
@@ -267,156 +267,156 @@ export default function MenuTop() {
               <div className="kol-mono-10 text-subtle px-3 py-1">Select a layer to apply an effect</div>
             ) : (
               <>
-                <MenuDropdownItem onClick={clearEffect} disabled={fxChain.length === 0}>
+                <MenuRow onClick={clearEffect} disabled={fxChain.length === 0}>
                   None
-                </MenuDropdownItem>
-                <MenuDropdownDivider />
+                </MenuRow>
+                <MenuDivider />
                 {effectCategories(fxOptions).filter((c) => c.id !== 'other' && c.id !== 'pattern').map((c) => (
-                  <MenuDropdownNest key={c.id} label={c.label}>
+                  <MenuFlyout key={c.id} label={c.label}>
                     {c.filters.map((f) => (
-                      <MenuDropdownItem
+                      <MenuRow
                         key={f.id}
                         onClick={() => applyEffect(f)}
-                        shortcut={fxInChain(f.id) ? <Icon name="check" size={11} /> : undefined}
+                        indicator={fxInChain(f.id) ? 'check' : undefined}
                       >
                         {f.label}
-                      </MenuDropdownItem>
+                      </MenuRow>
                     ))}
-                  </MenuDropdownNest>
+                  </MenuFlyout>
                 ))}
               </>
             )}
             {/* Pattern (labs EFFECTS > Pattern) — one nest holding both its
                 filters (need an fx target) and the four generator categories
                 (insert a layer, no target needed). */}
-            <MenuDropdownDivider />
-            <MenuDropdownNest label="Pattern">
+            <MenuDivider />
+            <MenuFlyout label="Pattern">
               {fxTarget && effectCategories(fxOptions).find((c) => c.id === 'pattern')?.filters.map((f) => (
-                <MenuDropdownItem
+                <MenuRow
                   key={f.id}
                   onClick={() => applyEffect(f)}
-                  shortcut={fxInChain(f.id) ? <Icon name="check" size={11} /> : undefined}
+                  indicator={fxInChain(f.id) ? 'check' : undefined}
                 >
                   {f.label}
-                </MenuDropdownItem>
+                </MenuRow>
               ))}
               {gen() && FX_PATTERN_CATEGORIES.map((c) => (
-                <MenuDropdownNest key={c.label} label={c.label}>
+                <MenuFlyout key={c.label} label={c.label}>
                   {presetsInSub(c.group, c.sub).map((p) => (
-                    <MenuDropdownItem key={p.id} onClick={() => addGenerative(p, c.group)}>
+                    <MenuRow key={p.id} onClick={() => addGenerative(p, c.group)}>
                       {p.label}
-                    </MenuDropdownItem>
+                    </MenuRow>
                   ))}
-                </MenuDropdownNest>
+                </MenuFlyout>
               ))}
-            </MenuDropdownNest>
+            </MenuFlyout>
           </div>
         </MenuItem>}
 
         <MenuItem label="Tools" panelClassName="z-[var(--kol-z-tooltip)]">
           <div className="py-1 w-[220px]">
-            <MenuDropdownItem onClick={openColorModal}>
+            <MenuRow onClick={openColorModal}>
               Color
-            </MenuDropdownItem>
-            <MenuDropdownDivider />
-            <MenuDropdownItem onClick={flattenSelected} disabled={!canFlatten}>
+            </MenuRow>
+            <MenuDivider />
+            <MenuRow onClick={flattenSelected} disabled={!canFlatten}>
               Flatten shape
-            </MenuDropdownItem>
-            <MenuDropdownItem onClick={() => releaseBoolean()} disabled={!canRelease}>
+            </MenuRow>
+            <MenuRow onClick={() => releaseBoolean()} disabled={!canRelease}>
               Release boolean
-            </MenuDropdownItem>
+            </MenuRow>
           </div>
         </MenuItem>
 
         <MenuItem label="File" panelClassName="z-[var(--kol-z-tooltip)]">
           <div className="py-1 w-[220px]">
-            <MenuDropdownItem onClick={onNew}>
+            <MenuRow onClick={onNew}>
               New
-            </MenuDropdownItem>
-            <MenuDropdownDivider />
-            <MenuDropdownItem onClick={onSave}>
+            </MenuRow>
+            <MenuDivider />
+            <MenuRow onClick={onSave}>
               {currentPresetId ? 'Save' : 'Save…'}
-            </MenuDropdownItem>
+            </MenuRow>
             {/* SAVE AS OPENS THE DIALOG, not a prompt: a prompt asks for a
                 name with no sight of the names already taken, which is how
                 three files end up called `test`. */}
-            <MenuDropdownItem onClick={() => openFiles({ focusName: true })}>
+            <MenuRow onClick={() => openFiles({ focusName: true })}>
               Save as…
-            </MenuDropdownItem>
+            </MenuRow>
             {/* the one place that lists what you have saved, and the only one
                 that can rename, duplicate or delete it */}
-            <MenuDropdownItem onClick={() => openFiles()}>
+            <MenuRow onClick={() => openFiles()}>
               Files…
-            </MenuDropdownItem>
-            <MenuDropdownItem onClick={clearLayers} disabled={layers.length === 0}>
+            </MenuRow>
+            <MenuRow onClick={clearLayers} disabled={layers.length === 0}>
               Clear
-            </MenuDropdownItem>
-            <MenuDropdownDivider />
-            <MenuDropdownItem
+            </MenuRow>
+            <MenuDivider />
+            <MenuRow
               onClick={toggleSnap}
-              shortcut={snapEnabled ? <Icon name="check" size={11} /> : undefined}
+              indicator={snapEnabled ? 'check' : undefined}
             >
               Snap to guides
-            </MenuDropdownItem>
-            <MenuDropdownDivider />
-            <MenuDropdownItem onClick={onExportSvg}>
+            </MenuRow>
+            <MenuDivider />
+            <MenuRow onClick={onExportSvg}>
               Export SVG
-            </MenuDropdownItem>
-            <MenuDropdownItem onClick={onExportPng}>
+            </MenuRow>
+            <MenuRow onClick={onExportPng}>
               Export PNG
-            </MenuDropdownItem>
-            <MenuDropdownDivider />
-            <MenuDropdownItem onClick={undo} disabled={!canUndo} shortcut="⌘Z">Undo</MenuDropdownItem>
-            <MenuDropdownItem onClick={redo} disabled={!canRedo} shortcut="⇧⌘Z">Redo</MenuDropdownItem>
+            </MenuRow>
+            <MenuDivider />
+            <MenuRow onClick={undo} disabled={!canUndo} kbd="⌘Z">Undo</MenuRow>
+            <MenuRow onClick={redo} disabled={!canRedo} kbd="⇧⌘Z">Redo</MenuRow>
           </div>
         </MenuItem>
 
         <MenuItem label="Canvas" panelClassName="z-[var(--kol-z-tooltip)]">
           <div className="py-1 w-[220px]">
-            <MenuDropdownNest label="Aspect">
+            <MenuFlyout label="Aspect">
               {ASPECT_OPTIONS.map((opt) => (
-                <MenuDropdownItem
+                <MenuRow
                   key={opt.value}
                   onClick={() => setAspect(opt.value)}
-                  shortcut={aspect === opt.value ? <Icon name="check" size={11} /> : undefined}
+                  indicator={aspect === opt.value ? 'dot' : undefined}
                 >
                   {opt.label}
-                </MenuDropdownItem>
+                </MenuRow>
               ))}
-            </MenuDropdownNest>
-            <MenuDropdownNest label="View">
-              <MenuDropdownItem
+            </MenuFlyout>
+            <MenuFlyout label="View">
+              <MenuRow
                 onClick={() => setView('single')}
-                shortcut={view === 'single' ? <Icon name="check" size={11} /> : undefined}
+                indicator={view === 'single' ? 'dot' : undefined}
               >
                 Single
-              </MenuDropdownItem>
-              <MenuDropdownItem
+              </MenuRow>
+              <MenuRow
                 onClick={() => setView('social')}
-                shortcut={view === 'social' ? <Icon name="check" size={11} /> : undefined}
+                indicator={view === 'social' ? 'dot' : undefined}
               >
                 Social
-              </MenuDropdownItem>
-            </MenuDropdownNest>
+              </MenuRow>
+            </MenuFlyout>
           </div>
         </MenuItem>
 
         <MenuItem label="Templates" align="end" panelClassName="z-[var(--kol-z-tooltip)]" panelStyle={{ maxHeight: '70vh', overflowY: 'auto' }}>
           <div className="py-1 w-[220px]">
-            <MenuDropdownNest label={`Starters · ${STARTERS.length}`}>
+            <MenuFlyout label={`Starters · ${STARTERS.length}`}>
               {STARTERS.map((s) => (
-                <MenuDropdownItem
+                <MenuRow
                   key={s.id}
                   onClick={() => onOpenStarter(s)}
                 >
                   {s.name}
-                </MenuDropdownItem>
+                </MenuRow>
               ))}
-            </MenuDropdownNest>
+            </MenuFlyout>
             {SLOT_KEYS.map((slot) => {
               const items = library[slot] ?? []
               return (
-                <MenuDropdownNest
+                <MenuFlyout
                   key={slot}
                   label={`${SLOT_META[slot].label} · ${items.length}`}
                 >
@@ -437,17 +437,17 @@ export default function MenuTop() {
                         </div>
                       )
                       return (
-                        <MenuDropdownItem
+                        <MenuRow
                           key={item.id}
                           onClick={() => onOpenItem(slot, item)}
                           prefix={swatch || undefined}
                         >
                           {label}
-                        </MenuDropdownItem>
+                        </MenuRow>
                       )
                     })
                   )}
-                </MenuDropdownNest>
+                </MenuFlyout>
               )
             })}
           </div>

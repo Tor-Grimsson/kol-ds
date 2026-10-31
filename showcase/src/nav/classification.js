@@ -273,6 +273,8 @@ export const FUNCTIONS_BY_NAME = {
   XYPad: 'input', InspectorRail: 'structure',
   /* lobby OriginPicker (kol-fxr, 2026-10-31) */
   OriginPicker: 'input',
+  /* lobby kol-fxr plan 51 4.4 (2026-10-31) */
+  BezierPathEditor: 'input', FunctionPlot: 'display', ParamBindDot: 'input',
   PathNodeOverlay: 'overlay', CropOverlay: 'overlay',
   LayerStack: 'structure', AddLayerButton: 'action', BLEND_MODES: 'utility',
   StepList: 'structure',

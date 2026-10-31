@@ -32,7 +32,7 @@ export function Card({ tabs, tab, setTab, onExpand, menu, children, className = 
                     <Icon name="chevron-down" size={10} className="ml-2" style={{ transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 200ms' }} />
                   </TabButton>
                 )}
-                items={t.options.map((o) => ({ key: o.key, label: o.label, current: o.key === tab, checked: o.key === tab, onClick: () => setTab(o.key) }))} />
+                items={t.options.map((o) => ({ key: o.key, label: o.label, current: o.key === tab, indicator: o.key === tab ? 'dot' : undefined, onClick: () => setTab(o.key) }))} />
             )
           })}
         </div>

@@ -164,8 +164,9 @@ const SplitToolButton = ({
                 <IconC name={variant.icon} size={14} />
               </span>
               <span className="flex-1 truncate">{variant.label}</span>
-              <span className="kol-helper-10 text-emphasis shrink-0">
-                {isActive ? '✓' : variant.shortcut}
+              {/* the current pick wears the dot, a real icon (plan-2026-10-31-menu-engine W2) — never a typed ✓ */}
+              <span className="kol-helper-10 text-oq-88 shrink-0 inline-flex items-center">
+                {isActive ? <Icon name="ascii-dot" size={24} style={{ margin: -5 }} /> : variant.shortcut}
               </span>
             </button>
           )

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, MenuDropdownDivider, MenuDropdownItem, PopoverPanel, useModal, usePopover, TabsRow, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, MenuDivider, MenuRow, PopoverPanel, useModal, usePopover, TabsRow, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
 import { isBooleanable } from '../../compose/boolean-ops'
@@ -134,31 +134,31 @@ function HeaderMoreMenu({ layer, layerOnlyIds, layers, ops }) {
       </Tooltip>
       <PopoverPanel popover={popover} panel={false} focus={false} className="z-[var(--kol-z-tooltip)] bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 176 }}>
         {BOOL_OPS.map((b) => (
-          <MenuDropdownItem key={b.id} disabled={!canBool} onClick={run(() => ops.booleanSelected(b.id))}>
+          <MenuRow key={b.id} disabled={!canBool} onClick={run(() => ops.booleanSelected(b.id))}>
             {b.label}
-          </MenuDropdownItem>
+          </MenuRow>
         ))}
-        <MenuDropdownDivider />
-        <MenuDropdownItem
+        <MenuDivider />
+        <MenuRow
           disabled={!canFlatten}
           onClick={run(() => (layer.type === 'text' ? ops.flattenText(layer.id) : ops.flattenSelected()))}
         >
           Flatten
-        </MenuDropdownItem>
+        </MenuRow>
         {layer.type === 'bool' && (
-          <MenuDropdownItem onClick={run(() => ops.releaseBoolean())}>
+          <MenuRow onClick={run(() => ops.releaseBoolean())}>
             Release boolean
-          </MenuDropdownItem>
+          </MenuRow>
         )}
         {layer.type === 'text' && (
           <>
-            <MenuDropdownDivider />
-            <MenuDropdownItem onClick={onEdit}>
+            <MenuDivider />
+            <MenuRow onClick={onEdit}>
               Edit object
-            </MenuDropdownItem>
-            <MenuDropdownItem onClick={run(() => window.dispatchEvent(new CustomEvent('kol:save-type', { detail: layer.id })))}>
+            </MenuRow>
+            <MenuRow onClick={run(() => window.dispatchEvent(new CustomEvent('kol:save-type', { detail: layer.id })))}>
               Save type to library
-            </MenuDropdownItem>
+            </MenuRow>
           </>
         )}
       </PopoverPanel>

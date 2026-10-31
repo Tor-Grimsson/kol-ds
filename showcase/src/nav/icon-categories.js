@@ -5,17 +5,9 @@
  * category first, then a group — which is why Editing · Misc · Color from the round became
  * Design tools · Other · Color & gradient. */
 export const ICON_CATEGORIES = {
-  'kol-icon-set-interface': [
-    { slug: 'arrows', name: 'Arrows', groups: ['chevron', 'arrow', 'arrow-diagonal', 'caret', 'traffic', 'transfer'] },
-    { slug: 'actions', name: 'Actions', groups: ['add-remove', 'singletons', 'eye-lock', 'notify'] },
-    { slug: 'navigation', name: 'Navigation', groups: ['nav', 'layout'] },
-    { slug: 'content', name: 'Content', groups: ['files', 'code', 'components', 'atomic'] },
-    { slug: 'design-tools', name: 'Design tools', groups: ['tools', 'editing', 'typography'] },
-    { slug: 'media', name: 'Media', groups: ['playback', 'device'] },
-    { slug: 'shapes', name: 'Shapes', groups: ['shape-primitives', 'shape-forms', 'pattern'] },
-    { slug: 'brand', name: 'Brand', groups: ['social'] },
-    { slug: 'other', name: 'Other', groups: ['misc'] },
-  ],
+  /* interface (kol-icons 0.58.0, plan-2026-10-31-icon-categories): the folders ARE the user's 18 categories, so no
+   * category layer sits over them — each folder is its own page */
+  'kol-icon-set-interface': [],
   'kol-icon-set-signal': [
     { slug: 'waves', name: 'Waves', groups: ['wave', 'curve', 'ramp', 'shaper', 'filter'] },
     { slug: 'patterns', name: 'Patterns', groups: ['dither', 'pattern', 'ascii', 'line', 'radial'] },

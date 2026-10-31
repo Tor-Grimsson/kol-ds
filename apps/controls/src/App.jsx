@@ -4,6 +4,7 @@ import { PageShell } from '@kolkrabbi/kol-shell'
 import Parametric from './pages/Parametric.jsx'
 import AppControls from './pages/AppControls.jsx'
 import Compositions from './pages/Compositions.jsx'
+import Menus from './pages/Menus.jsx'
 
 /* THE CONTROLS REFERENCE (deconstruction roadmap §2, 2026-09-27) — every value changer the DS
  * ships and the compositions consumers build from them. Not wired to anything: it is the
@@ -17,6 +18,7 @@ import Compositions from './pages/Compositions.jsx'
 const PAGES = [
   { value: 'parametric', label: 'Parametric', Page: Parametric },
   { value: 'app', label: 'App controls', Page: AppControls },
+  { value: 'menus', label: 'Menus', Page: Menus },
   { value: 'compositions', label: 'Compositions', Page: Compositions },
 ]
 const parse = () => PAGES.find((p) => `#${p.value}` === location.hash)?.value ?? 'parametric'

@@ -13,7 +13,7 @@ const OPTIONS = [
 export const variants = ['primary', 'grey', 'outline']
 
 /* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
-export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
+export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'faint', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 /* the axes as ONE MultiSelect in the toolbar (2026-10-02, the user's preview of it on this page) */
 export const picker = 'multi'

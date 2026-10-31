@@ -1,7 +1,17 @@
 {
+  "AccountRowNoPictureIsTheIcon": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, live on kol-shell 0.87.0",
+    "date": null
+  },
   "AppCardNoHoverFill": {
     "repo": "kol-ds-ui",
     "source": "kol-ds-ui/packages/component/src/molecules/AppItem.jsx#L79-L86 · kol-ds-ui/packages/component/src/molecules/ContentCard.jsx#L482-L494",
+    "date": null
+  },
+  "AppIdentitySet": {
+    "repo": "kol-mirror",
+    "source": "kol-mirror/public/touch-icons/ · kol-mirror/scripts/generate-icons.mjs",
     "date": null
   },
   "AppShellSet": {
@@ -74,6 +84,11 @@
     "source": "kol-r2b2 — the shipped organism (kol-component 0.97.1)",
     "date": null
   },
+  "ColumnPreviewDocked": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/ColumnBrowser.jsx (0.317.4) — Preview L389–440, the preview column ~L1100–1110; MediaLibraryPages.jsx rows/grid pane ~L1915–1951, L2214",
+    "date": null
+  },
   "ComponentSideEffectsField": {
     "repo": "kol-monitor",
     "source": "kol-monitor (kol-shell 0.1.0 adoption, 2026-08-15)",
@@ -139,6 +154,16 @@
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L118-L150 + components/sections/home/HomeHero.jsx",
     "date": null
   },
+  "DocsTocRailChildren": {
+    "repo": "kol-atlas",
+    "source": "kol-atlas/apps/lab/src/pages/t1-type.jsx (TypeScale, SCALE_TOC) · /lab/t1/type-scale",
+    "date": null
+  },
+  "DocumentIndexFigma (DocumentIndex in Figma · SectionText level=\"document\" · Table/TableRow slots)": {
+    "repo": "kol-atlas",
+    "source": "kol-atlas/apps/lab/src/App.jsx#L46-L61 · kol-atlas/apps/workspace/src/workspace.css#L13-L15 · Figma proxy--atlas 05RUcW1vfOy4lNdWSgma3U page 43:28 (Lab / Home)",
+    "date": null
+  },
   "Dropdown · MenuDropdownItem · Popover (matchReferenceWidth)": {
     "repo": "kol-component",
     "source": "kol-component/src/molecules/Dropdown.jsx#L120-L150 · src/molecules/MenuItem.jsx#L48,L100 · src/utilities/Popover.jsx#L67-L95 — hit in kol-mirror/src/components/hall-of-mirrors/LoadUnit.jsx#L104",
@@ -184,9 +209,24 @@
     "source": "kol-website — components/sections/shared/FeaturedCarousel.jsx (231L) vs kol-component organism (259L)",
     "date": null
   },
+  "Figma library — tone as a variable collection": {
+    "repo": "kol-ds-ui",
+    "source": "kol-ds-ui/packages/component/src/utilities/tone.js · Figma ❖ library--kol-ds-ui (n48kE2bJtrFjl7wxst30xH)",
+    "date": null
+  },
   "FilesDialog": {
     "repo": "kol-ds-ui",
     "source": "kol-ds-ui/packages/design-editor/src/editor/compose/useComposeFile.js + editor/library/LibraryProvider.jsx",
+    "date": null
+  },
+  "FloatingStyleAndSignInDemos": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — canvas \"FXR logged-out Home\", page Round 3 (https://claude.ai/artifact/W81QSMMdZXXWFrFBtGWjZP); kol-shell HubHome.jsx#L262-L277 · PhoneNav · TransportPill; kol-theme kol-components-shell.css .kol-more-sheet",
+    "date": null
+  },
+  "AppShell touch=\"floats\" — the top float's rows": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — plan 46 (Labs on a phone onto touch=\"floats\"), kol-shell 0.97.0 AppShell.jsx#L417",
     "date": null
   },
   "FontFolderNaming": {
@@ -219,9 +259,44 @@
     "source": "kol-website/pnpm-workspace.yaml#L8-L14",
     "date": null
   },
+  "GrowthLineStage + kol-growth (the line settles, the intro)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/loops/growth/engine.js#L1-L319 · kol-fxr/src/components/HomeStage.jsx#L1-L190",
+    "date": null
+  },
+  "GrowthLineStage": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/loops/growth/engine.js#L1-L200 · kol-fxr/src/components/HomeStage.jsx#L1-L90 · kol-fxr/src/loops/flow/growthLine.js#L1-L153 (sourceCanvas · vectorCanvas)",
+    "date": null
+  },
   "HeadingTwoNarrow": {
     "repo": "kol-theme",
     "source": "kol-theme/kol-typography.css (.kol-sans-heading-02)",
+    "date": null
+  },
+  "HubHome (signed-out dock and +) · AppFloatNav variant=\"dock\"": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Home signed out, kol-shell 0.94.0 HubHome.jsx#L310-312 · AppFloatNav.jsx",
+    "date": null
+  },
+  "AppFloatNav (HubHome signed-out dock)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Home signed out, kol-shell 0.91.2 HubHome.jsx#L306",
+    "date": null
+  },
+  "HomeMenuAccountRow": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, live on kol-shell 0.87.2",
+    "date": null
+  },
+  "HubAccountRow": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 43 (`~/dev/projects/kol-fxr/.kol/llm-plan/43-accounts-phone-home-and-the-growing-line.md`)",
+    "date": null
+  },
+  "HubAppOwnsItsRows": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, kol-shell 0.87.2",
     "date": null
   },
   "HubHomeContract": {
@@ -229,9 +304,29 @@
     "source": "kol-shell/src/HubHome.jsx#L1-L83 · kol-fxr/src/AppLayout.jsx#L330-L357 · kol-mirror/src/pages/HomePage.jsx#L98-L151 · kol-monitor/src/pages/HomePage.jsx#L85-L152",
     "date": null
   },
+  "HubHome (signed-out dock and +)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Home signed out, kol-shell 0.92.0 HubHome.jsx#L309",
+    "date": null
+  },
+  "HubHomePhoneChooser": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 43 (`~/dev/projects/kol-fxr/.kol/llm-plan/43-accounts-phone-home-and-the-growing-line.md`)",
+    "date": null
+  },
+  "HubHomeSignedOut": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 44 (`~/dev/projects/kol-fxr/.kol/llm-plan/44-logged-out-home-and-the-fonts.md`)",
+    "date": null
+  },
   "PageHeader / HubSettings (kol-shell)": {
     "repo": "kol-fxr",
     "source": "kol-fxr /settings at 390 (AppHub's HubSettings, kol-shell 0.62.0)",
+    "date": null
+  },
+  "HubSignedOutGutterAndSeams": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, kol-shell 0.89.1 — HubHome.jsx#L265-L269 · AppHub.jsx#L209-L232 · HubSettingsRail.jsx#L100",
     "date": null
   },
   "HubHome walkthrough (kol-shell)": {
@@ -242,6 +337,11 @@
   "IconSetCut": {
     "repo": "kol-website",
     "source": "kol-website/apps/brand/src/pages/IconsGallery.jsx (the `CUT` glob) + kol-icons/src/index.js (`KOL_ICON_SET_V1`)",
+    "date": null
+  },
+  "IconSetExternal": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/metric (plan 2026-10-30-metric-style, 9.5) — files already placed in packages/icons/src/kol-icon-set-external/",
     "date": null
   },
   "IconToggle": {
@@ -269,6 +369,11 @@
     "source": "kol-labs-single/src/sidebars.config.js#L49-L218",
     "date": null
   },
+  "Layout group (LayoutType · LayoutColor · LayoutLogo · LayoutText · LayoutGuide) + BlockType · BlockSwatch · CardLogo": {
+    "repo": "kol-atlas",
+    "source": "kol-atlas/apps/lab/src/pages/t1-type.jsx#L107-L378 · c1-color.jsx#L14-L127 · l1-logo.jsx#L20-L51 · i1-icons.jsx#L9-L110 · v1-verbal.jsx#L35-L121",
+    "date": null
+  },
   "ListingCardHoverZoom": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L155-L175",
@@ -289,6 +394,21 @@
     "source": "user request in a kol-branding session (no consumer source — new component)",
     "date": null
   },
+  "MediaGetInfoFileBody": {
+    "repo": "kol-component",
+    "source": "kol-component 0.317.5 — the ⌘I Get Info modal (MediaGetInfoModal), file case",
+    "date": null
+  },
+  "MediaGetInfoModal": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/MediaLibraryPages.jsx (0.317.4) — the ⌘I path (useHotkey(infoKey…) ~L1859 → spaceQuickLook → the folder overlay, setQuickLookFolder ~L1649); the file Quick Look modal (MediaInspector L659)",
+    "date": null
+  },
+  "MediaLibraryInfoKey": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/MediaLibraryPages.jsx (0.317.3) — openQuickLook / setQuickLookFolder ~L1595–1660, the folder pane ~L467–490",
+    "date": null
+  },
   "MediaLibraryPages": {
     "repo": "kol-r2b2",
     "source": "kol-r2b2/src/App.jsx#L1-L115 (header · bucket dropdown) + kol-r2b2/src/FileList.jsx (868 lines — the wall) + kol-component/src/organisms/MediaLibrary.jsx (the page variant it replaces)",
@@ -304,9 +424,19 @@
     "source": "kol-component/src/utilities/FullscreenOverlay.jsx (`.kol-overlay-close`) · kol-theme `.kol-media-picker`",
     "date": null
   },
+  "MediaPreviewNativeRatio": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/MediaLibraryPages.jsx#L265-L280 (0.317.0); call sites L1889, L2105",
+    "date": null
+  },
   "MenuDropdownItem (label span)": {
     "repo": "kol-fxr",
     "source": "kol-fxr — editor menubar, Settings → \"Show grid\" (any label with descenders)",
+    "date": null
+  },
+  "MetricDashboardUpstream": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/metric/src/demo7/ (route /demo-11) — plan kol-website .kol/llm-context/plans/2026-10-30-metric-style.md, W8–W17",
     "date": null
   },
   "MobileTouchFloor": {
@@ -339,6 +469,11 @@
     "source": "kol-chess NotationPanel (apparatus) · move rows",
     "date": null
   },
+  "OriginPicker — a 3×3 transform-origin / anchor value picker": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — src/editor/compose/inspectors/LayerInspector.jsx `AnchorPicker` (hand-built: nine 6 px radio dots on bg-surface-secondary)",
+    "date": null
+  },
   "PageHeaderMonoTitle": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/pages/HomePage.jsx#L51 · kol-fxr/src/pages/LibraryPage.jsx#L84",
@@ -349,9 +484,34 @@
     "source": "kol-r2b2/src/AudioTile.jsx (PlayDisc)",
     "date": null
   },
+  "PhoneMoreWholeNav": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 43 (`~/dev/projects/kol-fxr/.kol/llm-plan/43-accounts-phone-home-and-the-growing-line.md`)",
+    "date": null
+  },
+  "PhoneNavDock": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 44 (`~/dev/projects/kol-fxr/.kol/llm-plan/44-logged-out-home-and-the-fonts.md`)",
+    "date": null
+  },
   "PhoneNavTopAndFold": {
     "repo": "kol-fxr",
     "source": "kol-fxr proposal frame E — https://claude.ai/artifact/KRTF3jBpfpHUsEpyroDqRD (ProtoE.dc.html); built on kol-shell/src/PhoneNav.jsx + kol-component/src/molecules/TabsRow.jsx (StackedTabs, pill)",
+    "date": null
+  },
+  "PhoneNavVariants": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 43 (`~/dev/projects/kol-fxr/.kol/llm-plan/43-accounts-phone-home-and-the-growing-line.md`)",
+    "date": null
+  },
+  "PhonePillMoreTurnsToClose": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 44 W3.1, walked on kol-shell 0.86.0",
+    "date": null
+  },
+  "a phone page preset — AppFloatNav `panel` above, AppFloatNav `transport` below, a sheet between (studio-hub)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Labs on a phone: src/editor/labs/LabsView.jsx#L366-400 (LabsPhoneChrome) · src/editor/styles/kol-labs.css#L195-205",
     "date": null
   },
   "PlayDisc · VideoSheet · kol-icons playback/tools variants": {
@@ -364,9 +524,19 @@
     "source": "kol-theme/kol-components-molecules.css — the primary tone block (`ButtonPrimaryHoverDeeper`, ~line 2008)",
     "date": null
   },
+  "PromptHoldsWithKeyboard": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 43 (`~/dev/projects/kol-fxr/.kol/llm-plan/43-accounts-phone-home-and-the-growing-line.md`)",
+    "date": null
+  },
   "Input (property-field variant) — or a new atom": {
     "repo": "kol-fxr",
     "source": "kol-fxr — inspector prefixed inputs (X/Y, W/H, R°, opacity %, corner radius, weight)",
+    "date": null
+  },
+  "PublicSansByLink": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr plan 44 (`~/dev/projects/kol-fxr/.kol/llm-plan/44-logged-out-home-and-the-fonts.md`)",
     "date": null
   },
   "PublishWaveChangelog": {
@@ -382,6 +552,11 @@
   "QuickLookFit": {
     "repo": "kol-component@0.279.0",
     "source": "kol-component@0.279.0/src/organisms/MediaLibraryPages.jsx#L697-L702 (MediaInspector image body) · kol-theme@0.177.0 kol-components-molecules.css .kol-quicklook-media",
+    "date": null
+  },
+  "NavRail (useRailDrag) — the app rail's grab": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — every route's rail (AppStudio → AppHub → NavRail preset=\"app\"), kol-component 0.322.0 organisms/NavRail.jsx useRailDrag",
     "date": null
   },
   "NavRail (kol-shell) · AppShell": {
@@ -539,6 +714,11 @@
     "source": "kol-fxr/src/editor/morph/MorphTab.jsx#L41-L72",
     "date": null
   },
+  "SettingsAccountTab": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, kol-shell 0.87.2",
+    "date": null
+  },
   "SettingsPanel": {
     "repo": "kol-r2b2",
     "source": "kol-r2b2 on kol-component 0.100.1",
@@ -589,6 +769,11 @@
     "source": "kol-mirror/src/components/hall-of-mirrors/ExpressionReference.jsx#L191-L218",
     "date": null
   },
+  "SignedOutStageStill": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/src/components/HomeStage.jsx#L1-L100 · kol-fxr/src/loops/growth/engine.js#L1-L230",
+    "date": null
+  },
   "SiteRailTitleNavigatesOnly": {
     "repo": "kol-ds-ui",
     "source": "kol-ds-ui/packages/component/src/organisms/NavRailSite.jsx#L346-L363",
@@ -634,6 +819,11 @@
     "source": "kol-branding/src/hub/Fold.jsx#L1-L29",
     "date": null
   },
+  "TextPressure": {
+    "repo": "kol-website",
+    "source": "kol-website/_tmp/2026-10-28-web-frame/TextPressure.jsx#L1-L224",
+    "date": null
+  },
   "Textarea (resize grip)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/params/AutoControls.jsx#L247 (any rail-mounted Textarea)",
@@ -647,6 +837,11 @@
   "TiltBentoVoiceAndDefaults": {
     "repo": "kol-component",
     "source": "kol-component/src/molecules/TiltBento.jsx#L113-L166",
+    "date": null
+  },
+  "TimeStripInADock": {
+    "repo": "kol-fxr,",
+    "source": "kol-fxr, adopting TransportFromHardware on kol-hardware 0.8.0",
     "date": null
   },
   "TransportIcons (kol-icons set additions)": {

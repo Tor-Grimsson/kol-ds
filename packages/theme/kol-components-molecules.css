@@ -130,7 +130,12 @@
  * on this element) reaches the list: the hairline keeps its 1px, the list
  * takes the rest and scrolls inside — the panel itself never overflows the
  * viewport (2026-08-09, kol-ds-fxr long-dropdown ticket). */
+/* THE FUSED MENU PANEL — `Menu fused` (a select trigger's list, Dropdown): it continues the trigger, so it squares its
+ * top and takes the trigger tone's floating surface. One engine since 2026-10-31 (plan-2026-10-31-menu-engine W1.1);
+ * `.kol-dd-panel` is the old name, kept on the rule until nobody emits it. */
+.kol-menu-panel.kol-menu-panel--fused,
 .kol-dd-panel {
+  padding: 0;
   border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
   overflow: hidden;
   display: flex;
@@ -171,8 +176,10 @@
  * trigger (never fused to it), one step up from the cards. The oq ramp swaps per theme, so the one rule is light
  * and dark. 8px / 6px are the look the user signed off on the metric page (round 1), above the 4px container rung
  * on purpose — a floating menu, not a container. Was `.kol-dd-menu` (round 2, alias below). */
+/* ONE TONE PATH (W1.1): the trigger's resolved tone rides onto the portalled panel (Menu copies `--kol-tone-*`), so a
+ * menu inside a toned wrapper floats on that tone's surface; with no tone around it, oq-08 as signed off. */
 .kol-menu-panel {
-  background-color: var(--kol-oq-08);
+  background-color: var(--kol-tone-panel-bg, var(--kol-oq-08));
   border-radius: 8px;
   padding: var(--kol-spacing-1);
   box-shadow: var(--kol-shadow-float);
@@ -2177,22 +2184,29 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   --kol-tone-panel-border-w: 0px;
   --kol-tone-panel-border: transparent;
 }
-.kol-tone-grey,
-/* RAISED — Dropdown `variant="raised"`: the menus' faint raised look on a select (metric R3.4, user 2026-10-31: *"the same
- * faint raised panel as the menus"*), with the trigger on the same ground so closed and open are one tone (*"how are you
- * using one tone for default, but another for list open?"*). A variant, not the default, so no other select moves
- * (*"I dont wanna break anything, should we just make a variant?"*). */
+/* FAINT — the tone one step under grey: oq-06 (user 2026-10-31: *"I like it lets sement the tone faint"*). Born as
+ * Dropdown `variant="raised"` (metric R3.4 — the menus' faint raised look, trigger and list one tone open or closed);
+ * the variant differed from a dropdown only in colour, so it is this tone now and `raised` is its retiring alias. */
+.kol-tone-faint,
 :where(.kol-dd-trigger--raised, .kol-dd-panel--raised) {
-  --kol-tone-bg: var(--kol-oq-08);
+  --kol-tone-active-bg: var(--kol-oq-12);
+  --kol-tone-active-image: none;
+  --kol-tone-pressed-bg: var(--kol-surface-on-primary);
+  --kol-tone-pressed-image: none;
+  --kol-tone-pressed-fg: var(--kol-surface-primary);
+  --kol-tone-panel-border-w: 0px;
+  --kol-tone-panel-border: transparent;
+  --kol-tone-bg: var(--kol-oq-06);
   --kol-tone-image: none;
   --kol-tone-fg: var(--kol-fg-emphasis);
   --kol-tone-border: transparent;
-  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-hover-bg: var(--kol-oq-06);
   --kol-tone-hover-image: none;
   --kol-tone-hover-fg: var(--kol-fg-emphasis);
   --kol-tone-hover-border: transparent;
-  --kol-tone-panel-bg: var(--kol-oq-08);
+  --kol-tone-panel-bg: var(--kol-oq-06);
 }
+.kol-tone-grey,
 :where(.kol-btn-grey, .kol-dd-trigger--grey, .kol-dd-panel--grey, .kol-icon-frame-grey) {
   --kol-tone-bg: var(--kol-oq-12);
   --kol-tone-image: none;

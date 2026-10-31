@@ -117,8 +117,11 @@ function cssToHex(css) {
  * @param {boolean}  [modes=false]  a head row — `title` and a mode Dropdown, HEX · RGB · HSB · Lab — and, under the square and
  *                                 the hue, that mode's fields: the hex, or three channel strips with their numbers (Adobe's)
  * @param {string}   [title]       the head row's name ("Base", "Edit color")
+ * @param {ReactNode|Function} [footer] extras under the hex row — palette swatches, quick states ("Theme", "None"). A node,
+ *                                 or `({ close }) => node` so a pick can close the panel (lobby ColorPickerPopoverExtras,
+ *                                 kol-fxr 2026-10-31). Inline, it sits last and `close` does nothing
  */
-export default function ColorPickerPopover({ color, onChange, defaultValue, size = 'xs', label = 'Color', trigger, placement = 'bottom-end', alpha = true, brightness = false, inline = false, hexEnd, modes = false, title, className = '' }) {
+export default function ColorPickerPopover({ color, onChange, defaultValue, size = 'xs', label = 'Color', trigger, placement = 'bottom-end', alpha = true, brightness = false, inline = false, hexEnd, modes = false, title, footer, className = '' }) {
   const [mode, setMode] = useState('hex')
   const isNone = !color || color === 'transparent'
   const [open, setOpen] = useState(false)
@@ -162,6 +165,7 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
   }
 
   const opaque = hsva && hsvaToHex({ ...hsva, alpha: 1 })
+  const extras = typeof footer === 'function' ? footer({ close: () => setOpen(false) }) : footer
 
   /* INLINE: the working copy follows `color` whenever it changes from outside (a roll, an undo) */
   useEffect(() => {
@@ -223,6 +227,7 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
         {modes && mode !== 'hex' && CHANNELS[mode].map((ch) => <ChannelStrip key={ch.key} ch={ch} hex={hsvaToHex({ ...hsva, alpha: 1 })} hsva={hsva} onHsva={commit} />)}
         {(!modes || mode === 'hex' || mode === 'rgb') && <ChannelStrip ch={BRIGHTNESS} hex={hsvaToHex({ ...hsva, alpha: 1 })} hsva={hsva} onHsva={commit} />}
         {alpha && <AlphaStrip alpha={hsva.alpha} color={opaque} onChange={(a) => commit({ ...hsva, alpha: a })} />}
+        {extras}
       </div>
     )
   }
@@ -258,6 +263,7 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
           {head}
           {strips}
           {(!modes || mode === 'hex') && hexField}
+          {extras}
         </PopoverPanel>
       )}
     </>

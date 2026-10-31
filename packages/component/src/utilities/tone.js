@@ -2,7 +2,9 @@
  * toneClass — the control set's TONE, six values (tone-is-the-ground-axis,
  * kol-client-olina 2026-09-03; the six-tone list is the user's).
  *
- *   primary · secondary · inverted · outline · ghost · grey · sunken
+ *   primary · secondary · inverted · outline · ghost · grey · faint · sunken
+ *
+ * `faint` (2026-10-31) is grey one step down, oq-06 — Dropdown's retired `variant="raised"`.
  *
  * `secondary` paints the PAGE SURFACE and `inverted` the text color as fill
  * (tone-secondary-is-inverse, 2026-09-03; user: "that tone should be called
@@ -21,7 +23,7 @@
  * it sits BELOW the plane it is on) — NOT `inverted`; one kol-website call
  * still passes it, and it drops when that moves.
  */
-export const TONES = ['primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
+export const TONES = ['primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'faint', 'sunken']
 
 export const toneClass = (tone) =>
   tone === 'inverse' ? 'kol-tone-sunken' : TONES.includes(tone) ? `kol-tone-${tone}` : ''

@@ -1,16 +1,18 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
+import { Menu } from './Menu.jsx'
+import Kbd from '../atoms/Kbd.jsx'
+import { indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
  * MenuItem — top-level menu entry. Trigger button + popover panel.
  *
  *   <MenuItem label="File">
- *     <MenuDropdownItem onClick={…}>Save</MenuDropdownItem>
- *     <MenuDropdownItem onClick={…}>Export…</MenuDropdownItem>
+ *     <MenuRow onClick={…} kbd="⌘S">Save</MenuRow>
+ *     <MenuRow onClick={…}>Export…</MenuRow>
  *   </MenuItem>
  *
- * Built on `usePopover` (`@floating-ui/react`): portal-rendered panel
+ * Built on `Menu` (the one engine, 2026-10-31), which is `usePopover` (`@floating-ui/react`): portal-rendered panel
  * (escapes overflow), auto-flip + viewport shift, click-outside / Escape
  * dismiss, focus management. `align="end"` switches the placement to
  * `bottom-end` for right-aligned panels (Templates menu).
@@ -47,54 +49,34 @@ export function MenuItem({
    * the panel's top lands on the bar's own line (MenuItemOffset, kol-fxr 2026-10-13) */
   offset = 4,
 }) {
-  const [open, setOpen] = useState(defaultOpen)
-  const popover = usePopover({
-    open,
-    onOpenChange: setOpen,
-    placement: align === 'end' ? 'bottom-end' : 'bottom-start',
-    offset,
-    role: 'menu',
-  })
-
-  const close = () => setOpen(false)
-
+  /* `Menu` is the engine (plan-2026-10-31-menu-engine W1.4): this is a menubar trigger on it, the panel is the menu panel */
   return (
-    <>
-      <button
-        ref={popover.refs.setReference}
-        {...popover.getReferenceProps()}
-        type="button"
-        className={`kol-menu-btn ${TRIGGER_BY_SIZE[size] ?? TRIGGER_BY_SIZE.md} inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
-        style={{ height: TRIGGER_H[size] ?? TRIGGER_H.md }}
-      >
-        <span>{label}</span>
-        {caret && (
-          <Icon
-            name="chevron-down"
-            size={10}
-            style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
-          />
-        )}
-      </button>
-      {/* w-max: floats size to CONTENT, never to the containing block —
-        * same family law as ShapeDropdown's panel (2026-08-09 review). */}
-      <PopoverPanel
-        popover={popover}
-        panel={false}
-        focus={false}
-        className={`w-max bg-surface-secondary rounded ${panelClassName}`}
-        style={panelStyle}
-      >
-        <div
-          onClick={(e) => {
-            /* close on item click — items inside fire their handler then bubble. */
-            if (e.target.closest('[data-menu-item]')) close()
-          }}
+    <Menu
+      align={align}
+      offset={offset}
+      defaultOpen={defaultOpen}
+      panelClassName={panelClassName}
+      panelStyle={panelStyle}
+      trigger={({ open, props }) => (
+        <button
+          {...props}
+          type="button"
+          className={`kol-menu-btn ${TRIGGER_BY_SIZE[size] ?? TRIGGER_BY_SIZE.md} inline-flex items-center gap-2 rounded text-body hover:text-emphasis transition-colors ${buttonClassName}`}
+          style={{ height: TRIGGER_H[size] ?? TRIGGER_H.md }}
         >
-          {typeof children === 'function' ? children({ close }) : children}
-        </div>
-      </PopoverPanel>
-    </>
+          <span>{label}</span>
+          {caret && (
+            <Icon
+              name="chevron-down"
+              size={10}
+              style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
+            />
+          )}
+        </button>
+      )}
+    >
+      {children}
+    </Menu>
   )
 }
 
@@ -119,7 +101,11 @@ export function MenuItem({
  *                 strip). Use for visuals wider than a single icon.
  *   - iconLeft  — leading icon, fixed 16px width column (rows align).
  *   - children  — main label, flex-1.
- *   - shortcut  — trailing content (text shortcut hint, ✓ marker, or icon).
+ *   - indicator — the row's state mark, ALWAYS a kol-icon (plan-2026-10-31-menu-engine W2, user: *"its mainly about
+ *                 using real icons, not typed symbols"*): `dot` the current pick of a single choice (*"• replaces ✓ for
+ *                 single picks, definitely"*), `check` a row that is on in a many-of-N, `chevron` a row that opens more.
+ *   - kbd       — a key, drawn as `Kbd`. Nothing trails a row unless the caller passes one of these.
+ *   - shortcut  — @deprecated: the free trailing node the typed ✓ › ⌘S came through. A string renders as `Kbd`.
  */
 /* the row follows the trigger's rung (DropdownXsList, kol-monitor 2026-09-01):
  * at xs the list kept sm rows — kol-helper-12 in a 32px pitch — inside a panel
@@ -134,7 +120,9 @@ const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-2 h-8', m
 /* `flex`, not `inline-flex` (MenuDropdownItemBlockRow, kol-fxr 2026-10-13): as bare children of a
  * content-sized (`w-max`) panel, inline rows measured as ONE line — five starters ≈ 795px. A block
  * row still fills a fixed panel through `w-full` and lets a content-sized one hug its longest label. */
-export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
+const INDICATOR = { dot: 'ascii-dot', check: 'check', chevron: 'chevron-right' }
+
+export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, indicator, kbd, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
   /* `href` makes the row a real link — cmd/ctrl-click and middle-click open a new tab (DocumentHeader, 2026-10-31);
    * a plain click still runs `onClick` (the app's router), which may preventDefault */
   const Row = href && !disabled ? 'a' : 'button'
@@ -156,7 +144,17 @@ export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disable
         * loses its g). The h-8 centered row absorbs the taller line box —
         * zero layout shift (MenuItemDescenderClip, 2026-08-12). */}
       <span className="flex-1 truncate leading-normal">{children}</span>
-      {shortcut && <span className="kol-helper-10 text-emphasis shrink-0 inline-flex items-center">{shortcut}</span>}
+      {(indicator || kbd != null || shortcut) && (
+        <span className="shrink-0 inline-flex items-center gap-2 text-oq-88">
+          {/* the dot is kol-icons `ascii-dot` drawn at twice the slot and pulled back into it: at the slot's own size its
+            * 2.25/24 circle is a 2.6px speck; at 24 it is the rail's • (≈4.5px) and still takes the check's 14px column */}
+          {indicator === 'dot'
+            ? <Icon name="ascii-dot" size={size === 'xs' ? 16 : 24} style={{ margin: size === 'xs' ? -4 : -5 }} />
+            : indicator && <Icon name={INDICATOR[indicator] ?? indicator} size={size === 'xs' ? indicatorSize('xs') : 14} />}
+          {kbd != null && <Kbd size="md" className="kol-menu-kbd">{kbd}</Kbd>}
+          {typeof shortcut === 'string' ? <Kbd size="md" className="kol-menu-kbd">{shortcut}</Kbd> : shortcut}
+        </span>
+      )}
     </Row>
   )
 }

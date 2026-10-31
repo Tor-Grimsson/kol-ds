@@ -155,6 +155,9 @@ const DESCRIPTIONS = {
   EditorShell: 'A two-rail editor frame — left/right panel slots around a canvas region.',
   AlignmentGrid: 'An align-to-artboard control — DS Button cells firing an onAlign seam.',
   OriginPicker: 'A 3×3 origin / anchor picker — nine radio points holding `[x, y]`, a field\'s height at the same size.',
+  BezierPathEditor: 'A 2D bezier node editor — anchors with in / out handles in a box of any aspect, a value of normalised points.',
+  FunctionPlot: 'A plot of y = f(u) over one loop — the curve, the zero line and a cursor at the current u.',
+  ParamBindDot: 'The dot beside a param row — hollow at rest, the accent when bound, a click opens its menu.',
 
   /* P9 foundry (subpath @kolkrabbi/kol-component/foundry) */
   SpecimenSectionHeader: 'A shared specimen section header — eyebrow, title, and a controls slot the foundry sections mount under.',

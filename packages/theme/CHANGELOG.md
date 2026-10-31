@@ -1,5 +1,11 @@
 # @kolkrabbi/kol-theme
 
+
+## 0.210.0 — 2026-10-31
+
+- **`kol-tone-faint`** — the tone one step under grey: oq-06 ground, oq-12 press. Dropdown's `kol-dd-trigger--raised` / `--panel--raised` are its alias (on the retirement ledger).
+- **Grey restored** — `.kol-tone-grey` had been caught on the raised block's selector list and painted the raised ground; it is grey (oq-12) again.
+- **One menu panel** — `.kol-menu-panel` takes `--kol-tone-panel-bg` (oq-08 untoned); `.kol-menu-panel--fused` is the select's list (was `.kol-dd-panel`, kept as an alias on the rule).
 ## 0.209.0 — 2026-10-31
 
 - `.kol-dd-trigger--raised` / `.kol-dd-panel--raised` — the raised select tone bundle (oq-08 ground, emphasis ink) for Dropdown `variant="raised"`.

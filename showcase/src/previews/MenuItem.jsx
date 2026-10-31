@@ -1,4 +1,5 @@
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider, Icon } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuRow, MenuDivider, Icon } from '@kolkrabbi/kol-component'
+import { CONTROL_TONES, ALIGNS, toneWrap } from '../lib/controls.js'
 
 /* Index card: the CLOSED trigger only. The full preview below opens by default
  * and its panel is PORTALLED to <body> — floating-ui escapes overflow by
@@ -9,30 +10,32 @@ export function Card() {
 }
 
 export const sizes = ['md', 'xs', 'sm', 'lg']
-/* `offset` — the panel's gap under the trigger; 0 touches it, a negative overlaps */
-export const variants = ['4', '0', '-2']
+export const tones = CONTROL_TONES
+export const aligns = ALIGNS
 
-export default function MenuItemPreview({ size = 'md', variant = '4' }) {
+/* no `variants`: the old list was the panel's offset (4 · 0 · -2) in the variant picker — not a look, so its three
+ * entries rendered alike (plan-2026-10-31-menu-engine W3.3) */
+export default function MenuItemPreview({ size = 'md', tone, align = 'start' }) {
   return (
     /* The panel is portalled (escapes overflow by design), so the preview must
        reserve the space it lands on — otherwise the open-by-default menu
        overlays whatever sits under the card in dense galleries. */
-    <div className="flex min-h-[220px] w-full items-start justify-center">
-    <MenuItem label="File" size={size} offset={Number(variant)} defaultOpen>
+    <div className={`flex min-h-[220px] w-full items-start justify-center ${toneWrap(tone)}`}>
+    <MenuItem key={align} label="File" size={size} align={align} defaultOpen>
       <div className="min-w-[180px] py-1">
-        <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>
+        <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>
           New file
-        </MenuDropdownItem>
-        <MenuDropdownItem iconLeft={<Icon name="save" size={14} />} shortcut="⌘S" onClick={() => {}}>
+        </MenuRow>
+        <MenuRow iconLeft={<Icon name="save" size={14} />} kbd="⌘S" onClick={() => {}}>
           Save
-        </MenuDropdownItem>
-        <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => {}}>
+        </MenuRow>
+        <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => {}}>
           Export…
-        </MenuDropdownItem>
-        <MenuDropdownDivider />
-        <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} disabled onClick={() => {}}>
+        </MenuRow>
+        <MenuDivider />
+        <MenuRow iconLeft={<Icon name="trash" size={14} />} disabled onClick={() => {}}>
           Delete
-        </MenuDropdownItem>
+        </MenuRow>
       </div>
     </MenuItem>
     </div>

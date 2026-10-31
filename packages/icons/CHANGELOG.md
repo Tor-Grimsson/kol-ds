@@ -1,5 +1,21 @@
 # @kolkrabbi/kol-icons
 
+## 0.59.0 — 2026-10-31
+
+- **The batch is in: 559 icons join kol-icon-set-interface** (plan-2026-10-31-icon-categories 2.3; user 2026-10-31: put them in). Atlas 164, website 143 and the Claude list 252, as the treated copies in `lobby/archive/_assets/IconTreatment/treated/` (stroke 1.5, 24 box, keyline, `currentColor`), each in the category the plan placed it: `flow` and `commerce` open as folders, the interface set is 814 icons in 18 groups.
+- **Every drawing kept.** A name already taken (in any set, or by an earlier drawing in the batch) got the next free number, so nothing was overwritten: hierarchy → hierarchy-04, network → network-02, orbit → orbit-02, database → database-02, line-chart → line-chart-02, edit-square → edit-square-02, pen-nib → pen-nib-02, eraser → eraser-02, pen-nib → pen-nib-03, eraser → eraser-03, crop → crop-02, ruler → ruler-02, layers → layers-02, layers → layers-03, pen → pen-03, brush → brush-02, layers → layers-04, pen-tool → pen-tool-02, paint-bucket → paint-bucket-02, paint-roller → paint-roller-02, swatch-book → swatch-book-02, package-open → package-open-02, bell → bell-02, search → search-02, podium → podium-02, link → link-03, medal → medal-02, trophy → trophy-02, calendar → calendar-02, calendar → calendar-03, clock → clock-02, clock → clock-03, calendar → calendar-04, stopwatch → stopwatch-02, clock → clock-04, alarm-clock → alarm-clock-02, hourglass → hourglass-02, scale → scale-02, hourglass → hourglass-03, send → send-02, skull → skull-02, book-open → book-open-02, brain → brain-02, syringe → syringe-02, camera → camera-02, idea-bulb → idea-bulb-02, chrome → chrome-02, compass → compass-02, compass → compass-03, compass → compass-04. Duplicates are there to be culled, not decided here.
+- Drawings the treatment flagged for a redraw ship as they are; the flags are in `lobby/archive/_assets/IconTreatment/report.md`.
+
+## 0.58.0 — 2026-10-31
+
+- **kol-icon-set-interface is foldered by the user's categories** (plan-2026-10-31-icon-categories, user: *"I like your categories"*, *"go on both"*). The 25 groups become 16: `direction` 25, `actions` 20, `navigation` 12, `status` 9, `layout` 36, `files` 17, `charts` 3, `design` 40, `shapes` 24, `typography` 21, `media` 17, `devices` 9, `code` 8, `people` 9, `places` 1, `planning` 4. The other two of the eighteen, `flow` and `commerce`, have no shipped icon yet and arrive with the parked batch. `misc` and `singletons` are gone.
+- **No name changed**: all 255 names resolve as before (diffed before and after the move). Only the keys of `KOL_ICON_SET_INTERFACE` change: a consumer reading a group by its old folder name (`.nav`, `.playback`, …) reads the new one.
+- Solid stays a variant, not a category: an icon's cut (`getCut`: stroke · solid) is the filter.
+
+## 0.57.0 — 2026-10-31
+
+- **`social` moves from interface to external** (user 2026-10-31: *"move social then"*): the ten `social-*` marks (behance · dribbble · facebook · github · instagram · instagram-2 · linkedin · tiktok · twitter · youtube) are third-party brand marks, so they sit beside `brands` and `flags`. Names are unchanged and `<Icon name="social-github" />` still resolves; it now loads the external chunk instead of the interface one. A consumer reading `KOL_ICON_SET_INTERFACE.social` finds it under `KOL_ICON_SET_EXTERNAL.social`.
+
 ## 0.56.1 — 2026-10-31
 
 - **`kol-ds-wordmark`** in the identity set (`identity/kol-ds/`) — KOL DESIGN SYSTEM in Right Grotesk Tight Light, one line, tracking 0.4 %, the font's own kerning, set as type in `currentColor` on the family's wordmark geometry (cap 11.14, 24 high). The user's pick from his Figma; KDS stays the mark for the small sizes. The showcase's loader and share card use it.

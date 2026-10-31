@@ -1,8 +1,8 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { toneClass, TONE_VARS } from '../utilities/tone.js'
+import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MenuRow, MenuDivider } from './MenuItem.jsx'
-import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
+import { Menu } from './Menu.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -22,8 +22,8 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
  *   tone="inverse"              — the dark chip (`fg-ab-24`) for a washed
  *                                 plane, the panel continuing it (ControlToneInverse,
  *                                 kol-website 2026-08-27); same prop on ViewToggle · Input
- *   variant="raised"            — the menus' faint raised look (metric R3.4, 2026-10-31): trigger, open trigger and
- *                                 panel all on oq-08 with the float shadow — one tone, nothing changes on open
+ *   variant="raised"            — RETIRING (2026-10-31): an alias of `tone="faint"`, the oq-06 tone it only ever
+ *                                 differed by. Use the tone.
  *   variant="outline"           — bordered trigger; open panel carries the
  *     same border, trigger's bottom edge acts as the divider
  *
@@ -122,18 +122,17 @@ const Dropdown = ({
    * as SegmentedToggle's. An aria-label replaces the button's text, so the current value rides along
    * after it — "Color view, Hue" — and is still announced. */
   ariaLabel,
+  /* `multiple` — many-of-N (SettingsMulti, metric 2026-10-31 — user: *"some werid bastardisation of multiselect"*).
+   * `value` is an array or Set, every row toggles (`onChange(value)` per click) and carries the check while on, the
+   * list stays open, and the trigger reads `label` — no fake summary row, no ✓ typed into labels. */
+  multiple = false,
+  label,
   className = ''
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen)
 
-  /* THE PANEL IS PORTALLED (FloatingPortal → body), so a tone the trigger
-   * INHERITS from a toned wrapper never reaches it through the cascade — the
-   * exact failure the 2026-08-30 page-wash attempt hit. On open, copy the
-   * trigger's RESOLVED `--kol-tone-*` onto the panel as inline style: an
-   * explicit variant / tone class on the panel sets the same values, and the
-   * ambient case is the one only this can serve. */
+  /* the trigger's tone reaches the portalled panel through `Menu` (it copies `--kol-tone-*` on open) */
   const triggerRef = useRef(null)
-  const [ambient, setAmbient] = useState(null)
   /* …AND SO IS A ZOOM (2026-10-02, kol-monitor's rack — user: *"what about the dropdown in general?
    * its kinda wrong no"*). A trigger inside a zoomed surface (the rack at 80%) is drawn smaller,
    * but the portalled list was not: it kept its full-size type inside a panel pinned to the
@@ -144,10 +143,6 @@ const Dropdown = ({
   const [inPanel, setInPanel] = useState(false)
   useLayoutEffect(() => {
     if (!isOpen || !triggerRef.current) return
-    const cs = getComputedStyle(triggerRef.current)
-    const vars = {}
-    for (const v of TONE_VARS) { const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val }
-    setAmbient(vars)
     const laid = triggerRef.current.offsetWidth
     const s = laid ? triggerRef.current.getBoundingClientRect().width / laid : 1
     setScale(Math.abs(s - 1) > 0.01 ? s : 1)
@@ -159,22 +154,12 @@ const Dropdown = ({
   // sm everywhere unless explicitly overridden (see docblock size law).
   const resolvedSize = size || 'sm'
 
+  /* `variant="raised"` retires into `tone="faint"` (2026-10-31) — the alias, until nobody passes it */
+  if (variant === 'raised') { variant = undefined; tone = 'faint' }
   const resolvedVariant = LEGACY_VARIANTS[variant] || variant
 
-  /* Floating-ui popover. `flip: false` keeps the panel below the button
-   * — the seamless fused edge between trigger and panel assumes the panel
-   * sits below; flipping above would visually disconnect them.
-   * `matchReferenceWidth: true` pins panel min-width to the button. */
-  const popover = usePopover({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-    placement: 'bottom-start',
-    offset: -1,
-    flip: false,
-    matchReferenceWidth: true,
-    role: 'listbox',
-    dismiss: stayOpen ? { outsidePress: false } : true,
-  })
+  /* The panel is `Menu fused` (plan-2026-10-31-menu-engine W1.3): below the trigger, never flipped (the fused edge
+   * assumes below), the trigger's width, a listbox. */
 
   /* Width belongs to the CALL SITE (2026-08-09 user call — "width without any
    * regard to context"). The viewport-keyed resize listener that handed every
@@ -184,7 +169,7 @@ const Dropdown = ({
 
   const handleSelect = (option) => {
     onChange?.(option.value)
-    setIsOpen(false)
+    if (!multiple) setIsOpen(false)
   }
 
   /* the hover report, and the close that ends it. `hovered` is a ref, not
@@ -208,7 +193,8 @@ const Dropdown = ({
   /* `{ heading: 'Variant' }` names the list (2026-10-01 — user: "first item 'variant' then divider
    * then the list"): a row that says what the dropdown sets, never a choice. */
   const choices = options.filter((opt) => !opt?.divider && !opt?.heading)
-  const currentOption = choices.find((opt) => opt.value === value) || choices[0]
+  const picked = multiple ? (value instanceof Set ? value : new Set(value ?? [])) : null
+  const currentOption = multiple ? { label } : choices.find((opt) => opt.value === value) || choices[0]
 
   /* A clamped list (Popover caps the panel to the viewport) can open with the
    * checked row past the fold — scroll it into reach. Keyboard focus after
@@ -239,11 +225,10 @@ const Dropdown = ({
     toneClass(tone),
   ].filter(Boolean).join(' ')
 
-  return (
-    <div className={`kol-dd-root relative inline-block align-middle ${className}`}>
+  const trig = ({ props }) => (
       <button
-        ref={(el) => { triggerRef.current = el; popover.refs.setReference(el) }}
-        {...popover.getReferenceProps()}
+        ref={triggerRef}
+        {...props}
         type="button"
         className={triggerCls}
         aria-haspopup="listbox"
@@ -269,6 +254,7 @@ const Dropdown = ({
                   {option.label}
                 </span>
               ))}
+              {multiple && <span className="kol-dd-ghost" aria-hidden="true">{label}</span>}
             </span>
             {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
               * keyed off the trigger's data-state, no inline styles */}
@@ -279,40 +265,38 @@ const Dropdown = ({
             here so the square keeps ONE implementation */}
         {triggerAdornment}
       </button>
+  )
 
-      <PopoverPanel
-        popover={popover}
-        panel={false}
-        focus={false}
-        className={`kol-dd-panel ${resolvedVariant ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)} ${inPanel ? 'kol-hw-panel' : ''}`.replace(/\s+/g, ' ').trim()}
-        style={{
-          ...ambient,
-          '--kol-dd-max-rows': maxRows ?? 10,
-          /* a row is the trigger's height; the panel's max-height reads it */
-          ...(rowHeight == null ? { '--kol-dd-row-h': `var(--kol-ctl-${resolvedSize})` } : null),
-          ...(rowHeight != null ? { '--kol-dd-row-h': typeof rowHeight === 'number' ? `${rowHeight}px` : rowHeight } : null),
-        }}
-      >
+  return (
+    <Menu
+      fused
+      role="listbox"
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      stayOpen={stayOpen}
+      closeOnSelect={!multiple}
+      rootClassName={`kol-dd-root relative inline-block align-middle ${className}`}
+      trigger={trig}
+      panelClassName={`${resolvedVariant ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)} ${inPanel ? 'kol-hw-panel' : ''}`.replace(/\s+/g, ' ').trim()}
+      panelStyle={{
+        '--kol-dd-max-rows': maxRows ?? 10,
+        /* a row is the trigger's height; the panel's max-height reads it */
+        '--kol-dd-row-h': rowHeight == null ? `var(--kol-ctl-${resolvedSize})` : typeof rowHeight === 'number' ? `${rowHeight}px` : rowHeight,
+      }}
+    >
         {/* THE HAIRLINE UNDER THE TRIGGER, ALWAYS (2026-10-02 — user: *"I see it sometimes and sometimes
-          * not"*). It was drawn only for `variant="primary" | "grey"`: a dropdown toned by `tone=`
-          * got none, and an outline one lost its divider too — the panel sits 1px over the trigger's
-          * bottom border, which was meant to be it. One rule: an open dropdown has the line. */}
+          * not"*). One rule: an open dropdown has the line. */}
         <div className="kol-dd-div" />
 
-        <div ref={listRef} className="kol-dd-list" role="listbox" style={scale !== 1 ? { zoom: scale } : undefined}>
+        <div ref={listRef} className="kol-dd-list" role="listbox" aria-multiselectable={multiple || undefined} style={scale !== 1 ? { zoom: scale } : undefined}>
           {options.map((option, i) => {
             if (option?.divider) return <MenuDivider key={`divider-${i}`} />
             if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8' : 'kol-helper-12'} ${ROW_H[resolvedSize] ?? ROW_H.sm} ${ROW_PAD[resolvedSize] ?? ROW_PAD.sm} flex shrink-0 items-center text-meta`}>{option.heading}</div>
-            const isActive = option.value === currentOption?.value
+            const isActive = multiple ? picked.has(option.value) : option.value === currentOption?.value
             return (
               <MenuRow
                 key={option.value}
-                /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28,
-                 * "delete any hover state on dropdowns"): the trigger was
-                 * already pinned in all three variants — primary and outline
-                 * back to rest in kol-theme, grey carrying no hover rule at
-                 * all — and this was the last one left, the option row's ink
-                 * brighten. The check mark is what marks the current value. */
+                /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28) — the indicator marks the current value. */
                 hover={false}
                 size={resolvedSize}
                 rowClass={ROW[resolvedSize] ?? ROW.sm}
@@ -320,17 +304,11 @@ const Dropdown = ({
                 onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
                 onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}
                 onClick={() => handleSelect(option)}
-                /* The active row's mark is the CHECK, always — it is what says
-                 * which value is current, and nothing may take that slot from
-                 * it. An option's own `shortcut` shows on the rows that are
-                 * not current, which is the tool-palette idiom: the keystroke
-                 * that would arm this variant, replaced by the tick once it
-                 * is armed (editor-set-is-behind-its-source, 2026-09-03). */
-                shortcut={
-                  isActive
-                    ? <Icon name="check" size={resolvedSize === 'xs' ? indicatorSize('xs') : 11} />
-                    : option.shortcut
-                }
+                /* The current row's mark is the INDICATOR, always — • for the one pick, ✓ (the check icon) for each
+                 * row on in a `multiple` (plan-2026-10-31-menu-engine W2). An option's own `shortcut` shows on the
+                 * rows that are not current — the tool-palette idiom (editor-set-is-behind-its-source, 2026-09-03). */
+                indicator={isActive ? (multiple ? 'check' : 'dot') : undefined}
+                shortcut={isActive ? undefined : option.shortcut}
               >
                 {/* an option's leading glyph — the ADJACENT ladder, because it
                   * sits in a line box beside a label, never the solo rung */}
@@ -344,8 +322,7 @@ const Dropdown = ({
             )
           })}
         </div>
-      </PopoverPanel>
-    </div>
+    </Menu>
   )
 }
 

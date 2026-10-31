@@ -24,7 +24,7 @@ import SearchInput from '../molecules/SearchInput.jsx'
 import TabsRow, { TABBAR_H } from '../molecules/TabsRow.jsx'
 import { filterMedia, rankMedia } from '../utilities/mediaSearch.js'
 import { useMasthead, mastheadTitleClass } from '../utilities/masthead.js'
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider } from '../molecules/MenuItem.jsx'
+import { MenuItem, MenuRow, MenuDivider } from '../molecules/MenuItem.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import ContextMenu, { useContextMenu } from '../molecules/ContextMenu.jsx'
 import useMarquee from '../hooks/useMarquee.js'
@@ -1035,8 +1035,8 @@ function TrashPanel({ trash, onClose, run, confirm }) {
           const n = target.ids.length
           return (
             <>
-              {trash.restore && <MenuDropdownItem iconLeft={<Icon name="refresh" size={14} />} onClick={() => restore(target.ids)}>{n > 1 ? `Restore ${n}` : 'Restore'}</MenuDropdownItem>}
-              {trash.purge && <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} onClick={() => purge(target.ids)}>{n > 1 ? `Delete ${n} forever` : 'Delete forever'}</MenuDropdownItem>}
+              {trash.restore && <MenuRow iconLeft={<Icon name="refresh" size={14} />} onClick={() => restore(target.ids)}>{n > 1 ? `Restore ${n}` : 'Restore'}</MenuRow>}
+              {trash.purge && <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => purge(target.ids)}>{n > 1 ? `Delete ${n} forever` : 'Delete forever'}</MenuRow>}
             </>
           )
         }}
@@ -2683,17 +2683,17 @@ export function MediaLibraryBrowse({
             {({ close }) => (
               <div className="py-1 w-[200px]">
                 {STACK_VIEW_OPTIONS.map((opt) => (
-                  <MenuDropdownItem
+                  <MenuRow
                     key={opt.value}
                     onClick={() => { setSettings({ ...settings, stackView: opt.value }); close() }}
-                    shortcut={(settings.stackView ?? 'list') === opt.value ? <Icon name="check" size={11} /> : undefined}
+                    indicator={(settings.stackView ?? 'list') === opt.value ? 'dot' : undefined}
                   >
                     {opt.label}
-                  </MenuDropdownItem>
+                  </MenuRow>
                 ))}
-                <MenuDropdownDivider />
+                <MenuDivider />
                 {SORT_OPTIONS.map((opt) => (
-                  <MenuDropdownItem
+                  <MenuRow
                     key={opt.value}
                     /* tapping the ACTIVE key flips the direction, which is how
                        both references let you reverse without a second control */
@@ -2711,12 +2711,12 @@ export function MediaLibraryBrowse({
                       : undefined}
                   >
                     {opt.label}
-                  </MenuDropdownItem>
+                  </MenuRow>
                 ))}
                 {onKinds && (
                   <>
-                    <MenuDropdownDivider />
-                    <MenuDropdownItem onClick={() => { onKinds(); close() }} shortcut="K">File formats</MenuDropdownItem>
+                    <MenuDivider />
+                    <MenuRow onClick={() => { onKinds(); close() }} kbd="K">File formats</MenuRow>
                   </>
                 )}
               </div>
@@ -2864,29 +2864,29 @@ export function MediaLibraryBrowse({
               const custom = (fa.items ?? []).filter((it) => !it.when || it.when(target))
               const customItems = custom.length > 0 && (
                 <>
-                  <MenuDropdownDivider />
+                  <MenuDivider />
                   {custom.map((it) => (
-                    <MenuDropdownItem key={it.label} iconLeft={it.icon ? <Icon name={it.icon} size={14} /> : undefined} onClick={() => runAction(() => it.run(target))}>{it.label}</MenuDropdownItem>
+                    <MenuRow key={it.label} iconLeft={it.icon ? <Icon name={it.icon} size={14} /> : undefined} onClick={() => runAction(() => it.run(target))}>{it.label}</MenuRow>
                   ))}
                 </>
               )
               if (many) {
                 return (
                   <>
-                    <MenuDropdownItem disabled>{many.length} selected</MenuDropdownItem>
-                    <MenuDropdownDivider />
+                    <MenuRow disabled>{many.length} selected</MenuRow>
+                    <MenuDivider />
                     {fa.move && (
-                      <MenuDropdownItem iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuDropdownItem>
+                      <MenuRow iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuRow>
                     )}
                     {hasUrl && many.every((p) => !p.endsWith('/')) && (
                       <>
-                        <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuDropdownItem>
-                        <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuDropdownItem>
-                        {canTag && <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuDropdownItem>}
+                        <MenuRow iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuRow>
+                        <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuRow>
+                        {canTag && <MenuRow iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuRow>}
                       </>
                     )}
                     {fa.remove && (
-                      <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} onClick={() => doBatch(many, 'remove', 'Delete')}>Delete {many.length}</MenuDropdownItem>
+                      <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => doBatch(many, 'remove', 'Delete')}>Delete {many.length}</MenuRow>
                     )}
                     {customItems}
                   </>
@@ -2898,71 +2898,71 @@ export function MediaLibraryBrowse({
                 <>
                   {insFile && (!canInsert || canInsert(insFile)) && (
                     <>
-                      <MenuDropdownItem iconLeft={<Icon name="plus" size={14} />} onClick={() => { onInsert(insFile); close() }}>Insert</MenuDropdownItem>
-                      <MenuDropdownDivider />
+                      <MenuRow iconLeft={<Icon name="plus" size={14} />} onClick={() => { onInsert(insFile); close() }}>Insert</MenuRow>
+                      <MenuDivider />
                     </>
                   )}
                   {/* A PICKER'S TAP SELECTS (`tapSelects`), so Quick Look needs a door of its own on a
                     * phone — the menu (kol-fxr 2026-10-08). Only with `onPickFile`; others are unchanged. */}
                   {qlFile && (
                     <>
-                      <MenuDropdownItem iconLeft={<Icon name="eye-on" size={14} />} onClick={() => openQuickLook({ files: [qlFile], index: 0 })}>Quick Look</MenuDropdownItem>
-                      <MenuDropdownDivider />
+                      <MenuRow iconLeft={<Icon name="eye-on" size={14} />} onClick={() => openQuickLook({ files: [qlFile], index: 0 })}>Quick Look</MenuRow>
+                      <MenuDivider />
                     </>
                   )}
                   {fa.createFolder && (
-                    <MenuDropdownItem iconLeft={<Icon name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<Icon name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New folder{isFolder ? ` in ${target.path.replace(/\/$/, '').split('/').pop()}` : ''}
-                    </MenuDropdownItem>
+                    </MenuRow>
                   )}
                   {/* NEW DOCUMENT is the writing page (a name, a type, fields for markdown); New file stays for
                       a client that cannot write text — it makes the empty file and nothing else */}
                   {canNewDoc ? (
-                    <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New document…
-                    </MenuDropdownItem>
+                    </MenuRow>
                   ) : fa.createFile && (
-                    <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New file
-                    </MenuDropdownItem>
+                    </MenuRow>
                   )}
                   {dropFilesTo && !(target.type === 'file') && (
-                    <MenuDropdownItem iconLeft={<Icon name="upload" size={14} />} onClick={() => doUpload(target.path)}>
+                    <MenuRow iconLeft={<Icon name="upload" size={14} />} onClick={() => doUpload(target.path)}>
                       {isFolder ? `Upload into ${target.path.replace(/\/$/, '').split('/').pop()}…` : 'Upload here…'}
-                    </MenuDropdownItem>
+                    </MenuRow>
                   )}
-                  {!isLevel && <MenuDropdownDivider />}
+                  {!isLevel && <MenuDivider />}
                   {!isLevel && fa.rename && (
-                    <MenuDropdownItem iconLeft={<Icon name="edit" size={14} />} onClick={() => doRename(target.path, isFolder)}>Rename</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="edit" size={14} />} onClick={() => doRename(target.path, isFolder)}>Rename</MenuRow>
                   )}
                   {!isLevel && fa.move && (
-                    <MenuDropdownItem iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doMove(target.path)}>Move to…</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doMove(target.path)}>Move to…</MenuRow>
                   )}
                   {/* A FOLDER GETS COPY URL TOO (user 2026-09-23) — through the SAME `mediaUrl`
                       seam a file goes through, so what a folder URL means is the consumer's call
                       (a CDN prefix, a listing, a signed path) and never this page's guess. No
                       Download: a folder is not an object to fetch. */}
                   {hasUrl && !isLevel && (
-                    <MenuDropdownItem iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl([target.path])}>Copy URL</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl([target.path])}>Copy URL</MenuRow>
                   )}
                   {hasUrl && target.type === 'file' && (
-                    <MenuDropdownItem iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuRow>
                   )}
                   {!isLevel && canTag && (
-                    <MenuDropdownItem iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuRow>
                   )}
                   {!isLevel && canFavourite && (
-                    <MenuDropdownItem iconLeft={<Icon name={isFavourite(target.path) ? 'star-solid' : 'star'} size={14} />} onClick={() => toggleFavourite(target.path)}>
+                    <MenuRow iconLeft={<Icon name={isFavourite(target.path) ? 'star-solid' : 'star'} size={14} />} onClick={() => toggleFavourite(target.path)}>
                       {isFavourite(target.path) ? 'Remove from favourites' : 'Add to favourites'}
-                    </MenuDropdownItem>
+                    </MenuRow>
                   )}
                   {target.type === 'file' && canEdit && editKindOf(target.o ?? { key: target.path }) && (
-                    <MenuDropdownItem iconLeft={<Icon name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuDropdownItem>
+                    <MenuRow iconLeft={<Icon name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuRow>
                   )}
                   {!isLevel && fa.remove && (
                     <>
-                      <MenuDropdownDivider />
-                      <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} onClick={() => doDelete(target.path, isFolder)}>Delete</MenuDropdownItem>
+                      <MenuDivider />
+                      <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => doDelete(target.path, isFolder)}>Delete</MenuRow>
                     </>
                   )}
                   {customItems}
@@ -3398,11 +3398,11 @@ export function MediaLibraryLibrary({
                 {({ close }) => (
                   <div className="py-1 w-[200px]">
                     {LAYOUT_OPTIONS.map((opt) => (
-                      <MenuDropdownItem key={opt.value} onClick={() => { setLayout(opt.value); close() }} shortcut={layout === opt.value ? <Icon name="check" size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                      <MenuRow key={opt.value} onClick={() => { setLayout(opt.value); close() }} indicator={layout === opt.value ? 'dot' : undefined}>{opt.label}</MenuRow>
                     ))}
-                    <MenuDropdownDivider />
+                    <MenuDivider />
                     {SORT_OPTIONS.map((opt) => (
-                      <MenuDropdownItem key={opt.value} onClick={() => { handleSort(opt.value); close() }} shortcut={sortBy === opt.value ? <Icon name={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuDropdownItem>
+                      <MenuRow key={opt.value} onClick={() => { handleSort(opt.value); close() }} shortcut={sortBy === opt.value ? <Icon name={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
                     ))}
                   </div>
                 )}

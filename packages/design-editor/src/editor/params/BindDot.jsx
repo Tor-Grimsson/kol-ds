@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { PopoverPanel, usePopover, Tooltip } from '@kolkrabbi/kol-component'
+import { MenuRow, PopoverPanel, usePopover, Tooltip } from '@kolkrabbi/kol-component'
 import { getSources, getSource } from './sources'
 import { isGamepadSource } from './gamepad'
 import { isBinding, resolveValue } from './resolve'
@@ -104,15 +104,10 @@ export default function BindDot({ layer, param, setProp }) {
       >
         <div className="w-[220px]">
           {entries.map((e) => (
-            <button
-              key={e.value}
-              type="button"
-              onClick={() => pick(e.value)}
-              className="w-full kol-helper-12 px-3 h-8 inline-flex items-center gap-2 text-body hover:text-emphasis text-left"
-            >
-              <span className="flex-1 truncate">{e.label}</span>
-              <span className="kol-helper-10 text-emphasis shrink-0">{mode === e.value ? '✓' : ''}</span>
-            </button>
+            /* MenuRow, the current source wearing the dot — a real icon, never a typed ✓ (plan-2026-10-31-menu-engine W2) */
+            <MenuRow key={e.value} rowClass="kol-helper-12 px-3 h-8" onClick={() => pick(e.value)} indicator={mode === e.value ? 'dot' : undefined}>
+              {e.label}
+            </MenuRow>
           ))}
         </div>
       </PopoverPanel>

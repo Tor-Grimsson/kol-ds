@@ -36,6 +36,7 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
 | `MenuDropdownItem` | component | `MenuRow` — same component, same props (the Menu* family, metric Round 4) | 2026-10-31 |
 | `MenuDropdownDivider` | component | `MenuDivider` — same component, same props | 2026-10-31 |
+| Dropdown `variant="raised"` | component | `tone="faint"` — the same oq-06 ground; the variant only ever differed by colour | 2026-10-31 |
 | `MenuDropdownNest` | component | `MenuFlyout` — same component, same props | 2026-10-31 |
 | `kol-dd-menu` | theme | `kol-menu-panel` — same rule (`Menu`'s panel) | 2026-10-31 |
 | `PageHeader` | component | `SectionText` with `level` (page · app · section · content) — `title` → `headline`, `subtitle` → `body`, `titleClass` → `headlineClass` | 2026-10-22 |

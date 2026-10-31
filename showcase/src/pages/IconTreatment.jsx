@@ -159,7 +159,7 @@ function Treatment() {
               <MenuRow onClick={() => newCategory(picked)}>New category…</MenuRow>
             </MenuFlyout>
             <MenuDivider />
-            <MenuRow onClick={undo} disabled={!lastLive(log)} shortcut="⌘Z">Undo last move</MenuRow>
+            <MenuRow onClick={undo} disabled={!lastLive(log)} kbd="⌘Z">Undo last move</MenuRow>
             <MenuRow onClick={() => setSelected([])}>Clear selection</MenuRow>
           </>
         )}

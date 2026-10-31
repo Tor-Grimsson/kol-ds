@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 101 entries
+## Queue — 95 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -40,6 +40,11 @@ accrues entries and never closes.
 |---|---|---|---|---|
 | 🟢 | [RailDragHoldsWidth](done/RailDragHoldsWidth.md) | **kol-fxr** — NavRail: a drag keeps its width (no snap), a click still snaps collapsed ⇄ expanded and resets it; a max width instead of the open width; rows follow the width | 2026-10-31 | 🔵 `filed` |
 | 🟢 | [OriginPicker](done/OriginPicker.md) | **kol-fxr** — a 3×3 transform-origin value picker (`value [x, y]`, radiogroup, arrow keys, on the control ramp); fxr's last hand-built control with no KOL part | 2026-10-31 | 🔵 `filed` |
+| 🟢 | [BezierPathEditor](done/BezierPathEditor.md) | **kol-fxr** — a 2D bezier node editor: nodes with in/out handles, drag, add (double-click), delete; a value of points | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
+| 🟢 | [ParamBindDot](done/ParamBindDot.md) | **kol-fxr** — the small dot beside a param row that shows it is bound (modulated) and opens a menu | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
+| 🟢 | [FunctionPlot](done/FunctionPlot.md) | **kol-fxr** — a plot of y = f(u) over one loop with a cursor at the current u | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
+| 🟢 | [ItemList](done/ItemList.md) | **kol-fxr** — a reorderable list of rows: number · swatch · eye · name · inline control · actions, one row selected | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
+| 🟢 | [ColorPickerPopoverExtras](done/ColorPickerPopoverExtras.md) | **kol-fxr** — a footer slot on ColorPickerPopover for swatches and quick states | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
 | ⚪ | [IconTreatment](archive/IconTreatment.md) | **kol-ds-ui** — the three icon batches as one treatment project: A kol-atlas 164 + B kol-website 143 (shipped by mistake in kol-icons 0.55.0, out again in 0.56.0) + C the Claude list 252; source untouched, treated copies, `report.md`, review page in `archive/_assets/IconTreatment/` | 2026-10-31 | ⚪ `parked` — plan, not for the set until the user approves |
 | 🟢 | [FloatsOwnItems](done/FloatsOwnItems.md) | **kol-fxr** — `touch="floats"` takes `floats.items` / `floats.actions`: a page's own rows in the top float, the app's nav untouched when unset; plus nested submenus (a sub row opens its own rows), every variant | 2026-10-31 | 🔵 `filed` |
 | 🟢 | [PhoneTwoFloatLayout](done/PhoneTwoFloatLayout.md) | **kol-fxr** — a phone layout preset with a float above and one below (studio-hub's phone page), insets from the pill tokens; an upward shadow token for a bottom sheet | 2026-10-31 | 🔵 `filed` |
@@ -72,7 +77,7 @@ accrues entries and never closes.
 | 🟢 | [TabsRowOverflow](done/TabsRowOverflow.md) | **kol-website** — TabsRow scrolls (fade, active in view) or wraps when its tabs outgrow the column, every look; §4 of DocumentLibraryAndBoardParts, missed | 2026-10-29 | 🟢 `closed` 2026-10-29 · component 0.316.0 · theme 0.199.0 · shell 0.89.1 |
 | 🟢 | [DocumentLibraryAndBoardParts](done/DocumentLibraryAndBoardParts.md) | **kol-website** — one markdown library for brand and record (parser · table per folder · Quick Look · .md download), a Kanban board and a Flip card for record's dashboard; general seams asked | 2026-10-29 | 🟢 `closed` 2026-10-29 · component 0.315.0 · framework 0.64.0 · styleguide 0.16.0 · theme 0.198.0 · hardware 0.10.0 |
 | 🟢 | [WorkshopSettingsRailAndBars](done/WorkshopSettingsRailAndBars.md) | **kol-hq** — kol-workshop takes studio-hub's tabbed Settings rail (Settings · Shortcuts · About · Docs) and its `S` shortcuts modal, no reinvention; `<` `>` `\|` hide the top bar, the tab bar, both | 2026-10-29 | 🟢 `closed` 2026-10-29 · framework 0.63.0 · shell 0.89.0 · workshop 0.42.0 |
-| 🔵 | [ClaudeListIconSet](inbox/ClaudeListIconSet.md) | **kol-hq** — 252 icons drawn on the KOL keyline (182 from his Figma references + 70 refitted), grouped; SVGs in kol-hq `_tmp/icons/2026-10-28-claude-list/`. Import is a separate session here with the user | 2026-10-29 | 🔵 `filed` |
+| 🟢 | [ClaudeListIconSet](done/ClaudeListIconSet.md) | **kol-hq** — 252 icons drawn on the KOL keyline (182 from his Figma references + 70 refitted), grouped; SVGs in kol-hq `_tmp/icons/2026-10-28-claude-list/`. Import is a separate session here with the user | 2026-10-29 | 🟢 `closed` 2026-10-31 → kol-icons 0.59.0 |
 | 🟢 | [TimeSetAndSiteRailFade](done/TimeSetAndSiteRailFade.md) | **kol-website** — kol-atlas's Timeline · Month · Week copied in as one time set plus a new Day; and SiteLayout's rail fades where it scrolls, as the app and workshop rails already do | 2026-10-29 | 🟢 `closed` 2026-10-29 · component 0.314.0 · theme 0.197.0 · framework 0.62.5 · workshop 0.41.3 |
 | 🟢 | [TiltCardEdgeBanding](done/TiltCardEdgeBanding.md) | **kol-website** — kol-component TiltCard lost the site's 2026-08-27 anti-alias fix (backface-hidden · will-change-transform · transparent outline); the home foundry card bands | 2026-10-29 | 🟢 `closed` 2026-10-29 · component 0.313.1 |
 | 🟢 | [SettingsAccountTab](done/SettingsAccountTab.md) | **kol-fxr** — The settings rail gains an Account tab when the user is signed in (the app's rows: picture, name, email, invites, sign out); the account row and Home's menu open Settings on that tab — one place for the user's space, not a second rail | 2026-10-29 | `filed` — from a kol-fxr session || 🟢 `closed` 2026-10-29 · shell 0.88.0 |
@@ -529,8 +534,24 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-10-31 | **`BezierPathEditor` closed** → kol-component 0.330.0 (`BezierPathEditor` (atom) exported); receipt returned to kol-fxr, remainder there: adopt it |
+| 2026-10-31 | **`ColorPickerPopoverExtras` closed** → kol-component 0.330.0 (`ColorPickerPopover` `footer` slot); receipt returned to kol-fxr, remainder there: adopt it |
+| 2026-10-31 | **`FunctionPlot` closed** → kol-component 0.330.0 (`FunctionPlot` (atom) exported); receipt returned to kol-fxr, remainder there: adopt it |
+| 2026-10-31 | **`ItemList` closed** → kol-component 0.330.0 (`StepList` row slots (`swatch` · `shown`/`onToggleShown` · `control` · `actions`)); receipt returned to kol-fxr, remainder there: adopt it |
+| 2026-10-31 | **`ParamBindDot` closed** → kol-component 0.330.0 (`ParamBindDot` (molecule on Menu) exported); receipt returned to kol-fxr, remainder there: adopt it |
+| 2026-10-31 | **`ClaudeListIconSet` closed** → kol-icons 0.59.0: the 252 Claude-list icons in kol-icon-set-interface under the 18 categories, with the atlas and website batches (559 in all) |
+| 2026-10-31 | **`BezierPathEditor` addressed** — built, awaiting publish (kol-component, unreleased) |
+| 2026-10-31 | **`ParamBindDot` addressed** — built, awaiting publish (kol-component, unreleased) |
+| 2026-10-31 | **`FunctionPlot` addressed** — built, awaiting publish (kol-component, unreleased) |
+| 2026-10-31 | **`ItemList` addressed** — built, awaiting publish (kol-component, unreleased) |
+| 2026-10-31 | **`ColorPickerPopoverExtras` addressed** — built, awaiting publish (kol-component, unreleased) |
 | 2026-10-31 | **`RailDragHoldsWidth` filed** by kol-fxr — the rail keeps a dragged width; a click still snaps |
 | 2026-10-31 | **`OriginPicker` filed** by kol-fxr — a 3×3 transform-origin value picker (plan 49 9.2 audit) |
+| 2026-10-31 | **`BezierPathEditor` filed** by kol-fxr — a 2D bezier node editor: nodes with in/out handles, drag, add (double-click), delete; a value of points (plan 51 4.4) |
+| 2026-10-31 | **`ParamBindDot` filed** by kol-fxr — the small dot beside a param row that shows it is bound (modulated) and opens a menu (plan 51 4.4) |
+| 2026-10-31 | **`FunctionPlot` filed** by kol-fxr — a plot of y = f(u) over one loop with a cursor at the current u (plan 51 4.4) |
+| 2026-10-31 | **`ItemList` filed** by kol-fxr — a reorderable list of rows: number · swatch · eye · name · inline control · actions, one row selected (plan 51 4.4) |
+| 2026-10-31 | **`ColorPickerPopoverExtras` filed** by kol-fxr — a footer slot on ColorPickerPopover for swatches and quick states (plan 51 4.4) |
 | 2026-10-31 | **`IconTreatment` parked** — the 0.55.0 mis-shipped A/B batches (307) leave the set in kol-icons 0.56.0 and join the Claude list (252) as one treatment project, for the user's review |
 | 2026-10-31 | **`FloatsOwnItems` filed** by kol-fxr — a page's own rows in the floats layout's top float |
 | 2026-10-31 | **`PhoneTwoFloatLayout` filed** by kol-fxr — the two-float phone layout as a studio-hub preset; an upward sheet shadow token |

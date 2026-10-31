@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
-import { MenuDropdownItem, MenuDropdownNest } from '../molecules/MenuItem.jsx'
+import { MenuRow, MenuFlyout } from '../molecules/MenuItem.jsx'
 import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
 import { rowLabelForLayer, findLayerDeep } from '../hooks/layerTree.js'
 
@@ -488,19 +488,19 @@ export function AddLayerButton({
         {types.map((t) => {
           if (nested && t.id === nested.typeId) {
             return (
-              <MenuDropdownNest key={t.id} iconLeft={<IconC name={t.icon ?? iconFor(t.id)} size={12} />} label={t.label}>
+              <MenuFlyout key={t.id} iconLeft={<IconC name={t.icon ?? iconFor(t.id)} size={12} />} label={t.label}>
                 {nested.kinds.map((k) => (
-                  <MenuDropdownItem key={k.id} iconLeft={<IconC name={k.icon ?? iconFor(t.id)} size={12} />} onClick={() => pick(t.id, k.extras)}>
+                  <MenuRow key={k.id} iconLeft={<IconC name={k.icon ?? iconFor(t.id)} size={12} />} onClick={() => pick(t.id, k.extras)}>
                     {k.label}
-                  </MenuDropdownItem>
+                  </MenuRow>
                 ))}
-              </MenuDropdownNest>
+              </MenuFlyout>
             )
           }
           return (
-            <MenuDropdownItem key={t.id} iconLeft={<IconC name={t.icon ?? iconFor(t.id)} size={12} />} onClick={() => pick(t.id)}>
+            <MenuRow key={t.id} iconLeft={<IconC name={t.icon ?? iconFor(t.id)} size={12} />} onClick={() => pick(t.id)}>
               {t.label}
-            </MenuDropdownItem>
+            </MenuRow>
           )
         })}
       </PopoverPanel>

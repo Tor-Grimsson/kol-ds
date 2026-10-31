@@ -1,13 +1,13 @@
 import { useState } from 'react'
 import SearchInput from './SearchInput.jsx'
-import { MenuDropdownItem } from './MenuItem.jsx'
+import { MenuRow } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 
 /**
  * Combobox — A searchable value field: type to filter, pick a row. (MetricDashboardUpstream, kol-website 2026-10-31 —
  * metric's filter-value picker, plausible.io's.) Built from the parts, never a fork of them: the field is `SearchInput`
  * (outline, sm) and the list is `Dropdown`'s own panel (`kol-dd-panel` · `kol-dd-div` · `kol-dd-list`, rows
- * `MenuDropdownItem` at Dropdown's sm row), matched to the field's width and hung 1px under it.
+ * `MenuRow` at Dropdown's sm row), matched to the field's width and hung 1px under it.
  *
  *   <Combobox value={q} onChange={setQ} options={[{ value: '/blog', label: '/blog' }]} placeholder="Select a value" />
  *
@@ -44,13 +44,13 @@ export default function Combobox({ value, onChange, options = [], placeholder, a
         onChange={(e) => { onChange(e.target?.value ?? e); setOpen(true) }}
         onClear={() => onChange('')}
       />
-      <PopoverPanel popover={popover} panel={false} focus={false} className="kol-dd-panel" style={{ '--kol-dd-max-rows': 8, '--kol-dd-row-h': 'var(--kol-ctl-sm)' }}>
+      <PopoverPanel popover={popover} panel={false} focus={false} className="kol-menu-panel kol-menu-panel--fused" style={{ '--kol-dd-max-rows': 8, '--kol-dd-row-h': 'var(--kol-ctl-sm)' }}>
         <div className="kol-dd-div" />
         <div className="kol-dd-list" role="listbox">
           {shown.map((o) => (
-            <MenuDropdownItem key={o.value} hover={false} size="sm" rowClass={ROW_SM} onClick={() => { onChange(o.value); setOpen(false) }}>
+            <MenuRow key={o.value} hover={false} size="sm" rowClass={ROW_SM} onClick={() => { onChange(o.value); setOpen(false) }}>
               {o.label}
-            </MenuDropdownItem>
+            </MenuRow>
           ))}
           {!shown.length && <div className={`${ROW_SM} flex items-center text-meta`}>No matches</div>}
         </div>

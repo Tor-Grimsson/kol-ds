@@ -28,12 +28,12 @@ const STAGE = {
  * preview opts in by exporting `variants` / `sizes` (see PreviewCard's toolbar
  * pickers); previews that don't simply ignore the props, so this is additive for
  * all ~180 of them. */
-export default function PreviewStage({ entry, variant, tone, size, state }) {
+export default function PreviewStage({ entry, variant, tone, size, align, state }) {
   const C = entry?.Component
   if (!C) return null
   return (
     <div className={STAGE[entry.stage] ?? STAGE.hug}>
-      <ErrorBoundary><C variant={variant} tone={tone} size={size} state={state} /></ErrorBoundary>
+      <ErrorBoundary><C variant={variant} tone={tone} size={size} align={align} state={state} /></ErrorBoundary>
     </div>
   )
 }

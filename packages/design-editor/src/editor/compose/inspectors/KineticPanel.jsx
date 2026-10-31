@@ -2,7 +2,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Button,
   Dropdown, LabeledControl, Slider, Textarea, SegmentedToggle, ViewToggle,
-  ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
+  ToggleCheckbox, usePopover, PopoverPanel, MenuRow, Tooltip } from '@kolkrabbi/kol-component'
 import { ColorField } from './ColorField'
 import { TreePicker } from './TreePicker'
 import { resolveColor } from '../state'
@@ -559,13 +559,13 @@ function OpenTypeMenu({ value = {}, onToggle }) {
       >
         <div className="flex max-h-[300px] flex-col items-stretch overflow-y-auto" role="listbox">
           {OPENTYPE_FEATURES.map((f) => (
-            <MenuDropdownItem
+            <MenuRow
               key={f.tag}
               onClick={() => onToggle(f.tag, !value[f.tag])}
-              shortcut={value[f.tag] ? <Icon name="check" size={11} /> : undefined}
+              indicator={value[f.tag] ? 'check' : undefined}
             >
               {f.label}
-            </MenuDropdownItem>
+            </MenuRow>
           ))}
         </div>
       </PopoverPanel>
