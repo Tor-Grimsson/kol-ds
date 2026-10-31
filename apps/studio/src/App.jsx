@@ -16,7 +16,7 @@ export default function App() {
   const [view, setView] = useState({ zoom: 1, x: 0, y: 0 })
   return (
     <PageShell mode="fixed" className="gap-10 [--kol-page-header-mb:0]">
-      <PageHeader level="app" title="Studio" subtitle={`${Math.round(view.zoom * 100)}%`} />
+      <PageHeader variant="app" title="Studio" subtitle={`${Math.round(view.zoom * 100)}%`} />
       <div className="flex min-h-0 flex-1 flex-col" style={{ margin: '0 calc(var(--kol-shell-page-pad) * -1)' }}>
         <CanvasStudio className="flex-1" view={view} onViewChange={setView}>
           <div className="inline-flex flex-wrap gap-2" style={{ padding: 96, width: 1400 }}>

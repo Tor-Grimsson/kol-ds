@@ -2,7 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { SiteLayout } from '@kolkrabbi/kol-framework'
 import { PageHeader, Table } from '@kolkrabbi/kol-component'
 import {
-  Swatch, ColorAnatomy, ComboLab, TypeBlock, LogoCard, LogoScaling, AssetCard, AssetTable, MoodTile,
+  BlockSwatch, ColorAnatomy, ComboLab, BlockType, CardLogo, LogoScaling, AssetCard, AssetTable, MoodTile,
   BusinessCardFront, BusinessCardBack, Envelope, Letterhead, LetterheadB, EmailSignature,
 } from '@kolkrabbi/kol-styleguide'
 import { VOYAGER } from 'voyager-fixture'
@@ -79,14 +79,14 @@ const Ramps = () => (
     {brand.ramps.map((r) => (
       <section key={r.id} className="flex flex-col gap-3">
         <h2 className="kol-doc-eyebrow">{r.label} — {r.note}</h2>
-        <Grid min={96}>{r.stops.map((s) => <Swatch key={s.stop} hex={s.value} name={`${r.id}-${s.stop}`} anchor={s.stop === r.anchor} height={72} />)}</Grid>
+        <Grid min={96}>{r.stops.map((s) => <BlockSwatch key={s.stop} hex={s.value} name={`${r.id}-${s.stop}`} anchor={s.stop === r.anchor} height={72} />)}</Grid>
       </section>
     ))}
   </Page>
 )
 const Swatches = () => (
   <Page eyebrow="Colour" title="Swatches" lede="The palette as it is used — the anchors of each ramp, large.">
-    <Grid min={200}>{brand.ramps.map((r) => <Swatch key={r.id} hex={r.stops.find((s) => s.stop === r.anchor).value} name={r.label} anchor height={160} />)}</Grid>
+    <Grid min={200}>{brand.ramps.map((r) => <BlockSwatch key={r.id} hex={r.stops.find((s) => s.stop === r.anchor).value} name={r.label} anchor height={160} />)}</Grid>
   </Page>
 )
 const Anchors = () => (
@@ -106,7 +106,7 @@ const Families = () => (
     {brand.type.families.map((f) => (
       <section key={f.token} className="flex flex-col gap-3">
         <h2 className="kol-doc-eyebrow">{f.role} — {f.cut} · {f.weights.join(' / ')}</h2>
-        <TypeBlock
+        <BlockType
           text={brand.meta.name}
           cut={/Text/.test(f.cut) ? 'Text' : /Mono/.test(f.cut) ? 'mono' : 'base'}
           weight={f.weights.at(-1)}
@@ -123,7 +123,7 @@ const Scale = () => (
     {brand.type.scale.map((s) => (
       <section key={s.cls} className="flex flex-col gap-2">
         <h2 className="kol-doc-eyebrow">{s.cls} — {s.family} · {s.weight} · {s.size}</h2>
-        <TypeBlock
+        <BlockType
           text={s.family === 'serif' ? business.BIO.quote : 'Go further, leave less.'}
           weight={s.weight}
           italic={s.family === 'serif'}
@@ -139,7 +139,7 @@ const Scale = () => (
 /* ── logo ── */
 const Displays = () => (
   <Page eyebrow="Logo" title="Displays" lede="Every mark the manifest names, on the ground it is drawn for.">
-    <Grid min={280}>{brand.logos.map((l) => <LogoCard key={l.id} caption={`${l.name} — ${l.use}`} logo={<Mark id={l.id} />} aspect={l.id.includes('hori') || l.id === 'wordmark' ? '2 / 1' : '1 / 1'} />)}</Grid>
+    <Grid min={280}>{brand.logos.map((l) => <CardLogo key={l.id} caption={`${l.name} — ${l.use}`} logo={<Mark id={l.id} />} aspect={l.id.includes('hori') || l.id === 'wordmark' ? '2 / 1' : '1 / 1'} />)}</Grid>
   </Page>
 )
 const Clearspace = () => (

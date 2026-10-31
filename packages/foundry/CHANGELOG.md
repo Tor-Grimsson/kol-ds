@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-foundry
 
+## 0.15.0 — 2026-10-30
+
+- **`TextPressure` `variant="intro"`** (TextPressureIntroVariant, kol-website): the retired kolkrabbi.io behaviour — window-wide `mousemove` · `touchmove` with no hover gate, the follower starts at the container centre so the glyphs are bent from the first frame, `wdth` 5–200, falloff is the title width / 2, and the loop runs mount → unmount. `default` is unchanged; reduced motion stays static in both. `WebsiteIntroLoader` passes `variant="intro"`.
+
 ## 0.14.0 — 2026-10-28
 
 - **`WebsiteIntroLoader`** (LayoutsAndWebsiteLayout, kol-website): kolkrabbi.io's intro curtain carried verbatim beside `LoaderIntro` — the word in a variable font on this package's `TextPressure`, the arrow, and the scroll · touch · key gestures `LoaderIntro` dropped. Its own name because `IntroLoader` is a ledger alias of `LoaderIntro`. The word and font are props (`text` · `fontFamily` · `fontUrl`); the cursor trail is kol-framework's, so kol-framework ≥ 0.62.0 is a peer.

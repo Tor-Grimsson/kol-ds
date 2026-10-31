@@ -4,8 +4,8 @@ import { NavRail } from '@kolkrabbi/kol-component'
 import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
-import PhoneNav from './PhoneNav.jsx'
-import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kolkrabbi/kol-component'
+import AppFloatNav from './AppFloatNav.jsx'
+import { TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kolkrabbi/kol-component'
 
 /**
  * AppShell — layout root: the rail + the content column. No header, no
@@ -58,7 +58,7 @@ import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kol
  *                                        lands the rail on the new rest. Fixed here, not in a consumer: the route-entry effect
  *                                        below runs after its children's, so a consumer could only hide the rail a frame late
  *                                        (fxr's `HomeStage` rAF). The Hub passes it for the signed-out Home
- * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'|'pill'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
+ * @param {'shell'|'bare'|'overlay'|'drawer'|'bar'|'pill'|'floats'} props.touch  the touch-primary policy (default 'shell' = the rail regardless):
  *                                        'drawer' takes the rail OFF-CANVAS below `drawerBelow`, hands its width
  *                                        back to the content, and renders a trigger that brings it in over a scrim.
  *                                        Tapping a destination closes it. (ShellRailNoDrawerOnMobile, kol-chess
@@ -78,10 +78,24 @@ import { TABBAR_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kol
  *                                        description. One app, one header — media-hub wore both. NO DEFAULT (user, 2026-09-29): unset,
  *                                        every page renders as its own props say, so a consumer's bump moves nothing
  *                                        (fxr · mirror · monitor are mono by ruling).
+ * @param {Object} [props.floats]          THE TWO FLOATS (PhoneTwoFloatLayout, kol-fxr 2026-10-31 — fxr's Labs on a phone, frame E):
+ *                                        `touch="floats"` puts the nav in an AppFloatNav `panel` overlay pinned at the TOP (the
+ *                                        bar's rows and actions), an AppFloatNav `transport` overlay over the foot, and between
+ *                                        them the stage (children) and a bottom Rail. `{ transport: { items, sheetFor, … },
+ *                                        rail: node, railHeight = '50dvh' }`. The stage starts under the top float and the Rail's
+ *                                        rows scroll clear of the transport — both insets are `TABBAR_PILL_INSET + TABBAR_PILL_H +
+ *                                        TABBAR_PILL_INSET` plus the safe area; the Rail rises on `--kol-shadow-rail-up`, no rule.
+ *                                        THE PAGE'S OWN ROWS (FloatsOwnItems, kol-fxr 2026-10-31 — *"keep it as flexible as possible"*):
+ *                                        `floats.items` (AppFloatNav items — `{ path | id, icon, label, onPress?, selected?, sub? }`)
+ *                                        take the top float's slots and `floats.actions` (`[{ label, icon?, onPress, sub? }]`) its
+ *                                        More's actions, wherever the app passes them — the page's route, typically. THE ONE RULE:
+ *                                        the More keeps the app's whole nav (`barItems`, else items + bottomItems) — the page's
+ *                                        rows replace the slots, never the way back (a `phoneNav.sheetItems` still wins). Unset,
+ *                                        the top float is the app's nav and `barActions`, as 0.97.0
  * @param {Array}  [props.barActions]      `[{ label, icon?, onPress }]` — the page's buttons in the bar's More sheet, under the nav (PhoneNav `actions`)
- * @param {'nav'|'panel'|'transport'} [props.navVariant='nav']  THE PHONE PILL'S PRESET (PhoneNavVariants, kol-fxr 2026-10-28 —
- *                                        the Home pill kept its hairline while Labs tuned its own by hand): `nav` is no hairline,
- *                                        no shadow, the circle; PhoneNav's `PHONE_NAV_VARIANTS` is the table
+ * @param {'mobile'|'panel'|'transport'} [props.navVariant='mobile']  THE PHONE PILL'S PRESET (PhoneNavVariants, kol-fxr 2026-10-28 —
+ *                                        the Home pill kept its hairline while Labs tuned its own by hand): `mobile` (was `nav`) is no hairline,
+ *                                        no shadow, the circle; AppFloatNav's `APP_FLOAT_NAV_VARIANTS` is the table
  * @param {Object} [props.phoneNav]        any further PhoneNav prop for the pill (`sheetItems`, `moreKeepsOpen`, …) — the Hub's
  *                                        signed-out Home passes the rail as More's rows (2026-10-28)
  * @param {string[]|Function} [props.moreItems]  which rail rows the More sheet lists (PhoneNav `moreItems`) — unset, all of them
@@ -170,7 +184,8 @@ export default function AppShell({
   drawerOpenOn = NO_PATHS,
   barItems,
   barActions,
-  navVariant = 'nav',
+  floats: floatsProp,
+  navVariant = 'mobile',
   moreItems,
   phoneNav,
   barHiddenOn = NO_PATHS,
@@ -198,10 +213,16 @@ export default function AppShell({
   const drawer = touch === 'drawer' && narrow
   /* the bar steps aside on a tool's paths — no bar, no bar height; the rail stays off too (a phone has no rail) */
   /* `pill` is the bar in TabsRow's pill shape (user 2026-10-23) — the same rows, the same More, floated off the edge */
-  const barLike = touch === 'bar' || touch === 'pill'
+  const barLike = touch === 'bar' || touch === 'pill' || touch === 'floats'
   /* the preset's phone shape when the app did not say (AppHub passes it through) */
   const barAside = barLike && narrow && barHiddenOn.some((x) => (x === '/' ? currentPath === '/' : currentPath === x || currentPath?.startsWith(`${x}/`)))
   const bar = barLike && narrow && !barAside
+  /* THE TWO FLOATS: the bar is the top float, and the page is a column — the stage, then the Rail */
+  const floats = bar && touch === 'floats'
+  const floatClear = `${TABBAR_PILL_INSET + TABBAR_PILL_H + TABBAR_PILL_INSET}px`
+  /* the app's nav, and the page's own rows when it passes them — the app's nav then lives in the top float's More */
+  const appNav = barItems ?? [...(items ?? []), ...(bottomItems ?? [])]
+  const pageRows = floats && floatsProp?.items?.length ? floatsProp.items : null
   const [drawerOpen, setDrawerOpen] = useState(false)
   useEffect(() => { if (!drawer) setDrawerOpen(false) }, [drawer])
   useEffect(() => {
@@ -403,7 +424,8 @@ export default function AppShell({
           onClick={() => setDrawerOpen(false)}
         />
       )}
-      {bar && <PhoneNav items={barItems ?? [...(items ?? []), ...(bottomItems ?? [])]} actions={barActions} shape={touch === 'pill' ? 'pill' : 'bar'} variant={navVariant} moreItems={moreItems} {...phoneNav} currentPath={currentPath} onNavigate={navigate} />}
+      {bar && <AppFloatNav items={pageRows ?? appNav} actions={floats && floatsProp?.actions ? floatsProp.actions : barActions} shape={touch === 'bar' ? 'bar' : 'pill'} variant={floats ? 'panel' : navVariant} moreItems={moreItems} {...(pageRows && { sheetItems: appNav })} {...phoneNav} currentPath={currentPath} onNavigate={navigate} />}
+      {floats && floatsProp?.transport?.items?.length > 0 && <AppFloatNav variant="transport" foldable {...floatsProp.transport} />}
       {!navHidden && !bar && !barAside && (
         <Rail
           items={items}
@@ -425,9 +447,18 @@ export default function AppShell({
         * through the drag and the snap (RailFlatGrabOpen) */}
       <div className="bg-surface-primary min-w-0" style={{ marginLeft: `var(--kol-shell-rail-width)`, '--kol-shell-page-wash': pageWash, /* `bar` pads the page by its height; `pill` FLOATS OVER the page (user 2026-10-23: *"why doesn't it overlay the bottom"*) —
        * no pad, the page runs under it, and `--kol-shell-bar-clear` is what a scroll region's last row and a fixed foot clear */
-      ...(bar && touch !== 'pill' && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }),
-      ...(bar && touch === 'pill' && { '--kol-shell-bar-h': '0px', '--kol-shell-bar-clear': `calc(${TABBAR_H + TABBAR_PILL_INSET}px + env(safe-area-inset-bottom, 0px))` }), ...(barAside && { '--kol-shell-bar-h': '0px' }) }}>
-        {children}
+      ...(bar && touch === 'bar' && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }),
+      ...(bar && touch === 'pill' && { '--kol-shell-bar-h': '0px', '--kol-shell-bar-clear': `calc(${TABBAR_PILL_H + TABBAR_PILL_INSET}px + env(safe-area-inset-bottom, 0px))` }), ...(barAside && { '--kol-shell-bar-h': '0px' }), ...(floats && { '--kol-shell-bar-h': '0px' }) }}>
+        {floats ? (
+          <div className="flex h-dvh flex-col">
+            {/* THE STAGE OWNS THE PAGE'S GROUND (PhoneTwoFloatLayout): it paints the wash under the top float too and hands
+              * the page `transparent` — PageLayout's rule (kol-components-shell.css), one owner per pixel, no band under the float */}
+            <div className="min-h-0 flex-1 overflow-y-auto" style={{ paddingTop: `calc(env(safe-area-inset-top, 0px) + ${floatClear})`, background: pageWash ?? undefined, '--kol-shell-page-wash': pageWash ? 'transparent' : undefined, '--kol-shell-bar-h': floatClear }}>{children}</div>
+            {floatsProp?.rail != null && (
+              <div className="shrink-0 overflow-y-auto bg-surface-primary shadow-[var(--kol-shadow-rail-up)]" style={{ maxHeight: floatsProp.railHeight ?? '50dvh', paddingBottom: `calc(${floatClear} + env(safe-area-inset-bottom, 0px))` }}>{floatsProp.rail}</div>
+            )}
+          </div>
+        ) : children}
       </div>
       </div>
       </SettingsToggleContext.Provider>

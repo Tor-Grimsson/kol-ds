@@ -4,7 +4,7 @@ export const meta = {
   title: "DocsToc",
   type: "reference",
   status: "active",
-  updated: "2026-07-03",
+  updated: "2026-10-30",
   tags: [
     "domain/components",
     "domain/components/molecules",
@@ -40,10 +40,15 @@ observes `document.getElementById(id)`). Clicks set the browser hash
 natively; `onNavigate` hooks the click for smooth-scroll or closing a mobile
 drawer. Labels render verbatim — casing is authored at the call site.
 
+An entry may carry `children: [{ id, label }]`. The spy observes them too: the
+active child and its section are both marked. On `variant="rail"` the gap
+under a sectioned entry is one tick per child instead of `minors` graduations;
+each tick is a link whose label shows under the lens. No `children`, no change.
+
 ## Props
 
 <Api name="DocsToc" rows={[
-  {"prop":"toc","type":"{ id, label }[]","def":"—","desc":"Headings to render and observe — a matching in-page element must exist per id."},
+  {"prop":"toc","type":"{ id, label, children? }[]","def":"—","desc":"Headings to render and observe — a matching in-page element must exist per id, children included."},
   {"prop":"onNavigate","type":"(event) => void","def":"—","desc":"Optional click handler on every link."},
   {"prop":"rootMargin","type":"string","def":"'-80px 0px -80% 0px'","desc":"IntersectionObserver band passed to useScrollSpy."}
 ]} />

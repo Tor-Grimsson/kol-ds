@@ -132,6 +132,7 @@ export default function WebsiteIntroLoader({ onEnter, text, fontFamily, fontUrl 
           >
             <div className="w-full max-w-[280px] sm:max-w-[400px] md:max-w-[600px] h-20 sm:h-24 md:h-32 mx-auto">
               <TextPressure
+                variant="intro"
                 text={text}
                 fontFamily={fontFamily}
                 fontUrl={fontUrl}

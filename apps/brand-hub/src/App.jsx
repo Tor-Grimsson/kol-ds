@@ -4,7 +4,7 @@ import { SiteLayout } from '@kolkrabbi/kol-framework'
 import { PageShell } from '@kolkrabbi/kol-shell'
 import { Button, MEDIA_SETTINGS_BASE, PageHeader, SettingsSections } from '@kolkrabbi/kol-component'
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
-import { Brand, BrandGuide } from '@kolkrabbi/kol-styleguide'
+import { Brand, LayoutGuide } from '@kolkrabbi/kol-styleguide'
 import { GUIDE_SECTIONS, GUIDE_TEMPLATE } from '@kolkrabbi/kol-brand-template'
 import { Notes, NEW_NOTE } from '@kolkrabbi/kol-notes'
 import { Decks, NEW_DECK } from '@kolkrabbi/kol-deck'
@@ -52,8 +52,8 @@ export default function App() {
           <Route path="/" element={<BrandPage view="brand" />} />
           <Route path="/assets" element={<BrandPage view="assets" />} />
           <Route path="/guide" element={<Navigate to="/guide/blank" replace />} />
-          <Route path="/guide/blank" element={<BrandGuide key="blank" brand={GUIDE_TEMPLATE} sections={GUIDE_SECTIONS} />} />
-          <Route path="/guide/voyager" element={<BrandGuide key="voyager" brand={VOYAGER_GUIDE} sections={GUIDE_SECTIONS} logoSources={VOYAGER.logoSources} />} />
+          <Route path="/guide/blank" element={<LayoutGuide key="blank" brand={GUIDE_TEMPLATE} sections={GUIDE_SECTIONS} />} />
+          <Route path="/guide/voyager" element={<LayoutGuide key="voyager" brand={VOYAGER_GUIDE} sections={GUIDE_SECTIONS} logoSources={VOYAGER.logoSources} />} />
           <Route path="/notes/*" element={<OptIn id="notes"><NotesTool /></OptIn>} />
           <Route path="/decks/*" element={<OptIn id="decks"><DecksTool /></OptIn>} />
           <Route path="/media" element={<OptIn id="media"><MediaTool /></OptIn>} />

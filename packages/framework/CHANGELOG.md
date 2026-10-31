@@ -1,5 +1,19 @@
 # @kolkrabbi/kol-framework
 
+## 0.68.0 — 2026-10-31
+
+- **`DocumentHeader`** — a document page's header as one component (kol-atlas's tabs header, lifted from apps/document): the title as SectionText `variant="document"` (headline only — *"this without section header is how atlas does it"*; `eyebrow` / `lede` pass through), then one navigation row under a fg-12 rule — `TabsRow` (`tabs` · `value` · `onChange`) and the groups as kol-component `Menu` / `MenuTrigger` at its right end (`menus=[{ label, items, current }]`). The layout is the hand-written header's: `.kol-page` inset with no bottom pad, 16 between title and row, the row bottom-aligned. Peers on kol-component ≥0.324.0.
+
+## 0.67.0 — 2026-10-31
+
+- **`DocumentIndex`'s header is SectionText `level="document"`** (DocumentIndexFigma, kol-atlas) — `title` / `lede` render the Research page header (36/1.2 bold display face, 15/1.6 body-face lede to 724px) instead of PageHeader `size="sm" voice="mono"`. Peers on kol-component ≥0.323.0 (the level).
+
+## 0.66.0 — 2026-10-31
+
+- **`DocumentIndex` moves here from kol-styleguide** (LayoutGroup, kol-atlas — beside `documentFiles` / `documentTabs`, which it is built on; nothing about it is brand). Same props, same cards, the same Quick Look over a folder's files; the contents cards (`Contents`) moved with it, and kol-styleguide's brand guide reads them from here. kol-styleguide keeps `DocumentIndex` as an alias on the retirement ledger.
+- **`DocumentIndex variant="table"`**: the rows as a table — kol-atlas's lab home, class for class (the workspace's sheet table: grey header row in caps, 16px inset, an icon before each title, the accent underline on hover). `columns` sets the columns beside Title (default No. · Part · Date · Covers, those the rows carry); `accent` the underline. `cards` stays the default.
+- Peers on kol-component ≥0.317.0 (FileQuickLook).
+
 ## 0.65.0 — 2026-10-29
 
 - **`CategoryPage` lists its category as a TOC, its head a choice** (OverviewTocAndLibraryIcons, kol-website 2026-10-29 — user: *"I think they should just TOC the sub pages"* · *"props are good. we use variants and presets to define how things ship, but props make things flexible"*). `view`: `cards` (default, today's) · `toc` (every page of the category in the rail's order, card or not: label, `lede` or `card.body`, `trailing`; `{ label, children }` groups as sub-headings, as deep as the rail goes; the overview's own row left out) · `list` (the same rows as a `Table`, `columns` on DocumentLibrary's contract: `title · group · body · trailing`). `head`: `hero` (default) · `section` (PageSection's chapter head as the page's h1) · `none` · a node. New seams: `pages` (wins over the tree), `filter(page)`, `renderItem(page, defaultNode)`.

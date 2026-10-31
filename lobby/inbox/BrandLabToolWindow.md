@@ -88,3 +88,12 @@ On v2:
 ## Shipped on his word — 2026-10-29 (the review continues; the ticket stays open)
 
 *"just ship it so I can at least work in Atlas and the changes come on bump"* — published: kol-icons 0.53.0 · kol-theme 0.200.0 · kol-component 0.317.0 · kol-framework 0.65.0 · kol-styleguide 0.18.0, then review 7 as patches: kol-icons 0.53.1 · kol-theme 0.200.1 · kol-component 0.317.1 · kol-styleguide 0.18.1. The review rounds and their points: `.kol/llm-context/plan-2026-10-29-lab-window-review-1.md` (W1–W8).
+
+---
+
+## Review point from kol-atlas — 2026-10-30
+
+*"why can you only resize from the corner?! … the WINDOW MODAL is RESIZABLE!!! period"*
+
+- The window resizes from **every edge and every corner**, not only the corner grip.
+- Fix it in `QuickLookFrame` (kol-component) itself, so every window built on it gets it — the lab window (`LabWindow`, kol-styleguide) included.

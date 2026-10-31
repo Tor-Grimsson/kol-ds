@@ -82,6 +82,7 @@ import NavRailSite from './NavRailSite.jsx'
  * EXPANDS (its rows open under it in place) and COLLAPSES. No other words, in code or docs.
  *
  * @param {'app'|'site'|'workshop'} preset  which rail (default `app`); `variant="site"` is the old spelling of `preset="site"`
+ * @param {'top'} variant  `top` — the horizontal top rail (TopRail): logomark · items · `actions` (the right slot)
  * @param {Array}  items        `{ icon, path, label, sub?: [{ icon?, path, label }] }`
  *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron expands or enters
  * @param {Array}  bottomItems  pinned below the rule (Settings)
@@ -122,11 +123,21 @@ const openWidth = () => {
  * are now — inside `GRAB.range`, the middle band of the edge, so it never rides
  * up beside the logomark. One window listener, rAF-throttled. */
 
-/* THE DRAG — hold the pill and the width follows the pointer between closed and
- * open; release snaps to the nearer state, a click (no travel past GRAB.slop)
- * toggles. `onSnap` reports the resting state once — the sub rows render only
- * while open, because closed they would still take their height and push the
- * rungs below them. */
+/* THE DRAG HOLDS ITS WIDTH (RailDragHoldsWidth, kol-fxr 2026-10-31 — user: *"you should be able to drag it however
+ * you want, it will just get reset on rail click"*). Hold the pill and the width follows the pointer between CLOSED
+ * and MAX; release leaves it exactly there, no snap. A click (no travel past GRAB.slop) still snaps collapsed ⇄
+ * expanded — any width past CLOSED closes, CLOSED opens to the open width — so a click resets a custom width.
+ *
+ * THE LABEL THRESHOLD (LABELS): below it the rail is icons only — labels, chevrons and the mark's title hide (the
+ * `@max-[…]:hidden` container query on the rows, measured on the rail's content box = LABELS − its px-2 gutter), never
+ * a label clipped in a narrow strip. `onSnap` reports from the same threshold: crossings during a drag report live,
+ * a snap reports its target once at the start of the tween (as before) — the sub rows render only while it is true,
+ * because closed they would still take their height and push the rungs below them.
+ *
+ * ONE AXIS: the gesture reads `pos` and `size` only. A side rail reads x and width; a top rail (variant="top" — built
+ * 2026-10-31 as `TopRail`, without a drag) would swap them for y and height — nothing else in here assumes a side. */
+const RAIL_MAX = 560
+const RAIL_LABELS = 160
 function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
   useEffect(() => {
     const strip = grabRef.current, rail = railRef.current, root = document.documentElement
@@ -137,11 +148,15 @@ function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
      * exactly the inline token a consumer could not reach without `!important`. */
     if (!enabled) return undefined
     if (!strip || !rail) return undefined
+    const pos = (e) => e.clientX
+    const size = () => rail.offsetWidth
     gsap.set(root, { [RAIL_W]: `${CLOSED}px` })
     let drag = null
+    let labelled = false
+    const report = (w) => { const on = w >= RAIL_LABELS; if (on !== labelled) { labelled = on; onSnap(on) } }
     const snapTo = (w) => {
       gsap.to(root, { [RAIL_W]: `${w}px`, ...GRAB.snap, overwrite: 'auto' })
-      onSnap(w !== CLOSED)
+      report(w)
     }
     /* the ONLY way out of this effect (RailSectionPressOpensRail, kol-fxr
      * 2026-08-30). `snapTo` closes over the animation and the CLOSED/open
@@ -155,20 +170,21 @@ function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
     const onDown = (e) => {
       strip.setPointerCapture(e.pointerId)
       gsap.killTweensOf(root)
-      drag = { x: e.clientX, w: rail.offsetWidth, open: openWidth(), moved: false }
+      drag = { p: pos(e), w: size(), moved: false }
       strip.classList.add('is-dragging')
     }
     const onMove = (e) => {
       if (!drag) return
-      const dx = e.clientX - drag.x
-      if (Math.abs(dx) > GRAB.slop) drag.moved = true
-      root.style.setProperty(RAIL_W, `${Math.min(Math.max(drag.w + dx, CLOSED), drag.open)}px`)
+      const d = pos(e) - drag.p
+      if (Math.abs(d) > GRAB.slop) drag.moved = true
+      if (!drag.moved) return
+      const w = Math.min(Math.max(drag.w + d, CLOSED), RAIL_MAX)
+      root.style.setProperty(RAIL_W, `${w}px`)
+      report(w)
     }
     const onUp = () => {
       if (!drag) return
-      const w = rail.offsetWidth
-      const open = drag.open
-      snapTo(drag.moved ? (w > (CLOSED + open) / 2 ? open : CLOSED) : (drag.w > CLOSED ? CLOSED : open))
+      if (!drag.moved) snapTo(drag.w > CLOSED ? CLOSED : openWidth())
       drag = null
       strip.classList.remove('is-dragging')
     }
@@ -250,13 +266,13 @@ function RailItem({ icon, path, to, label, sub, currentPath, onNavigate, iconCom
         />
         </Tooltip>
         <span
-          className={`${RAIL_ROW.label} text-oq-96 flex-1 min-w-0 truncate cursor-pointer`}
+          className={`${RAIL_ROW.label} text-oq-96 flex-1 min-w-0 truncate cursor-pointer @max-[144px]/rail:hidden`}
           onClick={press}
         >
           {label}
         </span>
         {sub?.length > 0 && (
-          <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0">
+          <Tooltip label={label} placement="right" triggerClassName="inline-flex shrink-0 @max-[144px]/rail:hidden">
           <Button
             iconOnly={onEnter ? 'chevron-right' : open ? 'chevron-down' : 'chevron-right'}
             iconSize={16}
@@ -306,11 +322,43 @@ export const RAIL_PRESETS = {
 export function registerRailPreset(name, Component) { RAIL_PRESETS[name] = { ...(RAIL_PRESETS[name] ?? {}), component: Component } }
 
 export default function NavRail({ variant, preset, ...props }) {
+  if (variant === 'top') return <TopRail {...props} />
   const name = preset ?? (variant === 'site' ? 'site' : 'app')
   if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />
   const Named = RAIL_PRESETS[name]?.component
   if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset "${name}"`); return null }
   return <Named {...props} />
+}
+
+/* THE TOP RAIL (`variant="top"`, 2026-10-31 — user: *"it would have to be a TopNavRail? and completely rebuilt with Rail
+ * Component? so we wouldnt ever import this, but make something in its stead"*). Replaces Atlas's /lab header ("Lab bar"
+ * in Figma): the rail's own parts laid out on a row, 48 tall — the mark and the app name (the side rail's logomark row),
+ * the items as rail rows (a nav Button rung + the rail label), then `actions` on the right (views / menus — a `Menu` with
+ * a `MenuTrigger`). Same type and inks as the side rail; no grab, no drag. A row's `sub` is not drawn here. */
+function TopRail({ items = [], logomark, currentPath = '', onNavigate, iconComponent, actions, hidden = false, className = '' }) {
+  if (hidden) return null
+  return (
+    <header className={`kol-shell-rail kol-shell-rail--top bg-surface-primary sticky top-0 flex h-12 w-full items-center gap-6 px-4 border-b border-fg-08 ${className}`.trim()}>
+      {logomark && (
+        <div onClick={() => onNavigate?.('/')} className="text-oq-96 cursor-pointer flex items-center gap-3 shrink-0">
+          {logomark.svgUrl && <VectorLoader src={logomark.svgUrl} size={20} />}
+          <span className="kol-helper-12 uppercase">{logomark.title}</span>
+        </div>
+      )}
+      <nav className="flex min-w-0 flex-1 items-center gap-2 overflow-x-auto">
+        {items.map(({ icon, path, label }) => {
+          const active = path === '/' ? currentPath === '/' : currentPath.startsWith(path)
+          return (
+            <div key={path} className="flex items-center gap-2 shrink-0 cursor-pointer" onClick={() => onNavigate?.(path)}>
+              {icon && <Button iconOnly={icon} iconSize={RAIL_ROW.glyph} iconComponent={iconComponent} variant="nav" size="md" aria-current={active ? 'page' : undefined} aria-label={label} />}
+              <span className={`${RAIL_ROW.label} text-oq-96`}>{label}</span>
+            </div>
+          )
+        })}
+      </nav>
+      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+    </header>
+  )
 }
 
 function AppRail({
@@ -371,7 +419,7 @@ function AppRail({
         * trigger travelling to mid-screen, never the navigation's side. The
         * trigger is now pinned top-right in both states, so a left panel has
         * nothing to collide with and the drawer opens where the rail lives. */
-      className="kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08"
+      className="@container/rail kol-shell-rail bg-surface-primary fixed inset-y-0 left-0 flex flex-col items-start pt-4 pb-4 px-2 gap-2 border-r border-fg-08"
       /* A drawer takes its own width, NOT the live rail token — that token is
         * zeroed in drawer mode so the content gets the whole viewport back. */
       style={{ width: drawer ? 'var(--kol-shell-drawer-width, 240px)' : `var(${RAIL_W})` }}
@@ -413,7 +461,7 @@ function AppRail({
           className="text-oq-96 cursor-pointer flex items-center gap-3 w-full overflow-hidden shrink-0 pt-1 mb-4"
         >
           <span className="w-8 flex justify-center shrink-0"><VectorLoader src={logomark.svgUrl} size={20} /></span>
-          <span className="kol-helper-12 uppercase flex-1 min-w-0 truncate">{logomark.title}</span>
+          <span className="kol-helper-12 uppercase flex-1 min-w-0 truncate @max-[144px]/rail:hidden">{logomark.title}</span>
         </div>
         </Tooltip>
       )}

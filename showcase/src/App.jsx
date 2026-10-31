@@ -10,6 +10,9 @@ import FoundationsColor from './pages/FoundationsColor'
 import FoundationsTypography from './pages/FoundationsTypography'
 import FoundationsTones from './pages/FoundationsTones'
 import IconsGallery from './pages/IconsGallery'
+import { lazy, Suspense } from 'react'
+/* dev only — the icon treatment viewer; the dead branch drops it (and its data) from the production build */
+const IconTreatment = import.meta.env.DEV ? lazy(() => import('./pages/IconTreatment.jsx')) : null
 import ComponentPage from './pages/ComponentPage'
 import Components, { TierHome, FunctionHome } from './pages/Components'
 import Blocks from './pages/Blocks'
@@ -230,6 +233,8 @@ export default function App() {
           (2026-07-15 audit P1-3): the repo-root lobby/ work queue and the
           chess-consumer mirror (1:1 stand-in for the kol-chess app). */}
       {import.meta.env.DEV && <Route path="/demo" element={<Demo />} />}
+      {/* the icon treatment viewer (2026-10-31) — bare, outside the shell: user "I dont want to be in some layout" */}
+      {import.meta.env.DEV && <Route path="/demo/icon-treatment" element={<Suspense fallback={null}><IconTreatment /></Suspense>} />}
     </Routes>
   )
 }

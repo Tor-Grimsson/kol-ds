@@ -1,5 +1,24 @@
 # @kolkrabbi/kol-icons
 
+## 0.56.1 — 2026-10-31
+
+- **`kol-ds-wordmark`** in the identity set (`identity/kol-ds/`) — KOL DESIGN SYSTEM in Right Grotesk Tight Light, one line, tracking 0.4 %, the font's own kerning, set as type in `currentColor` on the family's wordmark geometry (cap 11.14, 24 high). The user's pick from his Figma; KDS stays the mark for the small sizes. The showcase's loader and share card use it.
+
+## 0.56.0 — 2026-10-31
+
+- **Removed: 306 of the 307 interface glyphs that shipped in 0.55.0 by mistake.** Two drops landed in the set unlogged and were meant to stay parked: 164 at 12:24 from kol-atlas's `more-icons-refs` session (Figma 174:25332) and 143 at 12:34 from kol-website's `super-icon-kol24` session (Figma 160:20415), with six new groups (`chart` · `commerce` · `control` · `flow` · `place-time` · `transport`). They are out of the set again and parked, unapproved, with the Claude list as one treatment project: `lobby/archive/IconTreatment.md`. A consumer that picked one of them up from 0.55.0 renders nothing for it now. **Kept: `calendar`** in `misc`, because `MenuDatePicker` (kol-component) names it as its default `icon`.
+- **Export junk stripped** off `social-behance` and `stopwatch-solid`: Figma's `clip-rule="evenodd"`, meaningless outside a clip path. No geometry touched. `cuts.json` regenerated (433 glyphs).
+- **`record`** in the identity set — record.kolkrabbi.io's mark from kol-website — shipped unlogged on 2026-10-28; logged here and in the inventory.
+
+## 0.55.0 — 2026-10-31
+
+- **`more-vertical`** in `nav` — the ⋮: `more`'s three dots stacked on the same 24 grid (r 2.5 at 5 · 12 · 19), solid. Menus used `more` turned 90° (user 2026-10-31: *"just make a vertical version"*).
+
+## 0.54.0 — 2026-10-31
+
+- **`kol-icon-set-external`, a fourth set** (IconSetExternal, 2026-10-31): marks drawn by others — `flags` (39 round `flag-<iso>`) and `brands` (20: browsers, OS, socials, services). Colour, never recoloured; the solid brands (`apple` · `github` · `openai` · `windows`) ink `currentColor`. Its own chunk (`./sets/external.js`); `setOf` resolves interface → signal → identity → external. New exports `KOL_ICON_SET_EXTERNAL` · `_NAMES` · `_META`, folded into `KOL_ICON_META`. `cuts.json` records the set: a new cut, `color`, for a glyph that keeps its own fills.
+- **`device` gains `laptop` · `laptop-solid` · `vr-headset`** (the metric dashboard's device column).
+
 ## 0.53.5 — 2026-10-30
 
 - **The harmony set on Adobe's constructions, his approval 2026-10-30** (https://claude.ai/artifact/1jPWD2qGPmzxf5xCSAFstu): `clr-mono` three dots on one radius; `clr-shd` the radius with one dot at the edge; `clr-cmpd` the Y with its lower dots 25° either side; `clr-tet` a square with corner dots; `clr-anl` three dots at the top on spokes; `clr-split` the Y at 40°. `clr-tri` · `clr-comp` · `clr-rnd` unchanged. The 0.53.4 files are in `_tmp/2026-10-30-harmony-before/`.

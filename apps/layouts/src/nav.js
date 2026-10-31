@@ -18,7 +18,7 @@ export const PAGE_ICON = {
   Notes: 'journal', DeckEditor: 'layers', PrintStudio: 'file', MetricsDashboard: 'stat-chart-a', ChessAnalysisLayout: 'chess-rook',
   ResumeLibrary: 'library', ResumeSource: 'database', ResumeTreatment: 'columns', KitPreview: 'layout',
   SiteHero: 'home-02', CategoryPage: 'folder', PageHero: 'maximize', SectionText: 'type', PageSection: 'rows', Brand: 'book-open',
-  BrandGuide: 'roadmap', MarkdownPage: 'file', DocumentIndex: 'view-list', A4Pages: 'copy', DocumentationReader: 'book-open',
+  LayoutGuide: 'roadmap', MarkdownPage: 'file', DocumentIndex: 'view-list', A4Pages: 'copy', DocumentationReader: 'book-open',
   SearchPage: 'search', ExhibitOverview: 'grid-3x3', ExhibitPage: 'target', StackHero: 'journal', ArticleHeader: 'type-02',
   StickyNavCard: 'pushpin', ContentCollection: 'grid', FeaturedCarousel: 'video', FeatureSplit: 'columns', NewsletterBand: 'email-01',
   CtaGlobal: 'arrow-upright', ProductDetailLayout: 'tablet', PrintsGrid: 'image', TypefaceSpecimenPage: 'font-01',
@@ -59,7 +59,7 @@ export function siteTree(f) {
   return f.groups.map((g) => {
     const page = (p) => `/${f.id}/${p}`
     if (g.id === 'home') return { id: g.id, label: g.label, icon: GROUP_ICON.home, to: page(g.pages[0]) }
-    if (g.id === 'brand') return { id: g.id, label: g.label, icon: GROUP_ICON.brand, to: page('Brand'), pages: [...chapters(page('Brand')), { label: 'Guide', children: [{ to: page('BrandGuide'), label: 'Brand guide' }] }] }
+    if (g.id === 'brand') return { id: g.id, label: g.label, icon: GROUP_ICON.brand, to: page('Brand'), pages: [...chapters(page('Brand')), { label: 'Guide', children: [{ to: page('LayoutGuide'), label: 'Brand guide' }] }] }
     if (g.id === 'documents') return {
       id: g.id, label: g.label, icon: GROUP_ICON.documents, to: page('CategoryPage'),
       lede: 'Voyager’s documents, three ways: a page, an index, A4 sheets.',

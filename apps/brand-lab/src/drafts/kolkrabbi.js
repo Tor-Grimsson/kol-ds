@@ -10,7 +10,9 @@
  *   combo   ComboLab's value (layout, mark slot, any part reassigned) — it combines the colour above
  *   faces   the faces the type is set in — literal families, so the guide can wear them
  *   lockup  LockupLab's value (type, shape, the parts' text and ratios), the mark (raw SVG; none yet → a shape) and the naming levels
- *   book    the brand book's copy, by section key (kol-styleguide BOOK_SECTIONS / ASSET_SECTIONS) */
+ *   book    the brand book's copy, by section key (kol-styleguide BOOK_SECTIONS / ASSET_SECTIONS)
+ *   text    LayoutText's chapters — the lines of kol-website's Brand Voice Guide (apps/brand/src/brand/data/brand-voice-guide.md,
+ *           the brand's source of truth), verbatim, with where they come from; the whole guide is ./kolkrabbi-voice.md */
 export default {
   name: 'Kolkrabbi',
   color: { base: '#3D7FF0', relation: 'analogous', count: 5, seed: 1, colors: null, locked: [] },
@@ -31,4 +33,42 @@ export default {
     },
   },
   book: {},
+  text: {
+    source: 'Brand Voice Guide, kol-website apps/brand',
+    chapters: [
+      {
+        title: 'Core Characteristics', lede: "Kolkrabbi's voice is clear, structured, and crafted — mirroring the studio's design philosophy.", source: 'Brand Voice Guide, kol-website apps/brand',
+        blocks: [{ type: 'text', lines: [
+          'Clear: direct, unembellished, focused on meaning',
+          'Structured: logical sequencing, clean phrasing, modular ideas',
+          'Quietly confident: never loud, never salesy, always assured',
+          'Craft-driven: precise language, well-chosen words',
+          'Human: warm, but never casual or sloppy',
+        ] }],
+      },
+      {
+        title: 'Tone Spectrum', source: 'Brand Voice Guide, kol-website apps/brand',
+        blocks: [{ type: 'table', columns: ['Tone Angle', 'Level', 'Description'], rows: [
+          ['Professional', 'High', 'Polished, articulate, respectful'],
+          ['Technical', 'Medium', 'Uses design vocabulary when helpful'],
+          ['Artistic', 'Medium', 'Expressive but controlled'],
+          ['Humorous', 'Low', 'Dry, subtle, understated'],
+          ['Marketing', 'Very Low', 'Never hype-driven'],
+        ] }],
+      },
+      {
+        title: 'Voice Dos', source: 'Brand Voice Guide, kol-website apps/brand',
+        blocks: [{ type: 'list', items: [
+          'Speak with calm authority', 'Use structure and hierarchy', 'Choose precise terminology', 'Use short sentences when explaining systems',
+          'Show the thinking, not just the outcome', 'Keep metaphors minimal and sharp', 'Use active voice',
+        ] }],
+      },
+      {
+        title: "Voice Don'ts", source: 'Brand Voice Guide, kol-website apps/brand',
+        blocks: [{ type: 'list', items: [
+          'No filler adjectives ("amazing", "outstanding", "world-class")', 'No hype language', 'No over-friendly casual tone', 'No jargon without purpose', 'No metaphors that over-explain',
+        ] }],
+      },
+    ],
+  },
 }

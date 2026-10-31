@@ -10,7 +10,7 @@
  * Measured on the shipped set: `chevron-down` → stroke; `caret-down`,
  * `star-solid`, `pause` → solid.
  *
- * Writes packages/icons/src/cuts.json — `{ name: 'stroke' | 'solid' }`, sorted
+ * Writes packages/icons/src/cuts.json — `{ name: 'stroke' | 'solid' | 'color' }`, sorted
  * — which index.js folds into KOL_ICON_SET_INTERFACE_META next to the folder group. A
  * new SVG classifies itself on the next run; `--check` fails when the JSON is
  * stale, so it can never drift from the drawings.
@@ -21,8 +21,10 @@ import { fileURLToPath } from 'node:url'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ICONS_SRC = join(HERE, '..', 'packages', 'icons', 'src')
-/* both sets — a glyph classifies itself wherever it lives (2026-08-28) */
-const SETS = ['kol-icon-set-interface', 'kol-icon-set-signal'].map((s) => join(ICONS_SRC, s))
+/* both sets — a glyph classifies itself wherever it lives (2026-08-28); external (2026-10-31) too, where a glyph that
+ * keeps its own fills is COLOR, never recoloured */
+const SETS = ['kol-icon-set-interface', 'kol-icon-set-signal', 'kol-icon-set-external'].map((s) => join(ICONS_SRC, s))
+const EXTERNAL = join(ICONS_SRC, 'kol-icon-set-external')
 const OUT = join(HERE, '..', 'packages', 'icons', 'src', 'cuts.json')
 const CHECK = process.argv.includes('--check')
 
@@ -30,10 +32,10 @@ const walk = (dir) => readdirSync(dir).flatMap((e) => {
   const p = join(dir, e)
   return statSync(p).isDirectory() ? walk(p) : p.endsWith('.svg') ? [p] : []
 })
-const cut = (svg) => (/fill="currentColor"/.test(svg) ? 'solid' : 'stroke')
+const cut = (svg, set) => (/fill="currentColor"/.test(svg) ? 'solid' : set === EXTERNAL ? 'color' : 'stroke')
 
 const next = {}
-for (const set of SETS) for (const p of walk(set)) next[p.split('/').pop().replace('.svg', '')] = cut(readFileSync(p, 'utf8'))
+for (const set of SETS) for (const p of walk(set)) next[p.split('/').pop().replace('.svg', '')] = cut(readFileSync(p, 'utf8'), set)
 const sorted = Object.fromEntries(Object.keys(next).sort().map((k) => [k, next[k]]))
 const json = JSON.stringify(sorted, null, 2) + '\n'
 
@@ -48,5 +50,5 @@ if (CHECK) {
   process.exit(1)
 }
 writeFileSync(OUT, json)
-const solid = Object.values(sorted).filter((c) => c === 'solid').length
-console.log(`icon-cuts: ${Object.keys(sorted).length} glyphs — ${solid} solid · ${Object.keys(sorted).length - solid} stroke → packages/icons/src/cuts.json`)
+const count = (k) => Object.values(sorted).filter((c) => c === k).length
+console.log(`icon-cuts: ${Object.keys(sorted).length} glyphs — ${count('solid')} solid · ${count('stroke')} stroke · ${count('color')} color → packages/icons/src/cuts.json`)

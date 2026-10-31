@@ -1,0 +1,2295 @@
+{
+ "name": "kol-icons-diff-set",
+ "fileKey": "91RgXQdroY01wN96lAiOv1",
+ "page": {
+  "id": "200:23737",
+  "name": "\u21b3 diff"
+ },
+ "built": "2026-10-31",
+ "diffRoot": "203:87",
+ "currentRoot": "203:137",
+ "note": "Category = the frame a component sits in. Read back: each component's parent.parent is its category frame; compare with `category` here to see moves.",
+ "frames": {
+  "design": "203:92",
+  "nav": "203:95",
+  "dashboard": "203:98",
+  "flow-connect": "203:101",
+  "shape-design": "203:104",
+  "plan": "203:107",
+  "people": "203:110",
+  "device": "203:113",
+  "business": "203:116",
+  "place": "203:119",
+  "file": "203:122",
+  "system": "203:125",
+  "nature": "203:128",
+  "faders": "203:131",
+  "code": "203:134"
+ },
+ "referenceFrames": {
+  "add-remove": "203:142",
+  "arrow": "203:145",
+  "arrow-diagonal": "203:148",
+  "atomic": "203:151",
+  "caret": "203:154",
+  "chevron": "203:157",
+  "code": "203:160",
+  "components": "203:163",
+  "device": "203:166",
+  "editing": "203:169",
+  "eye-lock": "203:172",
+  "files": "203:175",
+  "layout": "203:178",
+  "misc": "203:181",
+  "nav": "203:184",
+  "notify": "203:187",
+  "pattern": "203:190",
+  "playback": "203:193",
+  "shape-forms": "203:196",
+  "shape-primitives": "203:199",
+  "singletons": "203:202",
+  "social": "203:205",
+  "tools": "203:208",
+  "traffic": "203:211",
+  "transfer": "203:214",
+  "typography": "203:217"
+ },
+ "components": {
+  "A-stack-hang": {
+   "id": "204:87",
+   "category": "design"
+  },
+  "A-bezier": {
+   "id": "204:88",
+   "category": "design"
+  },
+  "A-select-frame-02": {
+   "id": "204:89",
+   "category": "design"
+  },
+  "A-edit-square": {
+   "id": "204:90",
+   "category": "design"
+  },
+  "A-pencil": {
+   "id": "204:91",
+   "category": "design"
+  },
+  "A-pencil-02": {
+   "id": "204:92",
+   "category": "design"
+  },
+  "C-220-swatch-book": {
+   "id": "204:93",
+   "category": "design"
+  },
+  "A-blend": {
+   "id": "204:94",
+   "category": "design"
+  },
+  "A-hatch": {
+   "id": "204:95",
+   "category": "design"
+  },
+  "A-drop-hatch": {
+   "id": "204:96",
+   "category": "design"
+  },
+  "A-paint-roller": {
+   "id": "204:97",
+   "category": "design"
+  },
+  "A-eraser": {
+   "id": "204:98",
+   "category": "design"
+  },
+  "A-ruler": {
+   "id": "204:99",
+   "category": "design"
+  },
+  "A-ruler-combined": {
+   "id": "204:100",
+   "category": "design"
+  },
+  "A-ruler-triangle": {
+   "id": "204:101",
+   "category": "design"
+  },
+  "A-pencil-circle": {
+   "id": "204:102",
+   "category": "design"
+  },
+  "A-marker-circle": {
+   "id": "204:103",
+   "category": "design"
+  },
+  "A-pen-nib-straight": {
+   "id": "204:104",
+   "category": "design"
+  },
+  "A-pencil-simple": {
+   "id": "204:105",
+   "category": "design"
+  },
+  "A-pencil-03": {
+   "id": "204:106",
+   "category": "design"
+  },
+  "A-pen-02": {
+   "id": "204:107",
+   "category": "design"
+  },
+  "A-drop-circle": {
+   "id": "204:108",
+   "category": "design"
+  },
+  "A-select-circle": {
+   "id": "204:109",
+   "category": "design"
+  },
+  "A-cube-dashed-02": {
+   "id": "204:110",
+   "category": "design"
+  },
+  "A-stack": {
+   "id": "204:111",
+   "category": "design"
+  },
+  "A-cube-dashed": {
+   "id": "204:112",
+   "category": "design"
+  },
+  "A-select-frame": {
+   "id": "204:113",
+   "category": "design"
+  },
+  "B-quote": {
+   "id": "204:114",
+   "category": "design"
+  },
+  "B-quote-solid": {
+   "id": "204:115",
+   "category": "design"
+  },
+  "C-001-edit-square": {
+   "id": "204:116",
+   "category": "design"
+  },
+  "C-002-lasso-rotate": {
+   "id": "204:117",
+   "category": "design"
+  },
+  "C-003-add-frame": {
+   "id": "204:118",
+   "category": "design"
+  },
+  "C-004-pen-nib": {
+   "id": "204:119",
+   "category": "design"
+  },
+  "C-005-duplicate": {
+   "id": "204:120",
+   "category": "design"
+  },
+  "C-006-eraser": {
+   "id": "204:121",
+   "category": "design"
+  },
+  "C-007-flip-frame": {
+   "id": "204:122",
+   "category": "design"
+  },
+  "C-008-add-anchor-pen": {
+   "id": "204:123",
+   "category": "design"
+  },
+  "C-014-rotate-object": {
+   "id": "204:124",
+   "category": "design"
+  },
+  "C-015-copy-layer": {
+   "id": "204:125",
+   "category": "design"
+  },
+  "C-016-text-frame": {
+   "id": "204:126",
+   "category": "design"
+  },
+  "C-017-flip-transform": {
+   "id": "204:127",
+   "category": "design"
+  },
+  "C-020-path-pencil": {
+   "id": "204:128",
+   "category": "design"
+  },
+  "C-023-edit-selection": {
+   "id": "204:129",
+   "category": "design"
+  },
+  "C-024-text-tool": {
+   "id": "204:130",
+   "category": "design"
+  },
+  "C-025-pen-nib": {
+   "id": "204:131",
+   "category": "design"
+  },
+  "C-026-lasso-select": {
+   "id": "204:132",
+   "category": "design"
+  },
+  "C-027-spray-can": {
+   "id": "204:133",
+   "category": "design"
+  },
+  "C-029-magic-wand": {
+   "id": "204:134",
+   "category": "design"
+  },
+  "C-030-eyedropper": {
+   "id": "204:135",
+   "category": "design"
+  },
+  "C-031-bezier-pen-handles": {
+   "id": "204:136",
+   "category": "design"
+  },
+  "C-032-3d-cube": {
+   "id": "204:137",
+   "category": "design"
+  },
+  "C-033-rgb-circles": {
+   "id": "204:138",
+   "category": "design"
+  },
+  "C-034-cmyk": {
+   "id": "204:139",
+   "category": "design"
+  },
+  "C-035-eraser": {
+   "id": "204:140",
+   "category": "design"
+  },
+  "C-036-brush": {
+   "id": "204:141",
+   "category": "design"
+  },
+  "C-037-select-area": {
+   "id": "204:142",
+   "category": "design"
+  },
+  "C-038-crop": {
+   "id": "204:143",
+   "category": "design"
+  },
+  "C-039-swatch-book": {
+   "id": "204:144",
+   "category": "design"
+  },
+  "C-040-drawing-tablet": {
+   "id": "204:145",
+   "category": "design"
+  },
+  "C-041-ruler": {
+   "id": "204:146",
+   "category": "design"
+  },
+  "C-042-design-file": {
+   "id": "204:147",
+   "category": "design"
+  },
+  "C-043-scissors": {
+   "id": "204:148",
+   "category": "design"
+  },
+  "C-045-craft-knife": {
+   "id": "204:149",
+   "category": "design"
+  },
+  "C-047-image-frame": {
+   "id": "204:150",
+   "category": "design"
+  },
+  "C-048-paint-bucket": {
+   "id": "204:151",
+   "category": "design"
+  },
+  "C-049-ruler-pencil": {
+   "id": "204:152",
+   "category": "design"
+  },
+  "C-050-3d-axes": {
+   "id": "204:153",
+   "category": "design"
+  },
+  "C-051-easel-artboard": {
+   "id": "204:154",
+   "category": "design"
+  },
+  "C-052-edit-image": {
+   "id": "204:155",
+   "category": "design"
+  },
+  "C-053-text-box": {
+   "id": "204:156",
+   "category": "design"
+  },
+  "C-055-layers": {
+   "id": "204:157",
+   "category": "design"
+  },
+  "C-056-colour-swatches": {
+   "id": "204:158",
+   "category": "design"
+  },
+  "C-058-select-cursor": {
+   "id": "204:159",
+   "category": "design"
+  },
+  "C-059-pen-tool": {
+   "id": "204:160",
+   "category": "design"
+  },
+  "C-060-3d-rotate": {
+   "id": "204:161",
+   "category": "design"
+  },
+  "C-061-easel": {
+   "id": "204:162",
+   "category": "design"
+  },
+  "C-062-layers": {
+   "id": "204:163",
+   "category": "design"
+  },
+  "C-063-palette-brush": {
+   "id": "204:164",
+   "category": "design"
+  },
+  "C-101-scroll-pen": {
+   "id": "204:165",
+   "category": "design"
+  },
+  "C-102-pen-laurel": {
+   "id": "204:166",
+   "category": "design"
+  },
+  "C-103-idea-pencil": {
+   "id": "204:167",
+   "category": "design"
+  },
+  "C-104-pen-nib-writing": {
+   "id": "204:168",
+   "category": "design"
+  },
+  "C-105-file-pen": {
+   "id": "204:169",
+   "category": "design"
+  },
+  "C-106-pen": {
+   "id": "204:170",
+   "category": "design"
+  },
+  "C-107-clipboard-pen": {
+   "id": "204:171",
+   "category": "design"
+  },
+  "C-108-notepad-pen": {
+   "id": "204:172",
+   "category": "design"
+  },
+  "C-109-typewriter": {
+   "id": "204:173",
+   "category": "design"
+  },
+  "C-110-quill-signature": {
+   "id": "204:174",
+   "category": "design"
+  },
+  "C-111-book-pen": {
+   "id": "204:175",
+   "category": "design"
+  },
+  "C-112-pen-scribble": {
+   "id": "204:176",
+   "category": "design"
+  },
+  "C-113-magic-pen": {
+   "id": "204:177",
+   "category": "design"
+  },
+  "C-114-brush": {
+   "id": "204:178",
+   "category": "design"
+  },
+  "C-115-file-quill": {
+   "id": "204:179",
+   "category": "design"
+  },
+  "C-116-fountain-pen": {
+   "id": "204:180",
+   "category": "design"
+  },
+  "C-176-layers": {
+   "id": "204:181",
+   "category": "design"
+  },
+  "C-183-pen-tool": {
+   "id": "204:182",
+   "category": "design"
+  },
+  "C-187-pilcrow": {
+   "id": "204:183",
+   "category": "design"
+  },
+  "C-193-heading-6": {
+   "id": "204:184",
+   "category": "design"
+  },
+  "C-194-slice": {
+   "id": "204:185",
+   "category": "design"
+  },
+  "C-198-diameter": {
+   "id": "204:186",
+   "category": "design"
+  },
+  "C-202-paint-bucket": {
+   "id": "204:187",
+   "category": "design"
+  },
+  "C-205-paint-roller": {
+   "id": "204:188",
+   "category": "design"
+  },
+  "C-210-square-pen": {
+   "id": "204:189",
+   "category": "design"
+  },
+  "C-216-palette": {
+   "id": "204:190",
+   "category": "design"
+  },
+  "C-217-clipboard-pen-line": {
+   "id": "204:191",
+   "category": "design"
+  },
+  "C-229-drafting-compass": {
+   "id": "204:192",
+   "category": "design"
+  },
+  "C-234-utensils-crossed": {
+   "id": "204:193",
+   "category": "design"
+  },
+  "C-246-wand-sparkles": {
+   "id": "204:194",
+   "category": "design"
+  },
+  "C-248-sparkles": {
+   "id": "204:195",
+   "category": "design"
+  },
+  "A-beaker": {
+   "id": "204:196",
+   "category": "nav"
+  },
+  "A-bookmark-square": {
+   "id": "204:197",
+   "category": "nav"
+  },
+  "A-briefcase": {
+   "id": "204:198",
+   "category": "nav"
+  },
+  "A-cash": {
+   "id": "204:199",
+   "category": "nav"
+  },
+  "A-receipt-refund": {
+   "id": "204:200",
+   "category": "nav"
+  },
+  "A-archive": {
+   "id": "204:201",
+   "category": "nav"
+  },
+  "A-chat": {
+   "id": "204:202",
+   "category": "nav"
+  },
+  "A-link": {
+   "id": "204:203",
+   "category": "nav"
+  },
+  "A-chat-double": {
+   "id": "204:204",
+   "category": "nav"
+  },
+  "A-location": {
+   "id": "204:205",
+   "category": "nav"
+  },
+  "A-scale": {
+   "id": "204:206",
+   "category": "nav"
+  },
+  "A-id-card": {
+   "id": "204:207",
+   "category": "nav"
+  },
+  "A-search-circle": {
+   "id": "204:208",
+   "category": "nav"
+  },
+  "A-cart": {
+   "id": "204:209",
+   "category": "nav"
+  },
+  "A-folder-add": {
+   "id": "204:210",
+   "category": "nav"
+  },
+  "A-folder-open": {
+   "id": "204:211",
+   "category": "nav"
+  },
+  "A-credit-card": {
+   "id": "204:212",
+   "category": "nav"
+  },
+  "A-hand": {
+   "id": "204:213",
+   "category": "nav"
+  },
+  "A-truck": {
+   "id": "204:214",
+   "category": "nav"
+  },
+  "A-user-circle": {
+   "id": "204:215",
+   "category": "nav"
+  },
+  "A-email-open": {
+   "id": "204:216",
+   "category": "nav"
+  },
+  "A-user-group": {
+   "id": "204:217",
+   "category": "nav"
+  },
+  "A-thumb-down": {
+   "id": "204:218",
+   "category": "nav"
+  },
+  "A-thumb-up": {
+   "id": "204:219",
+   "category": "nav"
+  },
+  "A-fire": {
+   "id": "204:220",
+   "category": "nav"
+  },
+  "A-megaphone": {
+   "id": "204:221",
+   "category": "nav"
+  },
+  "A-globe-earth": {
+   "id": "204:222",
+   "category": "nav"
+  },
+  "A-link-02": {
+   "id": "204:223",
+   "category": "nav"
+  },
+  "A-help-circle": {
+   "id": "204:224",
+   "category": "nav"
+  },
+  "A-check-circle": {
+   "id": "204:225",
+   "category": "nav"
+  },
+  "A-checkbox": {
+   "id": "204:226",
+   "category": "nav"
+  },
+  "A-cast": {
+   "id": "204:227",
+   "category": "nav"
+  },
+  "A-log-out": {
+   "id": "204:228",
+   "category": "nav"
+  },
+  "A-log-in": {
+   "id": "204:229",
+   "category": "nav"
+  },
+  "A-compass": {
+   "id": "204:230",
+   "category": "nav"
+  },
+  "A-folder-minus": {
+   "id": "204:231",
+   "category": "nav"
+  },
+  "A-camera-off": {
+   "id": "204:232",
+   "category": "nav"
+  },
+  "A-camera-scan": {
+   "id": "204:233",
+   "category": "nav"
+  },
+  "A-lightbulb": {
+   "id": "204:234",
+   "category": "nav"
+  },
+  "A-yarn": {
+   "id": "204:235",
+   "category": "nav"
+  },
+  "C-207-link": {
+   "id": "204:236",
+   "category": "nav"
+  },
+  "A-cursor-click": {
+   "id": "204:237",
+   "category": "nav"
+  },
+  "A-cloud-upload": {
+   "id": "204:238",
+   "category": "nav"
+  },
+  "A-navigation": {
+   "id": "204:239",
+   "category": "nav"
+  },
+  "A-cloud-download": {
+   "id": "204:240",
+   "category": "nav"
+  },
+  "A-support": {
+   "id": "204:241",
+   "category": "nav"
+  },
+  "A-bolt-zigzag": {
+   "id": "204:242",
+   "category": "nav"
+  },
+  "A-toggle-square": {
+   "id": "204:243",
+   "category": "nav"
+  },
+  "A-toggle-oval": {
+   "id": "204:244",
+   "category": "nav"
+  },
+  "A-toggle-oval-02": {
+   "id": "204:245",
+   "category": "nav"
+  },
+  "A-toggle-square-02": {
+   "id": "204:246",
+   "category": "nav"
+  },
+  "A-bolt-02": {
+   "id": "204:247",
+   "category": "nav"
+  },
+  "A-bolt-off": {
+   "id": "204:248",
+   "category": "nav"
+  },
+  "B-arrows-3way": {
+   "id": "204:249",
+   "category": "nav"
+  },
+  "B-contract-corners-solid": {
+   "id": "204:250",
+   "category": "nav"
+  },
+  "B-contract-cross": {
+   "id": "204:251",
+   "category": "nav"
+  },
+  "B-contract-cross-solid": {
+   "id": "204:252",
+   "category": "nav"
+  },
+  "B-expand-corners-solid": {
+   "id": "204:253",
+   "category": "nav"
+  },
+  "B-expand-cross": {
+   "id": "204:254",
+   "category": "nav"
+  },
+  "B-expand-cross-solid": {
+   "id": "204:255",
+   "category": "nav"
+  },
+  "B-face-scan": {
+   "id": "204:256",
+   "category": "nav"
+  },
+  "B-face-scan-solid": {
+   "id": "204:257",
+   "category": "nav"
+  },
+  "B-hand-pointer": {
+   "id": "204:258",
+   "category": "nav"
+  },
+  "B-hand-pointer-solid": {
+   "id": "204:259",
+   "category": "nav"
+  },
+  "B-heart-half": {
+   "id": "204:260",
+   "category": "nav"
+  },
+  "B-heart-half-solid": {
+   "id": "204:261",
+   "category": "nav"
+  },
+  "B-lifebuoy": {
+   "id": "204:262",
+   "category": "nav"
+  },
+  "B-lifebuoy-solid": {
+   "id": "204:263",
+   "category": "nav"
+  },
+  "B-medal": {
+   "id": "204:264",
+   "category": "nav"
+  },
+  "B-medal-solid": {
+   "id": "204:265",
+   "category": "nav"
+  },
+  "B-mouse": {
+   "id": "204:266",
+   "category": "nav"
+  },
+  "B-mouse-solid": {
+   "id": "204:267",
+   "category": "nav"
+  },
+  "B-podium": {
+   "id": "204:268",
+   "category": "nav"
+  },
+  "B-podium-solid": {
+   "id": "204:269",
+   "category": "nav"
+  },
+  "B-rocket": {
+   "id": "204:270",
+   "category": "nav"
+  },
+  "B-rocket-solid": {
+   "id": "204:271",
+   "category": "nav"
+  },
+  "B-shop": {
+   "id": "204:272",
+   "category": "nav"
+  },
+  "B-shop-solid": {
+   "id": "204:273",
+   "category": "nav"
+  },
+  "B-shopping-bag": {
+   "id": "204:274",
+   "category": "nav"
+  },
+  "B-shopping-bag-solid": {
+   "id": "204:275",
+   "category": "nav"
+  },
+  "B-switch-lane": {
+   "id": "204:276",
+   "category": "nav"
+  },
+  "B-switch-lane-solid": {
+   "id": "204:277",
+   "category": "nav"
+  },
+  "C-022-expand-cross-arrows": {
+   "id": "204:278",
+   "category": "nav"
+  },
+  "C-028-search-zoom": {
+   "id": "204:279",
+   "category": "nav"
+  },
+  "C-070-bell": {
+   "id": "204:280",
+   "category": "nav"
+  },
+  "C-091-bell-ringing": {
+   "id": "204:281",
+   "category": "nav"
+  },
+  "C-139-search-gear": {
+   "id": "204:282",
+   "category": "nav"
+  },
+  "C-149-search": {
+   "id": "204:283",
+   "category": "nav"
+  },
+  "C-160-crosshair": {
+   "id": "204:284",
+   "category": "nav"
+  },
+  "C-165-podium": {
+   "id": "204:285",
+   "category": "nav"
+  },
+  "C-166-funnel": {
+   "id": "204:286",
+   "category": "nav"
+  },
+  "C-175-user-target": {
+   "id": "204:287",
+   "category": "nav"
+  },
+  "C-190-concierge-bell": {
+   "id": "204:288",
+   "category": "nav"
+  },
+  "C-195-award": {
+   "id": "204:289",
+   "category": "nav"
+  },
+  "C-212-triangle-alert": {
+   "id": "204:290",
+   "category": "nav"
+  },
+  "C-219-medal": {
+   "id": "204:291",
+   "category": "nav"
+  },
+  "C-222-trophy": {
+   "id": "204:292",
+   "category": "nav"
+  },
+  "C-223-send": {
+   "id": "204:293",
+   "category": "nav"
+  },
+  "C-224-alarm-smoke": {
+   "id": "204:294",
+   "category": "nav"
+  },
+  "C-242-circle-user": {
+   "id": "204:295",
+   "category": "nav"
+  },
+  "C-245-siren": {
+   "id": "204:296",
+   "category": "nav"
+  },
+  "A-dot-plot-03": {
+   "id": "205:87",
+   "category": "dashboard"
+  },
+  "A-dot-plot-04": {
+   "id": "205:88",
+   "category": "dashboard"
+  },
+  "A-node-graph": {
+   "id": "205:89",
+   "category": "dashboard"
+  },
+  "A-candlestick": {
+   "id": "205:90",
+   "category": "dashboard"
+  },
+  "A-candlestick-02": {
+   "id": "205:91",
+   "category": "dashboard"
+  },
+  "A-presentation-bar": {
+   "id": "205:92",
+   "category": "dashboard"
+  },
+  "A-chart-square": {
+   "id": "205:93",
+   "category": "dashboard"
+  },
+  "A-file-chart": {
+   "id": "205:94",
+   "category": "dashboard"
+  },
+  "A-pie-hatch": {
+   "id": "205:95",
+   "category": "dashboard"
+  },
+  "A-pie-quarter": {
+   "id": "205:96",
+   "category": "dashboard"
+  },
+  "A-bar-chart": {
+   "id": "205:97",
+   "category": "dashboard"
+  },
+  "B-chart-pie": {
+   "id": "205:98",
+   "category": "dashboard"
+  },
+  "B-chart-pie-slice": {
+   "id": "205:99",
+   "category": "dashboard"
+  },
+  "B-chart-pie-slice-solid": {
+   "id": "205:100",
+   "category": "dashboard"
+  },
+  "B-chart-pie-solid": {
+   "id": "205:101",
+   "category": "dashboard"
+  },
+  "B-chart-pie-split": {
+   "id": "205:102",
+   "category": "dashboard"
+  },
+  "B-chart-pie-split-solid": {
+   "id": "205:103",
+   "category": "dashboard"
+  },
+  "B-chart-trend": {
+   "id": "205:104",
+   "category": "dashboard"
+  },
+  "B-chart-trend-solid": {
+   "id": "205:105",
+   "category": "dashboard"
+  },
+  "C-119-bars-line": {
+   "id": "205:106",
+   "category": "dashboard"
+  },
+  "C-120-gauge": {
+   "id": "205:107",
+   "category": "dashboard"
+  },
+  "C-121-dashboard-tile": {
+   "id": "205:108",
+   "category": "dashboard"
+  },
+  "C-122-bars-trend-arrow": {
+   "id": "205:109",
+   "category": "dashboard"
+  },
+  "C-123-monitor-chart": {
+   "id": "205:110",
+   "category": "dashboard"
+  },
+  "C-124-database-cycle": {
+   "id": "205:111",
+   "category": "dashboard"
+  },
+  "C-128-database-globe": {
+   "id": "205:112",
+   "category": "dashboard"
+  },
+  "C-129-database-refresh": {
+   "id": "205:113",
+   "category": "dashboard"
+  },
+  "C-130-line-chart": {
+   "id": "205:114",
+   "category": "dashboard"
+  },
+  "C-133-cycle-chart": {
+   "id": "205:115",
+   "category": "dashboard"
+  },
+  "C-134-trend-search": {
+   "id": "205:116",
+   "category": "dashboard"
+  },
+  "C-135-donut-chart": {
+   "id": "205:117",
+   "category": "dashboard"
+  },
+  "C-136-database-hex": {
+   "id": "205:118",
+   "category": "dashboard"
+  },
+  "C-137-phone-chart": {
+   "id": "205:119",
+   "category": "dashboard"
+  },
+  "C-138-cloud-apps": {
+   "id": "205:120",
+   "category": "dashboard"
+  },
+  "C-140-bars-pie": {
+   "id": "205:121",
+   "category": "dashboard"
+  },
+  "C-146-cloud-gear": {
+   "id": "205:122",
+   "category": "dashboard"
+  },
+  "C-147-database": {
+   "id": "205:123",
+   "category": "dashboard"
+  },
+  "C-148-bars-search": {
+   "id": "205:124",
+   "category": "dashboard"
+  },
+  "C-150-server": {
+   "id": "205:125",
+   "category": "dashboard"
+  },
+  "C-151-growth-bars": {
+   "id": "205:126",
+   "category": "dashboard"
+  },
+  "C-154-donut-ring": {
+   "id": "205:127",
+   "category": "dashboard"
+  },
+  "C-156-cloud-monitor": {
+   "id": "205:128",
+   "category": "dashboard"
+  },
+  "C-157-pie-search": {
+   "id": "205:129",
+   "category": "dashboard"
+  },
+  "C-159-server-rack": {
+   "id": "205:130",
+   "category": "dashboard"
+  },
+  "C-162-pie-chart": {
+   "id": "205:131",
+   "category": "dashboard"
+  },
+  "C-163-line-chart": {
+   "id": "205:132",
+   "category": "dashboard"
+  },
+  "C-164-monitor-pie": {
+   "id": "205:133",
+   "category": "dashboard"
+  },
+  "C-174-server-gear": {
+   "id": "205:134",
+   "category": "dashboard"
+  },
+  "C-178-search-graph": {
+   "id": "205:135",
+   "category": "dashboard"
+  },
+  "C-179-clipboard-pie": {
+   "id": "205:136",
+   "category": "dashboard"
+  },
+  "C-181-report-chart": {
+   "id": "205:137",
+   "category": "dashboard"
+  },
+  "C-182-growth-bars-arrow": {
+   "id": "205:138",
+   "category": "dashboard"
+  },
+  "C-191-database-zap": {
+   "id": "205:139",
+   "category": "dashboard"
+  },
+  "C-214-presentation": {
+   "id": "205:140",
+   "category": "dashboard"
+  },
+  "C-227-layout-dashboard": {
+   "id": "205:141",
+   "category": "dashboard"
+  },
+  "C-251-radar": {
+   "id": "205:142",
+   "category": "dashboard"
+  },
+  "A-sound-bars": {
+   "id": "205:143",
+   "category": "flow-connect"
+  },
+  "A-wind": {
+   "id": "205:144",
+   "category": "flow-connect"
+  },
+  "A-branch-up": {
+   "id": "205:145",
+   "category": "flow-connect"
+  },
+  "A-network": {
+   "id": "205:146",
+   "category": "flow-connect"
+  },
+  "A-hierarchy": {
+   "id": "205:147",
+   "category": "flow-connect"
+  },
+  "A-hierarchy-02": {
+   "id": "205:148",
+   "category": "flow-connect"
+  },
+  "A-hierarchy-03": {
+   "id": "205:149",
+   "category": "flow-connect"
+  },
+  "A-flow-branch": {
+   "id": "205:150",
+   "category": "flow-connect"
+  },
+  "A-tree": {
+   "id": "205:151",
+   "category": "flow-connect"
+  },
+  "A-flow-tree": {
+   "id": "205:152",
+   "category": "flow-connect"
+  },
+  "A-git-compare": {
+   "id": "205:153",
+   "category": "flow-connect"
+  },
+  "A-git-pull-request": {
+   "id": "205:154",
+   "category": "flow-connect"
+  },
+  "A-git-compare-02": {
+   "id": "205:155",
+   "category": "flow-connect"
+  },
+  "A-git-compare-03": {
+   "id": "205:156",
+   "category": "flow-connect"
+  },
+  "A-git-branch": {
+   "id": "205:157",
+   "category": "flow-connect"
+  },
+  "A-git-fork": {
+   "id": "205:158",
+   "category": "flow-connect"
+  },
+  "A-git-merge": {
+   "id": "205:159",
+   "category": "flow-connect"
+  },
+  "A-git-branch-02": {
+   "id": "205:160",
+   "category": "flow-connect"
+  },
+  "A-git-branch-03": {
+   "id": "205:161",
+   "category": "flow-connect"
+  },
+  "A-git-branch-04": {
+   "id": "205:162",
+   "category": "flow-connect"
+  },
+  "A-share": {
+   "id": "205:163",
+   "category": "flow-connect"
+  },
+  "A-git-commit": {
+   "id": "205:164",
+   "category": "flow-connect"
+  },
+  "A-rotate-out": {
+   "id": "205:165",
+   "category": "flow-connect"
+  },
+  "A-undo-circle": {
+   "id": "205:166",
+   "category": "flow-connect"
+  },
+  "A-sync": {
+   "id": "205:167",
+   "category": "flow-connect"
+  },
+  "A-orbit": {
+   "id": "205:168",
+   "category": "flow-connect"
+  },
+  "A-bubbles": {
+   "id": "205:169",
+   "category": "flow-connect"
+  },
+  "A-hex-nut": {
+   "id": "205:170",
+   "category": "flow-connect"
+  },
+  "A-hierarchy-boxes": {
+   "id": "205:171",
+   "category": "flow-connect"
+  },
+  "A-bento-02": {
+   "id": "205:172",
+   "category": "flow-connect"
+  },
+  "A-orbit-dot": {
+   "id": "205:173",
+   "category": "flow-connect"
+  },
+  "A-scan": {
+   "id": "205:174",
+   "category": "flow-connect"
+  },
+  "A-circles-grid-02": {
+   "id": "205:175",
+   "category": "flow-connect"
+  },
+  "A-circles-grid": {
+   "id": "205:176",
+   "category": "flow-connect"
+  },
+  "A-squares-linked": {
+   "id": "205:177",
+   "category": "flow-connect"
+  },
+  "A-circles-three": {
+   "id": "205:178",
+   "category": "flow-connect"
+  },
+  "A-stop-circle": {
+   "id": "205:179",
+   "category": "flow-connect"
+  },
+  "C-141-gear-network": {
+   "id": "205:180",
+   "category": "flow-connect"
+  },
+  "C-142-target-refresh": {
+   "id": "205:181",
+   "category": "flow-connect"
+  },
+  "C-153-cart-load": {
+   "id": "205:182",
+   "category": "flow-connect"
+  },
+  "C-155-data-network": {
+   "id": "205:183",
+   "category": "flow-connect"
+  },
+  "C-158-hierarchy": {
+   "id": "205:184",
+   "category": "flow-connect"
+  },
+  "C-161-power": {
+   "id": "205:185",
+   "category": "flow-connect"
+  },
+  "C-170-nodes": {
+   "id": "205:186",
+   "category": "flow-connect"
+  },
+  "C-171-workflow-circle": {
+   "id": "205:187",
+   "category": "flow-connect"
+  },
+  "C-172-flow-arrows": {
+   "id": "205:188",
+   "category": "flow-connect"
+  },
+  "C-184-network": {
+   "id": "205:189",
+   "category": "flow-connect"
+  },
+  "C-199-circle-arrow-out-up-right": {
+   "id": "205:190",
+   "category": "flow-connect"
+  },
+  "C-239-orbit": {
+   "id": "205:191",
+   "category": "flow-connect"
+  },
+  "C-247-git-pull-request-closed": {
+   "id": "205:192",
+   "category": "flow-connect"
+  },
+  "A-circles-pair": {
+   "id": "205:193",
+   "category": "shape-design"
+  },
+  "A-shapes": {
+   "id": "205:194",
+   "category": "shape-design"
+  },
+  "A-shapes-02": {
+   "id": "205:195",
+   "category": "shape-design"
+  },
+  "A-columns-two": {
+   "id": "205:196",
+   "category": "shape-design"
+  },
+  "A-table": {
+   "id": "205:197",
+   "category": "shape-design"
+  },
+  "A-grid-2x2": {
+   "id": "205:198",
+   "category": "shape-design"
+  },
+  "A-broom": {
+   "id": "205:199",
+   "category": "shape-design"
+  },
+  "A-magnet": {
+   "id": "205:200",
+   "category": "shape-design"
+  },
+  "A-magnet-02": {
+   "id": "205:201",
+   "category": "shape-design"
+  },
+  "A-rows-02": {
+   "id": "205:202",
+   "category": "shape-design"
+  },
+  "A-bento": {
+   "id": "205:203",
+   "category": "shape-design"
+  },
+  "B-barrel": {
+   "id": "205:204",
+   "category": "shape-design"
+  },
+  "A-triangle-down": {
+   "id": "205:205",
+   "category": "shape-design"
+  },
+  "A-capsules": {
+   "id": "205:206",
+   "category": "shape-design"
+  },
+  "A-tag-arrow": {
+   "id": "205:207",
+   "category": "shape-design"
+  },
+  "A-asterisk": {
+   "id": "205:208",
+   "category": "shape-design"
+  },
+  "A-sync-dashed": {
+   "id": "205:209",
+   "category": "shape-design"
+  },
+  "A-disc": {
+   "id": "205:210",
+   "category": "shape-design"
+  },
+  "A-square-slash": {
+   "id": "205:211",
+   "category": "shape-design"
+  },
+  "A-octagon": {
+   "id": "205:212",
+   "category": "shape-design"
+  },
+  "A-chip": {
+   "id": "205:213",
+   "category": "shape-design"
+  },
+  "A-ticket": {
+   "id": "205:214",
+   "category": "shape-design"
+  },
+  "A-puzzle": {
+   "id": "205:215",
+   "category": "shape-design"
+  },
+  "A-squares-linked-02": {
+   "id": "205:216",
+   "category": "shape-design"
+  },
+  "A-container": {
+   "id": "205:217",
+   "category": "shape-design"
+  },
+  "A-send": {
+   "id": "205:218",
+   "category": "shape-design"
+  },
+  "A-more-circle": {
+   "id": "205:219",
+   "category": "shape-design"
+  },
+  "B-shield": {
+   "id": "205:220",
+   "category": "shape-design"
+  },
+  "B-shield-badge": {
+   "id": "205:221",
+   "category": "shape-design"
+  },
+  "B-shield-badge-solid": {
+   "id": "205:222",
+   "category": "shape-design"
+  },
+  "B-shield-notch": {
+   "id": "205:223",
+   "category": "shape-design"
+  },
+  "B-shield-notch-solid": {
+   "id": "205:224",
+   "category": "shape-design"
+  },
+  "B-shield-round": {
+   "id": "205:225",
+   "category": "shape-design"
+  },
+  "B-shield-round-solid": {
+   "id": "205:226",
+   "category": "shape-design"
+  },
+  "B-shield-solid": {
+   "id": "205:227",
+   "category": "shape-design"
+  },
+  "B-shield-wave": {
+   "id": "205:228",
+   "category": "shape-design"
+  },
+  "B-shield-wave-solid": {
+   "id": "205:229",
+   "category": "shape-design"
+  },
+  "C-012-shapes-on-image": {
+   "id": "205:230",
+   "category": "shape-design"
+  },
+  "C-021-shape-union": {
+   "id": "205:231",
+   "category": "shape-design"
+  },
+  "C-132-venn-circles": {
+   "id": "205:232",
+   "category": "shape-design"
+  },
+  "A-clock": {
+   "id": "205:233",
+   "category": "plan"
+  },
+  "A-calendar": {
+   "id": "205:234",
+   "category": "plan"
+  },
+  "C-064-calendar": {
+   "id": "205:235",
+   "category": "plan"
+  },
+  "C-065-clock": {
+   "id": "205:236",
+   "category": "plan"
+  },
+  "C-067-hourglass": {
+   "id": "205:237",
+   "category": "plan"
+  },
+  "C-068-clock": {
+   "id": "205:238",
+   "category": "plan"
+  },
+  "C-069-calendar": {
+   "id": "205:239",
+   "category": "plan"
+  },
+  "C-071-stopwatch": {
+   "id": "205:240",
+   "category": "plan"
+  },
+  "C-072-alarm-clock": {
+   "id": "205:241",
+   "category": "plan"
+  },
+  "C-075-clock": {
+   "id": "205:242",
+   "category": "plan"
+  },
+  "C-076-clock-ring": {
+   "id": "205:243",
+   "category": "plan"
+  },
+  "C-077-wall-clock-square": {
+   "id": "205:244",
+   "category": "plan"
+  },
+  "C-078-calendar-date": {
+   "id": "205:245",
+   "category": "plan"
+  },
+  "C-079-alarm-clock": {
+   "id": "205:246",
+   "category": "plan"
+  },
+  "C-080-stopwatch-gauge": {
+   "id": "205:247",
+   "category": "plan"
+  },
+  "C-081-dashed-clock": {
+   "id": "205:248",
+   "category": "plan"
+  },
+  "C-082-clock-gear": {
+   "id": "205:249",
+   "category": "plan"
+  },
+  "C-083-watch": {
+   "id": "205:250",
+   "category": "plan"
+  },
+  "C-084-fast-stopwatch": {
+   "id": "205:251",
+   "category": "plan"
+  },
+  "C-085-clock-cycle": {
+   "id": "205:252",
+   "category": "plan"
+  },
+  "C-086-person-clock": {
+   "id": "205:253",
+   "category": "plan"
+  },
+  "C-087-hourglass-round": {
+   "id": "205:254",
+   "category": "plan"
+  },
+  "C-088-24-h-clock": {
+   "id": "205:255",
+   "category": "plan"
+  },
+  "C-089-gauge-timer": {
+   "id": "205:256",
+   "category": "plan"
+  },
+  "C-090-watch-24": {
+   "id": "205:257",
+   "category": "plan"
+  },
+  "C-092-clock-dashed": {
+   "id": "205:258",
+   "category": "plan"
+  },
+  "C-093-fast-clock": {
+   "id": "205:259",
+   "category": "plan"
+  },
+  "C-094-calendar-clock": {
+   "id": "205:260",
+   "category": "plan"
+  },
+  "C-095-time-zones": {
+   "id": "205:261",
+   "category": "plan"
+  },
+  "C-096-globe-clock": {
+   "id": "205:262",
+   "category": "plan"
+  },
+  "C-097-24-h-refresh": {
+   "id": "205:263",
+   "category": "plan"
+  },
+  "C-098-hourglass": {
+   "id": "205:264",
+   "category": "plan"
+  },
+  "C-100-s-route-roadmap": {
+   "id": "205:265",
+   "category": "plan"
+  },
+  "C-196-timer-reset": {
+   "id": "205:266",
+   "category": "plan"
+  },
+  "C-204-scale": {
+   "id": "205:267",
+   "category": "plan"
+  },
+  "C-221-alarm-clock-plus": {
+   "id": "205:268",
+   "category": "plan"
+  },
+  "C-250-hourglass": {
+   "id": "205:269",
+   "category": "plan"
+  },
+  "B-brain": {
+   "id": "206:87",
+   "category": "people"
+  },
+  "B-brain-solid": {
+   "id": "206:88",
+   "category": "people"
+  },
+  "B-coffee": {
+   "id": "206:89",
+   "category": "people"
+  },
+  "B-coffee-solid": {
+   "id": "206:90",
+   "category": "people"
+  },
+  "B-face-smile": {
+   "id": "206:91",
+   "category": "people"
+  },
+  "B-face-smile-solid": {
+   "id": "206:92",
+   "category": "people"
+  },
+  "B-gamepad": {
+   "id": "206:93",
+   "category": "people"
+  },
+  "B-gamepad-solid": {
+   "id": "206:94",
+   "category": "people"
+  },
+  "B-graduation-cap": {
+   "id": "206:95",
+   "category": "people"
+  },
+  "B-graduation-cap-solid": {
+   "id": "206:96",
+   "category": "people"
+  },
+  "B-manual": {
+   "id": "206:97",
+   "category": "people"
+  },
+  "B-manual-solid": {
+   "id": "206:98",
+   "category": "people"
+  },
+  "B-manual-warning": {
+   "id": "206:99",
+   "category": "people"
+  },
+  "B-manual-warning-solid": {
+   "id": "206:100",
+   "category": "people"
+  },
+  "B-robot-head": {
+   "id": "206:101",
+   "category": "people"
+  },
+  "B-robot-head-solid": {
+   "id": "206:102",
+   "category": "people"
+  },
+  "B-skull": {
+   "id": "206:103",
+   "category": "people"
+  },
+  "B-skull-solid": {
+   "id": "206:104",
+   "category": "people"
+  },
+  "B-spy": {
+   "id": "206:105",
+   "category": "people"
+  },
+  "B-spy-solid": {
+   "id": "206:106",
+   "category": "people"
+  },
+  "B-syringe": {
+   "id": "206:107",
+   "category": "people"
+  },
+  "B-syringe-solid": {
+   "id": "206:108",
+   "category": "people"
+  },
+  "C-145-hand-gear": {
+   "id": "206:109",
+   "category": "people"
+  },
+  "C-167-head-gear": {
+   "id": "206:110",
+   "category": "people"
+  },
+  "C-186-skull": {
+   "id": "206:111",
+   "category": "people"
+  },
+  "C-203-hand-metal": {
+   "id": "206:112",
+   "category": "people"
+  },
+  "C-208-heart-handshake": {
+   "id": "206:113",
+   "category": "people"
+  },
+  "C-213-handshake": {
+   "id": "206:114",
+   "category": "people"
+  },
+  "C-218-book-open": {
+   "id": "206:115",
+   "category": "people"
+  },
+  "C-226-cake": {
+   "id": "206:116",
+   "category": "people"
+  },
+  "C-230-sword": {
+   "id": "206:117",
+   "category": "people"
+  },
+  "C-232-brain": {
+   "id": "206:118",
+   "category": "people"
+  },
+  "C-235-brain-circuit": {
+   "id": "206:119",
+   "category": "people"
+  },
+  "C-236-brain-cog": {
+   "id": "206:120",
+   "category": "people"
+  },
+  "C-237-syringe": {
+   "id": "206:121",
+   "category": "people"
+  },
+  "C-240-candy-cane": {
+   "id": "206:122",
+   "category": "people"
+  },
+  "C-241-dices": {
+   "id": "206:123",
+   "category": "people"
+  },
+  "B-broadcast": {
+   "id": "206:124",
+   "category": "device"
+  },
+  "B-broadcast-solid": {
+   "id": "206:125",
+   "category": "device"
+  },
+  "B-browser": {
+   "id": "206:126",
+   "category": "device"
+  },
+  "B-browser-check": {
+   "id": "206:127",
+   "category": "device"
+  },
+  "B-browser-check-solid": {
+   "id": "206:128",
+   "category": "device"
+  },
+  "B-browser-solid": {
+   "id": "206:129",
+   "category": "device"
+  },
+  "B-desktop-camera": {
+   "id": "206:130",
+   "category": "device"
+  },
+  "B-desktop-camera-solid": {
+   "id": "206:131",
+   "category": "device"
+  },
+  "B-desktop-code": {
+   "id": "206:132",
+   "category": "device"
+  },
+  "B-desktop-code-solid": {
+   "id": "206:133",
+   "category": "device"
+  },
+  "B-desktop-play": {
+   "id": "206:134",
+   "category": "device"
+  },
+  "B-desktop-play-solid": {
+   "id": "206:135",
+   "category": "device"
+  },
+  "B-desktop-skull": {
+   "id": "206:136",
+   "category": "device"
+  },
+  "B-desktop-skull-solid": {
+   "id": "206:137",
+   "category": "device"
+  },
+  "B-microphone": {
+   "id": "206:138",
+   "category": "device"
+  },
+  "B-microphone-solid": {
+   "id": "206:139",
+   "category": "device"
+  },
+  "B-printer": {
+   "id": "206:140",
+   "category": "device"
+  },
+  "B-printer-solid": {
+   "id": "206:141",
+   "category": "device"
+  },
+  "B-radio": {
+   "id": "206:142",
+   "category": "device"
+  },
+  "B-radio-solid": {
+   "id": "206:143",
+   "category": "device"
+  },
+  "B-robot": {
+   "id": "206:144",
+   "category": "device"
+  },
+  "B-robot-solid": {
+   "id": "206:145",
+   "category": "device"
+  },
+  "B-sd-card": {
+   "id": "206:146",
+   "category": "device"
+  },
+  "B-sd-card-solid": {
+   "id": "206:147",
+   "category": "device"
+  },
+  "C-009-camera": {
+   "id": "206:148",
+   "category": "device"
+  },
+  "C-011-video-film": {
+   "id": "206:149",
+   "category": "device"
+  },
+  "C-044-idea-bulb": {
+   "id": "206:150",
+   "category": "device"
+  },
+  "C-054-idea-bulb": {
+   "id": "206:151",
+   "category": "device"
+  },
+  "C-189-audio-waveform": {
+   "id": "206:152",
+   "category": "device"
+  },
+  "C-197-air-vent": {
+   "id": "206:153",
+   "category": "device"
+  },
+  "C-201-antenna": {
+   "id": "206:154",
+   "category": "device"
+  },
+  "C-209-film": {
+   "id": "206:155",
+   "category": "device"
+  },
+  "C-211-cpu": {
+   "id": "206:156",
+   "category": "device"
+  },
+  "C-231-cctv": {
+   "id": "206:157",
+   "category": "device"
+  },
+  "C-233-chrome": {
+   "id": "206:158",
+   "category": "device"
+  },
+  "C-238-plug-2": {
+   "id": "206:159",
+   "category": "device"
+  },
+  "A-list-bullet": {
+   "id": "206:160",
+   "category": "business"
+  },
+  "A-kanban-02": {
+   "id": "206:161",
+   "category": "business"
+  },
+  "A-split": {
+   "id": "206:162",
+   "category": "business"
+  },
+  "B-abacus-solid": {
+   "id": "206:163",
+   "category": "business"
+  },
+  "B-barrel-solid": {
+   "id": "206:164",
+   "category": "business"
+  },
+  "B-coins": {
+   "id": "206:165",
+   "category": "business"
+  },
+  "B-coins-solid": {
+   "id": "206:166",
+   "category": "business"
+  },
+  "B-dollar": {
+   "id": "206:167",
+   "category": "business"
+  },
+  "B-dollar-solid": {
+   "id": "206:168",
+   "category": "business"
+  },
+  "B-euro": {
+   "id": "206:169",
+   "category": "business"
+  },
+  "B-euro-solid": {
+   "id": "206:170",
+   "category": "business"
+  },
+  "B-exchange": {
+   "id": "206:171",
+   "category": "business"
+  },
+  "B-exchange-solid": {
+   "id": "206:172",
+   "category": "business"
+  },
+  "B-gem": {
+   "id": "206:173",
+   "category": "business"
+  },
+  "B-gem-solid": {
+   "id": "206:174",
+   "category": "business"
+  },
+  "B-gift": {
+   "id": "206:175",
+   "category": "business"
+  },
+  "B-gift-solid": {
+   "id": "206:176",
+   "category": "business"
+  },
+  "B-package": {
+   "id": "206:177",
+   "category": "business"
+  },
+  "B-package-open": {
+   "id": "206:178",
+   "category": "business"
+  },
+  "B-package-open-solid": {
+   "id": "206:179",
+   "category": "business"
+  },
+  "B-package-solid": {
+   "id": "206:180",
+   "category": "business"
+  },
+  "B-pound": {
+   "id": "206:181",
+   "category": "business"
+  },
+  "B-pound-solid": {
+   "id": "206:182",
+   "category": "business"
+  },
+  "B-yen": {
+   "id": "206:183",
+   "category": "business"
+  },
+  "B-yen-solid": {
+   "id": "206:184",
+   "category": "business"
+  },
+  "C-013-bezier-node": {
+   "id": "206:185",
+   "category": "business"
+  },
+  "C-019-vector-nodes": {
+   "id": "206:186",
+   "category": "business"
+  },
+  "C-125-server-bars": {
+   "id": "206:187",
+   "category": "business"
+  },
+  "C-126-database-network": {
+   "id": "206:188",
+   "category": "business"
+  },
+  "C-152-folder-tree": {
+   "id": "206:189",
+   "category": "business"
+  },
+  "C-169-network-star": {
+   "id": "206:190",
+   "category": "business"
+  },
+  "C-188-package-open": {
+   "id": "206:191",
+   "category": "business"
+  },
+  "C-215-receipt": {
+   "id": "206:192",
+   "category": "business"
+  },
+  "B-buildings": {
+   "id": "206:193",
+   "category": "place"
+  },
+  "B-buildings-solid": {
+   "id": "206:194",
+   "category": "place"
+  },
+  "B-car": {
+   "id": "206:195",
+   "category": "place"
+  },
+  "B-car-solid": {
+   "id": "206:196",
+   "category": "place"
+  },
+  "B-courthouse": {
+   "id": "206:197",
+   "category": "place"
+  },
+  "B-courthouse-solid": {
+   "id": "206:198",
+   "category": "place"
+  },
+  "B-factory": {
+   "id": "206:199",
+   "category": "place"
+  },
+  "B-factory-solid": {
+   "id": "206:200",
+   "category": "place"
+  },
+  "B-map-route": {
+   "id": "206:201",
+   "category": "place"
+  },
+  "B-map-route-solid": {
+   "id": "206:202",
+   "category": "place"
+  },
+  "B-train": {
+   "id": "206:203",
+   "category": "place"
+  },
+  "B-train-solid": {
+   "id": "206:204",
+   "category": "place"
+  },
+  "C-046-compass": {
+   "id": "206:205",
+   "category": "place"
+  },
+  "C-057-compass": {
+   "id": "206:206",
+   "category": "place"
+  },
+  "C-066-map-pin": {
+   "id": "206:207",
+   "category": "place"
+  },
+  "C-073-route-pins": {
+   "id": "206:208",
+   "category": "place"
+  },
+  "C-074-map": {
+   "id": "206:209",
+   "category": "place"
+  },
+  "C-099-route-flag-pin": {
+   "id": "206:210",
+   "category": "place"
+  },
+  "C-131-globe-search": {
+   "id": "206:211",
+   "category": "place"
+  },
+  "C-185-compass": {
+   "id": "206:212",
+   "category": "place"
+  },
+  "B-clipboard-check": {
+   "id": "206:213",
+   "category": "file"
+  },
+  "B-clipboard-check-solid": {
+   "id": "206:214",
+   "category": "file"
+  },
+  "B-clipboard-list": {
+   "id": "206:215",
+   "category": "file"
+  },
+  "B-clipboard-list-solid": {
+   "id": "206:216",
+   "category": "file"
+  },
+  "B-file-checklist": {
+   "id": "206:217",
+   "category": "file"
+  },
+  "B-file-checklist-solid": {
+   "id": "206:218",
+   "category": "file"
+  },
+  "C-010-images": {
+   "id": "206:219",
+   "category": "file"
+  },
+  "C-127-report-gear": {
+   "id": "206:220",
+   "category": "file"
+  },
+  "C-143-checklist": {
+   "id": "206:221",
+   "category": "file"
+  },
+  "C-168-file-check": {
+   "id": "206:222",
+   "category": "file"
+  },
+  "C-177-document": {
+   "id": "206:223",
+   "category": "file"
+  },
+  "C-200-folders": {
+   "id": "206:224",
+   "category": "file"
+  },
+  "C-206-image-minus": {
+   "id": "206:225",
+   "category": "file"
+  },
+  "A-kanban": {
+   "id": "206:226",
+   "category": "system"
+  },
+  "B-key": {
+   "id": "206:227",
+   "category": "system"
+  },
+  "B-key-solid": {
+   "id": "206:228",
+   "category": "system"
+  },
+  "C-117-bento-grid": {
+   "id": "206:229",
+   "category": "system"
+  },
+  "C-118-app-squares": {
+   "id": "206:230",
+   "category": "system"
+  },
+  "C-144-block-diagram": {
+   "id": "206:231",
+   "category": "system"
+  },
+  "C-173-gear-cycle": {
+   "id": "206:232",
+   "category": "system"
+  },
+  "C-180-gear": {
+   "id": "206:233",
+   "category": "system"
+  },
+  "C-243-layout-template": {
+   "id": "206:234",
+   "category": "system"
+  },
+  "C-249-table-cells-merge": {
+   "id": "206:235",
+   "category": "system"
+  },
+  "B-cloud-storm": {
+   "id": "206:236",
+   "category": "nature"
+  },
+  "B-cloud-storm-solid": {
+   "id": "206:237",
+   "category": "nature"
+  },
+  "B-leaf": {
+   "id": "206:238",
+   "category": "nature"
+  },
+  "C-192-bird": {
+   "id": "206:239",
+   "category": "nature"
+  },
+  "C-225-snail": {
+   "id": "206:240",
+   "category": "nature"
+  },
+  "C-228-fish": {
+   "id": "206:241",
+   "category": "nature"
+  },
+  "C-244-tent": {
+   "id": "206:242",
+   "category": "nature"
+  },
+  "C-252-cloud-rain": {
+   "id": "206:243",
+   "category": "nature"
+  },
+  "A-equalizer": {
+   "id": "206:244",
+   "category": "faders"
+  },
+  "A-equalizer-02": {
+   "id": "206:245",
+   "category": "faders"
+  },
+  "A-equalizer-03": {
+   "id": "206:246",
+   "category": "faders"
+  },
+  "A-controls-box": {
+   "id": "206:247",
+   "category": "faders"
+  },
+  "A-equalizer-04": {
+   "id": "206:248",
+   "category": "faders"
+  },
+  "C-018-adjust-sliders": {
+   "id": "206:249",
+   "category": "faders"
+  },
+  "A-code-close": {
+   "id": "206:250",
+   "category": "code"
+  },
+  "B-browser-code": {
+   "id": "206:251",
+   "category": "code"
+  },
+  "B-browser-code-solid": {
+   "id": "206:252",
+   "category": "code"
+  }
+ }
+}

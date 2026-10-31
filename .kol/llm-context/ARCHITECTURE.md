@@ -115,6 +115,12 @@ touches a DOM, and nothing imports React. Its parser is `marked` with kol-print'
 parity with the dotfiles output — moving it onto kol-markdown is a later, measured step, not part of the move. Its app is
 `apps/print`; its UI half (`PrintStudio`, `A4Pages`) is kol-styleguide's.
 
+**Fourth engine, `@kolkrabbi/kol-growth` (2026-10-30, GrowthLineStage from kol-atlas — decided, for his review):** kol-fxr's
+growing line (differential growth), its `mulberry32` and the orb / SVG-path shape sources. Its consumers are fxr's own loops
+(the generator and the effect) and kol-component's `GrowthLineStage`, so the engine is its own package and the stage a
+kol-component organism over it. Like kol-print it touches a canvas on purpose (`densityFrom`, the shapes); the sim never
+does. App: `apps/growth`.
+
 **UI package `@kolkrabbi/kol-resume` (2026-10-28, ResumeKit from kol-website):** apps/record's resume kit, carried verbatim
 — pages, controls, CSS, the URL-to-PDF export. Its own package, not kol-styleguide, because it is a whole tool with routes
 (react-router), a vite plugin and a bin. **The person is a prop, never data in the package** — `ResumeProvider` is the one

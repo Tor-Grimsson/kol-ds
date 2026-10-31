@@ -97,6 +97,10 @@ import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, Shor
  *                              use, we made a artifact!!!"*): a path, or a function — signed out, every Sign in the Hub draws goes
  *                              there instead of the DS dialog: the rail's foot row, the signed-out + and the phone's More (fxr's
  *                              `/signin`, frame C). Signed in, nothing changes
+ *                              `form` (FloatingStyleAndSignInDemos, kol-fxr 2026-10-30, canvas Round 3): AccountForm's props
+ *                              `{ title, fields, okLabel, footer, onSubmit, check? }` — signed out, every Sign in opens the sign-in
+ *                              column over Home on a desk and the style-B box on a phone (HubHome `signInForm`), going Home first
+ *                              from anywhere else. It wins over `page`
  *                              `account: { sections, content?, footer? }` (SettingsAccountTab, kol-fxr 2026-10-29 — *"why isnt
  *                              account just in settings in account tab?"*): an Account tab, first in the settings rail while
  *                              signed in — typed rows (`sections`), a node for what rows cannot say (`content`: the
@@ -195,6 +199,9 @@ function HubFrame({
   const settingsDrawer = !!settings && !settingsPage
   const [settingsTab, setSettingsTab] = useState('settings')
   const account = signIn?.signedIn && signIn.account ? signIn.account : null
+  /* the sign-in column over Home (`signIn.form`) — closes when signing in lands */
+  const [formOpen, setFormOpen] = useState(false)
+  useEffect(() => { setFormOpen(false) }, [signIn?.signedIn])
   const modal = useModal()
   /* THE DEFAULT THEME IS A ROOT ATTRIBUTE kol-framework's theme reads (`data-theme-default`): reset (`theme.clear()`)
    * and the toggle's alt-click hand the page to it, not to the OS — a dark-first app stays dark on a light-mode Mac */
@@ -216,6 +223,11 @@ function HubFrame({
     if (!signIn) return
     /* SIGN IN CAN BE A PAGE (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — frame C): every Sign in the Hub draws comes
      * through here — the rail's foot row, the signed-out +, the phone's More — so one seam routes them all */
+    if (!signIn.signedIn && signIn.form) {
+      setFormOpen(true)
+      if (!onHome) onNavigate?.(homePath)
+      return
+    }
     if (!signIn.signedIn && signIn.page) {
       if (typeof signIn.page === 'function') signIn.page()
       else onNavigate?.(signIn.page)
@@ -301,7 +313,7 @@ function HubFrame({
   /* HOME'S BUTTONS ON A PHONE (user 2026-10-23: *"put new and walkthrough in the more button … crowded under the files"*):
    * with the bar, New and Walkthrough ride the top of its More sheet on Home and the page's foot row goes; with the drawer
    * (no More), they stay on the page */
-  const barOn = ['bar', 'pill'].includes(shell?.touch ?? RAIL_PRESETS.app.phone)
+  const barOn = ['bar', 'pill', 'floats'].includes(shell?.touch ?? RAIL_PRESETS.app.phone)
   const onHome = home && currentPath === homePath
   /* the signed-in account as a row — Home's menu and the phone's More end on it (HomeMenuAccountRow) */
   const accountAction = signIn?.signedIn && (signIn.user || signIn.account || signIn.onProfile)
@@ -322,13 +334,9 @@ function HubFrame({
   const { railHidden: railHiddenOpt, ...homeData } = home ?? {}
   const railHidden = !!onHome && (railHiddenOpt ?? signedOutHome)
   const signInAction = signIn && !signIn.signedIn ? { label: 'Sign in', icon: 'user', onPress: () => askSignIn() } : undefined
-  const page = onHome
-    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...homeData} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} signInAction={signInAction} accountAction={accountAction} />
-    : settingsPage && currentPath === settingsPath
-      ? <HubSettings app={app} shortcuts={shortcuts} themeToggle={toggle} filters={settingsFilters} {...settingsProps} drawer={settingsProps.drawer ?? true} />
-      : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
-        ? <HubDev storageKey={`kol-dev-tab:${app.name ?? 'app'}`} {...devProps} />
-        : children
+  /* the desk dock's ··· on the signed-out Home: the whole nav, as the phone's More lists it, each row pressing through `go` */
+  const dockMore = () => [...rows, ...bottom.map((r) => ({ ...r, icon: r.icon === ACCOUNT_GLYPH ? 'user' : r.icon, foot: true }))]
+    .map((r) => ({ ...r, onPress: r.onPress ?? (() => go(r.path)) }))
   /* the Dev row closes the app's own rows — under Stage in monitor (HubDevChrome, kol-monitor 2026-10-18 — user:
    * *"why did the dev tab move? it was fine where it was. below stage"*); Settings keeps the bottom alone */
   const rows = devOn ? [...items, { icon: 'code', path: devPath, label: 'Dev' }] : items
@@ -369,6 +377,15 @@ function HubFrame({
     if (pressed[path]) { pressed[path](); return }
     return onNavigate?.(path, ...rest)
   }
+  const page = onHome
+    ? <HubHome app={app} iconComponent={iconComponent} walkthrough={walkthrough} {...homeData} touring={touring} onTouringChange={setTouring} actionsInBar={barOn} signInAction={signInAction} accountAction={accountAction}
+      signInForm={signIn?.form && !signIn.signedIn ? { ...signIn.form, open: formOpen, onClose: () => setFormOpen(false) } : undefined}
+      dockMore={signedOutHome ? dockMore() : undefined} />
+    : settingsPage && currentPath === settingsPath
+      ? <HubSettings app={app} shortcuts={shortcuts} themeToggle={toggle} filters={settingsFilters} {...settingsProps} drawer={settingsProps.drawer ?? true} />
+      : devOn && (currentPath === devPath || currentPath?.startsWith(`${devPath}/`))
+        ? <HubDev storageKey={`kol-dev-tab:${app.name ?? 'app'}`} {...devProps} />
+        : children
 
   /* ⌘K's rows: Files, Pages, Shortcuts — the pages are the rail as drawn, mark first */
   const pages = [...(home ? [{ icon: 'home-01', path: homePath, label: 'Home' }] : []), ...rows, ...bottom]
@@ -396,7 +413,7 @@ function HubFrame({
     <AppShell
       items={rows}
       bottomItems={bottom}
-      barItems={signedOutHome && home.chromes?.length ? home.chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress })) : barItems}
+      barItems={signedOutHome && home.chromes?.length ? home.chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress, sub: c.sub })) : barItems}
       barActions={homeActions}
       phoneNav={(() => {
         const sheet = [...rows, ...bottom.map((r) => ({ ...r, icon: r.icon === ACCOUNT_GLYPH ? 'user' : r.icon, foot: true }))]

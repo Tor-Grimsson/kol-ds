@@ -1,4 +1,4 @@
-import { DocumentIndex } from '@kolkrabbi/kol-styleguide'
+import { DocumentIndex } from '@kolkrabbi/kol-framework'
 import { TABS, assetUrl } from 'document-fixture'
 
 export const stage = 'full'

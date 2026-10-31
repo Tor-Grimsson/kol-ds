@@ -17,6 +17,11 @@ const FOLDER_VIEW_OPTIONS = [
   { value: 'rows', label: 'Rows', icon: 'view-list' },
   { value: 'columns', label: 'Columns', icon: 'columns' },
 ]
+/* `previewPlacement` — the preview column after the last one, or docked at the right edge */
+const PLACEMENT_OPTIONS = [
+  { value: 'inline', label: 'Inline' },
+  { value: 'dock', label: 'Dock' },
+]
 
 /* Finder-style Miller columns — click a folder to open its column, a file to
  * preview it; ↑/↓ → ← walk the tree, space opens Quick Look. The folder-view
@@ -29,10 +34,14 @@ export default function ColumnBrowserPreview() {
   const [view, setView] = useState('columns')
   const [picked, setPicked] = useState(null)
   const [size, setSize] = useState({ height: 528, cols: {} })
+  const [placement, setPlacement] = useState('inline')
   return (
     <div className="flex w-full flex-col gap-4">
-      <ViewToggle viewMode={view} onViewChange={setView} variant="icon" options={FOLDER_VIEW_OPTIONS} />
-      <ColumnBrowser objects={OBJECTS} prefix={prefix} onPrefix={(p) => { setPrefix(p); setCalls((c) => c + 1) }} quickLook={quickLook} onQuickLook={setQuickLook} onPick={setPicked} urlOf={(o) => o.url} onHeightChange={(height) => setSize((s) => ({ ...s, height }))} onColumnResize={(i, px) => setSize((s) => ({ ...s, cols: { ...s.cols, [i]: px } }))} />
+      <div className="flex items-center gap-4">
+        <ViewToggle viewMode={view} onViewChange={setView} variant="icon" options={FOLDER_VIEW_OPTIONS} />
+        <ViewToggle viewMode={placement} onViewChange={setPlacement} variant="text" options={PLACEMENT_OPTIONS} />
+      </div>
+      <ColumnBrowser previewPlacement={placement} objects={OBJECTS} prefix={prefix} onPrefix={(p) => { setPrefix(p); setCalls((c) => c + 1) }} quickLook={quickLook} onQuickLook={setQuickLook} onPick={setPicked} urlOf={(o) => o.url} onHeightChange={(height) => setSize((s) => ({ ...s, height }))} onColumnResize={(i, px) => setSize((s) => ({ ...s, cols: { ...s.cols, [i]: px } }))} />
       {/* drag the bottom edge (height) and any column's right edge (width) — Finder's handles */}
       <p className="kol-mono-12 text-fg-48">height {size.height}px{Object.entries(size.cols).map(([i, px]) => ` · col ${i} ${px}px`).join('')}</p>
       <p className="kol-mono-12 text-fg-48" data-crumb>{prefix}{picked ? picked.key.slice(prefix.length) : '—'} <span data-calls>{calls}</span></p>

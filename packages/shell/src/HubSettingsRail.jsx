@@ -24,6 +24,8 @@ import About from './About.jsx'
  *                               other tabs (frame D2, HubSignedOutGutterAndSeams 2026-10-29)
  * @param {string}   tab · onTabChange   controlled tab (optional — the rail keeps its own otherwise)
  * @param {Function} onReset     the app's reset, after the theme goes back to the system
+ * @param {Array}    extra       `[{ id, label, draw }]` — an app's own tabs after the Hub's named ones; `draw({ app, shortcuts })`
+ *                               returns the tab's body (MetricDashboardUpstream, kol-website 2026-10-31 — metric's Deploys)
  */
 
 /* THE TOGGLE'S PROPS ARE THE HUB'S — studio-hub's `fill="none" label={false} size="sm"`, nothing else */
@@ -60,7 +62,7 @@ const RAIL_TABS = {
   },
 }
 
-export default function HubSettingsRail({ open, onClose, title = 'Settings', sections, app = {}, shortcuts = [], account, tab: tabProp, onTabChange, onReset }) {
+export default function HubSettingsRail({ open, onClose, title = 'Settings', sections, app = {}, shortcuts = [], account, tab: tabProp, onTabChange, onReset, extra = [] }) {
   const [ownTab, setOwnTab] = useState('settings')
   const theme = useTheme()
   const hasSettings = sections != null
@@ -71,6 +73,7 @@ export default function HubSettingsRail({ open, onClose, title = 'Settings', sec
     ...(shortcuts.length ? [{ value: 'shortcuts', label: RAIL_TABS.shortcuts.label, named: RAIL_TABS.shortcuts }] : []),
     ...((app.about || app.links?.length) ? [{ value: 'about', label: RAIL_TABS.about.label, named: RAIL_TABS.about }] : []),
     ...(app.docs?.length ? [{ value: 'docs', label: RAIL_TABS.docs.label, named: RAIL_TABS.docs }] : []),
+    ...extra.map((t) => ({ value: t.id, label: t.label, named: { draw: t.draw } })),
   ] : []
   /* the Account tab first, while signed in (SettingsAccountTab); then Settings and the Hub's named tabs */
   const tabs = [...(account ? [{ id: 'account', label: 'Account' }] : []), ...(hasSettings ? [{ id: 'settings', label: 'Settings' }] : []), ...railTabs.map((t) => ({ id: t.value, label: t.label }))]

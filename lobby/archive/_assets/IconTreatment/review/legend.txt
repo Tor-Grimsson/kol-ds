@@ -1,0 +1,576 @@
+Icon treatment app icon — proposal, 2026-10-31
+page: preview.html (open it) · artifact.html (the same, published)
+current: none
+pick: open
+candidates:
+  A-check-circle  lobby/archive/_assets/IconTreatment/treated/A-check-circle.svg  add-remove — outline
+  C-199-circle-arrow-out-up-right  lobby/archive/_assets/IconTreatment/treated/C-199-circle-arrow-out-up-right.svg  arrow-diagonal — outline · width/height → 24
+  C-119-bars-line  lobby/archive/_assets/IconTreatment/treated/C-119-bars-line.svg  chart — ★ outline · width/height → 24 · pick keep
+  C-122-bars-trend-arrow  lobby/archive/_assets/IconTreatment/treated/C-122-bars-trend-arrow.svg  chart — outline · width/height → 24 · pick keep
+  C-148-bars-search  lobby/archive/_assets/IconTreatment/treated/C-148-bars-search.svg  chart — outline · off-centre (ink) · width/height → 24 · pick unsure
+  A-candlestick  lobby/archive/_assets/IconTreatment/treated/A-candlestick.svg  chart — outline
+  A-candlestick-02  lobby/archive/_assets/IconTreatment/treated/A-candlestick-02.svg  chart — ★ outline
+  A-bar-chart  lobby/archive/_assets/IconTreatment/treated/A-bar-chart.svg  chart — outline
+  A-chart-square  lobby/archive/_assets/IconTreatment/treated/A-chart-square.svg  chart — outline
+  A-node-graph  lobby/archive/_assets/IconTreatment/treated/A-node-graph.svg  flow — outline
+  B-chart-pie  lobby/archive/_assets/IconTreatment/treated/B-chart-pie.svg  chart — outline · width/height → 24
+  B-chart-pie-slice  lobby/archive/_assets/IconTreatment/treated/B-chart-pie-slice.svg  chart — outline · width/height → 24
+  B-chart-pie-slice-solid  lobby/archive/_assets/IconTreatment/treated/B-chart-pie-slice-solid.svg  chart — ★ solid · width/height → 24
+  B-chart-pie-solid  lobby/archive/_assets/IconTreatment/treated/B-chart-pie-solid.svg  chart — solid · width/height → 24
+  B-chart-pie-split  lobby/archive/_assets/IconTreatment/treated/B-chart-pie-split.svg  chart — outline · width/height → 24
+  B-chart-pie-split-solid  lobby/archive/_assets/IconTreatment/treated/B-chart-pie-split-solid.svg  chart — solid · open path in a fill · width/height → 24
+  B-chart-trend  lobby/archive/_assets/IconTreatment/treated/B-chart-trend.svg  chart — outline · width/height → 24
+  B-chart-trend-solid  lobby/archive/_assets/IconTreatment/treated/B-chart-trend-solid.svg  chart — solid · width/height → 24
+  C-130-line-chart  lobby/archive/_assets/IconTreatment/treated/C-130-line-chart.svg  chart — ★ outline · width/height → 24 · pick keep
+  C-133-cycle-chart  lobby/archive/_assets/IconTreatment/treated/C-133-cycle-chart.svg  chart — outline · scaled ×1.055 (outer 17.14 → 18) · width/height → 24 · pick keep
+  C-135-donut-chart  lobby/archive/_assets/IconTreatment/treated/C-135-donut-chart.svg  chart — outline · width/height → 24 · pick keep
+  C-137-phone-chart  lobby/archive/_assets/IconTreatment/treated/C-137-phone-chart.svg  chart — outline · width/height → 24 · pick keep
+  C-163-line-chart  lobby/archive/_assets/IconTreatment/treated/C-163-line-chart.svg  chart — outline · off-centre (ink) · width/height → 24 · pick drop
+  C-178-search-graph  lobby/archive/_assets/IconTreatment/treated/C-178-search-graph.svg  chart — outline · width/height → 24 · pick drop
+  C-181-report-chart  lobby/archive/_assets/IconTreatment/treated/C-181-report-chart.svg  files — outline · width/height → 24
+  A-dot-plot-03  lobby/archive/_assets/IconTreatment/treated/A-dot-plot-03.svg  chart — ★ mixed · fill mixed with stroke · off-centre (ink)
+  A-dot-plot-04  lobby/archive/_assets/IconTreatment/treated/A-dot-plot-04.svg  chart — mixed · fill mixed with stroke · off-centre (ink)
+  C-151-growth-bars  lobby/archive/_assets/IconTreatment/treated/C-151-growth-bars.svg  chart — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  C-182-growth-bars-arrow  lobby/archive/_assets/IconTreatment/treated/C-182-growth-bars-arrow.svg  chart — outline · off-centre (ink) · width/height → 24 · pick keep
+  A-pie-hatch  lobby/archive/_assets/IconTreatment/treated/A-pie-hatch.svg  tools — outline
+  A-pie-quarter  lobby/archive/_assets/IconTreatment/treated/A-pie-quarter.svg  tools — outline
+  C-140-bars-pie  lobby/archive/_assets/IconTreatment/treated/C-140-bars-pie.svg  chart — outline · off-centre (ink) · width/height → 24 · pick keep
+  C-157-pie-search  lobby/archive/_assets/IconTreatment/treated/C-157-pie-search.svg  chart — ★ outline · width/height → 24 · pick keep
+  C-162-pie-chart  lobby/archive/_assets/IconTreatment/treated/C-162-pie-chart.svg  chart — outline · width/height → 24 · pick keep
+  C-179-clipboard-pie  lobby/archive/_assets/IconTreatment/treated/C-179-clipboard-pie.svg  files — outline · width/height → 24
+  A-presentation-bar  lobby/archive/_assets/IconTreatment/treated/A-presentation-bar.svg  chart — outline
+  C-214-presentation  lobby/archive/_assets/IconTreatment/treated/C-214-presentation.svg  files — ★ outline · width/height → 24
+  B-abacus-solid  lobby/archive/_assets/IconTreatment/treated/B-abacus-solid.svg  chart — solid · width/height → 24
+  C-120-gauge  lobby/archive/_assets/IconTreatment/treated/C-120-gauge.svg  chart — outline · width/height → 24
+  C-134-trend-search  lobby/archive/_assets/IconTreatment/treated/C-134-trend-search.svg  chart — outline · scaled ×1.0632 (outer 18.9 → 20) · width/height → 24 · pick keep
+  C-154-donut-ring  lobby/archive/_assets/IconTreatment/treated/C-154-donut-ring.svg  chart — outline · width/height → 24 · pick keep
+  C-251-radar  lobby/archive/_assets/IconTreatment/treated/C-251-radar.svg  chart — outline · width/height → 24
+  A-code-close  lobby/archive/_assets/IconTreatment/treated/A-code-close.svg  code — outline
+  B-shopping-bag  lobby/archive/_assets/IconTreatment/treated/B-shopping-bag.svg  commerce — ★ outline · width/height → 24
+  B-shopping-bag-solid  lobby/archive/_assets/IconTreatment/treated/B-shopping-bag-solid.svg  commerce — ★ solid · width/height → 24
+  B-barrel  lobby/archive/_assets/IconTreatment/treated/B-barrel.svg  commerce — ★ outline · width/height → 24
+  B-barrel-solid  lobby/archive/_assets/IconTreatment/treated/B-barrel-solid.svg  commerce — ★ solid · width/height → 24
+  B-buildings  lobby/archive/_assets/IconTreatment/treated/B-buildings.svg  commerce — ★ outline · outside live area · centred (off -0.9419, 0.0001) · width/height → 24
+  B-buildings-solid  lobby/archive/_assets/IconTreatment/treated/B-buildings-solid.svg  commerce — ★ solid · width/height → 24
+  A-cart  lobby/archive/_assets/IconTreatment/treated/A-cart.svg  commerce — outline
+  C-153-cart-load  lobby/archive/_assets/IconTreatment/treated/C-153-cart-load.svg  misc — ★ outline · width/height → 24
+  A-cash  lobby/archive/_assets/IconTreatment/treated/A-cash.svg  commerce — ★ outline
+  B-coins  lobby/archive/_assets/IconTreatment/treated/B-coins.svg  commerce — outline · width/height → 24
+  B-coins-solid  lobby/archive/_assets/IconTreatment/treated/B-coins-solid.svg  commerce — ★ solid · width/height → 24
+  B-dollar  lobby/archive/_assets/IconTreatment/treated/B-dollar.svg  commerce — outline · outside live area · scaled ×0.925 (outer 21.5 → 20) · width/height → 24
+  B-dollar-solid  lobby/archive/_assets/IconTreatment/treated/B-dollar-solid.svg  commerce — solid · width/height → 24
+  B-euro  lobby/archive/_assets/IconTreatment/treated/B-euro.svg  commerce — outline · width/height → 24
+  B-euro-solid  lobby/archive/_assets/IconTreatment/treated/B-euro-solid.svg  commerce — solid · off-centre (ink) · width/height → 24
+  B-pound  lobby/archive/_assets/IconTreatment/treated/B-pound.svg  commerce — outline · width/height → 24
+  B-pound-solid  lobby/archive/_assets/IconTreatment/treated/B-pound-solid.svg  commerce — solid · off-centre (ink) · width/height → 24
+  B-yen  lobby/archive/_assets/IconTreatment/treated/B-yen.svg  commerce — outline · scaled ×1.0822 (outer 18.5945 → 20) · width/height → 24
+  B-yen-solid  lobby/archive/_assets/IconTreatment/treated/B-yen-solid.svg  commerce — solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  B-exchange  lobby/archive/_assets/IconTreatment/treated/B-exchange.svg  commerce — ★ mixed · fill mixed with stroke · width/height → 24
+  B-exchange-solid  lobby/archive/_assets/IconTreatment/treated/B-exchange-solid.svg  commerce — ★ solid · width/height → 24
+  B-factory  lobby/archive/_assets/IconTreatment/treated/B-factory.svg  commerce — ★ outline · width/height → 24
+  B-factory-solid  lobby/archive/_assets/IconTreatment/treated/B-factory-solid.svg  commerce — ★ solid · width/height → 24
+  B-gem  lobby/archive/_assets/IconTreatment/treated/B-gem.svg  commerce — ★ outline · off-centre (ink) · width/height → 24
+  B-gem-solid  lobby/archive/_assets/IconTreatment/treated/B-gem-solid.svg  commerce — ★ solid · off-centre (ink) · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  B-gift  lobby/archive/_assets/IconTreatment/treated/B-gift.svg  commerce — ★ mixed · fill mixed with stroke · scaled ×0.9877 (outer 20.2313 → 20) · width/height → 24
+  B-gift-solid  lobby/archive/_assets/IconTreatment/treated/B-gift-solid.svg  commerce — ★ solid · width/height → 24
+  B-package  lobby/archive/_assets/IconTreatment/treated/B-package.svg  commerce — ★ mixed · fill mixed with stroke · width/height → 24
+  B-package-open  lobby/archive/_assets/IconTreatment/treated/B-package-open.svg  commerce — outline · width/height → 24
+  B-package-open-solid  lobby/archive/_assets/IconTreatment/treated/B-package-open-solid.svg  commerce — ★ solid · width/height → 24
+  B-package-solid  lobby/archive/_assets/IconTreatment/treated/B-package-solid.svg  commerce — solid · width/height → 24
+  C-188-package-open  lobby/archive/_assets/IconTreatment/treated/C-188-package-open.svg  misc — ★ outline · width/height → 24
+  A-receipt-refund  lobby/archive/_assets/IconTreatment/treated/A-receipt-refund.svg  commerce — outline
+  C-215-receipt  lobby/archive/_assets/IconTreatment/treated/C-215-receipt.svg  files — ★ outline · width/height → 24
+  B-shop  lobby/archive/_assets/IconTreatment/treated/B-shop.svg  commerce — ★ outline · width/height → 24
+  B-shop-solid  lobby/archive/_assets/IconTreatment/treated/B-shop-solid.svg  commerce — ★ solid · width/height → 24
+  A-briefcase  lobby/archive/_assets/IconTreatment/treated/A-briefcase.svg  commerce — outline
+  A-credit-card  lobby/archive/_assets/IconTreatment/treated/A-credit-card.svg  commerce — outline
+  A-ticket  lobby/archive/_assets/IconTreatment/treated/A-ticket.svg  commerce — outline
+  A-equalizer  lobby/archive/_assets/IconTreatment/treated/A-equalizer.svg  control — outline
+  A-equalizer-02  lobby/archive/_assets/IconTreatment/treated/A-equalizer-02.svg  control — outline
+  A-equalizer-03  lobby/archive/_assets/IconTreatment/treated/A-equalizer-03.svg  control — outline
+  A-equalizer-04  lobby/archive/_assets/IconTreatment/treated/A-equalizer-04.svg  control — outline
+  C-018-adjust-sliders  lobby/archive/_assets/IconTreatment/treated/C-018-adjust-sliders.svg  tools — ★ outline · width/height → 24 · pick keep
+  A-toggle-oval  lobby/archive/_assets/IconTreatment/treated/A-toggle-oval.svg  control — outline
+  A-toggle-oval-02  lobby/archive/_assets/IconTreatment/treated/A-toggle-oval-02.svg  control — ★ outline
+  A-toggle-square  lobby/archive/_assets/IconTreatment/treated/A-toggle-square.svg  control — outline
+  A-toggle-square-02  lobby/archive/_assets/IconTreatment/treated/A-toggle-square-02.svg  control — outline
+  B-switch-lane  lobby/archive/_assets/IconTreatment/treated/B-switch-lane.svg  traffic — outline · width/height → 24
+  B-switch-lane-solid  lobby/archive/_assets/IconTreatment/treated/B-switch-lane-solid.svg  traffic — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  A-checkbox  lobby/archive/_assets/IconTreatment/treated/A-checkbox.svg  control — outline
+  A-controls-box  lobby/archive/_assets/IconTreatment/treated/A-controls-box.svg  control — outline
+  C-124-database-cycle  lobby/archive/_assets/IconTreatment/treated/C-124-database-cycle.svg  data — ★ outline · width/height → 24 · pick keep
+  C-126-database-network  lobby/archive/_assets/IconTreatment/treated/C-126-database-network.svg  data — outline · width/height → 24 · pick unsure
+  C-128-database-globe  lobby/archive/_assets/IconTreatment/treated/C-128-database-globe.svg  data — outline · width/height → 24 · pick unsure
+  C-129-database-refresh  lobby/archive/_assets/IconTreatment/treated/C-129-database-refresh.svg  data — outline · width/height → 24 · pick keep
+  C-136-database-hex  lobby/archive/_assets/IconTreatment/treated/C-136-database-hex.svg  data — outline · width/height → 24 · pick keep
+  C-147-database  lobby/archive/_assets/IconTreatment/treated/C-147-database.svg  data — outline · width/height → 24 · pick keep
+  C-191-database-zap  lobby/archive/_assets/IconTreatment/treated/C-191-database-zap.svg  data — outline · width/height → 24 · pick keep
+  C-125-server-bars  lobby/archive/_assets/IconTreatment/treated/C-125-server-bars.svg  data — ★ outline · width/height → 24
+  C-150-server  lobby/archive/_assets/IconTreatment/treated/C-150-server.svg  data — outline · width/height → 24
+  C-159-server-rack  lobby/archive/_assets/IconTreatment/treated/C-159-server-rack.svg  data — outline · width/height → 24
+  C-174-server-gear  lobby/archive/_assets/IconTreatment/treated/C-174-server-gear.svg  data — outline · width/height → 24
+  C-170-nodes  lobby/archive/_assets/IconTreatment/treated/C-170-nodes.svg  data — outline · width/height → 24 · pick keep
+  C-171-workflow-circle  lobby/archive/_assets/IconTreatment/treated/C-171-workflow-circle.svg  data — outline · width/height → 24 · pick keep
+  B-broadcast  lobby/archive/_assets/IconTreatment/treated/B-broadcast.svg  device — ★ outline · width/height → 24
+  B-broadcast-solid  lobby/archive/_assets/IconTreatment/treated/B-broadcast-solid.svg  device — ★ solid · width/height → 24
+  B-browser  lobby/archive/_assets/IconTreatment/treated/B-browser.svg  device — mixed · fill mixed with stroke · width/height → 24
+  B-browser-check  lobby/archive/_assets/IconTreatment/treated/B-browser-check.svg  device — ★ mixed · fill mixed with stroke · width/height → 24
+  B-browser-check-solid  lobby/archive/_assets/IconTreatment/treated/B-browser-check-solid.svg  device — solid · off-centre (ink) · width/height → 24
+  B-browser-code  lobby/archive/_assets/IconTreatment/treated/B-browser-code.svg  device — mixed · fill mixed with stroke · width/height → 24
+  B-browser-code-solid  lobby/archive/_assets/IconTreatment/treated/B-browser-code-solid.svg  device — ★ solid · width/height → 24
+  B-browser-solid  lobby/archive/_assets/IconTreatment/treated/B-browser-solid.svg  device — solid · off-centre (ink) · width/height → 24
+  A-camera-off  lobby/archive/_assets/IconTreatment/treated/A-camera-off.svg  device — ★ outline
+  A-camera-scan  lobby/archive/_assets/IconTreatment/treated/A-camera-scan.svg  device — ★ mixed · fill mixed with stroke
+  C-009-camera  lobby/archive/_assets/IconTreatment/treated/C-009-camera.svg  device — outline · width/height → 24 · pick drop
+  B-desktop-camera  lobby/archive/_assets/IconTreatment/treated/B-desktop-camera.svg  device — outline · width/height → 24
+  B-desktop-camera-solid  lobby/archive/_assets/IconTreatment/treated/B-desktop-camera-solid.svg  device — ★ solid · width/height → 24
+  B-desktop-code  lobby/archive/_assets/IconTreatment/treated/B-desktop-code.svg  device — outline · width/height → 24
+  B-desktop-code-solid  lobby/archive/_assets/IconTreatment/treated/B-desktop-code-solid.svg  device — solid · width/height → 24
+  B-desktop-play  lobby/archive/_assets/IconTreatment/treated/B-desktop-play.svg  device — outline · width/height → 24
+  B-desktop-play-solid  lobby/archive/_assets/IconTreatment/treated/B-desktop-play-solid.svg  device — solid · width/height → 24
+  B-desktop-skull  lobby/archive/_assets/IconTreatment/treated/B-desktop-skull.svg  device — outline · centred (off 0.0233, -1.5122) · width/height → 24
+  B-desktop-skull-solid  lobby/archive/_assets/IconTreatment/treated/B-desktop-skull-solid.svg  device — solid · outside live area · centred (off 0, -1.5) · width/height → 24
+  C-123-monitor-chart  lobby/archive/_assets/IconTreatment/treated/C-123-monitor-chart.svg  chart — ★ outline · width/height → 24 · pick keep
+  C-164-monitor-pie  lobby/archive/_assets/IconTreatment/treated/C-164-monitor-pie.svg  chart — outline · scaled ×1.1212 (outer 18 → 20) · width/height → 24 · pick keep
+  C-051-easel-artboard  lobby/archive/_assets/IconTreatment/treated/C-051-easel-artboard.svg  device — outline · scaled ×1.1212 (outer 18 → 20) · width/height → 24
+  C-061-easel  lobby/archive/_assets/IconTreatment/treated/C-061-easel.svg  device — ★ outline · width/height → 24
+  B-gamepad  lobby/archive/_assets/IconTreatment/treated/B-gamepad.svg  device — ★ mixed · fill mixed with stroke · width/height → 24
+  B-gamepad-solid  lobby/archive/_assets/IconTreatment/treated/B-gamepad-solid.svg  device — ★ solid · width/height → 24
+  B-microphone  lobby/archive/_assets/IconTreatment/treated/B-microphone.svg  device — ★ outline · scaled ×1.0727 (outer 18.7462 → 20) · width/height → 24
+  B-microphone-solid  lobby/archive/_assets/IconTreatment/treated/B-microphone-solid.svg  device — ★ solid · width/height → 24
+  B-mouse  lobby/archive/_assets/IconTreatment/treated/B-mouse.svg  device — ★ outline · width/height → 24
+  B-mouse-solid  lobby/archive/_assets/IconTreatment/treated/B-mouse-solid.svg  device — ★ solid · off-centre (ink) · width/height → 24
+  B-printer  lobby/archive/_assets/IconTreatment/treated/B-printer.svg  device — ★ outline · width/height → 24
+  B-printer-solid  lobby/archive/_assets/IconTreatment/treated/B-printer-solid.svg  device — ★ solid · off-centre (ink) · width/height → 24
+  B-radio  lobby/archive/_assets/IconTreatment/treated/B-radio.svg  device — ★ outline · width/height → 24
+  B-radio-solid  lobby/archive/_assets/IconTreatment/treated/B-radio-solid.svg  device — ★ solid · off-centre (ink) · width/height → 24
+  B-sd-card  lobby/archive/_assets/IconTreatment/treated/B-sd-card.svg  device — ★ outline · width/height → 24
+  B-sd-card-solid  lobby/archive/_assets/IconTreatment/treated/B-sd-card-solid.svg  device — ★ solid · width/height → 24
+  A-cast  lobby/archive/_assets/IconTreatment/treated/A-cast.svg  device — outline
+  A-chip  lobby/archive/_assets/IconTreatment/treated/A-chip.svg  device — outline
+  C-040-drawing-tablet  lobby/archive/_assets/IconTreatment/treated/C-040-drawing-tablet.svg  device — outline · width/height → 24
+  C-109-typewriter  lobby/archive/_assets/IconTreatment/treated/C-109-typewriter.svg  device — outline · width/height → 24
+  C-201-antenna  lobby/archive/_assets/IconTreatment/treated/C-201-antenna.svg  device — outline · off-centre (ink) · width/height → 24
+  C-211-cpu  lobby/archive/_assets/IconTreatment/treated/C-211-cpu.svg  device — outline · width/height → 24
+  C-231-cctv  lobby/archive/_assets/IconTreatment/treated/C-231-cctv.svg  device — outline · scaled ×1.0607 (outer 18.9419 → 20) · width/height → 24 · pick keep
+  C-238-plug-2  lobby/archive/_assets/IconTreatment/treated/C-238-plug-2.svg  device — outline · width/height → 24
+  A-eraser  lobby/archive/_assets/IconTreatment/treated/A-eraser.svg  editing — ★ outline
+  C-006-eraser  lobby/archive/_assets/IconTreatment/treated/C-006-eraser.svg  editing — outline · off-centre (ink) · undersized · scaled ×1.3033 (outer 14.16 → 18) · centred (off 2.58, -2.26) · width/height → 24 · pick unsure
+  C-035-eraser  lobby/archive/_assets/IconTreatment/treated/C-035-eraser.svg  editing — outline · scaled ×1.1741 (outer 17.2564 → 20) · width/height → 24 · pick unsure
+  A-pen-02  lobby/archive/_assets/IconTreatment/treated/A-pen-02.svg  editing — outline
+  A-pen-nib-straight  lobby/archive/_assets/IconTreatment/treated/A-pen-nib-straight.svg  editing — outline
+  C-004-pen-nib  lobby/archive/_assets/IconTreatment/treated/C-004-pen-nib.svg  editing — outline · width/height → 24 · pick drop
+  C-008-add-anchor-pen  lobby/archive/_assets/IconTreatment/treated/C-008-add-anchor-pen.svg  editing — outline · width/height → 24 · pick drop
+  C-025-pen-nib  lobby/archive/_assets/IconTreatment/treated/C-025-pen-nib.svg  editing — outline · width/height → 24 · pick drop
+  C-031-bezier-pen-handles  lobby/archive/_assets/IconTreatment/treated/C-031-bezier-pen-handles.svg  editing — ★ outline · width/height → 24 · pick keep
+  C-059-pen-tool  lobby/archive/_assets/IconTreatment/treated/C-059-pen-tool.svg  editing — outline · width/height → 24 · pick drop
+  C-101-scroll-pen  lobby/archive/_assets/IconTreatment/treated/C-101-scroll-pen.svg  files — outline · scaled ×1.1212 (outer 18 → 20) · width/height → 24 · pick drop
+  C-102-pen-laurel  lobby/archive/_assets/IconTreatment/treated/C-102-pen-laurel.svg  editing — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-104-pen-nib-writing  lobby/archive/_assets/IconTreatment/treated/C-104-pen-nib-writing.svg  editing — outline · off-centre (ink) · scaled ×1.2333 (outer 16.5 → 20) · width/height → 24 · pick keep
+  C-106-pen  lobby/archive/_assets/IconTreatment/treated/C-106-pen.svg  editing — outline · scaled ×1.0784 (outer 16.8 → 18) · width/height → 24
+  C-107-clipboard-pen  lobby/archive/_assets/IconTreatment/treated/C-107-clipboard-pen.svg  files — outline · width/height → 24
+  C-108-notepad-pen  lobby/archive/_assets/IconTreatment/treated/C-108-notepad-pen.svg  files — outline · scaled ×1.1379 (outer 16 → 18) · width/height → 24 · pick keep
+  C-111-book-pen  lobby/archive/_assets/IconTreatment/treated/C-111-book-pen.svg  files — outline · width/height → 24 · pick keep
+  C-112-pen-scribble  lobby/archive/_assets/IconTreatment/treated/C-112-pen-scribble.svg  editing — outline · scaled ×1.1238 (outer 17.9617 → 20) · width/height → 24 · pick keep
+  C-113-magic-pen  lobby/archive/_assets/IconTreatment/treated/C-113-magic-pen.svg  editing — outline · scaled ×1.1563 (outer 17.5 → 20) · width/height → 24 · pick keep
+  C-116-fountain-pen  lobby/archive/_assets/IconTreatment/treated/C-116-fountain-pen.svg  editing — outline · scaled ×1.1325 (outer 16.07 → 18) · width/height → 24 · pick keep
+  C-183-pen-tool  lobby/archive/_assets/IconTreatment/treated/C-183-pen-tool.svg  editing — outline · width/height → 24 · pick keep
+  C-210-square-pen  lobby/archive/_assets/IconTreatment/treated/C-210-square-pen.svg  editing — outline · width/height → 24 · pick keep
+  C-217-clipboard-pen-line  lobby/archive/_assets/IconTreatment/treated/C-217-clipboard-pen-line.svg  files — outline · width/height → 24
+  A-edit-square  lobby/archive/_assets/IconTreatment/treated/A-edit-square.svg  editing — outline
+  A-pencil  lobby/archive/_assets/IconTreatment/treated/A-pencil.svg  editing — outline
+  A-pencil-02  lobby/archive/_assets/IconTreatment/treated/A-pencil-02.svg  editing — outline
+  A-pencil-03  lobby/archive/_assets/IconTreatment/treated/A-pencil-03.svg  editing — outline
+  A-pencil-circle  lobby/archive/_assets/IconTreatment/treated/A-pencil-circle.svg  editing — outline
+  A-pencil-simple  lobby/archive/_assets/IconTreatment/treated/A-pencil-simple.svg  editing — outline
+  C-001-edit-square  lobby/archive/_assets/IconTreatment/treated/C-001-edit-square.svg  editing — outline · scaled ×1.0573 (outer 17.1065 → 18) · width/height → 24 · pick drop
+  C-020-path-pencil  lobby/archive/_assets/IconTreatment/treated/C-020-path-pencil.svg  editing — outline · scaled ×1.1609 (outer 17.4362 → 20) · width/height → 24 · pick keep
+  C-023-edit-selection  lobby/archive/_assets/IconTreatment/treated/C-023-edit-selection.svg  tools — ★ outline · width/height → 24 · pick keep
+  C-052-edit-image  lobby/archive/_assets/IconTreatment/treated/C-052-edit-image.svg  files — outline · scaled ×1.0913 (outer 18.453 → 20) · width/height → 24 · pick keep
+  C-103-idea-pencil  lobby/archive/_assets/IconTreatment/treated/C-103-idea-pencil.svg  editing — outline · off-centre (ink) · width/height → 24 · pick keep
+  A-marker-circle  lobby/archive/_assets/IconTreatment/treated/A-marker-circle.svg  editing — outline
+  C-019-vector-nodes  lobby/archive/_assets/IconTreatment/treated/C-019-vector-nodes.svg  editing — outline · width/height → 24
+  C-027-spray-can  lobby/archive/_assets/IconTreatment/treated/C-027-spray-can.svg  editing — outline · scaled ×1.1385 (outer 17.75 → 20) · width/height → 24 · pick keep
+  C-029-magic-wand  lobby/archive/_assets/IconTreatment/treated/C-029-magic-wand.svg  editing — outline · width/height → 24
+  C-110-quill-signature  lobby/archive/_assets/IconTreatment/treated/C-110-quill-signature.svg  editing — outline · scaled ×1.1541 (outer 17.5294 → 20) · width/height → 24 · pick keep
+  C-246-wand-sparkles  lobby/archive/_assets/IconTreatment/treated/C-246-wand-sparkles.svg  editing — outline · width/height → 24
+  C-248-sparkles  lobby/archive/_assets/IconTreatment/treated/C-248-sparkles.svg  editing — outline · width/height → 24
+  B-face-scan  lobby/archive/_assets/IconTreatment/treated/B-face-scan.svg  eye-lock — ★ outline · width/height → 24
+  B-face-scan-solid  lobby/archive/_assets/IconTreatment/treated/B-face-scan-solid.svg  eye-lock — ★ solid · width/height → 24
+  B-face-smile  lobby/archive/_assets/IconTreatment/treated/B-face-smile.svg  misc — outline · width/height → 24
+  B-face-smile-solid  lobby/archive/_assets/IconTreatment/treated/B-face-smile-solid.svg  misc — solid · width/height → 24
+  B-key  lobby/archive/_assets/IconTreatment/treated/B-key.svg  eye-lock — ★ outline · width/height → 24
+  B-key-solid  lobby/archive/_assets/IconTreatment/treated/B-key-solid.svg  eye-lock — ★ solid · width/height → 24
+  B-shield  lobby/archive/_assets/IconTreatment/treated/B-shield.svg  eye-lock — outline · width/height → 24
+  B-shield-badge  lobby/archive/_assets/IconTreatment/treated/B-shield-badge.svg  eye-lock — ★ outline · width/height → 24
+  B-shield-badge-solid  lobby/archive/_assets/IconTreatment/treated/B-shield-badge-solid.svg  eye-lock — ★ solid · width/height → 24
+  B-shield-notch  lobby/archive/_assets/IconTreatment/treated/B-shield-notch.svg  eye-lock — outline · width/height → 24
+  B-shield-notch-solid  lobby/archive/_assets/IconTreatment/treated/B-shield-notch-solid.svg  eye-lock — solid · width/height → 24
+  B-shield-round  lobby/archive/_assets/IconTreatment/treated/B-shield-round.svg  eye-lock — outline · width/height → 24
+  B-shield-round-solid  lobby/archive/_assets/IconTreatment/treated/B-shield-round-solid.svg  eye-lock — solid · scaled ×1.1111 (outer 18.0005 → 20) · width/height → 24
+  B-shield-solid  lobby/archive/_assets/IconTreatment/treated/B-shield-solid.svg  eye-lock — solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  B-shield-wave  lobby/archive/_assets/IconTreatment/treated/B-shield-wave.svg  eye-lock — outline · width/height → 24
+  B-shield-wave-solid  lobby/archive/_assets/IconTreatment/treated/B-shield-wave-solid.svg  eye-lock — solid · width/height → 24
+  B-spy  lobby/archive/_assets/IconTreatment/treated/B-spy.svg  eye-lock — ★ outline · width/height → 24
+  B-spy-solid  lobby/archive/_assets/IconTreatment/treated/B-spy-solid.svg  eye-lock — ★ solid · width/height → 24
+  A-id-card  lobby/archive/_assets/IconTreatment/treated/A-id-card.svg  eye-lock — outline
+  B-clipboard-check  lobby/archive/_assets/IconTreatment/treated/B-clipboard-check.svg  files — ★ outline · width/height → 24
+  B-clipboard-check-solid  lobby/archive/_assets/IconTreatment/treated/B-clipboard-check-solid.svg  files — ★ solid · width/height → 24
+  B-clipboard-list  lobby/archive/_assets/IconTreatment/treated/B-clipboard-list.svg  files — outline · width/height → 24
+  B-clipboard-list-solid  lobby/archive/_assets/IconTreatment/treated/B-clipboard-list-solid.svg  files — solid · width/height → 24
+  A-file-chart  lobby/archive/_assets/IconTreatment/treated/A-file-chart.svg  files — outline
+  B-file-checklist  lobby/archive/_assets/IconTreatment/treated/B-file-checklist.svg  files — outline · width/height → 24
+  B-file-checklist-solid  lobby/archive/_assets/IconTreatment/treated/B-file-checklist-solid.svg  files — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  C-042-design-file  lobby/archive/_assets/IconTreatment/treated/C-042-design-file.svg  files — ★ mixed · fill mixed with stroke · scaled ×1.1212 (outer 18 → 20) · width/height → 24
+  C-105-file-pen  lobby/archive/_assets/IconTreatment/treated/C-105-file-pen.svg  files — outline · scaled ×1.0971 (outer 16.54 → 18) · width/height → 24
+  C-115-file-quill  lobby/archive/_assets/IconTreatment/treated/C-115-file-quill.svg  files — outline · scaled ×1.068 (outer 16.95 → 18) · width/height → 24
+  C-168-file-check  lobby/archive/_assets/IconTreatment/treated/C-168-file-check.svg  files — ★ outline · width/height → 24
+  C-177-document  lobby/archive/_assets/IconTreatment/treated/C-177-document.svg  files — outline · width/height → 24
+  A-folder-add  lobby/archive/_assets/IconTreatment/treated/A-folder-add.svg  files — ★ outline
+  A-folder-minus  lobby/archive/_assets/IconTreatment/treated/A-folder-minus.svg  files — outline
+  A-folder-open  lobby/archive/_assets/IconTreatment/treated/A-folder-open.svg  files — outline
+  C-152-folder-tree  lobby/archive/_assets/IconTreatment/treated/C-152-folder-tree.svg  files — outline · off-centre (ink) · width/height → 24
+  C-010-images  lobby/archive/_assets/IconTreatment/treated/C-010-images.svg  files — ★ outline · width/height → 24 · pick keep
+  C-012-shapes-on-image  lobby/archive/_assets/IconTreatment/treated/C-012-shapes-on-image.svg  files — outline · width/height → 24 · pick drop
+  C-047-image-frame  lobby/archive/_assets/IconTreatment/treated/C-047-image-frame.svg  files — ★ mixed · fill mixed with stroke · width/height → 24 · pick drop
+  C-206-image-minus  lobby/archive/_assets/IconTreatment/treated/C-206-image-minus.svg  files — outline · width/height → 24 · pick keep
+  B-manual  lobby/archive/_assets/IconTreatment/treated/B-manual.svg  files — outline · width/height → 24
+  B-manual-solid  lobby/archive/_assets/IconTreatment/treated/B-manual-solid.svg  files — solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  B-manual-warning  lobby/archive/_assets/IconTreatment/treated/B-manual-warning.svg  files — ★ outline · width/height → 24
+  B-manual-warning-solid  lobby/archive/_assets/IconTreatment/treated/B-manual-warning-solid.svg  files — ★ solid · width/height → 24
+  C-011-video-film  lobby/archive/_assets/IconTreatment/treated/C-011-video-film.svg  files — ★ outline · width/height → 24 · pick keep
+  C-209-film  lobby/archive/_assets/IconTreatment/treated/C-209-film.svg  files — outline · width/height → 24 · pick keep
+  A-archive  lobby/archive/_assets/IconTreatment/treated/A-archive.svg  files — outline
+  C-127-report-gear  lobby/archive/_assets/IconTreatment/treated/C-127-report-gear.svg  files — outline · width/height → 24
+  C-143-checklist  lobby/archive/_assets/IconTreatment/treated/C-143-checklist.svg  files — outline · width/height → 24
+  C-200-folders  lobby/archive/_assets/IconTreatment/treated/C-200-folders.svg  files — outline · width/height → 24
+  C-218-book-open  lobby/archive/_assets/IconTreatment/treated/C-218-book-open.svg  files — outline · width/height → 24 · pick keep
+  A-branch-up  lobby/archive/_assets/IconTreatment/treated/A-branch-up.svg  flow — outline
+  A-git-branch  lobby/archive/_assets/IconTreatment/treated/A-git-branch.svg  flow — outline · off-centre (ink)
+  A-git-branch-02  lobby/archive/_assets/IconTreatment/treated/A-git-branch-02.svg  flow — outline · off-centre (ink)
+  A-git-branch-03  lobby/archive/_assets/IconTreatment/treated/A-git-branch-03.svg  flow — outline · off-centre (ink)
+  A-git-branch-04  lobby/archive/_assets/IconTreatment/treated/A-git-branch-04.svg  flow — outline · off-centre (ink)
+  A-git-commit  lobby/archive/_assets/IconTreatment/treated/A-git-commit.svg  flow — outline
+  A-git-compare  lobby/archive/_assets/IconTreatment/treated/A-git-compare.svg  flow — outline
+  A-git-compare-02  lobby/archive/_assets/IconTreatment/treated/A-git-compare-02.svg  flow — outline
+  A-git-compare-03  lobby/archive/_assets/IconTreatment/treated/A-git-compare-03.svg  flow — outline
+  A-git-fork  lobby/archive/_assets/IconTreatment/treated/A-git-fork.svg  flow — outline
+  A-git-merge  lobby/archive/_assets/IconTreatment/treated/A-git-merge.svg  flow — outline · off-centre (ink)
+  A-git-pull-request  lobby/archive/_assets/IconTreatment/treated/A-git-pull-request.svg  flow — outline
+  C-247-git-pull-request-closed  lobby/archive/_assets/IconTreatment/treated/C-247-git-pull-request-closed.svg  code — ★ outline · width/height → 24
+  A-flow-branch  lobby/archive/_assets/IconTreatment/treated/A-flow-branch.svg  flow — outline · off-centre (ink)
+  A-flow-tree  lobby/archive/_assets/IconTreatment/treated/A-flow-tree.svg  flow — outline · off-centre (ink)
+  A-hierarchy  lobby/archive/_assets/IconTreatment/treated/A-hierarchy.svg  flow — outline · off-centre (ink)
+  A-hierarchy-02  lobby/archive/_assets/IconTreatment/treated/A-hierarchy-02.svg  flow — outline · off-centre (ink)
+  A-hierarchy-03  lobby/archive/_assets/IconTreatment/treated/A-hierarchy-03.svg  flow — outline · off-centre (ink)
+  A-hierarchy-boxes  lobby/archive/_assets/IconTreatment/treated/A-hierarchy-boxes.svg  flow — outline
+  A-network  lobby/archive/_assets/IconTreatment/treated/A-network.svg  flow — outline · off-centre (ink)
+  A-tree  lobby/archive/_assets/IconTreatment/treated/A-tree.svg  flow — ★ mixed · open path in a fill · fill mixed with stroke · off-centre (ink)
+  C-141-gear-network  lobby/archive/_assets/IconTreatment/treated/C-141-gear-network.svg  data — outline · width/height → 24 · pick unsure
+  C-155-data-network  lobby/archive/_assets/IconTreatment/treated/C-155-data-network.svg  data — ★ outline · width/height → 24 · pick keep
+  C-158-hierarchy  lobby/archive/_assets/IconTreatment/treated/C-158-hierarchy.svg  data — outline · off-centre (ink) · width/height → 24 · pick keep
+  C-169-network-star  lobby/archive/_assets/IconTreatment/treated/C-169-network-star.svg  data — outline · width/height → 24 · pick keep
+  C-172-flow-arrows  lobby/archive/_assets/IconTreatment/treated/C-172-flow-arrows.svg  data — outline · width/height → 24 · pick keep
+  C-184-network  lobby/archive/_assets/IconTreatment/treated/C-184-network.svg  data — outline · off-centre (ink) · width/height → 24 · pick keep
+  A-share  lobby/archive/_assets/IconTreatment/treated/A-share.svg  flow — outline
+  A-columns-two  lobby/archive/_assets/IconTreatment/treated/A-columns-two.svg  layout — outline
+  A-kanban  lobby/archive/_assets/IconTreatment/treated/A-kanban.svg  layout — ★ outline
+  A-kanban-02  lobby/archive/_assets/IconTreatment/treated/A-kanban-02.svg  tools — outline
+  A-bento  lobby/archive/_assets/IconTreatment/treated/A-bento.svg  layout — outline
+  A-bento-02  lobby/archive/_assets/IconTreatment/treated/A-bento-02.svg  layout — outline
+  A-circles-grid  lobby/archive/_assets/IconTreatment/treated/A-circles-grid.svg  tools — outline
+  A-circles-grid-02  lobby/archive/_assets/IconTreatment/treated/A-circles-grid-02.svg  tools — outline
+  A-grid-2x2  lobby/archive/_assets/IconTreatment/treated/A-grid-2x2.svg  layout — outline
+  C-117-bento-grid  lobby/archive/_assets/IconTreatment/treated/C-117-bento-grid.svg  layout — ★ outline · width/height → 24 · pick keep
+  A-stack  lobby/archive/_assets/IconTreatment/treated/A-stack.svg  layout — outline
+  A-stack-hang  lobby/archive/_assets/IconTreatment/treated/A-stack-hang.svg  tools — outline
+  C-055-layers  lobby/archive/_assets/IconTreatment/treated/C-055-layers.svg  layout — ★ outline · width/height → 24 · pick keep
+  C-062-layers  lobby/archive/_assets/IconTreatment/treated/C-062-layers.svg  layout — outline · width/height → 24 · pick keep
+  C-176-layers  lobby/archive/_assets/IconTreatment/treated/C-176-layers.svg  layout — outline · scaled ×1.1151 (outer 18.09 → 20) · width/height → 24 · pick drop
+  C-227-layout-dashboard  lobby/archive/_assets/IconTreatment/treated/C-227-layout-dashboard.svg  layout — ★ outline · width/height → 24 · pick keep
+  C-243-layout-template  lobby/archive/_assets/IconTreatment/treated/C-243-layout-template.svg  layout — outline · width/height → 24 · pick keep
+  A-table  lobby/archive/_assets/IconTreatment/treated/A-table.svg  layout — outline
+  C-249-table-cells-merge  lobby/archive/_assets/IconTreatment/treated/C-249-table-cells-merge.svg  layout — ★ outline · width/height → 24 · pick keep
+  A-list-bullet  lobby/archive/_assets/IconTreatment/treated/A-list-bullet.svg  layout — outline · off-centre (ink)
+  A-rows-02  lobby/archive/_assets/IconTreatment/treated/A-rows-02.svg  layout — outline
+  A-split  lobby/archive/_assets/IconTreatment/treated/A-split.svg  layout — outline
+  C-118-app-squares  lobby/archive/_assets/IconTreatment/treated/C-118-app-squares.svg  layout — mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-121-dashboard-tile  lobby/archive/_assets/IconTreatment/treated/C-121-dashboard-tile.svg  layout — outline · width/height → 24 · pick keep
+  C-144-block-diagram  lobby/archive/_assets/IconTreatment/treated/C-144-block-diagram.svg  layout — outline · width/height → 24 · pick keep
+  B-brain  lobby/archive/_assets/IconTreatment/treated/B-brain.svg  misc — outline · width/height → 24
+  B-brain-solid  lobby/archive/_assets/IconTreatment/treated/B-brain-solid.svg  misc — ★ solid · off-centre (ink) · width/height → 24
+  C-232-brain  lobby/archive/_assets/IconTreatment/treated/C-232-brain.svg  misc — ★ outline · width/height → 24 · pick keep
+  C-235-brain-circuit  lobby/archive/_assets/IconTreatment/treated/C-235-brain-circuit.svg  misc — outline · width/height → 24 · pick keep
+  C-236-brain-cog  lobby/archive/_assets/IconTreatment/treated/C-236-brain-cog.svg  misc — outline · width/height → 24 · pick keep
+  B-coffee  lobby/archive/_assets/IconTreatment/treated/B-coffee.svg  misc — ★ outline · width/height → 24
+  B-coffee-solid  lobby/archive/_assets/IconTreatment/treated/B-coffee-solid.svg  misc — ★ mixed · open path in a fill · solid carries strokes · width/height → 24
+  B-courthouse  lobby/archive/_assets/IconTreatment/treated/B-courthouse.svg  misc — ★ outline · off-centre (ink) · width/height → 24
+  B-courthouse-solid  lobby/archive/_assets/IconTreatment/treated/B-courthouse-solid.svg  misc — ★ solid · width/height → 24
+  B-graduation-cap  lobby/archive/_assets/IconTreatment/treated/B-graduation-cap.svg  misc — ★ outline · width/height → 24
+  B-graduation-cap-solid  lobby/archive/_assets/IconTreatment/treated/B-graduation-cap-solid.svg  misc — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  C-044-idea-bulb  lobby/archive/_assets/IconTreatment/treated/C-044-idea-bulb.svg  misc — outline · width/height → 24 · pick drop
+  C-054-idea-bulb  lobby/archive/_assets/IconTreatment/treated/C-054-idea-bulb.svg  misc — ★ outline · width/height → 24 · pick keep
+  B-medal  lobby/archive/_assets/IconTreatment/treated/B-medal.svg  misc — outline · scaled ×1.0819 (outer 18.5996 → 20) · width/height → 24
+  B-medal-solid  lobby/archive/_assets/IconTreatment/treated/B-medal-solid.svg  misc — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  C-219-medal  lobby/archive/_assets/IconTreatment/treated/C-219-medal.svg  misc — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  B-podium  lobby/archive/_assets/IconTreatment/treated/B-podium.svg  misc — outline · off-centre (ink) · width/height → 24
+  B-podium-solid  lobby/archive/_assets/IconTreatment/treated/B-podium-solid.svg  misc — ★ solid · off-centre (ink) · width/height → 24
+  C-165-podium  lobby/archive/_assets/IconTreatment/treated/C-165-podium.svg  misc — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  B-robot  lobby/archive/_assets/IconTreatment/treated/B-robot.svg  misc — outline · width/height → 24
+  B-robot-head  lobby/archive/_assets/IconTreatment/treated/B-robot-head.svg  misc — ★ outline · width/height → 24
+  B-robot-head-solid  lobby/archive/_assets/IconTreatment/treated/B-robot-head-solid.svg  misc — ★ solid · width/height → 24
+  B-robot-solid  lobby/archive/_assets/IconTreatment/treated/B-robot-solid.svg  misc — solid · outside live area · centred (off 0, -1) · width/height → 24
+  B-rocket  lobby/archive/_assets/IconTreatment/treated/B-rocket.svg  misc — ★ outline · width/height → 24
+  B-rocket-solid  lobby/archive/_assets/IconTreatment/treated/B-rocket-solid.svg  misc — ★ mixed · solid carries strokes · width/height → 24
+  A-scale  lobby/archive/_assets/IconTreatment/treated/A-scale.svg  misc — outline
+  C-204-scale  lobby/archive/_assets/IconTreatment/treated/C-204-scale.svg  misc — ★ outline · width/height → 24
+  B-skull  lobby/archive/_assets/IconTreatment/treated/B-skull.svg  misc — ★ outline · width/height → 24
+  B-skull-solid  lobby/archive/_assets/IconTreatment/treated/B-skull-solid.svg  misc — ★ solid · width/height → 24
+  C-186-skull  lobby/archive/_assets/IconTreatment/treated/C-186-skull.svg  misc — outline · scaled ×1.0819 (outer 18.6 → 20) · width/height → 24
+  B-syringe  lobby/archive/_assets/IconTreatment/treated/B-syringe.svg  misc — outline · off-centre (ink) · width/height → 24
+  B-syringe-solid  lobby/archive/_assets/IconTreatment/treated/B-syringe-solid.svg  misc — ★ solid · width/height → 24
+  C-237-syringe  lobby/archive/_assets/IconTreatment/treated/C-237-syringe.svg  misc — ★ outline · width/height → 24
+  A-beaker  lobby/archive/_assets/IconTreatment/treated/A-beaker.svg  misc — outline · off-centre (ink)
+  A-container  lobby/archive/_assets/IconTreatment/treated/A-container.svg  misc — outline
+  A-lightbulb  lobby/archive/_assets/IconTreatment/treated/A-lightbulb.svg  misc — outline
+  A-yarn  lobby/archive/_assets/IconTreatment/treated/A-yarn.svg  misc — outline
+  C-167-head-gear  lobby/archive/_assets/IconTreatment/treated/C-167-head-gear.svg  misc — outline · width/height → 24 · pick drop
+  C-192-bird  lobby/archive/_assets/IconTreatment/treated/C-192-bird.svg  misc — outline · width/height → 24
+  C-195-award  lobby/archive/_assets/IconTreatment/treated/C-195-award.svg  misc — outline · width/height → 24 · pick keep
+  C-197-air-vent  lobby/archive/_assets/IconTreatment/treated/C-197-air-vent.svg  misc — outline · width/height → 24
+  C-213-handshake  lobby/archive/_assets/IconTreatment/treated/C-213-handshake.svg  misc — outline · width/height → 24
+  C-222-trophy  lobby/archive/_assets/IconTreatment/treated/C-222-trophy.svg  misc — outline · width/height → 24 · pick keep
+  C-225-snail  lobby/archive/_assets/IconTreatment/treated/C-225-snail.svg  misc — outline · width/height → 24
+  C-226-cake  lobby/archive/_assets/IconTreatment/treated/C-226-cake.svg  misc — outline · off-centre (ink) · width/height → 24
+  C-228-fish  lobby/archive/_assets/IconTreatment/treated/C-228-fish.svg  misc — outline · width/height → 24
+  C-230-sword  lobby/archive/_assets/IconTreatment/treated/C-230-sword.svg  misc — outline · width/height → 24
+  C-233-chrome  lobby/archive/_assets/IconTreatment/treated/C-233-chrome.svg  misc — outline · width/height → 24 · pick keep
+  C-234-utensils-crossed  lobby/archive/_assets/IconTreatment/treated/C-234-utensils-crossed.svg  misc — outline · width/height → 24
+  C-240-candy-cane  lobby/archive/_assets/IconTreatment/treated/C-240-candy-cane.svg  misc — outline · width/height → 24
+  C-241-dices  lobby/archive/_assets/IconTreatment/treated/C-241-dices.svg  misc — outline · width/height → 24
+  C-244-tent  lobby/archive/_assets/IconTreatment/treated/C-244-tent.svg  misc — outline · off-centre (ink) · width/height → 24
+  C-139-search-gear  lobby/archive/_assets/IconTreatment/treated/C-139-search-gear.svg  singletons — outline · width/height → 24
+  C-173-gear-cycle  lobby/archive/_assets/IconTreatment/treated/C-173-gear-cycle.svg  nav — ★ outline · width/height → 24 · pick keep
+  C-180-gear  lobby/archive/_assets/IconTreatment/treated/C-180-gear.svg  nav — outline · width/height → 24 · pick drop
+  B-lifebuoy  lobby/archive/_assets/IconTreatment/treated/B-lifebuoy.svg  nav — ★ outline · width/height → 24
+  B-lifebuoy-solid  lobby/archive/_assets/IconTreatment/treated/B-lifebuoy-solid.svg  nav — ★ solid · width/height → 24
+  A-log-in  lobby/archive/_assets/IconTreatment/treated/A-log-in.svg  nav — outline · off-centre (ink)
+  A-log-out  lobby/archive/_assets/IconTreatment/treated/A-log-out.svg  nav — ★ outline
+  A-user-circle  lobby/archive/_assets/IconTreatment/treated/A-user-circle.svg  nav — outline
+  A-user-group  lobby/archive/_assets/IconTreatment/treated/A-user-group.svg  nav — outline
+  C-086-person-clock  lobby/archive/_assets/IconTreatment/treated/C-086-person-clock.svg  time — outline · outside live area · centred (off -0.0031, -0.165) · width/height → 24 · pick drop
+  C-175-user-target  lobby/archive/_assets/IconTreatment/treated/C-175-user-target.svg  nav — ★ outline · width/height → 24 · pick keep
+  C-242-circle-user  lobby/archive/_assets/IconTreatment/treated/C-242-circle-user.svg  nav — outline · width/height → 24 · pick keep
+  A-more-circle  lobby/archive/_assets/IconTreatment/treated/A-more-circle.svg  nav — outline
+  C-070-bell  lobby/archive/_assets/IconTreatment/treated/C-070-bell.svg  notify — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-091-bell-ringing  lobby/archive/_assets/IconTreatment/treated/C-091-bell-ringing.svg  notify — outline · outside live area · scaled ×0.9893 (outer 20.2 → 20) · centred (off 0, -0.625) · width/height → 24 · pick keep
+  C-190-concierge-bell  lobby/archive/_assets/IconTreatment/treated/C-190-concierge-bell.svg  misc — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  A-chat  lobby/archive/_assets/IconTreatment/treated/A-chat.svg  notify — outline
+  A-chat-double  lobby/archive/_assets/IconTreatment/treated/A-chat-double.svg  notify — ★ outline
+  A-send  lobby/archive/_assets/IconTreatment/treated/A-send.svg  notify — ★ outline
+  C-223-send  lobby/archive/_assets/IconTreatment/treated/C-223-send.svg  transfer — outline · off-centre (ink) · width/height → 24
+  A-thumb-down  lobby/archive/_assets/IconTreatment/treated/A-thumb-down.svg  notify — ★ outline
+  A-thumb-up  lobby/archive/_assets/IconTreatment/treated/A-thumb-up.svg  notify — outline
+  A-email-open  lobby/archive/_assets/IconTreatment/treated/A-email-open.svg  notify — outline · off-centre (ink)
+  A-megaphone  lobby/archive/_assets/IconTreatment/treated/A-megaphone.svg  notify — outline
+  A-support  lobby/archive/_assets/IconTreatment/treated/A-support.svg  notify — outline
+  C-245-siren  lobby/archive/_assets/IconTreatment/treated/C-245-siren.svg  notify — outline · off-centre (ink) · width/height → 24 · pick keep
+  A-compass  lobby/archive/_assets/IconTreatment/treated/A-compass.svg  place — outline
+  C-046-compass  lobby/archive/_assets/IconTreatment/treated/C-046-compass.svg  tools — outline · off-centre (ink) · width/height → 24 · pick keep
+  C-057-compass  lobby/archive/_assets/IconTreatment/treated/C-057-compass.svg  tools — ★ mixed · fill mixed with stroke · scaled ×0.9893 (outer 20.2 → 20) · width/height → 24 · pick drop
+  C-185-compass  lobby/archive/_assets/IconTreatment/treated/C-185-compass.svg  place — ★ outline · width/height → 24 · pick keep
+  A-globe-earth  lobby/archive/_assets/IconTreatment/treated/A-globe-earth.svg  place — outline
+  C-096-globe-clock  lobby/archive/_assets/IconTreatment/treated/C-096-globe-clock.svg  time — ★ outline · width/height → 24 · pick unsure
+  C-131-globe-search  lobby/archive/_assets/IconTreatment/treated/C-131-globe-search.svg  singletons — outline · scaled ×1.051 (outer 17.2 → 18) · width/height → 24
+  A-location  lobby/archive/_assets/IconTreatment/treated/A-location.svg  place — outline
+  C-099-route-flag-pin  lobby/archive/_assets/IconTreatment/treated/C-099-route-flag-pin.svg  place — ★ outline · width/height → 24 · pick keep
+  B-map-route  lobby/archive/_assets/IconTreatment/treated/B-map-route.svg  place — outline · width/height → 24
+  B-map-route-solid  lobby/archive/_assets/IconTreatment/treated/B-map-route-solid.svg  place — ★ solid · width/height → 24
+  C-066-map-pin  lobby/archive/_assets/IconTreatment/treated/C-066-map-pin.svg  place — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  C-074-map  lobby/archive/_assets/IconTreatment/treated/C-074-map.svg  place — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  A-navigation  lobby/archive/_assets/IconTreatment/treated/A-navigation.svg  place — outline · off-centre (ink)
+  C-073-route-pins  lobby/archive/_assets/IconTreatment/treated/C-073-route-pins.svg  place — mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-100-s-route-roadmap  lobby/archive/_assets/IconTreatment/treated/C-100-s-route-roadmap.svg  place — mixed · fill mixed with stroke · width/height → 24 · pick keep
+  A-sound-bars  lobby/archive/_assets/IconTreatment/treated/A-sound-bars.svg  playback — outline
+  A-stop-circle  lobby/archive/_assets/IconTreatment/treated/A-stop-circle.svg  playback — outline
+  C-189-audio-waveform  lobby/archive/_assets/IconTreatment/treated/C-189-audio-waveform.svg  playback — outline · width/height → 24
+  A-bolt-02  lobby/archive/_assets/IconTreatment/treated/A-bolt-02.svg  shape-forms — ★ outline
+  A-bolt-off  lobby/archive/_assets/IconTreatment/treated/A-bolt-off.svg  shape-forms — outline
+  A-bolt-zigzag  lobby/archive/_assets/IconTreatment/treated/A-bolt-zigzag.svg  shape-forms — outline
+  A-circles-pair  lobby/archive/_assets/IconTreatment/treated/A-circles-pair.svg  tools — outline
+  A-circles-three  lobby/archive/_assets/IconTreatment/treated/A-circles-three.svg  shape-forms — ★ outline
+  A-cloud-download  lobby/archive/_assets/IconTreatment/treated/A-cloud-download.svg  transfer — outline
+  A-cloud-upload  lobby/archive/_assets/IconTreatment/treated/A-cloud-upload.svg  transfer — outline
+  B-cloud-storm  lobby/archive/_assets/IconTreatment/treated/B-cloud-storm.svg  shape-forms — outline · width/height → 24
+  B-cloud-storm-solid  lobby/archive/_assets/IconTreatment/treated/B-cloud-storm-solid.svg  shape-forms — ★ solid · width/height → 24
+  C-138-cloud-apps  lobby/archive/_assets/IconTreatment/treated/C-138-cloud-apps.svg  data — ★ outline · width/height → 24
+  C-146-cloud-gear  lobby/archive/_assets/IconTreatment/treated/C-146-cloud-gear.svg  data — outline · width/height → 24
+  C-156-cloud-monitor  lobby/archive/_assets/IconTreatment/treated/C-156-cloud-monitor.svg  data — outline · width/height → 24
+  C-252-cloud-rain  lobby/archive/_assets/IconTreatment/treated/C-252-cloud-rain.svg  shape-forms — outline · width/height → 24
+  A-cube-dashed  lobby/archive/_assets/IconTreatment/treated/A-cube-dashed.svg  shape-primitives — outline
+  A-cube-dashed-02  lobby/archive/_assets/IconTreatment/treated/A-cube-dashed-02.svg  shape-forms — ★ outline
+  C-032-3d-cube  lobby/archive/_assets/IconTreatment/treated/C-032-3d-cube.svg  tools — outline · off-centre (ink) · scaled ×1.1212 (outer 18 → 20) · width/height → 24 · pick keep
+  B-heart-half  lobby/archive/_assets/IconTreatment/treated/B-heart-half.svg  shape-forms — outline · width/height → 24
+  B-heart-half-solid  lobby/archive/_assets/IconTreatment/treated/B-heart-half-solid.svg  shape-forms — ★ solid · off-centre (ink) · width/height → 24
+  C-208-heart-handshake  lobby/archive/_assets/IconTreatment/treated/C-208-heart-handshake.svg  misc — ★ outline · width/height → 24
+  A-asterisk  lobby/archive/_assets/IconTreatment/treated/A-asterisk.svg  shape-forms — outline
+  A-bookmark-square  lobby/archive/_assets/IconTreatment/treated/A-bookmark-square.svg  shape-forms — outline
+  A-bubbles  lobby/archive/_assets/IconTreatment/treated/A-bubbles.svg  shape-forms — outline
+  A-disc  lobby/archive/_assets/IconTreatment/treated/A-disc.svg  shape-forms — outline
+  A-fire  lobby/archive/_assets/IconTreatment/treated/A-fire.svg  shape-forms — outline
+  A-puzzle  lobby/archive/_assets/IconTreatment/treated/A-puzzle.svg  shape-forms — outline
+  A-square-slash  lobby/archive/_assets/IconTreatment/treated/A-square-slash.svg  shape-forms — outline
+  A-wind  lobby/archive/_assets/IconTreatment/treated/A-wind.svg  shape-forms — outline
+  B-leaf  lobby/archive/_assets/IconTreatment/treated/B-leaf.svg  shape-forms — outline · scaled ×1.065 (outer 18.8712 → 20) · width/height → 24
+  A-octagon  lobby/archive/_assets/IconTreatment/treated/A-octagon.svg  shape-primitives — outline
+  C-005-duplicate  lobby/archive/_assets/IconTreatment/treated/C-005-duplicate.svg  singletons — ★ outline · width/height → 24 · pick keep
+  C-015-copy-layer  lobby/archive/_assets/IconTreatment/treated/C-015-copy-layer.svg  layout — outline · width/height → 24 · pick keep
+  A-link  lobby/archive/_assets/IconTreatment/treated/A-link.svg  singletons — outline
+  A-link-02  lobby/archive/_assets/IconTreatment/treated/A-link-02.svg  singletons — outline
+  C-207-link  lobby/archive/_assets/IconTreatment/treated/C-207-link.svg  notify — ★ outline · width/height → 24
+  A-search-circle  lobby/archive/_assets/IconTreatment/treated/A-search-circle.svg  singletons — outline
+  C-149-search  lobby/archive/_assets/IconTreatment/treated/C-149-search.svg  singletons — ★ outline · width/height → 24 · pick keep
+  A-help-circle  lobby/archive/_assets/IconTreatment/treated/A-help-circle.svg  singletons — outline
+  C-028-search-zoom  lobby/archive/_assets/IconTreatment/treated/C-028-search-zoom.svg  singletons — outline · width/height → 24 · pick keep
+  C-161-power  lobby/archive/_assets/IconTreatment/treated/C-161-power.svg  singletons — outline · scaled ×1.1213 (outer 17.9987 → 20) · width/height → 24
+  C-166-funnel  lobby/archive/_assets/IconTreatment/treated/C-166-funnel.svg  singletons — outline · scaled ×1.085 (outer 18.55 → 20) · width/height → 24
+  A-calendar  lobby/archive/_assets/IconTreatment/treated/A-calendar.svg  time — outline
+  C-064-calendar  lobby/archive/_assets/IconTreatment/treated/C-064-calendar.svg  time — mixed · fill mixed with stroke · width/height → 24 · pick drop
+  C-069-calendar  lobby/archive/_assets/IconTreatment/treated/C-069-calendar.svg  time — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-078-calendar-date  lobby/archive/_assets/IconTreatment/treated/C-078-calendar-date.svg  time — ★ outline · width/height → 24 · pick keep
+  C-094-calendar-clock  lobby/archive/_assets/IconTreatment/treated/C-094-calendar-clock.svg  time — outline · width/height → 24 · pick drop
+  A-clock  lobby/archive/_assets/IconTreatment/treated/A-clock.svg  time — outline
+  C-065-clock  lobby/archive/_assets/IconTreatment/treated/C-065-clock.svg  time — mixed · fill mixed with stroke · scaled ×0.925 (outer 21.5 → 20) · width/height → 24
+  C-068-clock  lobby/archive/_assets/IconTreatment/treated/C-068-clock.svg  time — ★ outline · width/height → 24 · pick keep
+  C-071-stopwatch  lobby/archive/_assets/IconTreatment/treated/C-071-stopwatch.svg  time — ★ mixed · fill mixed with stroke · scaled ×0.9828 (outer 20.3238 → 20) · width/height → 24 · pick keep
+  C-072-alarm-clock  lobby/archive/_assets/IconTreatment/treated/C-072-alarm-clock.svg  time — mixed · fill mixed with stroke · outside live area · centred (off 0, -0.0531) · width/height → 24 · pick drop
+  C-075-clock  lobby/archive/_assets/IconTreatment/treated/C-075-clock.svg  time — outline · width/height → 24 · pick unsure
+  C-076-clock-ring  lobby/archive/_assets/IconTreatment/treated/C-076-clock-ring.svg  time — outline · width/height → 24 · pick drop
+  C-079-alarm-clock  lobby/archive/_assets/IconTreatment/treated/C-079-alarm-clock.svg  time — outline · width/height → 24 · pick drop
+  C-080-stopwatch-gauge  lobby/archive/_assets/IconTreatment/treated/C-080-stopwatch-gauge.svg  time — outline · width/height → 24 · pick keep
+  C-081-dashed-clock  lobby/archive/_assets/IconTreatment/treated/C-081-dashed-clock.svg  time — outline · width/height → 24 · pick unsure
+  C-082-clock-gear  lobby/archive/_assets/IconTreatment/treated/C-082-clock-gear.svg  time — outline · width/height → 24 · pick drop
+  C-083-watch  lobby/archive/_assets/IconTreatment/treated/C-083-watch.svg  time — outline · width/height → 24 · pick keep
+  C-084-fast-stopwatch  lobby/archive/_assets/IconTreatment/treated/C-084-fast-stopwatch.svg  time — outline · width/height → 24 · pick keep
+  C-085-clock-cycle  lobby/archive/_assets/IconTreatment/treated/C-085-clock-cycle.svg  time — outline · width/height → 24 · pick drop
+  C-089-gauge-timer  lobby/archive/_assets/IconTreatment/treated/C-089-gauge-timer.svg  time — outline · width/height → 24 · pick drop
+  C-090-watch-24  lobby/archive/_assets/IconTreatment/treated/C-090-watch-24.svg  time — outline · width/height → 24 · pick keep
+  C-092-clock-dashed  lobby/archive/_assets/IconTreatment/treated/C-092-clock-dashed.svg  time — outline · width/height → 24 · pick unsure
+  C-095-time-zones  lobby/archive/_assets/IconTreatment/treated/C-095-time-zones.svg  time — outline · width/height → 24 · pick drop
+  C-196-timer-reset  lobby/archive/_assets/IconTreatment/treated/C-196-timer-reset.svg  time — outline · width/height → 24 · pick keep
+  C-221-alarm-clock-plus  lobby/archive/_assets/IconTreatment/treated/C-221-alarm-clock-plus.svg  time — outline · width/height → 24 · pick keep
+  C-224-alarm-smoke  lobby/archive/_assets/IconTreatment/treated/C-224-alarm-smoke.svg  notify — outline · off-centre (ink) · width/height → 24 · pick keep
+  C-088-24-h-clock  lobby/archive/_assets/IconTreatment/treated/C-088-24-h-clock.svg  time — ★ outline · width/height → 24 · pick drop
+  C-097-24-h-refresh  lobby/archive/_assets/IconTreatment/treated/C-097-24-h-refresh.svg  time — outline · width/height → 24 · pick drop
+  C-067-hourglass  lobby/archive/_assets/IconTreatment/treated/C-067-hourglass.svg  time — mixed · fill mixed with stroke · width/height → 24 · pick drop
+  C-087-hourglass-round  lobby/archive/_assets/IconTreatment/treated/C-087-hourglass-round.svg  time — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-098-hourglass  lobby/archive/_assets/IconTreatment/treated/C-098-hourglass.svg  time — mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-250-hourglass  lobby/archive/_assets/IconTreatment/treated/C-250-hourglass.svg  time — ★ outline · width/height → 24 · pick keep
+  C-077-wall-clock-square  lobby/archive/_assets/IconTreatment/treated/C-077-wall-clock-square.svg  time — outline · width/height → 24 · pick unsure
+  C-093-fast-clock  lobby/archive/_assets/IconTreatment/treated/C-093-fast-clock.svg  time — outline · width/height → 24 · pick drop
+  A-bezier  lobby/archive/_assets/IconTreatment/treated/A-bezier.svg  tools — outline
+  C-013-bezier-node  lobby/archive/_assets/IconTreatment/treated/C-013-bezier-node.svg  editing — ★ outline · width/height → 24
+  A-paint-roller  lobby/archive/_assets/IconTreatment/treated/A-paint-roller.svg  tools — outline · off-centre (ink)
+  C-036-brush  lobby/archive/_assets/IconTreatment/treated/C-036-brush.svg  editing — outline · scaled ×1.0985 (outer 18.3417 → 20) · width/height → 24 · pick keep
+  C-048-paint-bucket  lobby/archive/_assets/IconTreatment/treated/C-048-paint-bucket.svg  tools — ★ mixed · fill mixed with stroke · width/height → 24 · pick keep
+  C-063-palette-brush  lobby/archive/_assets/IconTreatment/treated/C-063-palette-brush.svg  tools — ★ outline · width/height → 24 · pick keep
+  C-114-brush  lobby/archive/_assets/IconTreatment/treated/C-114-brush.svg  editing — outline · scaled ×1.076 (outer 16.8341 → 18) · width/height → 24 · pick drop
+  C-202-paint-bucket  lobby/archive/_assets/IconTreatment/treated/C-202-paint-bucket.svg  tools — outline · width/height → 24 · pick keep
+  C-205-paint-roller  lobby/archive/_assets/IconTreatment/treated/C-205-paint-roller.svg  tools — outline · off-centre (ink) · width/height → 24 · pick keep
+  A-drop-circle  lobby/archive/_assets/IconTreatment/treated/A-drop-circle.svg  tools — ★ outline
+  A-drop-hatch  lobby/archive/_assets/IconTreatment/treated/A-drop-hatch.svg  tools — outline
+  C-003-add-frame  lobby/archive/_assets/IconTreatment/treated/C-003-add-frame.svg  tools — ★ outline · width/height → 24 · pick keep
+  C-007-flip-frame  lobby/archive/_assets/IconTreatment/treated/C-007-flip-frame.svg  tools — outline · scaled ×1.1212 (outer 18 → 20) · width/height → 24
+  A-hand  lobby/archive/_assets/IconTreatment/treated/A-hand.svg  tools — outline
+  B-hand-pointer  lobby/archive/_assets/IconTreatment/treated/B-hand-pointer.svg  tools — outline · width/height → 24
+  B-hand-pointer-solid  lobby/archive/_assets/IconTreatment/treated/B-hand-pointer-solid.svg  tools — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  C-145-hand-gear  lobby/archive/_assets/IconTreatment/treated/C-145-hand-gear.svg  misc — outline · width/height → 24 · pick drop
+  C-203-hand-metal  lobby/archive/_assets/IconTreatment/treated/C-203-hand-metal.svg  misc — ★ outline · width/height → 24
+  A-magnet  lobby/archive/_assets/IconTreatment/treated/A-magnet.svg  tools — outline
+  A-magnet-02  lobby/archive/_assets/IconTreatment/treated/A-magnet-02.svg  tools — ★ outline
+  A-orbit  lobby/archive/_assets/IconTreatment/treated/A-orbit.svg  tools — outline
+  A-orbit-dot  lobby/archive/_assets/IconTreatment/treated/A-orbit-dot.svg  tools — outline
+  C-239-orbit  lobby/archive/_assets/IconTreatment/treated/C-239-orbit.svg  data — ★ outline · width/height → 24 · pick keep
+  A-rotate-out  lobby/archive/_assets/IconTreatment/treated/A-rotate-out.svg  tools — outline
+  C-014-rotate-object  lobby/archive/_assets/IconTreatment/treated/C-014-rotate-object.svg  tools — outline · off-centre (ink) · width/height → 24 · pick keep
+  C-060-3d-rotate  lobby/archive/_assets/IconTreatment/treated/C-060-3d-rotate.svg  tools — ★ outline · width/height → 24 · pick keep
+  A-ruler  lobby/archive/_assets/IconTreatment/treated/A-ruler.svg  tools — outline
+  A-ruler-combined  lobby/archive/_assets/IconTreatment/treated/A-ruler-combined.svg  tools — outline
+  A-ruler-triangle  lobby/archive/_assets/IconTreatment/treated/A-ruler-triangle.svg  tools — outline · off-centre (ink)
+  C-041-ruler  lobby/archive/_assets/IconTreatment/treated/C-041-ruler.svg  tools — ★ outline · width/height → 24
+  C-049-ruler-pencil  lobby/archive/_assets/IconTreatment/treated/C-049-ruler-pencil.svg  editing — ★ mixed · fill mixed with stroke · width/height → 24
+  A-select-circle  lobby/archive/_assets/IconTreatment/treated/A-select-circle.svg  tools — outline
+  A-select-frame  lobby/archive/_assets/IconTreatment/treated/A-select-frame.svg  tools — outline
+  A-select-frame-02  lobby/archive/_assets/IconTreatment/treated/A-select-frame-02.svg  tools — outline
+  C-002-lasso-rotate  lobby/archive/_assets/IconTreatment/treated/C-002-lasso-rotate.svg  tools — outline · scaled ×1.1332 (outer 16.06 → 18) · width/height → 24
+  C-026-lasso-select  lobby/archive/_assets/IconTreatment/treated/C-026-lasso-select.svg  tools — ★ outline · width/height → 24
+  C-037-select-area  lobby/archive/_assets/IconTreatment/treated/C-037-select-area.svg  tools — outline · width/height → 24
+  C-058-select-cursor  lobby/archive/_assets/IconTreatment/treated/C-058-select-cursor.svg  tools — outline · width/height → 24
+  A-shapes  lobby/archive/_assets/IconTreatment/treated/A-shapes.svg  tools — outline
+  A-shapes-02  lobby/archive/_assets/IconTreatment/treated/A-shapes-02.svg  tools — ★ outline
+  A-squares-linked  lobby/archive/_assets/IconTreatment/treated/A-squares-linked.svg  tools — outline
+  A-squares-linked-02  lobby/archive/_assets/IconTreatment/treated/A-squares-linked-02.svg  tools — ★ outline
+  C-039-swatch-book  lobby/archive/_assets/IconTreatment/treated/C-039-swatch-book.svg  tools — ★ outline · width/height → 24 · pick drop
+  C-220-swatch-book  lobby/archive/_assets/IconTreatment/treated/C-220-swatch-book.svg  tools — outline · width/height → 24 · pick drop
+  A-triangle-down  lobby/archive/_assets/IconTreatment/treated/A-triangle-down.svg  tools — outline · off-centre (ink)
+  C-212-triangle-alert  lobby/archive/_assets/IconTreatment/treated/C-212-triangle-alert.svg  singletons — ★ outline · off-centre (ink) · width/height → 24 · pick keep
+  A-blend  lobby/archive/_assets/IconTreatment/treated/A-blend.svg  tools — outline
+  A-broom  lobby/archive/_assets/IconTreatment/treated/A-broom.svg  tools — outline
+  A-capsules  lobby/archive/_assets/IconTreatment/treated/A-capsules.svg  tools — outline
+  A-cursor-click  lobby/archive/_assets/IconTreatment/treated/A-cursor-click.svg  tools — outline
+  A-hatch  lobby/archive/_assets/IconTreatment/treated/A-hatch.svg  tools — outline
+  A-hex-nut  lobby/archive/_assets/IconTreatment/treated/A-hex-nut.svg  tools — outline
+  A-scan  lobby/archive/_assets/IconTreatment/treated/A-scan.svg  tools — mixed · fill mixed with stroke
+  A-tag-arrow  lobby/archive/_assets/IconTreatment/treated/A-tag-arrow.svg  tools — outline
+  A-undo-circle  lobby/archive/_assets/IconTreatment/treated/A-undo-circle.svg  tools — outline
+  C-017-flip-transform  lobby/archive/_assets/IconTreatment/treated/C-017-flip-transform.svg  tools — outline · width/height → 24
+  C-021-shape-union  lobby/archive/_assets/IconTreatment/treated/C-021-shape-union.svg  tools — outline · width/height → 24
+  C-030-eyedropper  lobby/archive/_assets/IconTreatment/treated/C-030-eyedropper.svg  tools — outline · width/height → 24 · pick keep
+  C-033-rgb-circles  lobby/archive/_assets/IconTreatment/treated/C-033-rgb-circles.svg  tools — outline · width/height → 24 · pick keep
+  C-034-cmyk  lobby/archive/_assets/IconTreatment/treated/C-034-cmyk.svg  tools — outline · width/height → 24 · pick keep
+  C-038-crop  lobby/archive/_assets/IconTreatment/treated/C-038-crop.svg  tools — outline · width/height → 24 · pick keep
+  C-043-scissors  lobby/archive/_assets/IconTreatment/treated/C-043-scissors.svg  tools — outline · width/height → 24 · pick keep
+  C-045-craft-knife  lobby/archive/_assets/IconTreatment/treated/C-045-craft-knife.svg  tools — outline · scaled ×1.0819 (outer 18.6 → 20) · centred (off 0.05, 1.6) · width/height → 24 · pick keep
+  C-050-3d-axes  lobby/archive/_assets/IconTreatment/treated/C-050-3d-axes.svg  tools — outline · off-centre (ink) · scaled ×1.1212 (outer 18 → 20) · width/height → 24 · pick keep
+  C-056-colour-swatches  lobby/archive/_assets/IconTreatment/treated/C-056-colour-swatches.svg  tools — mixed · fill mixed with stroke · outside live area · mask construction (redraw flat) · mask construction kept as drawn — not fitted (needs a flat redraw) · width/height → 24 · pick drop
+  C-132-venn-circles  lobby/archive/_assets/IconTreatment/treated/C-132-venn-circles.svg  tools — outline · width/height → 24
+  C-142-target-refresh  lobby/archive/_assets/IconTreatment/treated/C-142-target-refresh.svg  tools — outline · width/height → 24 · pick drop
+  C-160-crosshair  lobby/archive/_assets/IconTreatment/treated/C-160-crosshair.svg  tools — outline · width/height → 24 · pick keep
+  C-194-slice  lobby/archive/_assets/IconTreatment/treated/C-194-slice.svg  tools — outline · width/height → 24 · pick keep
+  C-198-diameter  lobby/archive/_assets/IconTreatment/treated/C-198-diameter.svg  tools — outline · width/height → 24
+  C-216-palette  lobby/archive/_assets/IconTreatment/treated/C-216-palette.svg  tools — mixed · fill mixed with stroke · width/height → 24 · pick unsure
+  C-229-drafting-compass  lobby/archive/_assets/IconTreatment/treated/C-229-drafting-compass.svg  tools — outline · width/height → 24 · pick keep
+  B-contract-corners-solid  lobby/archive/_assets/IconTreatment/treated/B-contract-corners-solid.svg  traffic — ★ solid · width/height → 24
+  B-contract-cross  lobby/archive/_assets/IconTreatment/treated/B-contract-cross.svg  traffic — ★ outline · width/height → 24
+  B-contract-cross-solid  lobby/archive/_assets/IconTreatment/treated/B-contract-cross-solid.svg  traffic — solid · width/height → 24
+  B-expand-corners-solid  lobby/archive/_assets/IconTreatment/treated/B-expand-corners-solid.svg  traffic — ★ solid · width/height → 24
+  B-expand-cross  lobby/archive/_assets/IconTreatment/treated/B-expand-cross.svg  traffic — outline · width/height → 24
+  B-expand-cross-solid  lobby/archive/_assets/IconTreatment/treated/B-expand-cross-solid.svg  traffic — solid · width/height → 24
+  C-022-expand-cross-arrows  lobby/archive/_assets/IconTreatment/treated/C-022-expand-cross-arrows.svg  arrow-diagonal — ★ outline · width/height → 24 · pick keep
+  A-sync  lobby/archive/_assets/IconTreatment/treated/A-sync.svg  traffic — ★ outline
+  A-sync-dashed  lobby/archive/_assets/IconTreatment/treated/A-sync-dashed.svg  traffic — outline · scaled ×1.1428 (outer 15.9382 → 18)
+  B-arrows-3way  lobby/archive/_assets/IconTreatment/treated/B-arrows-3way.svg  traffic — outline · outside live area · centred (off -0.7513, 0.75) · width/height → 24
+  B-car  lobby/archive/_assets/IconTreatment/treated/B-car.svg  transport — ★ outline · width/height → 24
+  B-car-solid  lobby/archive/_assets/IconTreatment/treated/B-car-solid.svg  transport — ★ solid · centred (off 0, 1) · width/height → 24
+  B-train  lobby/archive/_assets/IconTreatment/treated/B-train.svg  transport — ★ outline · width/height → 24
+  B-train-solid  lobby/archive/_assets/IconTreatment/treated/B-train-solid.svg  transport — ★ solid · scaled ×1.1111 (outer 18 → 20) · width/height → 24
+  A-truck  lobby/archive/_assets/IconTreatment/treated/A-truck.svg  transport — outline
+  B-quote  lobby/archive/_assets/IconTreatment/treated/B-quote.svg  typography — ★ outline · width/height → 24
+  B-quote-solid  lobby/archive/_assets/IconTreatment/treated/B-quote-solid.svg  typography — ★ solid · width/height → 24
+  C-016-text-frame  lobby/archive/_assets/IconTreatment/treated/C-016-text-frame.svg  typography — ★ outline · width/height → 24 · pick keep
+  C-024-text-tool  lobby/archive/_assets/IconTreatment/treated/C-024-text-tool.svg  typography — outline · width/height → 24 · pick drop
+  C-053-text-box  lobby/archive/_assets/IconTreatment/treated/C-053-text-box.svg  typography — outline · width/height → 24 · pick keep
+  C-187-pilcrow  lobby/archive/_assets/IconTreatment/treated/C-187-pilcrow.svg  typography — outline · off-centre (ink) · scaled ×1.2847 (outer 15.9 → 20) · width/height → 24 · pick keep
+  C-193-heading-6  lobby/archive/_assets/IconTreatment/treated/C-193-heading-6.svg  typography — outline · scaled ×1.2092 (outer 16.8 → 20) · width/height → 24 · pick keep
+family (as shipped):
+  Kolkrabbi  assets/web/touch-icon.svg
+  KDS  assets/kds/touch-icon.svg
+  FXR  assets/fxr/touch-icon.svg
+  R2B2  assets/r2b2/touch-icon.svg
+  Metrics  assets/metrics/touch-icon.svg
+  Mirror  assets/mirror/touch-icon.svg
+  Monitor  assets/monitor/touch-icon.svg
+  Record  assets/record/touch-icon.svg
+  Branding  assets/branding/touch-icon.svg
+  Studio  assets/studio/touch-icon.svg
+  Brand  assets/brand/touch-icon.svg

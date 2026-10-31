@@ -261,16 +261,10 @@
   top: var(--ty);
   transform: translate(-50%, -110%);
   z-index: 10;
-  pointer-events: none;
-  display: inline-flex;
-  align-items: center;
-  padding: 0.125rem 0.25rem;
-  background-color: var(--kol-surface-primary);
-  border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary, currentColor) 12%, transparent);
-  border-radius: 0.25rem;
-  white-space: nowrap;
-  line-height: 1;
+  /* only the PLACE is the chart's: the box is KOL's one tooltip (DashTooltip renders `.kol-tooltip` — user 2026-10-31,
+   * on the heatmap's hover: *"what is this tooltip/popover? not ours?"*); its caption takes the tooltip's type */
 }
+.dash-tooltip .dash-caption { font: inherit; color: inherit; }
 
 .dash-chart-element--active {
   filter: brightness(1.2);

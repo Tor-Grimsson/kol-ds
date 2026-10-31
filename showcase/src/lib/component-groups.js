@@ -13,7 +13,7 @@
  *   parent name → [member names]
  */
 export const COMPONENT_GROUPS = {
-  MenuItem: ['MenuDropdownItem', 'MenuDropdownDivider', 'MenuDropdownNest'],
+  Menu: ['MenuTrigger', 'MenuPanel', 'MenuRow', 'MenuDivider', 'MenuLabel', 'MenuFlyout'],
   Accordion: ['AccordionPanel'],
 }
 

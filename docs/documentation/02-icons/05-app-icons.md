@@ -3,7 +3,7 @@ title: App icons
 type: reference
 status: active
 created: 2026-10-09
-updated: 2026-10-28
+updated: 2026-10-31
 description: The home-screen icon every KOL app ships
 aliases:
   - app icon
@@ -46,3 +46,5 @@ Favicons (tab icons) are not covered here and keep their own fit.
 ## Where they live (kol-icons ≥ 0.50.0)
 
 Every identity's set ships in `@kolkrabbi/kol-icons`, one folder each: `identity/<id>/` holds the icon (`<id>.svg`), the raw `-logomark`, `-wordmark`, `-favicon`, the `-app-icon` this rule describes and the PNGs rendered from it (180 dark + light, 192, 512, maskable 512) plus `og.png`. `pnpm identity:render` (`scripts/render-identity.mjs`) cuts every app icon by this rule from the logomark, so the family is drawn once; `apps/identity` shows them side by side, light and dark, before they ship. An app copies its folder into `public/` — [[../../operations/07-apps-tier/10-save-to-home-screen|Save to home screen]] step 3.
+
+**`kol-ds` gains its wordmark** (kol-icons 0.56.1, 2026-10-31, the user's pick): `kol-ds-wordmark.svg` — KOL DESIGN SYSTEM in Right Grotesk Tight Light, one line, tracking 0.4 %, the font's own kerning. It is the showcase's boot loader (`loaderApp`, `size: 280`) and its share card (`public/og/kol-ds-og.png`, the word 72 % of the width); KDS stays the mark for the favicon and the touch tile.

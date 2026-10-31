@@ -3,7 +3,7 @@ title: Opacity
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-10-31
 verified: 2026-09-03
 description: Every ink ladder, and which to use
 aliases:
@@ -116,10 +116,10 @@ tuning the surface behind it, and a scrim hides the thing you are tuning.
 A translucent foreground scale — `--kol-fg-01 … --kol-fg-96` — ink at increasing opacity over whatever surface it sits on. Both themes contrast-flip automatically because every consumer of `fg-*` derives from the surface ink — and since theme 0.52.0 that holds on a **subtree** too: the ramp, the roles, the `oq` scale and the border tokens are declared on `:root, :is([data-theme="light"], .light), :is([data-theme="dark"], .dark)`, so a `data-theme` / `.light` / `.dark` stamped on any element re-resolves them on that element (nested-theme-scope, 2026-08-26). A var() resolves where the property is declared; a `:root`-only ramp bakes the root's ink for every descendant.
 
 ```text
-01 02 04 08 12 16 24 32 40 48 64 72 80 88 96
+01 02 04 06 08 12 16 24 32 40 48 64 72 80 88 96
 ```
 
-**15 stops** — `01 02 04 08 12 16 24 32 40 48 64 72 80 88 96` — on every family but two. The `72` step began as a `--kol-fg-*` exception for the `lede` role and was widened to all ladders 2026-08-29. **`oq-ab-*` and `oq-ab-inverse-*` carry a 16th, `100`**: the pure pole itself, `#fff` and `#000` with nothing mixed in. It exists because `--kol-surface-sunken` needs it in light (below), and it is the one stop with no `text-`/`border-` utility — only `.bg-oq-ab-100`.
+**16 stops** — `01 02 04 06 08 12 16 24 32 40 48 64 72 80 88 96` — on every family but two. The `06` step was added 2026-10-31 as a whole step — every `fg-` and `oq-` family and their inverses, the `ab` and `absolute` tiers included (MetricDashboardUpstream, user ruling: *if it is added, it is added everywhere*) — for a resting chip fill between `oq-04`, which vanishes on a card, and `oq-08`. The `72` step began as a `--kol-fg-*` exception for the `lede` role and was widened to all ladders 2026-08-29. **`oq-ab-*` and `oq-ab-inverse-*` carry a 17th, `100`**: the pure pole itself, `#fff` and `#000` with nothing mixed in. It exists because `--kol-surface-sunken` needs it in light (below), and it is the one stop with no `text-`/`border-` utility — only `.bg-oq-ab-100`.
 
 ### Naming
 

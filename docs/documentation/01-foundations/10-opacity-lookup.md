@@ -16,7 +16,7 @@ sources:
   - packages/theme/kol-opaque.css
 tags:
   - domain/tokens
-  - domain/color
+  - audience/consumer
 related:
   - "[[01-tokens|tokens]]"
   - "[[11-color-lookup|color lookup]]"
@@ -28,14 +28,14 @@ related:
 
 # Opacity lookup
 
-**Color is hue; this is ink weight.** [[11-color-lookup|Color]] holds the
+**Colour is hue; this is ink weight.** [[11-color-lookup|Color]] holds the
 surfaces and ramps. Everything here is the theme's own ink at a strength, over
 something.
 
 ## Ink roles
 
 Eight names, each an alias onto one numeric stop. A role is a position on the
-ladder, never a color.
+ladder, never a colour.
 
 | Role | Stop |
 |---|---|
@@ -57,18 +57,18 @@ ladder, never a color.
 
 | Family | Stops | Flips toward | Kind | Range |
 |---|---|---|---|---|
-| `--kol-fg-*` | 15 | ink | translucent | `01`…`96` |
-| `--kol-fg-ab-*` | 15 | ground | translucent | `01`…`96` |
-| `--kol-fg-ab-inverse-*` | 15 | ink | translucent | `01`…`96` |
-| `--kol-fg-absolute-*` | 15 | frozen | translucent | `01`…`96` |
-| `--kol-fg-absolute-inverse-*` | 15 | frozen | translucent | `01`…`96` |
-| `--kol-fg-inverse-*` | 15 | ink | translucent | `01`…`96` |
-| `--kol-oq-*` | 15 | ink | opaque | `01`…`96` |
-| `--kol-oq-ab-*` | 16 | ground | opaque | `01`…`100` |
-| `--kol-oq-ab-inverse-*` | 16 | ink | opaque | `01`…`100` |
-| `--kol-oq-absolute-*` | 15 | frozen | opaque | `01`…`96` |
-| `--kol-oq-absolute-inverse-*` | 15 | frozen | opaque | `01`…`96` |
-| `--kol-oq-inverse-*` | 15 | ground | opaque | `01`…`96` |
+| `--kol-fg-*` | 16 | ink | translucent | `01`…`96` |
+| `--kol-fg-ab-*` | 16 | ground | translucent | `01`…`96` |
+| `--kol-fg-ab-inverse-*` | 16 | ink | translucent | `01`…`96` |
+| `--kol-fg-absolute-*` | 16 | frozen | translucent | `01`…`96` |
+| `--kol-fg-absolute-inverse-*` | 16 | frozen | translucent | `01`…`96` |
+| `--kol-fg-inverse-*` | 16 | ink | translucent | `01`…`96` |
+| `--kol-oq-*` | 16 | ink | opaque | `01`…`96` |
+| `--kol-oq-ab-*` | 17 | ground | opaque | `01`…`100` |
+| `--kol-oq-ab-inverse-*` | 17 | ink | opaque | `01`…`100` |
+| `--kol-oq-absolute-*` | 16 | frozen | opaque | `01`…`96` |
+| `--kol-oq-absolute-inverse-*` | 16 | frozen | opaque | `01`…`96` |
+| `--kol-oq-inverse-*` | 16 | ground | opaque | `01`…`96` |
 
 ## Utilities
 

@@ -3,7 +3,7 @@ title: Shipped packages
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-10-24
+updated: 2026-10-31
 description: Every package this repo ships, with its version
 aliases:
   - shipped-packages
@@ -31,13 +31,13 @@ Every package this repo maintains and publishes to npm, in one table. **Versions
 
 | Package | Version | Job |
 |---|---|---|
-| `@kolkrabbi/kol-theme` | **0.200.4** | Foundation CSS — tokens, type classes, all component chrome |
-| `@kolkrabbi/kol-icons` | **0.53.5** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal + kol-icon-set-identity, plus `registerIcons` for bring-your-own |
-| `@kolkrabbi/kol-component` | **0.317.4** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site) |
-| `@kolkrabbi/kol-framework` | **0.65.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer; `WebsiteLayout` (kolkrabbi.io's frame, 0.62.0) |
-| `@kolkrabbi/kol-shell` | **0.90.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
+| `@kolkrabbi/kol-theme` | **0.209.0** | Foundation CSS — tokens, type classes, all component chrome |
+| `@kolkrabbi/kol-icons` | **0.55.0** | `<Icon>` + kol-icon-set-interface + kol-icon-set-signal + kol-icon-set-identity + kol-icon-set-external, plus `registerIcons` for bring-your-own |
+| `@kolkrabbi/kol-component` | **0.328.0** | The components — atoms → molecules → organisms → utilities + `<Graphic>`, and `NavRail` (app · site · top) |
+| `@kolkrabbi/kol-framework` | **0.68.0** | Site shell — `SiteLayout` (the site frame; `PageLayout` · `AppShell` alias it), `CategoryPage`, `SideNav` (alias of `NavRail variant="site"`), `ShellHeader`, `ThemeToggle` + `useTheme`, the page kit (`PageHero` · `PageSection`), footer; `WebsiteLayout` (kolkrabbi.io's frame, 0.62.0); the document kit (`MarkdownPage` · `DocumentIndex` · `DocumentHeader`, 0.68.0) |
+| `@kolkrabbi/kol-shell` | **0.96.0** | Application shell — `AppShell` (renders kol-component's `NavRail`, re-exported) (the phone bar, the app's one masthead), `AppHub` (Home and Settings opt-in), `AppStudio` (the workstation page set), page scaffolds, `GridCard`, settings/walkthrough/shortcuts |
 | `@kolkrabbi/kol-workshop` | **0.44.0** | Docs/workshop system — the docs shell (per-space rails, one scroll region, the hub's settings rail, the S modal, hideable bars), the reader, `SearchPage`, the tag graph, exhibit sections; the engines moved to the engine tier (0.30.0), still re-exported |
-| `@kolkrabbi/kol-dashboards` | **0.5.1** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
+| `@kolkrabbi/kol-dashboards` | **0.7.1** | Analytics — hand-rolled SVG charts (no d3), card family, `MetricsDashboard` |
 | `@kolkrabbi/kol-hardware` | **0.10.0** | Hardware panel controls in five groups — value · switches · indicators · panel · frames — plus the signal engine (`./signal`: one expression compiler + ADSR) and `EnvelopeGenerator`. Renamed from kol-controls 2026-09-27 |
 | `@kolkrabbi/kol-controls` | **0.4.0** | **Deprecated** — a re-export of `kol-hardware`, so existing imports resolve until consumers move |
 | `@kolkrabbi/kol-chess` | **0.10.2** | Chess apparatus — interactive board, 3 piece sets, playback/notation/sidelines, archive, rail blocks |
@@ -57,6 +57,7 @@ Plain JS — no React, no DOM, no UI dependencies (ARCHITECTURE §3, 2026-09-28)
 |---|---|---|
 | `@kolkrabbi/kol-markdown` | **0.2.0** | The markdown engine — parser, frontmatter read + lossless round-trip, inventory, tag counts (co-occurrence moved to kol-search, adapter kept). One copy of what kol-workshop, kol-component and kol-notes each carried |
 | `@kolkrabbi/kol-search` | **0.3.0** | The search engine — query language (filters, aliases, negation, phrases, dates, smart terms), ranking with reasons, disjunctive facets, the tag graph (`tagGraph`) |
+| `@kolkrabbi/kol-growth` | **0.4.0** | The growing line — differential growth into a density field (`Growth`, `densityFrom`; the line cools by heat, `draw({ wave })`), `mulberry32`, the orb and SVG-path shape sources; kol-component's `GrowthLineStage` draws it, kol-fxr runs it in its loops |
 | `@kolkrabbi/kol-print` | **0.1.1** | The print engine — markdown → the Kolkrabbi A4 sheets → PDF (Chrome or the browser's print) · DOCX · MD; the `kol-print` CLI. The studio's details are the caller's |
 
 ## Other tiers

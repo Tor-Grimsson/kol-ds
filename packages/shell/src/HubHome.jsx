@@ -1,9 +1,10 @@
-import { useState } from 'react'
-import { Button, PopoverPanel, usePopover, useMediaQuery, VectorLoader } from '@kolkrabbi/kol-component'
-import PhoneNav from './PhoneNav.jsx'
+import { useEffect, useState } from 'react'
+import { Button, PopoverPanel, usePopover, useMediaQuery, VectorLoader, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import AppFloatNav from './AppFloatNav.jsx'
 import WalkthroughPanel from './WalkthroughPanel.jsx'
 import MoreRows from './MoreSheet.jsx'
 import CatalogPage from './CatalogPage.jsx'
+import AccountForm from './AccountForm.jsx'
 import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
 
 /* taxonomy-ok: organism — nests CatalogPage (relative) + kol-component's Button */
@@ -157,6 +158,10 @@ export default function HubHome({
   signedOut,
   stage,
   chromes = [],
+  /* what the signed-out dock and its menus (the +'s included) are made of (HubHomeFloatSurface, kol-fxr 2026-10-31 —
+   * *"we can see it first, but I think probably solid"*): AppFloatNav's `solid · glass-dark · glass-light`; solid is today's.
+   * The + itself stays the inverted round button on every surface (HomeDockRound4) */
+  surface = 'solid',
   signInAction,
   /* AppHub's: the signed-in account row (HomeMenuAccountRow, kol-fxr 2026-10-29 — *"here is supposed to be user space as
    * well"*), the menu's last row */
@@ -167,9 +172,25 @@ export default function HubHome({
    * `signedOutActions` the + on the signed-out page. */
   menu,
   signedOutActions,
+  /* SIGN IN OVER HOME (FloatingStyleAndSignInDemos, kol-fxr 2026-10-30, canvas Round 3) — AppHub's, from `signIn.form`:
+   * `{ open, onClose, ...AccountForm's props }`. Signed out and open: on a desk the sign-in column (672, surface-primary)
+   * slides in from the left over Home, the mark stays where it is above it, the rest of Home turns surface-secondary and
+   * the stage slides half the column right (never resized), the + and the nav stay; on a phone the form is the style-B box, centred over the
+   * stage at the 16 gutter, the nav stays. Escape closes it */
+  signInForm,
+  /* AppHub's: the whole nav, the desk dock's ··· (the board — the signed-out desk has no rail). A chrome may carry `sub`
+   * `[{ label, icon?, onPress }]`: its rows open above its slot (fxr: Randomiser → Generate, Effects) */
+  dockMore,
   ...unknown
 }) {
   if (import.meta.env.DEV) warnUnknown(unknown)
+  const formOpen = !!signInForm?.open
+  useEffect(() => {
+    if (!formOpen) return undefined
+    const onKey = (e) => { if (e.key === 'Escape') signInForm.onClose?.() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [formOpen]) // eslint-disable-line react-hooks/exhaustive-deps
   const coarse = useTouchPrimary()
   const narrow = useMediaQuery('(max-width: 767px)')
   const [view, setView] = useState(defaultView ?? views?.[0]?.value)
@@ -258,19 +279,38 @@ export default function HubHome({
   if (signedOut ?? (stage != null && files.length === 0)) {
     const outDefaults = [...baseActions, ...(signInAction ? [signInAction] : [])]
     const outActions = typeof signedOutActions === 'function' ? signedOutActions(outDefaults) ?? [] : outDefaults
+    const { open: _o, onClose: _c, ...form } = signInForm ?? {}
     return (
       <div className="relative min-h-dvh overflow-hidden" data-hub-signed-out>
-        {stage && <div className="absolute inset-0" aria-hidden="true">{stage}</div>}
+        {/* the rest of Home turns surface-secondary under an open sign-in column (a desk only) */}
+        <div className={`absolute inset-0 bg-surface-secondary transition-opacity duration-300 max-md:hidden ${formOpen ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
+        {/* the column overlays the stage, never resizes it — a stage that sizes to its box would reseed. It SLIDES half the
+          * column right instead, so the growth's centre sits in the middle of the grey that is left (kol-fxr 2026-10-30 — user:
+          * *"when shelf opens, then growth center shifts to center the gray visible area"*) */}
+        {stage && <div className={`absolute inset-0 transition-transform duration-300 ${formOpen ? 'md:translate-x-[336px]' : ''}`} aria-hidden="true">{stage}</div>}
+        {signInForm && (
+          <aside aria-label={form.title} aria-hidden={!formOpen} inert={!formOpen} className={`absolute inset-y-0 left-0 w-[672px] px-16 flex flex-col justify-center bg-surface-primary transition-transform duration-300 max-md:hidden ${formOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            {formOpen && <AccountForm {...form} />}
+          </aside>
+        )}
+        {formOpen && (
+          <div className="md:hidden absolute inset-x-4 top-1/2 -translate-y-1/2">
+            <AccountForm {...form} variant="box" />
+          </div>
+        )}
         {/* ONE 64 GUTTER ON A DESK (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user: *"cavnas 'padding' is a bit off"*): the
           * mark 64 in and 64 down, the + 64 in and 64 down on the mark's line, the dock 64 in and 64 up — the mark sat at 80 and
           * the + at 72. The phone's values are not part of it */}
         {app.logomark && (
-          <div className="absolute left-4 top-6 w-12 h-12 md:left-16 md:top-16 md:w-28 md:h-28 text-emphasis">
+          <div className="absolute z-10 left-4 top-6 w-12 h-12 md:left-16 md:top-16 md:w-28 md:h-28 text-emphasis">
             <VectorLoader src={app.logomark} size="100%" role="img" aria-label={app.name} />
           </div>
         )}
-        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" className="absolute right-16 top-16 max-md:hidden" />}
-        {chromes.length > 0 && <PhoneNav variant="dock" shape="pill" items={chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress }))} />}
+        {/* the + on the phone too (Round 3: the phone had no way to sign in from Home) — top-right on the mark's line, 16 in
+          * and 24 down; its menu is the floating style (`variant="float"`, the board's menus), as the dock's sheets are */}
+        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" variant="float" surface={surface} className="absolute z-10 right-4 top-6 md:right-16 md:top-16" />}
+        {/* over a stage the dock floats: the transport's shadow (HomeDockShadow, kol-fxr 2026-10-31) */}
+        {chromes.length > 0 && <AppFloatNav variant="dock" shape="pill" shadow={stage != null} surface={surface} items={chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress, sub: c.sub }))} sheetItems={dockMore} />}
         {/* the walkthrough over the stage, where the catalog's would sit — on the mark's left line */}
         {touring && steps.length > 0 && (
           <div className="absolute inset-x-4 top-24 md:left-16 md:right-auto md:top-52 md:w-[560px]">
@@ -306,7 +346,7 @@ export default function HubHome({
 }
 
 /* the masthead's round button and its sheet — the catalog's VariantsButton shape, the phone More's rows */
-function HomeMenu({ actions, icon = 'more', className = '' }) {
+function HomeMenu({ actions, icon = 'more', variant, surface = 'solid', className = '' }) {
   const [open, setOpen] = useState(false)
   /* the sheet opens to the LEFT of the button, top edges on one line (user 2026-10-23) — as the phone's sits beside its × */
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'left-start', offset: 12 })
@@ -314,10 +354,12 @@ function HomeMenu({ actions, icon = 'more', className = '' }) {
     <div className={className}>
       <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
         {/* `icon` — `more` on Home, `plus` signed out (frame B2), the × while its sheet is open */}
+        {/* always the inverted round button — `surface` dresses its menu only (HomeDockRound4, kol-fxr 2026-10-31 — user: *"this
+          * also changed the action button, but it is not supposed to change"*) */}
         <Button iconOnly={icon === 'more' ? 'more' : open ? 'x' : icon} size="lg" tone="inverted" radius="full" aria-label={open ? 'Close' : 'Actions'} pressed={open} />
       </span>
-      <PopoverPanel popover={popover} panel={false} className="kol-more-sheet" style={{ minWidth: 220 }}>
-        <MoreRows actions={actions} onPick={() => setOpen(false)} />
+      <PopoverPanel popover={popover} panel={false} className={`kol-more-sheet${variant === 'float' ? ` kol-more-sheet-float ${floatSurfaceClass(surface, true)}` : ''}`} style={{ minWidth: 220 }}>
+        <MoreRows actions={actions} variant={variant} onPick={() => setOpen(false)} />
       </PopoverPanel>
     </div>
   )

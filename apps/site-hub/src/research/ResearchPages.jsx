@@ -1,7 +1,7 @@
 import { useContext, useLayoutEffect, useState } from 'react'
 import { PageHero, ShellTocContext } from '@kolkrabbi/kol-framework'
 import { ContentCollection, DocsToc, PageControls } from '@kolkrabbi/kol-component'
-import { AssetCard, Swatch } from '@kolkrabbi/kol-styleguide'
+import { AssetCard, BlockSwatch } from '@kolkrabbi/kol-styleguide'
 import { VOYAGER } from 'voyager-fixture'
 import sheetHtml from './sheet.html?raw'
 
@@ -33,16 +33,16 @@ function RampColumn({ ramp, section, detail }) {
     <div className="flex flex-col gap-3 min-w-0">
       {section === 'overview' && (
         <>
-          <Swatch hex={anchor} name={ramp.label} anchor height={120} />
+          <BlockSwatch hex={anchor} name={ramp.label} anchor height={120} />
           <p className="kol-mono-12 text-fg-64">{ramp.stops.length} stops, anchor {ramp.anchor}</p>
         </>
       )}
       {section === 'stops' && (
         <div className="flex flex-col gap-2">
-          {stops.map((s) => <Swatch key={s.stop} hex={s.value} name={`${ramp.id}-${s.stop}`} anchor={s.stop === ramp.anchor} height={40} />)}
+          {stops.map((s) => <BlockSwatch key={s.stop} hex={s.value} name={`${ramp.id}-${s.stop}`} anchor={s.stop === ramp.anchor} height={40} />)}
         </div>
       )}
-      {section === 'anchors' && <Swatch hex={anchor} name={`${ramp.id}-${ramp.anchor}`} anchor height={200} />}
+      {section === 'anchors' && <BlockSwatch hex={anchor} name={`${ramp.id}-${ramp.anchor}`} anchor height={200} />}
       {section === 'notes' && <p className="kol-sans-body-02 text-fg-88">{ramp.note}</p>}
     </div>
   )

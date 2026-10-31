@@ -177,6 +177,8 @@ function TooltipOn({
   triggerClassName = 'inline-flex',
   asChild = false,
   disabled = false,
+  /* `float` (W16, round 3 — 2026-10-31): the floating style's tooltip, an inverted pill 24 (28 on touch) tall, 11 (12) type */
+  variant,
 }) {
   const [open, setOpen] = useState(false)
   const [covered, setCovered] = useState(false)
@@ -238,7 +240,7 @@ function TooltipOn({
         popover={popover}
         focus={false}
         panel={false}
-        className="kol-tooltip"
+        className={variant === 'float' ? 'kol-tooltip kol-tooltip-float' : 'kol-tooltip'}
         style={ambient ?? undefined}
       >
         <span>{label}</span>

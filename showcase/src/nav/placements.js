@@ -25,14 +25,14 @@ export const FRAMES = [
     runs: 'brand, record, site-hub, brand-hub',
     groups: [
       { id: 'home', label: 'Home', pages: ['SiteHero'] },
-      { id: 'brand', label: 'Brand', pages: ['Brand', 'BrandGuide'] },
+      { id: 'brand', label: 'Brand', pages: ['Brand', 'LayoutGuide'] },
       { id: 'pages', label: 'Pages', pages: ['PageHero', 'SectionText', 'PageSection'] },
       /* a FOLDERNOTE: CategoryPage is the group's own overview, its pages the cards */
       { id: 'documents', label: 'Documents', pages: ['CategoryPage', 'MarkdownPage', 'DocumentIndex', 'DocumentLibrary', 'A4Pages'] },
       { id: 'resume', label: 'Resume', pages: ['ResumeLibrary', 'ResumeSource', 'ResumeTreatment', 'KitPreview'] },
       { id: 'tools', label: 'Tools', pages: ['Decks', 'Notes', 'MediaLibrary', 'TimeSet'] },
     ],
-    evidence: ['SiteHero', 'CategoryPage', 'SectionText', 'PageSection', 'Brand', 'BrandGuide', 'DocumentIndex', 'Decks', 'Notes', 'MediaLibrary', 'ResumeLibrary', 'ResumeSource', 'ResumeTreatment'],
+    evidence: ['SiteHero', 'CategoryPage', 'SectionText', 'PageSection', 'Brand', 'LayoutGuide', 'DocumentIndex', 'Decks', 'Notes', 'MediaLibrary', 'ResumeLibrary', 'ResumeSource', 'ResumeTreatment'],
   }),
   frame({
     id: 'app', doc: '16-app-anatomy', name: 'AppShell', pkg: '@kolkrabbi/kol-shell',
@@ -82,9 +82,9 @@ export const PAGE_INFO = {
   SectionText: { pkg: 'kol-component', purpose: 'The page header: eyebrow, headline, body at the page, app, section or content level.', runs: 'brand, record, kolkrabbi.io, every hub' },
   PageSection: { pkg: 'kol-framework', purpose: 'A section of a page: its title and lede over the section’s content.', runs: 'brand, record, kolkrabbi.io' },
   Brand: { pkg: 'kol-styleguide', purpose: 'The brand tool: the brand book and the assets page over one manifest, book ⇄ assets.', runs: 'brand, brand-hub' },
-  BrandGuide: { pkg: 'kol-styleguide', purpose: 'A whole brand guide, chapter by chapter, over a manifest.', runs: 'brand, brand-hub' },
+  LayoutGuide: { pkg: 'kol-styleguide', purpose: 'A whole brand guide, chapter by chapter, over a manifest.', runs: 'brand, brand-hub' },
   MarkdownPage: { pkg: 'kol-framework', purpose: 'A markdown file as a document page, its links with hover cards.', runs: 'record, brand, document' },
-  DocumentIndex: { pkg: 'kol-styleguide', purpose: "A folder's documents as the brand book's contents cards.", runs: 'record, brand, document' },
+  DocumentIndex: { pkg: 'kol-framework', purpose: "A folder's documents as the brand book's contents cards.", runs: 'record, brand, document' },
   DocumentLibrary: { pkg: 'kol-styleguide', purpose: 'A library of documents as a table per folder: kind, date, language, the originals in Quick Look, the markdown.', runs: 'record, brand, document' },
   A4Pages: { pkg: 'kol-styleguide', purpose: 'Any content flowed onto A4 sheets, breaking between elements.', runs: 'record (the resume kit), print' },
   PrintStudio: { pkg: 'kol-styleguide', purpose: 'The print tool: markdown or stationery to A4 sheets, PDF, DOCX, MD.', runs: 'print' },
@@ -130,6 +130,7 @@ export const PAGE_INFO = {
 
 /* page-shaped by classification, but not a page a frame holds — each with its reason */
 export const NOT_A_PAGE = {
+  DocumentHeader: "a document page's header — it sits on top of MarkdownPage / DocumentIndex, not a page itself",
   BrandBook: "one of Brand's two pages (book ⇄ assets) — listed once, as Brand (LayoutsAppPages)",
   BrandAssets: "one of Brand's two pages (book ⇄ assets) — listed once, as Brand (LayoutsAppPages)",
   ShellLayout: 'a frame (ShellLayout) — the page list is under it',

@@ -143,13 +143,17 @@ export default function SettingsPanel({
  * row living in a column narrower than the 160px label default
  * (SettingsShortcutsComboOverflow, kol-monitor 2026-09-01). `text` is a row whose value is text — the same label,
  * on the baseline, as tall as its text (LabeledControl's `text`; SettingsRowMonoBaseline, kol-monitor 2026-10-18).
+ * `stack` puts the label ABOVE the value, both at the row's start — a dated entry read as a bulletin (metric's
+ * Deploys tab, Round 3 2026-10-31: *"date above the text"*); `labelWidth` and `align` do nothing there.
  */
-export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, text = false, children }) {
+export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, text = false, stack = false, children }) {
+  if (stack) align = 'fill'
   return (
-    <LabeledControl inline text={text} label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
+    <LabeledControl inline={!stack} text={text} label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
       {hint
-        ? <Tooltip label={hint} triggerClassName={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</Tooltip>
-        : <span className={`inline-flex w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</span>}
+        ? <Tooltip label={hint} triggerClassName={`flex min-h-6 items-center w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</Tooltip>
+        /* `flex`, not `inline-flex`: an inline box rode the label's text baseline and sat 5px low (2026-10-31) */
+        : <span className={`flex min-h-6 items-center w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</span>}
     </LabeledControl>
   )
 }

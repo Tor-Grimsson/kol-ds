@@ -14,6 +14,9 @@ export { default as AppShell } from './AppShell.jsx'
 export { NavHiddenContext, useNavHidden } from './navHidden.js'
 export { SettingsToggleContext, useSettingsToggle } from './settingsToggle.js'
 export { NavRail } from '@kolkrabbi/kol-component' // lives in kol-component since 2026-10-22
+// the floating nav, one family (AppFloatNav, kol-fxr 2026-10-30) — PhoneNav and TransportPill are its deprecated aliases
+// on the retirement ledger (PhoneNav's `nav` is `mobile`; TransportPill is `variant="transport"`)
+export { default as AppFloatNav, APP_FLOAT_NAV_VARIANTS } from './AppFloatNav.jsx'
 export { default as PhoneNav, PHONE_NAV_VARIANTS } from './PhoneNav.jsx'
 export { default as TransportPill } from './TransportPill.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'
@@ -38,6 +41,7 @@ export { default as TouchDeviceOverlay, useTouchPrimary } from './TouchDeviceOve
 // the Hub — Shell + Home + Settings + keys, made once (the app anatomy, 2026-09-26)
 export { default as AppHub } from './AppHub.jsx'
 export { default as HubHome } from './HubHome.jsx'
+export { default as AccountForm } from './AccountForm.jsx'
 export { default as HubSettings } from './HubSettings.jsx'
 export { default as HubSettingsRail, hubThemeToggle } from './HubSettingsRail.jsx'
 export { default as HubDev } from './HubDev.jsx'

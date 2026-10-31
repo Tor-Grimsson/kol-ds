@@ -1,5 +1,57 @@
 # @kolkrabbi/kol-shell
 
+## 0.98.0 — 2026-10-31
+
+- **`AppShell touch="floats"`: `floats.items` · `floats.actions`** (FloatsOwnItems, kol-fxr 2026-10-31 — *"keep it as flexible as possible"*). A page passes its own rows for the top float's slots (`floats.items`, AppFloatNav items) and its More's actions (`floats.actions`). One rule for every app: the More keeps the app's whole nav (`barItems`, else items + bottomItems), so the page's rows replace the slots, never the way back; a `phoneNav.sheetItems` still wins. Unset, nothing changes.
+- **Nested levels on every AppFloatNav variant.** A sub row with its own `sub` opens a level, the same row shape to any depth: `items[].sub`, More's `actions` and the transport's `sheetFor` rows alike (`FloatMenu`, MoreSheet.jsx). On the `dock` a level opens beside its row (the + menu's `usePopover` + `PopoverPanel` card, right of the row, bottom edges on one line). On every phone variant it replaces the card's rows under a Back row. A row that opens a level has a chevron at its end. A leaf runs its `onPress` and closes every level, and a sub row without `onPress` routes to its `path` (before, a sub row with only a `path` did nothing). Escape and an outside press close everything. Keys: ↑ ↓ move, → / Enter open a level, ← goes back one. AppHub's phone pill now passes `home.chromes[].sub`, as the dock already did.
+
+## 0.97.0 — 2026-10-31
+
+- **`AppShell touch="floats"` — the two floats** (PhoneTwoFloatLayout, kol-fxr 2026-10-31 — fxr's Labs on a phone). Under 768 the nav is an `AppFloatNav variant="panel"` overlay pinned at the top (the bar's rows and actions), `floats.transport` an `AppFloatNav variant="transport"` overlay over the foot, and between them the stage (children) and `floats.rail`, a bottom Rail (`floats.railHeight`, default `50dvh`). Both insets are `TABBAR_PILL_INSET + TABBAR_PILL_H + TABBAR_PILL_INSET` (98) plus the safe area — the stage starts under the top float, the Rail's rows scroll clear of the transport. The Rail rises on `--kol-shadow-rail-up`, no rule. The stage paints the page's wash itself — under the top float too — and hands the page `transparent` (PageLayout's one-owner rule), so no band shows under the float. AppHub treats `floats` as a bar (Home's New and Walkthrough ride More). Needs kol-theme 0.207.0 (peer raised).
+
+## 0.96.0 — 2026-10-31
+
+- The dock's slot hover moves into TabsRow (kol-component); AppFloatNav drops its `!` override. Needs the kol-component that ships it.
+
+## 0.95.0 — 2026-10-31
+
+- **The Home dock, round 4** (HomeDockRound4, kol-fxr 2026-10-31). **The + no longer follows `home.surface`** — it is the inverted round button on every surface; the surface still dresses the dock and every menu, the +'s included (*"this also changed the action button, but it is not supposed to change"*). **`AppFloatNav variant="dock"`: ··· sits inside the pill** (no split circle — *"I dont love this being disconnected"*) and **opens a card beside it** the way HubHome's + opens its menu — the same `usePopover` + `PopoverPanel` card, right of the pill, bottom edges on one line, ··· lit while open; no tall sheet, no × swap, no "Close". **Each dock slot lights on hover** like a menu row: the nav row's `--kol-oq-04` ground and `--kol-surface-on-primary` ink. Other variants are unchanged.
+
+## 0.94.0 — 2026-10-31
+
+- **`HubSettingsRail extra`** — `[{ id, label, draw }]`, an app's own tabs after the Hub's named ones; `draw({ app, shortcuts })` returns the body (MetricDashboardUpstream, kol-website metric's Deploys tab).
+
+## 0.93.0 — 2026-10-31
+
+- **The signed-out Home picks its float material** (HubHomeFloatSurface, kol-fxr 2026-10-31 — user: *"we can see it first, but I think probably solid"*). **`HubHome surface="solid|glass-dark|glass-light"`** (AppHub: `home.surface`, default solid — unchanged) reaches the dock (`AppFloatNav variant="dock"` — pill, ··· circle, sheets), the + and its menu; on a glass the + is the float's material instead of the inverted round button.
+
+## 0.92.0 — 2026-10-31
+
+- **Round 3's float, accepted** (W16, 2026-10-31). **`AppFloatNav surface="solid|glass-dark|glass-light"`** (default solid) on every variant — the pill, its circle and its sheets; ··· stands apart as a 66 circle 8 off the bar; `labels` draws the tab bar with labels. The sheets sit over the new geometry (66 tall). Menus (`MoreRows variant="float"`) are r 26 (30 touch), 6 in, rows 40 (48), the current row oq-16; the signed-out Home's menu wears the solid surface (with its shadow). **`AccountForm surface`** for `variant="box"`: 340 wide, 28 round, 20 in, 8 between rows. AppShell's pill clearance reads `TABBAR_PILL_H`. `PhoneNav` / `TransportPill` pass `surface` through. Needs kol-component and kol-theme (Unreleased).
+
+## 0.91.3 — 2026-10-31
+
+- **The Home dock floats over a stage** (HomeDockShadow, kol-fxr 2026-10-31 — user: *"this needs the drop shadow blur we use in labs?"*). HubHome passes `shadow` to its `AppFloatNav variant="dock"` when it has a `stage`, so the dock wears the transport's `--kol-shadow-float`, light and dark. The `dock` preset is unchanged (no shadow) for docks on a plain surface.
+
+- **The stage slides to the grey, never resizes** (kol-fxr 2026-10-30 — user: *"when shelf opens, then growth center shifts to center the gray visible area"*). 0.91.2 dropped the re-centre with the resize; it is back as a transform: with the sign-in column open the stage moves half the column right (`md:translate-x-[336px]`, 300 ms), so its centre sits in the middle of what the column leaves and nothing reseeds.
+
+## 0.91.2 — 2026-10-30
+
+- **Sign in overlays Home, never resizes the stage** (SignedOutStageStill, kol-fxr). HubHome's stage stays `absolute inset-0` open or closed; the column slides over it and the grey layer fades. The old `left` re-centre reseeded any stage that sizes to its box. Supersedes 0.91.0's "the stage re-centres".
+
+## 0.91.1 — 2026-10-30
+
+- **The closed sign-in column is inert.** HubHome passed `inert=""`, which React 19 reads as false, so the hidden column's fields stayed in the tab order. Now `inert={!formOpen}`. Seen on studio-hub, which now passes `signIn.form`.
+
+## 0.91.0 — 2026-10-30
+
+- **`AppFloatNav`** — the floating nav, one family (FloatingStyleAndSignInDemos, kol-fxr — the user's name, canvas Round 3's board). `variant`: `mobile` (an app's phone nav) · `dock` (the desk dock: the rail rows in rail order, then ··· which opens the whole nav and turns into ×) · `panel` (Labs' top pill) · `transport` (Labs' transport). A row with `sub: [{ label, icon?, onPress }]` opens its rows above its slot; each slot is named on hover by the KOL Tooltip; `menuBorder` draws the sheets' hairline (off by default). `APP_FLOAT_NAV_VARIANTS` is the preset table.
+- **`PhoneNav` and `TransportPill` are deprecated aliases** of `AppFloatNav`, on the retirement ledger — same props; PhoneNav's `variant="nav"` maps to `mobile`, TransportPill is `variant="transport"`. Existing call sites keep working.
+- **`AccountForm`** — sign in, sign up, request an invite, drawn from data (`title`, `fields`, `okLabel`, `footer`, `onSubmit`, `check`, `done`): `variant="column"` (style A, the desk column) or `"box"` (style B, the phone box; passes `variant="float"` to its fields and button).
+- **Sign in over Home: `AppHub signIn.form`** — AccountForm's props. Signed out, every Sign in the Hub draws opens it over Home instead of `signIn.page`: on a desk the 672 column slides in from the left (the mark stays above it, the rest of Home turns surface-secondary and the stage re-centres; the + and the nav stay); on a phone the style-B box, centred over the stage. Escape closes it; signing in closes it. **The signed-out + shows on the phone too**, top-right on the mark's line.
+- **`MoreRows variant="float"`** — the float menu's rows (`.kol-more-sheet-float`).
+- Needs kol-component ≥0.318.0 and kol-theme ≥0.201.0. **The float values are provisional** — they will change in later releases as the research lands; consumers change nothing.
+
 ## 0.90.0 — 2026-10-29
 
 - **The signed-out Home on one gutter, the rail hidden, Sign in as a page, Sign out in the foot** (HubSignedOutGutterAndSeams, kol-fxr — *"cavnas 'padding' is a bit off"* · *"when you are signed out, we should have the rail already hidden"* · *"we already choose which sign in to use, we made a artifact!!!"* · *"wrong button for sign out, wrong sizes"*). Walked on studio-hub (`_tmp/2026-10-29-hub-signed-out/`).

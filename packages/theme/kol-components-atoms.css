@@ -1474,3 +1474,114 @@ a.kol-icon-frame {
 }
 .kol-tabs-scroll::-webkit-scrollbar { display: none; }
 .kol-tabs-scroll > * { flex: none; min-width: 100%; }
+
+/* ═══════════════════════════════════════════════════════════════
+ * THE FLOATING STYLE (FloatingStyleAndSignInDemos, kol-fxr 2026-10-30; values from round 3, accepted 2026-10-31 — W16,
+ * https://claude.ai/artifact/VMiZCd6QZm5PRaWc4Yy4yF). `variant="float"` — the house word for a look — on Button, Input,
+ * Tooltip, SegmentedToggle, TabsRow and the menu rows; today's square controls stay the default. Capsules: height and type
+ * step together (`--kol-float-h-*` · `-t-*`, kol-design-tokens.css), one size up on `pointer: coarse`.
+ * The composed float components (AppFloatNav, AccountForm's box, the signed-out Home's menu) pass it to their children.
+ * ═══════════════════════════════════════════════════════════════ */
+.kol-btn.kol-btn-float {
+  height: var(--kol-float-h-md);
+  padding: 0 calc(var(--kol-float-h-md) * 0.42);
+  font-size: var(--kol-float-t-md);
+  line-height: 1;
+  gap: 8px;
+  border-radius: 999px;
+}
+.kol-btn.kol-btn-float.kol-btn-sm { height: var(--kol-float-h-sm); padding: 0 calc(var(--kol-float-h-sm) * 0.42); font-size: var(--kol-float-t-sm); }
+.kol-btn.kol-btn-float.kol-btn-lg { height: var(--kol-float-h-lg); padding: 0 calc(var(--kol-float-h-lg) * 0.42); font-size: var(--kol-float-t-lg); }
+.kol-btn.kol-btn-float.kol-btn-icon { width: var(--kol-float-h-md); padding: 0; }
+.kol-btn.kol-btn-float.kol-btn-icon.kol-btn-sm { width: var(--kol-float-h-sm); }
+.kol-btn.kol-btn-float.kol-btn-icon.kol-btn-lg { width: var(--kol-float-h-lg); }
+.kol-btn.kol-btn-float svg { width: var(--kol-float-ic); height: var(--kol-float-ic); }
+
+/* the field: a capsule on the float's well, 16 in; KOL fields keep no focus change */
+.kol-control.kol-control--float {
+  height: var(--kol-float-h-md);
+  padding: 0 16px;
+  border-radius: 999px;
+  border-color: transparent;
+  background-color: var(--kol-float-well);
+  font-size: var(--kol-float-t-md);
+}
+.kol-control.kol-control--float.kol-control-sm { height: var(--kol-float-h-sm); font-size: var(--kol-float-t-sm); }
+.kol-control.kol-control--float.kol-control-lg { height: var(--kol-float-h-lg); font-size: var(--kol-float-t-lg); }
+.kol-control.kol-control--float input { font-size: inherit; line-height: normal; height: auto; }
+
+/* the float Tooltip: an inverted pill */
+.kol-tooltip.kol-tooltip-float {
+  height: var(--kol-float-tip-h);
+  padding: 0 10px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kol-surface-on-primary);
+  color: var(--kol-surface-primary);
+  font-size: var(--kol-float-tip-t);
+}
+
+/* the float SegmentedToggle: a capsule track 6 in, pills 4 apart, the selected one filled with the ink */
+.kol-seg.kol-seg--float {
+  height: auto;
+  gap: 4px;
+  padding: var(--kol-float-inset);
+  border: 0;
+  border-radius: 999px;
+  overflow: visible;
+}
+.kol-seg--float .kol-seg-cell {
+  flex: none;
+  height: var(--kol-float-h-md);
+  padding: 0 calc(var(--kol-float-h-md) * 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--kol-oq-64);
+  font-size: var(--kol-float-t-md);
+  line-height: 1;
+}
+.kol-seg--float.kol-seg--sm .kol-seg-cell { height: var(--kol-float-h-sm); padding: 0 calc(var(--kol-float-h-sm) * 0.45); font-size: var(--kol-float-t-sm); }
+.kol-seg--float.kol-seg--lg .kol-seg-cell { height: var(--kol-float-h-lg); padding: 0 calc(var(--kol-float-h-lg) * 0.45); font-size: var(--kol-float-t-lg); }
+.kol-seg--float .kol-seg-cell + .kol-seg-cell { border-left: 0; }
+.kol-seg--float .kol-seg-cell.is-active { background: var(--kol-surface-on-primary); color: var(--kol-surface-primary); }
+
+/* the float TabsRow: pills 4 apart, the selected one oq-16 */
+.kol-tabs-float .kol-btn.kol-btn-float { padding: 0 calc(var(--kol-float-h-md) * 0.45); background: transparent; color: var(--kol-oq-64); }
+.kol-tabs-float .kol-btn.kol-btn-float.kol-btn-pressed { background: var(--kol-oq-16); color: var(--kol-fg-emphasis); }
+
+/* ─── THE SURFACE (`surface="solid|glass-dark|glass-light"`) — what a float is made of. `-m` marks a menu or a box (the
+ * medium blur and shadow); a bar, a button or a track is small. Solid is surface-secondary lifted by the float shadow.
+ * glass-dark is a dark material in either theme, so the component stamps `.dark` beside it and what sits on it takes
+ * dark-theme ink. Reduced transparency → solid. No border: the rim is the glass's own edge. Each class is doubled (the
+ * `.kol-menu-btn.kol-menu-btn` idiom) so it outranks the ground a later file gives its host (`.kol-more-sheet`). ─── */
+.kol-float-solid.kol-float-solid { background: var(--kol-surface-secondary); box-shadow: var(--kol-shadow-float); }
+.kol-float-glass-dark.kol-float-glass-dark {
+  --kol-glass-fill: var(--kol-glass-dark-fill);
+  --kol-glass-blur: var(--kol-glass-dark-blur-s);
+  --kol-glass-rim: var(--kol-glass-dark-rim);
+  --kol-glass-shadow: var(--kol-glass-dark-shadow-s);
+}
+.kol-float-glass-dark.kol-float-glass-dark.kol-float-m { --kol-glass-blur: var(--kol-glass-dark-blur-m); --kol-glass-shadow: var(--kol-glass-dark-shadow-m); }
+.kol-float-glass-light.kol-float-glass-light {
+  --kol-glass-fill: var(--kol-glass-light-fill);
+  --kol-glass-blur: var(--kol-glass-light-blur-s);
+  --kol-glass-rim: var(--kol-glass-light-rim);
+  --kol-glass-shadow: var(--kol-glass-light-shadow-s);
+}
+.kol-float-glass-light.kol-float-glass-light.kol-float-m { --kol-glass-blur: var(--kol-glass-light-blur-m); --kol-glass-shadow: var(--kol-glass-light-shadow-m); }
+.kol-float-glass-dark.kol-float-glass-dark,
+.kol-float-glass-light.kol-float-glass-light {
+  background: var(--kol-glass-fill);
+  -webkit-backdrop-filter: blur(var(--kol-glass-blur)) saturate(1.8);
+  backdrop-filter: blur(var(--kol-glass-blur)) saturate(1.8);
+  box-shadow: var(--kol-glass-rim), var(--kol-glass-shadow);
+  color: var(--kol-fg-emphasis);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .kol-float-glass-dark.kol-float-glass-dark,
+  .kol-float-glass-light.kol-float-glass-light {
+    background: var(--kol-surface-secondary);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

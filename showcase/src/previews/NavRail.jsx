@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavRail } from '@kolkrabbi/kol-component'
+import { NavRail, Menu, MenuTrigger } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 /* importing kol-workshop registers the `workshop` preset (ShellSidebar) under NavRail */
 import '@kolkrabbi/kol-workshop'
@@ -9,7 +9,18 @@ export const frame = 520
 /* THE THREE PRESETS (2026-10-24, user: *"app = studio, site = brand, workshop"*): `app` the studio rail — the hubs;
  * `site` the brand rail — brand.kolkrabbi.io; `workshop` the workshop rail — ui.kolkrabbi.io. One rail, three names;
  * the picker here is the preset. The words: a section ENTERS and EXITS, or EXPANDS and COLLAPSES. */
-export const variants = ['app', 'site', 'workshop']
+export const variants = ['app', 'site', 'workshop', 'top']
+
+/* top: the Atlas /lab bar rebuilt from the rail's parts — the mark, the app name, the open entry's views on the right */
+function TopPreview() {
+  const [view, setView] = useState('Specimen')
+  const views = ['Specimen', 'Grid', 'Sheet']
+  return (
+    <NavRail variant="top" logomark={{ svgUrl: '/favicon/favicon-kol-ds.svg', title: 'Lab' }} onNavigate={() => {}}
+      actions={<Menu align="end" items={views.map((v) => ({ label: v, current: v === view, onClick: () => setView(v) }))}
+        trigger={({ open, props }) => <MenuTrigger open={open} {...props}>{view}</MenuTrigger>} />} />
+  )
+}
 
 /* the studio rail's rows: Chrome ENTERS (its rows hold sections), Labs ENTERS, Effects EXPANDS (leaves) — the one rule */
 const ITEMS = [
@@ -55,6 +66,7 @@ const NAV_TREE = [
 
 export default function NavRailPreview({ variant = 'app' }) {
   const [path, setPath] = useState(variant === 'site' ? '/components/nav-rail' : '/')
+  if (variant === 'top') return <TopPreview />
   if (variant === 'workshop') {
     /* the workshop rail — kol-workshop's ShellSidebar, registered as the preset; its routes, its own chrome */
     return (

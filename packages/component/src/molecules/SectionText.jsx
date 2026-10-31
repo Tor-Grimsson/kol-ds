@@ -37,13 +37,15 @@
  *                                 stamps `reveal` on each part; nothing animates in the DS)
  * @param {object}    slotStyle    inline style per slot — `{ headline: { '--reveal-delay': '0.1s' } }`
  * @param {string}    className    extra classes on the block
- * @param {'page'|'app'|'section'|'content'} [level]  THE HEADER LEVELS (2026-10-22, user: *"rename PageHeader to
+ * @param {'page'|'app'|'section'|'content'|'document'} [variant]  THE HEADER VARIANTS (was `level` until 2026-10-31 — user: `variant`
+ *                    is the only word for a variant; `level` stays a deprecated alias on the retirement ledger) (2026-10-22, user: *"rename PageHeader to
  *                    something that describes section text elements"* — PageHeader is now an alias of this). A
  *                    level fills the role defaults; any explicit prop still wins. page = h1 display-01 over
  *                    `.kol-header-lede` — the hero; app = h1 display-01 at 46/60 over `.kol-header-lede-app`;
  *                    section = h2 display-03 over `.kol-header-lede-section`; content = h3 heading-04 under a
  *                    `kol-eyebrow`, over body-01 fg-64 at 64ch — a section of a page's CONTENT (a dev tab's
- *                    sections, DevSectionHeader, kol-fxr). A level sets actions inline, and the bottom rhythm
+ *                    sections, DevSectionHeader, kol-fxr); document = h1 36/1.2 bold display face over a 15/1.6 body-face lede
+ *                    to 724px — a document's own page (DocumentIndex). A level sets actions inline, and the bottom rhythm
  *                    to `--kol-page-header-mb` (40px; content 16px). Unset = the section family as before.
  * @param {ReactNode} media        a mark above the eyebrow (a logo, an SVG) — with a `level` only
  */
@@ -60,7 +62,7 @@ export const HEADLINE_ROLE = {
   'heading-05': 'kol-sans-heading-05',
 }
 
-/* ONE HEADER, FOUR LEVELS (Round 11 + PageHeaderAppLevel, carried from PageHeader whole). `title` is the
+/* ONE HEADER, FIVE LEVELS (Round 11 + PageHeaderAppLevel, carried from PageHeader whole). `title` is the
  * headline's type, `lede` the body's; the rest default the block for that level. */
 export const SECTION_TEXT_LEVELS = {
   page: { title: 'kol-sans-display-01', lede: 'kol-header-lede' },
@@ -69,6 +71,9 @@ export const SECTION_TEXT_LEVELS = {
   /* content (DevSectionHeader, kol-fxr 2026-10-22 — the user's approved look: *"maybe title and description is
    * one step bigger?"*; never `kol-helper-*` for a paragraph) */
   content: { title: 'kol-sans-heading-04', lede: 'kol-sans-body-01 text-fg-64', eyebrow: 'kol-eyebrow text-fg-48', as: 'h3', gap: 'gap-2', mb: '16px', measure: '64ch' },
+  /* document (DocumentIndexFigma, kol-atlas 2026-10-31) — the Research page header, the workspace sheet's: 36/1.2 bold
+   * display face at −0.005em, 12 under it; the lede 15/1.6 in the body face to a 724 edge */
+  document: { title: 'font-[family-name:var(--kol-font-family-sans)] text-[36px] font-bold leading-[1.2] tracking-[-0.005em]', lede: 'm-0 font-[family-name:var(--kol-font-family-sans-neutral)] text-[15px] leading-[1.6] text-fg-96', measure: '724px' },
 }
 
 export default function SectionText({
@@ -115,11 +120,14 @@ export default function SectionText({
      (PageHeader's `--kol-page-header-mb`). `slotStyle` reaches the slots; this
      was the one box it could not reach. */
   style,
+  variant: variantProp,
+  /* deprecated alias of `variant` (2026-10-31) */
   level,
   media,
 }) {
   /* a LEVEL fills the header defaults; an explicit prop always wins */
-  const L = level ? SECTION_TEXT_LEVELS[level] ?? SECTION_TEXT_LEVELS.page : null
+  const variant = variantProp ?? level
+  const L = variant ? SECTION_TEXT_LEVELS[variant] ?? SECTION_TEXT_LEVELS.page : null
   const Headline = headlineAs ?? L?.as ?? (L ? 'h1' : 'h2')
   if (L) {
     headlineClass = `text-fg-96 ${headlineClass ?? L.title}`

@@ -99,7 +99,7 @@ export function MenuItem({
 }
 
 /**
- * MenuDropdownItem — action row inside a MenuItem's dropdown panel.
+ * MenuRow — action row inside a menu panel (`Menu`, `MenuItem`). Was `MenuDropdownItem` (alias kept, 2026-10-31).
  *
  * `height` (default none — the `h-8` rung) — an inline row height, for a panel
  * in a chrome whose own rows are shorter (DropdownGhostWidthAndListHeight,
@@ -134,15 +134,17 @@ const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-2 h-8', m
 /* `flex`, not `inline-flex` (MenuDropdownItemBlockRow, kol-fxr 2026-10-13): as bare children of a
  * content-sized (`w-max`) panel, inline rows measured as ONE line — five starters ≈ 795px. A block
  * row still fills a fixed panel through `w-full` and lets a content-sized one hug its longest label. */
-export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
+export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
+  /* `href` makes the row a real link — cmd/ctrl-click and middle-click open a new tab (DocumentHeader, 2026-10-31);
+   * a plain click still runs `onClick` (the app's router), which may preventDefault */
+  const Row = href && !disabled ? 'a' : 'button'
   return (
-    <button
-      type="button"
+    <Row
+      {...(Row === 'a' ? { href, onClick: (e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; onClick?.(e) } } : { type: 'button', onClick })}
       data-menu-item
-      onClick={onClick}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
-      disabled={disabled}
+      disabled={Row === 'button' ? disabled : undefined}
       role="menuitem"
       style={height != null ? { height } : undefined}
       className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
@@ -155,16 +157,19 @@ export function MenuDropdownItem({ onClick, onPointerEnter, onPointerLeave, disa
         * zero layout shift (MenuItemDescenderClip, 2026-08-12). */}
       <span className="flex-1 truncate leading-normal">{children}</span>
       {shortcut && <span className="kol-helper-10 text-emphasis shrink-0 inline-flex items-center">{shortcut}</span>}
-    </button>
+    </Row>
   )
 }
 
-export function MenuDropdownDivider() {
-  return <div className="border-t border-oq-08 my-1" />
+/* `className` — the rule's colour and spacing, whole (MetricDashboardUpstream, kol-website 2026-10-31): on a filled
+ * panel the default `border-oq-08` vanishes. */
+/* MenuDivider — a rule between a menu's groups. Was `MenuDropdownDivider` (alias kept, 2026-10-31). */
+export function MenuDivider({ className = 'border-oq-08 my-1' }) {
+  return <div className={`border-t ${className}`} />
 }
 
 /**
- * MenuDropdownNest — A dropdown row that opens a submenu. a row inside a dropdown panel that holds a submenu.
+ * MenuFlyout — a menu row that holds a submenu. Was `MenuDropdownNest` (alias kept, 2026-10-31).
  *
  * Default — ACCORDION: click the row to expand/collapse its children inline
  * (below the row, in the same panel); the trailing chevron rotates 90°.
@@ -184,11 +189,15 @@ export function MenuDropdownDivider() {
  * lists. A scrolling panel clips its own flyouts, so give it to a panel with no
  * flyouts inside.
  *
+ * `rowClass` (flyout) — the nest row's type, padding, height and fill, whole, as `MenuDropdownItem rowClass`.
+ * `panelClassName` / `panelStyle` (flyout) — the panel's surface and its place beside the row; a `marginLeft` gap
+ * mirrors to `marginRight` when the panel flips (MetricDashboardUpstream, kol-website 2026-10-31).
+ *
  * Either way, a leaf MenuDropdownItem inside still closes the whole menu via the
  * standard data-menu-item bubble; the nest row itself only toggles.
  */
-export function MenuDropdownNest({ prefix, iconLeft, label, disabled, flyout = false, scroll = false, children }) {
-  if (flyout) return <MenuFlyoutNest prefix={prefix} iconLeft={iconLeft} label={label} disabled={disabled} scroll={scroll}>{children}</MenuFlyoutNest>
+export function MenuFlyout({ prefix, iconLeft, label, disabled, flyout = false, scroll = false, rowClass, panelClassName, panelStyle, children }) {
+  if (flyout) return <MenuFlyoutNest prefix={prefix} iconLeft={iconLeft} label={label} disabled={disabled} scroll={scroll} rowClass={rowClass} panelClassName={panelClassName} panelStyle={panelStyle}>{children}</MenuFlyoutNest>
   return <MenuAccordionNest prefix={prefix} iconLeft={iconLeft} label={label} disabled={disabled}>{children}</MenuAccordionNest>
 }
 
@@ -233,7 +242,7 @@ function MenuAccordionNest({ prefix, iconLeft, label, disabled, children }) {
   )
 }
 
-function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, children }) {
+function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, rowClass, panelClassName, panelStyle, children }) {
   const [open, setOpen] = useState(false)
   const [fit, setFit] = useState({ dy: 0, flip: false })
   const row = useRef(null)
@@ -271,7 +280,7 @@ function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, children })
             requestAnimationFrame(() => panel.current?.querySelector('button:not(:disabled)')?.focus())
           }
         }}
-        className={`${NEST_ROW} ${open ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
+        className={rowClass ? `kol-menu-btn w-full shrink-0 flex items-center gap-2 text-left disabled:opacity-40 disabled:cursor-not-allowed ${rowClass}` : `${NEST_ROW} ${open ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
       >
         <NestRowBody prefix={prefix} iconLeft={iconLeft} label={label} />
         <Icon name="chevron-right" size={10} className="text-emphasis shrink-0" />
@@ -281,8 +290,8 @@ function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, children })
         <div
           ref={panel}
           role="menu"
-          className={`absolute ${fit.flip ? 'right-full' : 'left-full'} flex flex-col w-max min-w-[180px] max-w-[320px] py-1 bg-surface-secondary rounded border border-oq-08 shadow-lg z-10 ${scroll ? 'max-h-[60vh] overflow-y-auto' : ''}`}
-          style={{ top: -5 + fit.dy }}
+          className={`absolute ${fit.flip ? 'right-full' : 'left-full'} flex flex-col w-max min-w-[180px] max-w-[320px] z-10 ${panelClassName ?? 'py-1 bg-surface-secondary rounded border border-oq-08 shadow-lg'} ${scroll ? 'max-h-[60vh] overflow-y-auto' : ''}`}
+          style={{ top: -5 + fit.dy, ...(fit.flip && panelStyle?.marginLeft != null ? { ...panelStyle, marginLeft: undefined, marginRight: panelStyle.marginLeft } : panelStyle) }}
         >
           {children}
         </div>
@@ -290,3 +299,10 @@ function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, children })
     </div>
   )
 }
+
+/** @deprecated 2026-10-31 → MenuRow (the Menu* family, metric Round 4) */
+export const MenuDropdownItem = MenuRow
+/** @deprecated 2026-10-31 → MenuDivider */
+export const MenuDropdownDivider = MenuDivider
+/** @deprecated 2026-10-31 → MenuFlyout */
+export const MenuDropdownNest = MenuFlyout

@@ -50,6 +50,7 @@ UI packages, an engine tier and a clients tier. Every content/domain system that
 | | `@kolkrabbi/kol-styleguide` | brand guide — color anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
 | **Engines** (plain JS) | `@kolkrabbi/kol-markdown` | markdown parser, frontmatter read + round-trip, inventory, tag counts — proved in `apps/markdown` |
 | | `@kolkrabbi/kol-search` | query language, ranking with reasons, disjunctive facets — proved in `apps/search` |
+| | `@kolkrabbi/kol-growth` | the growing line (differential growth into any shape), its seeded rng and shape sources; kol-component's `GrowthLineStage` draws it — proved in `apps/growth` |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
 **Static assets (ARCHITECTURE §7, 2026-07-15):** ONE `public/` at the repo root (fonts, images, favicons) — every app points at it via Vite `publicDir: '../public'`; symlink only for tools that can't be configured. Never a second per-app `public/`.

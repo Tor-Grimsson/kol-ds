@@ -12,7 +12,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *
  * @param {Object} props
  * @param {ReactNode} props.children - Button content
- * @param {'accent'|'danger'|'nav'|'tab'|'tab-filled'} props.variant - The intent; the GROUND is `tone`. `tab` is the tab chip (2026-10-02): quiet text at rest, a soft filled chip while `pressed`. `tab-filled` (2026-10-29) shows its chip at rest (oq-04), brighter on hover (oq-08) and brightest selected (oq-16). `primary · secondary · outline · ghost · grey · control` are deprecated aliases of tones (2026-10-01, on the retirement ledger): pass `tone` — `secondary` is `tone="inverted"`, `control` is `tone="ghost"`, the rest keep their name. Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
+ * @param {'accent'|'danger'|'nav'|'tab'|'tab-filled'|'bare'} props.variant - `bare` is a pressable surface with no button chrome (a tile, a bar row — the caller draws it). The intent; the GROUND is `tone`. `tab` is the tab chip (2026-10-02): quiet text at rest, a soft filled chip while `pressed`. `tab-filled` (2026-10-29) shows its chip at rest (oq-04), brighter on hover (oq-08) and brightest selected (oq-16). `float` (FloatingStyleAndSignInDemos; round 3's values, W16 2026-10-31) is the shape only: a capsule whose height and type step together — sm · md · lg 28 · 36 · 44 with 12 · 13 · 14 type and an 18 glyph, on `pointer: coarse` 36 · 44 · 52, 15 · 16 type and a 20 glyph; icon-only is the square; the ground stays the `tone`'s, the surface is the float it sits on. A composed float component (AppFloatNav, AccountForm's box) passes it, a consumer never sets it by hand. `primary · secondary · outline · ghost · grey · control` are deprecated aliases of tones (2026-10-01, on the retirement ledger): pass `tone` — `secondary` is `tone="inverted"`, `control` is `tone="ghost"`, the rest keep their name. Visual variant. UNSET (the default) inherits the tone of the nearest `kol-tone-*` wrapper, else renders primary; the five ground variants are aliases of `tone`. `danger` is the destructive treatment (--ui-error fill); `nav` is the chrome rung — transparent, oq-64 ink, one step brighter than `ghost`; `control` is an alias for `ghost` (legacy call-sites).
  * @param {'xs'|'sm'|'md'|'lg'} props.size - Button size (default: 'md'); xs is the panel rung (ControlsXsRung, 2026-09-01) — kol-mono-8 in a 22px shell (20 icon-only), opt-in by prop
  * @param {string} props.iconLeft - Icon name to display on the left
  * @param {string} props.iconRight - Icon name to display on the right
@@ -65,11 +65,18 @@ const Button = ({
   tone = 'default',
   ...props
 }) => {
+  /* `variant="bare"` (MetricRebuild, 2026-10-31): a pressable SURFACE — a stat tile, a bar row, a column head — that
+   * draws itself. No kol-btn chrome (ground, size, type, radius); the button keeps its type, the KOL focus ring
+   * (`kol-menu-btn`, as MenuItem's rows) and `disabled`. For a control that looks like a button, use any other variant. */
+  if (variant === 'bare') {
+    return <button type={type} onClick={onClick} disabled={disabled} className={`kol-menu-btn ${className}`.trim()} style={style} {...props}>{children}</button>
+  }
   // Two ladders, split on whether a label sits beside the glyph. An icon-only
   // button is a solo glyph in a pinned square, so it takes SOLO (16/20/24) —
   // it took the text-adjacent ladder until component 0.20.0, which put a 14px
   // glyph in a 28px square at `sm`. `iconSize` still overrides either.
-  const resolvedIconSize = iconSize ?? glyphSize(size, Boolean(iconOnly))
+  /* a float glyph follows the pointer (18, 20 on touch — `--kol-float-ic`), so its size is the token, not a number */
+  const resolvedIconSize = iconSize ?? (variant === 'float' ? 'var(--kol-float-ic)' : glyphSize(size, Boolean(iconOnly)))
 
   // `control` is a legacy alias for `ghost` (kept so web call-sites passing
   // variant="control" keep working post-migration).
@@ -93,7 +100,7 @@ const Button = ({
     warned.add(variant)
     console.warn(`Button: variant="${variant}" is deprecated — use tone="${VARIANT_TONE[variant]}"`)
   }
-  const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'tab', 'tab-filled', 'danger', 'grey']
+  const KNOWN = ['primary', 'secondary', 'accent', 'outline', 'ghost', 'nav', 'tab', 'tab-filled', 'danger', 'grey', 'float']
   const known = !resolvedVariant || KNOWN.includes(resolvedVariant)
   if (!known && import.meta.env.DEV) console.warn(`Button: unknown variant "${resolvedVariant}" — rendering the inherited tone (primary)`)
   const variantClass = resolvedVariant && known ? `kol-btn-${resolvedVariant}` : ''

@@ -58,6 +58,16 @@ const DESCRIPTIONS = {
   MenuDropdownNest: 'A nested submenu inside a dropdown menu.',
   ContentFilters: 'A full filter bar — search, tag groups, view modes — for content grids.',
   MenuPopover: 'A click-open action menu / popover.',
+  Menu: 'An action menu — a trigger and rows as data: labels, dividers, icons, checks, key caps, disabled with a reason, flyouts.',
+  MenuTrigger: 'The menu chip — a tab button, pressed while its menu is open; icon-only is the ⋮.',
+  MenuPanel: 'The faint raised panel a menu floats on.',
+  MenuRow: 'A clickable row inside a menu.',
+  MenuDivider: 'A rule between a menu’s groups.',
+  MenuLabel: 'A section name inside a menu.',
+  MenuFlyout: 'A menu row that opens a submenu beside it (or inline).',
+  MenuFilter: 'A filter menu — category rows with flyouts and disabled rows, the active filters as chips under it.',
+  MenuDatePicker: 'A date-range menu — range groups with key shortcuts, a custom range, a compare row.',
+  MenuMore: 'The ⋮ menu — the more chip and its rows.',
 
   /* primitives */
   AccordionPanel: 'A single collapsible panel.',
@@ -144,6 +154,7 @@ const DESCRIPTIONS = {
   SelectionOverlay: 'Transform handles + bounding box in the canvas 1080-virtual space.',
   EditorShell: 'A two-rail editor frame — left/right panel slots around a canvas region.',
   AlignmentGrid: 'An align-to-artboard control — DS Button cells firing an onAlign seam.',
+  OriginPicker: 'A 3×3 origin / anchor picker — nine radio points holding `[x, y]`, a field\'s height at the same size.',
 
   /* P9 foundry (subpath @kolkrabbi/kol-component/foundry) */
   SpecimenSectionHeader: 'A shared specimen section header — eyebrow, title, and a controls slot the foundry sections mount under.',

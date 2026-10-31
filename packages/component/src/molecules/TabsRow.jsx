@@ -4,6 +4,8 @@ import CloseButton from '../atoms/CloseButton.jsx'
 import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { RAIL_ROW } from '../hooks/railRow.js'
+import { Tooltip } from '../utilities/Popover.jsx'
+import { floatSurfaceClass } from '../utilities/tone.js'
 
 /* taxonomy-ok: nests kol-icons's Icon */
 
@@ -32,7 +34,8 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  *   keeps one line that scrolls sideways with no scrollbar, `.kol-scroll-fade--x` fading the clipped edge(s), and the
  *   active tab scrolled into view when it changes — arrow keys included; `wrap` breaks the tabs onto a second line.
  *   Every variant but `stacked`, which has its phone bar
- * @param {'underline'|'chip'|'text'|'stacked'} [variant='underline']
+ * @param {'underline'|'chip'|'text'|'stacked'|'float'} [variant='underline']  `float` (W16, round 3): `chip`'s row as the floating
+ *        style's capsules — float heights (28/36/44, touch 36/44/52), 4 apart, the selected one oq-16
  * @param {string} [look]  @deprecated 2026-10-30 — the old spelling of `variant`; `variant` wins when both are passed
  * @param {'mono'|'sans'|'mono-light'} [type='mono']  `underline` only: the tab's type — `mono-light` is `sans`'s row on JetBrains Mono at 300 (his word, 2026-10-30)
  * @param {boolean} [filled=false] - `chip` only: every chip shows at rest (Button `tab-filled`), so the row reads as choices
@@ -59,8 +62,17 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  *                                 that component shoudl probablyget its own variant"*): the pill on a DESK — shown from md up, hidden
  *                                 below (the phone has its own nav), placed at the content's bottom-left, 64 in from the rail's edge
  *                                 (`--kol-shell-rail-width`) and 64 up, not centred
- * @param {boolean} [shadow=false]  a drop shadow — for a pill that floats over content (the transport), not the nav
- * @param {'fill'|'circle'} [active='fill']  the lit slot: `fill` its whole 56 slot (today), `circle` a 44×44 1:1 circle
+ * @param {boolean} [shadow=false]  the KOL float shadow (`--kol-shadow-float`) — for a pill that floats over content (the transport,
+ *                                 a nav over a clashing canvas). Every pill slot names itself on hover in the KOL `Tooltip`
+ * @param {'fill'|'circle'} [active='fill']  the lit slot — since W16 (round 3, 2026-10-31) both are the whole 56 slot as a circle,
+ *                                 oq-16; the prop stays so call sites keep working
+ * THE FLOAT (W16, round 3 — 2026-10-31, accepted: *"accept the style, both glass styles"*). The pill is fxr's live nav: 66 tall, 56
+ * buttons 4 apart, 5 in, 28 glyphs — the same on mouse and touch. Its name on hover is the float Tooltip.
+ * @param {'solid'|'glass-dark'|'glass-light'} [surface='solid']  the pill's material (`floatSurfaceClass`); a glass has no
+ *                                 hairline (its rim is the edge) and always its own shadow; `solid` keeps `border` and `shadow`
+ * @param {boolean} [split=false]  the LAST tab (AppFloatNav's ···) stands apart as its own 66 circle, 8 off the bar (iOS 27's
+ *                                 grouped toolbar); while `collapsed` the bar fades and the circle is the ×
+ * @param {boolean} [labels=false]  the tab bar with labels: 66 tall, items 58 tall and 84 wide, 4 in, a 24 glyph over an 11 label
  * @param {boolean} [foldable=false]  a sideways swipe (> 40px) folds the pill into a 28×72 edge tab; a tap restores it
  * @param {boolean} [folded] · {Function} [onFoldChange]  the folded state, controlled (else the pill holds it)
  * @param {'left'|'right'} [foldSide='left']  the screen edge the tab sits on
@@ -68,21 +80,38 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  * lights it whatever `value` is — action slots (the transport) light more than one.
  */
 export const TABBAR_H = 56
-/* the pill's air off the bottom edge — a page under it owes TABBAR_H + this */
+/* the pill's height (W16, round 3 — fxr's live nav: was TABBAR_H) — a page under it owes TABBAR_PILL_H + TABBAR_PILL_INSET */
+export const TABBAR_PILL_H = 66
+/* the pill's air off the bottom edge */
 export const TABBAR_PILL_INSET = 16
-/* the pill's geometry, shared with the sheet that aligns to it: 56 per tab, 6px pad and 1px hairline each side */
+/* the pill's geometry, shared with the sheets that align to it: 56 per tab, 4 between, 5 in (4 + the 1px hairline) each side;
+ * with labels 84 per tab, none between, 4 in; a split last tab is a TABBAR_PILL_H circle 8 off the bar */
 export const TABBAR_PILL_TAB = 56
-export const tabbarPillWidth = (count) => count * TABBAR_PILL_TAB + 14
+export const TABBAR_PILL_GAP = 4
+export const TABBAR_PILL_LABEL_TAB = 84
+export const TABBAR_PILL_SPLIT_GAP = 8
+const pillBar = (n, labels) => (labels ? n * TABBAR_PILL_LABEL_TAB + 8 : n * TABBAR_PILL_TAB + Math.max(0, n - 1) * TABBAR_PILL_GAP + 10)
+/* the whole pill's width — the bar, plus the split circle when `split` */
+export const tabbarPillWidth = (count, { labels = false, split = false } = {}) => (split
+  ? pillBar(count - 1, labels) + TABBAR_PILL_SPLIT_GAP + TABBAR_PILL_H
+  : pillBar(count, labels))
+/* a slot's centre, from the pill's left edge (a split last slot is the circle's) */
+export const tabbarPillSlot = (at, { count, labels = false, split = false } = {}) => {
+  if (split && at === count - 1) return pillBar(count - 1, labels) + TABBAR_PILL_SPLIT_GAP + TABBAR_PILL_H / 2
+  return labels ? 4 + at * TABBAR_PILL_LABEL_TAB + TABBAR_PILL_LABEL_TAB / 2 : 5 + at * (TABBAR_PILL_TAB + TABBAR_PILL_GAP) + TABBAR_PILL_TAB / 2
+}
 /* the collapse's motion — one duration for the width and the glyph swap (300, user 2026-10-23: 180 read as abrupt) */
 const COLLAPSE_MS = 300
 
-export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type = 'mono', filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type = 'mono', filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, surface, split, labels, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
   const look = variant ?? lookLegacy ?? 'underline'
   const wrap = overflow === 'wrap'
+  /* `float` (W16, round 3): the chip row as capsules — float heights, pills 4 apart, the selected one oq-16 */
+  if (look === 'float') return <Overflow mode={overflow} value={value}><ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'md'} float ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${className ?? ''}`} /></Overflow>
   if (look === 'chip') return <Overflow mode={overflow} value={value}><ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} filled={filled} ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${className ?? ''}`} /></Overflow>
   if (look === 'text') return <Overflow mode={overflow} value={value}><TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={`${wrap ? 'flex-wrap gap-y-2 ' : ''}${className ?? 'gap-6'}`} style={style} /></Overflow>
-  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} ariaLabel={ariaLabel} className={className ?? ''} />
+  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} surface={surface} split={split} labels={labels} ariaLabel={ariaLabel} className={className ?? ''} />
   return <Overflow mode={overflow} value={value}><UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} wrap={wrap} type={type} /></Overflow>
 }
 
@@ -106,14 +135,14 @@ function Overflow({ mode, value, children }) {
 }
 
 /* chip — TabChips verbatim */
-function ChipTabs({ tabs, value, onChange, size, filled, ariaLabel, className }) {
+function ChipTabs({ tabs, value, onChange, size, filled, float = false, ariaLabel, className }) {
   return (
-    <div className={`flex items-center ${filled ? 'gap-2' : 'gap-1'} ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
+    <div className={`flex items-center ${filled ? 'gap-2' : 'gap-1'}${float ? ' kol-tabs-float' : ''} ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
       {tabs.map((t) => {
         const active = t.id === value
         return (
           /* a tab is selected, not pressed — the role's own attribute replaces Button's aria-pressed */
-          <Button key={t.id} variant={filled ? 'tab-filled' : 'tab'} size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} data-active={active || undefined} onClick={() => onChange?.(t.id)}>
+          <Button key={t.id} variant={float ? 'float' : filled ? 'tab-filled' : 'tab'} size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} data-active={active || undefined} onClick={() => onChange?.(t.id)}>
             {t.label}
           </Button>
         )
@@ -145,17 +174,24 @@ function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
 /* the fold: a sideways swipe past this folds the pill, as frame E's prototype measures it */
 const FOLD_SWIPE = 40
 
-function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, dock = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', ariaLabel = 'Sections', className }) {
+function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, dock = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', surface = 'solid', split: splitProp = false, labels = false, ariaLabel = 'Sections', className }) {
   const [foldedOwn, setFoldedOwn] = useState(false)
   const swipe = useRef({ x: null, swiped: false })
   if (tabs.length === 0) return null
   const phone = placement === 'phone'
   const pill = phone && shape === 'pill'
   const isCollapsed = phone && collapsed
-  const W = tabbarPillWidth(tabs.length)
+  const split = pill && splitProp && tabs.length > 1
+  const W = tabbarPillWidth(tabs.length, { labels, split })
   const top = pill && edge === 'top'
   const isFolded = pill && foldable && (foldedProp ?? foldedOwn)
   const setFolded = (v) => { if (foldedProp === undefined) setFoldedOwn(v); onFoldChange?.(v) }
+  /* THE MATERIAL (W16): solid keeps the pill's ground, hairline and shadow props; a glass is the theme's class, no hairline */
+  const glass = surface === 'glass-dark' || surface === 'glass-light'
+  const material = glass ? floatSurfaceClass(surface) : ''
+  const solidLook = glass ? {} : { background: 'var(--kol-surface-secondary)', boxShadow: shadow ? 'var(--kol-shadow-float)' : undefined }
+  /* without the hairline the 1px it took stays, transparent, so the slots never move */
+  const edgeLine = `1px solid ${border && !glass ? 'var(--kol-oq-08)' : 'transparent'}`
   /* the edge offset: the pill's inset from the safe area on its edge */
   const inset = `calc(env(safe-area-inset-${top ? 'top' : 'bottom'}, 0px) + ${TABBAR_PILL_INSET}px)`
   const swipeProps = pill && foldable ? {
@@ -176,97 +212,158 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         type="button"
         aria-label={`Show ${ariaLabel.toLowerCase()}`}
         onClick={() => setFolded(false)}
-        className="kol-mobile-tabbar-tab md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] flex items-center justify-center cursor-pointer"
+        className={`kol-mobile-tabbar-tab md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] flex items-center justify-center cursor-pointer ${material}`.trim()}
         style={{
           [foldSide]: 0,
           [top ? 'top' : 'bottom']: `calc(env(safe-area-inset-${top ? 'top' : 'bottom'}, 0px) + ${TABBAR_PILL_INSET + 8}px)`,
           width: 28, height: 72, padding: 0, border: 'none',
           borderRadius: foldSide === 'left' ? '0 16px 16px 0' : '16px 0 0 16px',
-          background: 'var(--kol-surface-secondary)', color: RAIL_ROW.rest,
+          ...(glass ? {} : { background: 'var(--kol-surface-secondary)' }), color: RAIL_ROW.rest,
         }}
       >
         <Icon name={foldSide === 'left' ? 'chevron-right' : 'chevron-left'} size={18} />
       </button>
     )
   }
+  const inBar = split ? tabs.slice(0, -1) : tabs
+  const last = split ? tabs[tabs.length - 1] : null
+  const slotW = labels ? TABBAR_PILL_LABEL_TAB : TABBAR_PILL_TAB
+  const slotH = labels ? 58 : TABBAR_PILL_TAB
+  const ink = (on) => (phone ? (on ? RAIL_ROW.active : RAIL_ROW.rest) : (on ? 'var(--kol-fg-default)' : 'var(--kol-fg-48)'))
+  const tip = (t, el) => <Tooltip key={t.id} label={t.label} placement={top ? 'bottom' : 'top'} offset={10} variant="float" asChild>{el}</Tooltip>
+  const slot = (t) => {
+    const active = t.selected ?? t.id === value
+    if (pill) {
+      /* round 3: the lit slot is the whole slot as a circle (a capsule with labels), oq-16 */
+      return tip(t, (
+        <button
+          key={t.id}
+          type="button"
+          onClick={() => onChange?.(t.id)}
+          aria-current={active ? 'page' : undefined}
+          aria-label={t.label}
+          /* a DOCK slot lights on hover like a menu row — the nav row's oq-04 ground and on-primary ink (HomeDockRound4,
+           * kol-fxr 2026-10-31; was forced from AppFloatNav with `!` over the inline ground). The rest ground and ink ride
+           * variables so the hover class can win without `!`. */
+          className={`flex flex-col items-center justify-center rounded-full cursor-pointer flex-none bg-[var(--slot-bg)] text-[var(--slot-ink)]${dock && !active ? ' hover:bg-[var(--kol-oq-04)] hover:text-[var(--kol-surface-on-primary)]' : ''}${labels ? ' gap-0.5' : ''}`}
+          style={{ width: slotW, height: slotH, padding: 0, border: 'none', '--slot-bg': active ? 'var(--kol-oq-16)' : 'transparent', '--slot-ink': ink(active) }}
+        >
+          {t.icon && <Icon name={t.icon} size={labels ? 24 : 28} />}
+          {labels && <span className="truncate max-w-full px-1.5" style={{ fontFamily: 'var(--kol-font-family-mono)', fontSize: 11, lineHeight: 1.2, fontWeight: 600 }}>{t.label}</span>}
+        </button>
+      ))
+    }
+    return (
+      <button
+        key={t.id}
+        type="button"
+        onClick={() => onChange?.(t.id)}
+        aria-current={active ? 'page' : undefined}
+        /* the PHONE bar is icons alone (user 2026-10-23: *"skip the title and show just the icon bigger"*) — the
+         * label is the button's accessible name */
+        aria-label={phone ? t.label : undefined}
+        className="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 cursor-pointer"
+        /* the PHONE bar wears the rail's row type and ink (review 2, § 7.1 — RAIL_ROW, the one constant the rail reads);
+         * an inline stacked row keeps MobileTabBar's own */
+        style={{ background: 'transparent', border: 'none', color: ink(active) }}
+      >
+        {t.icon && <Icon name={t.icon} size={phone ? 24 : 18} />}
+        {/* helper is single-line chrome, which a tab label always is */}
+        {!phone && <span className="kol-helper-10 truncate max-w-full px-1">{t.label}</span>}
+      </button>
+    )
+  }
+  /* the isCollapsed × — the bar's More slot, or (a whole pill, no split) the pill shrunk to one circle; present always so it cross-fades */
+  const closeX = phone && !split && (
+    <button
+      type="button"
+      aria-label="Close"
+      aria-hidden={!isCollapsed}
+      tabIndex={isCollapsed ? 0 : -1}
+      onClick={onExpand}
+      className="absolute flex items-center justify-center rounded-full cursor-pointer"
+      style={{
+        /* no fill — the × is the only glyph, a filled circle inside the circle read as two rings (user 2026-10-23) */
+        ...(pill ? { right: 4, top: 4, width: TABBAR_PILL_TAB, height: TABBAR_PILL_TAB } : { right: 0, top: 0, bottom: 0, width: `${100 / tabs.length}%` }),
+        background: 'transparent', border: 'none', color: RAIL_ROW.active,
+        opacity: isCollapsed ? 1 : 0, pointerEvents: isCollapsed ? 'auto' : 'none', transition: `opacity ${COLLAPSE_MS}ms ease`,
+      }}
+    >
+      <Icon name="x" size={pill ? 28 : 24} />
+    </button>
+  )
+  const row = (
+    <div className={`flex items-stretch ${pill ? 'flex-none' : 'flex-1 min-w-0'}`} style={{ gap: pill && !labels ? TABBAR_PILL_GAP : undefined, opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? 'none' : 'auto', transition: `opacity ${COLLAPSE_MS}ms ease` }}>
+      {inBar.map(slot)}
+    </div>
+  )
+  if (!pill) {
+    return (
+      <nav
+        className={`${phone ? 'kol-mobile-tabbar md:hidden fixed inset-x-0 bottom-0 z-[var(--kol-z-sticky)] ' : ''}flex items-stretch ${className}`.trim()}
+        style={phone ? {
+          height: TABBAR_H,
+          /* the pill's own ground, not the page's — it floats OVER content, so a
+           * transparent bar would show rows sliding through the labels */
+          background: 'var(--kol-surface-primary)',
+          borderTop: '1px solid var(--kol-oq-08)',
+          paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+        } : { height: TABBAR_H }}
+        aria-label={ariaLabel}
+      >
+        {row}
+        {closeX}
+      </nav>
+    )
+  }
+  const barW = W - (split ? TABBAR_PILL_SPLIT_GAP + TABBAR_PILL_H : 0)
   return (
     <nav
       {...swipeProps}
-      className={`${pill
-        ? `kol-mobile-tabbar kol-mobile-tabbar-pill ${dock ? 'hidden md:flex' : 'md:hidden'} fixed z-[calc(var(--kol-z-sticky)+1)] rounded-full p-1.5 overflow-hidden `
-        : phone ? 'kol-mobile-tabbar md:hidden fixed inset-x-0 bottom-0 z-[var(--kol-z-sticky)] ' : ''}flex items-stretch ${className}`.trim()}
-      style={pill ? {
-        /* THE PILL (user 2026-10-23, iOS Files beside the full-width bar): floats off the bottom edge, hugs its tabs,
-         * the same ground and hairline as the bar, no shadow (user 2026-10-23). Anchored by its RIGHT edge at the
-         * centre line, so the collapse shrinks it toward where More was and the × lands under the same thumb. */
-        height: TABBAR_H,
-        width: isCollapsed ? TABBAR_H : W,
+      className={`kol-mobile-tabbar kol-mobile-tabbar-pill ${dock ? 'hidden md:flex' : 'md:hidden'} fixed z-[calc(var(--kol-z-sticky)+1)] flex items-stretch ${className}`.trim()}
+      style={{
+        /* THE PILL (user 2026-10-23, iOS Files beside the full-width bar; round 3's size, W16): floats off the bottom edge,
+         * hugs its tabs. Anchored by its RIGHT edge at the centre line, so the collapse shrinks it toward where More was
+         * and the × lands under the same thumb. */
+        height: TABBAR_PILL_H,
+        gap: TABBAR_PILL_SPLIT_GAP,
         ...(dock
           ? { left: 'calc(var(--kol-shell-rail-width, 48px) + 64px)', bottom: 64 }
           : { right: `calc(50% - ${W / 2}px)`, [top ? 'top' : 'bottom']: inset }),
-        background: 'var(--kol-surface-secondary)',
-        /* without the hairline the 1px it took stays, transparent, so the slots never move */
-        border: `1px solid ${border ? 'var(--kol-oq-08)' : 'transparent'}`,
-        boxShadow: shadow ? '0 8px 40px rgba(0, 0, 0, 0.45)' : undefined,
-        transition: `width ${COLLAPSE_MS}ms ease`,
         ...swipeProps.style,
-      } : phone ? {
-        height: TABBAR_H,
-        /* the pill's own ground, not the page's — it floats OVER content, so a
-         * transparent bar would show rows sliding through the labels */
-        background: 'var(--kol-surface-primary)',
-        borderTop: '1px solid var(--kol-oq-08)',
-        paddingBottom: 'env(safe-area-inset-bottom, 0px)',
-      } : { height: TABBAR_H }}
+      }}
       aria-label={ariaLabel}
     >
-      <div className={`flex items-stretch ${pill ? 'flex-none' : 'flex-1 min-w-0'}`} style={{ width: pill ? W - 14 : undefined, opacity: isCollapsed ? 0 : 1, pointerEvents: isCollapsed ? 'none' : 'auto', transition: `opacity ${COLLAPSE_MS}ms ease` }}>
-      {tabs.map((t) => {
-        const active = t.selected ?? t.id === value
-        const circle = pill && activeShape === 'circle'
-        return (
-          <button
-            key={t.id}
-            type="button"
-            onClick={() => onChange?.(t.id)}
-            aria-current={active ? 'page' : undefined}
-            /* the PHONE bar is icons alone (user 2026-10-23: *"skip the title and show just the icon bigger"*) — the
-             * label is the button's accessible name */
-            aria-label={phone ? t.label : undefined}
-            className={pill ? 'flex items-center justify-center rounded-full cursor-pointer' : 'flex-1 min-w-0 flex flex-col items-center justify-center gap-1 cursor-pointer'}
-            /* the PHONE bar wears the rail's row type and ink (review 2, § 7.1 — RAIL_ROW, the one constant the rail reads);
-             * an inline stacked row keeps MobileTabBar's own */
-            style={{ background: pill && active && !circle ? 'var(--kol-oq-08)' : 'transparent', border: 'none', width: pill ? 56 : undefined, color: phone ? (active ? RAIL_ROW.active : RAIL_ROW.rest) : (active ? 'var(--kol-fg-default)' : 'var(--kol-fg-48)') }}
-          >
-            {/* the circle: 44×44, 1:1 inside the 56 slot (frame E — the fill stretched to the slot's width) */}
-            {t.icon && (circle
-              ? <span className="inline-flex items-center justify-center rounded-full" style={{ width: 44, height: 44, background: active ? 'var(--kol-oq-08)' : 'transparent' }}><Icon name={t.icon} size={28} /></span>
-              : <Icon name={t.icon} size={pill ? 28 : phone ? 24 : 18} />)}
-            {/* helper is single-line chrome, which a tab label always is */}
-            {!phone && <span className="kol-helper-10 truncate max-w-full px-1">{t.label}</span>}
-          </button>
-        )
-      })}
+      <div
+        className={`relative flex items-center rounded-full overflow-hidden ${material}`.trim()}
+        style={{
+          height: TABBAR_PILL_H,
+          width: isCollapsed && !split ? TABBAR_PILL_H : barW,
+          padding: labels ? 3 : 4,
+          border: edgeLine,
+          ...solidLook,
+          opacity: isCollapsed && split ? 0 : 1,
+          pointerEvents: isCollapsed && split ? 'none' : undefined,
+          transition: `width ${COLLAPSE_MS}ms ease, opacity ${COLLAPSE_MS}ms ease`,
+        }}
+      >
+        {row}
+        {closeX}
       </div>
-      {phone && (
-        /* the isCollapsed × — the pill's one tab-sized circle, the bar's More slot; present always so it cross-fades */
+      {split && tip(isCollapsed ? { id: last.id, label: 'Close' } : last, (
+        /* the split circle (round 3, iOS 27's grouped toolbar): ··· on its own, 8 off the bar; the × while collapsed */
         <button
+          key={last.id}
           type="button"
-          aria-label="Close"
-          aria-hidden={!isCollapsed}
-          tabIndex={isCollapsed ? 0 : -1}
-          onClick={onExpand}
-          className="absolute flex items-center justify-center rounded-full cursor-pointer"
-          style={{
-            /* no fill — the × is the only glyph, a filled circle inside the circle read as two rings (user 2026-10-23) */
-            ...(pill ? { right: 6, top: 6, width: TABBAR_H - 14, height: TABBAR_H - 14 } : { right: 0, top: 0, bottom: 0, width: `${100 / tabs.length}%` }),
-            background: 'transparent', border: 'none', color: RAIL_ROW.active,
-            opacity: isCollapsed ? 1 : 0, pointerEvents: isCollapsed ? 'auto' : 'none', transition: `opacity ${COLLAPSE_MS}ms ease`,
-          }}
+          onClick={() => (isCollapsed ? onExpand?.() : onChange?.(last.id))}
+          aria-current={!isCollapsed && (last.selected ?? last.id === value) ? 'page' : undefined}
+          aria-label={isCollapsed ? 'Close' : last.label}
+          className={`flex items-center justify-center rounded-full cursor-pointer flex-none ${material}`.trim()}
+          style={{ width: TABBAR_PILL_H, height: TABBAR_PILL_H, padding: 0, border: edgeLine, ...solidLook, color: ink(isCollapsed || (last.selected ?? last.id === value)) }}
         >
-          <Icon name="x" size={pill ? 28 : 24} />
+          <Icon name={isCollapsed ? 'x' : last.icon} size={labels ? 24 : 28} />
         </button>
-      )}
+      ))}
     </nav>
   )
 }

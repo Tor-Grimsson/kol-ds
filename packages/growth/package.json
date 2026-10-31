@@ -1,0 +1,36 @@
+{
+  "name": "@kolkrabbi/kol-growth",
+  "version": "0.4.0",
+  "description": "The growing line engine, differential growth into shapes",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "scripts": {
+    "test": "node src/selftest.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "generative",
+    "differential-growth",
+    "engine"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/growth"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -147,6 +147,21 @@ const CHROMES = [
   { path: '/chrome/morph', icon: 'swap', label: 'Morph' },
 ]
 
+/* LABS' CATALOG AS NESTED FLOAT ROWS (FloatsOwnItems, kol-fxr 2026-10-31): section → group → category, three levels — the
+ * dock's and the phone pill's Labs, and the Catalog slot of Labs' own top float. A leaf routes; the rail is untouched */
+const labsMenu = (go) => [
+  { label: 'Generative', icon: 'refresh', sub: [
+    { label: 'Fields', icon: 'grid', sub: ['Noise', 'Flow', 'Voronoi'].map((l) => ({ label: l, onPress: () => go('/chrome/labs/generate') })) },
+    { label: 'Particles', icon: 'layers', sub: ['Swarm', 'Orbit'].map((l) => ({ label: l, onPress: () => go('/chrome/labs/generate') })) },
+    { label: 'Patterns', icon: 'grid', onPress: () => go('/chrome/labs/composition') },
+  ] },
+  { label: 'Effects', icon: 'filter', sub: [
+    { label: 'Blur', icon: 'drop', onPress: () => go('/chrome/labs/effects/blur') },
+    { label: 'Glow', icon: 'brightness', onPress: () => go('/chrome/labs/effects/glow') },
+  ] },
+  { label: 'Open Labs', icon: 'globe', onPress: () => go('/chrome/labs') },
+]
+
 function Placeholder({ name, text }) {
   return (
     <div className="flex h-full min-h-[60vh] flex-col items-center justify-center gap-4 text-oq-24">
@@ -174,8 +189,49 @@ export default function App() {
   /* the settings tiers, flipped live from the drawer so he sees all three (review 2, § 6.3) */
   const [tier, setTier] = useState({ page: false, filters: false })
   /* the phone nav, bar or drawer — both ship (review 2, § 7.1); his pick survives a reload */
-  const [phoneNav, setPhoneNavState] = useState(() => { try { const v = localStorage.getItem('studio-hub:phone-nav'); return ['bar', 'pill', 'drawer'].includes(v) ? v : 'pill' } catch { return 'pill' } })
+  const [phoneNav, setPhoneNavState] = useState(() => { try { const v = localStorage.getItem('studio-hub:phone-nav'); return ['bar', 'pill', 'drawer', 'floats'].includes(v) ? v : 'pill' } catch { return 'pill' } })
   const setPhoneNav = (v) => { setPhoneNavState(v); try { localStorage.setItem('studio-hub:phone-nav', v) } catch { /* storage blocked */ } }
+  /* THE TWO FLOATS (PhoneTwoFloatLayout, kol-fxr 2026-10-31): fxr's Labs on a phone — the nav on top, a transport over the
+   * foot, the stage and a bottom Rail between; a dummy transport and a dummy Rail of params */
+  const [playing, setPlaying] = useState(false)
+  const [loopSeconds, setLoopSeconds] = useState(4)
+  /* LABS PASSES ITS OWN ROWS (FloatsOwnItems, 2026-10-31): under /chrome/labs the top float is Labs' — Home · Catalog · Params ·
+   * Transport, More → Output · File, then the app's nav; every other page keeps the app's nav */
+  const [labsParams, setLabsParams] = useState(true)
+  const [labsTransport, setLabsTransport] = useState(true)
+  const onLabs = path === '/chrome/labs' || path.startsWith('/chrome/labs/')
+  const floats = {
+    ...(onLabs && {
+      items: [
+        { id: 'home', icon: 'home-01', label: 'Home', onPress: () => navigate('/') },
+        { id: 'catalog', icon: 'grid', label: 'Catalog', sub: labsMenu(navigate) },
+        { id: 'params', icon: 'slider-01', label: 'Params', onPress: () => setLabsParams((v) => !v), selected: labsParams },
+        { id: 'transport', icon: 'play', label: 'Transport', onPress: () => setLabsTransport((v) => !v), selected: labsTransport },
+      ],
+      actions: [
+        { label: 'Output', icon: 'desktop', onPress: () => {} },
+        { label: 'File', icon: 'file', onPress: () => {} },
+      ],
+    }),
+    transport: (onLabs && !labsTransport) ? undefined : {
+      items: [
+        { id: 'play', icon: 'play', label: 'Play', onPress: () => setPlaying(true), selected: playing },
+        { id: 'pause', icon: 'pause', label: 'Pause', onPress: () => setPlaying(false), selected: !playing },
+        { id: 'loop', icon: 'stopwatch-solid', label: 'Loop length' },
+        { id: 'stop', icon: 'stop', label: 'Stop', onPress: () => setPlaying(false) },
+        { id: 'rewind', icon: 'rewind', label: 'Rewind' },
+      ],
+      sheetFor: { loop: [2, 4, 8, 12, 16].map((n) => ({ label: `${n} s`, checked: loopSeconds === n, onPress: () => setLoopSeconds(n) })) },
+    },
+    rail: (onLabs && !labsParams) ? undefined : (
+      <div className="flex flex-col px-4 pt-4">
+        <span className="kol-helper-10 text-meta pb-2">Params</span>
+        {[['Speed', '0.50'], ['Scale', '1.00'], ['Hue', '210'], ['Grain', '0.12']].map(([l, v]) => (
+          <div key={l} className="flex items-center justify-between py-2 kol-mono-12"><span className="text-body">{l}</span><span className="text-meta">{v}</span></div>
+        ))}
+      </div>
+    ),
+  }
   /* how a rail section opens — enter (fxr's labs) or fold (the other apps), both shown for review */
   /* the rack fits the phone's height on open (user 2026-10-23); the desktop keeps 100 % */
   const phone = useMediaQuery('(max-width: 767px)')
@@ -226,7 +282,7 @@ export default function App() {
      * passes its generator's canvas */
     signedOut: !signedIn,
     stage: <div className="h-full w-full" style={{ background: 'radial-gradient(60% 50% at 70% 40%, var(--kol-color-blue-400, #222d3d), transparent), radial-gradient(40% 40% at 25% 70%, var(--kol-color-orange-300, #c4622d), transparent)', opacity: 0.55 }} />,
-    chromes: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })),
+    chromes: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path), ...(c.label === 'Labs' && { sub: labsMenu(navigate) }) })),
     ...(quickLinks && { touch: { label: 'Select chrome', doors: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })) } }),
   }
 
@@ -395,6 +451,17 @@ export default function App() {
         /* SIGN IN IS A PAGE (HubSignedOutGutterAndSeams, 2026-10-29): every Sign in the Hub draws — the rail's foot row, the
          * signed-out +, the phone's More — opens the app's own page instead of the dialog (fxr's /signin, frame C) */
         page: '/signin',
+        /* SIGN IN OVER HOME (FloatingStyleAndSignInDemos, 2026-10-30): wins over `page` — the column over Home on a desk, the box on a phone */
+        form: {
+          title: 'Sign in',
+          fields: [
+            { id: 'email', placeholder: 'Email', type: 'email', autoComplete: 'email' },
+            { id: 'password', placeholder: 'Password', type: 'password', autoComplete: 'current-password' },
+          ],
+          okLabel: 'Sign in',
+          footer: { text: "Don't have an account?", link: 'Sign up' },
+          onSubmit: async () => setSignedIn(true),
+        },
       }}
       /* THE ROWS ARE TYPED DATA (2026-10-24): the Hub draws every control in the rail's tone — no app writes a Dropdown */
       settings={{
@@ -411,7 +478,7 @@ export default function App() {
             { label: 'Settings page', type: 'switch', on: tier.page, onChange: (v) => setTier((t) => ({ page: v, filters: v && t.filters })) },
             { label: 'Filters', type: 'switch', on: tier.filters, disabled: !tier.page, disabledHint: 'Needs the settings page', onChange: (v) => setTier((t) => ({ ...t, filters: v })) },
             { label: 'Rail sections', type: 'choice', options: [{ value: 'enter', label: 'Enter' }, { value: 'fold', label: 'Fold' }], value: railSections, onChange: setRailSections },
-            { label: 'Phone nav', type: 'choice', options: [{ value: 'bar', label: 'Bar' }, { value: 'pill', label: 'Pill' }, { value: 'drawer', label: 'Drawer' }], value: phoneNav, onChange: setPhoneNav },
+            { label: 'Phone nav', type: 'choice', options: [{ value: 'bar', label: 'Bar' }, { value: 'pill', label: 'Pill' }, { value: 'drawer', label: 'Drawer' }, { value: 'floats', label: 'Floats' }], value: phoneNav, onChange: setPhoneNav },
             { label: 'Quick links on the phone', labelWidth: 200, type: 'switch', on: quickLinks, onChange: setQuickLinks },
           ] },
         ],
@@ -422,7 +489,7 @@ export default function App() {
         filters: tier.filters,
       }}
       /* the bar steps aside for the tools: the studio and the chromes take the full height on a phone (review 2, § 7.1) */
-      shell={{ railSections, touch: phoneNav }}
+      shell={{ railSections, touch: phoneNav, ...(phoneNav === 'floats' && { floats }) }}
     />
   )
 }

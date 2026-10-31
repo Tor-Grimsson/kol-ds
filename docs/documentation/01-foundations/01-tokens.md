@@ -3,7 +3,7 @@ title: Tokens
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-09-03
+updated: 2026-10-31
 description: The token foundation under every KOL component
 aliases:
   - foundations
@@ -75,6 +75,8 @@ Light takes the **pole** because a page wash moves the page 250 → 245 and the 
 | `--kol-surface-tertiary` | `#0E0E11` | — |
 | `--kol-surface-inverse` | `#FCFBF8` | `#0E0E11` |
 
+**Every surface reads a base (theme ≥0.202.0).** The tiers hold no hex of their own: each points at one of the poles (`--kol-color-ab-white` · `-ab-black` · `--kol-color-white` · `-black`) or at the **neutral ramp**, the twelve greys the surfaces use, defined once in `kol-base-tokens.css` and named by HSL lightness ×10 — `--kol-neutral-980` (`#fafafa`) · `973` · `949` · `933` · `878` · `839` · `259` · `137` · `129` · `106` · `076` (`#121215`) · `045`. Theme-invariant; a theme picks which base a tier reads. The Figma library's `primitives` collection mirrors it, so its surfaces are aliases.
+
 Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` under the standing law **explicit choice > system/auto > light** (corrected 2026-07-28): a stamped `data-theme` or saved toggle choice wins; an un-stamped page follows `prefers-color-scheme` live via the `:root:not([data-theme])` mirror blocks in `kol-base-tokens.css`/`kol-theme.css`; light is the last-resort fallback. The same stamp on any **element** themes that subtree (theme ≥0.52.0): surfaces, fg ramp, roles, `oq` and borders all re-resolve on the stamped element; the **accent family deliberately does not** — `kol-brand-color.css` rebinds it at `:root`, so a nested pane keeps the app's accent. The showcase boots un-stamped (system-follow) unless a saved choice exists; ThemeToggle (framework ≥0.6.0) cycles light → dark → system.
 
 ## Content widths
@@ -85,7 +87,9 @@ inner caps, width is never a page identity. Detail: [[04-layout-breakpoints|layo
 ## Radius & shadows
 
 - Radii: `--kol-radius-{none,sm,md,lg,xl,2xl,full}` — components reference these, never hardcoded corners.
-- Shadows: `--kol-shadow-{sm,md,lg,xl,inner}`.
+- Shadows: `--kol-shadow-{sm,md,lg,xl,inner}`; `--kol-shadow-float` lifts a float (the solid surface); `--kol-shadow-rail-up` lifts a Rail rising from the bottom edge (no top rule with it, kol-theme 0.207.0).
+- Glass (W16, round 3 — 2026-10-31): `--kol-glass-dark-*` · `--kol-glass-light-*` — `fill`, `blur-s` · `blur-m`, `rim`, `shadow-s` · `shadow-m`; worn through `.kol-float-glass-dark` · `.kol-float-glass-light` (`.kol-float-m` for a menu or a box), never inline. glass-dark: rgb 26 at 62%, blur 6 / 16 with saturate 1.8; glass-light: rgb 236 236 232 at 10%, blur 6 / 6. Reduced transparency → solid.
+- Float sizes: `--kol-float-h-{sm,md,lg}` 28 · 36 · 44 (touch 36 · 44 · 52), `--kol-float-t-{sm,md,lg}` 12 · 13 · 14 (13 · 15 · 16), `--kol-float-ic` 18 (20), `--kol-float-row` 40 (48), `--kol-float-menu-r` 26 (30), `--kol-float-inset` 6, `--kol-float-tip-h` · `-tip-t` 24 · 11 (28 · 12), `--kol-float-well` (the field's well, per theme). Touch = `pointer: coarse`.
 
 ## State colors
 

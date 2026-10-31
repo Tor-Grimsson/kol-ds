@@ -42,7 +42,7 @@ import DocumentEditor from './DocumentEditor.jsx'
 import { listDrafts, moveDrafts, DRAFTS_EVENT } from '../utilities/localDrafts.js'
 import { parseFrontmatter } from '@kolkrabbi/kol-markdown'
 import CommandOverlay from './CommandOverlay.jsx'
-import ColumnBrowser, { isFileDrag, Preview as ColumnPreview, SelectionPreview } from './ColumnBrowser.jsx'
+import ColumnBrowser, { isFileDrag, Preview as ColumnPreview, SelectionPreview, COL_ICON } from './ColumnBrowser.jsx'
 import SettingsPanel, { SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter } from './SettingsPanel.jsx'
 import SettingsSections from './SettingsSections.jsx'
 import { kindOf, extOf, KIND_LABEL, KINDS, DEFAULT_KINDS, isSystemFile, isSegment, groupSegments, groupVariants, posterFor, partition } from '../utilities/mediaKinds.js'
@@ -533,6 +533,108 @@ function ContainerPreview({ name, icon, facts, width, details }) {
       {/* a folder's own rows — favourite, tags (media D1 plan v2) — an island, like the file pane's */}
       {details && <div onClick={(e) => e.stopPropagation()} onPointerDown={(e) => e.stopPropagation()}>{details}</div>}
     </div>
+  )
+}
+
+/* GET INFO (MediaGetInfoModal, kol-website 2026-10-30) — Finder's ⌘I body, one for a folder and a
+ * file, drawn inside Quick Look's window (`QuickLookFrame` in a `FullscreenOverlay`, as
+ * `MediaInspector` draws it): the head row (a glyph no taller than its lines, the name, the size,
+ * "Modified"), the tags, General as key/value rows, then a file's small preview. Never the pane's
+ * full-height plate. `general` is `[label, value]` pairs. */
+function InfoBody({ icon, name, size, modified, tags, general, preview }) {
+  return (
+    <div className="flex-1 self-start w-[min(var(--kol-ql-max-w),420px)] max-h-[var(--kol-ql-media-h)] overflow-y-auto p-4 flex flex-col gap-4">
+      <div className="flex items-start gap-3">
+        <IconFrame name={icon} variant="ghost" size="sm" />
+        <div className="flex-1 min-w-0 flex flex-col gap-0.5 kol-mono-12">
+          <div className="flex items-baseline justify-between gap-4">
+            <span className="text-strong break-all">{name}</span>
+            {size && <span className="text-fg-default shrink-0">{size}</span>}
+          </div>
+          {modified && <span className="text-meta">Modified {modified}</span>}
+        </div>
+      </div>
+      {tags}
+      <dl className="flex flex-col gap-1">
+        {general.map(([k, v]) => (
+          <div key={k} className="flex justify-between gap-4 kol-mono-12">
+            <dt className="text-meta shrink-0">{k}</dt>
+            <dd className="text-fg-default text-right break-all">{v}</dd>
+          </div>
+        ))}
+      </dl>
+      {preview}
+    </div>
+  )
+}
+
+/* the size as Finder's Get Info writes it: bytes, then readable, then the count for a folder */
+const infoSize = (bytes, items) => `${bytes.toLocaleString('en-US')} bytes (${formatSize(bytes)})${items != null ? ` for ${items} item${items === 1 ? '' : 's'}` : ''}`
+
+/* ⌘I's modal: a folder's or a file's Get Info in Quick Look's window. `path` is a folder (ends `/`) or
+ * a file key; `where` is the bucket's label, the head of the Where breadcrumb. */
+function GetInfoModal({ path, objects, where, onClose, formatDate, tags, mediaUrl, downloadUrl, hasUrl = true, keySet }) {
+  const [dims, setDims] = useState(null)
+  const folder = path.endsWith('/')
+  const o = folder ? null : objects.find((x) => x.key === path)
+  const parts = path.replace(/\/$/, '').split('/')
+  const name = o ? (o.displayKey ?? o.displayName ?? parts[parts.length - 1]) : parts[parts.length - 1]
+  const crumb = [where, ...parts.slice(0, -1)].join(' › ')
+  let frame, body
+  if (folder) {
+    const inside = objects.filter((x) => x.key.startsWith(path))
+    const bytes = inside.reduce((n, x) => n + (x.size ?? 0), 0)
+    const last = inside.reduce((t, x) => (x.uploaded && x.uploaded > t ? x.uploaded : t), '')
+    frame = { title: name, meta: [`${inside.length} items`, formatSize(bytes)].join(' · ') }
+    body = <InfoBody icon="folder" name={name} size={formatSize(bytes)} modified={last ? formatDate(last) : null} tags={tags}
+      general={[['Kind', 'Folder'], ['Size', infoSize(bytes, inside.length)], ['Where', crumb], ...(last ? [['Newest', formatDate(last) || '—']] : [])]} />
+  } else {
+    if (!o) return null
+    const kind = kindOf(o)
+    const url = hasUrl ? mediaUrl(o.key) : null
+    const sized = isImage(o.contentType) || kind === 'video'
+    const timed = kind === 'video' || kind === 'audio'
+    const poster = kind === 'video' ? posterFor(o.key, keySet) : null
+    const onMeta = (e) => { const t = e.currentTarget; setDims({ w: t.videoWidth, h: t.videoHeight, len: t.duration }) }
+    frame = {
+      title: name,
+      meta: [formatSize(o.size), dims?.w && `${dims.w} × ${dims.h} px`, dims?.len && formatLength(dims.len)].filter(Boolean).join(' · '),
+      actions: url && (
+        <span className="flex items-center gap-1">
+          <CopyAction label="Copy URL" text={url} />
+          <Tooltip label="Download">
+            <Button variant="nav" size="sm" iconOnly="download" href={downloadUrl(o.key)} download={o.key.split('/').pop()} aria-label="Download" />
+          </Tooltip>
+        </span>
+      ),
+    }
+    body = <InfoBody icon={COL_ICON[kind] || 'file'} name={name} size={formatSize(o.size)} modified={o.uploaded ? formatDate(o.uploaded) : null} tags={tags}
+      general={[
+        ['Kind', KIND_LABEL[kind] || 'file'],
+        ['Type', o.contentType || '—'],
+        ['Size', infoSize(o.size ?? 0)],
+        ['Where', crumb],
+        ['Modified', formatDate(o.uploaded) || '—'],
+        ...(sized ? [['Dimensions', dims?.w ? `${dims.w} × ${dims.h} px` : url ? '…' : '—']] : []),
+        ...(timed ? [['Length', dims?.len ? formatLength(dims.len) : url ? '…' : '—']] : []),
+        ...(url ? [['URL', <span key="u" className="inline-flex items-center gap-1">{url}<CopyAction label="Copy URL" text={url} /></span>]] : []),
+      ]}
+      /* SMALL (MediaGetInfoFileBody, 2026-10-30): the modal's width at its own ratio, but never taller
+       * than 32vh — a 9:16 reel at full width ran the body past its cap. `#t=0.1` makes the browser
+       * paint a frame under preload="metadata"; without it a posterless video was a blank band. */
+      preview={url && (isImage(o.contentType) ? (
+        <img src={url} alt="" className="block max-w-full max-h-[32vh] w-auto h-auto mx-auto rounded" onLoad={(e) => setDims({ w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })} />
+      ) : kind === 'video' ? (
+        <video src={`${url}#t=0.1`} poster={poster ? mediaUrl(poster) : undefined} preload="metadata" controls className="block max-w-full max-h-[32vh] w-auto h-auto mx-auto rounded" onLoadedMetadata={onMeta} />
+      ) : kind === 'audio' ? (
+        /* no picture to show; loaded only for its length */
+        <audio src={url} preload="metadata" className="hidden" onLoadedMetadata={onMeta} />
+      ) : null)} />
+  }
+  return (
+    <FullscreenOverlay open onClose={onClose} closeButton={false} scrim>
+      <QuickLookFrame {...frame} onClose={onClose}>{body}</QuickLookFrame>
+    </FullscreenOverlay>
   )
 }
 
@@ -1172,6 +1274,10 @@ export function MediaLibraryBrowse({
    * draw a picked folder's; `false` leaves the column empty, as before. */
   infoKey = 'mod+i',
   columnFolderInfo = true,
+  /* `previewPlacement` — Columns: the preview pane docked at the right edge as Rows and Grid dock
+   * theirs (`'dock'`, ColumnPreviewDocked, kol-website 2026-10-30), or the column after the last
+   * one (`'inline'`, as before). Handed to ColumnBrowser. */
+  previewPlacement = 'dock',
 }) {
   const [ownPrefix, setOwnPrefix] = useState('')
   const prefix = prefixProp ?? ownPrefix
@@ -1691,16 +1797,18 @@ export function MediaLibraryBrowse({
       setPickedFolder(null); setPickedFile(o)
     }
   }
-  const spaceQuickLook = () => {
+  const spaceQuickLook = (info) => {
     /* in the columns a folder is picked by being OPEN — the deepest level (MediaLibraryInfoKey: ⌘I
      * is the only caller there; the columns keep their own Space) */
     const key = pickedFile?.key ?? (view === 'columns' ? (prefix || null) : pickedFolder ?? (rowSelection.size === 1 ? [...rowSelection][0] : null))
     /* a picked bucket or the title Quick-Looks like any folder (user 2026-09-25) */
-    if (!key && previewRoot) { setQuickLookFolder(ROOT_KEY); return }
+    if (!key && previewRoot) { setInfoFor(ROOT_KEY); return }
     if (!key) return
     /* A FOLDER QUICK-LOOKS TOO (user 2026-09-23: *"anything can be quick viewed, also folders"*) —
      * the same pane the preview column draws, at overlay size. */
-    if (key.endsWith('/')) { setQuickLookFolder(key); return }
+    if (key.endsWith('/')) { setInfoFor(key); return }
+    /* ⌘I on a file is its Get Info, not the media viewer (MediaGetInfoModal) */
+    if (info === true) { setInfoFor(key); return }
     const files = isWall
       ? wallFiles
       : rowLevel(key.slice(0, key.lastIndexOf('/') + 1), sortedObjects).files
@@ -1729,7 +1837,7 @@ export function MediaLibraryBrowse({
     if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return false
     /* ⇧+ARROWS KEEP SELECTING UNDER QUICK LOOK (user 2026-09-24), Finder's: the selection grows
      * underneath and the window pages through it */
-    if (view === 'columns' || (quickLook && !e.shiftKey) || quickLookFolder || searchOpen) return false
+    if (view === 'columns' || (quickLook && !e.shiftKey) || infoFor || searchOpen) return false
     if (atTitleRoot && !single) {
       if (e.metaKey && e.key === 'ArrowUp') goUp()
       else if (e.metaKey && e.key === 'ArrowDown') { if (atTop) goTitleRoot(); else openBucket(bucketList.find((b) => (b.id ?? b.label) === pickedBucket) ?? bucketMeta) }
@@ -1834,7 +1942,7 @@ export function MediaLibraryBrowse({
       /* ENTER OPENS THE SELECTED FOLDER, ⇧ENTER GOES TO THE PARENT (user 2026-09-24). The same
        * two moves as a double-click and ⌘↑, so the child you leave is still the one selected.
        * A focused tile has already opened itself on Enter (it calls preventDefault). */
-      if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.defaultPrevented && !quickLook && !quickLookFolder && !searchOpen) {
+      if (e.key === 'Enter' && !e.metaKey && !e.ctrlKey && !e.altKey && !e.defaultPrevented && !quickLook && !infoFor && !searchOpen) {
         if (e.shiftKey) { e.preventDefault(); goUp(); return }
         if (view !== 'columns') {
           const root = rootItems.find((it) => it.key === pickedBucket)
@@ -1847,7 +1955,7 @@ export function MediaLibraryBrowse({
       if (e.key === ' ' && view !== 'columns' && !searchOpen) {
         e.preventDefault()
         if (quickLook) closeQuickLook()
-        else if (quickLookFolder) setQuickLookFolder(null)
+        else if (infoFor) setInfoFor(null)
         else spaceQuickLook()
       }
     }
@@ -1856,10 +1964,10 @@ export function MediaLibraryBrowse({
   })
 
   const [quickLook, setQuickLook] = useState(null)
-  const [quickLookFolder, setQuickLookFolder] = useState(null)
-  /* ⌘I — GET INFO (MediaLibraryInfoKey): what Space opens, from every view; inert over an open
-   * overlay (Esc closes it) and over the search modal */
-  useHotkey(infoKey, !quickLook && !quickLookFolder && !searchOpen, spaceQuickLook)
+  const [infoFor, setInfoFor] = useState(null)
+  /* ⌘I — GET INFO (MediaLibraryInfoKey; MediaGetInfoModal: the Get Info modal, file or folder),
+   * from every view; ⌘I again or Esc closes it; inert over Quick Look and the search modal */
+  useHotkey(infoKey, !quickLook && !searchOpen, () => (infoFor ? setInfoFor(null) : spaceQuickLook(true)))
   /* …and the open window takes the new selection as its set, on the file the cursor reached */
   useEffect(() => {
     if (!quickLook || rowSelection.size < 2) return
@@ -2124,6 +2232,7 @@ export function MediaLibraryBrowse({
                 height={colH}
                 onHeightChange={onColH}
                 rowSize={rowSize}
+                previewPlacement={previewPlacement}
                 columnWidths={settings.columnWidths}
                 onColumnResize={(i, px) => setSettings({ ...settings, columnWidths: { ...(settings.columnWidths ?? {}), [i]: px } })}
                 objects={treeObjects.filter((o) => !isSystemFile(o.key)).map((o) => ({ ...o, key: `${VROOT}${o.key}` }))}
@@ -2630,13 +2739,21 @@ export function MediaLibraryBrowse({
             onOpenResults={(q) => { setSettings({ ...settings, filters: true }); setBarQuery(q) }}
           />
         )}
-        {quickLookFolder && (
-          <FullscreenOverlay open onClose={() => setQuickLookFolder(null)} scrim>
-            {quickLookFolder === ROOT_KEY
-              ? previewRoot && <ContainerPreview name={previewRoot.name} icon={previewRoot.icon} facts={previewRoot.facts} width={420} />
-              : <FolderPreview path={quickLookFolder} objects={objects} width={420} formatDate={formatDate} />}
+        {/* GET INFO (MediaGetInfoModal, kol-website 2026-10-30): ⌘I, and Space on a folder, open Finder's
+          * Get Info in Quick Look's window — never the pane's plate at overlay size */}
+        {infoFor && (infoFor === ROOT_KEY ? (
+          <FullscreenOverlay open onClose={() => setInfoFor(null)} closeButton={false} scrim>
+            {previewRoot && (
+              <QuickLookFrame title={previewRoot.name} onClose={() => setInfoFor(null)}>
+                <InfoBody icon={previewRoot.icon} name={previewRoot.name} general={previewRoot.facts} />
+              </QuickLookFrame>
+            )}
           </FullscreenOverlay>
-        )}
+        ) : (
+          <GetInfoModal path={infoFor} objects={objects} where={bucketMeta.label || 'bucket'} onClose={() => setInfoFor(null)} formatDate={formatDate}
+            tags={(canTag || tagsOf(infoFor).length > 0) && <TagEditor tags={tagsOf(infoFor)} suggestions={allTags} onChange={canTag ? (next) => saveTags(infoFor, next) : undefined} />}
+            mediaUrl={mediaUrl} downloadUrl={downloadUrl} hasUrl={hasUrl} keySet={keySet} />
+        ))}
         {quickLook && (
           <MediaInspector files={quickLook.files} index={quickLook.index} onClose={closeQuickLook} mediaUrl={mediaUrl} downloadUrl={downloadUrl} hasUrl={hasUrl} keySet={keySet} showNav={rowSelection.size > 1}
             onEdit={canEdit ? (f) => { closeQuickLook(); openEditor(f) } : undefined}

@@ -35,6 +35,10 @@ export { default as MarkdownPage } from './MarkdownPage.jsx'
 export { default as LinkPreview } from './LinkPreview.jsx'
 export { default as documentTabs } from './documentTabs.js'
 export { default as documentFiles } from './documentFiles.js'
+/* a folder's index page — contents cards or a table, its files in Quick Look (moved from kol-styleguide 2026-10-31, LayoutGroup) */
+export { default as DocumentIndex } from './DocumentIndex.jsx'
+/* a document page's header — the title (SectionText variant="document") over the tabs + menus row (2026-10-31) */
+export { default as DocumentHeader } from './DocumentHeader.jsx'
 export { default as documentLibrary, matchOriginals, kindAndTitle, libraryLinks, KINDS as DOCUMENT_KINDS, LANGS as DOCUMENT_LANGS } from './documentLibrary.js'
 
 /* a website's frame — kolkrabbi.io's top bar, takeover menu, footer and cursor layer, carried verbatim

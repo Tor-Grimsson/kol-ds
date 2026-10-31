@@ -64,7 +64,16 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
 
 const ModalCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/ModalCtx')] ??= createContext(null))
 
-export function ModalProvider({ children }) {
+/* THE MODAL VARIANTS (user 2026-10-31: *"do we not use variants for different styles?"*). `lift` — the overlay panel
+ * every KOL overlay wears (oq-04, no border, the scrim is the edge); `bordered` — the page surface behind an fg-08
+ * hairline. Each modal keeps its own default (prompts bordered, Dialog lift) until he picks one. */
+const MODAL_VARIANTS = {
+  lift: { className: 'kol-overlay-panel', style: {} },
+  bordered: { className: 'border border-fg-08', style: { background: 'var(--kol-surface-primary)', color: 'var(--kol-surface-on-primary)' } },
+}
+const modalVariant = (v, fallback) => MODAL_VARIANTS[v] ?? MODAL_VARIANTS[fallback]
+
+export function ModalProvider({ children, variant = 'bordered' }) {
   const [state, setState] = useState(null)
 
   const closeWith = useCallback((value) => {
@@ -74,34 +83,35 @@ export function ModalProvider({ children }) {
     })
   }, [])
 
-  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel, type = 'text', placeholder } = {}) =>
-    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, type, placeholder, resolve })),
+  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel, type = 'text', placeholder, variant } = {}) =>
+    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, type, placeholder, variant, resolve })),
   [])
 
-  const confirm = useCallback((title, { okLabel, cancelLabel, options } = {}) =>
-    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, options: options?.length ? options : null, resolve })),
+  const confirm = useCallback((title, { okLabel, cancelLabel, options, variant } = {}) =>
+    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, options: options?.length ? options : null, variant, resolve })),
   [])
 
-  const alert = useCallback((title, { okLabel } = {}) =>
-    new Promise((resolve) => setState({ kind: 'alert', title, okLabel, resolve })),
+  const alert = useCallback((title, { okLabel, variant } = {}) =>
+    new Promise((resolve) => setState({ kind: 'alert', title, okLabel, variant, resolve })),
   [])
 
-  const form = useCallback((title, fields = [], { okLabel, cancelLabel } = {}) =>
-    new Promise((resolve) => setState({ kind: 'form', title, fields, okLabel, cancelLabel, resolve })),
+  const form = useCallback((title, fields = [], { okLabel, cancelLabel, variant } = {}) =>
+    new Promise((resolve) => setState({ kind: 'form', title, fields, okLabel, cancelLabel, variant, resolve })),
   [])
 
   return (
     <ModalCtx.Provider value={{ prompt, confirm, alert, form }}>
       {children}
       {state && typeof document !== 'undefined' && createPortal(
-        <ModalView state={state} closeWith={closeWith} />,
+        <ModalView state={state} closeWith={closeWith} variant={state.variant ?? variant} />,
         document.body,
       )}
     </ModalCtx.Provider>
   )
 }
 
-function ModalView({ state, closeWith }) {
+function ModalView({ state, closeWith, variant }) {
+  const look = modalVariant(variant, 'bordered')
   const [val, setVal] = useState(state.defaultValue ?? '')
   const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
   const [fieldVals, setFieldVals] = useState(() => Object.fromEntries((state.fields ?? []).map((f) => [f.id, f.defaultValue ?? ''])))
@@ -184,10 +194,9 @@ function ModalView({ state, closeWith }) {
         aria-modal="true"
         aria-labelledby="kol-modal-title"
         onMouseDown={(e) => e.stopPropagation()}
-        className="kol-modal flex flex-col gap-4 p-5 rounded border border-fg-08"
+        className={`kol-modal flex flex-col gap-4 p-5 rounded ${look.className}`}
         style={{
-          background: 'var(--kol-surface-primary)',
-          color: 'var(--kol-surface-on-primary)',
+          ...look.style,
           minWidth: 320,
           maxWidth: '90vw',
         }}
@@ -277,4 +286,47 @@ export function useModal() {
       if (typeof window !== 'undefined') window.alert(title)
     },
   }
+}
+
+/**
+ * Dialog — Modal's shell holding any content (MetricDashboardUpstream, kol-website 2026-10-31 — metric's filter and
+ * segment dialogs). The same `.kol-overlay-scrim` + `.kol-modal` surface as the prompts above, with `children` in place
+ * of a prompt. **z 150, not Modal's 1000**, so KOL's portalled floats (z 210+) open ABOVE it — a Dropdown or Combobox
+ * inside a dialog has to show its list (a native `<dialog>` cannot: `showModal()` puts it in the top layer, over every
+ * portal). Esc and a press on the scrim close it; Esc is left to an open float inside first.
+ *
+ *   <Dialog open={open} onClose={() => setOpen(false)} title="Filter by page" width={560}>…</Dialog>
+ */
+export function Dialog({ open, onClose, title, width = 560, variant = 'lift', children }) {
+  const look = modalVariant(variant, 'lift')
+  useEffect(() => {
+    if (!open) return undefined
+    const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.kol-popover-float')) onClose() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, onClose])
+  if (!open || typeof document === 'undefined') return null
+  return createPortal(
+    <div
+      onMouseDown={onClose}
+      className="kol-overlay-scrim"
+      style={{ position: 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={title}
+        data-dialog
+        onMouseDown={(e) => e.stopPropagation()}
+        /* THE OVERLAY PANEL (MetricRebuild, 2026-10-31 — user: the filter dialog read as "a borderless box floating
+         * mid-page"): it painted the page's own surface behind an fg-08 hairline, so on a dark page it was the page.
+         * `.kol-overlay-panel` is the lift every KOL overlay wears (oq-04, no border — the scrim is the edge). */
+        className={`kol-modal flex flex-col rounded max-h-[85vh] ${look.className}`}
+        style={{ ...look.style, width: `min(${width}px, calc(100vw - 32px))` }}
+      >
+        {children}
+      </div>
+    </div>,
+    document.body,
+  )
 }

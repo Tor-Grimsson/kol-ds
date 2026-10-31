@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { toneClass, TONE_VARS } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { MenuDropdownItem, MenuDropdownDivider } from './MenuItem.jsx'
+import { MenuRow, MenuDivider } from './MenuItem.jsx'
 import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
@@ -22,6 +22,8 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
  *   tone="inverse"              — the dark chip (`fg-ab-24`) for a washed
  *                                 plane, the panel continuing it (ControlToneInverse,
  *                                 kol-website 2026-08-27); same prop on ViewToggle · Input
+ *   variant="raised"            — the menus' faint raised look (metric R3.4, 2026-10-31): trigger, open trigger and
+ *                                 panel all on oq-08 with the float shadow — one tone, nothing changes on open
  *   variant="outline"           — bordered trigger; open panel carries the
  *     same border, trigger's bottom edge acts as the divider
  *
@@ -32,6 +34,8 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
  * explicit `size` prop (user law 2026-07-28 — desktop is sm, always, and
  * smaller viewports never resolve larger than desktop). The old auto-ramp
  * (lg ≥1024 / md ≥768 / sm below) is gone.
+ *
+ * An action menu (rows as data under a trigger) is `Menu` (the Menu* family, 2026-10-31), not this.
  */
 
 /* xs (ControlsXsRung, 2026-09-01): the panel rung, opt-in by prop — the default stays sm (2026-07-28 law) */
@@ -220,7 +224,7 @@ const Dropdown = ({
     'kol-btn',
     /* grey is dropdown-only chrome (2026-07-15) — no kol-btn-* class so it
      * never leaks into Button's variant set */
-    resolvedVariant === 'grey' ? 'kol-dd-trigger--grey' : resolvedVariant && `kol-btn-${resolvedVariant}`,
+    resolvedVariant === 'grey' ? 'kol-dd-trigger--grey' : resolvedVariant === 'raised' ? 'kol-dd-trigger--raised' : resolvedVariant && `kol-btn-${resolvedVariant}`,
     `kol-btn-${resolvedSize}`,
     SIZE_TYPE[resolvedSize],
     'kol-dd-trigger',
@@ -297,11 +301,11 @@ const Dropdown = ({
 
         <div ref={listRef} className="kol-dd-list" role="listbox" style={scale !== 1 ? { zoom: scale } : undefined}>
           {options.map((option, i) => {
-            if (option?.divider) return <MenuDropdownDivider key={`divider-${i}`} />
+            if (option?.divider) return <MenuDivider key={`divider-${i}`} />
             if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8' : 'kol-helper-12'} ${ROW_H[resolvedSize] ?? ROW_H.sm} ${ROW_PAD[resolvedSize] ?? ROW_PAD.sm} flex shrink-0 items-center text-meta`}>{option.heading}</div>
             const isActive = option.value === currentOption?.value
             return (
-              <MenuDropdownItem
+              <MenuRow
                 key={option.value}
                 /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28,
                  * "delete any hover state on dropdowns"): the trigger was
@@ -336,7 +340,7 @@ const Dropdown = ({
                   </span>
                 )}
                 {option.label}
-              </MenuDropdownItem>
+              </MenuRow>
             )
           })}
         </div>

@@ -36,6 +36,7 @@ const COMPONENTS = {
 
 /* file → why the inverted Button is right there. A site hero's second CTA is the one case. */
 const ALLOWED_INVERTED = {
+  'packages/styleguide/src/LayoutType.jsx': 'the article board\'s callout button, carried class for class from kol-atlas apps/lab (the Figma Article reference draws it inverted, full radius) — LayoutGroup 2026-10-31',
   'packages/component/src/molecules/Modal.jsx': 'the dialog OK — primary is the dark ground since tone-is-the-ground-axis, so OK drew the same as Cancel',
   'apps/catalog/src/App.jsx': 'the floating Variants button — Round 16 drew it inverted over the page',
   'packages/shell/src/HubHome.jsx': 'the masthead\'s round button — the catalog\'s Variants button, inverted over the page (user 2026-10-23: "a component like apps/catalog")',

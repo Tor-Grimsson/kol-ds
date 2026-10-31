@@ -33,7 +33,7 @@ The type-foundry / specimen apparatus. **The membership test: does the component
 |-----------|-----------------------------------|--------|
 | `TypeSample` | Renders one labeled live specimen — family/weight/size/line-height via props | moved |
 | `TypeSpecCard` | Font-metric data sheet beside a live sample slot | moved |
-| `TextPressure` | Manipulates variable-font axes (`wght`/`wdth`/`ital`) per glyph toward the pointer | moved |
+| `TextPressure` | Manipulates variable-font axes (`wght`/`wdth`/`ital`) per glyph toward the pointer; `variant="intro"` tracks the whole window and is bent from mount (kolkrabbi.io's intro) | moved |
 | `IntroLoader` (was `ColorLoader`) | Branded loading curtain — times in a live TextPressure variable-font wordmark | moved |
 
 ### Scaffold + composition

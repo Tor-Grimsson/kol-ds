@@ -26,6 +26,11 @@ const STATIC_VARIATION = "'wght' 400, 'wdth' 100, 'ital' 0.00"
  *     default `var(--kol-font-family-sans)` animates only if that theme font is
  *     itself variable — otherwise the text renders correctly but static.
  *
+ * `variant="intro"` — kolkrabbi.io's intro wordmark (the retired site copy):
+ * window-scoped listeners with no hover gate, the follower starts at the
+ * container centre so the glyphs are bent from the first frame, `wdth` runs
+ * 5–200, falloff is the title width / 2, and the loop runs mount → unmount.
+ *
  * Reduced motion → no listeners, no rAF; glyphs render static at the rest axis
  * values (wght 400 / wdth 100 / ital 0). Casing is authored by the caller —
  * this component never text-transforms.
@@ -46,6 +51,7 @@ const STATIC_VARIATION = "'wght' 400, 'wdth' 100, 'ital' 0.00"
  * @param {number}  minFontSize   floor for the responsive font size
  * @param {number}  [maxFontSize] cap for the responsive font size
  * @param {boolean} returnToDefault true: coast back to rest on leave; false: freeze
+ * @param {'default'|'intro'} [variant] 'intro': window-wide tracking, bent from mount (see above)
  */
 export default function TextPressure({
   text = 'Compressa',
@@ -68,7 +74,9 @@ export default function TextPressure({
   minFontSize = 24,
   maxFontSize = null,
   returnToDefault = true,
+  variant = 'default',
 }) {
+  const intro = variant === 'intro'
   const containerRef = useRef(null)
   const titleRef = useRef(null)
   const spansRef = useRef([])
@@ -92,11 +100,12 @@ export default function TextPressure({
     return Math.sqrt(dx * dx + dy * dy)
   }
 
-  // Container-scoped pointer tracking (never window). Skipped for reduced motion.
+  // Container-scoped pointer tracking (window for `intro`). Skipped for reduced motion.
   useEffect(() => {
     if (reducedMotion) return undefined
     const container = containerRef.current
     if (!container) return undefined
+    const target = intro ? window : container
 
     const handleMouseMove = (e) => {
       cursorRef.current.x = e.clientX
@@ -110,10 +119,12 @@ export default function TextPressure({
     const handleMouseEnter = () => setIsHovering(true)
     const handleMouseLeave = () => setIsHovering(false)
 
-    container.addEventListener('mousemove', handleMouseMove)
-    container.addEventListener('touchmove', handleTouchMove, { passive: false })
-    container.addEventListener('mouseenter', handleMouseEnter)
-    container.addEventListener('mouseleave', handleMouseLeave)
+    target.addEventListener('mousemove', handleMouseMove)
+    target.addEventListener('touchmove', handleTouchMove, { passive: false })
+    if (!intro) {
+      container.addEventListener('mouseenter', handleMouseEnter)
+      container.addEventListener('mouseleave', handleMouseLeave)
+    }
 
     const { left, top, width: w, height: h } = container.getBoundingClientRect()
     mouseRef.current.x = left + w / 2
@@ -122,12 +133,12 @@ export default function TextPressure({
     cursorRef.current.y = mouseRef.current.y
 
     return () => {
-      container.removeEventListener('mousemove', handleMouseMove)
-      container.removeEventListener('touchmove', handleTouchMove)
+      target.removeEventListener('mousemove', handleMouseMove)
+      target.removeEventListener('touchmove', handleTouchMove)
       container.removeEventListener('mouseenter', handleMouseEnter)
       container.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [reducedMotion])
+  }, [reducedMotion, intro])
 
   // Responsive sizing (layout, not motion — runs regardless of reduced motion).
   useEffect(() => {
@@ -166,13 +177,12 @@ export default function TextPressure({
     let rafId
 
     const animate = () => {
-      if (isHovering) {
+      if (intro || isHovering) {
         mouseRef.current.x += (cursorRef.current.x - mouseRef.current.x) / 15
         mouseRef.current.y += (cursorRef.current.y - mouseRef.current.y) / 15
 
         if (titleRef.current && containerRef.current) {
-          const containerRect = containerRef.current.getBoundingClientRect()
-          const maxDist = containerRect.width / 2
+          const maxDist = (intro ? titleRef.current : containerRef.current).getBoundingClientRect().width / 2
 
           spansRef.current.forEach((span, i) => {
             if (!span) return
@@ -185,7 +195,7 @@ export default function TextPressure({
               return Math.max(minVal, val + minVal)
             }
 
-            const wdth = width ? Math.floor(getAttr(d, 5, 150)) : 100
+            const wdth = width ? Math.floor(getAttr(d, 5, intro ? 200 : 150)) : 100
             const wght = weight ? Math.floor(getAttr(d, 100, 900)) : 400
             const italVal = italic ? getAttr(d, 0, 1) : 0
             const alphaVal = alpha ? getAttr(d, 0, 1) : 1
@@ -282,7 +292,7 @@ export default function TextPressure({
 
     animate()
     return () => cancelAnimationFrame(rafId)
-  }, [width, weight, italic, alpha, chars.length, isHovering, returnToDefault, reducedMotion])
+  }, [width, weight, italic, alpha, chars.length, isHovering, returnToDefault, reducedMotion, intro])
 
   const titleClass = [
     'kol-text-pressure-title m-0 w-full max-w-full overflow-hidden box-border text-center whitespace-nowrap select-none origin-top font-thin',

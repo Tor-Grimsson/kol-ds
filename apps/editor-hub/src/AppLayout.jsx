@@ -231,7 +231,7 @@ const fixtureClient = createFixtureClient()
 function MorphPage() {
   return (
     <PageShell className="gap-10">
-      <PageHeader level="app" title="Morph" subtitle="A transition between files. The mirrored editor carries no Morph route yet." />
+      <PageHeader variant="app" title="Morph" subtitle="A transition between files. The mirrored editor carries no Morph route yet." />
     </PageShell>
   )
 }

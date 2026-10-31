@@ -25,6 +25,8 @@ export const ICON_CATEGORIES = {
   ],
   /* identity (kol-icons 0.49.0): two groups, each its own page — no category layer over two rows */
   'kol-icon-set-identity': [],
+  /* external (IconSetExternal, 2026-10-31): flags · brands, each its own page */
+  'kol-icon-set-external': [],
 }
 
 export const findCategory = (set, slug) => ICON_CATEGORIES[set]?.find((c) => c.slug === slug) ?? null

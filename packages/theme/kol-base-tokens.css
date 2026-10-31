@@ -43,15 +43,31 @@
   --kol-color-white: #fcfbf8;
   --kol-color-black: #0e0e11;
 
+  /* THE NEUTRAL RAMP (2026-10-31, W9 of the Figma library plan): every grey a surface tier uses, defined once
+   * and read by the surfaces in both themes, so a surface is a choice of base and the Figma library can alias
+   * it. Named by HSL lightness ×10. Theme-invariant, like the poles above; the computed surfaces are unchanged. */
+  --kol-neutral-980: #fafafa;
+  --kol-neutral-973: #f8f8f8;
+  --kol-neutral-949: #f2f2f2;
+  --kol-neutral-933: #eeeeee;
+  --kol-neutral-878: #e0e0e0;
+  --kol-neutral-839: #d4d4d8;
+  --kol-neutral-259: #424242;
+  --kol-neutral-129: #212121;
+  --kol-neutral-137: #202026;
+  --kol-neutral-106: #19191d;
+  --kol-neutral-076: #121215;
+  --kol-neutral-045: #0b0b0c;
+
   /* Surface tiers (page-level) — Light Mode (default) */
-  --kol-surface-primary: #fafafa;
-  --kol-surface-on-primary: #121215;
+  --kol-surface-primary: var(--kol-neutral-980);
+  --kol-surface-on-primary: var(--kol-neutral-076);
 
-  --kol-surface-secondary: #f2f2f2;
-  --kol-surface-on-secondary: #19191d;
+  --kol-surface-secondary: var(--kol-neutral-949);
+  --kol-surface-on-secondary: var(--kol-neutral-106);
 
-  --kol-surface-tertiary: #ffffff;
-  --kol-surface-on-tertiary: #0e0e11;
+  --kol-surface-tertiary: var(--kol-color-ab-white);
+  --kol-surface-on-tertiary: var(--kol-color-black);
 
   /* THE SUNKEN WELL — a step DOWN from the page, in BOTH themes (measured on
    * kol-fxr's /settings, 2026-08-30). The `sunken` tone had no token of its own
@@ -93,54 +109,54 @@
   --kol-surface-secondary-hover: rgb(from var(--kol-surface-secondary) calc(r - 8) calc(g - 8) calc(b - 8));
   --kol-surface-secondary-press: rgb(from var(--kol-surface-secondary) calc(r - 16) calc(g - 16) calc(b - 16));
 
-  --kol-surface-inverse: #0e0e11;
-  --kol-surface-on-inverse: #fcfbf8;
+  --kol-surface-inverse: var(--kol-color-black);
+  --kol-surface-on-inverse: var(--kol-color-white);
 
-  --kol-surface-secondary-inverse: #212121;
-  --kol-surface-tertiary-inverse: #424242;
+  --kol-surface-secondary-inverse: var(--kol-neutral-129);
+  --kol-surface-tertiary-inverse: var(--kol-neutral-259);
 
-  --kol-surface-contrast: #f2f2f2;
+  --kol-surface-contrast: var(--kol-neutral-949);
 
   /* Surface split tokens */
-  --kol-surface-support-split: #eeeeee;
-  --kol-surface-support-split-inverse: #202026;
-  --kol-surface-ab-split: #ffffff;
-  --kol-surface-ab-split-inverse: #000000;
+  --kol-surface-support-split: var(--kol-neutral-933);
+  --kol-surface-support-split-inverse: var(--kol-neutral-137);
+  --kol-surface-ab-split: var(--kol-color-ab-white);
+  --kol-surface-ab-split-inverse: var(--kol-color-ab-black);
 }
 
 /* Dark Mode — surface overrides */
 /* (no --kol-link override here: link color is a per-repo hook, user law
    2026-07-29 — a consumer binding it owns both modes) */
 :is([data-theme="dark"], .dark) {
-  --kol-surface-primary: #121215;
-  --kol-surface-on-primary: #fafafa;
+  --kol-surface-primary: var(--kol-neutral-076);
+  --kol-surface-on-primary: var(--kol-neutral-980);
 
-  --kol-surface-secondary: #19191d;
-  --kol-surface-on-secondary: #f8f8f8;
+  --kol-surface-secondary: var(--kol-neutral-106);
+  --kol-surface-on-secondary: var(--kol-neutral-973);
 
-  --kol-surface-tertiary: #0e0e11;
+  --kol-surface-tertiary: var(--kol-color-black);
   /* the well is the 96 rung in dark, not the pole — see the light block */
   --kol-surface-sunken: var(--kol-oq-ab-96);
   /* dark: rest 25 minus 8 was 17 on an 18 rail — the button vanished on hover. The well (10)
    * is the step; press is one past it. */
   --kol-surface-secondary-hover: var(--kol-surface-sunken);
   --kol-surface-secondary-press: rgb(from var(--kol-surface-sunken) calc(r - 8) calc(g - 8) calc(b - 8));
-  --kol-surface-on-tertiary: #ffffff;
+  --kol-surface-on-tertiary: var(--kol-color-ab-white);
 
 
-  --kol-surface-inverse: #fcfbf8;
-  --kol-surface-on-inverse: #0e0e11;
+  --kol-surface-inverse: var(--kol-color-white);
+  --kol-surface-on-inverse: var(--kol-color-black);
 
-  --kol-surface-secondary-inverse: #e0e0e0;
-  --kol-surface-tertiary-inverse: #d4d4d8;
+  --kol-surface-secondary-inverse: var(--kol-neutral-878);
+  --kol-surface-tertiary-inverse: var(--kol-neutral-839);
 
-  --kol-surface-contrast: #0b0b0c;
+  --kol-surface-contrast: var(--kol-neutral-045);
 
   /* Surface split tokens - Dark Mode */
-  --kol-surface-support-split: #202026;
-  --kol-surface-support-split-inverse: #eeeeee;
-  --kol-surface-ab-split: #000000;
-  --kol-surface-ab-split-inverse: #ffffff;
+  --kol-surface-support-split: var(--kol-neutral-137);
+  --kol-surface-support-split-inverse: var(--kol-neutral-933);
+  --kol-surface-ab-split: var(--kol-color-ab-black);
+  --kol-surface-ab-split-inverse: var(--kol-color-ab-white);
 }
 
 /* UI STATE — dark tier. The base ladder (kol-color.css) is authored for
@@ -164,35 +180,35 @@
  * data-theme (any value) vetoes the OS. MIRROR of the block above — edit both. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
-    --kol-surface-primary: #121215;
-    --kol-surface-on-primary: #fafafa;
+    --kol-surface-primary: var(--kol-neutral-076);
+    --kol-surface-on-primary: var(--kol-neutral-980);
 
-    --kol-surface-secondary: #19191d;
-    --kol-surface-on-secondary: #f8f8f8;
+    --kol-surface-secondary: var(--kol-neutral-106);
+    --kol-surface-on-secondary: var(--kol-neutral-973);
 
-    --kol-surface-tertiary: #0e0e11;
+    --kol-surface-tertiary: var(--kol-color-black);
     /* the well is the 96 rung in dark, not the pole — see the light block */
     --kol-surface-sunken: var(--kol-oq-ab-96);
     /* dark: rest 25 minus 8 was 17 on an 18 rail — the button vanished on hover. The well (10)
      * is the step; press is one past it. */
     --kol-surface-secondary-hover: var(--kol-surface-sunken);
     --kol-surface-secondary-press: rgb(from var(--kol-surface-sunken) calc(r - 8) calc(g - 8) calc(b - 8));
-    --kol-surface-on-tertiary: #ffffff;
+    --kol-surface-on-tertiary: var(--kol-color-ab-white);
 
 
-    --kol-surface-inverse: #fcfbf8;
-    --kol-surface-on-inverse: #0e0e11;
+    --kol-surface-inverse: var(--kol-color-white);
+    --kol-surface-on-inverse: var(--kol-color-black);
 
-    --kol-surface-secondary-inverse: #e0e0e0;
-    --kol-surface-tertiary-inverse: #d4d4d8;
+    --kol-surface-secondary-inverse: var(--kol-neutral-878);
+    --kol-surface-tertiary-inverse: var(--kol-neutral-839);
 
-    --kol-surface-contrast: #0b0b0c;
+    --kol-surface-contrast: var(--kol-neutral-045);
 
     /* Surface split tokens - Dark Mode */
-    --kol-surface-support-split: #202026;
-    --kol-surface-support-split-inverse: #eeeeee;
-    --kol-surface-ab-split: #000000;
-    --kol-surface-ab-split-inverse: #ffffff;
+    --kol-surface-support-split: var(--kol-neutral-137);
+    --kol-surface-support-split-inverse: var(--kol-neutral-933);
+    --kol-surface-ab-split: var(--kol-color-ab-black);
+    --kol-surface-ab-split-inverse: var(--kol-color-ab-white);
 
     /* UI STATE — dark tier (mirror of the block above — edit both) */
     --ui-error:    #F87171;

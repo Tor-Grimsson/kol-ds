@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { PhoneNav, TransportPill } from '@kolkrabbi/kol-shell'
+import { AppFloatNav } from '@kolkrabbi/kol-shell'
 
 /* Round 22 — the phone Labs layout on the DS (PhoneNavTopAndFold + TransportPill, kol-fxr 2026-10-27, frame E — his approved
  * proposal, https://claude.ai/artifact/KRTF3jBpfpHUsEpyroDqRD). Built: TabsRow's pill takes `edge` (top) · `border` ·
@@ -55,8 +55,8 @@ function Phone() {
           {panel === 'params' ? 'Params panel' : 'Catalog panel'}
         </div>
       )}
-      <PhoneNav items={nav} shape="pill" placement="top" border={false} active="circle" foldable moreKeepsOpen onNavigate={() => {}} />
-      {transport && <TransportPill items={transportItems} sheetFor={sheetFor} foldable />}
+      <AppFloatNav items={nav} shape="pill" placement="top" border={false} active="circle" foldable moreKeepsOpen onNavigate={() => {}} />
+      {transport && <AppFloatNav variant="transport" items={transportItems} sheetFor={sheetFor} foldable />}
     </div>
   )
 }

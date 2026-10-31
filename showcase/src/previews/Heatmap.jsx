@@ -16,6 +16,8 @@ const data = [
 const rows = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const cols = ['0h', '', '4h', '', '8h', '', '12h', '', '16h', '', '20h', '']
 
-export default function HeatmapPreview() {
-  return <Heatmap data={data} rows={rows} cols={cols} />
+export const variants = ['cells', 'dots']
+
+export default function HeatmapPreview({ variant = 'cells' }) {
+  return <Heatmap data={data} rows={rows} cols={cols} variant={variant} cellSize={variant === 'dots' ? 16 : 32} />
 }

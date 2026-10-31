@@ -41,7 +41,7 @@ nothing else changes.
 foundation   kol-theme (all CSS)   kol-icons (344 icons, one loader)
 core         kol-component         kol-framework (site)   kol-shell (app)
 domain       workshop · dashboards · hardware · chess · content · foundry · store · styleguide · notes · deck
-engines      kol-markdown · kol-search   (plain JS, no React, no DOM)
+engines      kol-markdown · kol-search · kol-growth   (plain JS, no React; kol-growth's shapes draw on a canvas)
 clients      kol-media-client            (one package per service contract)
 app          design-editor               (the one built package)
 ```

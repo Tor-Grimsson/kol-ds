@@ -1,4 +1,4 @@
-import { GuideChapters } from './BrandGuide.jsx'
+import { GuideChapters } from './LayoutGuide.jsx'
 import { BOOK_SECTIONS } from './brandBook.js'
 
 /* taxonomy-ok: organism — the brand book's identity page: the guide's chapters over BOOK_SECTIONS */

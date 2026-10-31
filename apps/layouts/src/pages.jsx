@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { Brand, BrandGuide, A4Pages, PrintStudio } from '@kolkrabbi/kol-styleguide'
+import { Brand, LayoutGuide, A4Pages, PrintStudio } from '@kolkrabbi/kol-styleguide'
 import { GUIDE_SECTIONS } from '@kolkrabbi/kol-brand-template'
 import { SiteHero, PageHero, PageSection, CategoryPage, MarkdownPage } from '@kolkrabbi/kol-framework'
 import { ContentCard, ContentCollection } from '@kolkrabbi/kol-component'
@@ -63,7 +63,7 @@ const DIRECT = {
   PrintStudio: () => <div className="h-dvh min-h-0"><PrintStudio studio={STUDIO} meta={BRIEF_META} markdown={BRIEF} /></div>,
   /* brand-hub's preview mounts the whole app, its own SiteLayout around it — here the tool alone, book ⇄ assets */
   Brand: () => <Brand brand={brand} logoSources={logoSources} />,
-  BrandGuide: () => <BrandGuide brand={VOYAGER_GUIDE} sections={GUIDE_SECTIONS} logoSources={logoSources} />,
+  LayoutGuide: () => <LayoutGuide brand={VOYAGER_GUIDE} sections={GUIDE_SECTIONS} logoSources={logoSources} />,
   ChessAnalysisLayout: ChessApparatus,
   /* the reader on Voyager's brief, its TOC in the frame's right rail */
   DocumentationReader: () => <DocumentationReader inventory={DOCS} modules={{ './field-manual-brief.md': BRIEF }} docId={DOCS[0]?.id} showFrontmatter docHref={(id) => `#${id}`} routes={{ docsIndex: '#', components: '#' }} />,

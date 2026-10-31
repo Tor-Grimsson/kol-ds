@@ -67,7 +67,7 @@ Every page that fits SiteLayout, from `showcase/src/nav/placements.js` (the list
 |---|---|
 | `SiteHero` | runs here today |
 | `Brand` | runs here today |
-| `BrandGuide` | runs here today |
+| `LayoutGuide` | runs here today |
 | `PageHero` | fits, placed for review |
 | `SectionText` | runs here today |
 | `PageSection` | runs here today |

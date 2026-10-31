@@ -82,19 +82,38 @@ export const KOL_ICON_SET_IDENTITY = (() => {
 
 export const KOL_ICON_SET_IDENTITY_NAMES = Object.values(KOL_ICON_SET_IDENTITY).flat().sort()
 
+/* kol-icon-set-external (2026-10-31, IconSetExternal) — marks drawn by others, grouped by folder: `flags` (round
+ * country flags, `flag-<iso>`) · `brands` (browsers, OS, socials, services). Colour, never recoloured — the set is
+ * exempt from `currentColor`; its solid members (apple · github · openai · windows) already use it. Cut `color`. */
+export const KOL_ICON_SET_EXTERNAL = (() => {
+  const idx = {}
+  for (const p of Object.keys(import.meta.glob('./kol-icon-set-external/**/*.svg'))) {
+    const parts = p.split('/')
+    const name = (parts.pop() || '').replace('.svg', '')
+    const group = parts.pop() || 'misc'
+    ;(idx[group] ||= []).push(name)
+  }
+  for (const g of Object.values(idx)) g.sort()
+  return idx
+})()
+
+export const KOL_ICON_SET_EXTERNAL_NAMES = Object.values(KOL_ICON_SET_EXTERNAL).flat().sort()
+
 /* Per-glyph META — `{ name: { group, cut } }` (IconSetCut, kol-website 2026-08-27):
  * the set carries how each glyph is DRAWN — `cut: 'stroke' | 'solid'` — so a
  * gallery filters by type without globbing the package's SVGs. The cut is
  * derived from the markup at build (scripts/extract-icon-cuts.mjs → cuts.json,
- * a gate keeps it fresh): `fill="currentColor"` anywhere = solid, else stroke. */
+ * a gate keeps it fresh): `fill="currentColor"` anywhere = solid, else stroke — `color` for an external glyph that
+ * keeps its own fills. */
 const metaOf = (index, set) => Object.fromEntries(
   Object.entries(index).flatMap(([group, names]) => names.map((name) => [name, { group, set, cut: CUTS[name] ?? 'stroke' }])),
 )
 export const KOL_ICON_SET_INTERFACE_META = metaOf(KOL_ICON_SET_INTERFACE, 'interface')
 export const KOL_ICON_SET_SIGNAL_META = metaOf(KOL_ICON_SET_SIGNAL, 'signal')
 export const KOL_ICON_SET_IDENTITY_META = metaOf(KOL_ICON_SET_IDENTITY, 'identity')
+export const KOL_ICON_SET_EXTERNAL_META = metaOf(KOL_ICON_SET_EXTERNAL, 'external')
 /* every glyph the package ships, any set — `{ name: { group, set, cut } }` */
-export const KOL_ICON_META = { ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_IDENTITY_META, ...KOL_ICON_SET_INTERFACE_META }
+export const KOL_ICON_META = { ...KOL_ICON_SET_EXTERNAL_META, ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_IDENTITY_META, ...KOL_ICON_SET_INTERFACE_META }
 export const getCut = (name) => KOL_ICON_META[name]?.cut ?? null
 export const getSet = (name) => KOL_ICON_META[name]?.set ?? null
 

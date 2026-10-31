@@ -1,0 +1,2684 @@
+[
+ {
+  "name": "A-sound-bars",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23062"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23071"
+ },
+ {
+  "name": "A-wind",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23078"
+ },
+ {
+  "name": "A-dot-plot-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23080"
+ },
+ {
+  "name": "A-dot-plot-04",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23093"
+ },
+ {
+  "name": "A-dot-plot-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23106"
+ },
+ {
+  "name": "A-dot-plot-04",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23119"
+ },
+ {
+  "name": "A-branch-up",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23132"
+ },
+ {
+  "name": "A-network",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23140"
+ },
+ {
+  "name": "A-node-graph",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23147"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23157"
+ },
+ {
+  "name": "A-stack-hang",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23163"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23169"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23171"
+ },
+ {
+  "name": "A-candlestick",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23174"
+ },
+ {
+  "name": "A-candlestick-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23177"
+ },
+ {
+  "name": "A-hierarchy",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23181"
+ },
+ {
+  "name": "A-hierarchy-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23186"
+ },
+ {
+  "name": "A-hierarchy-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23191"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23197"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23207"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23217"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23226"
+ },
+ {
+  "name": "A-bezier",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23236"
+ },
+ {
+  "name": "A-flow-branch",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23245"
+ },
+ {
+  "name": "A-tree",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23255"
+ },
+ {
+  "name": "A-flow-tree",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23266"
+ },
+ {
+  "name": "A-git-compare",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23274"
+ },
+ {
+  "name": "A-git-pull-request",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23284"
+ },
+ {
+  "name": "A-git-compare-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23294"
+ },
+ {
+  "name": "A-git-compare-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23303"
+ },
+ {
+  "name": "A-git-branch",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23312"
+ },
+ {
+  "name": "A-git-fork",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23319"
+ },
+ {
+  "name": "A-git-merge",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23327"
+ },
+ {
+  "name": "A-git-branch-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23335"
+ },
+ {
+  "name": "A-git-branch-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23344"
+ },
+ {
+  "name": "A-git-branch-04",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23352"
+ },
+ {
+  "name": "A-share",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23361"
+ },
+ {
+  "name": "A-share",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23372"
+ },
+ {
+  "name": "A-git-commit",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:22970"
+ },
+ {
+  "name": "A-flow-tree",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24179"
+ },
+ {
+  "name": "A-git-compare-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24187"
+ },
+ {
+  "name": "A-git-compare-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24196"
+ },
+ {
+  "name": "A-git-branch",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24205"
+ },
+ {
+  "name": "A-git-fork",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24212"
+ },
+ {
+  "name": "A-git-merge",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24220"
+ },
+ {
+  "name": "A-tree",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24168"
+ },
+ {
+  "name": "A-flow-branch",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24158"
+ },
+ {
+  "name": "A-bezier",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24149"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24139"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24130"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24120"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24110"
+ },
+ {
+  "name": "A-sound-bars",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24228"
+ },
+ {
+  "name": "A-git-compare",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23839"
+ },
+ {
+  "name": "A-git-branch-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23849"
+ },
+ {
+  "name": "A-rotate-out",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23953"
+ },
+ {
+  "name": "A-undo-circle",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23946"
+ },
+ {
+  "name": "A-sync",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23933"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23920"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23863"
+ },
+ {
+  "name": "A-orbit",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23873"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23857"
+ },
+ {
+  "name": "A-bubbles",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23910"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23995"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23978"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23969"
+ },
+ {
+  "name": "A-hex-nut",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23902"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23960"
+ },
+ {
+  "name": "A-hierarchy-boxes",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24094"
+ },
+ {
+  "name": "A-bento-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24237"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24086"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24030"
+ },
+ {
+  "name": "A-orbit-dot",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24024"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24007"
+ },
+ {
+  "name": "A-select-frame-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23835"
+ },
+ {
+  "name": "A-hierarchy-boxes",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23785"
+ },
+ {
+  "name": "A-scan",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23777"
+ },
+ {
+  "name": "A-circles-grid-02",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23510"
+ },
+ {
+  "name": "A-circles-grid",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23505"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23500"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23492"
+ },
+ {
+  "name": "A-squares-linked",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:23410"
+ },
+ {
+  "name": "A-bubbles",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24279"
+ },
+ {
+  "name": "A-git-compare",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24288"
+ },
+ {
+  "name": "A-git-branch-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24298"
+ },
+ {
+  "name": "A-git-branch-03",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24496"
+ },
+ {
+  "name": "A-git-compare",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24481"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24522"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24531"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24540"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24550"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24559"
+ },
+ {
+  "name": "A-orbit-dot",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24566"
+ },
+ {
+  "name": "A-circles-three",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24642"
+ },
+ {
+  "name": "A-bubbles",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24634"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24627"
+ },
+ {
+  "name": "A-share",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24725"
+ },
+ {
+  "name": "A-stop-circle",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:24713"
+ },
+ {
+  "name": "A-rotate-out",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:25322"
+ },
+ {
+  "name": null,
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:25289"
+ },
+ {
+  "name": "A-sync",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:25302"
+ },
+ {
+  "name": "A-undo-circle",
+  "category": "flow-connect",
+  "frame": "_flow",
+  "figmaNode": "174:25315"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22872"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22874"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22876"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22883"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22893"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22903"
+ },
+ {
+  "name": "A-equalizer",
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22913"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22924"
+ },
+ {
+  "name": "A-equalizer-02",
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22935"
+ },
+ {
+  "name": "A-equalizer-03",
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22946"
+ },
+ {
+  "name": "A-controls-box",
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22959"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22977"
+ },
+ {
+  "name": null,
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22987"
+ },
+ {
+  "name": "A-equalizer-04",
+  "category": "faders",
+  "frame": "_control",
+  "figmaNode": "174:22994"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22816"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22821"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22826"
+ },
+ {
+  "name": "A-code-close",
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22832"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22837"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22839"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22841"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22853"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22865"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22867"
+ },
+ {
+  "name": null,
+  "category": "code",
+  "frame": "_code",
+  "figmaNode": "174:22869"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:22997"
+ },
+ {
+  "name": "A-edit-square",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23000"
+ },
+ {
+  "name": "A-pencil",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23006"
+ },
+ {
+  "name": "A-pencil-02",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23009"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23014"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23017"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23027"
+ },
+ {
+  "name": "A-list-bullet",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23029"
+ },
+ {
+  "name": "A-list-bullet",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23031"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23033"
+ },
+ {
+  "name": "A-kanban-02",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23035"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23037"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23044"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23047"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23049"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23051"
+ },
+ {
+  "name": "A-split",
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23053"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23055"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23057"
+ },
+ {
+  "name": null,
+  "category": "input",
+  "frame": "_input",
+  "figmaNode": "174:23059"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24782"
+ },
+ {
+  "name": "A-beaker",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24784"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24788"
+ },
+ {
+  "name": "A-bookmark-square",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24792"
+ },
+ {
+  "name": "A-briefcase",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24794"
+ },
+ {
+  "name": "A-presentation-bar",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24798"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24800"
+ },
+ {
+  "name": "A-cash",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24802"
+ },
+ {
+  "name": "A-receipt-refund",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24804"
+ },
+ {
+  "name": "A-archive",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24806"
+ },
+ {
+  "name": "A-chart-square",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24808"
+ },
+ {
+  "name": "A-chat",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24810"
+ },
+ {
+  "name": "A-link",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24812"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24816"
+ },
+ {
+  "name": "A-chat-double",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24818"
+ },
+ {
+  "name": "A-location",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24820"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24822"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24824"
+ },
+ {
+  "name": "A-scale",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24826"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24828"
+ },
+ {
+  "name": "A-id-card",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24832"
+ },
+ {
+  "name": "A-search-circle",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24834"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24836"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24838"
+ },
+ {
+  "name": "A-cart",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24842"
+ },
+ {
+  "name": "A-clock",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24844"
+ },
+ {
+  "name": "A-folder-add",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24850"
+ },
+ {
+  "name": "A-folder-open",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24852"
+ },
+ {
+  "name": "C-220-swatch-book",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24854"
+ },
+ {
+  "name": "A-credit-card",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24858"
+ },
+ {
+  "name": "A-hand",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24860"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24864"
+ },
+ {
+  "name": "A-truck",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24866"
+ },
+ {
+  "name": "A-user-circle",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24868"
+ },
+ {
+  "name": "A-file-chart",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24870"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24872"
+ },
+ {
+  "name": "A-email-open",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24874"
+ },
+ {
+  "name": "A-user-group",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24876"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24878"
+ },
+ {
+  "name": "A-thumb-down",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24880"
+ },
+ {
+  "name": "A-thumb-up",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24882"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24884"
+ },
+ {
+  "name": "A-fire",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24886"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24890"
+ },
+ {
+  "name": "A-megaphone",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24892"
+ },
+ {
+  "name": "A-globe-earth",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24894"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24896"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24898"
+ },
+ {
+  "name": "A-link-02",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24902"
+ },
+ {
+  "name": "A-help-circle",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24904"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24906"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24908"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24912"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24914"
+ },
+ {
+  "name": "A-check-circle",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24916"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24918"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24920"
+ },
+ {
+  "name": "A-checkbox",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24922"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24924"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24926"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24928"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24930"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24932"
+ },
+ {
+  "name": "A-cast",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24934"
+ },
+ {
+  "name": "A-log-out",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24936"
+ },
+ {
+  "name": "A-log-in",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24938"
+ },
+ {
+  "name": "A-compass",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24940"
+ },
+ {
+  "name": "A-location",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24942"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24944"
+ },
+ {
+  "name": "A-folder-minus",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24946"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24952"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24954"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24956"
+ },
+ {
+  "name": "A-camera-off",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24958"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24961"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24968"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24973"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24980"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:24988"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25004"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25200"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25192"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25235"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25278"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25026"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25256"
+ },
+ {
+  "name": "A-camera-scan",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25146"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25204"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25094"
+ },
+ {
+  "name": "A-lightbulb",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25002"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25064"
+ },
+ {
+  "name": "A-yarn",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25263"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25211"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25070"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25156"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25034"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25097"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25039"
+ },
+ {
+  "name": "C-207-link",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25222"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25073"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25162"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25100"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25008"
+ },
+ {
+  "name": "A-cursor-click",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25010"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25045"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25228"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25167"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25112"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25076"
+ },
+ {
+  "name": "A-cloud-upload",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25081"
+ },
+ {
+  "name": "A-navigation",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25012"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25174"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25122"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25245"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25051"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25132"
+ },
+ {
+  "name": "A-lightbulb",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25182"
+ },
+ {
+  "name": "A-cloud-download",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25084"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25247"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25056"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25089"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25018"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25139"
+ },
+ {
+  "name": "A-support",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25254"
+ },
+ {
+  "name": "A-lightbulb",
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25185"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25196"
+ },
+ {
+  "name": null,
+  "category": "nav",
+  "frame": "_nav-01",
+  "figmaNode": "174:25240"
+ },
+ {
+  "name": "A-blend",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23377"
+ },
+ {
+  "name": "A-circles-pair",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23384"
+ },
+ {
+  "name": "A-shapes",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23390"
+ },
+ {
+  "name": "A-shapes-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23396"
+ },
+ {
+  "name": "A-hatch",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23402"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23417"
+ },
+ {
+  "name": "A-drop-hatch",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23422"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23431"
+ },
+ {
+  "name": "A-columns-two",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23437"
+ },
+ {
+  "name": "A-table",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23442"
+ },
+ {
+  "name": "A-pie-hatch",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23449"
+ },
+ {
+  "name": "A-grid-2x2",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23457"
+ },
+ {
+  "name": "A-pie-quarter",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23463"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23472"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23482"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23516"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23519"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23522"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23527"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23534"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23541"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23546"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23555"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23560"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23565"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23569"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23573"
+ },
+ {
+  "name": "A-paint-roller",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23581"
+ },
+ {
+  "name": "A-broom",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23588"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23598"
+ },
+ {
+  "name": "A-eraser",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23606"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23612"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23615"
+ },
+ {
+  "name": "A-ruler",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23623"
+ },
+ {
+  "name": "A-ruler-combined",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23630"
+ },
+ {
+  "name": "A-ruler-triangle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23639"
+ },
+ {
+  "name": "A-pencil-circle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23647"
+ },
+ {
+  "name": "A-marker-circle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23655"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23662"
+ },
+ {
+  "name": "A-magnet",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23668"
+ },
+ {
+  "name": "A-magnet-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23674"
+ },
+ {
+  "name": "A-pen-nib-straight",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23680"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23687"
+ },
+ {
+  "name": "A-pencil-simple",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23694"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23699"
+ },
+ {
+  "name": "A-pencil-03",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23705"
+ },
+ {
+  "name": "A-pen-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23711"
+ },
+ {
+  "name": "A-rows-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23718"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23723"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23727"
+ },
+ {
+  "name": "A-bento",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23731"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23737"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23743"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23749"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23755"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23763"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23771"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23794"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23808"
+ },
+ {
+  "name": "B-barrel",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23813"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23819"
+ },
+ {
+  "name": "A-kanban-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23821"
+ },
+ {
+  "name": "A-split",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23823"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23825"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23827"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:23882"
+ },
+ {
+  "name": "A-triangle-down",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24037"
+ },
+ {
+  "name": "A-drop-circle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24045"
+ },
+ {
+  "name": "A-capsules",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24051"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24061"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24068"
+ },
+ {
+  "name": "A-bolt-zigzag",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24075"
+ },
+ {
+  "name": "A-tag-arrow",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24081"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24103"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24432"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24438"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24240"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24246"
+ },
+ {
+  "name": "A-select-frame-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24258"
+ },
+ {
+  "name": "A-select-circle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24263"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24268"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24306"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24312"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24318"
+ },
+ {
+  "name": "A-cube-dashed-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24326"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24331"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24337"
+ },
+ {
+  "name": "A-hex-nut",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24344"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24352"
+ },
+ {
+  "name": "A-asterisk",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24357"
+ },
+ {
+  "name": "A-orbit",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24364"
+ },
+ {
+  "name": "A-sync-dashed",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24373"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24382"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24390"
+ },
+ {
+  "name": "A-orbit",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24397"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24406"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24416"
+ },
+ {
+  "name": "A-disc",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24423"
+ },
+ {
+  "name": "A-sync-dashed",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24445"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24468"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24474"
+ },
+ {
+  "name": "A-select-frame-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24491"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24504"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24681"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24677"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24573"
+ },
+ {
+  "name": "A-capsules",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24583"
+ },
+ {
+  "name": "A-tag-arrow",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24593"
+ },
+ {
+  "name": "A-bolt-zigzag",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24598"
+ },
+ {
+  "name": "A-triangle-down",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24604"
+ },
+ {
+  "name": "A-drop-circle",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24612"
+ },
+ {
+  "name": "A-toggle-square",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24648"
+ },
+ {
+  "name": "A-toggle-oval",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24654"
+ },
+ {
+  "name": "A-toggle-oval-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24660"
+ },
+ {
+  "name": "A-toggle-square-02",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24666"
+ },
+ {
+  "name": "A-square-slash",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24672"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24686"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24690"
+ },
+ {
+  "name": "A-octagon",
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24694"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24698"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_design",
+  "figmaNode": "174:24702"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24456"
+ },
+ {
+  "name": "A-bolt-02",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24458"
+ },
+ {
+  "name": "A-bolt-off",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24466"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24510"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24514"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24518"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:23898"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24709"
+ },
+ {
+  "name": "A-cube-dashed-02",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24715"
+ },
+ {
+  "name": "A-chip",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24717"
+ },
+ {
+  "name": "A-ticket",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24719"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24721"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24723"
+ },
+ {
+  "name": "A-puzzle",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24729"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24731"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24738"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24746"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24756"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24761"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24769"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24727"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:23892"
+ },
+ {
+  "name": "A-bar-chart",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:23374"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24711"
+ },
+ {
+  "name": "B-barrel",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24462"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24464"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24454"
+ },
+ {
+  "name": "A-stack",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24460"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24618"
+ },
+ {
+  "name": "A-squares-linked-02",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:23801"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24790"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24862"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24814"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24786"
+ },
+ {
+  "name": "A-calendar",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24796"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24840"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24846"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24848"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24995"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24856"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:25106"
+ },
+ {
+  "name": "A-container",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24948"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24950"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24900"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24888"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24910"
+ },
+ {
+  "name": "A-send",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:25016"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:24830"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:25062"
+ },
+ {
+  "name": null,
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:25014"
+ },
+ {
+  "name": "A-more-circle",
+  "category": "shape-design",
+  "frame": "_shape",
+  "figmaNode": "174:25006"
+ }
+]

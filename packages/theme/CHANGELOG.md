@@ -1,5 +1,61 @@
 # @kolkrabbi/kol-theme
 
+## 0.209.0 — 2026-10-31
+
+- `.kol-dd-trigger--raised` / `.kol-dd-panel--raised` — the raised select tone bundle (oq-08 ground, emphasis ink) for Dropdown `variant="raised"`.
+
+## 0.208.0 — 2026-10-31
+
+- **The select Dropdown is one tone, closed or open** (user: *"how are you using one tone for default, but another for list open?"*). The panel is the trigger tone's floating surface again (`--kol-tone-panel-bg`, untoned → `surface-secondary`, primary's), and the open trigger no longer switches to oq-08; the float shadow is what lifts the panel off the page. Replaces 0.206.0's oq-08 panel + open-trigger rule.
+
+## 0.207.0 — 2026-10-31
+
+- **`--kol-shadow-rail-up`** (PhoneTwoFloatLayout, kol-fxr 2026-10-31) — `0 -8px 40px rgba(0, 0, 0, 0.45)`, the upward lift of a Rail rising from the bottom edge (fxr's Labs on a phone). With it the Rail has no top rule. One value in both themes. Additive.
+
+## 0.206.0 — 2026-10-31
+
+- `.kol-menu-trigger` — every menu trigger rests at fg-80, not the tab's fg-48.
+
+- `.kol-menu-trigger--quiet` — the labelled menu trigger's hover wash is off.
+
+- **The open select is one block** — `.kol-dd-trigger--open` takes the raised panel's oq-08, so the trigger and its list share one ground (user 2026-10-31: *"why are there two TONEs in one component here?"*).
+
+- `.dash-tooltip` keeps only its placement; the box is `.kol-tooltip` (DashTooltip).
+
+- **Select `Dropdown` panel is raised** (metric Round 3, 2026-10-31): `.kol-dd-panel` takes `.kol-menu-panel`'s `oq-08` ground and `--kol-shadow-float` on every tone (was the trigger tone's floating surface, no shadow). Visible on every select Dropdown.
+- **`.kol-menu-panel`** — `Menu`'s panel (the Menu\* family, 2026-10-31): `oq-08` ground, 8px radius, 4px inset, `--kol-shadow-float`; **`.kol-menu-row`** (38 tall, 12px sides, 6px radius, fg-88 → oq-16 + fg-96 on hover, `--current` and an open flyout), **`.kol-menu-rule`** (oq-16, through the inset), **`.kol-menu-label`** (uppercase helper in fg-48), **`.kol-menu-kbd`** (outlined cap, no fill). The oq ramp makes it light and dark. **`.kol-dd-menu`** stays as a deprecated alias of the panel (30-day ledger).
+
+## 0.205.0 — 2026-10-31
+
+- **The quiet tab gets a hover chip** (user 2026-10-31: *"the unselected doesnt have a hover state like the IconFrame"*). `.kol-btn-tab` (TabsRow `variant="chip"`) hovers to an `oq-04` chip, one step under the selected `oq-08` — the filled tab's ladder, as IconFrame's hover. Reverses 2026-10-02's ink-only hover.
+
+## 0.204.0 — 2026-10-31
+
+- **`06`, a whole step** (MetricDashboardUpstream, user ruling: *if it is added, it is added everywhere*) — a resting chip fill between `oq-04`, which vanishes on a card, and `oq-08`. Every ladder takes it: `--kol-fg-06` · `fg-inverse` · `fg-ab` · `fg-ab-inverse` · `fg-absolute` · `fg-absolute-inverse`, `--kol-oq-06` · `oq-inverse` · `oq-ab` · `oq-ab-inverse` · `oq-absolute` · `oq-absolute-inverse`, in every theme block (the `ab` flips included, and kol-color's on-inverse redeclare), with the same `bg-` / `text-` / `border-` / `hover:` / `group-hover:` utilities each family's `04` has. Additive; nothing existing moves.
+
+## 0.203.0 — 2026-10-31
+
+- **Round 3's float, accepted** (W16, 2026-10-31 — *"accept the style, both glass styles"*; https://claude.ai/artifact/VMiZCd6QZm5PRaWc4Yy4yF). The provisional values of 0.201.0 are replaced. **The glass tokens**: `--kol-glass-dark-*` (fill rgb 26 at 62%, blur 6 / 16, the rim, shadow `0 8px 15px` 4% / `0 8px 48px` 45%) and `--kol-glass-light-*` (rgb 236 236 232 at 10%, blur 6 / 6, the four-part rim, shadow `0 8px 15px` 4%). **The surfaces**: `.kol-float-solid` (surface-secondary + `--kol-shadow-float`) · `.kol-float-glass-dark` · `.kol-float-glass-light`, `.kol-float-m` for a menu or a box (the medium blur and shadow); saturate 1.8; `prefers-reduced-transparency` → solid. **The float sizes**: `--kol-float-h-*` 28 · 36 · 44, `-t-*` 12 · 13 · 14, `-ic` 18, `-row` 40, `-menu-r` 26, `-inset` 6, `-tip-h` 24 · `-tip-t` 11 — on `pointer: coarse` 36 · 44 · 52, 13 · 15 · 16, 20, 48, 30, 28 · 12; `--kol-float-well` (the field's well, light .06 / dark .35).
+- **⚠ `.kol-btn-float` · `.kol-control--float` are capsules now** (999, not 18) at the float heights and type, the field on `--kol-float-well`; `.kol-more-sheet-float` is r 26 (30), 6 in, rows 40 (48) 12 in, the current row oq-16. New: `.kol-tooltip-float` (an inverted pill), `.kol-seg--float` (a 6-in capsule track, the selected pill filled with the ink), `.kol-tabs-float` (pills, the selected one oq-16).
+
+## 0.202.0 — 2026-10-31
+
+- **The neutral ramp: every surface reads a base** (W9 of the Figma library plan). The surface tiers held their greys as raw hex in each theme block; the twelve greys are now defined once as `--kol-neutral-<HSL lightness ×10>` (`--kol-neutral-980` = `#fafafa` … `--kol-neutral-045` = `#0b0b0c`) and every `--kol-surface-*` reads either one of them or a pole (`--kol-color-ab-white` · `-ab-black` · `--kol-color-white` · `-black`). **No computed colour changes**: all 248 `--kol-*` / `--ui-*` colour properties measured identical before and after in light, dark and both system-follow modes. The Figma library mirrors the ramp as its `primitives` collection.
+
+## 0.201.0 — 2026-10-30
+
+- **The floating style B** (FloatingStyleAndSignInDemos, kol-fxr — *"we are actually introducing a new style"*). **`--kol-shadow-float`** — the raised shadow that lifts a floating nav or menu off a clashing canvas (fxr's local value, now a token). **`.kol-btn-float` · `.kol-control--float`** — Button and Input `variant="float"` (kol-component 0.318.0): a 44 control (44×44 icon-only), an 18 radius, the field on the page's ground. **`.kol-more-sheet-float`** — the float menu: a 6 inset, rows flush, 14 in.
+- **⚠ `.kol-more-sheet` is borderless by default**; `.kol-more-sheet-bordered` draws the old `1px solid var(--kol-oq-08)` (kol-shell's `menuBorder`).
+- **The float values are provisional** — shadow, radius, inset and heights will change in later releases as the research lands, under the same names; consumers change nothing.
+
+## 0.200.6 — 2026-10-30
+
+- `.kol-toc-child` — DocsToc's rail children (kol-component 0.317.7): a 3px graduation stretched across the rail as its hit area, its label overflowing the row without growing it and shown only near the lens's peak (`(--m − 0.96) × 25`), the active child's stroke at the active ink and a graduation's length; hidden at rest and under reduced motion, shown on keyboard focus.
+
+## 0.200.5 — 2026-10-30
+
+- `.kol-column-browser-strip--dock` — ColumnBrowser's docked preview (kol-component 0.317.5): the last column's grab pill sits inside its line, so the strip scrolls no further than the last column's edge and that edge meets the pane's divider as one line.
+
 ## 0.200.4 — 2026-10-30
 
 - `.kol-tab-mono-light` — the sans tab row's face rule on the mono (`--kol-font-family-mono`), for TabsRow `type="mono-light"` (kol-component 0.317.4).

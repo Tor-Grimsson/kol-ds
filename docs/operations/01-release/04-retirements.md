@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-10-29
+updated: 2026-10-31
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -34,9 +34,16 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
 | `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
+| `MenuDropdownItem` | component | `MenuRow` — same component, same props (the Menu* family, metric Round 4) | 2026-10-31 |
+| `MenuDropdownDivider` | component | `MenuDivider` — same component, same props | 2026-10-31 |
+| `MenuDropdownNest` | component | `MenuFlyout` — same component, same props | 2026-10-31 |
+| `kol-dd-menu` | theme | `kol-menu-panel` — same rule (`Menu`'s panel) | 2026-10-31 |
 | `PageHeader` | component | `SectionText` with `level` (page · app · section · content) — `title` → `headline`, `subtitle` → `body`, `titleClass` → `headlineClass` | 2026-10-22 |
 | `PAGE_HEADER_ROLES` | component | `SECTION_TEXT_LEVELS` | 2026-10-22 |
 | `SideNav` | framework | `NavRail variant="site"` from kol-component (same props; kol-framework's `SideNav` keeps the react-router read and the ThemeToggle) | 2026-10-22 |
+| `PhoneNav` | shell | `AppFloatNav` — same props; `variant="nav"` is `variant="mobile"` | 2026-10-30 |
+| `PHONE_NAV_VARIANTS` | shell | `APP_FLOAT_NAV_VARIANTS` (`nav` is `mobile`) | 2026-10-30 |
+| `TransportPill` | shell | `AppFloatNav variant="transport"` — same props | 2026-10-30 |
 | `TypeScaleLab` | styleguide | `TypeLab` — the lab family's name (kol-styleguide/lab); same value, plus roles and leading | 2026-10-29 |
 | `typeScale` | styleguide | `typeLab(value).steps` | 2026-10-29 |
 | `typeScaleCss` | styleguide | `typeLabCss` (which also emits the faces, the roles and a `.type-<role>` class each) | 2026-10-29 |
@@ -45,6 +52,11 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `DEFAULT_PALETTE` | styleguide | `DEFAULT_COMBO_LAB` | 2026-10-29 |
 | `generatePalette` | styleguide | `generateColors` (colorLab.js — the one colour engine: OKLCH, base is colour 1, 2–8 colours, jobs by look) | 2026-10-29 |
 | `LockupBuilder` | styleguide | `LockupLab` — same props | 2026-10-29 |
+| `TypeBlock` | styleguide | `BlockType` — same component, same props; named group-word-first (LayoutGroup) | 2026-10-31 |
+| `Swatch` | styleguide | `BlockSwatch` — same component, same props, plus `variant="cell"` | 2026-10-31 |
+| `LogoCard` | styleguide | `CardLogo` — same component, same props, plus `variant="plate"` | 2026-10-31 |
+| `BrandGuide` | styleguide | `LayoutGuide` — same component, same props; also from `@kolkrabbi/kol-styleguide/layout` | 2026-10-31 |
+| `DocumentIndex` | styleguide | import it from `@kolkrabbi/kol-framework` — same component, same props, plus `variant="table"` | 2026-10-31 |
 | `Logomark` | component | `VectorLoader` — the same component, any SVG by URL; `src` is the URL (`svgUrl` still works) | 2026-10-28 |
 | `BrandHero` | framework | `PageHero` | 2026-09-03 |
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
@@ -95,6 +107,7 @@ Aliases the gate cannot see — a prop value is not an export. Same lifetime, ke
 | `Button variant="primary" · "outline" · "ghost" · "grey"` | component | `tone` of the same name | 2026-10-01 |
 | `Button variant="secondary"` | component | `tone="inverted"` — `secondary` painted the inverted fill; tone `secondary` is the page surface | 2026-10-01 |
 | `Button variant="control"` | component | `tone="ghost"` | 2026-10-01 |
+| `SectionText level` · `PageHeader level` | component | `variant` — same values (page · app · section · content · document); `variant` is the only word for a variant (user 2026-10-31). Still read by kol-shell (CatalogPage, AppStudio, HubDev, StudioDetail) and kol-framework (DocumentIndex) until their next release | 2026-10-31 |
 
 `variant` keeps `accent · danger · nav`. The six still render as they did and warn once in dev; `pnpm validate:variants` (V3) keeps this repo off them.
 

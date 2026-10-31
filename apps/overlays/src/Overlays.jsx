@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import {
-  Button, FullscreenOverlay, LabeledControlSection, QuickLookFrame, ModalProvider, SettingsPanel, SettingsRow,
+  Button, Dialog, FullscreenOverlay, LabeledControlSection, QuickLookFrame, ModalProvider, SettingsPanel, SettingsRow,
   shortcutInScope, useModal,
 } from '@kolkrabbi/kol-component'
 import CommandModes, { KEYMAP } from './CommandModes.jsx'
 import Specimen from './Specimen.jsx'
+import SignIn from './SignIn.jsx'
 
 /* EVERY OVERLAY MODAL ON ONE PAGE (ShortcutsOverlayCategories, kol-monitor 2026-10-18 — user: *"I asked for EVERY
  * FUCKING TYPE OF OVERLAY MODAL"*). Each button opens the shipped component on monitor's real content
@@ -23,13 +24,27 @@ const Open = ({ onClick, children }) => <Button tone="grey" size="md" onClick={o
 
 function Dialogs() {
   const { prompt, confirm, alert } = useModal()
+  const [dialog, setDialog] = useState(null)
+  /* both modal variants side by side (user 2026-10-31: *"do we not use variants for different styles?"*) — `lift` the
+   * overlay panel, `bordered` the page surface behind a hairline; the prompts default bordered, Dialog lift */
   return (
-    <Group title="Modal" ships="kol-component · useModal">
-      <Open onClick={() => prompt('Name this frame:', 'Untitled')}>prompt</Open>
-      <Open onClick={() => confirm('Discard unsaved changes?')}>confirm</Open>
-      <Open onClick={() => confirm('Web-optimise raster images?', { okLabel: 'Upload', options: [{ id: 'optimise', label: 'Optimise', hint: '≤2560 px, ≤500 KB', defaultValue: true }, { id: 'keepOriginals', label: 'Keep originals', defaultValue: true }] })}>confirm + options</Open>
-      <Open onClick={() => alert('Upload failed: quota exceeded')}>alert</Open>
-    </Group>
+    <>
+      {['bordered', 'lift'].map((variant) => (
+        <Group key={variant} title={`Modal · ${variant}`} ships={`kol-component · useModal · Dialog — variant="${variant}"`}>
+          <Open onClick={() => prompt('Name this frame:', 'Untitled', { variant })}>prompt</Open>
+          <Open onClick={() => confirm('Discard unsaved changes?', { variant })}>confirm</Open>
+          <Open onClick={() => confirm('Web-optimise raster images?', { okLabel: 'Upload', variant, options: [{ id: 'optimise', label: 'Optimise', hint: '≤2560 px, ≤500 KB', defaultValue: true }, { id: 'keepOriginals', label: 'Keep originals', defaultValue: true }] })}>confirm + options</Open>
+          <Open onClick={() => alert('Upload failed: quota exceeded', { variant })}>alert</Open>
+          <Open onClick={() => setDialog(variant)}>Dialog</Open>
+        </Group>
+      ))}
+      <Dialog open={dialog != null} onClose={() => setDialog(null)} title="Filter by browser" variant={dialog ?? 'lift'}>
+        <div className="flex flex-col gap-4 p-6">
+          <span className="kol-mono-14 text-emphasis">Filter by browser</span>
+          <div className="flex gap-2"><Button tone="grey" size="md" onClick={() => setDialog(null)}>Apply filter</Button><Button tone="ghost" size="md" onClick={() => setDialog(null)}>Cancel</Button></div>
+        </div>
+      </Dialog>
+    </>
   )
 }
 
@@ -59,6 +74,8 @@ export default function Overlays() {
           <Open onClick={() => setOpen('rail')}>rail</Open>
           <Open onClick={() => setOpen('overlay')}>overlay</Open>
         </Group>
+
+        <SignIn Group={Group} />
 
         {/* apps/media's Quick Look (MediaLibraryPages): FullscreenOverlay over a scrim holding a QuickLookFrame */}
         <Group title="Quick Look" ships="kol-component · QuickLookFrame">

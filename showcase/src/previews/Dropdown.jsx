@@ -11,6 +11,7 @@ const OPTIONS = [
 /* ONE instance; variant and size ride the toolbar pickers (2026-09-30, the names audit — the
  * three variants used to stack side by side, one of them open). */
 export const variants = ['primary', 'grey', 'outline']
+
 /* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
 export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']

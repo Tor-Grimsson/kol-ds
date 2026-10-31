@@ -1,5 +1,93 @@
 # @kolkrabbi/kol-component
 
+## 0.329.0 — 2026-10-31
+
+- **`OriginPicker`** (new atom — lobby OriginPicker, kol-fxr) — the 3×3 transform-origin / anchor picker. `value: [x, y]` (each 0 · 0.5 · 1), `onChange([x, y])`; a radiogroup of nine radios ("left top" … "center" … "right bottom", `ariaLabel` for the group), roving tabindex, ←/→/↑/↓ move selection and focus. `size` xs · sm · md: the square is a field's height (22 · 26 · 32; touch 32 · 32 · 36), on the control ground (`--kol-tone-bg`, `tone` accepted), no border. Dots oq-24, hover oq-48, selected the accent; focus the quiet ring. Replaces fxr's hand-built `AnchorPicker`.
+
+## 0.328.0 — 2026-10-31
+
+- **NavRail `variant="top"`** — the horizontal top rail, built from the rail's own parts (user 2026-10-31: *"it would have to be a TopNavRail? and completely rebuilt with Rail Component?"*). 48 tall, `px-4`, the fg-08 rule below: the logomark row (mark + app name, `kol-helper-12 uppercase`), `items` as rail rows (nav Button rung + rail label, `aria-current` on `currentPath`), then `actions` — the right slot for views and menus (`Menu` + `MenuTrigger`). No grab, no drag; a row's `sub` is not drawn. Replaces Atlas's `/lab` header ("Lab bar").
+
+## 0.327.0 — 2026-10-31
+
+- **NavRail: a drag holds its width** (RailDragHoldsWidth, kol-fxr) — the `app` rail's release keeps the dragged width, no snap; the drag runs 48 → 560 (`RAIL_MAX`, was capped at the open width). A click on the pill still toggles 48 ⇄ the open width and resets a custom width. Under 160 (`RAIL_LABELS`) the rail is icons only — labels, chevrons and the mark's title hide via a container query on the rail — and `railOpen` reports from that threshold, live during a drag. Nothing persisted, as before.
+
+## 0.326.0 — 2026-10-31
+
+- **Dropdown `variant="raised"`** — the menus' faint raised look on a select: trigger, open trigger and panel all on oq-08 with the float shadow, one tone closed or open. Opt-in; the default select is unchanged (user 2026-10-31: *"I dont wanna break anything, should we just make a variant?"*).
+
+## 0.325.0 — 2026-10-31
+
+- **Menu rows can be links** — `MenuRow href` (and `href` on a `Menu` item) renders an `<a>`: cmd/ctrl/shift- and middle-click open a new tab, a plain click still runs `onClick` (the app's router). DocumentHeader's menus lost real links in kol-framework 0.68.0; apps/document passes `href` again.
+
+## 0.324.0 — 2026-10-31
+
+- **SectionText `variant`** — `level` renamed to `variant` (page · app · section · content · document), the one word for a variant (user 2026-10-31: *"why is SectionText LEVEL"*). `level` stays a deprecated alias on the retirement ledger; PageHeader takes the same.
+
+## 0.323.0 — 2026-10-31
+
+- **TabsRow dock slots light on hover** — oq-04 ground, on-primary ink (the nav row's hover), built in: the slot's rest ground and ink ride `--slot-bg` / `--slot-ink` so the hover class wins without `!`. AppFloatNav's forced override (kol-shell 0.95.0) goes.
+
+- **`SectionText level="document"`** (DocumentIndexFigma, kol-atlas 2026-10-31) — the Research page header: h1 36px / 1.2, weight 700, −0.005em, display face (`--kol-font-family-sans`), 12 under it; the lede 15 / 1.6 in the body face (`--kol-font-family-sans-neutral`) to 724px. kol-framework's `DocumentIndex` renders its `title` / `lede` with it. Additive.
+- **Quiet menu triggers** — a labelled `MenuTrigger` has no ground at rest or on hover, only while open (oq-08, the panel's); the ⋮ keeps its hover. Every ready-made menu opens 8px under its trigger.
+
+- **`MenuDatePicker` — trigger and panel one family** (metric Round 6 — user: *"relation ship between tab and dropdown is much better at reference"*). The trigger shows its chip at rest (the tab's pressed oq-08, the same ground as `.kol-menu-panel`); the panel opens right-aligned 8px under it. New **`Menu` `offset`** (default 4, unchanged for the other menus).
+- **`MenuFilter` — active filters inside the menu** (metric Round 6, 2026-10-31 — user: *"dont put this tag there, it breaks the layout"*). `active` (`[{ key, label, group, field? }]`) is now an "Active" section at the top of the menu (`MenuLabel`, one `MenuRow` per filter — click is `onPick({ group, field })` to edit, × is `onRemove`; "Clear all" at 2+), then a rule, then the categories. The chip line under the trigger and the count `Badge` are gone; the trigger holds its `pressed` ground while any filter is set. A group with exactly one field is a plain row (no flyout). Breaking for callers that reserved room for the chip line (metric only).
+- **Modal variants** (user 2026-10-31: *"do we not use variants for different styles?"*). `variant="lift" | "bordered"` on the modal family: `ModalProvider variant` sets the prompts' default, each `prompt` / `confirm` / `alert` / `form` call can pass its own, and `Dialog variant`. `lift` is `.kol-overlay-panel` (oq-04, no border), `bordered` the page surface behind an fg-08 hairline. Defaults unchanged — prompts bordered, Dialog lift. apps/overlays shows both.
+
+- **`SettingsRow` `stack`** (metric Round 3, 2026-10-31) — the label above the value, both at the row's start; `SettingsSections` passes a row's `stack`. Additive.
+- **The Menu\* family** (metric Round 4, 2026-10-31) — one family, one prefix. New **`Menu`** (a `trigger` render prop `({ open, props })` + `items` as data: `{ heading }` · `{ divider }` · `{ label, icon, trailing, current, checked, kbd, disabled, tooltip, items, onClick }` — `items` makes a flyout; `search`, `align`, `minWidth`, `children` above the rows). Parts: **`MenuTrigger`** (`Button variant="tab" size="sm"`, `pressed` while open; `iconOnly` = the ⋮), **`MenuPanel`**, **`MenuLabel`**, **`MenuRow`**, **`MenuDivider`**, **`MenuFlyout`**. Ready-made, data and callbacks only: **`MenuFilter`** (category `groups`, flyouts, disabled rows with their reason, active-filter chips + count), **`MenuDatePicker`** (range `groups`, key shortcuts, custom range, `compare`), **`MenuMore`** (⋮ + `items`). Needs kol-theme (Unreleased).
+- **Deprecated** (30-day ledger): `MenuDropdownItem` → `MenuRow`, `MenuDropdownDivider` → `MenuDivider`, `MenuDropdownNest` → `MenuFlyout` — same components, renamed.
+- **`Dropdown` is the select only** — the `items` / `trigger` action menu added in the working tree (never published) moved to `Menu`.
+
+## 0.322.0 — 2026-10-31
+
+- **GrowthLineStage: the line settles, the wave, the intro** (GrowthLineIntro, kol-fxr HomeStage, for kol-atlas). On kol-growth 0.4.0: the line cools and goes still with no hard stop (two steps a frame while it grows, one while warm), the pointer is soft and follows its own speed, and **a resize keeps the line** — re-centred, shape re-sampled, never reseeded. New **`wave`** (default `{ ms: 24000, a: 9, l: 640 }`, `false` lets a settled line sleep; off under reduced motion). New **`intro`** — the line grows only inside `shape` (at `fit` 0.5) in the emphasis ink for 3.8 s, breathes 4 s, then grows out to the orb over 4 s while the stage's ink fades up; the pointer waits. New **`onIntroEnd`**. Default `params` growth 8 → 2.5 (the engine's new per-front-edge rate); the default cap follows the area (w·h/90). Showcase preview: an `intro` variant with the hexagon.
+
+## 0.321.0 — 2026-10-31
+
+- **MetricDashboardUpstream** (kol-website metric's /demo-11, its disconnected copies folded back). **`MenuDropdownDivider className`** — the rule's colour and spacing, whole (default `border-oq-08 my-1`, unchanged). **`MenuDropdownNest rowClass` · `panelClassName` · `panelStyle`** (flyout) — the nest row's type/padding/height/fill whole, the flyout's surface and its place beside the row; a `marginLeft` gap mirrors to `marginRight` when the panel flips. **`ResizeHandle`** exported from `ColumnBrowser` (the grab gesture with `GRAB_COLUMN`, drawn by `.kol-column-browser-resize-x|y`) — no more inlined tuning. New **`Combobox`** — a searchable value field: `SearchInput` (outline, sm) over Dropdown's own panel and sm rows (`MenuDropdownItem`), width-matched. New **`Dialog`** (in `Modal.jsx`) — Modal's `.kol-overlay-scrim` + `.kol-modal` shell holding any children, portalled, at z 150 so the DS's floats (z 210+) open above it; Esc and the scrim close it.
+
+## 0.320.1 — 2026-10-31
+
+- **Settings switch rows: one rhythm, level with their label** (user, on the showcase's settings next to Media's: *"its too much gap between toggles?"*). `SettingsSections` gives a section of only `type: 'switch'` rows the 4px row gap by default (`rowGap` 1, as the docs always said) — the showcase's shell settings sat 32px apart, Media's 28. `SettingsRow`'s control cell is `flex` (was `inline-flex`, which rode the label's text baseline and set the switch 5px low) with a 24px minimum height, so switch rows keep their 28 pitch. Measured: both panels 28 apart, switch centre = label centre.
+
+## 0.320.0 — 2026-10-31
+
+- **Round 3's float, accepted** (W16, 2026-10-31). `Button` / `Input` `variant="float"` are capsules whose height and type step together — 28 · 36 · 44 with 12 · 13 · 14 (touch 36 · 44 · 52, 13 · 15 · 16), an 18 (20) glyph; the provisional 44 / 18-radius shape is gone. New: **`Tooltip variant="float"`** (an inverted pill, 24 / 28), **`SegmentedToggle variant="float"`** + `surface` (a capsule track 6 in, the selected pill filled), **`TabsRow variant="float"`** (chip's row as capsules, the selected one oq-16). **`floatSurfaceClass(surface, medium)`** · `FLOAT_SURFACES` — `solid` · `glass-dark` · `glass-light` to kol-theme's classes; glass-dark stamps `.dark`.
+- **⚠ `TabsRow` pill is round 3's nav**: 66 tall (`TABBAR_PILL_H`), 56 slots 4 apart (`TABBAR_PILL_GAP`), 5 in, 28 glyphs, the lit slot a 56 circle at oq-16 (`active` `fill` and `circle` now draw the same); `surface`, `split` (the last slot its own 66 circle 8 off the bar — the × while collapsed) and `labels` (items 58 × 84, a 24 glyph over an 11 label). `tabbarPillWidth(count, { labels, split })` changed value; `tabbarPillSlot(at, { count, labels, split })` is new. Slots name themselves in the float Tooltip. Needs kol-theme (Unreleased).
+
+## 0.319.2 — 2026-10-30
+
+- **`GrowthLineStage` rests** (kol-fxr plan 44 6.1 — 0.319.1 still jittered). `settle: 120` by default on kol-growth 0.3.0: the packed interior cools and stops, so only the growing front and the pointer's wake move; one step a frame (the front-only growth keeps the old pace); the pointer zone is retired. `params.settle` overrides, `0` is 0.319.1's behaviour. Needs kol-growth 0.3.0.
+
+## 0.319.1 — 2026-10-30
+
+- **`GrowthLineStage` sits still once finished** (SignedOutStageStill, kol-fxr). A `full` flag is set once at the cap — reading the live count let merges drop it back under the cap, so the whole line stepped forever; after it only the pointer's zone steps (`r` 0.36 · min(w, h)); a resting pointer is not a force — it pokes and wakes only on a move over 0.3 px or a press, and sleeps a second after it stops. `bleed: 48` by default (`params.bleed` overrides). Needs kol-growth 0.2.0.
+
+## 0.319.0 — 2026-10-30
+
+- **`GrowthLineStage`** (GrowthLineStage, kol-atlas — fxr's growing line as a stage any app can grow into a shape). kol-fxr's HomeStage sim loop on the new engine `@kolkrabbi/kol-growth` 0.1.0 (now a dependency): one `<canvas>` filling its box at dpr ≤ 2, a closed line growing into `shape` — `'orb'` (default), an SVG path `d` drawn centred at `fit` (0.6), or `(w, h) => canvas` — with `params` (`{ minGap, maxGap, contrast, growth }`, the orb's `{6, 24, 1.4, 8}` by default), `cap` (`min(14000, w·h/112)`), `seed` (a `mulberry32` seed, random when absent) and `pointer` (true). It grows, then stops drawing (no rAF); a move pushes the line, a press blasts it, and it settles a second after the pointer leaves. Ink is the canvas's computed `color` (pass a `text-*` class), repainted on a `data-theme` flip; the stage clears to transparent. **Reduced motion** grows the line off screen and draws it once, with no pointer force. fxr's transport / epoch keying, editor schema and `?stage=logo` switch are not carried.
+
+## 0.318.0 — 2026-10-30
+
+- **`Button variant="float"` · `Input variant="float"`** — the floating style B's shape (FloatingStyleAndSignInDemos, kol-fxr): a 44 control (44×44 icon-only), an 18 radius; Button keeps its `tone`'s ground, Input sits on the page's ground inside a float box. A composed float component (kol-shell's `AppFloatNav`, `AccountForm variant="box"`) passes it; a consumer never sets it by hand. Styles are kol-theme 0.201.0's `.kol-btn-float` · `.kol-control--float`.
+- **`TabsRow` pill**: `shadow` is the KOL float shadow (`--kol-shadow-float`, was a local 40px blur), and every pill slot names itself on hover in the KOL `Tooltip`.
+- **The float values are provisional** — they will change in later releases as the research lands; call sites stay as they are.
+
+## 0.317.7 — 2026-10-30
+
+- **`DocsToc` entries take `children: [{ id, label }]`** (DocsTocRailChildren, kol-atlas — on `/lab/t1/type-scale` the ticks under each section were inert graduations, the same count for every gap). On `variant="rail"` the gap under a sectioned entry is one tick per child instead of `minors`: a graduation at rest, a link in the tab order, its label (`kol-helper-10`, smaller than the section's) shown under the lens near its peak, a click going through the same `onNavigate`. The rail's height follows the content. The spy observes the children too: the active child takes the active ink and its section stays lit; the list marks the section. `snap="label"` locks to every labelled link. **`useScrollSpy`** handles nested ids: the innermost visible element wins, and a section takes the active mark back when its entry leaves the band. No `children`, no change. Styles are kol-theme 0.200.6's `.kol-toc-child`.
+
+## 0.317.6 — 2026-10-30
+
+- **Get Info on a file draws its preview and hugs it** (MediaGetInfoFileBody, kol-website — on `asmr-sharp.mp4`, a 1080 × 1920 reel, the facts sat at the top of a capped, scrolling box whose lower 60% was the video with no frame painted). The preview is the image or video at the modal's width and its own ratio, never taller than 32vh, so the window ends at the preview; the video loads at `#t=0.1`, so a frame paints under `preload="metadata"` without a poster. The folder case, the frame and Space's Quick Look viewer are unchanged.
+
+## 0.317.5 — 2026-10-30
+
+- **`ColumnBrowser previewPlacement="inline" | "dock"`** (ColumnPreviewDocked, kol-website — Columns put the preview straight after the last open column, so it moved as folders opened and closed): `dock` pins the preview pane at the right edge at its `columnWidths.preview` width, beside a strip of columns that scrolls on its own, the way Rows and Grid dock theirs; empty until something is shown; its handle sits on the pane's left edge and still writes `columnWidths.preview`. `inline`, the default, renders exactly as 0.317.4. **`MediaLibrary previewPlacement`** forwards it, `dock` by default. The strip's divider rule is kol-theme 0.200.5's `.kol-column-browser-strip--dock`.
+- **⌘I is a Get Info modal** (MediaGetInfoModal, kol-website — 0.317.4 drew a folder's preview pane at overlay size with no container: a full-height folder plate on the scrim). ⌘I now opens Finder's Get Info inside Quick Look's window (`QuickLookFrame` in a `FullscreenOverlay`, as `MediaInspector` draws it): the header bar (name, a `·` meta line, copy URL · download · ×), then a head row (a small kind glyph, the name, the size, "Modified"), the tags, General (Kind, Size in bytes and readable with "for N items" on a folder, Where as `bucket › folder › …`, Newest or Modified; a file adds Type, Dimensions or Length and URL) and, for a file, a small preview. ⌘I again, Esc or × close it. Space on a folder opens the same modal, so the plate is gone from every overlay; Space on a file is the Quick Look viewer as before. No new props.
+
 ## 0.317.4 — 2026-10-30
 
 - **`TabsRow type="mono-light"`** — the `sans` row exactly (14px at 300, 20px glyphs at the set's 1.5 stroke, a 1px underline, the 40px row, 24 between tabs) on JetBrains Mono instead of Public Sans (the user, 2026-10-30: *"make another variant just like this one but mono, JetBrains Mono, keep it light"*). The face class is kol-theme 0.200.4's `.kol-tab-mono-light`.

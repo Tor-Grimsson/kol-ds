@@ -1,0 +1,10 @@
+{
+  "codeConnect": {
+    "include": [
+      "*.figma.js",
+      "icons/*.figma.js"
+    ],
+    "label": "React",
+    "language": "jsx"
+  }
+}

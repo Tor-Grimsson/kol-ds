@@ -30,13 +30,13 @@ import {
   ComboLab,
   DEFAULT_COMBO_LAB,
   MoodTile,
-  LogoCard,
+  CardLogo,
   LogoScaling,
-  TypeBlock,
+  BlockType,
   AssetTable,
   ColorAnatomy,
   AssetCard,
-  Swatch,
+  BlockSwatch,
   PostPhoto,
   PostType,
   PostProduct,
@@ -329,7 +329,7 @@ export default function StyleguideSet() {
       {/* 6 — LOGO CONSTRUCTION & SCALING */}
       <Section title="Logo construction">
         <div className="max-w-[560px]">
-          <LogoCard caption="Wordmark — clearspace & grid" aspect="2 / 1" logo={WORDMARK} grid={GRID} keyline={KEYLINE} />
+          <CardLogo caption="Wordmark — clearspace & grid" aspect="2 / 1" logo={WORDMARK} grid={GRID} keyline={KEYLINE} />
         </div>
         <LogoScaling variants={SCALING_VARIANTS} steps={[96, 64, 48, 32, 24, 16, 12, 8]} />
       </Section>
@@ -347,9 +347,9 @@ export default function StyleguideSet() {
       {/* 8 — TYPE BLOCKS */}
       <Section title="Type blocks">
         <div className="flex flex-col gap-8 text-auto">
-          <TypeBlock text="The quick brown fox" cut="base" weight={700} size={64} lineHeight={1} />
-          <TypeBlock text="The quick brown fox" cut="Wide" weight={500} size={36} tracking={0.02} lineHeight={1.1} />
-          <TypeBlock text="const fox = () => jump()" cut="mono" weight={400} size={18} lineHeight={1.4} />
+          <BlockType text="The quick brown fox" cut="base" weight={700} size={64} lineHeight={1} />
+          <BlockType text="The quick brown fox" cut="Wide" weight={500} size={36} tracking={0.02} lineHeight={1.1} />
+          <BlockType text="const fox = () => jump()" cut="mono" weight={400} size={18} lineHeight={1.4} />
         </div>
       </Section>
 
@@ -385,7 +385,7 @@ export default function StyleguideSet() {
       <Section title="Swatches">
         <div className="grid grid-cols-2 gap-6 sm:grid-cols-4 lg:grid-cols-6">
           {BRAND_CHIPS.map((c, i) => (
-            <Swatch key={c.hex} hex={c.hex} name={c.name} anchor={i === 0} />
+            <BlockSwatch key={c.hex} hex={c.hex} name={c.name} anchor={i === 0} />
           ))}
         </div>
       </Section>

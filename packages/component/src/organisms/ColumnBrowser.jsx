@@ -78,6 +78,7 @@ import { GRAB_COLUMN } from '../utilities/motion.js'
  *                                  so a consumer hands back what it stored. A key with no column is ignored;
  *                                  any column it does not name falls back to the drag state, then `columnWidth`
  * @param {Function} onColumnResize (index, px) => void — the column's index, or `'preview'`
+ * @param {'inline'|'dock'} previewPlacement  the preview column after the last column (default), or docked at the right edge, the columns scrolling to its left; empty until something is shown
  * @param {Function} onDropFiles   (files, folderPath) => void — OS files dropped on a folder row or column; the consumer uploads
  * @param {string}   className    extra classes on the browser
  *
@@ -476,7 +477,7 @@ function Preview({ o, urlOf, kindOf, kindLabel, formatSize, formatDate, renderPr
  * sidenav. the handles are different from the sidenav"*) — a 2.8s chase and a
  * 30px retarget, so the pill tracks the pointer instead of landing and holding
  * on the rail's 90px dwell. */
-function ResizeHandle({ axis, onDrag, onEnd }) {
+export function ResizeHandle({ axis, onDrag, onEnd }) {
   const [dragging, setDragging] = useState(false)
   const start = useRef(null)
   const ref = useRef(null)
@@ -525,6 +526,10 @@ export default function ColumnBrowser({
    * folder's own pane (MediaLibraryInfoKey, kol-website 2026-10-30 — the media page's folder facts,
    * as its rows draw them). Null for a level with nothing to say; absent, the column is empty. */
   renderFolderPreview,
+  /* `previewPlacement` — where the preview column sits (ColumnPreviewDocked, kol-website 2026-10-30):
+   * `'inline'` the column after the last one, as ever; `'dock'` pinned at the right edge beside a
+   * self-scrolling strip of columns, the way the media page's Rows and Grid dock theirs. */
+  previewPlacement = 'inline',
   height,
   defaultHeight = 528,
   onHeightChange,
@@ -844,7 +849,7 @@ export default function ColumnBrowser({
   useEffect(() => {
     const box = marquee.ref.current
     if (box && box.scrollWidth > box.clientWidth) box.scrollTo({ left: box.scrollWidth, behavior: 'smooth' })
-  }, [prefix, picked?.key, selectedKeys?.size]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [prefix, picked?.key, selectedKeys?.size, previewPlacement]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (stack) {
     /* THE CURRENT LEVEL IS THE LIST (StackModeChromeAndAncestors, kol-r2b2
@@ -989,19 +994,16 @@ export default function ColumnBrowser({
     )
   }
 
-  return (
-    <div
-      ref={rootRef}
-      tabIndex={0}
-      onKeyDown={onKeyDown}
-      // 12 rows of 44px by default (user ruling 2026-08-27), so the browser never jumps as columns change; each column scrolls.
-      // The scroll box is the INNER flex row: the bottom handle is absolute on this root, so it spans the visible width, not the scrolled one.
-      className={`kol-column-browser relative border rounded outline-none ${className}`.trim()}
-      style={{ borderColor: 'var(--kol-oq-08)', height: h }}
-    >
-      {/* A CLICK ON THE BACKGROUND DESELECTS (user 2026-09-22) — the band's own closing click is
-          swallowed by the hook, so this only ever fires on a real click into empty space. */}
-      <div ref={marquee.ref} {...marquee.props} className="relative flex h-full overflow-x-auto"
+  /* the preview pane: several selected → the stack; a file → its preview; else the open folder's pane */
+  const dock = previewPlacement === 'dock'
+  const pane = selectedKeys?.size > 1
+    ? <SelectionPreview keys={[...selectedKeys]} objects={objects} urlOf={urlOf} kindOf={kindOf} formatSize={formatSize} formatDate={formatDate} width={widthOf('preview')} />
+    : shown
+      ? <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} renderDetails={renderDetails} width={widthOf('preview')} />
+      : folderPane
+  /* the scrolling strip of columns; inline, the pane rides at its end */
+  const strip = (cls, after) => (
+      <div ref={marquee.ref} {...marquee.props} className={`relative flex h-full overflow-x-auto${cls}`}
         onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) { pick(null); onSelectKeys?.([], false) } }}>
         {marquee.rect && <div className="kol-marquee" style={marquee.rect} />}
       {levels.map((level, k) => {
@@ -1094,20 +1096,39 @@ export default function ColumnBrowser({
           </Fragment>
         )
       })}
-      {selectedKeys?.size > 1 ? (
-        <>
-          <SelectionPreview keys={[...selectedKeys]} objects={objects} urlOf={urlOf} kindOf={kindOf} formatSize={formatSize} formatDate={formatDate} width={widthOf('preview')} />
-          <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
-        </>
-      ) : (shown || folderPane) && (
-        <>
-          {shown
-            ? <Preview key={shown.key} o={shown} urlOf={urlOf} kindOf={kindOf} kindLabel={kindLabel} formatSize={formatSize} formatDate={formatDate} renderPreview={renderPreview} renderDetails={renderDetails} width={widthOf('preview')} />
-            : folderPane}
-          <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
-        </>
-      )}
+      {after}
       </div>
+  )
+
+  return (
+    <div
+      ref={rootRef}
+      tabIndex={0}
+      onKeyDown={onKeyDown}
+      // 12 rows of 44px by default (user ruling 2026-08-27), so the browser never jumps as columns change; each column scrolls.
+      // The scroll box is the INNER flex row: the bottom handle is absolute on this root, so it spans the visible width, not the scrolled one.
+      className={`kol-column-browser relative border rounded outline-none ${className}`.trim()}
+      style={{ borderColor: 'var(--kol-oq-08)', height: h }}
+    >
+      {/* A CLICK ON THE BACKGROUND DESELECTS (user 2026-09-22) — the band's own closing click is
+          swallowed by the hook, so this only ever fires on a real click into empty space. */}
+      {dock ? (
+        /* the strip tucks 1px under the pane's edge, so once the columns overflow the last one's edge
+         * and the divider are one line (`.kol-column-browser-strip--dock`, kol-theme) */
+        <div className="flex h-full">
+          {strip(' kol-column-browser-strip--dock flex-1 min-w-0 -mr-px')}
+          {/* the handle sits on the pane's LEFT edge, so a drag to the left widens it */}
+          <ResizeHandle axis="x" onDrag={(dx) => resizeCol('preview')(-dx)} onEnd={endDrag} />
+          <div className="relative flex shrink-0 border-l" style={{ borderColor: 'var(--kol-oq-08)' }}>
+            {pane || <div className="kol-column-browser-preview shrink-0" style={{ width: widthOf('preview') }} />}
+          </div>
+        </div>
+      ) : strip('', pane && (
+        <>
+          {pane}
+          <ResizeHandle axis="x" onDrag={resizeCol('preview')} onEnd={endDrag} />
+        </>
+      ))}
       {/* A FILL HEIGHT HAS NO GRABBER (user 2026-09-22). A CSS length says "take the room you
         * are given"; dragging would fight it. A px height keeps its handle. */}
       {typeof h !== 'string' && <ResizeHandle axis="y" onDrag={resizeH} onEnd={endDrag} />}
@@ -1117,7 +1138,7 @@ export default function ColumnBrowser({
 
 /* The preview column, for the media page's ROW view (user 2026-09-22 — Finder's "Show preview"):
  * one preview, the same pane beside rows as beside columns. Not in the barrel. */
-export { Preview, SelectionPreview }
+export { Preview, SelectionPreview, COL_ICON }
 
 /* SelectionPreview — the preview pane for MORE THAN ONE selected item (user 2026-09-23, Finder's:
  * *"preview of 3 overlapping files, 2 and 3 slightly rotated behind 1 … the info fields should say

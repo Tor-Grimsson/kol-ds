@@ -53,7 +53,7 @@ Four components moved in from `@kolkrabbi/kol-component` — each passes the mem
 |-----------|-----------|
 | `TypeSample` | a single labeled type-specimen block — family/weight/size/line-height rendered live via props |
 | `TypeSpecCard` | two-column type-spec row — font-metric key/value panel beside a live sample slot |
-| `TextPressure` | a line of variable-font text whose glyphs deform toward the pointer — manipulates `wght`/`wdth`/`ital` per glyph, each frame |
+| `TextPressure` | a line of variable-font text whose glyphs deform toward the pointer — manipulates `wght`/`wdth`/`ital` per glyph, each frame; `variant="intro"` tracks the whole window and is bent from mount (`WebsiteIntroLoader`) |
 | `IntroLoader` | full-height branded loading curtain — times in a live TextPressure variable-font wordmark (**peer:** `framer-motion`) |
 
 `kol-component`'s `LoaderOverlay` now takes a `loader` SLOT instead of hardcoding IntroLoader — consumers inject `<IntroLoader/>` from this package.

@@ -8,7 +8,17 @@ export const stage = 'lg'
  * Casing is authored in the strings — no text-transform. */
 const VF = { fontFamily: 'TG Rot VF', fontUrl: '/fonts/tg-typefaces/TGRotVF.ttf' }
 
-export default function TextPressurePreview() {
+/* the variant rides the picker; intro = kolkrabbi.io's wordmark (window-wide, bent from mount) */
+export const variants = ['default', 'intro']
+
+export default function TextPressurePreview({ variant = 'default' }) {
+  if (variant === 'intro') {
+    return (
+      <div className="h-28 w-full">
+        <TextPressure variant="intro" text="KOLKRABBI" minFontSize={32} italic={false} {...VF} />
+      </div>
+    )
+  }
   return (
     <div className="flex w-full flex-col gap-10">
       <div>

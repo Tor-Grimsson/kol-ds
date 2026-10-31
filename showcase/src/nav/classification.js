@@ -18,8 +18,8 @@
  *    the playbook arc. ──────────────────────────────────────────────────── */
 export const TIERS = {
   /* kol-styleguide */
-  MoodTile: 'atoms', TypeBlock: 'atoms', ClearspaceDiagram: 'molecules', LogoScaling: 'atoms',
-  ColorAnatomy: 'molecules', AssetTable: 'molecules', LogoCard: 'molecules',
+  MoodTile: 'atoms', ClearspaceDiagram: 'molecules', LogoScaling: 'atoms',
+  ColorAnatomy: 'molecules', AssetTable: 'molecules',
   /* comboLayouts.jsx — the palette-combination slabs ComboLab arranges, also
    * exported standalone for a guide that wants one. Surfaced 2026-08-15 when
    * the barrel parser learned multi-line export blocks; ungated until then. */
@@ -29,7 +29,7 @@ export const TIERS = {
   /* the brand-book set both brand apps were maintaining locally
    * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
    * frame plus a mark plus a text block, nesting nothing. */
-  AssetCard: 'atoms', Swatch: 'molecules', DocumentIndex: 'organisms', DocumentLibrary: 'organisms', DocumentView: 'organisms', LabWindow: 'organisms', LabOutput: 'molecules', BrandLockup: 'molecules', DocumentFiles: 'molecules', DocumentMarkdown: 'atoms',
+  AssetCard: 'atoms', DocumentIndex: 'organisms', DocumentLibrary: 'organisms', DocumentView: 'organisms', LabWindow: 'organisms', LabOutput: 'molecules', BrandLockup: 'molecules', DocumentFiles: 'molecules', DocumentMarkdown: 'atoms',
   /* print (2026-10-28) */
   A4Pages: 'molecules', PrintStudio: 'organisms',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
@@ -39,8 +39,7 @@ export const TIERS = {
   Letterhead: 'molecules', LetterheadCorrespondence: 'molecules', EmailSignature: 'molecules',
   /* the brand tool (2026-09-27): the two brand-book pages are page regions, the tool is both of them */
   Brand: 'organisms', BrandBook: 'organisms', BrandAssets: 'organisms',
-  /* the brand guide (2026-10-27): kol-branding's guide renderer over the outline it is handed */
-  BrandGuide: 'organisms',
+  /* the brand guide (2026-10-27): kol-branding's guide renderer over the outline it is handed — LayoutGuide since 2026-10-31 */
   /* the brand lab (2026-10-20): the generators a brand is made with, carried from kol-atlas */
   ColorLab: 'organisms', TypeLab: 'organisms', LockupLab: 'organisms', Lockup: 'molecules',
   /* kol-content */
@@ -53,6 +52,8 @@ export const TIERS = {
   StickyNavCard: 'molecules',
   /* a site's landing (2026-10-28) */
   SiteHero: 'organisms',
+  /* a document page's header — title over the tabs + menus row (2026-10-31) */
+  DocumentHeader: 'organisms',
   ScrollDriftGallery: 'organisms',
   /* kol-store */
   PriceDisplay: 'atoms', PrintGridCardGsap: 'atoms',
@@ -79,7 +80,7 @@ export const TIERS = {
   DashChartCard: 'molecules', DashListCard: 'molecules', DashFeaturedCard: 'molecules',
   DashAlertCard: 'molecules', DashTableCard: 'molecules',
   Histogram: 'molecules', Candlestick: 'molecules', ScatterPlot: 'molecules',
-  LineChart: 'molecules', DonutChart: 'molecules', Heatmap: 'molecules',
+  LineChart: 'molecules', DonutChart: 'molecules', Heatmap: 'molecules', CalendarHeatmap: 'molecules', CalendarScale: 'atoms',
   MetricsDashboard: 'organisms',
   /* kol-workshop */
   /* RailSection is a MOLECULE (user ruling 2026-10-01): a toggle, a link, a count and a body —
@@ -136,7 +137,7 @@ export const TIERS = {
   Logomark: 'atoms', VectorLoader: 'atoms',
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
-  NavRail: 'organisms', PhoneNav: 'organisms', TransportPill: 'organisms', WalkthroughPanel: 'organisms',
+  NavRail: 'organisms', AppFloatNav: 'organisms', AccountForm: 'molecules', WalkthroughPanel: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
   PageShell: 'utilities',
@@ -171,6 +172,9 @@ export const TIERS = {
   CoverLetter: 'organisms', Portfolio: 'organisms', Backside: 'organisms',
   KitPreview: 'organisms', ResumeSource: 'organisms', ResumeLibrary: 'organisms', ResumeTreatment: 'organisms',
   ResumeProvider: 'utilities',
+  /* the layouts (LayoutGroup, 2026-10-31): the identity lab's views, and their blocks named group-word-first */
+  LayoutType: 'organisms', LayoutColor: 'organisms', LayoutLogo: 'organisms', LayoutText: 'organisms', LayoutGuide: 'organisms',
+  BlockType: 'atoms', BlockSwatch: 'molecules', CardLogo: 'molecules', IconBrowser: 'organisms',
 }
 
 /* ── Function: closed set — action, input, display, feedback, navigation,
@@ -194,6 +198,9 @@ export const FUNCTIONS_BY_NAME = {
   Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
+  /* the Menu* family (metric Round 4, 2026-10-31) */
+  Menu: 'overlay', MenuTrigger: 'overlay', MenuPanel: 'overlay', MenuRow: 'overlay', MenuDivider: 'overlay',
+  MenuLabel: 'overlay', MenuFlyout: 'overlay', MenuFilter: 'overlay', MenuDatePicker: 'overlay', MenuMore: 'overlay',
   QuadrantSync: 'overlay',
   Image: 'media', Carousel: 'media', Graphic: 'media', AssetPlaceholder: 'media', FileIcon: 'media', QuickLookFrame: 'media', MediaTile: 'media',
   RowMenuButton: 'action',
@@ -216,16 +223,17 @@ export const FUNCTIONS_BY_NAME = {
   TypeSpecCard: 'display', SpecList: 'display',
   ShapeDropdown: 'action', SplitToolButton: 'action', ToolPalette: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
+  Combobox: 'input', Dialog: 'overlay', ResizeHandle: 'action', CalendarHeatmap: 'display', CalendarScale: 'display',
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
   SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
-  BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media',
+  BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media', GrowthLineStage: 'display',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   LoaderIntro: 'display', LoaderOverlay: 'overlay',
   SpectrumControls: 'input', SwatchControls: 'input', ColorInputRow: 'input', ColorPickerPopover: 'input',
   ColorRamp: 'display', SpectrumGrid: 'display',
-  ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media', StickyNavCard: 'navigation', SiteHero: 'structure',
+  ArticleHeader: 'structure', ImageBlock: 'media', VideoBlock: 'media', StickyNavCard: 'navigation', SiteHero: 'structure', DocumentHeader: 'structure',
   PortableTextRenderer: 'display', StackHero: 'structure',
   SourcesReferences: 'display',
   GalleryCarousel: 'media', ParallaxShelf: 'media',
@@ -249,7 +257,7 @@ export const FUNCTIONS_BY_NAME = {
    * hook was gated or invisible depending on its export shape. */
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
-  useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', PhoneNav: 'navigation', TransportPill: 'action', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
+  useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', AppFloatNav: 'navigation', AccountForm: 'input', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -263,6 +271,8 @@ export const FUNCTIONS_BY_NAME = {
   CanvasRuler: 'display', CanvasGuides: 'display', useFrameGeom: 'utility', niceStep: 'utility', ticksFor: 'utility',
   /* editor-panels-the-held-specs A6 (2026-09-03) */
   XYPad: 'input', InspectorRail: 'structure',
+  /* lobby OriginPicker (kol-fxr, 2026-10-31) */
+  OriginPicker: 'input',
   PathNodeOverlay: 'overlay', CropOverlay: 'overlay',
   LayerStack: 'structure', AddLayerButton: 'action', BLEND_MODES: 'utility',
   StepList: 'structure',
@@ -281,13 +291,13 @@ export const FUNCTIONS_BY_NAME = {
   AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', CategoryPage: 'structure',
   MarkdownPage: 'structure', LinkPreview: 'overlay', documentTabs: 'utility', documentFiles: 'utility',
   /* styleguide */
-  MoodTile: 'media', ColorAnatomy: 'display', TypeBlock: 'display', AssetTable: 'display',
-  LogoCard: 'display', ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
+  MoodTile: 'media', ColorAnatomy: 'display', AssetTable: 'display',
+  ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',
   RatioBar: 'display', Tower: 'display', QuadSplit: 'display',
   CardRow: 'display', StripeRow: 'display', AppliedCard: 'display',
   /* brand-book set (2026-09-03) — every one of these SHOWS something: a mark
    * in situ, a color with its value, an asset in a frame. */
-  AssetCard: 'display', Swatch: 'display', DocumentIndex: 'structure', DocumentLibrary: 'structure',
+  AssetCard: 'display', DocumentIndex: 'structure', DocumentLibrary: 'structure',
   /* DocumentLibraryAndBoardParts (2026-10-29) */
   FileQuickLook: 'overlay', Kanban: 'display', SortableGrid: 'display', ProgressBar: 'feedback',
   DocumentView: 'display', DocumentFiles: 'action', DocumentMarkdown: 'action', useFileQuickLook: 'overlay',
@@ -362,12 +372,14 @@ export const FUNCTIONS_BY_NAME = {
   Notes: 'structure', NotesCatalog: 'wayfinding', NoteEditor: 'input', NoteThumb: 'display',
   /* styleguide — the brand tool (2026-09-27) */
   Brand: 'structure', BrandBook: 'structure', BrandAssets: 'structure',
-  BrandGuide: 'structure',
   /* styleguide — the brand lab (2026-10-20): each one sets a brand's values */
   ColorLab: 'input', TypeLab: 'input', LockupLab: 'input', Lockup: 'display',
   /* deck — kol-deck (2026-09-27): presentations as a tool */
   Decks: 'structure', DecksCatalog: 'wayfinding', DeckEditor: 'structure', DeckFile: 'overlay', DeckSettings: 'overlay',
   SlideRenderer: 'display', SlideThumb: 'display', SlideStage: 'input', SlideInspector: 'input', useDeckHistory: 'utility',
+  /* the layouts (LayoutGroup, 2026-10-31) */
+  LayoutType: 'display', LayoutColor: 'display', LayoutLogo: 'display', LayoutText: 'display', LayoutGuide: 'structure',
+  BlockType: 'display', BlockSwatch: 'display', CardLogo: 'display', IconBrowser: 'wayfinding',
 }
 
 /* ── Exempt: exports that are deliberately NOT roster rows ─────────────────
@@ -390,6 +402,8 @@ export const EXEMPT = {
   /* the one nav rail moved to kol-component 2026-10-22; kol-shell re-exports these */
   NavRail: 're-export:@kolkrabbi/kol-component', Logomark: 're-export:@kolkrabbi/kol-component', VectorLoader: 're-export:@kolkrabbi/kol-component', useRailSlot: 're-export:@kolkrabbi/kol-component',
   TypeSample: 're-export:@kolkrabbi/kol-foundry', TypeSpecCard: 're-export:@kolkrabbi/kol-foundry',
+  /* growth — the engine's sim class, plain JS; its stage is kol-component's GrowthLineStage */
+  Growth: 'non-component',
   /* chess */
   ChessControlsProvider: 'non-component',
   /* workshop — contexts, providers, single-parent doc/tag sub-parts */
@@ -422,6 +436,8 @@ export const EXEMPT = {
   SwatchStack: 'member-of:SwatchControls', EyedropPick: 'member-of:SwatchControls',
   CanvasFrame: 'member-of:CanvasEditor',
   StudioCreateAction: 'member-of:StudioCreate',
+  /* DocumentIndex moved to kol-framework 2026-10-31 (LayoutGroup); kol-styleguide keeps the name as an alias */
+  DocumentIndex: 're-export:@kolkrabbi/kol-framework',
 }
 
 /* ── Off-roster lists (moved from registry.js so the CI gate can import
@@ -440,6 +456,8 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* MenuDropdownItem · MenuDropdownDivider · MenuDropdownNest = MenuRow · MenuDivider · MenuFlyout (2026-10-31, the Menu* family) */
+  'MenuDropdownItem', 'MenuDropdownDivider', 'MenuDropdownNest',
   /* the lab family's names (2026-10-29, BrandLabToolGaps): TypeScaleLab = TypeLab, LockupBuilder = LockupLab */
   'TypeScaleLab', 'LockupBuilder',
   /* ShellSearchOverlay = CommandOverlay (2026-10-17): one overlay with modes */
@@ -448,6 +466,8 @@ export const DEPRECATED = [
   'ShellDrawer',
   /* TabChips · TabStrip · MobileTabBar = TabsRow `variant` (2026-10-17): one tab component */
   'TabChips', 'TabStrip', 'MobileTabBar',
+  /* PhoneNav · TransportPill = AppFloatNav (2026-10-30): one floating nav, `variant` mobile · dock · panel · transport */
+  'PhoneNav', 'TransportPill',
   /* SideNav = NavRail variant="site" (2026-10-22): one nav rail */
   'SideNav',
   /* Logomark = VectorLoader (2026-10-28): any SVG by URL, named for what it does */
@@ -493,6 +513,8 @@ export const DEPRECATED = [
    * LetterheadCorrespondence — a B suffix says nothing about which sheet to
    * reach for. Kept so a fork migrates without touching its call sites. */
   'LetterheadB',
+  /* group-word-first names (LayoutGroup, 2026-10-31): TypeBlock = BlockType, Swatch = BlockSwatch, LogoCard = CardLogo, BrandGuide = LayoutGuide */
+  'TypeBlock', 'Swatch', 'LogoCard', 'BrandGuide',
 ]
 
 /* Components that ship without a preview file ON PURPOSE (pnpm validate:preview-files).
@@ -531,8 +553,8 @@ export const NO_PREVIEW = (() => {
       + 'tool\'s client, so it is shown inside the Notes preview (the apps/notes entry on the fixture, 2026-10-01)'])),
     ...Object.fromEntries(['BrandBook', 'BrandAssets'].map((n) => [n, 'one of the brand tool\'s two pages — it renders a '
       + 'whole brand manifest, so it is shown inside the Brand preview (the apps/brand-hub entry on Voyager, 2026-10-01)'])),
-    BrandGuide: 'a whole brand guide over a manifest and a chapter list — it is shown on apps/brand-hub\'s Guide pages, '
-      + 'the outline blank and filled with VOYAGER (2026-10-27)',
+    LayoutGuide: 'BrandGuide renamed (LayoutGroup, 2026-10-31) — a whole brand guide over a manifest and a chapter list; '
+      + 'it is shown on apps/brand-hub\'s Guide pages and on apps/brand-lab /layout/guide',
     ...Object.fromEntries(['DecksCatalog', 'DeckEditor', 'DeckFile', 'DeckSettings', 'SlideRenderer', 'SlideThumb',
       'SlideStage', 'SlideInspector'].map((n) => [n, 'a part of the presentation tool — it runs against a deck document, '
       + 'so it is shown inside the Decks preview (the apps/presentation entry on the fixture, 2026-10-01)'])),

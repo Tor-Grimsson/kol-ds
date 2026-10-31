@@ -58,11 +58,22 @@ import useScrollSpy from '../hooks/useScrollSpy.js'
  * move handler is what makes this pattern jank; so is re-rendering React seven
  * times a frame to animate seven numbers.
  *
+ * SECTIONED RAIL (`children`, DocsTocRailChildren, kol-atlas 2026-10-30 — the
+ * type-scale page wanted each section's ticks to BE its styles). An entry may
+ * carry `children: [{ id, label }]`; under it the gap is one tick per child
+ * instead of `minors` inert graduations, so the rail's height follows the
+ * content. A child tick is today's graduation at rest — 3px, no label — but it
+ * is a real link (tab stop, not aria-hidden), its label appears only near the
+ * lens's peak (a steeper curve than the section labels, because at a 3px pitch
+ * the section curve would print five labels on top of one another), and the
+ * spy observes its id: the active child takes the active ink and its section
+ * stays lit as the parent. No `children`, no change.
+ *
  * HEADING DISCOVERY STAYS THE CONSUMER'S. `toc` is the contract for both
  * variants — reading `<section id>` and its `<h2>` out of the DOM is app
  * knowledge and does not belong in the package.
  *
- * @param {Array<{id: string, label: string}>} toc  headings to render + observe
+ * @param {Array<{id: string, label: string, children?: Array<{id: string, label: string}>}>} toc  headings to render + observe; RAIL: `children` are the section's entries, one tick each in place of `minors`
  * @param {'list'|'rail'} variant  render (default 'list' — the docs-sidebar column)
  * @param {Function} onNavigate  (event) => void — optional click handler on every link
  * @param {string}   rootMargin  IntersectionObserver rootMargin passed to the
@@ -92,13 +103,20 @@ export default function DocsToc({
   ariaLabel = 'On this page',
   className = '',
 }) {
-  const activeId = useScrollSpy(toc.map((item) => item.id), { rootMargin, root })
+  /* Children are observed too, in document order; the active SECTION is the
+   * active id itself or the entry that owns it. */
+  const activeId = useScrollSpy(
+    toc.flatMap((item) => [item.id, ...(item.children ?? []).map((c) => c.id)]),
+    { rootMargin, root },
+  )
+  const activeSection = toc.find((item) => item.id === activeId || item.children?.some((c) => c.id === activeId))?.id
 
   if (variant === 'rail') {
     return (
       <TocRail
         toc={toc}
         activeId={activeId}
+        activeSection={activeSection}
         onNavigate={onNavigate}
         minors={minors}
         falloff={falloff}
@@ -131,7 +149,7 @@ export default function DocsToc({
                * Layout, color, hover and focus live in `.shell-nav-item` now;
                * active is the shared `is-active` marker, not `text-emphasis`
                * typed at one call site. Matches RailRow exactly. */
-              className={`shell-nav-item kol-mono-14${activeId === item.id ? ' is-active' : ''}`}
+              className={`shell-nav-item kol-mono-14${activeSection === item.id ? ' is-active' : ''}`}
             >
               {item.label}
             </a>
@@ -148,7 +166,7 @@ export default function DocsToc({
  * do not belong in the other's render path.
  *
  * The magnitudes go to the DOM as `--m`, never to state — see the header. */
-function TocRail({ toc, activeId, onNavigate, minors, falloff, snap, position, minSections, ariaLabel, className }) {
+function TocRail({ toc, activeId, activeSection, onNavigate, minors, falloff, snap, position, minSections, ariaLabel, className }) {
   const navRef = useRef(null)
   const centresRef = useRef([])
   const frameRef = useRef(0)
@@ -182,13 +200,14 @@ function TocRail({ toc, activeId, onNavigate, minors, falloff, snap, position, m
      *   off    no snap at all — the honest fisheye, and better on a long rail
      *          with many headings and no graduations
      *
-     * Majors are every (minors + 1)th child, because the render interleaves
-     * one heading with `minors` ticks and stops after the last heading. */
+     * The labelled marks are the rail's links — headings and, under a
+     * sectioned entry, its children — read off the DOM so the count no longer
+     * has to be every (minors + 1)th row. */
     const marks = centresRef.current
     const targets = snap === 'off'
       ? null
       : snap === 'label'
-        ? marks.filter((_, i) => i % (minors + 1) === 0)
+        ? marks.filter((_, i) => nav.children[i]?.tagName === 'A')
         : marks
     const focus = y == null
       ? null
@@ -200,7 +219,7 @@ function TocRail({ toc, activeId, onNavigate, minors, falloff, snap, position, m
       const m = focus == null ? 0 : Math.exp(-(((focus - c) / falloff) ** 2))
       nav.children[i]?.style.setProperty('--m', m.toFixed(3))
     })
-  }, [falloff, snap, minors])
+  }, [falloff, snap])
 
   const onMove = useCallback((e) => {
     /* Reduced motion: the curve is the animation, so there is nothing to damp —
@@ -238,8 +257,8 @@ function TocRail({ toc, activeId, onNavigate, minors, falloff, snap, position, m
       onPointerLeave={(e) => { delete e.currentTarget.dataset.live; onLeave() }}
       className={`kol-toc kol-toc--${position} ${className}`.trim()}
     >
-      {toc.flatMap(({ id, label }, i) => {
-        const active = id === activeId
+      {toc.flatMap(({ id, label, children }, i) => {
+        const active = id === activeSection
         const row = (
           <a
             key={id}
@@ -275,6 +294,26 @@ function TocRail({ toc, activeId, onNavigate, minors, falloff, snap, position, m
             <span aria-hidden="true" className="kol-toc-rule" />
           </a>
         )
+        /* A sectioned entry's gap is its children, one tick each — a link with
+         * its label, not an inert graduation. */
+        if (children?.length) {
+          return [row, ...children.map((c) => {
+            const on = c.id === activeId
+            return (
+              <a
+                key={c.id}
+                href={`#${c.id}`}
+                onClick={onNavigate}
+                aria-current={on ? 'true' : undefined}
+                data-active={on ? '' : undefined}
+                className="kol-toc-row kol-toc-tick kol-toc-child"
+              >
+                <span className="kol-toc-label kol-helper-10 text-meta">{c.label}</span>
+                <span aria-hidden="true" className="kol-toc-rule" />
+              </a>
+            )
+          })]
+        }
         /* No graduations after the last heading — a ruler ends on a mark. */
         if (i === toc.length - 1) return [row]
         return [row, ...Array.from({ length: minors }, (_, k) => (

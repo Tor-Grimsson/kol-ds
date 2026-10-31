@@ -252,8 +252,19 @@
   padding: 8px;
   border-radius: 24px;
   background: var(--kol-surface-secondary);
-  border: 1px solid var(--kol-oq-08);
 }
+/* NO BORDER BY DEFAULT (FloatingStyleAndSignInDemos, kol-fxr 2026-10-30 — the Round 3 board's menus have none); the
+ * hairline is opt-in, the `menuBorder` prop of AppFloatNav and TransportPill */
+.kol-more-sheet-bordered { border: 1px solid var(--kol-oq-08); }
+/* THE FLOAT MENU (`variant="float"` — kol-components-atoms.css; round 3, W16 2026-10-31): r 26 (30 on touch), a 6 inset,
+ * pill rows 40 (48) tall, 12 in, the glyph 10 (12) off the label, the lit row oq-16. Its surface is `.kol-float-*` + `-m` */
+.kol-more-sheet.kol-more-sheet-float { padding: var(--kol-float-inset); gap: 0; border-radius: var(--kol-float-menu-r); }
+.kol-more-sheet-float .kol-btn.kol-btn-float.kol-btn-lg {
+  height: var(--kol-float-row);
+  padding: 0 12px;
+  gap: var(--kol-float-gap-ic);
+}
+.kol-more-sheet-float .kol-btn.kol-btn-float[aria-current="page"] { background: var(--kol-oq-16); color: var(--kol-fg-emphasis); }
 .kol-phone-nav-more {
   position: fixed;
   left: 12px;

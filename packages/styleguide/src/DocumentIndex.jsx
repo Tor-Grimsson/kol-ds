@@ -1,42 +1,5 @@
-import { useState } from 'react'
-import { FileQuickLook, PageHeader, KIND_LABEL } from '@kolkrabbi/kol-component'
-import { Contents } from './BrandGuide.jsx'
-
-/* DOCUMENT INDEX — a folder's pages as the brand book's contents cards (BrandGuide's `Contents`, routed), grouped by
- * `part` (plan-2026-10-28-document W3.3; home here since W5.2). A compact page header, never a hero: the cards are the page.
- *
- * A FILE IS A CARD TOO (DocumentIndexFilesAndIcons049, kol-website 2026-10-28 — a point of the MarkdownPage ticket: *"a
- * folder may also hold PDFs and images; the contents index lists them beside the md pages and opens them in the DS
- * QuickLook, not as pages"*): a row with `file` sits in its part like a page, its kind on the card's small line, and
- * opens in the DS Quick Look window (`QuickLookFrame` over the dimmed page, `KindPreview` as the body — a PDF page by
- * page, an image at its size), paging through the folder's files with ‹ ›. `documentFiles(glob)` in kol-framework makes
- * the rows.
- *
- *   rows      [{ id, to, label?, title, part, meta? }] — a page: label is the card's eyebrow (an entry's parent), part the group
- *             [{ id, file, title, part, ext?, kind? }]  — a file: the served URL; kind from the DS's `kindOf` when not given
- *   title · lede   the header, when the index is a page of its own (Reviews); a folder's index sits under its document
- *   onNavigate(to) the app's router */
-const fileLabel = (r) => KIND_LABEL[r.kind] ?? (r.ext ? r.ext.toUpperCase() : 'File')
-
-export default function DocumentIndex({ rows, title, lede, onNavigate }) {
-  const files = rows.filter((r) => r.file)
-  const [open, setOpen] = useState(null)   // index into `files`
-  const index = rows.map((r) => (r.file
-    ? { ...r, href: r.file, meta: r.meta ?? fileLabel(r), onClick: (e) => { if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return; e.preventDefault(); setOpen(files.indexOf(r)) } }
-    : r))
-  return (
-    <div className="kol-page flex flex-col gap-6">
-      {title && <PageHeader title={title} subtitle={lede} size="sm" voice="mono" />}
-      <Contents index={index} onNavigate={onNavigate} />
-      {/* the DS Quick Look over the folder's files (kol-component FileQuickLook, 2026-10-29 — the composition this file drew
-        * by hand: dims, pages ‹ ›, a download) */}
-      <FileQuickLook
-        files={files.map((f) => ({ key: f.file.split('?')[0], name: f.title, url: f.file, type: f.kind === 'image' ? 'image/' : undefined }))}
-        index={open}
-        onIndex={setOpen}
-        onClose={() => setOpen(null)}
-        meta={(x) => fileLabel(files.find((f) => f.file === x.url))}
-      />
-    </div>
-  )
-}
+/**
+ * @deprecated 2026-10-31 — DocumentIndex lives in `@kolkrabbi/kol-framework` (LayoutGroup, kol-atlas), beside
+ * `documentFiles` / `documentTabs`. This name is an alias on the retirement ledger; import it from kol-framework.
+ */
+export { default } from '@kolkrabbi/kol-framework/src/DocumentIndex.jsx'

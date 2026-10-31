@@ -41,3 +41,16 @@ export const TONE_VARS = [
   'pressed-bg', 'pressed-image', 'pressed-fg',
   'panel-bg', 'panel-border-w', 'panel-border',
 ].map((k) => `--kol-tone-${k}`)
+
+/**
+ * floatSurfaceClass — what a float is made of (W16, round 3 — 2026-10-31: *"accept the style, both glass styles"*).
+ * `surface="solid|glass-dark|glass-light"` on the float components resolves here to kol-theme's classes, never inline styles:
+ * `solid` (surface-secondary + the float shadow), `glass-dark` (Apple's dark glass, plus `.dark` — a dark material in either
+ * theme, so what sits on it takes dark-theme ink), `glass-light` (the light tint). `medium` marks a menu or a box (the
+ * deeper blur and shadow); a bar, a button or a track is small. Unknown → solid.
+ */
+export const FLOAT_SURFACES = ['solid', 'glass-dark', 'glass-light']
+export const floatSurfaceClass = (surface = 'solid', medium = false) => {
+  const s = FLOAT_SURFACES.includes(surface) ? surface : 'solid'
+  return `kol-float-${s}${medium ? ' kol-float-m' : ''}${s === 'glass-dark' ? ' dark' : ''}`
+}

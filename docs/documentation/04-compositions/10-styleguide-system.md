@@ -3,7 +3,7 @@ title: Style-guide system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-10-28
+updated: 2026-10-31
 verified: 2026-07-10
 description: Brand-guide specimens for color, logo and type
 aliases:
@@ -31,7 +31,7 @@ related:
 The brand/style-guide component set — the visual specimens a brand manual is built from. Assembled 2026-07-10 (bucket A of the external brand raid) by porting the studio's styleguide components read-only from their scattered homes (apps/brand · kol-client-kolkrabbi · kol-labs-monorepo) and decoupling every one to consumer-injected props.
 
 ```js
-import { ComboLab, MoodTile, LogoCard, TypeBlock } from '@kolkrabbi/kol-styleguide'
+import { ComboLab, MoodTile, CardLogo, BlockType } from '@kolkrabbi/kol-styleguide'
 ```
 
 ## Component index
@@ -82,7 +82,7 @@ ledger: `TypeScaleLab`, `typeScale`, `typeScaleCss`, `DEFAULT_TYPE_SCALE`, `deri
 ### Logo
 | Component | What it is |
 |-----------|-----------|
-| `LogoCard` | framed logo tile + caption + clearspace toggle |
+| `CardLogo` (was `LogoCard`, an alias) | framed logo tile + caption + clearspace toggle; `variant="plate"` — the mark on its ground, LayoutLogo's card |
 | `ClearspaceDiagram` (+ `hasFramework`) | clearspace/keyline overlay (grid → keyline → logo), all layers injected nodes |
 | `LogoScaling` | 4-variant × 10-step (128→8px) responsive scale matrix |
 | `Lockup` (+ `LOCKUP_SCALES`) | the branded-house lockup — mark beside a parent name, a product name and descriptors; horizontal · hero · wordmark at sm → xl |
@@ -91,7 +91,7 @@ ledger: `TypeScaleLab`, `typeScale`, `typeScaleCss`, `DEFAULT_TYPE_SCALE`, `deri
 ### Type
 | Component | What it is |
 |-----------|-----------|
-| `TypeBlock` | typography specimen primitive — family/cut/weight/size/tracking/`case` (explicit prop, default `none` — no auto-casing) |
+| `BlockType` (was `TypeBlock`, an alias) | typography specimen primitive — family/cut/weight/size/tracking/`case` (explicit prop, default `none` — no auto-casing) |
 | `WEIGHTS` · `CUTS` · `CASES` · `familyFor` | cut/weight/case data (`typographyCuts.js`) |
 | `TypeLab` | a brand's **type** — base size × musical ratio, a spec row + live sample per step with its line-height factor, and (2026-10-29) sixteen roles on the steps, each with face (display · heading · text · mono), weight, tracking, case and ink, in the brand's own faces (`TypeScaleLab` before) |
 | `typeLab` · `typeLabCss` · `DEFAULT_TYPE_LAB` · `TYPE_RATIOS` · `TYPE_STEPS` · `TYPE_ROLES` · `TYPE_FACES` · `TYPE_CASES` · `TYPE_INKS` | the type math (`typeLab.js`) — steps and roles from `{ base, ratio, leading, roles }`, and the type as `--type-*` variables plus a `.type-<role>` class each reading the colour lab's ink; `typeScale` · `typeScaleCss` · `DEFAULT_TYPE_SCALE` are the old names |
@@ -105,8 +105,23 @@ ledger: `TypeScaleLab`, `typeScale`, `typeScaleCss`, `DEFAULT_TYPE_SCALE`, `deri
 ### Guide
 | Component | What it is |
 |-----------|-----------|
-| `BrandGuide` | a brand guide, one scrolling page: `PageHero`, then one chapter per row of the `sections` it is handed (eyebrow · title · lede · prose · rules · the `kind`'s specimen · spec table · do / don't · words · closing prose), the chapters on a rail. kol-branding's renderer, carried. The outline is `kol-brand-template`'s `GUIDE_SECTIONS`; blank copy `GUIDE_TEMPLATE`; a client passes its own manifest with a `book` keyed the same. Live: apps/brand-hub `/guide/blank` · `/guide/voyager` |
+| `LayoutGuide` (was `BrandGuide`, an alias) | a brand guide, one scrolling page: `PageHero`, then one chapter per row of the `sections` it is handed (eyebrow · title · lede · prose · rules · the `kind`'s specimen · spec table · do / don't · words · closing prose), the chapters on a rail. kol-branding's renderer, carried. The outline is `kol-brand-template`'s `GUIDE_SECTIONS`; blank copy `GUIDE_TEMPLATE`; a client passes its own manifest with a `book` keyed the same. Live: apps/brand-hub `/guide/blank` · `/guide/voyager` |
 | `guideSections` · `guideToc` | the chapter list merged with `brand.book`, empty chapters dropped; the rail's entries (`guideBook.js`) — the one chapter model: `BrandBook` and `BrandAssets` are `BrandGuide`'s chapters over `BOOK_SECTIONS` and `ASSET_SECTIONS` since 0.11.0 (one renderer, user 2026-10-28) |
+
+### Layouts — `@kolkrabbi/kol-styleguide/layout`
+The identity lab's views as KOL layouts (LayoutGroup, kol-atlas 2026-10-31): carried class for class from kol-atlas `apps/lab`, a brand passes only data. Each takes a `view`. Run on the Kolkrabbi draft in `apps/brand-lab` at `/layout/type|color|logo|text|guide`.
+
+| Component | What it is |
+|-----------|-----------|
+| `LayoutType` (+ `LAYOUT_TYPE_VIEWS`, `LAYOUT_TYPE_FACES`) | a type exploration over a TypeLab value and its faces — `scale` (every role on a styleholder, the rail) · `styles` (rich text) · `article` · `sheet` (the specimen sheet) · `faces` (the UI font options sheet: one scale, D1 80/88 … H6 32/40 at 800 and the body steps, with a face switch over `faceOptions`) |
+| `LayoutColor` (+ `LAYOUT_COLOR_VIEWS`) | a colour exploration over a ColorLab value — `palette` · `ramps` · `layouts` (the roles as ink on ground) · `sheet` (cells are `BlockSwatch variant="cell"`) |
+| `LayoutLogo` (+ `LAYOUT_LOGO_VIEWS`) | every mark on its ground (`marks`), and each with the wordmark (`lockups`); cards are `CardLogo variant="plate"` |
+| `LayoutText` (+ `LAYOUT_TEXT_VIEWS`) | voice and copy in the type roles — `lines` (chapters, each line with its source) · `source` (a markdown document on the rail) |
+| `LayoutGuide` | the brand guide (above) |
+| `BlockSwatch` (was `Swatch`, an alias) | the documented swatch — chip over name and hex; `variant="cell"` is the colour sheet's cell |
+| `IconBrowser` | the showcase's icon gallery as a component — filter row, size · ground · guide · LIST / GRID, IconPlate tiles; items are kol-icons names or raw SVG; opt-in (0.20.0): `filters="dropdown"` (a multi-select menu a group, one row: every value starts ticked, `All` ticks or clears them, a row toggles and keeps the panel open, the trigger reads All · the value · `N of M` · None), `labels` (default true) and `labelToggle` (bare plates, name on a Tooltip) `perRowControl` (a Per row Slider, 2–32, sets the grid's count) and `actions` (a node after LIST / GRID, e.g. a ThemeToggle); `selectable` (a Select toggle: each plate shows the media library's `ToggleCheckbox variant="media"` top-left in `.kol-frame-control--top-left`; click the box or plate toggles, shift-click a range in the shown order, cmd/ctrl-click toggles, Escape clears, `N selected` and an All shown ToggleCheckbox in the row; grid only), item `meta` (`[[key, value], …]`, listed under the name in the plate's Tooltip), `selected` / `onSelect(names)` (controlled selection, optional) and `onContextMenu(selectedItems, event)` (right-click a plate, an unselected one becomes the selection; the page draws its own ContextMenu); `persistKey` (the controls — ticked facet values, per row, size, ground, guide, labels, layout, select mode, facets open — kept in sessionStorage under `kol-icon-browser:<key>`, so a reload comes back as it was; the selection stays the page's) |
+
+`DocumentIndex` moved to kol-framework (2026-10-31); the name here is an alias.
 
 ### Re-exported primitives (live in the core packages, surfaced here)
 `AssetGrid` · `FeatureSplit` · `ProsePreview` · `SpectrumGrid` (from `kol-component`) · `TypeSample` · `TypeSpecCard` (from `kol-foundry`). **Not duplicated** — the same modules, re-exported so a brand guide imports from one place.

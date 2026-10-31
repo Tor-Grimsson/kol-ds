@@ -11,6 +11,9 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *   variant="outline"          — bordered, transparent bg — THE secondary
  *                                treatment (2026-07-08 chrome law: one
  *                                secondary, always subordinate to filled)
+ *   variant="float"            — the floating style (round 3, W16 2026-10-31): a capsule on the float's well
+ *                                (`--kol-float-well`), 16 in, sm · md · lg 28 · 36 · 44 (touch 36 · 44 · 52) with
+ *                                12 · 13 · 14 (13 · 15 · 16) type; AccountForm's box passes it
  *   tone="inverse"             — the dark chip (`fg-ab-24`) for a washed plane
  *                                (ControlToneInverse, 2026-08-27); same prop on ViewToggle · Dropdown
  *   size="xs"                  — the panel rung (ControlsXsRung, 2026-09-01):

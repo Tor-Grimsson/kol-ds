@@ -2,7 +2,7 @@
  * Icon Component
  *
  * Dynamically loads and renders SVG icons from kol-icon-set-interface,
- * kol-icon-set-signal and kol-icon-set-identity (or consumer-registered sets)
+ * kol-icon-set-signal, kol-icon-set-identity and kol-icon-set-external (or consumer-registered sets)
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (matches SVG filename without extension)
@@ -26,6 +26,7 @@ const SETS = {
   interface: () => import('./sets/interface.js'),
   signal: () => import('./sets/signal.js'),
   identity: () => import('./sets/identity.js'),
+  external: () => import('./sets/external.js'),
 }
 const LOADED = {}           // set → { name: svg } once its chunk resolves
 const PENDING = {}          // set → the in-flight import
@@ -89,7 +90,7 @@ export const registerIcons = (globMap) => {
   }
 }
 
-/* Resolution order: kol-icon-set-interface → kol-icon-set-signal → kol-icon-set-identity (0.49.0) → consumer-registered.
+/* Resolution order: kol-icon-set-interface → kol-icon-set-signal → kol-icon-set-identity (0.49.0) → kol-icon-set-external → consumer-registered.
  * That's the whole chain — a miss is a real miss.
  *
  * v1 BEFORE signal, and it decides the twelve names both sets drew (2026-08-28):

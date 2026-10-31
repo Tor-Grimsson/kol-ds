@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Button, FileQuickLook, SOLO, Table, Tag } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { MarkdownPage, PageSection, libraryLinks } from '@kolkrabbi/kol-framework'
-import DocumentIndex from './DocumentIndex.jsx'
+import DocumentIndex from '@kolkrabbi/kol-framework/src/DocumentIndex.jsx'
 
 /* DOCUMENT LIBRARY — a `documentLibrary` (kol-framework) drawn: a sortable table per folder, the title opening the text,
  * the originals opening in the DS Quick Look, the markdown downloading (DocumentLibraryAndBoardParts, kol-website

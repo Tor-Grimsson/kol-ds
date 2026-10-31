@@ -1911,6 +1911,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PopoverPanel": [
@@ -2447,6 +2453,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "level",
       "type": "—",
       "def": "—",
@@ -2505,6 +2517,12 @@
       "desc": ""
     },
     {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -2524,6 +2542,44 @@
     },
     {
       "prop": "ariaLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "VariantsControl": [
+    {
+      "prop": "axes",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -3148,6 +3204,44 @@
     },
     {
       "prop": "yLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "OriginPicker": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "[0.5, 0.5]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Origin'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -4507,6 +4601,12 @@
       "desc": ""
     },
     {
+      "prop": "cycle",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "value",
       "type": "—",
       "def": "—",
@@ -4514,6 +4614,18 @@
     },
     {
       "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5367,7 +5479,7 @@
       "desc": ""
     }
   ],
-  "MenuDropdownItem": [
+  "MenuRow": [
     {
       "prop": "hover",
       "type": "—",
@@ -5378,6 +5490,12 @@
       "prop": "size",
       "type": "—",
       "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
       "desc": ""
     },
     {
@@ -5441,7 +5559,15 @@
       "desc": ""
     }
   ],
-  "MenuDropdownNest": [
+  "MenuDivider": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'border-oq-08 my-1'",
+      "desc": ""
+    }
+  ],
+  "MenuFlyout": [
     {
       "prop": "flyout",
       "type": "—",
@@ -5479,7 +5605,399 @@
       "desc": ""
     },
     {
+      "prop": "rowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuDropdownItem": [
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuDropdownDivider": [
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuDropdownNest": [
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "disabled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "scroll",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuTrigger": [
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "iconOnly",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuPanel": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuLabel": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Menu": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'start'",
+      "desc": ""
+    },
+    {
+      "prop": "offset",
+      "type": "—",
+      "def": "4",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "stayOpen",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "trigger",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "minWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "search",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuFilter": [
+    {
+      "prop": "groups",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Filter'",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'filter-lines'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "minWidth",
+      "type": "—",
+      "def": "224",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClear",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuDatePicker": [
+    {
+      "prop": "groups",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'calendar'",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "minWidth",
+      "type": "—",
+      "def": "224",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "compare",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuMore": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "minWidth",
+      "type": "—",
+      "def": "224",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "stayOpen",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5487,7 +6005,71 @@
   ],
   "ModalProvider": [
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'bordered'",
+      "desc": ""
+    },
+    {
       "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Dialog": [
+    {
+      "prop": "state",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "closeWith",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Combobox": [
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6249,6 +6831,36 @@
       "desc": ""
     },
     {
+      "prop": "placement",
+      "type": "—",
+      "def": "'bottom-end'",
+      "desc": ""
+    },
+    {
+      "prop": "alpha",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "brightness",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "inline",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "modes",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -6268,6 +6880,24 @@
     },
     {
       "prop": "defaultValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trigger",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hexEnd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6643,9 +7273,15 @@
       "desc": ""
     },
     {
-      "prop": "look",
+      "prop": "type",
       "type": "—",
-      "def": "'underline'",
+      "def": "'mono'",
+      "desc": ""
+    },
+    {
+      "prop": "filled",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -6673,6 +7309,12 @@
       "desc": ""
     },
     {
+      "prop": "overflow",
+      "type": "—",
+      "def": "'scroll'",
+      "desc": ""
+    },
+    {
       "prop": "value",
       "type": "—",
       "def": "—",
@@ -6697,6 +7339,18 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "look",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "onExpand",
       "type": "—",
       "def": "—",
@@ -6716,6 +7370,12 @@
     },
     {
       "prop": "shadow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dock",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6751,6 +7411,24 @@
       "desc": ""
     },
     {
+      "prop": "surface",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "split",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "size",
       "type": "—",
       "def": "—",
@@ -6777,6 +7455,32 @@
   ],
   "TABBAR_H": [
     {
+      "prop": "mode",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TABBAR_PILL_H": [
+    {
+      "prop": "float",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "tabs",
       "type": "—",
       "def": "—",
@@ -6796,6 +7500,12 @@
     },
     {
       "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filled",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6889,6 +7599,12 @@
       "desc": ""
     },
     {
+      "prop": "dock",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "active",
       "type": "—",
       "def": "'fill'",
@@ -6904,6 +7620,24 @@
       "prop": "foldSide",
       "type": "—",
       "def": "'left'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "split",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -6956,6 +7690,50 @@
     },
     {
       "prop": "className",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TABBAR_PILL_GAP": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMinimise",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "wrap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "type",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -8307,6 +9085,68 @@
       "desc": ""
     }
   ],
+  "GrowthLineStage": [
+    {
+      "prop": "shape",
+      "type": "—",
+      "def": "'orb'",
+      "desc": ""
+    },
+    {
+      "prop": "params",
+      "type": "—",
+      "def": "{ minGap: 6, maxGap: 24, contrast: 1.4, growth: 2.5 }",
+      "desc": ""
+    },
+    {
+      "prop": "pointer",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "wave",
+      "type": "—",
+      "def": "{ ms: 24000, a: 9, l: 640 }",
+      "desc": ""
+    },
+    {
+      "prop": "intro",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cap",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "seed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onIntroEnd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "SectionHero": [
     {
       "prop": "variant",
@@ -9577,6 +10417,12 @@
       "desc": ""
     },
     {
+      "prop": "stack",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "label",
       "type": "—",
       "def": "—",
@@ -10159,6 +11005,26 @@
       "desc": ""
     }
   ],
+  "ResizeHandle": [
+    {
+      "prop": "axis",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDrag",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onEnd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ColumnBrowser": [
     {
       "prop": "objects",
@@ -10212,6 +11078,12 @@
       "prop": "partition",
       "type": "—",
       "def": "(objects, prefix) => {\n  const folderSet = new Set()\n  const files = []\n  for (const o of objects) {\n    const rel = prefix ? o.key.slice(prefix.length) : o.key\n    const slash = rel.indexOf('/')\n    if (slash !== -1) folderSet.add(rel.slice(0, slash + 1))\n    else files.push({ ...o, displayKey: o.displayKey ?? o.displayName ?? rel })\n  }\n  return { folders: [...folderSet].sort(), files }\n}",
+      "desc": ""
+    },
+    {
+      "prop": "previewPlacement",
+      "type": "—",
+      "def": "'inline'",
       "desc": ""
     },
     {
@@ -10288,6 +11160,12 @@
     },
     {
       "prop": "renderDetails",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderFolderPreview",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -10434,6 +11312,12 @@
     },
     {
       "prop": "poster",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "credentials",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -10692,6 +11576,256 @@
     },
     {
       "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FileQuickLook": [
+    {
+      "prop": "files",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "urlOf",
+      "type": "—",
+      "def": "(f) => f.url",
+      "desc": ""
+    },
+    {
+      "prop": "download",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "index",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onIndex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FlipCard": [
+    {
+      "prop": "defaultFlipped",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "duration",
+      "type": "—",
+      "def": "450",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "flipped",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFlippedChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "front",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "back",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Kanban": [
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "cards",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "empty",
+      "type": "—",
+      "def": "'—'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onMove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderCard",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cardActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columnActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "externalType",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExternalDrop",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SortableGrid": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "getId",
+      "type": "—",
+      "def": "(it) => it.id",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "280",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "renderItem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onReorder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ProgressBar": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -11159,6 +12293,50 @@
       "desc": ""
     }
   ],
+  "TimeSet": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "milestones",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "model",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "today",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "now",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "storageKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "StackHero": [
     {
       "prop": "sizes",
@@ -11336,6 +12514,62 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    }
+  ],
+  "StickyNavCard": [
+    {
+      "prop": "bullets",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "isActive",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "collapsed",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "heading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "index",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
       "desc": ""
     }
   ],
@@ -11621,6 +12855,762 @@
       "desc": ""
     }
   ],
+  "DashMetricCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "delta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "borderColor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metrics",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sparkline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashStackedBarCard": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trend",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footerLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footerRight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashChartCard": [
+    {
+      "prop": "legends",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "badge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metricLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashListCard": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "barColor",
+      "type": "—",
+      "def": "'var(--kol-palette-yellow)'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "badge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashFeaturedCard": [
+    {
+      "prop": "legends",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "badge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metricLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "metricValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "chart",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashAlertCard": [
+    {
+      "prop": "trend",
+      "type": "—",
+      "def": "'up'",
+      "desc": ""
+    },
+    {
+      "prop": "alerts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trendValue",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashSlotCard": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "chart",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashTableCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "subtitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "badge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Histogram": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "barColor",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    }
+  ],
+  "Candlestick": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "288",
+      "desc": ""
+    }
+  ],
+  "ScatterPlot": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "maxX",
+      "type": "—",
+      "def": "200",
+      "desc": ""
+    },
+    {
+      "prop": "maxY",
+      "type": "—",
+      "def": "3000",
+      "desc": ""
+    },
+    {
+      "prop": "xLabels",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "yLabels",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "pointColor",
+      "type": "—",
+      "def": "'var(--kol-palette-blue)'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "320",
+      "desc": ""
+    }
+  ],
+  "LineChart": [
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "240",
+      "desc": ""
+    },
+    {
+      "prop": "fill",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "showArea",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "showDots",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "series",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "xLabels",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "yLabels",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DonutChart": [
+    {
+      "prop": "segments",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "120",
+      "desc": ""
+    },
+    {
+      "prop": "thickness",
+      "type": "—",
+      "def": "20",
+      "desc": ""
+    },
+    {
+      "prop": "showLegend",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "centerLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Sparkline": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-surface-on-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "24",
+      "desc": ""
+    },
+    {
+      "prop": "fill",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "Heatmap": [
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "cols",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "colTick",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "colorScale",
+      "type": "—",
+      "def": "['var(--kol-palette-blue)', 'var(--kol-palette-yellow)']",
+      "desc": ""
+    },
+    {
+      "prop": "cellSize",
+      "type": "—",
+      "def": "32",
+      "desc": ""
+    },
+    {
+      "prop": "fill",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'cells'",
+      "desc": ""
+    }
+  ],
+  "CalendarScale": [
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-palette-blue)'",
+      "desc": ""
+    }
+  ],
+  "CalendarHeatmap": [
+    {
+      "prop": "days",
+      "type": "—",
+      "def": "new Map()",
+      "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "new Date()",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-palette-blue)'",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'deploys'",
+      "desc": ""
+    }
+  ],
+  "DashboardGrid": [
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'4-col'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "GridCard": [
+    {
+      "prop": "span",
+      "type": "—",
+      "def": "'1x1'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "asCard",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DashTooltip": [
+    {
+      "prop": "visible",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MetricsDashboard": [
+    {
+      "prop": "milestones",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "data",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mainHost",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "Decks": [
     {
       "prop": "layouts",
@@ -11731,12 +13721,6 @@
       "desc": ""
     },
     {
-      "prop": "railLeft",
-      "type": "—",
-      "def": "0",
-      "desc": ""
-    },
-    {
       "prop": "unsaved",
       "type": "—",
       "def": "false",
@@ -11768,6 +13752,12 @@
     },
     {
       "prop": "onUpload",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railLeft",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -12767,6 +14757,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "fontUrl",
       "type": "—",
       "def": "—",
@@ -12830,6 +14826,32 @@
     },
     {
       "prop": "onComplete",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WebsiteIntroLoader": [
+    {
+      "prop": "onEnter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fontUrl",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -13029,6 +15051,18 @@
       "desc": ""
     },
     {
+      "prop": "hideTop",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "hideTabs",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -13171,6 +15205,12 @@
       "desc": ""
     },
     {
+      "prop": "level",
+      "type": "—",
+      "def": "'section'",
+      "desc": ""
+    },
+    {
       "prop": "id",
       "type": "—",
       "def": "—",
@@ -13241,6 +15281,12 @@
       "desc": ""
     },
     {
+      "prop": "size",
+      "type": "—",
+      "def": "'intro'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -13283,6 +15329,74 @@
       "desc": ""
     }
   ],
+  "SiteHero": [
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'center'",
+      "desc": ""
+    },
+    {
+      "prop": "minHeight",
+      "type": "—",
+      "def": "'100dvh'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "image",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "mark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "markTitle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tagline",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "overlay",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "CategoryPage": [
     {
       "prop": "navTree",
@@ -13303,7 +15417,43 @@
       "desc": ""
     },
     {
+      "prop": "view",
+      "type": "—",
+      "def": "'cards'",
+      "desc": ""
+    },
+    {
+      "prop": "head",
+      "type": "—",
+      "def": "'hero'",
+      "desc": ""
+    },
+    {
       "prop": "id",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "pages",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "filter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "renderItem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -13368,6 +15518,330 @@
     },
     {
       "prop": "cardFor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocumentIndex": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'cards'",
+      "desc": ""
+    },
+    {
+      "prop": "accent",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lede",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocumentHeader": [
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "menus",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'Pages'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lede",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WebsiteLayout": [
+    {
+      "prop": "navItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "cursor",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "wordmark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logomark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "takeover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "owner",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "hideChrome",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tools",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WebsiteNavbar": [
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TakeoverMenu": [
+    {
+      "prop": "navItems",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "lines",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logomark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "blurb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "social",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WebsiteFooter": [
+    {
+      "prop": "owner",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CursorProvider": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WorkViewProvider": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Modulatable": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "min",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "max",
+      "type": "—",
+      "def": "100",
+      "desc": ""
+    },
+    {
+      "prop": "density",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bus",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "clock",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "source",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSourceChange",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -13893,39 +16367,53 @@
       "desc": ""
     }
   ],
-  "FlipCard": [
-    {
-      "prop": "flipped",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "duration",
-      "type": "—",
-      "def": "450",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "front",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "back",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
+  "Scrubber": [
     {
       "prop": "width",
+      "type": "—",
+      "def": "232",
+      "desc": ""
+    },
+    {
+      "prop": "transport",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TimeStrip": [
+    {
+      "prop": "framed",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "span",
+      "type": "—",
+      "def": "'auto'",
+      "desc": ""
+    },
+    {
+      "prop": "transport",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "gutter",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -14321,11 +16809,237 @@
       "desc": ""
     }
   ],
+  "ResumeProvider": [
+    {
+      "prop": "person",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "records",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "contact",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "letters",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "portfolio",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "workBase",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "assetUrl",
+      "type": "—",
+      "def": "(k) => k",
+      "desc": ""
+    },
+    {
+      "prop": "copy",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "workUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "portrait",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fileStem",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Cover": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "Resume": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "ResumeMarginalia": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "ResumeRail": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "ResumeGrid": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "CoverLetter": [
+    {
+      "prop": "preview",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    },
+    {
+      "prop": "role",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "company",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Portfolio": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    },
+    {
+      "prop": "preview",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    }
+  ],
+  "Backside": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "KitPreview": [
+    {
+      "prop": "mode",
+      "type": "—",
+      "def": "'continuous'",
+      "desc": ""
+    },
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    }
+  ],
+  "KitOptions": [
+    {
+      "prop": "kit",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    }
+  ],
+  "ExportButtons": [
+    {
+      "prop": "lang",
+      "type": "—",
+      "def": "'en'",
+      "desc": ""
+    },
+    {
+      "prop": "treatment",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "options",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ContactLine": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "LangToggle": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
   "AppShell": [
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({ variant, preset, ...props }) {\n  const name = preset ?? (variant === 'site' ? 'site' : 'app')\n  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />\n  const Named = RAIL_PRESETS[name]?.component\n  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset \"${name}\"`); return null }\n  return <Named {...props} />\n}",
+      "def": "function NavRail({ variant, preset, ...props }) {\n  if (variant === 'top') return <TopRail {...props} />\n  const name = preset ?? (variant === 'site' ? 'site' : 'app')\n  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />\n  const Named = RAIL_PRESETS[name]?.component\n  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset \"${name}\"`); return null }\n  return <Named {...props} />\n}",
       "desc": ""
     },
     {
@@ -14338,6 +17052,12 @@
       "prop": "rail",
       "type": "—",
       "def": "'app'",
+      "desc": ""
+    },
+    {
+      "prop": "railHidden",
+      "type": "—",
+      "def": "false",
       "desc": ""
     },
     {
@@ -14356,6 +17076,12 @@
       "prop": "drawerOpenOn",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "navVariant",
+      "type": "—",
+      "def": "'mobile'",
       "desc": ""
     },
     {
@@ -14455,6 +17181,24 @@
       "desc": ""
     },
     {
+      "prop": "floats",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "moreItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "phoneNav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "masthead",
       "type": "—",
       "def": "—",
@@ -14467,7 +17211,7 @@
       "desc": ""
     }
   ],
-  "PhoneNav": [
+  "APP_FLOAT_NAV_VARIANTS": [
     {
       "prop": "items",
       "type": "—",
@@ -14493,25 +17237,19 @@
       "desc": ""
     },
     {
-      "prop": "placement",
-      "type": "—",
-      "def": "'bottom'",
-      "desc": ""
-    },
-    {
-      "prop": "border",
-      "type": "—",
-      "def": "true",
-      "desc": ""
-    },
-    {
-      "prop": "foldable",
+      "prop": "menuBorder",
       "type": "—",
       "def": "false",
       "desc": ""
     },
     {
-      "prop": "moreKeepsOpen",
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -14523,12 +17261,42 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "placement",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "border",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shadow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "active",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
+      "prop": "foldable",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "folded",
       "type": "—",
       "def": "—",
@@ -14536,44 +17304,38 @@
     },
     {
       "prop": "onFoldChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "moreKeepsOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "moreItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sheetItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dock",
       "type": "—",
       "def": "—",
       "desc": ""
     }
   ],
-  "TransportPill": [
+  "PhoneNav": [
     {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "sheetFor",
-      "type": "—",
-      "def": "{}",
-      "desc": ""
-    },
-    {
-      "prop": "placement",
-      "type": "—",
-      "def": "'bottom'",
-      "desc": ""
-    },
-    {
-      "prop": "foldable",
-      "type": "—",
-      "def": "false",
-      "desc": ""
-    },
-    {
-      "prop": "folded",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onFoldChange",
+      "prop": "variant",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15095,7 +17857,133 @@
   ],
   "AppHub": [
     {
+      "prop": "app",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
       "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "settingsPath",
+      "type": "—",
+      "def": "'/settings'",
+      "desc": ""
+    },
+    {
+      "prop": "homePath",
+      "type": "—",
+      "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutsKey",
+      "type": "—",
+      "def": "'s'",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutsRailKey",
+      "type": "—",
+      "def": "'S'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultTheme",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "iconComponent",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "home",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "walkthrough",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "settings",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "media",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signIn",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "themeToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "masthead",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shell",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "phoneNav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15124,6 +18012,18 @@
       "prop": "actionsInBar",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "chromes",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
       "desc": ""
     },
     {
@@ -15263,6 +18163,116 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "signedOut",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "stage",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signInAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "accountAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "menu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signedOutActions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "signInForm",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "dockMore",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AccountForm": [
+    {
+      "prop": "fields",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'column'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "okLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSubmit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "check",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "done",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "HubSettings": [
@@ -15340,6 +18350,74 @@
     },
     {
       "prop": "comboLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "HubSettingsRail": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Settings'",
+      "desc": ""
+    },
+    {
+      "prop": "app",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "shortcuts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "extra",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "account",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTabChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onReset",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15452,6 +18530,12 @@
     },
     {
       "prop": "dev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "phoneNav",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -16127,7 +19211,7 @@
       "desc": ""
     }
   ],
-  "TypeBlock": [
+  "BlockType": [
     {
       "prop": "text",
       "type": "—",
@@ -16257,7 +19341,7 @@
       "desc": ""
     }
   ],
-  "LogoCard": [
+  "CardLogo": [
     {
       "prop": "grid",
       "type": "—",
@@ -16298,6 +19382,12 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'figure'",
       "desc": ""
     },
     {
@@ -16385,63 +19475,31 @@
   ],
   "DEFAULT_PALETTE": [
     {
-      "prop": "label",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "hex",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    }
-  ],
-  "ComboLab": [
-    {
-      "prop": "layouts",
-      "type": "—",
-      "def": "[\n  { id: 'ratio-603010', label: '60 / 30 / 10' },\n  { id: 'tower',        label: 'Tower' },\n  { id: 'quad-split',   label: 'Quad split' },\n  { id: 'card-row',     label: 'Card row' },\n  { id: 'stripe-row',   label: 'Stripe row' },\n  { id: 'applied-card', label: 'Applied card' },\n]",
-      "desc": ""
-    },
-    {
-      "prop": "logo",
-      "type": "—",
-      "def": "null",
-      "desc": ""
-    },
-    {
-      "prop": "mode",
-      "type": "—",
-      "def": "'random'",
-      "desc": ""
-    },
-    {
       "prop": "className",
       "type": "—",
       "def": "''",
       "desc": ""
     },
     {
-      "prop": "palette",
+      "prop": "color",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "palettes",
+      "prop": "value",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "layout",
+      "prop": "onChange",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "pool",
+      "prop": "logo",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -16473,21 +19531,79 @@
       "desc": ""
     }
   ],
-  "DocumentIndex": [
+  "DocumentFiles": [
     {
-      "prop": "rows",
+      "prop": "assetsView",
+      "type": "—",
+      "def": "'label'",
+      "desc": ""
+    },
+    {
+      "prop": "fileIcon",
+      "type": "—",
+      "def": "(f) => BY_EXT[ext(f).toLowerCase()] ?? 'file'",
+      "desc": ""
+    },
+    {
+      "prop": "row",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "title",
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocumentMarkdown": [
+    {
+      "prop": "row",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocumentLibrary": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'table'",
+      "desc": ""
+    },
+    {
+      "prop": "urlOf",
+      "type": "—",
+      "def": "(f) => f.url",
+      "desc": ""
+    },
+    {
+      "prop": "assetsView",
+      "type": "—",
+      "def": "'label'",
+      "desc": ""
+    },
+    {
+      "prop": "langView",
+      "type": "—",
+      "def": "'text'",
+      "desc": ""
+    },
+    {
+      "prop": "library",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "lede",
+      "prop": "folder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -16497,9 +19613,123 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "fileIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
-  "Swatch": [
+  "DocumentView": [
+    {
+      "prop": "urlOf",
+      "type": "—",
+      "def": "(f) => f.url",
+      "desc": ""
+    },
+    {
+      "prop": "markdown",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "assetsView",
+      "type": "—",
+      "def": "'label'",
+      "desc": ""
+    },
+    {
+      "prop": "row",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "library",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "fileIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "A4Pages": [
+    {
+      "prop": "paged",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PrintStudio": [
+    {
+      "prop": "studio",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "logoSvg",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "markdown",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "templates",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "logoPngUrl",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "BlockSwatch": [
     {
       "prop": "anchor",
       "type": "—",
@@ -16516,6 +19746,30 @@
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'chip'",
+      "desc": ""
+    },
+    {
+      "prop": "lead",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "ink",
+      "type": "—",
+      "def": "'currentColor'",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
       "desc": ""
     },
     {
@@ -16609,7 +19863,7 @@
       "desc": ""
     }
   ],
-  "BrandGuide": [
+  "LayoutGuide": [
     {
       "prop": "className",
       "type": "—",
@@ -16647,99 +19901,17 @@
       "desc": ""
     }
   ],
-  "ColorLab": [
+  "BrandGuide": [
     {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "value",
+      "prop": "s",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "onChange",
+      "prop": "brand",
       "type": "—",
       "def": "—",
-      "desc": ""
-    }
-  ],
-  "TypeScaleLab": [
-    {
-      "prop": "faces",
-      "type": "—",
-      "def": "{\n  display: { family: 'var(--kol-font-family-sans-narrow)', label: 'Right Grotesk Narrow', weight: 500 },\n  heading: { family: 'var(--kol-font-family-sans-compact)', label: 'Right Grotesk Compact', weight: 500 },\n  text: { family: 'var(--kol-font-family-sans)', label: 'Right Grotesk', weight: 400 },\n}",
-      "desc": ""
-    },
-    {
-      "prop": "samples",
-      "type": "—",
-      "def": "{\n  headline: 'The quick brown fox jumps over the lazy dog',\n  text: 'A modular scale sets every size from one base and one ratio, so the steps keep the same proportion from the smallest note to the largest headline.',\n}",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "value",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onChange",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    }
-  ],
-  "Lockup": [
-    {
-      "prop": "parent",
-      "type": "—",
-      "def": "'Brand'",
-      "desc": ""
-    },
-    {
-      "prop": "product",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "descriptor",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "descriptor2",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "scale",
-      "type": "—",
-      "def": "'md'",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'horizontal'",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
       "desc": ""
     },
     {
@@ -16749,7 +19921,19 @@
       "desc": ""
     },
     {
-      "prop": "font",
+      "prop": "index",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "logoSources",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "structure",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -16759,11 +19943,187 @@
     {
       "prop": "parent",
       "type": "—",
-      "def": "'Brand'",
+      "def": "—",
       "desc": ""
     },
     {
       "prop": "presets",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LayoutType": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'scale'",
+      "desc": ""
+    },
+    {
+      "prop": "faces",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "accent",
+      "type": "—",
+      "def": "'var(--kol-accent-primary)'",
+      "desc": ""
+    },
+    {
+      "prop": "images",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "faceOptions",
+      "type": "—",
+      "def": "[\n  { id: 'inter', label: 'Inter', family: \"'Inter', system-ui, sans-serif\", href: gf('Inter') },\n  { id: 'geist', label: 'Geist', family: \"'Geist', system-ui, sans-serif\", href: gf('Geist') },\n  { id: 'ibm-plex-sans', label: 'IBM Plex Sans', family: \"'IBM Plex Sans', system-ui, sans-serif\", href: gf('IBM Plex Sans', '400;500;600;700') },\n  { id: 'public-sans', label: 'Public Sans', family: \"'Public Sans', system-ui, sans-serif\", href: gf('Public Sans') },\n  { id: 'noto-sans', label: 'Noto Sans', family: \"'Noto Sans', system-ui, sans-serif\", href: gf('Noto Sans') },\n  { id: 'montserrat', label: 'Montserrat', family: \"'Montserrat', system-ui, sans-serif\", href: gf('Montserrat') },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "sheet",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LAYOUT_TYPE_VIEWS": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'px-16 py-24'",
+      "desc": ""
+    },
+    {
+      "prop": "article",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LayoutColor": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'palette'",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LAYOUT_COLOR_VIEWS": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'h-24'",
+      "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LayoutLogo": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'marks'",
+      "desc": ""
+    },
+    {
+      "prop": "marks",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "wordmark",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "'var(--kol-font-family-sans)'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "LAYOUT_LOGO_VIEWS": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LayoutText": [
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "'lines'",
+      "desc": ""
+    },
+    {
+      "prop": "chapters",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "markdown",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "faces",
       "type": "—",
       "def": "{}",
       "desc": ""
@@ -16775,13 +20135,113 @@
       "desc": ""
     },
     {
-      "prop": "mark",
+      "prop": "source",
       "type": "—",
       "def": "—",
       "desc": ""
     },
     {
-      "prop": "font",
+      "prop": "lang",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LAYOUT_TEXT_VIEWS": [
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "IconBrowser": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Icons'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultGround",
+      "type": "—",
+      "def": "'light'",
+      "desc": ""
+    },
+    {
+      "prop": "filters",
+      "type": "—",
+      "def": "'chips'",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "labelToggle",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "perRowControl",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "selectable",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "filterGroups",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onContextMenu",
       "type": "—",
       "def": "—",
       "desc": ""

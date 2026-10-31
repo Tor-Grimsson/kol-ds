@@ -44,7 +44,9 @@
  *               outline shell; the inset ring marks ONLY the selected cell) |
  *               'tonal' (filled tiles, but the clicked cell marks itself by
  *               TONE — surface-tertiary fill, no ring; 2026-08-12).
- *               Every variant renders at the SAME pinned button-ladder
+ *               'float' (W16, round 3 — 2026-10-31): a capsule track 6 in on its `surface`, pills 4 apart at the
+ *               float heights (28/36/44, touch 36/44/52), the selected pill filled with the ink.
+ *               Every other variant renders at the SAME pinned button-ladder
  *               height (22/26/32/40) — icon or text, the box never moves.
  *   size      — mirrors Button exactly: 'sm' (26px, mono-12, 4/12 pad) |
  *               'md' (default, 32px, mono-14, 6/16 pad) | 'lg' (40px,
@@ -57,13 +59,16 @@
  *               selected cell on `--kol-surface-sunken` / `fg-96`, rest cells as the default paints
  *               them; `filled` and `tonal` keep their own selected law. Through `toneClass`, so a
  *               `kol-tone-sunken` wrapper reaches it too. Unset = inherit.
+ *   surface   — `variant="float"` only: 'solid' (default) | 'glass-dark' | 'glass-light' — the track's material
+ *               (`floatSurfaceClass`, kol-theme `.kol-float-*`)
  *   ariaLabel — accessible name for the group
  *   className — additional classes on the outer shell
  */
-import { toneClass } from '../utilities/tone.js'
+import { toneClass, floatSurfaceClass } from '../utilities/tone.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
-export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', tone = 'default', ariaLabel, className = '' }) {
+export default function SegmentedToggle({ value, onChange, options = [], variant = 'default', size = 'md', tone = 'default', surface = 'solid', ariaLabel, className = '' }) {
+  const float = variant === 'float'
   const cellType = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
   const stateless = value == null
   const focusIdx = Math.max(0, options.findIndex((opt) => opt.value === value))
@@ -95,6 +100,7 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
         (variant === 'filled' || variant === 'tonal') && 'kol-seg--filled',
         variant === 'tonal' && 'kol-seg--tonal',
         size !== 'md' && `kol-seg--${size}`,
+        float && `kol-seg--float ${floatSurfaceClass(surface)}`,
         toneClass(resolvedTone),
         className,
       ].filter(Boolean).join(' ')}

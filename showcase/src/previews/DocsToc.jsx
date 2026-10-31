@@ -8,7 +8,18 @@ export const stage = 'full'
 const TOC = [
   { id: 'toc-preview-overview', label: 'Overview' },
   { id: 'toc-preview-anatomy', label: 'Anatomy' },
-  { id: 'toc-preview-props', label: 'Props' },
+  /* `children` — on the rail, one tick per entry under its section in place of
+   * the inert graduations; hover the rail to read them. */
+  {
+    id: 'toc-preview-props',
+    label: 'Props',
+    children: [
+      { id: 'toc-preview-props-toc', label: 'toc' },
+      { id: 'toc-preview-props-variant', label: 'variant' },
+      { id: 'toc-preview-props-onnavigate', label: 'onNavigate' },
+      { id: 'toc-preview-props-rootmargin', label: 'rootMargin' },
+    ],
+  },
   { id: 'toc-preview-theming', label: 'Theming' },
 ]
 
@@ -29,10 +40,13 @@ export default function DocsTocPreview({ variant = 'list' }) {
         <DocsToc toc={TOC} variant={variant} />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-6">
-        {TOC.map(({ id, label }) => (
+        {TOC.map(({ id, label, children }) => (
           <section key={id} id={id} className="flex min-h-[16rem] flex-col gap-2 rounded border border-fg-08 p-6">
             <h3 className="kol-sans-body-01 text-emphasis">{label}</h3>
             <p className="kol-sans-body-02 text-meta">{BODY[id]}</p>
+            {children?.map((c) => (
+              <h4 key={c.id} id={c.id} className="kol-mono-14 text-body min-h-[12rem] pt-10">{c.label}</h4>
+            ))}
           </section>
         ))}
       </div>

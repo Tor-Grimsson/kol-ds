@@ -3,7 +3,7 @@ title: Phase log
 type: index
 status: active
 created: 2026-09-30
-updated: 2026-10-28
+updated: 2026-10-31
 description: Every run of work, newest first
 tags:
   - domain/workflow
@@ -27,6 +27,9 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-10-31 | [[2026-10-31-icon-batch-scan\|Icon batch scan]] | the 252-icon ClaudeListIconSet batch scanned before import — 19 batch clusters, 11 duplicates of shipped glyphs, 8 name collisions, a group and a name per icon; four new groups proposed (`time` · `chart` · `data` · `place`) | scanned · import is his session; nothing landed |
+| 2026-10-31 | [[2026-10-31-metric-rebuild\|apps/metric rebuilt on KOL parts]] | scan of 71 local components; raw `<button>` 11 → 0; six hand-made menus → one new kol-component `Menu`; `Button variant="bare"`; `Dialog` on the overlay panel; filter chips in the toolbar, Deploys tab on `SettingsSections` | built + verified locally · his review; nothing published |
+| 2026-10-31 | [[2026-10-31-figma-library\|The KOL Figma library]] | the code-built Figma mirror — tokens, 441 icons, atoms → organisms, layouts, app pages, breakpoints, Code Connect; kol-theme 0.202.0's neutral ramp | built W1–W15 · W16–W19 running · the library publish is his |
 | 2026-10-28 | [[2026-10-28-document\|Document space]] | kol-atlas's documents as pages on the site rail — `apps/document-fixture`, the kol-markdown additions proved in `apps/markdown`, `apps/document` with `MarkdownPage` (born there) and the index, Round 23 on the body face | built · his review of the app and the round; nothing published |
 | 2026-10-24 | [[2026-10-24-site-hub\|Site hub]] | the site-rail shape made once — `apps/site-hub` on `PageLayout` and `NavRail variant="site"` with Home, Brand and Assets on VOYAGER, the rest of the rail as rows; the render gate clean, the walk 33/33 | built · the look and the pages wait on the user |
 | 2026-10-24 | [[2026-10-24-home-library-one-card\|Home + Library]] | Home is the user's saves, Library is what ships; one card everywhere (modules and shipped presets too); `StudioDetail` and one slug scheme; the file rail's Date · Size and Upload image; covers are the output — DS wave published, fxr · mirror · monitor taken through by step message, closed by the extended pass | published · the three repos adopted |

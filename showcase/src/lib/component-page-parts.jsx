@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CodeBlock } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -32,25 +32,105 @@ const pagesOf = (names) => [...(names ?? [])]
   .filter(Boolean)
   .sort((a, b) => a.displayName.localeCompare(b.displayName))
 
-/** The two lists on a component page — what it renders, and what renders it — each a link. */
+/* WHAT IT IS BUILT FROM, READ FROM ITS SOURCE (LayoutGroup, 2026-10-31 — kol-atlas: *"/components/document-index shows none
+ * of what it is built from (SectionText, the icons, the text styles)"*). The composition index above is mined with the
+ * estate scan (extract-usage), so a component newer than the last scan listed nothing, and it never held icons or type
+ * classes. The page now reads the component's own file (lazily, only the one it shows): every component it renders, the
+ * kol-icons it names and the kol type classes it sets. A part with no page of its own (a file-local card, an alias such
+ * as PageHeader) is walked into, so what it renders is listed in its place. */
+const RAW = import.meta.glob('../../../packages/*/src/**/*.{js,jsx}', { query: '?raw', import: 'default' })
+const rawKey = (file) => `../../../${file}`
+const join = (from, rel) => {
+  const parts = from.split('/').slice(0, -1)
+  for (const seg of rel.split('/')) { if (seg === '..') parts.pop(); else if (seg !== '.') parts.push(seg) }
+  const f = parts.join('/')
+  return [f, `${f}.jsx`, `${f}.js`].find((x) => RAW[rawKey(x)]) ?? null
+}
+/* the file an import points at: relative, or a package's own src path; a bare package name resolves per name (SOURCES) */
+const target = (from, spec) => {
+  if (spec.startsWith('.')) return join(from, spec)
+  const m = /^@kolkrabbi\/kol-([a-z-]+)\/src\/(.+)$/.exec(spec)
+  return m ? join(`packages/${m[1]}/src/x`, `./${m[2]}`) : null
+}
+async function readParts(file, seen = new Set(), depth = 0) {
+  const out = { components: new Set(), icons: new Set(), type: new Set() }
+  if (!file || seen.has(file) || !RAW[rawKey(file)]) return out
+  seen.add(file)
+  const src = await RAW[rawKey(file)]()
+  for (const m of src.matchAll(/\b(kol-(?:sans|mono|helper|doc|prose|display|serif)-[a-z0-9-]+)/g)) out.type.add(m[1])
+  for (const m of src.matchAll(/<Icon\b[^>]*?\bname="([a-z0-9-]+)"|\bicon[=:]\s*["']([a-z0-9-]+)["']/g)) out.icons.add(m[1] ?? m[2])
+  /* imported names that the file renders as an element */
+  const imports = []
+  for (const m of src.matchAll(/import\s+([^'"]+?)\s+from\s+['"]([^'"]+)['"]/g)) {
+    const [clause, spec] = [m[1], m[2]]
+    const def = /^([A-Z]\w*)/.exec(clause)?.[1]
+    if (def) imports.push({ local: def, name: def, spec })
+    for (const n of /\{([^}]*)\}/.exec(clause)?.[1].split(',') ?? []) {
+      const [name, local = name] = n.trim().split(/\s+as\s+/)
+      if (/^[A-Z]/.test(local)) imports.push({ local, name, spec })
+    }
+  }
+  const rendered = (n) => new RegExp(`<${n}[\\s/>]`).test(src)
+  const walk = []
+  for (const { local, name, spec } of imports) {
+    if (!rendered(local) || local === 'Icon') continue
+    const page = getComponentBySlug(slugify(name))
+    const at = target(file, spec) ?? SOURCES[name]
+    /* an alias on the retirement ledger (its file opens `@deprecated`, as PageHeader → SectionText) lists what it renders */
+    const alias = page && at && RAW[rawKey(at)] && /@deprecated/.test((await RAW[rawKey(at)]()).match(/\/\*\*[\s\S]*?\*\//)?.[0] ?? '')
+    if (page && !alias) { out.components.add(page.slug); continue }
+    if (depth < 2) walk.push(at)
+  }
+  for (const f of walk) {
+    const sub = await readParts(f, seen, depth + 1)
+    sub.components.forEach((c) => out.components.add(c)); sub.icons.forEach((c) => out.icons.add(c)); sub.type.forEach((c) => out.type.add(c))
+  }
+  return out
+}
+
+function useSourceParts(name) {
+  const [parts, setParts] = useState(null)
+  useEffect(() => {
+    let live = true
+    setParts(null)
+    readParts(name ? SOURCES[name] : null).then((p) => { if (live) setParts(p) })
+    return () => { live = false }
+  }, [name])
+  return parts
+}
+
+const chipRow = (list) => (
+  <ul className="flex flex-wrap gap-2">{list.map((x) => <li key={x}><code className="kol-table-token">{x}</code></li>)}</ul>
+)
+
+/** The lists on a component page — what it renders (its components, icons and text styles) and what renders it — the
+ *  components each a link. */
 export function Nested({ component, Heading }) {
+  const parts = useSourceParts(component.name)
+  const nested = pagesOf(new Set([...(USES[component.name] ?? []), ...[...(parts?.components ?? [])].map((slug) => getComponentBySlug(slug)?.name)].filter((n) => n && n !== component.name)))
   const rows = [
-    ['Nested components', pagesOf(USES[component.name])],
+    ['Nested components', nested],
     ['Used by', pagesOf(USED_BY[component.name])],
   ].filter(([, list]) => list.length)
   /* flat siblings, like every other section of the page — the heading carries the section air */
-  return rows.map(([title, list]) => (
-    <Fragment key={title}>
-      <Heading>{title}</Heading>
-      <ul className="flex flex-wrap gap-x-4 gap-y-2">
-        {list.map((c) => (
-          <li key={c.slug} className="kol-doc-body">
-            <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={`/components/${c.slug}`}>{c.displayName}</Link>
-          </li>
-        ))}
-      </ul>
-    </Fragment>
-  ))
+  return (
+    <>
+      {rows.map(([title, list]) => (
+        <Fragment key={title}>
+          <Heading>{title}</Heading>
+          <ul className="flex flex-wrap gap-x-4 gap-y-2">
+            {list.map((c) => (
+              <li key={c.slug} className="kol-doc-body">
+                <Link className="underline decoration-fg-16 underline-offset-4 hover:decoration-fg-64" to={`/components/${c.slug}`}>{c.displayName}</Link>
+              </li>
+            ))}
+          </ul>
+        </Fragment>
+      ))}
+      {parts?.icons.size > 0 && <><Heading>Nested icons</Heading>{chipRow([...parts.icons].sort())}</>}
+      {parts?.type.size > 0 && <><Heading>Nested text styles</Heading>{chipRow([...parts.type].sort().map((c) => `.${c}`))}</>}
+    </>
+  )
 }
 
 /**

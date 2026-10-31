@@ -15,7 +15,7 @@ export { default as ScatterPlot } from './charts/ScatterPlot.jsx'
 export { default as LineChart } from './charts/LineChart.jsx'
 export { default as DonutChart } from './charts/DonutChart.jsx'
 export { default as Sparkline } from './charts/Sparkline.jsx'
-export { default as Heatmap } from './charts/Heatmap.jsx'
+export { default as Heatmap, CalendarHeatmap, CalendarScale } from './charts/Heatmap.jsx'
 
 // Layout
 export { default as DashboardGrid } from './layout/DashboardGrid.jsx'

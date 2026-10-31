@@ -46,13 +46,24 @@ export default function useScrollSpy(ids, { rootMargin = '-30% 0px -60% 0px', ed
       }
     }
 
+    /* NESTED IDS (DocsToc `children`, 2026-10-30): a section that contains its
+     * entries intersects for as long as any of them does, so the innermost
+     * visible element wins, and when an entry leaves while its section is
+     * still in the band the section takes it back. Flat ids never contain one
+     * another, so both rules are inert for them. */
+    const live = new Set()
     const observer = new IntersectionObserver(
       (entries) => {
+        entries.forEach((e) => (e.isIntersecting ? live.add(e.target) : live.delete(e.target)))
         if (edgeLockRef.current) return
-        const visible = entries
-          .filter((e) => e.isIntersecting)
+        const hits = entries.filter((e) => e.isIntersecting)
+        const visible = hits
+          .filter((e) => !hits.some((o) => o !== e && e.target.contains(o.target)))
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
-        if (visible[0]) setActiveId(visible[0].target.id)
+        if (visible[0]) { setActiveId(visible[0].target.id); return }
+        const left = entries.find((e) => !e.isIntersecting)
+        const owner = left && [...live].find((el) => el.contains(left.target))
+        if (owner) setActiveId(owner.id)
       },
       { root: scroller ?? null, rootMargin, threshold: 0 },
     )

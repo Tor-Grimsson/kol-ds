@@ -10,6 +10,8 @@
 
 They are grouped into categories and sub-categories (studio / design · time / plan · writing / blog · metrics / dashboard · general).
 
+Worked on together with the A/B batches in [IconTreatment](../archive/IconTreatment.md) (2026-10-31).
+
 ## Where they are
 
 | what | where |

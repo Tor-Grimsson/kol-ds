@@ -9,10 +9,11 @@
 // Exports are appended as each component lands.
 export { default as MoodTile } from './MoodTile.jsx'
 export { default as ColorAnatomy } from './ColorAnatomy.jsx'
-export { default as TypeBlock } from './TypeBlock.jsx'
+/* group-word-first names (LayoutGroup, 2026-10-31); the old names are aliases on the retirement ledger */
+export { default as BlockType, default as TypeBlock } from './BlockType.jsx'
 export { default as AssetTable } from './AssetTable.jsx'
 export { WEIGHTS, CUTS, CASES, familyFor } from './typographyCuts.js'
-export { default as LogoCard } from './LogoCard.jsx'
+export { default as CardLogo, default as LogoCard } from './CardLogo.jsx'
 export { default as ClearspaceDiagram, hasFramework } from './ClearspaceDiagram.jsx'
 export { default as LogoScaling } from './LogoScaling.jsx'
 export { DEFAULT_PALETTE } from './ComboLab.jsx'
@@ -25,13 +26,14 @@ export { generatePalette, fgOn, hexToHsl, hslToHex, GENERATION_MODES } from './c
 // The brand-book set the two brand apps were both maintaining locally
 // (brand-book-mocks-two-consumers, 2026-09-03).
 export { default as AssetCard } from './AssetCard.jsx'
-/* a folder's pages as the brand book's contents cards (plan-2026-10-28-document W5.2) */
+/* a folder's pages as the brand book's contents cards (plan-2026-10-28-document W5.2) — in kol-framework since 2026-10-31
+ * (LayoutGroup); this name is an alias of that one, on the retirement ledger */
 export { default as DocumentIndex } from './DocumentIndex.jsx'
 export { default as DocumentLibrary, DocumentView, DocumentFiles, DocumentMarkdown, kindIcon, useFileQuickLook } from './DocumentLibrary.jsx'
 /* print (PdfToolsFromStudio, 2026-10-28): A4 sheets for any content, and markdown to PDF · DOCX · MD on @kolkrabbi/kol-print */
 export { default as A4Pages } from './A4Pages.jsx'
 export { default as PrintStudio } from './PrintStudio.jsx'
-export { default as Swatch } from './Swatch.jsx'
+export { default as BlockSwatch, default as Swatch } from './BlockSwatch.jsx'
 export {
   PostPhoto, PostType, PostProduct, PostEditorial, StoryPhoto, StoryType, BrandAvatar, ProfileAvatar,
   DEFAULT_MOCK_PALETTE, DEFAULT_MOCK_FONTS,
@@ -58,7 +60,7 @@ export { brandSections, brandToc, brandInfo, BRAND_VIEWS, BOOK_SECTIONS, ASSET_S
 
 // The brand guide (2026-10-27): kol-branding's guide renderer over a chapter list it is handed —
 // kol-brand-template's GUIDE_SECTIONS, blank (GUIDE_TEMPLATE) or filled by a client's manifest.
-export { default as BrandGuide } from './BrandGuide.jsx'
+export { default as LayoutGuide, default as BrandGuide } from './LayoutGuide.jsx'
 export { guideSections, guideToc } from './guideBook.js'
 
 // THE LAB (2026-10-20; one name system and its own subpath 2026-10-29, BrandLabToolGaps): the generators a brand is MADE
@@ -78,3 +80,12 @@ export { default as TypeScaleLab } from './TypeScaleLab.jsx'
 export { typeScale, typeScaleCss, DEFAULT_TYPE_SCALE } from './typeLab.js'
 export { deriveColorLab } from './colorLab.js'
 export { default as LockupBuilder } from './LockupBuilder.jsx'
+
+// THE LAYOUTS (LayoutGroup, kol-atlas 2026-10-31): the identity lab's views as KOL layouts — a brand only passes data (values,
+// marks, copy). `@kolkrabbi/kol-styleguide/layout`; the main barrel exports the same names.
+export { default as LayoutType, LAYOUT_TYPE_VIEWS, UI_FACES as LAYOUT_TYPE_FACES } from './LayoutType.jsx'
+export { default as LayoutColor, LAYOUT_COLOR_VIEWS } from './LayoutColor.jsx'
+export { default as LayoutLogo, LAYOUT_LOGO_VIEWS } from './LayoutLogo.jsx'
+export { default as LayoutText, LAYOUT_TEXT_VIEWS } from './LayoutText.jsx'
+/* the icon browser — the showcase's icon gallery, exported (LayoutGroup, 2026-10-31) */
+export { default as IconBrowser } from './IconBrowser.jsx'

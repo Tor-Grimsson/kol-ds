@@ -5,7 +5,7 @@ status: canonical
 created: 2026-09-03
 updated: 2026-09-03
 verified: 2026-09-03
-description: Every color value, looked up
+description: Every surface, accent, state and ramp value
 aliases:
   - color-lookup
   - colors-lookup
@@ -16,7 +16,7 @@ sources:
   - packages/framework/kol-brand-color.css
 tags:
   - domain/tokens
-  - domain/color
+  - audience/consumer
 related:
   - "[[02-color|color]]"
   - "[[10-opacity|opacity]]"
@@ -30,28 +30,30 @@ related:
 
 Hue and surface values. **Ink weight is not here** — the `fg-*` / `oq-*`
 ladders and the eight ink roles live in [[10-opacity|opacity]], because they are
-neutral ink at a strength rather than color.
+neutral ink at a strength rather than colour.
 
 ## Surfaces
 
 | Token | Dark | Light |
 |---|---|---|
-| `--kol-surface-primary` | `#121215` | `#fafafa` |
-| `--kol-surface-on-primary` | `#fafafa` | `#121215` |
-| `--kol-surface-secondary` | `#19191d` | `#f2f2f2` |
-| `--kol-surface-on-secondary` | `#f8f8f8` | `#19191d` |
-| `--kol-surface-tertiary` | `#0e0e11` | `#ffffff` |
-| `--kol-surface-on-tertiary` | `#ffffff` | `#0e0e11` |
+| `--kol-surface-primary` | `var(--kol-neutral-076)` | `var(--kol-neutral-980)` |
+| `--kol-surface-on-primary` | `var(--kol-neutral-980)` | `var(--kol-neutral-076)` |
+| `--kol-surface-secondary` | `var(--kol-neutral-106)` | `var(--kol-neutral-949)` |
+| `--kol-surface-on-secondary` | `var(--kol-neutral-973)` | `var(--kol-neutral-106)` |
+| `--kol-surface-tertiary` | `var(--kol-color-black)` | `var(--kol-color-ab-white)` |
+| `--kol-surface-on-tertiary` | `var(--kol-color-ab-white)` | `var(--kol-color-black)` |
 | `--kol-surface-sunken` | `var(--kol-oq-ab-96)` | `var(--kol-oq-ab-100)` |
-| `--kol-surface-inverse` | `#fcfbf8` | `#0e0e11` |
-| `--kol-surface-on-inverse` | `#0e0e11` | `#fcfbf8` |
-| `--kol-surface-secondary-inverse` | `#e0e0e0` | `#212121` |
-| `--kol-surface-tertiary-inverse` | `#d4d4d8` | `#424242` |
-| `--kol-surface-contrast` | `#0b0b0c` | `#f2f2f2` |
-| `--kol-surface-support-split` | `#202026` | `#eeeeee` |
-| `--kol-surface-support-split-inverse` | `#eeeeee` | `#202026` |
-| `--kol-surface-ab-split` | `#000000` | `#ffffff` |
-| `--kol-surface-ab-split-inverse` | `#ffffff` | `#000000` |
+| `--kol-surface-secondary-hover` | `var(--kol-surface-sunken)` | `rgb(from var(--kol-surface-secondary) calc(r - 8) calc(g - 8) calc(b - 8))` |
+| `--kol-surface-secondary-press` | `rgb(from var(--kol-surface-sunken) calc(r - 8) calc(g - 8) calc(b - 8))` | `rgb(from var(--kol-surface-secondary) calc(r - 16) calc(g - 16) calc(b - 16))` |
+| `--kol-surface-inverse` | `var(--kol-color-white)` | `var(--kol-color-black)` |
+| `--kol-surface-on-inverse` | `var(--kol-color-black)` | `var(--kol-color-white)` |
+| `--kol-surface-secondary-inverse` | `var(--kol-neutral-878)` | `var(--kol-neutral-129)` |
+| `--kol-surface-tertiary-inverse` | `var(--kol-neutral-839)` | `var(--kol-neutral-259)` |
+| `--kol-surface-contrast` | `var(--kol-neutral-045)` | `var(--kol-neutral-949)` |
+| `--kol-surface-support-split` | `var(--kol-neutral-137)` | `var(--kol-neutral-933)` |
+| `--kol-surface-support-split-inverse` | `var(--kol-neutral-933)` | `var(--kol-neutral-137)` |
+| `--kol-surface-ab-split` | `var(--kol-color-ab-black)` | `var(--kol-color-ab-white)` |
+| `--kol-surface-ab-split-inverse` | `var(--kol-color-ab-white)` | `var(--kol-color-ab-black)` |
 
 ## Absolutes
 

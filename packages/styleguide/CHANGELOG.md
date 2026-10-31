@@ -1,5 +1,30 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.20.0 — 2026-10-31
+
+**IconBrowser goes icons-first, opt-in** (IconTreatment — the user: "I really just need to see the icons … toggle hide things, and filters using DS components"). Every default renders as before.
+- **`filters="dropdown"`** — one multi-select menu a filter group (the Menu family's panel and ✓ rows), all in one row under the header, in place of the chip groups; the filter glyph shows and hides the row. Every value starts ticked, `All` (`group.all`) ticks or clears them, a row toggles and keeps the panel open (the user: "if all then everything toggled on.. then I could toggle away the group Im trying to sort into"); the trigger reads All · the one value · `N of M` · None. An item passes when its value, or any member of an array value, is ticked. `filters="chips"` stays the default.
+- **`labels`** (default true) — the name and group under each plate on first paint. **`labelToggle`** (default false) puts a Labels toggle in the control row. Labels off: bare plates in a dense wall, the name on the DS `Tooltip`, click still copies it.
+
+- **`perRowControl`** (default false) — a Per row `Slider` (2–32) in the control row sets the grid's count per row (the user: "give me input or slider for icon per row").
+- **`actions`** — a node at the end of the control row, after a divider (the treatment page puts its `ThemeToggle` there; the user: "I also need a theme toggle, not just icon background flip color").
+- **`selectable`** (default false) — a Select toggle in the control row: click toggles a plate, shift-click selects a range in the shown order, cmd/ctrl-click toggles, Escape clears, the row reads `N selected`; each plate shows the media library's select indicator (`ToggleCheckbox variant="media"` in `.kol-frame-control--top-left`), the box or the plate toggles it, and an **All shown** ToggleCheckbox beside the count takes every icon the filters and search show (the user: "we have a toggle component, why didnt you use that??"). An item's **`meta`** (`[[key, value], …]`) lists under its name in the plate's Tooltip, `none` left out. **`selected` / `onSelect(names)`** control it (optional). **`onContextMenu(selectedItems, event)`** — right-click a plate (an unselected one becomes the selection); the page opens its own `ContextMenu` (the treatment page: move to category, the user: "toggle 5, 10, 20 icons, then I can right click and move those to category").
+- **`persistKey`** (opt-in) — the controls (ticked facet values, per row, size, ground, guide, labels, layout, select mode, facets open) are kept in sessionStorage under `kol-icon-browser:<key>`, read and written in try/catch, so a dev-server reload comes back as it was (the user: "I cant do anything, it keeps refreshing"). The selection stays the page's.
+
+## 0.19.0 — 2026-10-31
+
+**The layouts** (LayoutGroup, kol-atlas — the user: the identity lab's views are KOL layouts with Atlas's data in them). A new entry, **`@kolkrabbi/kol-styleguide/layout`** (the main barrel exports the same names), each carried class for class from kol-atlas `apps/lab` with its `--lab-*` vars as props and Atlas's copy and Lab bar left out:
+- **`LayoutType`** `view` scale · styles · article · sheet, over a TypeLab value and its faces (`type`, `faces`, `accent`, `images`, `sheet`). The role classes (`.t-<role>`) are written by `typeLabCss` and scoped to the layout.
+  `view="faces"` (the user's go): the UI font options sheet — one type scale (D1 80/88 … H6 32/40 at 800, then the subheading, text, utility and label steps), one sheet with a face switch, never a copy per face. `faceOptions: [{ id, label, family, href? }]`, default `LAYOUT_TYPE_FACES` (Inter · Geist · IBM Plex Sans · Public Sans · Noto Sans · Montserrat).
+- **`LayoutColor`** `view` palette · ramps · layouts · sheet, over a ColorLab value (`color`, `font`).
+- **`LayoutLogo`** `view` marks · lockups (`marks: [{ id, svg, label, ground, ink? }]`, `wordmark`, `font`).
+- **`LayoutText`** `view` lines · source — chapters of lines with their sources, or a markdown source on the rail, in the type roles (`chapters`, `markdown`, `source`, `lang`, `type`, `faces`).
+- **`LayoutGuide`** is `BrandGuide` renamed, unchanged.
+- **Group-word-first names:** `BlockType` (was `TypeBlock`), `BlockSwatch` (was `Swatch`), `CardLogo` (was `LogoCard`). `BlockSwatch variant="cell"` is the colour sheet's cell (the name and hex inside the colour, `lead`, `ink`, `font`); `CardLogo variant="plate"` is the logo board's card (the mark on its ground).
+- **`IconBrowser`**: the showcase's icon gallery as a component — filter row, size · ground · guide · LIST / GRID, IconPlate tiles; an item is a kol-icons name or raw SVG (`svg: null` is a gap).
+- **`DocumentIndex` moved to kol-framework** (≥0.66.0, now a peer floor); the name here is an alias.
+- **Aliases** on the retirement ledger, same components: `TypeBlock` → `BlockType`, `Swatch` → `BlockSwatch`, `LogoCard` → `CardLogo`, `BrandGuide` → `LayoutGuide`, `DocumentIndex` → kol-framework's.
+
 ## 0.18.4 — 2026-10-30
 
 - **The Wheel tab wears `color-wheel`** (kol-icons 0.53.5), not `clr-mono` borrowed.

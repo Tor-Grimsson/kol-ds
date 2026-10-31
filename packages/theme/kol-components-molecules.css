@@ -125,6 +125,7 @@
  * trigger squares its bottom corners, panel squares its top, and the fill
  * continues (panel offset is -1 in Dropdown.jsx for the same reason). */
 .kol-dd-trigger--open { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
 /* Flex column so the viewport clamp (Popover size middleware sets maxHeight
  * on this element) reaches the list: the hairline keeps its 1px, the list
  * takes the rest and scrolls inside — the panel itself never overflows the
@@ -138,7 +139,11 @@
    * sunken continue their fill, outline and ghost paint the page's ground —
    * `--kol-tone-ground` — so opening changes nothing under the panel. The
    * `--primary` / `--grey` / `--outline` classes are aliases of the tones. */
-  background-color: var(--kol-tone-panel-bg, var(--kol-tone-bg, var(--kol-surface-secondary)));
+  /* ONE TONE, CLOSED OR OPEN (user 2026-10-31: *"how are you using one tone for default, but another for list open?"*):
+   * the panel is the trigger tone's floating surface again (`--kol-tone-panel-bg`), so opening never changes the
+   * ground; what lifts it off the page is the float shadow (metric Round 3's "the panel melted into the page"). */
+  background-color: var(--kol-tone-panel-bg, var(--kol-surface-secondary)); /* untoned = primary, whose floating surface is surface-secondary */
+  box-shadow: var(--kol-shadow-float);
   border: var(--kol-tone-panel-border-w, 0) solid var(--kol-tone-panel-border, transparent); /* outline: matches the trigger's rest border */
   border-top: 0; /* the trigger's bottom edge is the divider (docs page) */
 }
@@ -160,6 +165,56 @@
   overflow-y: auto;
   min-height: 0;
   max-height: calc(var(--kol-dd-max-rows, 10) * var(--kol-dd-row-h, 2rem) + var(--kol-spacing-1) * 2);
+}
+
+/* THE MENU PANEL (the Menu* family, metric Round 4, 2026-10-31) — `Menu`'s panel: it floats under the caller's
+ * trigger (never fused to it), one step up from the cards. The oq ramp swaps per theme, so the one rule is light
+ * and dark. 8px / 6px are the look the user signed off on the metric page (round 1), above the 4px container rung
+ * on purpose — a floating menu, not a container. Was `.kol-dd-menu` (round 2, alias below). */
+.kol-menu-panel {
+  background-color: var(--kol-oq-08);
+  border-radius: 8px;
+  padding: var(--kol-spacing-1);
+  box-shadow: var(--kol-shadow-float);
+}
+/* @deprecated 2026-10-31 → kol-menu-panel */
+.kol-dd-menu {
+  background-color: var(--kol-oq-08);
+  border-radius: 8px;
+  padding: var(--kol-spacing-1);
+  box-shadow: var(--kol-shadow-float);
+}
+/* the row: tall (38), inset by the panel's 4, ink one step down until hovered; the current row and an
+ * open flyout's row are filled. Two classes so it outranks the row's own `text-body` utility. */
+.kol-menu-panel .kol-menu-row {
+  height: 38px;
+  padding-inline: var(--kol-spacing-3);
+  border-radius: 6px;
+  color: var(--kol-fg-88);
+}
+.kol-menu-panel .kol-menu-row:hover,
+.kol-menu-panel .kol-menu-row--current,
+.kol-menu-panel .kol-menu-row[aria-expanded="true"] {
+  color: var(--kol-fg-96);
+  background-color: var(--kol-oq-16);
+}
+/* a rule runs edge to edge — through the panel's 4px inset */
+.kol-menu-panel .kol-menu-rule {
+  border-color: var(--kol-oq-16);
+  margin: var(--kol-spacing-1) calc(var(--kol-spacing-1) * -1);
+}
+/* MenuLabel — a section's name */
+.kol-menu-panel .kol-menu-label {
+  padding: var(--kol-spacing-2) var(--kol-spacing-3) var(--kol-spacing-1);
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+  color: var(--kol-fg-48);
+}
+/* a row's shortcut cap: outlined, no fill — it sits on the filled current row */
+.kol-menu-panel .kol-menu-kbd {
+  background-color: transparent;
+  border: 1px solid var(--kol-oq-24);
+  color: var(--kol-oq-80);
 }
 
 /* Popover — default chrome for floating-ui-positioned panels.
@@ -1858,6 +1913,11 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
 }
 .kol-column-browser-resize-x.is-dragging::before,
 .kol-column-browser-resize-y.is-dragging::before { background: var(--kol-fg-96); }
+/* THE DOCKED PREVIEW (ColumnPreviewDocked, kol-website 2026-10-30): the columns scroll in their own
+ * strip beside a pane pinned right, and the strip tucks 1px under the pane's edge so the last column's
+ * edge and the divider are one line. The last grab pill sits inside its line here, or its half past the
+ * edge adds 2px of scroll and the two lines part. */
+.kol-column-browser-strip--dock > .kol-column-browser-resize-x:last-child::before { left: calc(100% - 1px); }
 
 .kol-overlay .kol-prose {
   max-width: var(--kol-content-measure);
@@ -2118,6 +2178,21 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   --kol-tone-panel-border: transparent;
 }
 .kol-tone-grey,
+/* RAISED — Dropdown `variant="raised"`: the menus' faint raised look on a select (metric R3.4, user 2026-10-31: *"the same
+ * faint raised panel as the menus"*), with the trigger on the same ground so closed and open are one tone (*"how are you
+ * using one tone for default, but another for list open?"*). A variant, not the default, so no other select moves
+ * (*"I dont wanna break anything, should we just make a variant?"*). */
+:where(.kol-dd-trigger--raised, .kol-dd-panel--raised) {
+  --kol-tone-bg: var(--kol-oq-08);
+  --kol-tone-image: none;
+  --kol-tone-fg: var(--kol-fg-emphasis);
+  --kol-tone-border: transparent;
+  --kol-tone-hover-bg: var(--kol-oq-08);
+  --kol-tone-hover-image: none;
+  --kol-tone-hover-fg: var(--kol-fg-emphasis);
+  --kol-tone-hover-border: transparent;
+  --kol-tone-panel-bg: var(--kol-oq-08);
+}
 :where(.kol-btn-grey, .kol-dd-trigger--grey, .kol-dd-panel--grey, .kol-icon-frame-grey) {
   --kol-tone-bg: var(--kol-oq-12);
   --kol-tone-image: none;
@@ -2183,7 +2258,9 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   --kol-tone-image: none;
   --kol-tone-fg: var(--kol-fg-meta);
   --kol-tone-border: transparent;
-  --kol-tone-hover-bg: transparent;
+  /* an oq-04 chip under the pointer, one step under the selected oq-08 — as IconFrame's hover (user 2026-10-31:
+   * *"the unselected doesnt have a hover state like the IconFrame"*; reverses 2026-10-02's ink-only hover) */
+  --kol-tone-hover-bg: var(--kol-oq-04);
   --kol-tone-hover-image: none;
   --kol-tone-hover-fg: var(--kol-fg-emphasis);
   --kol-tone-hover-border: transparent;
@@ -2196,6 +2273,12 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
 /* THE FILLED TAB (user 2026-10-29, on the lab rail's text tabs: *"its not so clear that these are selectable tabs"*):
  * the tab bundle with its chip showing at rest — oq-04 in meta ink, oq-08 in full ink under the pointer, oq-16 when
  * selected — so a row of them reads as choices before one is hovered. `TabsRow look="chip" filled`. */
+/* the labelled MENU trigger (Filter, the date picker): quiet text, no hover wash — its chip shows only while its menu is
+ * open (user 2026-10-31: *"no hover just click … only [...] has hover"*). The ⋮ keeps the tab's oq-04 hover. */
+.kol-btn.kol-btn-tab.kol-menu-trigger--quiet { --kol-tone-hover-bg: transparent; }
+/* every menu trigger rests at strong ink (fg-80), not the tab's meta (fg-48) — it is a control you use, not a tab you
+ * are not on (user 2026-10-31: *"and default bring opacity up on all of them"*) */
+.kol-btn.kol-btn-tab.kol-menu-trigger { --kol-tone-fg: var(--kol-fg-strong); }
 :where(.kol-btn-tab-filled) {
   --kol-tone-bg: var(--kol-oq-04);
   --kol-tone-image: none;
@@ -2462,8 +2545,29 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   background: var(--kol-fg-12);
 }
 
+/* Children — a sectioned entry's own ticks (DocsToc `toc[].children`, DocsTocRailChildren, kol-atlas 2026-10-30). At
+ * rest a child is the graduation above, 3px and unlabelled; its label overflows the 3px row on both sides rather than
+ * growing it, so the pitch (and every measured detent) stays put. The label shows only near the lens's PEAK — a steeper
+ * curve than the section labels, because at a 3px pitch the section curve would stack four or five labels on one
+ * another — and it never takes the pointer: the row is stretched across the rail and IS the hit area, so the tick under
+ * the pointer is the one the lens shows and the one a click follows. */
+.kol-toc-child { align-self: stretch; }
+.kol-toc-child .kol-toc-label,
+.kol-toc-child[data-active] .kol-toc-label {
+  opacity: clamp(0, (var(--m) - 0.96) * 25, 1);
+  pointer-events: none;
+}
+.kol-toc-child:focus-visible .kol-toc-label { opacity: 1; }
+/* The active child takes the active ink at a graduation's length; its section row stays lit as the parent. */
+.kol-toc-child[data-active] .kol-toc-rule {
+  width: calc(12px + 11px * var(--m));
+  background: var(--kol-fg-64);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .kol-toc-label { opacity: 1; transform: none; }
+  .kol-toc-child .kol-toc-label { opacity: 0; }
+  .kol-toc-child:focus-visible .kol-toc-label { opacity: 1; }
   .kol-toc-rule  { width: 12px; }
   .kol-toc-row[data-active] .kol-toc-rule { width: 24px; }
   .kol-toc-tick .kol-toc-rule { width: 5px; }

@@ -9,29 +9,31 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Later — user ideas, not scheduled
 
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` is on `AppHub`, the app rail; `apps/site-hub` (2026-10-24) is the site rail's reference beside it, and `apps/shell` shows both rails on one set of pages. The specimens exist; the call is his, his session.
+- **Phasing out Right Grotesk** (2026-10-31, parked). He wants to compare a replacement: Schibsted Grotesk or another Google face, and a plain system-like sans (Inter, Noto Sans, Montserrat, Red Hat Display/Text; Proxima Nova is Adobe Fonts, not Google). The tool already exists: the Figma library's `13-ui-font` sheet switches six fonts by the `ui-font` mode (Inter · Geist · IBM Plex Sans · Public Sans · Noto Sans · Montserrat) — add Schibsted Grotesk and Red Hat as modes there; the `type` collection's Right Grotesk / Schibsted modes switch every text style at once. A pick becomes a kol-theme `--kol-font-family-sans*` change and its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-10-30 — the Brand Lab to approval, the icon rounds, two website tickets)
+## 🏁 Current state (2026-10-31 evening — the Figma library from the code, metric on KOL, the Menu family)
+
+- **Published** kol-component 0.320–0.328 · kol-theme 0.202–0.209 · kol-dashboards 0.6.0–0.7.1 · kol-framework 0.68.0 · kol-shell 0.92–0.96 · kol-icons 0.54–0.55. The Menu* family (Menu, MenuTrigger, MenuPanel, MenuRow/Label/Divider/Flyout, MenuFilter/DatePicker/More; MenuDropdown* are aliases), Dropdown `variant="raised"`, Modal `variant` lift|bordered, Button `bare`, SectionText `variant` (was `level`) + `lede`, NavRail `variant="top"`, DocumentHeader, apps/metric (the reference dashboard, nine logged rounds).
+- **Figma library** (n48kE2bJtrFjl7wxst30xH) built from the code, W1–W32 in `plan-2026-10-31-figma-library.md`: `ink-roles` collection (role = the node's mode), `tone` collection, breakpoint type sizes, 27-document-system, application pages, Code Connect on everything. **Rule: a look/API change lands in Figma the same turn** (memory). Log: `session-log/2026-10-31-figma-library-metric-rebuild-menu-family.md`.
+
+## Current state (2026-10-31 — LayoutGroup, its Figma pages, HomeDockRound4)
+
+- **Published** kol-framework 0.66.0 (DocumentIndex moved here, `variant="table"`) · kol-styleguide 0.19.0 (`./layout`: LayoutType with the `faces` UI-font view, LayoutColor, LayoutLogo, LayoutText, LayoutGuide; BlockType, BlockSwatch, CardLogo aliases; IconBrowser) · kol-shell 0.95.0 (dock: + off the surface, ··· in the pill opening the + card, slot hover). Figma pages 14–21 plus the layout-type and layout-color collections; the library is unpublished (his click). LayoutGroup and HomeDockRound4 are closed with receipts. Open: move the dock hover into TabsRow when kol-ds-ui-2d frees kol-component; Code Connect for the new components. Log: `session-log/2026-10-31-layout-group-figma-pages-home-dock.md`.
+
+## Current state (2026-10-30 night — float rounds, sign-in over Home, GrowthLineStage)
+
+- **Published** kol-component 0.317.7–0.319.0 · kol-theme 0.200.6 / 0.201.0 · kol-shell 0.91.0 / 0.91.1 · kol-foundry 0.15.0 · kol-growth 0.1.0 (new engine package): DocsToc rail children, TextPressure intro, provisional float (`variant="float"`, AppFloatNav, AccountForm, sign-in over Home), GrowthLineStage. Float style is still under review as artifacts (round 3 is the latest); FloatingStyleAndSignInDemos stays 🟠. Log: `session-log/2026-10-30-float-style-rounds-sign-in-and-growth-line.md`.
+
+## Current state (2026-10-30 later — MediaLibrary Columns dock, the Get Info modal)
+
+- **Published** kol-component 0.317.5 / 0.317.6 · kol-theme 0.200.5: ColumnBrowser `previewPlacement` (`dock` default in MediaLibrary), ⌘I as a Get Info modal in Quick Look's frame, the file preview capped at 32vh. ColumnPreviewDocked, MediaGetInfoModal, MediaGetInfoFileBody closed with receipts. Open: Type lab review; BrandLabToolWindow and ClaudeListIconSet wait for him. Log: `session-log/2026-10-30-media-library-columns-dock-and-get-info.md`.
+
+## Current state (2026-10-30 — the Brand Lab to approval, the icon rounds, two website tickets)
 
 - **Published** kol-icons 0.53.3–0.53.5 (lock/unlock, shuffle, the harmony set on Adobe's constructions, `color-wheel` · `color-palette` · `color-swatch` from Figma) · kol-theme 0.200.3 / 0.200.4 · kol-component 0.317.3 / 0.317.4 (TabsRow `variant` + `type="mono" | "sans" | "mono-light"`, the oq ink ladder, the plain Dropdown in ColorPickerPopover, MediaLibrary `previewFrame` · `settingsKey` · `infoKey` · `columnFolderInfo`) · kol-styleguide 0.18.3 / 0.18.4 (the contrast rail on SettingsSections, KOL vector forms on the stage, Combo and Lockup fixes). Log: `session-log/2026-10-30-brand-lab-review-icons-and-tickets.md`.
 - **Rulings:** `variant` is the one word for a look (`look` and `preset` were agent drift); every icon round is BUILT by `~/.claude/skills/app-icon/bin/propose.cjs` with `"glyphs": true` from a spec (kol-icon skill `example-spec.json`), never drawn; a glyph fills one of the three keyline rectangles and a pair's parts never move between states but the one that opens; lobby tickets go to background agents, never the main thread; the Brand Lab's header is two groups — the four generators, then Guide and Export.
 - **Open:** the Type lab review; BrandLabToolWindow closes when he calls the review done; ClaudeListIconSet waits for him.
-
-## Current state (2026-10-29 — resume kit, the Layouts app, the website frame)
-
-- **Published** kol-resume 0.2.0 (new) · kol-framework 0.62.5 (`WebsiteLayout`) · kol-foundry 0.14.0 · kol-component 0.314.0 (`VariantsControl`, `TimeSet`, `useScrollFade`) · kol-shell 0.88.0 (editable Hub rows, Account tab) · kol-styleguide 0.15.0 · kol-theme 0.197.0 · kol-hardware 0.9.1. Fifteen tickets closed with receipts; inbox empty. `apps/layouts` shows four frames and every page that fits (one list: `showcase/src/nav/placements.js`, guarded by `validate-placements`); `validate-relative-imports` keeps contexts single. Push is his. Log: `session-log/2026-10-29-resume-kit-layouts-app-website-frame.md`.
-
-## Current state (2026-10-28 evening — the document space, the identity set, Public Sans)
-
-- **Published** kol-markdown 0.2.0 · kol-theme 0.193.0 / 0.194.0 · kol-framework 0.58.0 / 0.59.0 · kol-styleguide 0.12.0 / 0.13.0 · kol-icons 0.48.0 / 0.49.0. kol-website's MarkdownPage ticket became `apps/document` (5208, `document-fixture` = kol-atlas's documents): `MarkdownPage` · `LinkPreview` · `documentTabs` · `documentFiles` in kol-framework, `DocumentIndex` (files open in Quick Look) in kol-styleguide, the parser additions in kol-markdown, `.kol-sheet`'s accent, figure fill and Public Sans body (his ruling, Round 23) in kol-theme — proved block for block against kol-atlas's own engine. `kol-icon-set-identity` is the third icon set (`kolkrabbi` · `apps`; studio and brand glyphs by ticket). Four tickets closed with receipts; PdfToolsFromStudio waits. Push is his. Log: `session-log/2026-10-28-document-space-identity-set-public-sans.md`.
-
-## Current state (2026-10-28 — brand estate split and a day of lobby tickets)
-
-- **Published** kol-brand-template 0.4.0 (`GUIDE_SECTIONS` · `GUIDE_TEMPLATE`, the guide outline) · kol-styleguide 0.8.0–0.10.0 (`BrandGuide`; `BrandAssets` Graphics/Patterns, drawn social mocks, LetterheadB — kol-website's /assets runs on it) · kol-media-client 0.7.0 (private bucket, one sign-in) · kol-component 0.306.0 (MediaLibrary asks the session). brand-hub is on `SiteLayout`; `apps/brand` → `apps/brand-sections` (5207) and a new `apps/brand` home (5179); `apps/stationery` rebuilt on kol-branding's layouts, VOYAGER, placeholders. Eight tickets closed; PdfToolsFromStudio waits. Push is his. Log: `session-log/2026-10-28-brand-estate-split-and-lobby-tickets.md`.
-
-## Current state (2026-10-27 — home screen, the site rail, the phone pills)
-
-- **Published** kol-theme 0.191.0 (the `html` ground + standalone top inset) · kol-icons 0.46.0 / 0.47.0 (mirror's glyphs, `stopwatch-solid`) · kol-framework 0.57.0 (site chevron 16) · kol-component 0.303.0 / 0.304.0 (site pages 2px right of the title; the phone pill's edge · fold · circle) · kol-shell 0.83.0 (`PhoneNav` top · fold · `moreKeepsOpen`, `TransportPill`). Four tickets closed with receipts. Round 20 rejected, 21 approved, 22 open (the phone Labs layout). Showcase previews: one MultiSelect with Background. Later: SiteRailTitleNavigatesOnly closed in kol-component 0.305.0 (the title navigates, the chevron expands; `discloseOnTitle` · `defaultOpen` · `openOnRoute`). New playbook `07-apps-tier/10-save-to-home-screen.md`. Push is his. Log: `session-log/2026-10-27-home-screen-site-rail-phone-pills.md`.
 
 ## Repo standup (2026-06-15)
 

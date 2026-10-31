@@ -32,6 +32,14 @@
       "destination": "/apps/overlays/index.html"
     },
     {
+      "source": "/apps/style/(.*)",
+      "destination": "/apps/style/index.html"
+    },
+    {
+      "source": "/apps/stylesheet/(.*)",
+      "destination": "/apps/stylesheet/index.html"
+    },
+    {
       "source": "/apps/stationery/(.*)",
       "destination": "/apps/stationery/index.html"
     },
@@ -98,6 +106,10 @@
     {
       "source": "/apps/print/(.*)",
       "destination": "/apps/print/index.html"
+    },
+    {
+      "source": "/apps/growth/(.*)",
+      "destination": "/apps/growth/index.html"
     },
     {
       "source": "/apps/site-hub/(.*)",

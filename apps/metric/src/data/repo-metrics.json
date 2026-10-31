@@ -1,0 +1,128 @@
+{
+  "measured": "2026-10-30",
+  "components": 496,
+  "routes": 102,
+  "linesOfCode": 30615,
+  "commits": 346,
+  "apps": 6,
+  "packages": 1,
+  "atoms": 29,
+  "molecules": 73,
+  "organisms": 50,
+  "sessionLogs": 318,
+  "docsFiles": 108,
+  "fonts": 218,
+  "dsPackages": [
+    {
+      "name": "component",
+      "components": 175
+    },
+    {
+      "name": "design-editor",
+      "components": 80
+    },
+    {
+      "name": "styleguide",
+      "components": 29
+    },
+    {
+      "name": "foundry",
+      "components": 26
+    },
+    {
+      "name": "workshop",
+      "components": 25
+    },
+    {
+      "name": "shell",
+      "components": 24
+    },
+    {
+      "name": "framework",
+      "components": 22
+    },
+    {
+      "name": "dashboards",
+      "components": 21
+    },
+    {
+      "name": "hardware",
+      "components": 21
+    },
+    {
+      "name": "chess",
+      "components": 18
+    },
+    {
+      "name": "resume",
+      "components": 18
+    },
+    {
+      "name": "content",
+      "components": 16
+    },
+    {
+      "name": "deck",
+      "components": 9
+    },
+    {
+      "name": "store",
+      "components": 6
+    },
+    {
+      "name": "notes",
+      "components": 4
+    },
+    {
+      "name": "brand",
+      "components": 1
+    },
+    {
+      "name": "icons",
+      "components": 1
+    }
+  ],
+  "routesByApp": [
+    {
+      "name": "web",
+      "routes": 36
+    },
+    {
+      "name": "brand",
+      "routes": 34
+    },
+    {
+      "name": "record",
+      "routes": 29
+    },
+    {
+      "name": "media",
+      "routes": 1
+    },
+    {
+      "name": "metric",
+      "routes": 1
+    },
+    {
+      "name": "studio",
+      "routes": 1
+    }
+  ],
+  "history": [
+    {
+      "measured": "2026-10-30",
+      "components": 496,
+      "routes": 102,
+      "linesOfCode": 30615,
+      "commits": 346,
+      "apps": 6,
+      "packages": 1,
+      "atoms": 29,
+      "molecules": 73,
+      "organisms": 50,
+      "sessionLogs": 318,
+      "docsFiles": 108,
+      "fonts": 218
+    }
+  ]
+}

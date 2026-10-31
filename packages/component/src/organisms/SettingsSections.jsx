@@ -67,7 +67,7 @@ const rowAlign = (row, fallback) => row.align ?? (row.type === 'choice' || row.t
  * first included: the rule is `.kol-section--divided + .kol-section--divided`,
  * so the first draws nothing and skipping it just costs the next its line.
  *
- * @param {Array<{label?: string, note?: string|string[], rows?: Array<{label: ReactNode, type?: 'choice'|'switch'|'slider', options?: Array, value?: ReactNode, on?: boolean, onChange?: Function, min?: number, max?: number, step?: number, formatValue?: Function, defaultValue?: number, displayWidth?: number, render?: Function, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint; `note` a sentence or two under the eyebrow; a string `value` is drawn in the DS's mono-12 and sits on the baseline; `type: 'choice'` / `'switch'` / `'slider'` rows are drawn here — a slider is the DS Slider across the value column, fluid track + the Input readout at `displayWidth` chars (3, `preset="rail"`), its label column 80 unless set; `min` · `max` · `step` · `value` · `onChange`)
+ * @param {Array<{label?: string, note?: string|string[], rows?: Array<{label: ReactNode, type?: 'choice'|'switch'|'slider', options?: Array, value?: ReactNode, on?: boolean, onChange?: Function, min?: number, max?: number, step?: number, formatValue?: Function, defaultValue?: number, displayWidth?: number, render?: Function, hint?: string, align?: string, labelWidth?: number|'auto', text?: boolean, stack?: boolean, id?: string}>, rowGap?: number}>} sections - The settings body, in order (`hint` → SettingsRow's hint; `stack` → SettingsRow's stack, the label over the value; `note` a sentence or two under the eyebrow; a string `value` is drawn in the DS's mono-12 and sits on the baseline; `type: 'choice'` / `'switch'` / `'slider'` rows are drawn here — a slider is the DS Slider across the value column, fluid track + the Input readout at `displayWidth` chars (3, `preset="rail"`), its label column 80 unless set; `min` · `max` · `step` · `value` · `onChange`)
  * @param {boolean} [divided=false] - Hairline above each section
  * @param {number|'auto'} [labelWidth] - Default label column for every row — `'auto'` makes the label yield and the control hug, which is what a narrow column or a nowrap value needs
  * @param {string} [align] - Default row alignment passed to `SettingsRow`
@@ -77,7 +77,7 @@ export default function SettingsSections({ sections = [], divided = false, label
   return (
     <div className={`kol-settings-sections flex flex-col gap-6 ${className}`.trim()}>
       {sections.map((sec, i) => (
-        <LabeledControlSection key={sec.label ?? i} label={sec.label} divided={divided} rowGap={sec.rowGap}>
+        <LabeledControlSection key={sec.label ?? i} label={sec.label} divided={divided} rowGap={sec.rowGap ?? (sec.rows?.length && sec.rows.every((r) => r.type === 'switch') ? 1 : undefined)}>
           {sec.note != null && notes(sec.note)}
           {(sec.rows ?? []).map((row, j) => (
             <SettingsRow
@@ -87,6 +87,7 @@ export default function SettingsSections({ sections = [], divided = false, label
               align={rowAlign(row, align)}
               labelWidth={row.labelWidth ?? labelWidth ?? (row.type === 'slider' ? 80 : undefined)}
               text={row.text ?? (!row.render && !row.type && isText(row.value))}
+              stack={row.stack}
             >
               {control(row)}
             </SettingsRow>

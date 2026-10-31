@@ -14,7 +14,7 @@ import CompositionDiagram from '../lib/CompositionDiagram.jsx'
  */
 
 export const LAYERS = [
-  { id: 'engine', label: 'Engine', what: 'Plain JS, no UI — parse, index, rank. Its app is a lab: input in, what the engine reads out.', lives: 'kol-markdown · kol-search' },
+  { id: 'engine', label: 'Engine', what: 'Plain JS, no UI — parse, index, rank. Its app is a lab: input in, what the engine reads out.', lives: 'kol-markdown · kol-search · kol-growth' },
   { id: 'shell', label: 'Shell', what: 'The frame — the rail, the layout root, the nav keys, the phone bar.', lives: 'kol-shell AppShell + NavRail · kol-workshop ShellLayout' },
   { id: 'hub', label: 'Hub', what: 'The standard pages around the work — Home, Settings, the shortcuts sheet, the walkthrough. Opt-in, page by page. The Studio is the Hub plus the workstation pages — Library · Create · Use.', lives: 'kol-shell AppHub · AppStudio' },
   { id: 'catalog', label: 'Catalog', what: 'The ContentFilters page — masthead, filter + search, views, LIST · GRID, the cards.', lives: 'kol-shell CatalogPage' },
@@ -31,6 +31,8 @@ export const APPS = [
     layers: ['Engine'], packages: ['kol-markdown', 'kol-workshop'], optIns: ['fixture: workshop-fixture'], consumer: 'Depend on @kolkrabbi/kol-markdown; it is plain ESM — no Vite, no React needed.' },
   { name: 'search', layer: 'engine', port: 5185, run: 'search-app', what: 'Everything search — the ⌘K search modal, the results page with reasons and facets, / focus, and the tag graph.',
     layers: ['Engine', 'Tool frame'], packages: ['kol-search', 'kol-component (ShellSearchOverlay)', 'kol-workshop (TagGraph)'], optIns: ['search engine', 'tag system', 'node graph', 'fixture: workshop-fixture'], consumer: 'Depend on @kolkrabbi/kol-search; index your items with createIndex, query with search, graph with tagGraph.' },
+  { name: 'growth', layer: 'engine', port: 5215, what: 'The growing line alone — one closed line growing into the orb and into an SVG path; the pointer pushes it, a press blasts it.',
+    layers: ['Engine', 'Hub'], packages: ['kol-growth', 'kol-component (GrowthLineStage)', 'kol-shell'], optIns: [], consumer: 'GrowthLineStage from @kolkrabbi/kol-component with a shape; or run @kolkrabbi/kol-growth Growth in your own loop.' },
   { name: 'shell', layer: 'shell', port: 5186, what: 'The frame alone, under either rail — the Variants button switches Rail: app (AppShell, the phone bar) · site (SiteLayout, the phone drawer) — around ten placeholder pages.',
     layers: ['Shell'], packages: ['kol-shell'], optIns: ['phone bar (touch="bar")', 'nav keys'], consumer: 'AppShell with items + bottomItems; touch="bar" for the phone bar, masthead for the app’s one header voice.' },
   { name: 'workshop', layer: 'shell', port: 5183, what: 'The workshop shell alone — header, rails, search modal, tag browser and reader over an invented corpus.',
@@ -73,11 +75,11 @@ export const APPS = [
     layers: ['Site frame (SiteLayout)'], packages: ['kol-framework (SiteLayout)'], optIns: ['PWA'], consumer: `SiteLayout with a Home of cards, one per app; ${PWA}.` },
   { name: 'brand-sections', layer: 'tool', port: 5207, what: 'The brand catalogue — every building block a brand is made of, one page each, on VOYAGER, in kol-framework’s brand-book frame.',
     layers: ['Shell (SiteLayout, the site frame)', 'Tool (the brand blocks)'], packages: ['kol-styleguide', 'kol-framework (SiteLayout)'], optIns: ['PWA', 'fixture: voyager-fixture'],
-    consumer: `SiteLayout with a navTree, and the kol-styleguide blocks over your manifest — Swatch · ColorAnatomy · ComboLab · TypeBlock · LogoCard · LogoScaling · the stationery mocks · AssetTable · MoodTile; ${PWA}.`,
+    consumer: `SiteLayout with a navTree, and the kol-styleguide blocks over your manifest — BlockSwatch · ColorAnatomy · ComboLab · BlockType · CardLogo · LogoScaling · the stationery mocks · AssetTable · MoodTile; ${PWA}.`,
     routes: [
-      { path: '/colour/ramps · swatches · anchors · combinations', what: 'Swatch per stop, the anchors large, ColorAnatomy per role, ComboLab' },
-      { path: '/type/families · scale', what: 'TypeBlock per family (Playfair included), the scale' },
-      { path: '/logo/displays · clearspace · scaling', what: 'LogoCard per mark, the construction diagrams, LogoScaling' },
+      { path: '/colour/ramps · swatches · anchors · combinations', what: 'BlockSwatch per stop, the anchors large, ColorAnatomy per role, ComboLab' },
+      { path: '/type/families · scale', what: 'BlockType per family (Playfair included), the scale' },
+      { path: '/logo/displays · clearspace · scaling', what: 'CardLogo per mark, the construction diagrams, LogoScaling' },
       { path: '/stationery/business-card · set', what: 'BusinessCardFront/Back, Envelope · Letterhead · EmailSignature, the carried files' },
       { path: '/assets/downloads · imagery · business', what: 'AssetTable per file group, mood and graphics, the business-data tables' },
     ] },
@@ -87,11 +89,11 @@ export const APPS = [
     layers: ['Site frame (SiteLayout)', 'Tool (MarkdownPage, born here)'], packages: ['kol-framework (SiteLayout)', 'kol-markdown', 'kol-theme (.kol-sheet)'], optIns: ['fixture: document-fixture'],
     consumer: 'A folder of .md files, a glob and menu rows: MarkdownPage on the page route, DocumentIndex on the folder route (plan-2026-10-28-document; ships from kol-framework after review).' },
   { name: 'brand-hub', layer: 'tool', port: 5193, what: 'A client’s home on VOYAGER — the brand book and its assets (kol-styleguide’s Brand), with notes · decks · media as opt-in tools and the editor as an opt-in app.',
-    layers: ['Site frame (SiteLayout)', 'Tool (Brand · BrandGuide)', 'Tools (opt-in)'], packages: ['kol-framework (SiteLayout)', 'kol-styleguide', 'kol-brand-template (the guide outline)', 'kol-notes', 'kol-deck', 'kol-component (MediaLibrary)'], optIns: ['notes', 'decks', 'media', 'editor (app)', 'settings', 'fixture: voyager-fixture', 'fixture: media-fixture'],
-    consumer: 'SiteLayout around Brand and BrandGuide over your manifest; each tool a rail row the client turns on in Settings. What a brand.<domain> site is made of.',
+    layers: ['Site frame (SiteLayout)', 'Tool (Brand · LayoutGuide)', 'Tools (opt-in)'], packages: ['kol-framework (SiteLayout)', 'kol-styleguide', 'kol-brand-template (the guide outline)', 'kol-notes', 'kol-deck', 'kol-component (MediaLibrary)'], optIns: ['notes', 'decks', 'media', 'editor (app)', 'settings', 'fixture: voyager-fixture', 'fixture: media-fixture'],
+    consumer: 'SiteLayout around Brand and LayoutGuide over your manifest; each tool a rail row the client turns on in Settings. What a brand.<domain> site is made of.',
     routes: [
       { path: '/ · /assets', what: 'The book and the assets (Brand)' },
-      { path: '/guide/blank · /guide/voyager', what: 'The brand guide outline, blank and filled (BrandGuide)' },
+      { path: '/guide/blank · /guide/voyager', what: 'The brand guide outline, blank and filled (LayoutGuide)' },
       { path: '/notes · /decks · /media', what: 'The opt-in tools, on the fixture bucket' },
       { path: '/editor', what: 'The editor — an app of its own, opened beside' },
       { path: '/settings', what: 'Which opt-ins this client has' },

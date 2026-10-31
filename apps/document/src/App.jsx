@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
 import { BrowserRouter, Navigate, Outlet, Route, Routes, useLocation, useNavigate, useOutletContext, useParams } from 'react-router-dom'
-import { SiteLayout, MarkdownPage, LinkPreview, documentLibrary } from '@kolkrabbi/kol-framework'
+import { SiteLayout, MarkdownPage, LinkPreview, documentLibrary, DocumentIndex, DocumentHeader } from '@kolkrabbi/kol-framework'
 import { AppShell } from '@kolkrabbi/kol-shell'
-import { MenuItem, TabsRow } from '@kolkrabbi/kol-component'
+import { TabsRow } from '@kolkrabbi/kol-component'
 import { TABS, CLIENT, LINK_CARDS, tabPath, docSource, REVIEW_MODULES, assetUrl, cardImage } from 'document-fixture'
 import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
-import { DocumentIndex, DocumentLibrary, DocumentView } from '@kolkrabbi/kol-styleguide'
+import { DocumentLibrary, DocumentView } from '@kolkrabbi/kol-styleguide'
 import { LIBRARY_MODULES, LIBRARY_FILES, LIBRARY_ROOT } from 'voyager-fixture/library'
 
 /* THE DOCUMENT SPACE (plan-2026-10-28-document W3) — kol-atlas's documents as pages. THE LAYOUT (user 2026-10-28, on
@@ -168,9 +168,8 @@ function Library() {
 }
 
 /* ── the frames ── */
-/* kol-atlas's tabs header on DS parts, on top of every page: the client's name, TabsRow for the plain tabs, the groups as
- * MenuItems at the row's right end (their rows are links). A group reads as selected when one of its pages is open. */
-const plainClick = (e) => !(e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)
+/* kol-atlas's tabs header — kol-framework's DocumentHeader: the client's name, the plain tabs, the groups as menus at the
+ * row's right end. A group's trigger holds pressed when one of its pages is open. */
 function TabsHeader() {
   const { pathname } = useLocation()
   const navigate = useNavigate()
@@ -179,25 +178,12 @@ function TabsHeader() {
     ...folders.map((f) => ({ label: f.group, rows: [{ to: tabPath(f), label: 'Overview' }, ...inGroup(f.group).flatMap((t) => [t, ...children(t.id)]).map((t) => ({ to: tabPath(t), label: t.parent ? `— ${t.title}` : t.title }))] })),
     { label: 'Reviews', rows: [{ to: '/reviews', label: 'All reviews' }, ...reviews.map((r) => ({ to: r.to, label: r.slug }))] },
   ]
-  const open = (g) => g.rows.some((r) => pathname === r.to)
-  return (
-    <div className="kol-page pb-0 flex flex-col gap-4">
-        <h1 className="kol-prose-display-md m-0">{CLIENT}</h1>
-        <div className="flex items-end gap-6 border-b border-fg-12">
-          <TabsRow tabs={plain} value={plain.find((t) => t.id === pathname)?.id ?? ''} onChange={navigate} ariaLabel="Pages" className="!border-0" />
-          <div className="ml-auto flex items-end gap-6">
-            {groups.map((g) => (
-              <MenuItem key={g.label} label={g.label} align="end" size="sm" buttonClassName={`kol-mono-12 !rounded-none !px-0 border-b-2 ${open(g) ? 'border-fg-100 text-emphasis' : 'border-transparent text-body'}`} panelClassName="min-w-[220px]">
-                {g.rows.map((r) => (
-                  <a key={r.to} href={r.to} role="menuitem" data-menu-item className={`kol-menu-btn kol-helper-12 flex h-8 w-full items-center px-3 no-underline ${pathname === r.to ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
-                    onClick={(e) => { if (!plainClick(e)) return; e.preventDefault(); navigate(r.to) }}>{r.label}</a>
-                ))}
-              </MenuItem>
-            ))}
-          </div>
-        </div>
-    </div>
-  )
+  const menus = groups.map((g) => ({
+    label: g.label,
+    current: g.rows.some((r) => pathname === r.to),
+    items: g.rows.map((r) => ({ key: r.to, label: r.label, current: pathname === r.to, href: r.to, onClick: (e) => { e.preventDefault(); navigate(r.to) } })),
+  }))
+  return <DocumentHeader title={CLIENT} tabs={plain} value={plain.find((t) => t.id === pathname)?.id ?? ''} onChange={navigate} menus={menus} />
 }
 
 /* the site rail, the tabs header above the page, no TOC rail (the pages publish none) */
