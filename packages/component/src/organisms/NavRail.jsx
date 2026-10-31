@@ -129,7 +129,7 @@ const openWidth = () => {
  * expanded — any width past CLOSED closes, CLOSED opens to the open width — so a click resets a custom width.
  *
  * THE LABEL THRESHOLD (LABELS): below it the rail is icons only — labels, chevrons and the mark's title hide (the
- * `@max-[…]:hidden` container query on the rows, measured on the rail's content box = LABELS − its px-2 gutter), never
+ * max-width `hidden` container query on the rows, measured on the rail's content box = LABELS − its px-2 gutter), never
  * a label clipped in a narrow strip. `onSnap` reports from the same threshold: crossings during a drag report live,
  * a snap reports its target once at the start of the tween (as before) — the sub rows render only while it is true,
  * because closed they would still take their height and push the rungs below them.
