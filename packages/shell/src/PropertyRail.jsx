@@ -13,7 +13,8 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *
  * @param {string}   title       the header (Properties)
  * @param {Function} onCollapse  the ⇥'s press; unset, no ⇥
- * @param {Array}    tabs        TabsRow tabs `[{ value, label }]`; `tab` the current value · `onTab` `(value) => void`
+ * @param {Array}    tabs        TabsRow tabs `[{ value, label }]` at the inspector size (xs, 26 — float-operational W1.3);
+ *                               `tab` the current value, the lit chip (`aria-selected`) · `onTab` `(value) => void`
  * @param {Object}   selected    `{ icon, name, visible?, onVisible? }` — the object line; unset, none
  * @param {Array}    sections    `[{ id?, label, onAdd?, meta?, rows }]` — a row is one of:
  *                               `{ type: 'fields', fields: [{ id, prefix?, unit?, value, onChange }] }` (two-up, Input float, `prefix` the X · Y · W · H letter) ·
@@ -32,7 +33,7 @@ export default function PropertyRail({ title, onCollapse, tabs, tab, onTab, sele
         <span className="kol-float-panel text-emphasis">{title}</span>
         {onCollapse && <Button variant="float" tone="ghost" size="sm" iconOnly="skip-end" aria-label="Collapse" onClick={onCollapse} />}
       </div>
-      {tabs?.length > 0 && <TabsRow variant="float" tabs={tabs} value={tab} onChange={onTab} />}
+      {tabs?.length > 0 && <TabsRow variant="float" size="xs" tabs={tabs} value={tab} onChange={onTab} ariaLabel={`${title} tabs`} />}
       {selected && (
         <div className="flex items-center gap-2">
           {selected.icon && <Icon name={selected.icon} size={18} className="text-oq-64" />}

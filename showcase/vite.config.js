@@ -78,6 +78,9 @@ export default defineConfig({
   // dispatcher. Force a single react / react-dom copy.
   resolve: {
     dedupe: ['react', 'react-dom'],
+    /* the Float set mounts apps/float, whose visual editor reads design-editor's /core — the one BUILT package
+     * (ARCHITECTURE §4), so alias its source as apps/editor and apps/float do */
+    alias: [{ find: /^@kolkrabbi\/design-editor\/core$/, replacement: fileURLToPath(new URL('../packages/design-editor/src/core.jsx', import.meta.url)) }],
   },
   /* the moves log is written by the middleware above, and _tmp/ is scratch — neither should ever wake HMR */
   server: {

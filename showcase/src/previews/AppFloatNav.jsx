@@ -41,6 +41,7 @@ const SHAPES = {
   dock: (surface) => <AppFloatNav variant="dock" shape="pill" shadow surface={surface} items={NAV} sheetItems={MORE} currentPath="labs" onNavigate={() => {}} />,
   panel: (surface) => <AppFloatNav variant="panel" shape="pill" surface={surface} items={PANEL} actions={[{ label: 'Settings', icon: 'nav-settings', onPress: () => {} }]} currentPath="#none" onNavigate={() => {}} />,
   transport: (surface) => <AppFloatNav variant="transport" surface={surface} items={TRANSPORT} timecode={{ current: '00:04:12', total: '00:12:00' }} sheetFor={{ loop: [{ label: '1 bar', checked: false, onPress: () => {} }, { label: '4 bars', checked: true, onPress: () => {} }] }} />,
+  'transport inline': (surface) => <AppFloatNav variant="transport" inline surface={surface} items={TRANSPORT} timecode={{ current: '00:04:12', total: '00:12:00' }} sheetFor={{ loop: [{ label: '1 bar', checked: false, onPress: () => {} }, { label: '4 bars', checked: true, onPress: () => {} }] }} className="absolute! left-4 bottom-6" />,
   labels: (surface) => <AppFloatNav variant="mobile" shape="pill" labels surface={surface} items={NAV} sheetItems={MORE} currentPath="labs" onNavigate={() => {}} />,
 }
 

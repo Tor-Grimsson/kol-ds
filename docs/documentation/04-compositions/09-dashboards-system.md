@@ -59,8 +59,8 @@ The float look on the card set and the card kinds the exploration added (float-e
 | `FoldedHead` | `title` · `count` · `onClick` | a folded card's heading as a 40 pill with ⌄ |
 | `FloatCard` | `title` · `support` · `lines` | the glass sheet (`.kol-float-glass-dark`): title, support, a rule, mono lines |
 | `TaskCard` | `title` · `group` · `date` · `chip` · `done` + `onToggle` · `selected` · `onClick` · `size` lg \| sm | a task: checkbox, title, group, the date pill; sm is a group's row with a date or a size chip |
-| `SourceCard` | `code` · `title` · `status` · `message` · `detail` · `action` + `onAction` | a connected source and its state |
-| `CaptureCard` | `image` \| `src` · `title` · `meta` · `onNext` · `onOpen` | a captured screen: the image at 5:3, title, age, → |
+| `SourceCard` | `code` · `title` · `meta` · `status` · `message` · `detail` · `action` + `onAction` · `children` | a connected source and its state; a healthy one lists its items (`meta` "4 items", rows as `children`) |
+| `CaptureCard` | `image` \| `src` · `title` · `meta` · `onPrev` · `onNext` · `action` + `onAction` · `onOpen` | a captured screen: the image at 5:3, title, age, →; no image = a text capture with ← → and an action ("Archive") in a row under the meta |
 | `KanbanColumn` | `title` · `count` · children | a board lane in the well holding cards |
 | `ProjectCard` | `eyebrow` · `status` · `title` · `description` · `progress` (`{ label, pct, note }`) · `action` + `onAction` | a project: eyebrow + status, name, line, the 6px completion line, one action |
 | `LinkCard` | `title` · `meta` · `href` \| `onClick` | an outbound link as a 66 row with ↗ |

@@ -16,10 +16,14 @@
  *       button, which I have said numerous times NOT to default, the default is fucking called
  *       primary"*. An unset variant inherits the wrapper's tone, else primary — that is the default.
  *
+ *       THE FLOAT LAW (float-operational W3, 2026-11-04 — 24-float-system.md § Roles): on a float control the
+ *       primary role IS `tone="inverted"`, so `<Button variant="float" tone="inverted">` is legal by the rule, not by
+ *       file. Only the literal pair counts; `variant={x ? 'float' : …}` is still the caller's to allowlist.
+ *
  *   V3  `<Button variant>` is never one of the six tone-duplicates (primary · secondary · outline ·
  *       ghost · grey · control) — deprecated 2026-10-01; the ground is `tone`.
  *
- * Button's allowed set is read from its `KNOWN` list (it has no `variant === '…'` branches).
+ * Button's allowed set is read from its `KNOWN` list plus its early-return `variant === '…'` branches (`bare`).
  * Only literal values are checked; an expression (`variant={v}`) is the caller's to get right.
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs'
@@ -48,12 +52,7 @@ const ALLOWED_INVERTED = {
   'showcase/src/sets/section-set.jsx': 'site section — the second CTA of a pair',
   'showcase/src/previews/FeatureSplit.jsx': 'site section — the second CTA of a pair',
   'showcase/src/previews/SectionSplit.jsx': 'site section — the second CTA of a pair',
-  'showcase/src/previews/Button.jsx': 'the float primary role IS the inverted tone (float-everything W0.5, 2026-11-04) — the preview shows the four roles',
   'packages/component/src/molecules/PanelsMenu.jsx': 'the row\'s primary action (Show) is the float primary role, inverted (float-everything W4 row 57, 2026-11-04)',
-  'showcase/src/previews/Dialog.jsx': 'the float window\'s next step (Export video, Sign in) is the float primary role, inverted (float-everything W6 rows 83 · 84 · 90, 2026-11-04)',
-  'showcase/src/previews/TabsRow.jsx': 'the tab pill\'s New task is the float primary role, inverted (float-everything W5 row 78, 2026-11-04)',
-  'packages/component/src/molecules/ReadingNotes.jsx': 'View highlights is the float primary role, inverted (float-everything W11 row 150, 2026-11-04)',
-  'packages/component/src/organisms/ReadingOverview.jsx': 'Resume reading is the float primary role, inverted (float-everything W11 row 152, 2026-11-04)',
 }
 
 /* V3 (2026-10-01): the six Button variants that were tones under a second name — deprecated
@@ -63,8 +62,9 @@ const TONE_VARIANTS = ['primary', 'secondary', 'outline', 'ghost', 'grey', 'cont
 function allowed(file) {
   const src = readFileSync(join(ROOT, file), 'utf8')
   const known = src.match(/const KNOWN = \[([^\]]*)\]/)
-  if (known) return new Set([...known[1].matchAll(/'([\w-]+)'/g)].map((m) => m[1]).concat('control'))
+  /* KNOWN plus any early-return branch (`variant === 'bare'` returns before KNOWN is read) */
   const set = new Set([...src.matchAll(/variant === '([\w-]+)'/g)].map((m) => m[1]))
+  if (known) return new Set([...known[1].matchAll(/'([\w-]+)'/g)].map((m) => m[1]).concat('control', ...set))
   const def = src.match(/variant = '([\w-]+)'/)
   if (def) set.add(def[1])
   return set
@@ -80,6 +80,15 @@ function walk(dir, out = []) {
   return out
 }
 
+/* the float law: a float control's primary is the inverted tone (V2 exempt) */
+const floatPrimary = (attrs) => /\bvariant="float"/.test(attrs)
+
+/* SELF-CHECK (W3 acceptance): the rule passes a float primary and still fails a non-float inverted — runs every time */
+const V2 = (attrs) => /\btone="inverted"/.test(attrs) && !floatPrimary(attrs)
+if (V2(' variant="float" tone="inverted" size="md"') || !V2(' tone="inverted" size="sm"') || !V2(' variant="accent" tone="inverted"')) {
+  console.error('variants: self-check failed — the float-law exemption is wrong'); process.exit(1)
+}
+
 const files = [...walk(join(ROOT, 'packages')), ...walk(join(ROOT, 'apps')), ...walk(join(ROOT, 'showcase', 'src'))]
 const errors = []
 let seen = 0
@@ -90,7 +99,7 @@ for (const [name, file] of Object.entries(COMPONENTS)) {
     const src = readFileSync(f, 'utf8')
     for (const m of src.matchAll(tag)) {
       /* V2 follows the ground to where it lives now: `tone="inverted"` is the same fill */
-      if (name === 'Button' && /\btone="inverted"/.test(m[1]) && !ALLOWED_INVERTED[relative(ROOT, f)]) {
+      if (name === 'Button' && V2(m[1]) && !ALLOWED_INVERTED[relative(ROOT, f)]) {
         errors.push(`${relative(ROOT, f)}:${src.slice(0, m.index).split('\n').length}  <Button tone="inverted"> — the inverted fill; drop it (inherits the tone, else primary) or allowlist the file with a reason (V2)`)
       }
       const v = m[1].match(/\bvariant="([\w-]+)"/)

@@ -209,11 +209,11 @@ function Clip({ view, lit, label, mono = false, children }) {
   )
 }
 
-/* a layer with no track: a clip the loop long, its length on it */
-function ClipLane({ view, lit }) {
+/* a layer with no track: a clip the loop long, its length on it (or `label`, a layout's name for it) */
+function ClipLane({ view, lit, label }) {
   return (
     <div className="relative flex-1 min-w-0 overflow-hidden rounded-[5px] bg-[var(--kol-float-well)]" style={{ height: ROW }}>
-      <Clip view={view} lit={lit} label={`${view.loop.toFixed(2)} s`} mono />
+      <Clip view={view} lit={lit} label={label ?? `${view.loop.toFixed(2)} s`} mono={label == null} />
     </div>
   )
 }
@@ -241,7 +241,7 @@ function LayerLabel({ layer, name, sub, lit, select, toggleLayer, toggleLayerLoc
       style={{ width: GUTTER, height: ROW, paddingLeft: sub ? 8 + 14 + 10 : undefined }}
       onClick={layer ? () => select(layer.id) : undefined}
     >
-      {!sub && <span className="flex shrink-0 text-oq-64" aria-hidden="true"><Icon name={layer ? iconFor(layer.type) : 'layers'} size={14} /></span>}
+      {!sub && <span className="flex shrink-0 text-oq-64" aria-hidden="true"><Icon name={layer ? layer.icon ?? iconFor(layer.type) : 'layers'} size={14} /></span>}
       <span className={`kol-float-label truncate flex-1 min-w-0 ${sub ? 'text-fg-64' : 'text-emphasis'}`}>{name}</span>
       {fold && (
         <IconButton name="chevron-down" size={12} label={fold.folded ? 'Show the morph’s tracks' : 'Hide the morph’s tracks'} onClick={(e) => { e.stopPropagation(); fold.toggle() }} className={fold.folded ? '-rotate-90' : ''} />
@@ -526,18 +526,7 @@ export default function Timeline({ surface = 'solid' }) {
   /* THE WINDOW: the loop at 100 %, a span of it at 200 / 400 % that follows the head. `X(frac)` puts a loop fraction on
    * the lane (0..1 of its width), `fracFromEvent` reads one back from a pointer on it. */
   const now = t * loopSeconds
-  const span = loopSeconds / zoom
-  const origin = zoom === 1 ? 0 : Math.min(Math.max(0, now - span / 2), loopSeconds - span)
-  const view = {
-    loop: loopSeconds, origin, span,
-    X: (frac) => (frac * loopSeconds - origin) / span,
-    fracFromEvent: (e, el) => {
-      const r = el.getBoundingClientRect()
-      const sec = origin + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * span
-      return Math.min(1, Math.max(0, sec / loopSeconds))
-    },
-  }
-  const looping = !!transport.clock.state.looping
+  const view = timelineView(loopSeconds, zoom, now)
 
   const writeKeys = (track, nextKeys) => {
     const sorted = [...nextKeys].sort((a, b) => a.t - b.t)
@@ -569,6 +558,21 @@ export default function Timeline({ surface = 'solid' }) {
   const litLayer = (l) => !!l && selectedIds.includes(l.id)
   const graphOpen = !!(selected && tracks.find((tr) => tr.id === selected.trackId && !tr.header && !tr.readOnly))
 
+  const looping = !!transport.clock.state.looping
+  const railRows = shown.map((row) => ({
+    ...row,
+    lit: litLayer(row.layer) || (!!row.track && selected?.trackId === row.track.id),
+    labelLit: litLayer(row.layer),
+    name: row.sub ? row.track.key : row.layer ? labelForLayer(row.layer) : row.track.label,
+    label: row.kind === 'wave' ? `${labelForLayer(row.layer)} · audio` : undefined,
+    wave: row.kind === 'wave' ? wave.current : undefined,
+    fold: row.track?.header && tracks.some((x) => x.under === row.track.id) ? { folded: folded.has(row.track.id), toggle: () => toggleFold(row.track.id) } : null,
+    /* the selected key's lane opens as a value graph (numbers only; a morph header is step indices) */
+    graph: row.track && selected?.trackId === row.track.id && !row.track.header && !row.track.readOnly && row.track.keys.every((k) => typeof k.v === 'number')
+      ? <GraphLane track={row.track} writeKeys={writeKeys} selected={selected} setSelected={setSelected} />
+      : null,
+  }))
+
   return (
     <div className="kol-timeline-dock relative p-3 select-none" style={{ height: dockH ?? undefined, maxHeight: dockH ? undefined : DOCK_MAX }}>
       <DockGrab
@@ -576,55 +580,104 @@ export default function Timeline({ surface = 'solid' }) {
         onEnd={() => { base.current = null }}
         onReset={() => setDockH(null)}
       />
-      <div className={`kol-timeline flex flex-col gap-2 p-3 h-full min-h-0 ${floatSurfaceClass(surface, true)}`} style={{ borderRadius: 'var(--kol-float-menu-r)' }}>
-        {/* the toolbar: the scene, its count, a key; the view, loop, fit, zoom, the dock's height */}
-        <div className="flex items-center justify-between h-6 shrink-0">
-          <div className="flex items-center gap-3.5">
-            <span className="flex text-oq-96" aria-hidden="true"><Icon name="layers" size={14} /></span>
-            <span className="kol-float-panel text-emphasis whitespace-nowrap">{currentPresetName || 'Untitled'}</span>
-            <span className="kol-float-label text-meta whitespace-nowrap">{flat.length} {flat.length === 1 ? 'layer' : 'layers'}</span>
-            <IconButton name="plus" label="Add a key at the head" disabled={!target} onClick={addKeyAtHead} />
-          </div>
-          <div className="flex items-center gap-[18px]">
-            <span className="kol-float-label text-fg-64">{graphOpen ? 'Curve' : 'Keyframes'}</span>
-            <IconButton name="overlap" label={looping ? 'Loop off' : 'Loop on'} toggle on={looping} onClick={() => transport.clock.set({ looping: !looping })} />
-            <IconButton name="cap-round" label="Fit the loop" on={zoom !== 1} onClick={() => setZoom(1)} />
-            <Tooltip label="Zoom the lanes" variant="float" asChild>
-              <button type="button" onClick={() => setZoom(ZOOMS[(ZOOMS.indexOf(zoom) + 1) % ZOOMS.length])} className="kol-float-timecode text-emphasis leading-none cursor-pointer rounded outline-none focus-visible:shadow-[var(--kol-float-focus)]">{zoom * 100}%</button>
-            </Tooltip>
-            <IconButton name="nav-create" label={dockH ? 'Fit the timeline to its lanes' : 'Expand the timeline'} on={!!dockH} onClick={() => setDockH(dockH ? null : DOCK_MAX)} />
-          </div>
+      <TimelineRail
+        surface={surface} className="h-full min-h-0"
+        title={currentPresetName || 'Untitled'} count={flat.length} onAdd={target ? addKeyAtHead : undefined}
+        mode={graphOpen ? 'Curve' : 'Keyframes'}
+        looping={looping} onLoop={() => transport.clock.set({ looping: !looping })}
+        zoom={zoom} onZoom={() => setZoom(ZOOMS[(ZOOMS.indexOf(zoom) + 1) % ZOOMS.length])} onFit={() => setZoom(1)}
+        expanded={!!dockH} onExpand={() => setDockH(dockH ? null : DOCK_MAX)}
+        view={view} seek={seek} now={now} rows={railRows}
+        selected={selected} setSelected={setSelected} writeKeys={writeKeys}
+        select={select} toggleLayer={toggleLayer} toggleLayerLock={toggleLayerLock}
+        footer={<SelectedKeyEditor tracks={tracks} selected={selected} setSelected={setSelected} writeKeys={writeKeys} len={loopSeconds} />}
+      />
+    </div>
+  )
+}
+
+const noop = () => {}
+
+/**
+ * timelineView — the lanes' window over the loop (seconds): the whole loop at zoom 1, a `loop / zoom` span that follows
+ * the head at 200 · 400 %. `X(frac)` puts a loop fraction on the lane (0..1 of its width); `fracFromEvent` reads one back.
+ */
+export function timelineView(loop, zoom = 1, now = 0) {
+  const span = loop / zoom
+  const origin = zoom === 1 ? 0 : Math.min(Math.max(0, now - span / 2), loop - span)
+  return {
+    loop, origin, span,
+    X: (frac) => (frac * loop - origin) / span,
+    fracFromEvent: (e, el) => {
+      const r = el.getBoundingClientRect()
+      const sec = origin + Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)) * span
+      return Math.min(1, Math.max(0, sec / loop))
+    },
+  }
+}
+
+/**
+ * TimelineRail — the Timeline's float Rail with no engine under it (float-views W3.1, 2026-11-04): toolbar · ruler ·
+ * rows · playhead, drawn from props. `Timeline` renders the editor's state through it; a layout (apps/float's visual
+ * editor) hands it rows as data. Every handler is optional — unset, the control is inert.
+ *
+ * @param {'solid'|'glass-dark'|'glass-light'} surface  the Rail's material (default solid)
+ * @param {string}   title     the scene ("Scene 01") · {number} count  its layers ("5 layers")
+ * @param {Function} onAdd     the + (a key at the head); unset, the + is disabled
+ * @param {string}   mode      the toolbar's word (Keyframes · Curve)
+ * @param {boolean}  looping · {Function} onLoop · {number} zoom · {Function} onZoom · {Function} onFit · {boolean} expanded · {Function} onExpand
+ * @param {Object}   view      `timelineView(loop, zoom, now)` · {number} now  the head, seconds · {Function} seek  `(frac) => void`
+ * @param {Array}    rows      `[{ id, layer, track?, sub?, kind?, name, lit?, labelLit?, fold?, label?, wave?, graph? }]` — `layer`
+ *                             `{ id, type, icon?, visible?, locked? }` (`icon` overrides the type's glyph); with `track`
+ *                             (`{ id, label, keys: [{ t, v }] }`) the lane is its keys, else `kind` 'wave' (`wave` the bars
+ *                             0..1, `label` the clip's name) or a clip the loop long (`label`, else its length)
+ * @param {ReactNode} footer   under the rows (the engine's key editor)
+ */
+export function TimelineRail({ surface = 'solid', title, count = 0, onAdd, mode = 'Keyframes', looping = false, onLoop, zoom = 1, onZoom, onFit, expanded = false, onExpand, view, seek = noop, now = 0, rows = [], selected = null, setSelected = noop, writeKeys = noop, select = noop, toggleLayer = noop, toggleLayerLock = noop, footer, className = '', style }) {
+  return (
+    <div className={`kol-timeline flex flex-col gap-2 p-3 ${floatSurfaceClass(surface, true)} ${className}`.trim()} style={{ borderRadius: 'var(--kol-float-menu-r)', ...style }}>
+      {/* the toolbar: the scene, its count, a key; the view, loop, fit, zoom, the dock's height */}
+      <div className="flex items-center justify-between h-6 shrink-0">
+        <div className="flex items-center gap-3.5">
+          <span className="flex text-oq-96" aria-hidden="true"><Icon name="layers" size={14} /></span>
+          <span className="kol-float-panel text-emphasis whitespace-nowrap">{title}</span>
+          <span className="kol-float-label text-meta whitespace-nowrap">{count} {count === 1 ? 'layer' : 'layers'}</span>
+          <IconButton name="plus" label="Add a key at the head" disabled={!onAdd} onClick={onAdd} />
         </div>
-        {/* the ruler and the tracks share the head */}
-        <div className="relative flex flex-col gap-2 min-h-0">
-          <Ruler view={view} seek={seek} />
-          <div className="flex flex-col gap-1 min-h-0 overflow-y-auto">
-            {shown.map((row) => (
-              <Fragment key={row.id}>
-                <div className="flex items-start shrink-0" style={{ gap: GAP, height: ROW }}>
-                  <LayerLabel
-                    layer={row.layer} sub={row.sub} lit={litLayer(row.layer)}
-                    name={row.sub ? row.track.key : row.layer ? labelForLayer(row.layer) : row.track.label}
-                    select={select} toggleLayer={toggleLayer} toggleLayerLock={toggleLayerLock}
-                    fold={row.track?.header && tracks.some((x) => x.under === row.track.id) ? { folded: folded.has(row.track.id), toggle: () => toggleFold(row.track.id) } : null}
-                  />
-                  {row.track
-                    ? <KeyLane track={row.track} view={view} selected={selected} setSelected={setSelected} writeKeys={writeKeys} lit={litLayer(row.layer) || selected?.trackId === row.track.id} />
-                    : row.kind === 'wave'
-                      ? <WaveLane view={view} lit={litLayer(row.layer)} label={`${labelForLayer(row.layer)} · audio`} wave={wave.current} />
-                      : <ClipLane view={view} lit={litLayer(row.layer)} />}
-                </div>
-                {/* the selected key's lane opens as a value graph (numbers only; a morph header is step indices) */}
-                {row.track && selected?.trackId === row.track.id && !row.track.header && !row.track.readOnly && row.track.keys.every((k) => typeof k.v === 'number') && (
-                  <GraphLane track={row.track} writeKeys={writeKeys} selected={selected} setSelected={setSelected} />
-                )}
-              </Fragment>
-            ))}
-          </div>
-          <Playhead view={view} now={now} />
+        <div className="flex items-center gap-[18px]">
+          <span className="kol-float-label text-fg-64">{mode}</span>
+          <IconButton name="overlap" label={looping ? 'Loop off' : 'Loop on'} toggle on={looping} onClick={onLoop} />
+          <IconButton name="cap-round" label="Fit the loop" on={zoom !== 1} onClick={onFit} />
+          <Tooltip label="Zoom the lanes" variant="float" asChild>
+            <button type="button" onClick={onZoom} className="kol-float-timecode text-emphasis leading-none cursor-pointer rounded outline-none focus-visible:shadow-[var(--kol-float-focus)]">{zoom * 100}%</button>
+          </Tooltip>
+          <IconButton name="nav-create" label={expanded ? 'Fit the timeline to its lanes' : 'Expand the timeline'} on={expanded} onClick={onExpand} />
         </div>
-        <SelectedKeyEditor tracks={tracks} selected={selected} setSelected={setSelected} writeKeys={writeKeys} len={loopSeconds} />
       </div>
+      {/* the ruler and the tracks share the head */}
+      <div className="relative flex flex-col gap-2 min-h-0">
+        <Ruler view={view} seek={seek} />
+        <div className="flex flex-col gap-1 min-h-0 overflow-y-auto">
+          {rows.map((row) => (
+            <Fragment key={row.id}>
+              <div className="flex items-start shrink-0" style={{ gap: GAP, height: ROW }}>
+                <LayerLabel
+                  layer={row.layer} sub={row.sub} lit={row.labelLit ?? row.lit} name={row.name}
+                  select={select} toggleLayer={toggleLayer} toggleLayerLock={toggleLayerLock} fold={row.fold}
+                />
+                {row.track
+                  ? <KeyLane track={row.track} view={view} selected={selected} setSelected={setSelected} writeKeys={writeKeys} lit={!!row.lit} />
+                  : row.kind === 'wave'
+                    ? <WaveLane view={view} lit={!!row.lit} label={row.label} wave={row.wave ?? []} />
+                    : <ClipLane view={view} lit={!!row.lit} label={row.label} />}
+              </div>
+              {row.graph}
+            </Fragment>
+          ))}
+        </div>
+        <Playhead view={view} now={now} />
+      </div>
+      {footer}
     </div>
   )
 }

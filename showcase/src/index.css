@@ -34,6 +34,8 @@
 @source "../../apps/brand-hub/src";
 @source "../../apps/rack/src";
 @source "../../apps/mixer/src";
+@source "../../apps/float/src";
+@source "../../packages/design-editor/src";
 
 @import "@kolkrabbi/kol-theme";
 /* kol-resume's screen styles for its previews — the kit sheets and the source page; its print rules (kol-resume.css) stay the host app's */

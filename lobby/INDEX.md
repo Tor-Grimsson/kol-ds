@@ -31,7 +31,7 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 96 entries
+## Queue — 98 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
@@ -214,6 +214,8 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [StyleguideNoMiddots](done/StyleguideNoMiddots.md) | **kol-website** — no `·` in kol-styleguide's shipped copy; `validate:no-middots` gate | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.1** live; receipt to kol-website |
+| 🟢 | [DocumentLangMark](done/DocumentLangMark.md) | **kol-website** — kol-styleguide `DocumentLibrary`/`DocumentView` `langMark` (code → node, preset `"flags"` on kol-icons `flag-*`) | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.0** live; receipt to kol-website |
 | 🟢 | [GrowthLineSeedOutline](done/GrowthLineSeedOutline.md) | **kol-atlas** — GrowthLineStage `seed="outline"`: the line starts on the shape's edge and fills inward; kol-growth `seed({ points })` takes a ring, `outline` / `pathRing` trace it | 2026-11-01 | 2026-11-01 | `closed` — **kol-growth 0.5.0 · kol-component 0.332.0** live; receipt to kol-atlas |
 | 🟢 | [LoaderAppIntro](done/LoaderAppIntro.md) | **kol-fxr** — the app loader is the line: `loaderApp({ intro })` ground only, `GrowthLineStage intro` claims it and drops the loader on its first frame, HubHome fades its chrome in on the breath | 2026-11-01 | 2026-11-01 | `closed` — **kol-component 0.331.0 · kol-framework 0.69.0 · kol-shell 0.99.0** live; receipt to kol-fxr |
 | 🟢 | [CanvasStudioSnapPositions](done/CanvasStudioSnapPositions.md) | **kol-mirror** — `CanvasStudio` binds monitor's 1–9 snap positions (numpad-laid pan, no zoom), the `snap` row in `CANVAS_KEYS` | 2026-10-25 | 2026-10-25 | `closed` — **kol-component 0.302.0** live; receipt to kol-mirror |
@@ -518,6 +520,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [IconsBoldOnWebsite](outbox/IconsBoldOnWebsite.md) | **kol-website** — `/Users/kolkrabbi/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-11-04 | **none** |
 | 🟢 | [TransportFromHardware](outbox/TransportFromHardware.md) | **kol-fxr** — `/Users/kolkrabbi/dev/projects/kol-fxr/lobby/INDEX.md` | 🟢 closed 2026-10-29 — clock and strip adopted (kol-hardware 0.9.1) | **none** |
 | 🔵 | [FloatingFromHardware](outbox/FloatingFromHardware.md) | **kol-monitor** — `/Users/kolkrabbi/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
 | 🟢 | [KolPrintSkillOnPackage](outbox/KolPrintSkillOnPackage.md) | **dotfiles** — `/Users/kolkrabbi/.dotfiles/lobby/INDEX.md` | 🟢 closed 2026-10-28 — /kol-print on the published package | **none** |
@@ -544,6 +547,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-04 | **`StyleguideNoMiddots` closed** — kol-styleguide 0.22.1 live; receipt to kol-website |
+| 2026-11-04 | **`DocumentLangMark` closed** — kol-styleguide 0.22.0 live; receipt to kol-website |
+| 2026-11-04 | **`IconsBoldOnWebsite` filed to kol-website** — kol-icons 0.64.0 (`typography/bold`, node 237:21006) published; the site bumps |
 | 2026-11-04 | **`FloatTimeline` withdrawn** the same day — the user: *"you don't choose what to build … that includes timeline and everything"*; built here in `packages/design-editor` after the mirror refresh from fxr |
 | 2026-11-04 | **`FloatTimeline` filed to kol-fxr** — float-everything W12: the timeline panel is the editor's; its remainder here is the mirror refresh + the gap-map rows |
 | 2026-11-03 | FloatFoldBothSidesGrey closed — kol-component 0.333.0 · kol-shell 0.100.0; receipt to kol-fxr |

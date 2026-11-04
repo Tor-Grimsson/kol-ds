@@ -33,7 +33,12 @@ import DocumentIndex from '@kolkrabbi/kol-framework/src/DocumentIndex.jsx'
  * use icons? the table is deadboring like this"* · *"props are good. we use variants and presets to define how things
  * ship, but props make things flexible"*). `assetsView="icon"` draws kol-icons' file-type glyph per original, its
  * extension and language in the tooltip and the aria-label; two of one kind carry the language as a subscript on the
- * glyph. `icon-label` is the glyph beside today's label. The defaults are the cells as they were. */
+ * glyph. `icon-label` is the glyph beside today's label. The defaults are the cells as they were.
+ *
+ * LANGUAGE MARK (DocumentLangMark, kol-website 2026-11-04 — user: *"we have is and en flags as icons"*). `langMark` is how
+ * ONE language code is drawn, in the twin-file subscript and in every Language cell: `(code) => node` (default the code
+ * as text) or `"flags"` — kol-icons' `flag-*` by `LANG_FLAGS` (`is → flag-is`, `en → flag-gb`, `de → flag-de`), the text
+ * code for any code without one. `langView` keeps the cell's layout; the accessible name stays the codes. */
 const LANGS = ['is', 'en', 'de']
 const ext = (f) => (f.key ?? f.name ?? '').split('.').pop().toUpperCase()
 export const fileLabel = (files, f) => (files.filter((x) => ext(x) === ext(f)).length > 1
@@ -49,6 +54,16 @@ const KINDS = {
 }
 const BY_EXT = Object.fromEntries(Object.entries(KINDS).flatMap(([name, exts]) => exts.map((e) => [e, name])))
 export const kindIcon = (f) => BY_EXT[ext(f).toLowerCase()] ?? 'file'
+/* the "flags" preset's map, language code → kol-icons flag */
+const LANG_FLAGS = { is: 'flag-is', en: 'flag-gb', de: 'flag-de' }
+const flagMark = (code) => {
+  const name = LANG_FLAGS[String(code).toLowerCase()]
+  return name
+    ? <span role="img" aria-label={code} className="inline-flex overflow-hidden rounded-[2px] shadow-[0_0_0_1px_var(--kol-border-default)]"><Icon name={name} size={12} /></span>
+    : code
+}
+const markOf = (langMark) => (langMark === 'flags' ? flagMark : typeof langMark === 'function' ? langMark : null)
+const marks = (codes, mark) => codes.map((c) => <span key={c} className="inline-flex">{mark(c)}</span>)
 const plain = (e) => !(e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0)
 
 /* the one Quick Look a page holds: `open(files, index)` and the overlay to render */
@@ -66,8 +81,10 @@ const Subscripted = ({ glyph, sub }) => (
   </span>
 )
 
-export function DocumentFiles({ row, onOpen, assetsView = 'label', fileIcon = kindIcon }) {
+export function DocumentFiles({ row, onOpen, assetsView = 'label', fileIcon = kindIcon, langMark }) {
   if (!row.files?.length) return null
+  const mark = markOf(langMark)
+  const subOf = (f) => (mark ? <span className="inline-flex gap-px">{marks(langOf(f).split(' '), mark)}</span> : langOf(f))
   return (
     <div className="flex flex-wrap gap-1">
       {row.files.map((f, i) => {
@@ -80,7 +97,7 @@ export function DocumentFiles({ row, onOpen, assetsView = 'label', fileIcon = ki
         const twin = fileLabel(row.files, f) !== ext(f)
         return (
           <Button key={f.key} variant="nav" size="sm" onClick={open} title={`${fullLabel(f)}, ${name}`} aria-label={fullLabel(f)}
-            iconOnly={typeof icon === 'string' ? icon : 'file'} iconComponent={twin ? <Subscripted glyph={glyph} sub={langOf(f)} /> : (typeof icon === 'string' ? undefined : icon)} />
+            iconOnly={typeof icon === 'string' ? icon : 'file'} iconComponent={twin ? <Subscripted glyph={glyph} sub={subOf(f)} /> : (typeof icon === 'string' ? undefined : icon)} />
         )
       })}
     </div>
@@ -88,11 +105,14 @@ export function DocumentFiles({ row, onOpen, assetsView = 'label', fileIcon = ki
 }
 
 /* the Language cell: today's text, a `Tag` per language, or the globe and the codes */
-function DocumentLangs({ lang, langView = 'text' }) {
-  if (!lang || langView === 'text') return lang ?? null
+function DocumentLangs({ lang, langView = 'text', langMark }) {
+  const mark = markOf(langMark)
+  if (!lang || (langView === 'text' && !mark)) return lang ?? null
   const codes = String(lang).split(/[,\s]+/).filter(Boolean)
-  if (langView === 'chips') return <span className="inline-flex flex-wrap gap-1">{codes.map((c) => <Tag key={c} variant="tertiary" size="xs" hash={false}>{c}</Tag>)}</span>
-  return <span className="inline-flex items-center gap-1" aria-label={`Language: ${codes.join(', ')}`}><Icon name="globe" size={14} />{codes.join(' ')}</span>
+  const label = `Language: ${codes.join(', ')}`
+  if (langView === 'chips') return <span className="inline-flex flex-wrap gap-1">{codes.map((c) => <Tag key={c} variant="tertiary" size="xs" hash={false}>{mark ? mark(c) : c}</Tag>)}</span>
+  if (langView === 'text') return <span className="inline-flex flex-wrap items-center gap-1" aria-label={label}>{marks(codes, mark)}</span>
+  return <span className="inline-flex items-center gap-1" aria-label={label}><Icon name="globe" size={14} />{mark ? marks(codes, mark) : codes.join(' ')}</span>
 }
 
 export const DocumentMarkdown = ({ row }) => (
@@ -101,22 +121,22 @@ export const DocumentMarkdown = ({ row }) => (
 
 const DEFAULT_KEYS = ['title', 'kind', 'date', 'lang', 'assets', 'markdown']
 
-function columnsFor({ onNavigate, onOpen, assetsView, langView, fileIcon }) {
+function columnsFor({ onNavigate, onOpen, assetsView, langView, fileIcon, langMark }) {
   return {
     title: { header: 'Title', accessor: 'title', wrap: true, sortable: true, render: (r) => (
       <a href={r.to} className="underline-offset-2 hover:underline" onClick={onNavigate ? (e) => { if (!plain(e)) return; e.preventDefault(); onNavigate(r.to) } : undefined}>{r.title}</a>
     ) },
     kind: { header: 'Kind', accessor: 'kind', sortable: true },
     date: { header: 'Date', accessor: 'date', sortable: true },
-    lang: { header: 'Language', accessor: 'lang', ...(langView !== 'text' && { render: (r) => <DocumentLangs lang={r.lang} langView={langView} /> }) },
-    assets: { header: 'Assets', accessor: 'files', render: (r) => <DocumentFiles row={r} onOpen={onOpen} assetsView={assetsView} fileIcon={fileIcon} /> },
+    lang: { header: 'Language', accessor: 'lang', ...((langView !== 'text' || langMark) && { render: (r) => <DocumentLangs lang={r.lang} langView={langView} langMark={langMark} /> }) },
+    assets: { header: 'Assets', accessor: 'files', render: (r) => <DocumentFiles row={r} onOpen={onOpen} assetsView={assetsView} fileIcon={fileIcon} langMark={langMark} /> },
     markdown: { header: 'Markdown', accessor: 'source', render: (r) => <DocumentMarkdown row={r} /> },
   }
 }
 
-export default function DocumentLibrary({ library, folder, columns, view = 'table', onNavigate, urlOf = (f) => f.url, assetsView = 'label', langView = 'text', fileIcon }) {
+export default function DocumentLibrary({ library, folder, columns, view = 'table', onNavigate, urlOf = (f) => f.url, assetsView = 'label', langView = 'text', fileIcon, langMark }) {
   const [open, overlay] = useFileQuickLook(urlOf)
-  const named = columnsFor({ onNavigate, onOpen: open, assetsView, langView, fileIcon })
+  const named = columnsFor({ onNavigate, onOpen: open, assetsView, langView, fileIcon, langMark })
   const defaults = DEFAULT_KEYS.map((k) => named[k])
   const resolve = (c) => (typeof c === 'string' ? named[c] : c)
   const cols = (typeof columns === 'function' ? columns(defaults) : columns ?? DEFAULT_KEYS).map(resolve).filter(Boolean)
@@ -143,16 +163,16 @@ export default function DocumentLibrary({ library, folder, columns, view = 'tabl
 }
 
 /* THE OPEN DOCUMENT: the same Assets and Markdown buttons above `MarkdownPage`, then `actions` — record's DocumentsPage.
- * `assetsView` and `fileIcon` as the library's.
+ * `assetsView`, `fileIcon` and `langMark` as the library's.
  * Every other prop goes to MarkdownPage (`resolveLink`, `assetUrl`, `toc`, `numbered`, …); `resolveLink` defaults to the
  * library's own (`libraryLinks`, kol-framework) when the caller passes `library` and no resolver. */
-export function DocumentView({ row, library, urlOf = (f) => f.url, actions, markdown = true, assetsView = 'label', fileIcon, ...page }) {
+export function DocumentView({ row, library, urlOf = (f) => f.url, actions, markdown = true, assetsView = 'label', fileIcon, langMark, ...page }) {
   const [open, overlay] = useFileQuickLook(urlOf)
   if (library && !page.resolveLink) page.resolveLink = libraryLinks(library)
   return (
     <>
       <div className="kol-page flex items-center justify-end gap-1 pb-0">
-        <DocumentFiles row={row} onOpen={open} assetsView={assetsView} fileIcon={fileIcon} />
+        <DocumentFiles row={row} onOpen={open} assetsView={assetsView} fileIcon={fileIcon} langMark={langMark} />
         {markdown && <DocumentMarkdown row={row} />}
         {actions}
       </div>

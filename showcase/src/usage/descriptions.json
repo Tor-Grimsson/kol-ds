@@ -354,6 +354,7 @@
   "FooterStrip": "The page's foot line (float-everything W9 row 139, 2026-11-04): counts at the start, meta at the end, both in `kol-float-timecode` (oq-64); an array joins with ` / `.",
   "PeriodNav": "The period's ‹ › Today (float-everything W9 row 142, 2026-11-04): one 36 float capsule — the two chevrons as quiet slots around the word (`kol-float-hint`), a press on it returns to now.",
   "DataStatus": "What the numbers are (float-everything W9 row 143, 2026-11-04): the disclosure Badge (\"Demo data\") and when they were last refreshed in `kol-float-timecode` (oq-64).",
+  "FloatLayout": "The float workspace frame (plan-2026-11-04-float-views W1.1 — kol-float--style 9:15449 \"Adaptive workspace\", its rules 9:15179).",
   "PageShell": "The page scaffold of an app.",
   "TabStrip": "Old name for TabsRow's text variant.",
   "SettingsScaffold": "The settings page scaffold.",

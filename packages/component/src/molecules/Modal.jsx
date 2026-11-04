@@ -72,6 +72,15 @@ import QuickLookHeader from './QuickLookHeader.jsx'
  *
  * Mounted once at the app root (BrandLayout). Renders into `document.body`
  * via portal, so it floats above any rail / scroll-context.
+ *
+ * CONTAINER (float-operational W2, 2026-11-04 — a specimen page shows the confirm open inside its box): `container`
+ * (an Element) is the portal target instead of `<body>`; the scrim turns `absolute` and fills that element (give it
+ * `position: relative` and a height), the visual-viewport fit is skipped, the focus does not scroll the page and the
+ * keys (Tab, Enter, Esc) are heard inside the box only.
+ * Unset, nothing changes.
+ *
+ *   const [box, setBox] = useState(null)
+ *   <div ref={setBox} className="relative h-[420px]"><ModalProvider container={box}>…</ModalProvider></div>
  */
 
 const ModalCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/ModalCtx')] ??= createContext(null))
@@ -87,7 +96,7 @@ const MODAL_VARIANTS = {
 }
 const modalVariant = (v, fallback) => MODAL_VARIANTS[v] ?? MODAL_VARIANTS[fallback]
 
-export function ModalProvider({ children, variant = 'bordered' }) {
+export function ModalProvider({ children, variant = 'bordered', container }) {
   const [state, setState] = useState(null)
 
   const closeWith = useCallback((value) => {
@@ -117,14 +126,14 @@ export function ModalProvider({ children, variant = 'bordered' }) {
     <ModalCtx.Provider value={{ prompt, confirm, alert, form }}>
       {children}
       {state && typeof document !== 'undefined' && createPortal(
-        <ModalView state={state} closeWith={closeWith} variant={state.variant ?? variant} />,
-        document.body,
+        <ModalView state={state} closeWith={closeWith} variant={state.variant ?? variant} contained={!!container} />,
+        container ?? document.body,
       )}
     </ModalCtx.Provider>
   )
 }
 
-function ModalView({ state, closeWith, variant }) {
+function ModalView({ state, closeWith, variant, contained }) {
   const look = modalVariant(variant, 'bordered')
   const float = variant === 'float'
   const [val, setVal] = useState(state.defaultValue ?? '')
@@ -139,7 +148,7 @@ function ModalView({ state, closeWith, variant }) {
    * instead of the browser scrolling the page to clear it; the scroll the page had is restored when the keyboard goes
    * (the visual viewport back to full height) and when the dialog closes */
   useEffect(() => {
-    if (typeof window === 'undefined') return undefined
+    if (typeof window === 'undefined' || contained) return undefined
     const y0 = window.scrollY
     const vv = window.visualViewport
     const fit = () => {
@@ -170,7 +179,7 @@ function ModalView({ state, closeWith, variant }) {
   /* focus once on open — the key effect below re-runs per keystroke and would steal it back */
   useEffect(() => {
     if (typing) inputRef.current?.focus({ preventScroll: true })
-    else dialogRef.current?.querySelector('[data-modal-ok]')?.focus()
+    else dialogRef.current?.querySelector('[data-modal-ok]')?.focus(contained ? { preventScroll: true } : undefined)
   }, [state.kind])
 
   useEffect(() => {
@@ -186,8 +195,10 @@ function ModalView({ state, closeWith, variant }) {
         els[next].focus()
       }
     }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
+    /* contained, the keys are the box's: Tab, Enter and Esc elsewhere on the page stay the page's */
+    const on = contained ? overlayRef.current : window
+    on?.addEventListener('keydown', onKey)
+    return () => on?.removeEventListener('keydown', onKey)
   }, [state.kind, val, values, fieldVals, closeWith]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -199,7 +210,7 @@ function ModalView({ state, closeWith, variant }) {
          z stays above the drawers it can open from. */
       className="kol-overlay-scrim"
       style={{
-        position: 'fixed', inset: 0, zIndex: 1000,
+        position: contained ? 'absolute' : 'fixed', inset: 0, zIndex: 1000,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
@@ -213,7 +224,7 @@ function ModalView({ state, closeWith, variant }) {
         style={{
           ...look.style,
           minWidth: 320,
-          maxWidth: '90vw',
+          maxWidth: contained ? '90%' : '90vw',
           ...(float ? { width: 562 } : {}),
         }}
       >
@@ -333,8 +344,10 @@ export function useModal() {
  * @param {string}   [icon]       float: the header's glyph
  * @param {Function} [onMinimise] float: the − control
  * @param {boolean}  [blocking=true]
+ * @param {Element}  [container]  the portal target instead of `<body>` (float-operational W2, 2026-11-04): the layer turns
+ *   `absolute` and fills it — a specimen box (`position: relative`, a height) shows the window open in place. Unset, unchanged.
  */
-export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, children }) {
+export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, container, children }) {
   const look = modalVariant(variant, 'lift')
   const float = variant === 'float'
   useEffect(() => {
@@ -348,7 +361,7 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
     <div
       onMouseDown={blocking ? onClose : undefined}
       className={blocking ? 'kol-overlay-scrim' : 'pointer-events-none'}
-      style={{ position: 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      style={{ position: container ? 'absolute' : 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <div
         role="dialog"
@@ -359,13 +372,13 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
         /* THE OVERLAY PANEL (MetricRebuild, 2026-10-31 — user: the filter dialog read as "a borderless box floating
          * mid-page"): it painted the page's own surface behind an fg-08 hairline, so on a dark page it was the page.
          * `.kol-overlay-panel` is the lift every KOL overlay wears (oq-04, no border — the scrim is the edge). */
-        className={float ? `kol-modal pointer-events-auto flex flex-col gap-[18px] p-6 max-h-[85vh] overflow-auto ${look.className}` : `kol-modal flex flex-col rounded max-h-[85vh] ${look.className}${blocking ? '' : ' pointer-events-auto'}`}
-        style={{ ...look.style, width: `min(${width}px, calc(100vw - 32px))` }}
+        className={float ? `kol-modal pointer-events-auto flex flex-col gap-[18px] p-6 ${container ? 'max-h-[85%]' : 'max-h-[85vh]'} overflow-auto ${look.className}` : `kol-modal flex flex-col rounded ${container ? 'max-h-[85%]' : 'max-h-[85vh]'} ${look.className}${blocking ? '' : ' pointer-events-auto'}`}
+        style={{ ...look.style, width: `min(${width}px, calc(${container ? '100%' : '100vw'} - 32px))` }}
       >
         {float && title && <QuickLookHeader variant="float" icon={icon} title={title} onMinimise={onMinimise} onClose={onClose} />}
         {children}
       </div>
     </div>,
-    document.body,
+    container ?? document.body,
   )
 }

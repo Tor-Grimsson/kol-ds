@@ -545,6 +545,7 @@
   "FooterStrip": "packages/shell/src/WorkspaceStrips.jsx",
   "PeriodNav": "packages/shell/src/WorkspaceStrips.jsx",
   "DataStatus": "packages/shell/src/WorkspaceStrips.jsx",
+  "FloatLayout": "packages/shell/src/FloatLayout.jsx",
   "PhoneNav": "packages/shell/src/PhoneNav.jsx",
   "PHONE_NAV_VARIANTS": "packages/shell/src/PhoneNav.jsx",
   "TransportPill": "packages/shell/src/TransportPill.jsx",

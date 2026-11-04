@@ -8,7 +8,7 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 
 ## Later — user ideas, not scheduled
 
-- **OUTSTANDING — the gap map's icons frame** (2026-11-04, owed to him). kol-float--style `XY6adCImPaxDuHDO6OdUw9`, node 51:2365: every tile's KOL side must be a LINKED library instance (his rule: no linked icon = fail). Blocked on his library publish (n48kE2bJtrFjl7wxst30xH); then import each master by key, place it, hide the loose copy, check the whole frame. State: 33 tiles linked; today's promoted/redrawn icons and the align pairs still loose. Also owed: kol-icons 0.63.0 npm publish (staged), kol-component + kol-deck patch (align `-solid` names), the landing of corner fixes + kol-icon batch (agent run, `_tmp/icons/2026-11-04-*`), and the shared-bases work (`_tmp/icons/2026-11-04-base-audit/report.md`: 67 bases, clocks 20 versions, documents 12, monitors 9).
+- **OUTSTANDING — the gap map's icons frame** (2026-11-04, owed to him). kol-float--style `XY6adCImPaxDuHDO6OdUw9`, node 51:2365: every tile's KOL side must be a LINKED library instance (his rule: no linked icon = fail). Blocked on his library publish (n48kE2bJtrFjl7wxst30xH); then import each master by key, place it, hide the loose copy, check the whole frame. State: 33 tiles linked; today's promoted/redrawn icons and the align pairs still loose. Also owed: the shared-bases work (`_tmp/icons/2026-11-04-base-audit/report.md`: 67 bases, clocks 20 versions, documents 12, monitors 9).
 
 - **Which rail a brand site wears** (2026-10-22, earmarked). `apps/brand-hub` is on `AppHub`, the app rail; `apps/site-hub` (2026-10-24) is the site rail's reference beside it, and `apps/shell` shows both rails on one set of pages. The specimens exist; the call is his, his session.
 - **Phasing out Right Grotesk** (2026-10-31, parked). He wants to compare a replacement: Schibsted Grotesk or another Google face, and a plain system-like sans (Inter, Noto Sans, Montserrat, Red Hat Display/Text; Proxima Nova is Adobe Fonts, not Google). The tool already exists: the Figma library's `13-ui-font` sheet switches six fonts by the `ui-font` mode (Inter · Geist · IBM Plex Sans · Public Sans · Noto Sans · Montserrat) — add Schibsted Grotesk and Red Hat as modes there; the `type` collection's Right Grotesk / Schibsted modes switch every text style at once. A pick becomes a kol-theme `--kol-font-family-sans*` change and its own session.
@@ -16,7 +16,11 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Tone variable names in plain words** (2026-11-03, parked). `--kol-tone-bg` / `-fg` / `-border` (and hover/active/pressed/panel siblings) read as dev shorthand; he wants ground · ink · edge. Code and Figma (`tone` collection) must rename together to stay one-to-one. Its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-11-04 — Figma round 4, the Avatar initial in Inter)
+## 🏁 Current state (2026-11-04 late — float operational: views, the Float set, every gap closed)
+
+- **Published** kol-shell 0.103.0 (FloatLayout + `bottom`/`eyebrow`, transport `inline`) · kol-component 0.338.0 (Dialog `container`) · design-editor 0.27.0 (TimelineRail) · kol-dashboards 0.11.0 · kol-styleguide 0.22.1 · kol-icons 0.64.0 (`bold`). apps/float = the float home (13 family pages, 6 views), mounted as the showcase's Float set; Figma has the ➤ Float chapter and the screens as FloatLayout instances. Figma work goes to kol-figma-agent, which loads the new `kol-figma` skill. Open: round 25 rulings (W6/W7), his library publish. Log: `session-log/2026-11-04-float-views-set-and-operational.md`.
+
+## Current state (2026-11-04 — Figma round 4, the Avatar initial in Inter)
 
 - **Published** kol-theme 0.210.3–0.210.4 (`font-inter` + Inter @font-face from /fonts/inter) · kol-component 0.333.3 (Avatar initial in Inter). Figma round 4 built (plan-2026-11-03-figma-round-4.md, all ✅): brand pages to the end, CodeBlock, /work list view, light images, small gaps. Open: he republishes the library. Log: `session-log/2026-11-04-figma-round-4-and-avatar-inter.md`.
 
@@ -31,10 +35,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-10-31 late — interface icons in 18 categories, the batch landed)
 
 - **Published** kol-icons 0.57.0–0.59.0: `social` → external; kol-icon-set-interface foldered by the user's 18 categories (plan-2026-10-31-icon-categories); the 559-icon batch (atlas · website · Claude list) in, every drawing kept, 814 icons. Solid is a variant (the Type chips), not a category. Closed ClaudeListIconSet and the five fxr tickets (kol-component 0.330.0). Open: culling duplicates with him. Log: `session-log/2026-10-31-interface-icon-categories-and-the-batch.md`.
-
-## Current state (2026-10-31 night — one menu engine, tone faint, the Controls set)
-
-- **Published** kol-theme 0.210.0 · kol-component 0.330.0 · kol-styleguide 0.20.0 · design-editor 0.24.0: `Menu` is the one engine (Dropdown fused, MultiSelect columns, MenuItem, ContextMenu on it), `MenuRow` `indicator` dot/check/chevron + `kbd` (• single pick, check many-of-N — his ruling), `tone="faint"` (oq-06) retires Dropdown `variant="raised"`, showcase Controls set = apps/controls (new Menus page). 0.330.0 also carries the five fxr tickets — close them once it is live. Open: W5 (two row looks, two radii — TALK), Combobox + SplitToolButton onto Menu. Plan: `plan-2026-10-31-menu-engine.md`. Log: `session-log/2026-10-31-one-menu-engine-faint-tone-controls-set.md`.
 
 ## Repo standup (2026-06-15)
 

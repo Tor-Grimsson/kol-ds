@@ -165,7 +165,7 @@ function Pairs({ pairs, brand }) {
   const rows = pairs.map((p, i) => {
     const [t, b] = [stopHex(brand, p.text), stopHex(brand, p.bg)]
     const r = contrast(t, b)
-    return { id: i, text: `${p.text}${t ? ` · ${t}` : ''}`, bg: `${p.bg}${b ? ` · ${b}` : ''}`, ratio: r ? `${r.toFixed(2)} : 1` : '—', passes: r ? grade(r) : '—', use: p.use ?? '' }
+    return { id: i, text: `${p.text}${t ? `, ${t}` : ''}`, bg: `${p.bg}${b ? `, ${b}` : ''}`, ratio: r ? `${r.toFixed(2)} : 1` : '—', passes: r ? grade(r) : '—', use: p.use ?? '' }
   })
   const columns = [{ accessor: 'text', header: 'Text' }, { accessor: 'bg', header: 'Background' }, { accessor: 'ratio', header: 'Contrast' }, { accessor: 'passes', header: 'WCAG 2' }, { accessor: 'use', header: 'Use', wrap: true }]
   return <Table variant="simple" caption="Approved color pairs" columns={columns} rows={rows} className="mt-8" />

@@ -50,6 +50,8 @@ const GATES = [
   ['consumption', 'validate-consumption.mjs'],
   ['icon-ink', 'validate-icon-ink.mjs'],
   ['native-title', 'validate-native-title.mjs'],
+  ['no-middots', 'validate-no-middots.mjs'],
+,
   ['variants', 'validate-variants.mjs'],
   ['control-type', 'validate-control-type.mjs'],
   ['views', 'validate-views.mjs'],

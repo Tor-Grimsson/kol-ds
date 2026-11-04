@@ -3,8 +3,11 @@
 // component=Dialog
 import figma from 'figma'
 
+const instance = figma.selectedInstance
+// body is a slot — the dialog's children
+
 export default {
-  example: figma.code`<Dialog variant="float" open={open} onClose={close} onMinimise={minimise} icon="share" title="Export scene" width={418}>{fields}</Dialog>`,
+  example: figma.code`<Dialog variant="float" open={open} onClose={close} onMinimise={minimise} icon="share" title="${instance.getString('title')}" width={418}>{fields}</Dialog>`,
   imports: ["import { Dialog } from \"@kolkrabbi/kol-component\""],
   id: 'Dialog',
 }

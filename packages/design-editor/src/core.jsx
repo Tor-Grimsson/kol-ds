@@ -87,6 +87,12 @@ export { EditorProviders }
 export { OutputView, OutputCanvas, OutputStage }
 
 /**
+ * TimelineRail — the Timeline's float Rail with no engine under it (float-views W3.1, 2026-11-04): a layout hands it
+ * rows as data; `timelineView(loop, zoom, now)` is its window. The editor's Timeline renders through the same Rail.
+ */
+export { TimelineRail, timelineView } from './editor/params/Timeline'
+
+/**
  * THE HOST'S CONFIGURATION, for a chrome mounted WITHOUT `<DesignEditor />` (2026-09-29, found
  * mounting LabsView and MobileView in the apps tier): the three props `DesignEditor` takes are
  * module setters underneath, and only `DesignEditor` called them — so a host that routed straight

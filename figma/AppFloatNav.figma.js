@@ -8,12 +8,15 @@ const variant = instance.getEnum('variant', { "mobile": "mobile", "dock": "dock"
 const labels = instance.getEnum('labels', { "true": "true", "false": "false" })
 const surface = instance.getEnum('surface', { "solid": "solid", "glass-dark": "glass-dark", "glass-light": "glass-light" })
 const shape = instance.getEnum('shape', { "pill": "pill", "bar": "bar" })
+const inline = instance.getEnum('inline', { "true": "true", "false": "false" })
 const sf = surface !== 'solid' ? ` surface="${surface}"` : ''
 const lb = labels === 'true' ? ' labels' : ''
 
 export default {
   example: variant === 'transport'
-    ? figma.code`<AppFloatNav variant="transport"${sf} items={transportItems} />`
+    ? inline === 'true'
+      ? figma.code`<AppFloatNav variant="transport" inline${sf} items={transportItems} timecode={{ current, total }} />`
+      : figma.code`<AppFloatNav variant="transport"${sf} items={transportItems} />`
     : figma.code`<AppFloatNav variant="${variant}" shape="${shape}"${sf}${lb} items={items} sheetItems={moreItems} currentPath={path} onNavigate={navigate} />`,
   imports: ["import { AppFloatNav } from \"@kolkrabbi/kol-shell\""],
   id: 'AppFloatNav',

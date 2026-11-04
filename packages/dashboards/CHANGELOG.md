@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.11.0 — 2026-11-04
+
+- **The record dashboard's source and capture cards** (plan-2026-11-04-float-views W3.2, kol-float--style 13:5037). **`SourceCard`** takes `meta` (mono, at the title's right — "4 items") and `children` (its rows under the head, `TaskCard size="sm"`) — a healthy source that lists what it holds. **`CaptureCard`** draws the 5:3 frame only when `image` or `src` is given (a text capture from a list source has none), and takes `onPrev` (←) and `action` + `onAction` (a labelled float button — "Archive"); with either, the moves sit in their own row under the meta. Existing calls (an image + `onNext`) render as before. Not published.
+
 ## 0.10.0 — 2026-11-04
 
 - **Float, all of it — W7 cards + tiles and W10 charts** (plan-2026-11-04-float-everything; the gap map's rows 95–114 and 153–157, each built to the exploration piece). Needs kol-theme ≥ 0.211.0 (the float tokens, Inter and the `kol-float-*` roles). The float look: a 20 sheet (`--kol-float-menu-r`) on the secondary surface, Inter through the float type roles and JetBrains Mono for numbers, no rim, selection at fg-16, the 2px focus ring, hover fg-08.

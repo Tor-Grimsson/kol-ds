@@ -13,6 +13,7 @@ const swap = instance.getInstanceSwap('icon')
 // the swapped icon's own Code Connect id is its code name (figma/icons/*.figma.js); a layer name never follows a swap
 const icon = (swap && typeof swap.codeConnectId === 'function' && swap.codeConnectId()) || 'search'
 
+const tone = instance.getEnum('tone', { "default": "default", "primary": "primary", "inverted": "inverted", "secondary": "secondary", "ghost": "ghost", "danger": "danger" })
 const radius = instance.getEnum('radius', { "sm": "sm", "full": "full" })
 const iconLeftOn = instance.getBoolean('iconLeft')
 const leftSwap = instance.getInstanceSwap('iconLeftName')
@@ -24,8 +25,8 @@ const right = (rightSwap && typeof rightSwap.codeConnectId === 'function' && rig
 const xr = radius === 'full' ? ' radius="full"' : ''
 const xd = disabled === 'true' ? ' disabled' : ''
 const xl = (iconLeftOn ? ` iconLeft="${left}"` : '') + (iconRightOn ? ` iconRight="${right}"` : '')
-// tone is the `tone` collection's variable mode on the instance or a wrapper (W24); Code Connect can't read a mode, so the snippet inherits it like an untoned <Button>
-const ground = variant !== 'default' ? `variant="${variant}" ` : ''
+// tone: the float roles (inverted · secondary · ghost · danger) are the `tone` variant; elsewhere tone is the `tone` collection's variable mode (W24), which Code Connect can't read, so the snippet inherits it
+const ground = (variant !== 'default' ? `variant="${variant}" ` : '') + (tone !== 'default' && tone !== 'primary' ? `tone="${tone}" ` : '')
 export default {
   example: iconOnly === 'true'
     ? pressed === 'true'

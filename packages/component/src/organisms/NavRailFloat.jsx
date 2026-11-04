@@ -31,10 +31,12 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {Function} [onHide]       the rail's hide slot (expanded: put kol-shell's RailDisplayControls in `footer`)
  * @param {Array}    [defaultExpanded]  paths of sections open at mount
  * @param {ReactNode} [footer]
+ * @param {Function} [onItemHover]  collapsed only: `(item, element)` when the pointer enters a slot, `(null, null)` when it
+ *                                  leaves — the seam a hover flyout hangs off (kol-shell's RailFlyout, FloatLayout 2026-11-04)
  */
 const isOn = (path, current) => !!path && path === current
 
-export default function NavRailFloat({ items = [], currentPath = '', onNavigate, collapsed = false, onCollapsedChange, title, icon = 'grid', onSwitch, switcher, onSearch, onHide, defaultExpanded = [], footer, className = '' }) {
+export default function NavRailFloat({ items = [], currentPath = '', onNavigate, collapsed = false, onCollapsedChange, title, icon = 'grid', onSwitch, switcher, onSearch, onHide, defaultExpanded = [], footer, onItemHover, className = '' }) {
   const [open, setOpen] = useState(() => new Set(defaultExpanded))
   const toggle = (path) => setOpen((s) => { const n = new Set(s); n.has(path) ? n.delete(path) : n.add(path); return n })
   const go = (path) => () => onNavigate?.(path)
@@ -56,7 +58,8 @@ export default function NavRailFloat({ items = [], currentPath = '', onNavigate,
             if (it.heading) return i === 0 ? null : <span key={`h${i}`} className="h-4 shrink-0" aria-hidden />
             const on = isOn(it.path, currentPath) || !!it.sub?.some((c) => isOn(c.path, currentPath))
             return (
-              <span key={it.path ?? it.label} className="relative flex w-full justify-center">
+              <span key={it.path ?? it.label} className="relative flex w-full justify-center"
+                onMouseEnter={onItemHover && ((e) => onItemHover(it, e.currentTarget))} onMouseLeave={onItemHover && (() => onItemHover(null, null))}>
                 {on && <span className="absolute left-[5px] top-1/2 h-3.5 w-[3px] -translate-y-1/2 rounded-full bg-[var(--kol-surface-on-primary)]" aria-hidden />}
                 {slot(it.path ?? it.label, it.label, it.icon, { on, onClick: go(it.path) })}
               </span>

@@ -156,7 +156,7 @@ export const TIERS = {
   PropertyRail: 'organisms', TopControlsBar: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'modules', AppStudio: 'modules', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
-  PageShell: 'modules',
+  PageShell: 'modules', FloatLayout: 'modules',
   /* the page frames, Modules on the ladder (user ruling 2026-11-03, taxonomy § The ladder) */
   SiteLayout: 'modules', WebsiteLayout: 'modules',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
@@ -292,6 +292,7 @@ export const FUNCTIONS_BY_NAME = {
   ToolRail: 'input', PropertyRail: 'input', DocumentCapsule: 'navigation', GlobalActions: 'action', TopControlsBar: 'navigation', PanelsRestore: 'action',
   ReaderBar: 'navigation', ProgressDock: 'navigation', RailTrigger: 'navigation', RailFlyout: 'navigation', RailDisplayControls: 'action',
   AccountFooter: 'display', Breadcrumb: 'wayfinding', FooterStrip: 'display', PeriodNav: 'navigation', DataStatus: 'feedback',
+  FloatLayout: 'structure',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */

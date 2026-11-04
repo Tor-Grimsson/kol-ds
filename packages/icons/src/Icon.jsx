@@ -106,7 +106,7 @@ export const registerIcons = (globMap) => {
  *   user-interface → metrics → metric (2026-10-09: it is the metrics app's mark, moved to `identity`)
  *   metrics → metric (2026-10-28: one word, singular, the app's own name — `apps/metric`, metric.kolkrabbi.io)
  *   rack → rack-v (2026-10-09: beside the new rack-h) */
-export const RENAMED_ICONS = { customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v' }
+export const RENAMED_ICONS = { overlap: 'transparency', customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v' }
 
 /* A REGISTERED GLYPH NEVER OVERRIDES A DS NAME (user 2026-10-24: kol-mirror registered its own set over the resolver and
  * its `refresh` replaced the DS's in the settings rail's reset — *"how can it register its own in a FIXED PRESET OF

@@ -71,7 +71,8 @@ export function CanvasHint({ icon = 'pointer', hint, className = '' }) {
  * around `children`, the object's label above (`kol-float-label`) and the size cap under it (`kol-float-ruler` on the
  * `--kol-float-list-r` round). The exploration's `Selection measurement` (kol-float--style 9:8895).
  *
- * @param {number|string} width · {number|string} height  the cap's numbers ("754 × 771")
+ * @param {number|string} width · {number|string} height  the cap's numbers ("754 × 771"); both unset, no cap — the
+ *                         handles alone (the selected brief, kol-float--style 9:14640)
  * @param {string}   label     the object's name, above the frame
  * @param {ReactNode} children  the selected thing
  * @param {string}   className
@@ -88,7 +89,7 @@ export function SelectionMeasure({ width, height, label, children, className = '
         <span className={`${handle} -bottom-1 -right-1`} />
       </div>
       {label && <span className="kol-float-label text-oq-64 absolute left-0 bottom-full mb-2 whitespace-nowrap">{label}</span>}
-      <span className="kol-float-ruler text-emphasis absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap px-2 py-1 rounded-[var(--kol-float-list-r)] bg-oq-08">{width} × {height}</span>
+      {(width != null || height != null) && <span className="kol-float-ruler text-emphasis absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap px-2 py-1 rounded-[var(--kol-float-list-r)] bg-oq-08">{width} × {height}</span>}
     </div>
   )
 }

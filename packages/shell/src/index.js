@@ -31,6 +31,8 @@ export { default as RailTrigger } from './RailTrigger.jsx'
 export { default as RailFlyout } from './RailFlyout.jsx'
 export { default as RailDisplayControls } from './RailDisplayControls.jsx'
 export { AccountFooter, StatusStrip, Breadcrumb, FooterStrip, PeriodNav, DataStatus } from './WorkspaceStrips.jsx'
+// the float page frame, assembled from the chrome above (plan-2026-11-04-float-views W1.1)
+export { default as FloatLayout } from './FloatLayout.jsx'
 export { default as PhoneNav, PHONE_NAV_VARIANTS } from './PhoneNav.jsx'
 export { default as TransportPill } from './TransportPill.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'

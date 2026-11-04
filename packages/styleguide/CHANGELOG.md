@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.22.1 — 2026-11-04
+
+- **No `·` in the shipped copy** (StyleguideNoMiddots, kol-website — the user's no-bullets law). A label's two parts take a comma: the brand book's section labels (`04 — logos, concept`), the stationery rows (`Letterhead, A4`), ComboLayouts' `PRIMARY, 50`, LayoutGuide's pair cells (`text, token`), PrintStudio's `N sheets, A4`, the letterhead foot's `entity, Kt.` and EmailSignature's default role line. Value lists drop the glyph for spans with a gap: the letterhead contact line and EmailSignature's email and web. New gate `pnpm validate:no-middots` (no `·` in `packages/styleguide/src` outside comments). Copy only; no API change.
+
+## 0.22.0 — 2026-11-04
+
+- **`langMark`** on `DocumentLibrary` and `DocumentView`, forwarded to `DocumentFiles` and the Language cell (DocumentLangMark, kol-website — the user: "we have is and en flags as icons"): how ONE language code is drawn, in the twin-file subscript and every Language cell. `(code) => node`, or the preset `"flags"` — kol-icons `flag-is`, `flag-gb` for `en`, `flag-de`, each in a 2px-rounded hairline frame at 12; any code without a flag stays its text. `langView` keeps the cell's layout; the accessible name stays the codes. Unset, everything renders as before.
+
 ## 0.21.0 — 2026-11-04
 
 - **`ThemeTile`** (float-everything W2 row 34 — the exploration's reading-theme pick, `Aa Night · Paper · Sepia`): an 88 × 64 tile painted in the theme's own `bg` and `ink`, the `sample` (default `Aa`) at 22 in the reading face (`font`, default Literata), the `label` under it in Inter 10; `selected` wears the float focus ring; with `onClick` it is a button, so a row of them is a pick.

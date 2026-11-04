@@ -5707,7 +5707,7 @@
     {
       "prop": "items",
       "type": "—",
-      "def": "[\n  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },\n  { axis: 'h', mode: 'center', icon: 'align-horizontal-center', title: 'Align horizontal center' },\n  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right',  title: 'Align right' },\n  { axis: 'v', mode: 'start',  icon: 'align-vertical-top',      title: 'Align top' },\n  { axis: 'v', mode: 'center', icon: 'align-vertical-center',   title: 'Align vertical center' },\n  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },\n]",
+      "def": "[\n  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left-solid',   title: 'Align left' },\n  { axis: 'h', mode: 'center', icon: 'align-horizontal-center-solid', title: 'Align horizontal center' },\n  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right-solid',  title: 'Align right' },\n  { axis: 'v', mode: 'start',  icon: 'align-vertical-top-solid',      title: 'Align top' },\n  { axis: 'v', mode: 'center', icon: 'align-vertical-center-solid',   title: 'Align vertical center' },\n  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom-solid',   title: 'Align bottom' },\n]",
       "desc": ""
     },
     {
@@ -8027,6 +8027,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "container",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "Dialog": [
@@ -8044,6 +8050,12 @@
     },
     {
       "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "contained",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15843,6 +15855,12 @@
       "desc": ""
     },
     {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "status",
       "type": "—",
       "def": "—",
@@ -15868,6 +15886,12 @@
     },
     {
       "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15905,7 +15929,25 @@
       "desc": ""
     },
     {
+      "prop": "onPrev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "onNext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -21323,6 +21365,152 @@
       "desc": ""
     }
   ],
+  "FloatLayout": [
+    {
+      "prop": "nav",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "defaultRail",
+      "type": "—",
+      "def": "'expanded'",
+      "desc": ""
+    },
+    {
+      "prop": "bar",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "inspectorLabel",
+      "type": "—",
+      "def": "'Inspector'",
+      "desc": ""
+    },
+    {
+      "prop": "defaultInspectorHidden",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSwitch",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSearch",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rail",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRailChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultExpanded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railFooter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "breadcrumb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "inspector",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bottom",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "inspectorHidden",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onInspectorHiddenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "PhoneNav": [
     {
       "prop": "variant",
@@ -23595,6 +23783,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "langMark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DocumentMarkdown": [
@@ -23659,6 +23853,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "langMark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DocumentView": [
@@ -23700,6 +23900,12 @@
     },
     {
       "prop": "fileIcon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "langMark",
       "type": "—",
       "def": "—",
       "desc": ""

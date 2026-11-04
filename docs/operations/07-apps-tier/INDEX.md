@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-11-01
+updated: 2026-11-04
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -44,6 +44,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 |---|---|---|
 | `apps/media` | `pnpm media` · `/apps/media` | the media tool alone |
 | `apps/metric` | `pnpm metric` · `/apps/metric` | kol-website metric's analytics dashboard (`/demo-11`) as the reference page, on static fixture data (`src/fixtures.json`, captured 2026-10-31; `fixtures.js` answers every `/api/*` call) — MetricDashboardUpstream |
+| `apps/float` | `pnpm float` (5216) · `/apps/float` | the float views on kol-shell's `FloatLayout` — Home lists them, one route each: `visual-editor` (full screen, its own chrome, no layout) · `record-tabs` · `record-float` · `rails` · `workspace` · `metrics`; layout, not function (plan-2026-11-04-float-views; Folio parked for `apps/folio`) |
 | `apps/media-hub` | `pnpm media-hub` (5175) · `/apps/media-hub` | the same tool on kol-shell's `AppHub` — Browse at `/` and Settings, nothing else (2026-09-29: Library, Notes, Decks and Brand left — notes/decks/brand are their own apps). No Home; one settings place (the tool's gear hands over through `onOpenSettings`); the phone bar |
 | `apps/notes` | `pnpm notes` (5177) · `/apps/notes` | the notes tool alone — kol-notes over the fixture's fake D1 `notes` table, through media-fixture's `useNotesTool`. Opens on a blank note (`NEW_NOTE`); the list is `#list` |
 | `apps/notes-hub` | `pnpm notes-hub` (5187) · `/apps/notes-hub` | Shell + Hub + notes — Write (a blank note, `/`) and Notes (`/notes`) on one rail |

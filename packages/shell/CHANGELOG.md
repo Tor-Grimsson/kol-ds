@@ -1,5 +1,22 @@
 # @kolkrabbi/kol-shell
 
+## 0.103.0 — 2026-11-04
+
+The float chrome's missing seams (plan-2026-11-04-float-operational W1 + W4.2):
+- **FloatLayout `bottom`** — a bottom Rail under the content AND the inspector, 24 below them at its own height; the content row takes what is left. Below `md` it scrolls with the content, after the inspector. apps/float record float's filter capsule + Task index dock live in it (kol-float--style 9:14340).
+- **FloatLayout `eyebrow`** — a line in the 40 under the bar, 25 below it, taking no height (the content still starts 40 down); below `md` in flow under the bar. Record float's WORKSPACE / TASKS, so its canvas starts at y 140.
+- **AppFloatNav `variant="transport" inline`** — the desktop capsule (9:8791): at ≥ md a 48 capsule in flow where it is placed, 6 in, float Buttons (ghost, icon-only, 36) 4 apart, the lit slot fg-16, each named by the float Tooltip, the Timecode 12 in after them (378 × 48 with the timecode; the frame's 374). A `sheetFor` slot opens its rows 12 above the slot. Below md the phone pill as before. Unset, unchanged.
+- **PropertyRail tabs at the inspector size** — TabsRow float `size="xs"` (26), the `tab` value the lit chip (`aria-selected`); the tablist is named `<title> tabs`.
+
+## 0.102.1 — 2026-11-04
+
+- **SelectionMeasure: the size cap is optional** — with neither `width` nor `height` the frame is the four handles alone (the selected brief in kol-float--style 9:14640, apps/float Rails, plan-2026-11-04-float-views W3.4). With either set, unchanged.
+- **FloatLayout `defaultExpanded`** — the nav's sections open at mount, handed to `NavRail variant="float"` (the frame's Dashboard open over its six rows, kol-float--style 9:14486).
+
+## 0.102.0 — 2026-11-04
+
+- **FloatLayout** — the float workspace frame (plan-2026-11-04-float-views W1.1, kol-float--style 9:15449 and its rule sheet 9:15179), assembled from the float chrome with nothing drawn of its own: `NavRail variant="float"` in three states (`rail` / `defaultRail`: `expanded` 280 · `collapsed` 72 · `hidden` 0, where RailTrigger and the `breadcrumb` take the corner), RailFlyout beside a 72 slot that holds a section (on hover), RailDisplayControls at the expanded foot, the 64 TopControlsBar (`bar`), the content slot (`children`) and ONE inspector slot (`inspector`, a node or `({ hide }) => node` for PropertyRail's `onCollapse`). Panels ▾ (PanelsRestore) shows in the bar exactly while the nav or the inspector is hidden, and brings it back as it was (the nav at its last width). 24 round the page and between the Rails, 40 under the bar; below `md` the nav is the trigger and the inspector stacks under the content. Peer kol-component ≥0.337.0 (`NavRail float onItemHover`).
+
 ## 0.101.1 — 2026-11-04
 
 - **The transport's Timecode sits inside the pill** (float-everything W5 row 70): `AppFloatNav variant="transport" timecode` passes it to TabsRow's new `trailing` (kol-component 0.335.0) instead of a capsule 8 off the pill. The slots stay where a pill without it puts them; the pill grows rightward. Peer kol-component ≥0.335.0.

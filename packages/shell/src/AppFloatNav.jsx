@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { TabsRow, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, tabbarPillWidth, tabbarPillSlot, floatSurfaceClass, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
+import { Button, TabsRow, Tooltip, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, tabbarPillWidth, tabbarPillSlot, floatSurfaceClass, usePopover, PopoverPanel, useMediaQuery } from '@kolkrabbi/kol-component'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
 import Timecode from './Timecode.jsx'
 
@@ -290,8 +290,14 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
  * @param {Object|string} timecode  THE TIMECODE (float-everything W5 rows 69 · 70, 2026-11-04): `{ current, total? }` (or the
  *                               current alone) drawn by `Timecode` INSIDE the pill, after the slots — TabsRow's `trailing`
  *                               (kol-component ≥0.335.0); the slots stay where a pill without it puts them. Unset, no readout
+ * @param {boolean} inline       THE DESKTOP CAPSULE (plan-2026-11-04-float-operational W1.2; kol-float--style 9:8791): at ≥ md
+ *                               the transport is a 48 capsule IN FLOW where the consumer places it — 6 in, the float
+ *                               Buttons (ghost, icon-only, 36) 4 apart, the lit slot fg-16, each named by the float Tooltip,
+ *                               the Timecode 12 in after them (374 wide with a timecode); a `sheetFor` slot opens its rows
+ *                               12 above the slot. Below md it is the phone pill as before. Default false — the pill everywhere
+ * @param {string} className     the inline capsule's (ignored by the pill)
  */
-function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable = false, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false, foldSide = 'right', foldTone, timecode }) {
+function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable = false, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false, foldSide = 'right', foldTone, timecode, inline = false, className = '' }) {
   const [sheet, setSheet] = useState(null)
   useEffect(() => {
     if (!sheet) return undefined
@@ -320,6 +326,30 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
     width: 'max-content', minWidth: 160,
   }
   const tc = timecode == null ? null : typeof timecode === 'string' ? { current: timecode } : timecode
+  const phone = useMediaQuery('(max-width: 767px)')
+
+  if (inline && !phone) {
+    /* the desktop capsule — ToolRail's slots laid in a row; the sheet sits over its slot (6 in + 40 a slot + 18 its centre) */
+    const capsuleSheet = { position: 'absolute', left: 6 + at * 40 + 18, right: 'auto', transform: 'translateX(-50%)', [top ? 'top' : 'bottom']: 'calc(100% + 12px)', width: 'max-content', minWidth: 160 }
+    return (
+      <div role="toolbar" aria-label="Transport" className={`kol-transport-capsule kol-float-chrome relative inline-flex items-center gap-1 p-1.5 rounded-full ${floatSurfaceClass(surface)} ${className}`.trim()}>
+        {sheet && <button type="button" aria-label="Close" className="kol-phone-nav-scrim" onClick={() => setSheet(null)} />}
+        {sheet && (
+          <div className={`kol-phone-nav-more kol-more-sheet kol-more-sheet-float ${floatSurfaceClass(surface, true)}${menuBorder ? ' kol-more-sheet-bordered' : ''}`} role="menu" aria-label={items[at]?.label} style={capsuleSheet}>
+            <FloatMenu onLeaf={() => setSheet(null)}>
+              <MoreRows variant="float" actions={sheetFor[sheet]} onPick={() => setSheet(null)} />
+            </FloatMenu>
+          </div>
+        )}
+        {tabs.map((t) => (
+          <Tooltip key={t.value} variant="float" placement={top ? 'bottom' : 'top'} offset={12} label={t.label}>
+            <Button variant="float" tone="ghost" iconOnly={t.icon} aria-label={t.label} pressed={t.selected} onClick={() => press(t.value)} />
+          </Tooltip>
+        ))}
+        {tc && <Timecode {...tc} className="px-3" />}
+      </div>
+    )
+  }
 
   return (
     <>

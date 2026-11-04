@@ -148,6 +148,10 @@
       "destination": "/apps/resume/index.html"
     },
     {
+      "source": "/apps/float/(.*)",
+      "destination": "/apps/float/index.html"
+    },
+    {
       "source": "/media/(.*)",
       "destination": "https://r2.kolkrabbi.io/$1"
     },

@@ -23,11 +23,11 @@ export const BOOK_SECTIONS = [
   { key: 'hero', id: 'hero', kind: 'hero', label: 'brand guidelines', lede: 'Client-facing identity guidelines — chapter-structured for handoff. Mirrors the shape of the deliverable PDF.' },
   { key: 'overview', id: 'brand-overview', kind: 'contents', label: 'Overview', title: 'Chapters', lede: 'Each chapter is its own page. They read in order, but every one stands alone for handoff.' },
   { key: 'about', id: 'about', part: OVERVIEW, nav: 'About', label: '01 — about' },
-  { key: 'messages', id: 'key-messages', part: OVERVIEW, nav: 'Key messages', label: '01 — about · key messages', title: 'Key messages' },
+  { key: 'messages', id: 'key-messages', part: OVERVIEW, nav: 'Key messages', label: '01 — about, key messages', title: 'Key messages' },
   { key: 'tone', id: 'voice', part: OVERVIEW, nav: 'Tone', label: '02 — tone', title: 'Tone' },
   { key: 'look', id: 'look', part: OVERVIEW, nav: 'Look', label: '03 — look', title: 'Look' },
-  { key: 'logo', id: 'logos-concept', part: LOGOS, kind: 'logo', nav: 'Logo', label: '04 — logos · concept', title: 'The mark', marks: ['wordmark', 'logomark'] },
-  { key: 'lockups', id: 'logos-types', part: LOGOS, kind: 'lockups', nav: 'Lockups', label: '05 — logos · types', title: 'Marks and lockups', lede: 'Logomark, wordmark, and two primary lockups.', marks: ['logomark', 'wordmark', 'lockup-hori', 'lockup-vert'] },
+  { key: 'logo', id: 'logos-concept', part: LOGOS, kind: 'logo', nav: 'Logo', label: '04 — logos, concept', title: 'The mark', marks: ['wordmark', 'logomark'] },
+  { key: 'lockups', id: 'logos-types', part: LOGOS, kind: 'lockups', nav: 'Lockups', label: '05 — logos, types', title: 'Marks and lockups', lede: 'Logomark, wordmark, and two primary lockups.', marks: ['logomark', 'wordmark', 'lockup-hori', 'lockup-vert'] },
   { key: 'color', id: 'color', part: FOUNDATIONS, kind: 'color', nav: 'Color', label: '06 — color', title: 'Palette' },
   { key: 'typography', id: 'typography', part: FOUNDATIONS, kind: 'typography', nav: 'Typography', label: '07 — typography', title: 'Type' },
 ]
@@ -41,14 +41,14 @@ export const ASSET_SECTIONS = [
      so they are the manifest's to set, as Logos' is. */
   { key: 'graphics', id: 'graphics', kind: 'graphics', category: 'abstract', nav: 'Graphics', label: '02 — graphics', title: 'Graphics' },
   { key: 'patterns', id: 'patterns', kind: 'graphics', category: 'patterns', nav: 'Patterns', label: '03 — patterns', title: 'Patterns' },
-  { key: 'graphicsPatterns', id: 'graphics-patterns', kind: 'graphics-cards', category: 'patterns', label: '16 — graphics · patterns', title: 'Patterns' },
+  { key: 'graphicsPatterns', id: 'graphics-patterns', kind: 'graphics-cards', category: 'patterns', label: '16 — graphics, patterns', title: 'Patterns' },
   { key: 'branded', id: 'branded-assets', kind: 'branded', nav: 'Branded', label: '04 — branded', title: 'Branded assets' },
-  { key: 'stationery', id: 'assets-stationery', kind: 'stationery', nav: 'Stationery', label: '08 — assets · stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
+  { key: 'stationery', id: 'assets-stationery', kind: 'stationery', nav: 'Stationery', label: '08 — assets, stationery', title: 'Stationery', lede: 'Standard correspondence — business card, envelope, letterhead, email signature. Quiet typography, generous space, monochrome restraint.' },
   { key: 'labels', id: 'labels', nav: 'Labels', label: '09 — labels', title: 'Labels' },
   { key: 'packaging', id: 'packaging', nav: 'Packaging', label: '10 — packaging', title: 'Packaging' },
   { key: 'mockups', id: 'mockups', nav: 'Mockups', label: '11 — mockups', title: 'Mockups' },
-  { key: 'social', id: 'social-sizes', kind: 'social', nav: 'Social', label: '12 — social · sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
-  { key: 'profile', id: 'social-profile', kind: 'profile', nav: 'Profile', label: '13 — social · profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },
+  { key: 'social', id: 'social-sizes', kind: 'social', nav: 'Social', label: '12 — social, sizes', title: 'Post sizes', lede: 'One template at each of the three Instagram aspect ratios — square feed (1:1), portrait feed (4:5), and story / reel (9:16). Editorial photography, restrained typography, a deliberate cadence.' },
+  { key: 'profile', id: 'social-profile', kind: 'profile', nav: 'Profile', label: '13 — social, profile', title: 'Profile', lede: 'Avatar treatment for profile pictures across platforms — round-cropped on burgundy, signature centered.' },
   { key: 'generators', id: 'generators', nav: 'Generators', label: '14 — generators', title: 'Generators' },
   { key: 'deck', id: 'slide-deck', nav: 'Slide deck', label: '15 — slide deck', title: 'Slide deck' },
 ]
@@ -86,10 +86,10 @@ export const STATIONERY_MARKS = { card: 'lockup-hori', envelope: 'logomark', let
 
 /* The Branded table — the five stationery pieces the mocks draw. */
 export const BRANDED_ASSET_ROWS = [
-  { item: 'Business card · front',  aspect: '85.6 / 53.85 (ID-1)', surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.BusinessCardFront' },
-  { item: 'Business card · back',   aspect: '85.6 / 53.85',         surface: 'ink',       status: 'mocked',  note: 'StationeryMocks.BusinessCardBack' },
-  { item: 'Envelope · DL',           aspect: '220 / 110',           surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.Envelope' },
-  { item: 'Letterhead · A4',         aspect: '210 / 297',           surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.Letterhead' },
+  { item: 'Business card, front',  aspect: '85.6 / 53.85 (ID-1)', surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.BusinessCardFront' },
+  { item: 'Business card, back',   aspect: '85.6 / 53.85',         surface: 'ink',       status: 'mocked',  note: 'StationeryMocks.BusinessCardBack' },
+  { item: 'Envelope, DL',           aspect: '220 / 110',           surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.Envelope' },
+  { item: 'Letterhead, A4',         aspect: '210 / 297',           surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.Letterhead' },
   { item: 'Email signature',         aspect: 'free',                surface: 'paper',     status: 'mocked',  note: 'StationeryMocks.EmailSignature' },
 ]
 

@@ -76,15 +76,15 @@ export function QuadSplit({ palette, logo }) {
     <div className="kol-combo-stage kol-combo-frame kol-combo-stage--fill kol-combo-stage--quad">
       <div className="kol-combo-slab kol-combo-slab--between" style={{ background: primary, color: fgOn(primary) }}>
         <LogoSlot logo={logo} size={64} />
-        <span className="kol-combo-label">PRIMARY · 50</span>
+        <span className="kol-combo-label">PRIMARY, 50</span>
       </div>
       <div className="kol-combo-quad-col">
         <div className="kol-combo-slab kol-combo-slab--end" style={{ background: light, color: fgOn(light) }}>
-          <span className="kol-combo-label">LIGHT · 25</span>
+          <span className="kol-combo-label">LIGHT, 25</span>
         </div>
         <div className="kol-combo-slab kol-combo-slab--between" style={{ background: dark, color: fgOn(dark) }}>
           <span className="kol-combo-label" style={{ color: accent }}>ACCENT</span>
-          <span className="kol-combo-label">DARK · 25</span>
+          <span className="kol-combo-label">DARK, 25</span>
         </div>
       </div>
     </div>

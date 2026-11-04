@@ -1,5 +1,38 @@
 # @kolkrabbi/kol-icons
 
+## 0.64.0 — 2026-11-04
+
+- **Import batch: 71 icons** from the Figma import frame, each fitted to the keyline (18 near-square, 20 otherwise, centred), stroke 1.5, one path, `currentColor`, round caps and joins. Added by group:
+  - `files` (16 new + 2 redrawn): `book-copy` · `book-dashed` · `file-sliders` · `file-terminal` · `file-type` · `file-type-offset` · `folder-cog` · `folder-git` · `notebook` · `notebook-pen` · `notebook-tabs` · `notebook-text` · `notepad-text` · `notepad-text-dashed` · `scroll` · `scroll-text`; `files` and `notes` redrawn.
+  - `typography` (12): `arrow-down-z-a` · `arrow-up-z-a` · `heading` · `heading-1` to `heading-5` · `letter-text` · `ligature` · `pilcrow-left` · `pilcrow-right`.
+  - `design` (9): `circles-overlap` · `contrast` · `feather` · `flip-triangles-horizontal` · `flip-triangles-vertical` · `lasso` · `mirror-frame-horizontal` · `mirror-frame-vertical` · `sparkle`.
+  - `places` (6): `anchor` · `flask-conical` · `flask-round` · `map-folded` · `traffic-cone` · `train-track`.
+  - `media` (5): `album` · `captions` · `cassette-tape` · `headphones` · `keyboard-music`.
+  - `actions` (3): `copy` (redrawn) · `copy-check` · `filter-x`.
+  - `code` (3): `codepen` · `equal` · `equal-not`.
+  - `layout` (3): `blinds` · `fold-horizontal` · `fold-vertical`.
+  - `devices` (2): `airplay` · `circuit-board`. `flow` (2): `iteration-ccw` · `iteration-cw`. `people` (2): `mail-plus` · `mails`. `planning` (2): `calendar-plus` · `clipboard-copy`. `shapes` (2): `grip-horizontal` · `grip-vertical`. `charts`: `activity`. `navigation`: `message-circle-more`.
+- **Redrawn in place** (the user's picks; old files in `_tmp/2026-11-04-plurals-handdrawn/` and `_tmp/2026-11-04-copy-handdrawn/`): `files/files` (two sheets, folded back corner), `files/notes` (the same two sheets, plain corner, two text lines), `actions/copy` (now a stroke drawing; it was solid).
+- **Skipped as duplicates: 12** (the set already draws them): `heading-6` · `pilcrow` · `sparkles` · `folder` · `lasso-select` · `mail-open` · `mail` · `grip` · `ellipsis-vertical` · `filter` · `alarm-clock` · `eraser`. Two more were left out as retired today: `clipboard-pen` and `ellipsis`.
+- Renamed where a name was taken by a different drawing: `circles-overlap` (not `blend`), `map-folded` (not `map`), `mirror-frame-horizontal` and `-vertical` (not `flip-*`), plus `flip-triangles-*`, `file-type-offset` and `folder-git` to avoid `-2` suffixes.
+- Corner radii are as drawn in the import; the corner rule was not re-applied to these 71.
+- **New `typography/bold`** (Figma 91RgXQdroY01wN96lAiOv1, node 237:21006): the text-bold B, a solid letterform like `typography/type`, fill `currentColor`, fitted to the 20 keyline and centred.
+- `design/overlap` renamed `design/transparency` (the user's naming); `overlap` stays as an alias in RENAMED_ICONS so existing code keeps working.
+
+## 0.63.2 — 2026-11-04
+
+- Keyline fit: 31 icons scaled to the 18/20 keyline, drawn extent incl. stroke, stroke kept at 1.5 (actions/filter-lines, redo, undo; charts/dot-plot-03, dot-plot-04; code/hash-01, hash-02, terminal; design/frequency, pointer, slider-01, slider-02; direction/download, upload; layout/atomic-atomic-01, atomic-atomic-02, atomic-molecule-04, foundation, view-list; media/speaker; typography/font-01, letter-spacing, line-height, text-align-center, text-align-left, text-align-right, text-justify-all, text-justify-center, text-justify-left, text-justify-right, underline). Compact marks and the set's 18-ink icons are left as drawn. Originals are in `_tmp/2026-11-04-icons-pre-fit/`.
+- `design/notepad-pen` — the pen is now the set's rounded pencil (actions/pencil), scaled into the pad; library master redrawn.
+- Retired `direction/chevron-up-short` (a duplicate of `chevron-up`; the float fold buttons use `chevron-up` in an icon-only Button).
+- Retired `navigation/dots-three-fine` (a duplicate of `more`; the float option buttons use `more` in an icon-only Button).
+
+## 0.63.1 — 2026-11-04
+
+- `design/notepad-pen` scaled up to the keyline (15.75 × 16.5 → 18 tall), one path at 1.5; the float "notes" tile maps to it.
+
+- **New plural icons** `files/files` and `files/notes`, drawn like `folders` and `images`: two stacked sheets, the back one offset up and right and cut where the front covers it. `files` has the folded corner on the back sheet; `notes` has two text lines on the front sheet.
+- **Retired** (duplicates, the user's ruling: one of each): `design/clipboard-pen`, `design/pen-nib-02`, `design/pen-nib-03`, `design/pen-nib-straight`.
+
 ## 0.63.0 — 2026-11-04
 
 - **Corner rule:** a rounded corner's radius follows the shorter side of the shape it rounds, measured on the stroke centre-line in the 24 grid: ≥ 16 → r 3.5, 10–16 → 2, 3–10 → 1, < 3 → 0.5 (± 0.15; sharp stays; shapes with a shared edge, like `layout/split`, count as one frame). Shapes (`shapes/*`), organic drawings and dashed strokes are exempt and keep their own radii. About 120 stroke icons were re-rounded; inner strokes were re-ended to meet the new corner curve and each icon's strokes are one path with round caps. Originals are in `_tmp/2026-11-04-icons-pre-corner/`. Hand redraws to the rule: `devices/sd-card`, `files/folder-minus`, `media/video-off`.
@@ -7,7 +40,7 @@
 
 - **Align pairs, outline + solid (the set's convention, `rocket` / `rocket-solid`):** the six `design/align-*` names now draw the new outlines; the filled drawings moved to `align-*-solid`. The `-outline` names never shipped. A consumer that wants the old filled look uses `align-*-solid` or `<Icon variant="solid">`; kol-component's `AlignmentGrid` and kol-deck's `SlideInspector` were moved to `-solid` so they look unchanged. Library: each pair is one set, `variant=outline|solid`.
 
-- **Retired (to `_tmp/2026-11-04-icons-retired/`, the user's ruling on the float review):** `shapes/diamond-plus` (the float "brand" glyph now maps to `shapes/ball`), `places/compass` (`compass-04` wins), `places/compass-03`, `planning/calendar-03` (the user: ugly), `devices/camera-02` (a second camera; `camera` stays), `design/colour-swatches` (another swatch fan; one stays), `people/syringe-solid` (the filled twin of the retired syringe), `people/syringe` (too small to read; syringe-02 stays), `design/swatch-book` (a duplicate of a swatch fan already in the set), `devices/robot` (too dense to read small; `people/robot-head` stays), `layout/container` (the same clipboard as `clipboard`, which now takes `clipboard-check`'s drawing without the check), `actions/pill-knob` (the float "toggle" is the shipped `actions/toggle-oval-02`, the same switch in its on state). Code that imports these names must move: `diamond-plus` → `ball`, `compass` → `compass-04`.
+- **Retired (to `_tmp/2026-11-04-icons-retired/`, the user's ruling on the float review):** `shapes/diamond-plus` (the float "brand" glyph now maps to `shapes/ball`), `places/compass` (`compass-04` wins), `places/compass-03`, `planning/calendar-03` (the user: ugly), `devices/camera-02` (a second camera; `camera` stays), `design/pen-nib-straight` (duplicate — the user: one of each), `design/pen-nib-03` (duplicate — the user: one of each), `design/pen-nib-02` (duplicate — the user: one of each), `design/clipboard-pen` (duplicate — the user: one of each), `design/colour-swatches` (another swatch fan; one stays), `people/syringe-solid` (the filled twin of the retired syringe), `people/syringe` (too small to read; syringe-02 stays), `design/swatch-book` (a duplicate of a swatch fan already in the set), `devices/robot` (too dense to read small; `people/robot-head` stays), `layout/container` (the same clipboard as `clipboard`, which now takes `clipboard-check`'s drawing without the check), `actions/pill-knob` (the float "toggle" is the shipped `actions/toggle-oval-02`, the same switch in its on state). Code that imports these names must move: `diamond-plus` → `ball`, `compass` → `compass-04`.
 - `shapes/bin-lid` — the gap where the body met the lid closed: lid, body and handle are one path, round caps, so the joins paint once.
 - `shapes/ring` — the centre is a filled dot (r 4), as the exploration draws record.
 

@@ -4,6 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
+// start · end are slots: the document capsule and the Panels ▾ + New task by default, anything when the consumer passes `start` / `end`
 
 export default {
   example: figma.code`<TopControlsBar document={document} tabs={tabs} tab={tab} onTab={setTab} onSearch={search} panels={{ items: panels }} action={{ label: "New task", onPress: newTask }} />`,

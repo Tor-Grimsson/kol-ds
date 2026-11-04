@@ -64,6 +64,7 @@ export const SET_FAMILY = {
   'content-filters': 'component',
   'content-set-reference': 'content',
   'design-editor': 'component',
+  float: 'shell',
   'foundry-specimen': 'foundry',
   'kind-preview': 'component',
   'media-library': 'component',

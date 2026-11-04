@@ -207,7 +207,11 @@ export function Letterhead({ mark, info, palette, fonts, children, signoff = 'Wa
           opacity: 0.6,
         }}
       >
-        <p>{brand.contact.web}  ·  {brand.studio.city}, {brand.studio.country}  ·  {brand.contact.phone}</p>
+        <p className="flex flex-wrap gap-x-5">
+          <span>{brand.contact.web}</span>
+          <span>{brand.studio.city}, {brand.studio.country}</span>
+          <span>{brand.contact.phone}</span>
+        </p>
       </div>
     </div>
   )
@@ -338,7 +342,7 @@ export function LetterheadCorrespondence({
           borderTop: '0.5px solid rgba(19,19,22,0.18)',
         }}
       >
-        <span>{brand.legal.entity} · Kt. {brand.legal.kt}</span>
+        <span>{brand.legal.entity}, Kt. {brand.legal.kt}</span>
         <span>{brand.contact.web}</span>
         <span>{page}</span>
       </div>
@@ -373,11 +377,10 @@ export function EmailSignature({ mark, info, palette, fonts, role, className = '
           {brand.identity.founder}
         </p>
         <p style={{ ...capsStyle(font), fontSize: 9, opacity: 0.6, marginTop: 2 }}>
-          {role ?? `${brand.identity.role} · ${brand.identity.name}`}
+          {role ?? `${brand.identity.role}, ${brand.identity.name}`}
         </p>
-        <p style={{ fontFamily: font.mono, fontSize: 10, marginTop: 8, lineHeight: 1.5, letterSpacing: '0.04em' }}>
+        <p className="flex flex-wrap gap-x-5" style={{ fontFamily: font.mono, fontSize: 10, marginTop: 8, lineHeight: 1.5, letterSpacing: '0.04em' }}>
           <span style={{ opacity: 0.6 }}>{brand.contact.email}</span>
-          <span style={{ margin: '0 8px', opacity: 0.3 }}>·</span>
           <span style={{ opacity: 0.6 }}>{brand.contact.web}</span>
         </p>
       </div>

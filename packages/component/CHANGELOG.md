@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-component
 
+## 0.338.0 — 2026-11-04
+
+- **`Dialog` and `ModalProvider` `container`** — an Element to portal into instead of `<body>` (plan-2026-11-04-float-operational W2). The layer turns `absolute` and fills it, so a specimen box (`position: relative`, a height) shows the window or the useModal confirm open in place; the confirm skips its visual-viewport fit and opens without scrolling the page. Unset, nothing changes.
+
+## 0.337.0 — 2026-11-04
+
+- **`NavRail variant="float"` `onItemHover`** — collapsed only: `(item, element)` when the pointer enters a slot, `(null, null)` when it leaves. The seam kol-shell's FloatLayout hangs RailFlyout off (the hover flyout of the 72 rail). Nothing changes when it is unset.
+
 ## 0.336.1 — 2026-11-04
 
 - Align icons moved to the `-solid` names (kol-icons 0.63.0 gave the bare `align-*` names to new outlines), so the alignment buttons keep their filled look.

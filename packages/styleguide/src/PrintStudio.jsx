@@ -106,7 +106,7 @@ export default function PrintStudio({ studio = {}, logoSvg = '', logoPngUrl, met
           <Button size="sm" onClick={saveDocx} disabled={!!template || !pages.length}>DOCX</Button>
           <Button size="sm" onClick={saveMd} disabled={!!template || !md.trim()}>MD</Button>
         </div>
-        <span className="kol-mono-10 text-meta">{sheetCount} {sheetCount === 1 ? 'sheet' : 'sheets'} · A4</span>
+        <span className="kol-mono-10 text-meta">{sheetCount} {sheetCount === 1 ? 'sheet' : 'sheets'}, A4</span>
       </aside>
       <iframe title="Sheets" className="min-h-[60vh] flex-1 border-0" srcDoc={preview} data-print-preview />
       <iframe ref={frameRef} title="Print" aria-hidden="true" tabIndex={-1} className="fixed h-0 w-0 border-0 opacity-0 pointer-events-none" />
