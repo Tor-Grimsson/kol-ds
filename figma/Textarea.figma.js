@@ -4,11 +4,13 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline" })
+const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline", "float": "float" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
 
 export default {
-  example: figma.code`<Textarea variant="${variant}" size="${size}" value={value} onChange={setValue} placeholder="…" />`,
+  example: variant === 'float'
+    ? figma.code`<Textarea variant="float" value={value} onChange={setValue} placeholder="Add a note…" />`
+    : figma.code`<Textarea variant="${variant}" size="${size}" value={value} onChange={setValue} placeholder="…" />`,
   imports: ["import { Textarea } from \"@kolkrabbi/kol-component\""],
   id: 'Textarea',
 }

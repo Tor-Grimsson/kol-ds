@@ -1,6 +1,16 @@
 # @kolkrabbi/design-editor
 
 
+## 0.26.0 — 2026-11-04
+
+- **The timeline on the float style** (float-everything W12.2; gap-map board W2.12, the exploration's `Floating timeline` 9:8597). `editor/params/Timeline.jsx`: a float sheet (`--kol-float-menu-r` 20, surface-secondary lifted by `--kol-shadow-float`, 12 in) holding the toolbar (24: the scene · its layer count · `+` a key at the head; the view · loop · fit · zoom 100 / 200 / 400 % · the dock's height), the ruler (15: `LAYERS` over the gutter, `00s …` over the lanes, scrub to seek), a `LayerTrack` per layer (25: a 268 label gutter — icon · name · eye · lock — and the lane: ◇ keys on a clip named `layer · param`, a clip the loop long, a waveform for a layer riding an audio source; a layer's further tracks under it, a morph's header folding them) and the playhead with its `ss:cc` marker. Inter and JetBrains Mono through the `kol-float-*` classes; colour on the fg / oq ladders and `--kol-float-well`; no hairline. `surface` prop as kol-shell's AppFloatNav: `solid` (default) · `glass-dark` · `glass-light` on kol-theme's `.kol-float-*`. The clock, the gestures (lane click adds, drag moves, alt-click deletes), the value graph, the key editor, the resize grab and Window › Timeline's pin are the dock's, carried whole; `TimelineDock` stays as the mounted name (a re-export). The dock it replaces is in `_tmp/2026-11-04-timeline-dock/`.
+- **Fixed: `@kolkrabbi/kol-hardware` was missing from the peers** — 0.25.0's `params/transport.js` imports `@kolkrabbi/kol-hardware/signal` (fxr's TransportFromHardware), and neither the peers nor `apps/editor` listed the package, so the app could not resolve it. Peer `>=0.10.0 <1`; kol-theme peer `>=0.211.0 <1` (the float tokens and type classes).
+
+## 0.25.0 — 2026-11-04
+
+- **Mirror refreshed from kol-fxr** (float-everything W12.1; the user: *"grab the latest version from FXR"*). `src/` is fxr's `src/` as of 2026-11-04 — the mirrored folders (`brand components data editor filters kinetic loops packs settings`, `core.jsx`, `railExtras.js`) plus `phoneFloats.js` (LabsView imports it) and fxr's `index.lib.css` (the theme's `--kol-font-family-sans`, audit D5); only `index.jsx` stays the package's own. 236 files changed, 84 new; the package-only `ColorModal` · `PaletteModal` · `PalettePreview` · `LayersAssetsPanel` · `SelectionPalettePanel` · `ToolPalette` · `loops/field/raster.js` are superseded by fxr's (`ColorModesWindow`, `PaintPopover`, `PaletteBody` …) and kept in `_tmp/2026-11-04-design-editor-pre-refresh/`.
+- `pnpm build` green. **`check:core` is red at 10 reaches** (it was red at 2 before): fxr's source crosses the core → pack seam in eight more places (`loops/lib/themes.js`, `loops/lib/viewport.js`, `loops/distress/engine.js`, `loops/lib/util.js`, `loops/lib/sandbox.js`, `editor/labs/useLabsLayer.js`, `kinetic/presets.js`, `loops/registry.js`). Not patched here — the mirror carries fxr's structure; the seam is a note to fxr.
+
 ## 0.24.0 — 2026-10-31
 
 - Menus on kol-component 0.330's `MenuRow` indicators: the editor mode, aspect and view menus wear the dot, fx-in-chain, snap and kinetic tags the check, undo/redo show `Kbd` caps; `BindDot`'s source list is `MenuRow` rows with the dot (no typed ✓).

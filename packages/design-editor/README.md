@@ -25,8 +25,8 @@ like everything else in this repo. kol-fxr is now its first consumer.
 
 ```sh
 npm install @kolkrabbi/design-editor \
-  @kolkrabbi/kol-component @kolkrabbi/kol-framework @kolkrabbi/kol-icons \
-  @kolkrabbi/kol-shell @kolkrabbi/kol-media-client react react-dom
+  @kolkrabbi/kol-component @kolkrabbi/kol-framework @kolkrabbi/kol-hardware @kolkrabbi/kol-icons \
+  @kolkrabbi/kol-shell @kolkrabbi/kol-media-client @kolkrabbi/kol-theme react react-dom
 ```
 
 Peers are pinned to the DS versions the bundle was built against (see

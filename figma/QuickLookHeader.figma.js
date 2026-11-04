@@ -7,7 +7,8 @@ import figma from 'figma'
 const instance = figma.selectedInstance
 const name = instance.getString('name')
 const meta = instance.getString('meta')
-const eyebrow = instance.getEnum('title', { "mono": false, "eyebrow": true })
+const titleKind = instance.getEnum('title', { "mono": "mono", "eyebrow": "eyebrow", "float": "float" })
+const eyebrow = titleKind === 'eyebrow'
 const actions = instance.getSlot('actions')
 const xn = instance.getBoolean('nav') ? ' nav={{ index, total, onPrev, onNext }}' : ''
 const xc = instance.getBoolean('close') ? ' onClose={close}' : ''
@@ -15,9 +16,11 @@ const title = eyebrow ? figma.code`title={<span className="kol-eyebrow">${name}<
 const xa = actions && actions.length ? figma.code` actions={<>${actions}</>}` : ''
 
 export default {
-  example: figma.code`<QuickLookFrame ${title}${xa}${xn}${xc}>
+  example: titleKind === 'float'
+    ? figma.code`<QuickLookHeader variant="float" icon="user" title="${name}" onMinimise={minimise} onClose={close} />`
+    : figma.code`<QuickLookFrame ${title}${xa}${xn}${xc}>
   {body}
 </QuickLookFrame>`,
-  imports: ["import { QuickLookFrame } from \"@kolkrabbi/kol-component\""],
+  imports: ["import { QuickLookFrame, QuickLookHeader } from \"@kolkrabbi/kol-component\""],
   id: 'QuickLookHeader',
 }

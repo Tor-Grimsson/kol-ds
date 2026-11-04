@@ -1,16 +1,21 @@
 import { useEffect, useState } from 'react'
-import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { Button, SegmentedToggle, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { pack } from '../packs'
 import { useComposeFile } from '../compose/useComposeFile'
 import { transport, useTransport } from '../params/transport'
-import { groupById, loopById } from '../../loops/registry'
+import { groupById, loopById, presetsInGroup, presetLayerPatch } from '../../loops/registry'
 import CategoryScreen, { SPREAD } from './CategoryScreen'
 import EffectScreen from './EffectScreen'
 import { deriveScopes, allScopeParams, computeRoll, computePresetRoll, computeFilterRoll, useRollSeed } from '../params/rolls'
 import { resolvedChain } from '../compose/filterChain'
+import { useLabsKeys } from '../labs/useLabsKeys'
 import { effectHost } from '../compose/inspectors/effectCategories'
-import { PanelHeader, PanelPills, SheetGrab, SHEET_H } from '../components/PanelHeader'
+import { PanelHeader, PanelPills, SheetGrab, SHEET_H, SHEET_MIN } from '../components/PanelHeader'
+import RollScopesDialog from '../params/RollScopesDialog'
+import MorphTab from '../morph/MorphTab'
+import { useMorph } from '../morph/morphStore'
+import { openFiles } from '../library/filesDialogStore'
 
 /**
  * MobileOverlay — the generator's control panel, content split into
@@ -146,6 +151,10 @@ const ASPECT_ROW_2 = [
 ]
 
 export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRestart, aspectValue, onAspect, openEffects = false, rail = false, onRail, onSheet }) {
+  /* a morph file opened here plays; its steps show read-only (plan 09 — building is labs' job).
+     First hook in the body: the overlay returns early below, and a hook after a conditional return
+     changes the hook count between renders (React #310). */
+  const morph = useMorph()
   const { updateLayer, addFilter, removeFilter } = useComposeState()
   const { onExportPng } = useComposeFile()
   const [uiHidden, setUiHidden] = useState(false)
@@ -159,6 +168,10 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
      Now it is labs' sheet: half the display (tall on the grabber), the stage refitting above it
      (`onSheet`), the controls scrolling inside when they outgrow it. */
   const [tall, setTall] = useState(false)
+  const [scopesOpen, setScopesOpen] = useState(false)
+  const { aspect } = useComposeState()
+  /* …or the height the grab was dragged to (plan 15 § 1); null = the detent */
+  const [sheetPx, setSheetPx] = useState(null)
   const seed = useRollSeed(layer)
   /* the Effects tool opens its sheet as soon as its media has landed */
   useEffect(() => { if (openEffects) { setOpen(true); setShowFx(true) } }, [openEffects])
@@ -169,8 +182,21 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
   useEffect(() => { onRail?.(railShown); return () => onRail?.(false) }, [railShown]) // eslint-disable-line react-hooks/exhaustive-deps
   /* …and the sheet's height, so the stage can stand above it */
   const sheetShown = !rail && !!layer && open && !uiHidden
-  const sheetH = sheetShown ? (tall ? SHEET_H.tall : SHEET_H.half) : null
+  const sheetH = sheetShown ? (sheetPx ? `${sheetPx}px` : tall ? SHEET_H.tall : SHEET_H.half) : null
   useEffect(() => { onSheet?.(sheetH); return () => onSheet?.(null) }, [sheetH]) // eslint-disable-line react-hooks/exhaustive-deps
+  /* labs' R · Shift+R, here too: back to the preset's defaults · roll everything */
+  /* R and the Generate tab's Reset button are one action */
+  const resetLayer = () => {
+    const preset = layer?.type === 'loop' && presetsInGroup(layer.loopGroup).find((p) => p.id === layer.presetId)
+    if (preset) updateLayer(layer.id, presetLayerPatch(preset, layer.loopGroup))
+  }
+  useLabsKeys(
+    resetLayer,
+    () => {
+      if (layer?.type !== 'loop') return
+      updateLayer(layer.id, computeRoll(layer, allScopeParams(loopById(layer.loopId)?.params ?? [], layer), seed.take(), { withFilters: true }))
+    },
+  )
 
   if (!layer) return null
 
@@ -217,24 +243,28 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
       /* Pill shows the preset name only — the group·preset long form stays on
          the expanded header (user ruling 2026-08-12). */
       <PanelPills label={isLoop ? layer.presetLabel : 'Media'} onOpen={() => setOpen(true)} size={cs}>
-        {/* Media has no generator schema, but an effect chain is still
-            rollable — computeRoll's filter half carries it (2026-08-27).
-            Before that this button was loop-only, so an image or video
-            collapsed to Download and the pill, nothing to press. */}
+        {/* THE ROW IS ICONS (plan 18 § 1) — the pill, then roll · download · hide UI · fill, so it
+            holds one line at 390. Media has no generator schema, but an effect chain is still
+            rollable — computeRoll's filter half carries it (2026-08-27). Hide UI and Fill came up
+            from the Output tab (§ 2): the shot is taken from here, with the sheet down. */}
         {(isLoop || chain.length > 0) && (
-          <Button tone="primary" size={cs} onClick={rollAll}>Randomize all</Button>
+          <Tooltip label="Randomize all"><Button tone="primary" size={cs} iconOnly="bolt" aria-label="Randomize all" onClick={rollAll} className="shrink-0" /></Tooltip>
         )}
-        {/* Capture without re-expanding the sheet (2026-08-12). */}
-        <Button tone="primary" size={cs} onClick={() => onExportPng(2)}>Download</Button>
+        <Tooltip label="Download"><Button tone="primary" size={cs} iconOnly="download" aria-label="Download" onClick={() => onExportPng(2)} className="shrink-0" /></Tooltip>
+        <Tooltip label="Hide UI"><Button tone="primary" size={cs} iconOnly="eye-off" aria-label="Hide UI" onClick={() => setUiHidden(true)} className="shrink-0" /></Tooltip>
+        <Tooltip label={aspectValue === 'fill' ? 'Back to the frame' : 'Fill the screen'}>
+          <Button tone="primary" size={cs} iconOnly="maximize" aria-label={aspectValue === 'fill' ? 'Back to the frame' : 'Fill the screen'} aria-pressed={aspectValue === 'fill'} onClick={() => onAspect(aspectValue === 'fill' ? aspect : 'fill')} className="shrink-0" />
+        </Tooltip>
       </PanelPills>
     )
   }
 
-  const tabs = (isLoop ? TABS_LOOP : TABS_MEDIA).filter((t) => (t.value !== 'effects' || effectable) && (t.value !== 'transport' || pack('motion')))
+  const tabs = [...(isLoop ? TABS_LOOP : TABS_MEDIA), ...(isLoop && morph.steps.length >= 2 ? [{ value: 'morph', label: 'Morph' }] : [])].filter((t) => (t.value !== 'effects' || effectable) && (t.value !== 'transport' || pack('motion')))
   const activeTab = tabs.some((t) => t.value === tab) ? tab : tabs[0].value
 
   return (
     <>
+      <RollScopesDialog open={scopesOpen} onClose={() => setScopesOpen(false)} schema={schema} layer={layer} size={cs} />
       {/* Generator switch sheet — the ONE list (CategoryScreen), identical
           to the entry flow's: pick hops the live layer's category, Insert
           restarts into the media picker, Back restarts to the beginning. */}
@@ -269,7 +299,14 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
            `dvh` sum in MobileView) whatever the layout viewport's own height is doing */
         style={rail ? PANEL_STYLE : { ...PANEL_STYLE, top: `calc(100dvh - ${sheetH ?? SHEET_H.half})` }}
       >
-        {!rail && <SheetGrab tall={tall} onToggle={() => setTall((v) => !v)} onDrag={(dir) => { if (dir < 0) setTall(true); else if (tall) setTall(false); else setOpen(false) }} />}
+        {!rail && (
+          <SheetGrab
+            tall={tall}
+            onToggle={() => { setSheetPx(null); setTall((v) => !v) }}
+            onResize={(px) => setSheetPx(Math.max(SHEET_MIN, Math.min(window.innerHeight * 0.92, px)))}
+            onResizeEnd={(px) => { if (px < SHEET_MIN) { setSheetPx(null); setOpen(false) } }}
+          />
+        )}
         {/* Header — title tap collapses; Start over always reachable (it was
             buried in the Output tab — "can't go back", user 2026-08-12). In the
             rail it holds labs' insets, so both rails' first rows start on one y. */}
@@ -277,7 +314,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
           title={title}
           onCollapse={() => setOpen(false)}
           className={rail ? 'px-4 pt-2.5 pb-1.5' : 'px-3'}
-          action={<button className="kol-helper-12 text-meta py-2.5" onClick={onRestart}>Start over</button>}
+          action={<Button tone="ghost" quiet size="sm" onClick={onRestart}>Start over</Button>}
         />
 
         <div className={rail ? 'px-4 pb-5' : 'min-h-0 flex-1 overflow-y-auto px-3 pb-3'}>
@@ -298,15 +335,21 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
             className={rail ? STRIP_CLAMP : '[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-2 [&_.kol-seg-cell]:overflow-hidden'}
           />
 
+          {activeTab === 'morph' && isLoop && <MorphTab layer={layer} readOnly />}
           {activeTab === 'generate' && isLoop && (
             <div className="flex flex-col gap-2 pt-3">
               <div className="grid grid-cols-2 gap-2">
                 <Button tone="primary" size={cs} iconRight="refresh" onClick={shufflePreset}>Preset</Button>
                 <Button tone="primary" size={cs} onClick={() => setShowCats(true)}>Generator</Button>
               </div>
-              <Button tone="primary" size={cs} className="w-full" onClick={rollAll}>
-                Randomize all
-              </Button>
+              <div className="flex gap-2">
+                <Button tone="primary" size={cs} className="flex-1 min-w-0" onClick={rollAll}>
+                  Randomize all
+                </Button>
+                {/* what it touches — the setting's dialog (plan 18 § 3) */}
+                <Tooltip label="What Randomize all rolls"><Button tone="primary" size={cs} iconOnly="nav-settings" aria-label="What Randomize all rolls" onClick={() => setScopesOpen(true)} className="shrink-0" /></Tooltip>
+                <Tooltip label="Reset to defaults" shortcut="R"><Button tone="primary" size={cs} iconOnly="refresh" aria-label="Reset to defaults" onClick={resetLayer} className="shrink-0" /></Tooltip>
+              </div>
               {scopes.length > 0 && (
                 <ScopeStrips size={cs} cells={[
                   ...scopes.map((s) => ({ value: s.id, label: s.label, run: () => rollScope(s) })),
@@ -329,7 +372,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
                   behind them and the Randomize they belong to was last. */}
               <div className="grid grid-cols-2 gap-2">
                 <Button tone="primary" size={cs} onClick={() => setShowFx(true)}>Add effect</Button>
-                <Button tone="primary" size={cs} disabled={!chain.length} onClick={rollFilters}>Randomize</Button>
+                {chain.length > 0 && <Button tone="primary" size={cs} onClick={rollFilters}>Randomize</Button>} {/* nothing to roll → not drawn (plan 51 3.1) */}
               </div>
               {/* THE CHAIN, IN RENDER ORDER. The array is already tier-sorted
                   by addFilter (canvas → pixi GPU → the single terminal GL
@@ -386,7 +429,9 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
             <div className="flex flex-col gap-2 pt-3">
               <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size={cs} ariaLabel="Aspect" />
               <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size={cs} ariaLabel="Aspect (landscape) and fill" />
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
+                {/* a roll as a file — a labs file, so it is a morph step under From my files (⌘S at a desk) */}
+                <Button tone="primary" size={cs} onClick={() => openFiles({ focusName: true })}>Save…</Button>
                 <Button tone="primary" size={cs} onClick={() => onExportPng(2)}>Download</Button>
                 <Button tone="primary" size={cs} onClick={() => setUiHidden(true)}>Hide UI</Button>
                 <Button tone="primary" size={cs} onClick={onRestart}>Start over</Button>

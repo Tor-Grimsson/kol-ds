@@ -32,20 +32,21 @@ const TREE = {
   ],
 }
 
-/* THE SIZE LADDER — a component inside a block inside an app */
-const SIZES = {
-  label: 'An app — a tool, read through its layers',
+/* THE LADDER (user ruling 2026-11-03, taxonomy § The ladder) — each layer made of the ones inside it.
+ * One drawing: Composition's "By size" and the /components home both render it. */
+export const LADDER = {
+  label: 'App — a whole tool · studio-hub, metric',
   to: '/apps',
   children: [
-    { label: 'A module — shells and tools composed, at every width', to: '/modules', children: [
-      { label: 'Components — one export with a face', to: '/components', row: true, children: [
-        { label: 'Atom', to: '/components/tier/atoms' },
-        { label: 'Molecule', to: '/components/tier/molecules' },
-        { label: 'Organism', to: '/components/tier/organisms' },
+    { label: 'Module — a page frame or a page arrangement · AppHub, SiteLayout', to: '/components/tier/modules', children: [
+      { label: 'Organism — a region · Rail, Table', to: '/components/tier/organisms', children: [
+        { label: 'Molecule — a small unit · Slider, ButtonGroup', to: '/components/tier/molecules', children: [
+          { label: 'Atom — one element · Button, Tag', to: '/components/tier/atoms' },
+        ] },
       ] },
     ] },
   ],
-  note: 'Utilities sit beside the ladder — no face of their own.',
+  note: 'Utilities sit beside the ladder — no face of their own · Tooltip, AsciiCursor.',
 }
 
 /* SET vs PACKAGE — one set drawing from two packages; one package and what its page holds */
@@ -76,7 +77,7 @@ export function Composition() {
   return (
     <>
       <HomeDoc id="composition" />
-      <DocSection id="by-size" title="By size"><CompositionDiagram node={SIZES} /></DocSection>
+      <DocSection id="by-size" title="By size"><CompositionDiagram node={LADDER} /></DocSection>
     </>
   )
 }

@@ -2,6 +2,7 @@ import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
 import { useAppItem } from './AppItem.jsx'
 import { toneClass } from '../utilities/tone.js'
+import { Icon } from '@kolkrabbi/kol-icons'
 
 /**
  * ContentRow — The row form of a content card. the row form of the content-card system: leading thumb (where
@@ -12,7 +13,9 @@ import { toneClass } from '../utilities/tone.js'
  * 36 square thumb when `media` is passed (none without); article rides a 120px 16:9 thumb; work a framed 64px row; typeface a
  * framed no-thumb block.
  *
- * @param {string}    variant   file | app | catalog | print | article | work | typeface | roster
+ * @param {string}    variant   file | app | catalog | print | article | work | typeface | roster | float
+ *                             (`float` = the link row: `title` · `url` · ↗, float-everything W8 row 124 — props
+ *                             `title`, `url`, `href`, `external`, `onClick`, `className`)
  *                             (`app` = the file row with `verbs` · `menuItems` slotted — AppItem.jsx)
  *                             (`default` is an alias of `file`). `roster` is the pickable
  *                             row: filled tile, no border or divider, a FIXED 56px height the
@@ -154,6 +157,30 @@ const BOX = {
 const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
 const LAYOUT_KEY = { column: 'showcaseCanvas', line: 'showcase' }
 
+/* THE LINK ROW (`variant="float"`, float-everything W8 row 124, 2026-11-04 — kol-float--style 48:3922): title · url · ↗.
+ * A link to somewhere else, on the float: the well's ground (`--kol-float-well`) on the list radius, 16 in, the title
+ * in `kol-float-hint` at 13 on the emphasis ink over the address in mono (`kol-float-timecode` at 11, fg-64), the
+ * `arrow-upright` glyph at the right on oq-64 — bright with the row under the pointer, which lifts the ground fg-08.
+ * `url` is shown as given (strip the scheme yourself); `href` defaults to it. Opens in a new tab when `external`
+ * (default: the href is absolute). Its own path — none of the variants' box table applies. */
+function ContentRowFloat({ title, url, href = url, external, onClick, className = '' }) {
+  const ext = external ?? /^https?:/.test(href ?? '')
+  return (
+    <a
+      href={href}
+      onClick={onClick}
+      {...(ext ? { target: '_blank', rel: 'noreferrer' } : {})}
+      className={`group flex w-full items-center gap-4 rounded-[var(--kol-float-list-r)] bg-[var(--kol-float-well)] px-4 py-3 no-underline hover:bg-fg-08 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${className}`.trim()}
+    >
+      <span className="flex min-w-0 flex-1 flex-col gap-1">
+        <span className="kol-float-hint truncate text-fg-emphasis" style={{ fontSize: 13 }}>{title}</span>
+        {url && <span className="kol-float-timecode truncate text-fg-64" style={{ fontSize: 11 }}>{url}</span>}
+      </span>
+      <Icon name="arrow-upright" size={16} className="shrink-0 text-oq-64 group-hover:text-oq-96" />
+    </a>
+  )
+}
+
 export default function ContentRow({
   variant: variantProp = 'file',
   layout,
@@ -198,6 +225,8 @@ export default function ContentRow({
    * None of them reach ContentText; an app row's `tags` are the rail's, never chips in the row. */
   const app = useAppItem(variantProp, { title: text.title, verbs: text.verbs, download: text.download, menuItems: text.menuItems, date: text.date, size: text.size, media, back: text.back, tone, tags: text.tags, details: text.details, onTags: text.onTags, note: text.note, onNote: text.onNote, mark: text.mark, onCover: text.onCover, onInsert: text.onInsert, images: text.images, onImages: text.onImages, onBack: text.onBack, row: true })
   delete text.verbs; delete text.download; delete text.menuItems; delete text.details; delete text.onTags; delete text.note; delete text.onNote; delete text.mark; delete text.onCover; delete text.onInsert; delete text.back; delete text.images; delete text.onImages; delete text.onBack
+  /* `float` is the link row — its own path, after the hook so the hook order never depends on the variant */
+  if (variantProp === 'float') return <ContentRowFloat title={text.title} url={text.url} href={href ?? text.url} external={text.external} onClick={onClick} className={className} />
   if (app) {
     delete text.tags
     variantProp = 'file'

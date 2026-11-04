@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-framework
 
+## 0.69.0 — 2026-11-01
+
+- **`loaderApp({ intro })`** (LoaderAppIntro, kol-fxr — the loader is the line): `true` (`/`) or a path / paths. On a matching `location.pathname` with motion allowed, a pre-paint script stamps `kol-intro` on <html> and one rule (`.kol-intro #kol-loader-app svg{display:none}`) leaves the loader its ground only. Without `intro` the HTML is byte-identical to 0.68.0.
+- **`claimIntro` · `introClaimed` · `endIntro` · `releaseIntro`** beside `hideLoaderApp`, which now does the claim-or-fallback itself: stamped and unclaimed, it waits 600 ms, then ends the intro and hides the loader. An app calls `hideLoaderApp()` as before. The source moved to kol-component (GrowthLineStage claims it); `src/loaderApp.js` re-exports it. Peers on kol-component ≥0.331.0.
+
 ## 0.68.0 — 2026-10-31
 
 - **`DocumentHeader`** — a document page's header as one component (kol-atlas's tabs header, lifted from apps/document): the title as SectionText `variant="document"` (headline only — *"this without section header is how atlas does it"*; `eyebrow` / `lede` pass through), then one navigation row under a fg-12 rule — `TabsRow` (`tabs` · `value` · `onChange`) and the groups as kol-component `Menu` / `MenuTrigger` at its right end (`menus=[{ label, items, current }]`). The layout is the hand-written header's: `.kol-page` inset with no bottom pad, 16 between title and row, the row bottom-aligned. Peers on kol-component ≥0.324.0.

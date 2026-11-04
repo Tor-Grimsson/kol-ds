@@ -6,9 +6,10 @@ import figma from 'figma'
 const instance = figma.selectedInstance
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 const label = instance.getString('label')
+const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
 
 export default {
-  example: figma.code`<SectionLabel size="${size}" text="${label}" />`,
+  example: variant === 'float' ? figma.code`<SectionLabel variant="float" text="APPEARANCE" onAdd={add} />` : figma.code`<SectionLabel size="${size}" text="${label}" />`,
   imports: ["import { SectionLabel } from \"@kolkrabbi/kol-component\""],
   id: 'SectionLabel',
 }

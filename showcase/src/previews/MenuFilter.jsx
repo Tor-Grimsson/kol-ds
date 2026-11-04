@@ -17,12 +17,14 @@ const GROUPS = [
 
 export const tones = CONTROL_TONES
 export const aligns = ALIGNS
+/* `float` (float-everything W4): the float trigger and list */
+export const variants = ['default', 'float']
 
-export default function MenuFilterPreview({ tone, align = 'start' }) {
+export default function MenuFilterPreview({ tone, align = 'start', variant = 'default' }) {
   const [active, setActive] = useState([{ key: 'browser', label: 'Browser is Chrome' }, { key: 'country', label: 'Country is Iceland' }])
   return (
     <div className={`flex min-h-[120px] w-full items-start justify-center pb-10 ${toneWrap(tone)}`}>
-      <MenuFilter key={align} align={align} groups={GROUPS} onPick={() => {}} active={active}
+      <MenuFilter key={align + variant} align={align} variant={variant === 'float' ? 'float' : undefined} groups={GROUPS} onPick={() => {}} active={active}
         onRemove={(c) => setActive((a) => a.filter((x) => x.key !== c.key))} onClear={() => setActive([])} />
     </div>
   )

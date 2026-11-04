@@ -28,10 +28,14 @@ import glass from './glass.js'
 import scanline from './scanline.js'
 import dither from './dither.js'
 import { RADAR_FX } from './fxRadar.js'
+import { BLOCKS_FX } from './fxBlocks.js'
+import { MEDIA_FX } from './fxMedia.js'
 import ascii from './fxAscii.js'
 import halftoneDither from './fxHalftoneDither.js'
 import bitmap from './fxBitmap.js'
+import growth from './fxGrowth.js'
 import { EFFECTS_FX } from './fxEffects.js'
+import { SLICER_FX } from './fxSlicer.js'
 import { GL_FILTERS } from './gl/catalog.js'
 import { PIXI_FILTERS } from './pixi/defs.js'
 
@@ -39,9 +43,17 @@ export const FILTERS = [
   glass, scanline, dither,
   /* Radar canvas FX — labs radar/hooks/useCanvasFx.js (radar + live postfx chain) */
   ...RADAR_FX,
+  /* block corruption (plan 26 § 14) — the Post-processing rack's, and any page's post stage */
+  ...BLOCKS_FX,
+  /* the media moves — tile · drift · spin · tilt, pinned first in the chain (plan 26 § 4) */
+  ...MEDIA_FX,
   /* HALFTONE trio — labs radar Dither/ASCII (+ shared sweep rig, sweeps.js)
      and optic Bitmap (photo-luma halftone field) */
   ascii, halftoneDither, bitmap,
+  /* the growing line (plan 43 § 4.2) — one loop filling the photo; also a generator, Flow › Growth */
+  growth,
+  /* the image slicer (plan 37 § 6.6) — the zoom-wave grid and the two-ink riso screens */
+  ...SLICER_FX,
   /* Effects canvas tier — labs pages/effects engine/canvasEffects.js over lib/imagefilters.js */
   ...EFFECTS_FX,
   /* GL engine filters — synths / distortion / lens (labs radar); lazy engines */

@@ -16,6 +16,7 @@
   },
   "Avatar": {
     "typeClasses": [
+      "kol-helper-10",
       "kol-helper-12",
       "kol-helper-14",
       "kol-helper-16",
@@ -100,6 +101,7 @@
   },
   "DocsToc": {
     "typeClasses": [
+      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-12",
       "kol-mono-14"
@@ -216,10 +218,14 @@
       "TONE_VARS"
     ]
   },
+  "FLOAT_SURFACES": {
+    "typeClasses": [],
+    "composes": []
+  },
   "ContextMenu": {
     "typeClasses": [],
     "composes": [
-      "PopoverPanel"
+      "Menu"
     ]
   },
   "AppItemMenuProvider": {
@@ -228,7 +234,7 @@
     ],
     "composes": [
       "MenuCtx",
-      "MenuDropdownItem",
+      "MenuRow",
       "ActionButton",
       "Tag",
       "Input",
@@ -353,6 +359,16 @@
       "Tooltip"
     ]
   },
+  "VariantsControl": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Button",
+      "SegmentedToggle",
+      "PopoverPanel"
+    ]
+  },
   "Stepper": {
     "typeClasses": [
       "kol-mono-12",
@@ -449,6 +465,27 @@
     ],
     "composes": []
   },
+  "OriginPicker": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "BezierPathEditor": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "FunctionPlot": {
+    "typeClasses": [
+      "kol-mono-10"
+    ],
+    "composes": []
+  },
+  "ParamBindDot": {
+    "typeClasses": [],
+    "composes": [
+      "Menu",
+      "Tooltip"
+    ]
+  },
   "InspectorRail": {
     "typeClasses": [],
     "composes": []
@@ -472,8 +509,8 @@
     "composes": [
       "Button",
       "Input",
-      "MenuDropdownItem",
-      "MenuDropdownNest",
+      "MenuRow",
+      "MenuFlyout",
       "PopoverPanel",
       "Tooltip"
     ]
@@ -485,8 +522,8 @@
     "composes": [
       "Button",
       "Input",
-      "MenuDropdownItem",
-      "MenuDropdownNest",
+      "MenuRow",
+      "MenuFlyout",
       "PopoverPanel",
       "Tooltip"
     ]
@@ -498,8 +535,8 @@
     "composes": [
       "Button",
       "Input",
-      "MenuDropdownItem",
-      "MenuDropdownNest",
+      "MenuRow",
+      "MenuFlyout",
       "PopoverPanel",
       "Tooltip"
     ]
@@ -737,24 +774,22 @@
       "kol-mono-8"
     ],
     "composes": [
-      "TONE_VARS",
-      "MenuDropdownItem",
-      "MenuDropdownDivider",
-      "PopoverPanel",
+      "MenuRow",
+      "MenuDivider",
+      "Menu",
       "Icon"
     ]
   },
   "MultiSelect": {
     "typeClasses": [
-      "kol-helper-12",
       "kol-mono-12",
       "kol-mono-14",
       "kol-mono-16",
       "kol-mono-8"
     ],
     "composes": [
-      "MenuDropdownItem",
-      "PopoverPanel",
+      "MenuRow",
+      "Menu",
       "Icon"
     ]
   },
@@ -853,45 +888,190 @@
   },
   "MenuItem": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-8"
     ],
     "composes": [
-      "PopoverPanel",
+      "Menu",
+      "Kbd",
+      "Icon"
+    ]
+  },
+  "MenuRow": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-8"
+    ],
+    "composes": [
+      "Menu",
+      "Kbd",
+      "Icon"
+    ]
+  },
+  "MenuDivider": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-8"
+    ],
+    "composes": [
+      "Menu",
+      "Kbd",
+      "Icon"
+    ]
+  },
+  "MenuFlyout": {
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-8"
+    ],
+    "composes": [
+      "Menu",
+      "Kbd",
       "Icon"
     ]
   },
   "MenuDropdownItem": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-8"
     ],
     "composes": [
-      "PopoverPanel",
+      "Menu",
+      "Kbd",
       "Icon"
     ]
   },
   "MenuDropdownDivider": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-8"
     ],
     "composes": [
-      "PopoverPanel",
+      "Menu",
+      "Kbd",
       "Icon"
     ]
   },
   "MenuDropdownNest": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-8"
     ],
     "composes": [
+      "Menu",
+      "Kbd",
+      "Icon"
+    ]
+  },
+  "Menu": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
       "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuTrigger": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuPanel": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuLabel": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuFilter": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuDatePicker": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
+      "Icon"
+    ]
+  },
+  "MenuMore": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
+      "Button",
+      "SearchInput",
+      "MenuRow",
+      "MenuDivider",
+      "MenuFlyout",
+      "PopoverPanel",
+      "Tooltip",
+      "TONE_VARS",
       "Icon"
     ]
   },
@@ -909,6 +1089,26 @@
       "Button",
       "Input",
       "ToggleCheckbox"
+    ]
+  },
+  "Dialog": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "Button",
+      "Input",
+      "ToggleCheckbox"
+    ]
+  },
+  "Combobox": {
+    "typeClasses": [
+      "kol-mono-12"
+    ],
+    "composes": [
+      "SearchInput",
+      "MenuRow",
+      "PopoverPanel"
     ]
   },
   "PaletteHarmonyWheel": {
@@ -933,7 +1133,7 @@
       "Button",
       "PopoverPanel",
       "Tooltip",
-      "MenuDropdownItem",
+      "MenuRow",
       "Icon"
     ]
   },
@@ -1021,14 +1221,20 @@
     "composes": []
   },
   "ColorPickerPopover": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-helper-12",
+      "kol-mono-12"
+    ],
     "composes": [
       "ColorSwatch",
       "Input",
+      "Slider",
+      "Dropdown",
       "PopoverPanel",
       "HueStrip",
       "SBSquare",
-      "AlphaStrip"
+      "AlphaStrip",
+      "Icon"
     ]
   },
   "CompareGrid": {
@@ -1106,12 +1312,14 @@
     "typeClasses": [
       "kol-helper",
       "kol-helper-10",
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-sans-body-02"
     ],
     "composes": [
       "CloseButton",
       "Button",
       "RAIL_ROW",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -1119,12 +1327,29 @@
     "typeClasses": [
       "kol-helper",
       "kol-helper-10",
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-sans-body-02"
     ],
     "composes": [
       "CloseButton",
       "Button",
       "RAIL_ROW",
+      "Tooltip",
+      "Icon"
+    ]
+  },
+  "TABBAR_PILL_H": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-sans-body-02"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -1132,12 +1357,14 @@
     "typeClasses": [
       "kol-helper",
       "kol-helper-10",
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-sans-body-02"
     ],
     "composes": [
       "CloseButton",
       "Button",
       "RAIL_ROW",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -1145,12 +1372,59 @@
     "typeClasses": [
       "kol-helper",
       "kol-helper-10",
-      "kol-mono-12"
+      "kol-mono-12",
+      "kol-sans-body-02"
     ],
     "composes": [
       "CloseButton",
       "Button",
       "RAIL_ROW",
+      "Tooltip",
+      "Icon"
+    ]
+  },
+  "TABBAR_PILL_GAP": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-sans-body-02"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
+      "Tooltip",
+      "Icon"
+    ]
+  },
+  "TABBAR_PILL_LABEL_TAB": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-sans-body-02"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
+      "Tooltip",
+      "Icon"
+    ]
+  },
+  "TABBAR_PILL_SPLIT_GAP": {
+    "typeClasses": [
+      "kol-helper",
+      "kol-helper-10",
+      "kol-mono-12",
+      "kol-sans-body-02"
+    ],
+    "composes": [
+      "CloseButton",
+      "Button",
+      "RAIL_ROW",
+      "Tooltip",
       "Icon"
     ]
   },
@@ -1468,6 +1742,10 @@
       "SectionCards"
     ]
   },
+  "GrowthLineStage": {
+    "typeClasses": [],
+    "composes": []
+  },
   "SectionHero": {
     "typeClasses": [],
     "composes": [
@@ -1584,8 +1862,8 @@
       "ContentRow",
       "ContentFilters",
       "MenuItem",
-      "MenuDropdownItem",
-      "MenuDropdownDivider",
+      "MenuRow",
+      "MenuDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
@@ -1614,8 +1892,8 @@
       "ContentRow",
       "ContentFilters",
       "MenuItem",
-      "MenuDropdownItem",
-      "MenuDropdownDivider",
+      "MenuRow",
+      "MenuDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
@@ -1644,8 +1922,8 @@
       "ContentRow",
       "ContentFilters",
       "MenuItem",
-      "MenuDropdownItem",
-      "MenuDropdownDivider",
+      "MenuRow",
+      "MenuDivider",
       "MediaViewer",
       "MediaLibraryBrowse",
       "MediaLibraryLibrary",
@@ -1684,8 +1962,8 @@
       "SortControls",
       "SearchInput",
       "MenuItem",
-      "MenuDropdownItem",
-      "MenuDropdownDivider",
+      "MenuRow",
+      "MenuDivider",
       "Tooltip",
       "KindPreview",
       "MediaPlayer",
@@ -2010,6 +2288,20 @@
       "Icon"
     ]
   },
+  "ResizeHandle": {
+    "typeClasses": [
+      "kol-helper-10",
+      "kol-mono-12"
+    ],
+    "composes": [
+      "FileIcon",
+      "RowMenuButton",
+      "OptionRow",
+      "KIND_LABEL",
+      "GRAB_COLUMN",
+      "Icon"
+    ]
+  },
   "KindPreview": {
     "typeClasses": [
       "kol-mono-12",
@@ -2107,6 +2399,42 @@
       "Button",
       "CloseButton"
     ]
+  },
+  "FileQuickLook": {
+    "typeClasses": [],
+    "composes": [
+      "Button",
+      "FullscreenOverlay",
+      "QuickLookFrame",
+      "KindPreview",
+      "KIND_LABEL"
+    ]
+  },
+  "FlipCard": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "Kanban": {
+    "typeClasses": [
+      "kol-mono-10",
+      "kol-mono-12",
+      "kol-sans-body-03"
+    ],
+    "composes": [
+      "Button"
+    ]
+  },
+  "SortableGrid": {
+    "typeClasses": [],
+    "composes": [
+      "Button"
+    ]
+  },
+  "ProgressBar": {
+    "typeClasses": [
+      "kol-mono-10"
+    ],
+    "composes": []
   },
   "MediaTile": {
     "typeClasses": [],
@@ -2227,6 +2555,10 @@
     "composes": []
   },
   "INDICATOR": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "TimeSet": {
     "typeClasses": [],
     "composes": []
   },
@@ -2354,10 +2686,23 @@
     ],
     "composes": []
   },
+  "SiteHero": {
+    "typeClasses": [
+      "kol-prose-display",
+      "kol-prose-tagline"
+    ],
+    "composes": []
+  },
   "CategoryPage": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-prose-label",
+      "kol-sans-body-02",
+      "kol-sans-heading-05"
+    ],
     "composes": [
-      "PageHero"
+      "PageHero",
+      "PageSection"
     ]
   },
   "MarkdownPage": {
@@ -2371,6 +2716,77 @@
       "kol-helper-10",
       "kol-mono-12"
     ],
+    "composes": []
+  },
+  "DocumentIndex": {
+    "typeClasses": [
+      "kol-mono-10",
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-prose-label"
+    ],
+    "composes": [
+      "Icon"
+    ]
+  },
+  "DocumentHeader": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "WebsiteLayout": {
+    "typeClasses": [
+      "kol-mono-14"
+    ],
+    "composes": [
+      "Navbar",
+      "Footer",
+      "CursorProvider",
+      "WorkViewProvider",
+      "CursorOverlay"
+    ]
+  },
+  "WebsiteNavbar": {
+    "typeClasses": [],
+    "composes": [
+      "TakeoverMenu"
+    ]
+  },
+  "TakeoverMenu": {
+    "typeClasses": [
+      "kol-mono-14",
+      "kol-mono-16",
+      "kol-sans-heading-01",
+      "kol-sans-heading-02"
+    ],
+    "composes": [
+      "ThemeToggle",
+      "Icon"
+    ]
+  },
+  "WebsiteFooter": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": []
+  },
+  "RouteLoader": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CursorProvider": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CursorOverlay": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "CursorTrail": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "WorkViewProvider": {
+    "typeClasses": [],
     "composes": []
   },
   "SpecimenSectionHeader": {
@@ -2524,6 +2940,12 @@
     ]
   },
   "ColorLoader": {
+    "typeClasses": [],
+    "composes": [
+      "TextPressure"
+    ]
+  },
+  "WebsiteIntroLoader": {
     "typeClasses": [],
     "composes": [
       "TextPressure"

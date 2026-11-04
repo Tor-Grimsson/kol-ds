@@ -6,7 +6,7 @@ import { clear, strokeOutline, wrapLoop, sampleInside, pc } from '../common.js'
 const PARAMS          = [
   { key: 'count', type: 'int', min: 100, max: 1600, default: 600, step: 100, label: 'particles' },
   { key: 'stiff', type: 'range', min: 10, max: 400, default: 80, step: 10, label: 'stiffness k' },
-  { key: 'visc', type: 'range', min: 0.01, max: 1.5, default: 0.3, step: 0.05, label: 'viscosity μ' },
+  { key: 'visc', type: 'range', min: 0.01, max: 1.5, default: 0.3, step: 0.01, label: 'viscosity μ' },
   { key: 'gravity', type: 'range', min: 0, max: 2, default: 0.4, step: 0.1, label: 'gravity' },
   { key: 'trails', type: 'boolean', default: false, label: 'trails' },
   { key: 'interact', type: 'range', min: 0, max: 3, step: 0.1, default: 1, label: 'interaction' },
@@ -14,7 +14,7 @@ const PARAMS          = [
 
 export const r2_fluid_05_sph            = {
   id: 'r2-fluid-05-sph',
-  name: 'SPH FLUID',
+  name: 'SPH fluid',
   repo: 'Müller, Charypar & Gross 2003 · SCA 2003',
   summary:
     'Lagrangian SPH particle fluid — density, pressure, and viscosity forces summed via poly6/spiky kernels. Particles pool against glyph boundaries and slosh through narrow letter strokes like ink.',

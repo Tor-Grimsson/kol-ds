@@ -63,7 +63,7 @@ export default function MoreRows({ actions = [], items = [], active, onPick, ite
           size="lg"
           iconLeft={i.icon}
           iconSize={glyph}
-          aria-current={i.path === active ? 'page' : undefined}
+          aria-current={i.path != null && i.path === active ? 'page' : undefined}
           className={rowCls}
           onClick={() => onPick?.(i)}
         >

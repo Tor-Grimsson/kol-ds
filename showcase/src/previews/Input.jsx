@@ -6,7 +6,7 @@ export const stage = 'md'
 /* The main instance takes the variant and size pickers (2026-09-30 — filled and outline used to
  * stack); the examples below it are different PROPS (commit on blur, a slot, a property pair),
  * not variants of the same thing. */
-export const variants = ['filled', 'outline']
+export const variants = ['filled', 'outline', 'float']
 export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['sm', 'md', 'lg', 'xs']
 
@@ -17,6 +17,17 @@ export default function InputPreview({ variant = 'filled', tone = 'default', siz
   const [x, setX] = useState('240')
   const [pct, setPct] = useState('100')
   const onChange = (e) => setV(e?.target?.value ?? e)
+  /* float (float-everything W3 row 36): the capsule's states — rest · focus (click in) · error with its message · disabled */
+  if (variant === 'float') {
+    return (
+      <div className="grid w-full max-w-2xl grid-cols-2 gap-4">
+        <Input variant="float" size={size} placeholder="Scene name" value={v} onChange={onChange} width="100%" />
+        <Input variant="float" size={size} value="Still in motion" onChange={() => {}} width="100%" autoFocus />
+        <Input variant="float" size={size} type="email" value="alex@" onChange={() => {}} error="Enter a valid email address." width="100%" />
+        <Input variant="float" size={size} placeholder="Available after sign in" disabled width="100%" />
+      </div>
+    )
+  }
   return (
     <>
       <Input variant={variant} tone={tone} size={size} placeholder={variant} value={v} onChange={onChange} />

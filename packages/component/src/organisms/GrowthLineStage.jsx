@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
-import { Growth, densityFrom, mulberry32, orbCanvas, pathCanvas } from '@kolkrabbi/kol-growth'
+import { Growth, densityFrom, mulberry32, orbCanvas, outline, pathCanvas, pathRing } from '@kolkrabbi/kol-growth'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
+import { claimIntro, endIntro, hideLoaderApp, releaseIntro } from '../utilities/loaderApp.js'
 
 /* THE GROWING LINE AS A STAGE (GrowthLineStage, kol-atlas 2026-10-30) — kol-fxr's HomeStage sim loop on
  * @kolkrabbi/kol-growth: one closed line grows into `shape`, packing tighter where it is dark. One <canvas> filling its
@@ -21,10 +22,20 @@ import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'
  * THE INTRO (`intro`): one line from load to page. It grows on the shape's density (at `fit` 0.5) for 3.8 s, drawn only
  * through the shape in the emphasis ink; rests 4 s breathing (ink 0.7–1.0 on a 2 s period, growth off after the first
  * breath); then lets go over 4 s — the density blends shape → orb, `params` take over, every node warms, the stage's ink
- * fades up as the shape's fades out, and the pointer waits until it ends. `onIntroEnd` fires then.
+ * fades up as the shape's fades out, and the pointer waits until it ends. `onIntroEnd` fires then; `onIntroBreath` fires
+ * as the rest begins (HubHome fades its chrome in on it).
  *
- * REDUCED MOTION — no intro (`onIntroEnd` fires at once), no wave, no pointer force: the finished line is grown off
+ * THE LOADER IS THE LINE (LoaderAppIntro, kol-fxr 2026-11-01): on a page `loaderApp({ intro })` stamped `kol-intro`, the
+ * intro claims it on mount, hides the app loader (its ground only) on its first drawn frame and ends it with the intro.
+ * Without the stamp — another route, a SPA return, reduced motion — no loader is involved.
+ *
+ * REDUCED MOTION — no intro (`onIntroBreath` and `onIntroEnd` fire at once), no wave, no pointer force: the finished line is grown off
  * screen and drawn once.
+ *
+ * THE SEED (GrowthLineSeedOutline, kol-atlas 2026-11-01): `seed="centre"` (default) starts a small ring at the shape's
+ * centre of darkness (the intro's at the box's centre); `seed="outline"` starts one ring on the shape's edge — the path
+ * itself for a path `d`, the density's 0.5 iso-line otherwise — inset `minGap` so it starts inside, and the line fills
+ * inward. A number is still the rng seed (the same number grows the same line).
  *
  * `shape` — 'orb' · an SVG path `d` (centred at `fit` of the box) · `(w, h) => canvas` (dark on light). */
 const ORB_PARAMS = { minGap: 6, maxGap: 24, contrast: 1.4, growth: 2.5 }
@@ -39,7 +50,7 @@ const shapeCanvas = (shape, w, h, fit, W) => {
   return pathCanvas(shape, w / h, fit, W)
 }
 
-export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAMS, cap, pointer = true, seed, wave = WAVE, intro = false, onIntroEnd, className = '' }) {
+export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAMS, cap, pointer = true, seed, wave = WAVE, intro = false, onIntroBreath, onIntroEnd, className = '' }) {
   const ref = useRef(null)
   const reduced = usePrefersReducedMotion()
   /* the props are read at (re)start; the effect re-runs when one changes by value */
@@ -48,6 +59,8 @@ export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAM
   shapeRef.current = shape
   const endRef = useRef(onIntroEnd)
   endRef.current = onIntroEnd
+  const breathRef = useRef(onIntroBreath)
+  breathRef.current = onIntroBreath
 
   useEffect(() => {
     const canvas = ref.current
@@ -56,6 +69,8 @@ export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAM
     const drift = wave && !reduced ? wave : null
     const capOf = () => cap ?? Math.round(w * h / 90)
     let sim = null, raf = 0, w = 0, h = 0, dpr = 1, it = null, orbed = false
+    /* the app loader's intro: claimed on mount, handed over ('shown') on the first frame */
+    let claim = false
     let ptr = null, sm = null
     const force = pointer && !reduced
     const fitCanvas = () => {
@@ -77,21 +92,25 @@ export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAM
       it.mask = m
       it.layer = document.createElement('canvas'); it.layer.width = canvas.width; it.layer.height = canvas.height
     }
-    const end = () => { it = null; endRef.current?.() }
+    const end = () => { it = null; if (claim) { claim = false; endIntro() } endRef.current?.() }
     const start = () => {
       fitCanvas()
       const src = shapeCanvas(shapeRef.current, w, h, k)
       if (!src) return false
-      sim = new Growth({ w, h, density: densityFrom(src), rand: seed == null ? Math.random : mulberry32(seed), cap: capOf() })
+      sim = new Growth({ w, h, density: densityFrom(src), rand: typeof seed === 'number' ? mulberry32(seed) : Math.random, cap: capOf() })
       sim.setParams({ bleed: 48, settle: 60, ...(intro && !reduced ? INTRO_PARAMS : params) })
+      /* the outline seed: the path itself, or the density's iso-line; null (nothing traced) falls back to the centre */
+      const ring = seed === 'outline' && (typeof shapeRef.current === 'string' && shapeRef.current !== 'orb' ? pathRing(shapeRef.current, w / h, k) : outline(sim.density))
+      const seedAt = (...centre) => (ring ? sim.seed({ points: ring, inset: sim.minGap }) : sim.seed(...centre))
       if (intro && !reduced) {
-        sim.seed(0.5, 0.5)
+        seedAt(0.5, 0.5)
         const probe = document.createElement('span'); probe.className = 'text-emphasis'; canvas.parentElement.append(probe)
         it = { t0: 0, ink: 1, out: 0, bright: getComputedStyle(probe).color, mark: sim.density, mix: null }
         probe.remove(); masks()
+        claim = claimIntro()
       } else {
-        sim.seed()
-        if (intro) endRef.current?.()
+        seedAt()
+        if (intro) { breathRef.current?.(); endRef.current?.() }
       }
       return true
     }
@@ -129,13 +148,14 @@ export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAM
     const frame = (now) => {
       let steps = !sim.full ? 2 : sim.hot > 0 ? 1 : 0
       if (it) {
-        if (!it.t0) it.t0 = now
+        if (!it.t0) { it.t0 = now; if (claim) { claim = 'shown'; hideLoaderApp({ minMs: 0 }) } }
         const t = now - it.t0
         if (t < MARK_MS) steps = 4
         else if (t < MARK_MS + REST_MS) {
           /* it keeps filling the shape's far corners through the first breath, then holds */
           if (!it.rest && t > MARK_MS + BREATH_MS) { it.rest = true; sim.setParams({ growth: 0 }) }
           it.ink = 0.7 + 0.3 * Math.cos((2 * Math.PI * (t - MARK_MS)) / BREATH_MS)
+          if (!it.breath) { it.breath = true; breathRef.current?.() }
         } else {
           if (!it.free) { it.free = true; it.ink = 1; release() }
           const u = Math.min(1, (t - MARK_MS - REST_MS) / RELEASE_MS)
@@ -203,6 +223,8 @@ export default function GrowthLineStage({ shape = 'orb', fit, params = ORB_PARAM
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
     return () => {
       cancelAnimationFrame(raf); ro.disconnect(); mo.disconnect()
+      /* gone before its first frame (StrictMode's first mount reclaims at once) → the loader's fallback; gone mid-intro → ended */
+      if (claim === true) releaseIntro(); else if (claim) endIntro()
       if (force) {
         window.removeEventListener('pointermove', onMove)
         window.removeEventListener('pointerdown', onDown)

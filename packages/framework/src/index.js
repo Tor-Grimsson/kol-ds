@@ -20,7 +20,7 @@ export { default as ShellHeader, HEADER_ICON } from './ShellHeader.jsx'
 export { default as ThemeToggle } from './ThemeToggle.jsx'
 export { useTheme, applyTheme, getInitialTheme, THEME_STORAGE_KEY, THEME_BOOT_SCRIPT } from './theme.js'
 /* the app loader's runtime half — the build half is `loaderApp()` in `@kolkrabbi/kol-framework/vite` */
-export { hideLoaderApp } from './loaderApp.js'
+export { hideLoaderApp, claimIntro, introClaimed, endIntro, releaseIntro } from './loaderApp.js'
 export { default as Layout } from './Layout.jsx'
 export { default as PageSection } from './PageSection.jsx'
 export { default as PortalFooter } from './PortalFooter.jsx'

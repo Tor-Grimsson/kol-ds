@@ -106,6 +106,8 @@ export function MenuItem({
  *                 single picks, definitely"*), `check` a row that is on in a many-of-N, `chevron` a row that opens more.
  *   - kbd       — a key, drawn as `Kbd`. Nothing trails a row unless the caller passes one of these.
  *   - shortcut  — @deprecated: the free trailing node the typed ✓ › ⌘S came through. A string renders as `Kbd`.
+ *   - tone      — `'danger'` (float-everything W4 row 50, 2026-11-04): the destructive row — the error ink, the same
+ *                 lift as every row (`.kol-menu-row--danger`). Delete layer, Remove, Sign out.
  */
 /* the row follows the trigger's rung (DropdownXsList, kol-monitor 2026-09-01):
  * at xs the list kept sm rows — kol-helper-12 in a 32px pitch — inside a panel
@@ -122,7 +124,7 @@ const ROW_BY_SIZE = { xs: 'kol-mono-8 px-2 h-5', sm: 'kol-helper-12 px-2 h-8', m
  * row still fills a fixed panel through `w-full` and lets a content-sized one hug its longest label. */
 const INDICATOR = { dot: 'ascii-dot', check: 'check', chevron: 'chevron-right' }
 
-export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, indicator, kbd, shortcut, hover = true, height, size = 'sm', rowClass, children }) {
+export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disabled, prefix, iconLeft, indicator, kbd, shortcut, hover = true, height, size = 'sm', rowClass, tone, children }) {
   /* `href` makes the row a real link — cmd/ctrl-click and middle-click open a new tab (DocumentHeader, 2026-10-31);
    * a plain click still runs `onClick` (the app's router), which may preventDefault */
   const Row = href && !disabled ? 'a' : 'button'
@@ -135,7 +137,7 @@ export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disable
       disabled={Row === 'button' ? disabled : undefined}
       role="menuitem"
       style={height != null ? { height } : undefined}
-      className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`}
+      className={`kol-menu-btn w-full ${rowClass ?? ROW_BY_SIZE[size] ?? ROW_BY_SIZE.sm} shrink-0 flex items-center gap-2 text-body ${hover ? 'hover:text-emphasis' : ''} ${tone === 'danger' ? 'kol-menu-row--danger' : ''} disabled:opacity-40 disabled:cursor-not-allowed text-left`.replace(/\s+/g, ' ')}
     >
       {prefix && <span className="shrink-0 inline-flex items-center">{prefix}</span>}
       {iconLeft && <span className="shrink-0 w-4 inline-flex items-center justify-center">{iconLeft}</span>}
@@ -151,7 +153,10 @@ export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disable
           {indicator === 'dot'
             ? <Icon name="ascii-dot" size={size === 'xs' ? 16 : 24} style={{ margin: size === 'xs' ? -4 : -5 }} />
             : indicator && <Icon name={INDICATOR[indicator] ?? indicator} size={size === 'xs' ? indicatorSize('xs') : 14} />}
-          {kbd != null && <Kbd size="md" className="kol-menu-kbd">{kbd}</Kbd>}
+          {/* ⌘ is drawn, never typed — the Kbd's `command` glyph (as SearchInput's and Button's caps; W2 row 27, 2026-11-04) */}
+          {kbd != null && (typeof kbd === 'string' && kbd.startsWith('⌘')
+            ? <Kbd size="md" icon="command" className="kol-menu-kbd">{kbd.slice(1)}</Kbd>
+            : <Kbd size="md" className="kol-menu-kbd">{kbd}</Kbd>)}
           {typeof shortcut === 'string' ? <Kbd size="md" className="kol-menu-kbd">{shortcut}</Kbd> : shortcut}
         </span>
       )}

@@ -791,6 +791,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "kbd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "CloseButton": [
@@ -1179,6 +1185,12 @@
       "desc": ""
     },
     {
+      "prop": "numbered",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -1268,6 +1280,12 @@
     },
     {
       "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -1403,7 +1421,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -1688,6 +1706,12 @@
     },
     {
       "prop": "placeholder",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "error",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -1987,6 +2011,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "AppItemMenuProvider": [
@@ -2055,6 +2085,12 @@
       "desc": ""
     },
     {
+      "prop": "ariaLabel",
+      "type": "—",
+      "def": "'quantity'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -2068,6 +2104,18 @@
     },
     {
       "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "unit",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -2469,6 +2517,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "SectionLabel": [
@@ -2479,6 +2533,12 @@
       "desc": ""
     },
     {
+      "prop": "addLabel",
+      "type": "—",
+      "def": "'Add'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -2486,6 +2546,18 @@
     },
     {
       "prop": "text",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -2673,6 +2745,1622 @@
       "desc": ""
     }
   ],
+  "Delta": [
+    {
+      "prop": "direction",
+      "type": "—",
+      "def": "'up'",
+      "desc": ""
+    },
+    {
+      "prop": "fromLabel",
+      "type": "—",
+      "def": "'from'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "from",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LiveDot": [
+    {
+      "prop": "live",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SizeChip": [
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ValueField": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "prefix",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FieldPair": [
+    {
+      "prop": "fields",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PasswordInput": [
+    {
+      "prop": "revealed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRevealChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "revealLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "InlineAddRow": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Add'",
+      "desc": ""
+    },
+    {
+      "prop": "kbd",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LinkAddRow": [
+    {
+      "prop": "namePlaceholder",
+      "type": "—",
+      "def": "'Link name'",
+      "desc": ""
+    },
+    {
+      "prop": "urlPlaceholder",
+      "type": "—",
+      "def": "'https://…'",
+      "desc": ""
+    },
+    {
+      "prop": "addLabel",
+      "type": "—",
+      "def": "'Add link'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ColorField": [
+    {
+      "prop": "swatchFrame",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PanelsMenu": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Workspace panels'",
+      "desc": ""
+    },
+    {
+      "prop": "panels",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SummaryLine": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "QuickLookHeader": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "nav",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMinimise",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NoticeBanner": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "body",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TreeRow": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "depth",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "expanded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailing",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LayerRow": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'layers'",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "visible",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "locked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "depth",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleVisible",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggleLock",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "IndexRow": [
+    {
+      "prop": "cells",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "checked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCheck",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TaskRow": [
+    {
+      "prop": "done",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "date",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onDate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TocRow": [
+    {
+      "prop": "current",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "number",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NavDrawer": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "fixed",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "defaultExpanded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CalendarTimeline": [
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Phase'",
+      "desc": ""
+    },
+    {
+      "prop": "months",
+      "type": "—",
+      "def": "['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "year",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "today",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CalendarMonth": [
+    {
+      "prop": "events",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "weekdays",
+      "type": "—",
+      "def": "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "month",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "today",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CalendarWeek": [
+    {
+      "prop": "events",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "running",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "runningLabel",
+      "type": "—",
+      "def": "'Running this week'",
+      "desc": ""
+    },
+    {
+      "prop": "weekdays",
+      "type": "—",
+      "def": "['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "week",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "today",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "empty",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CalendarDay": [
+    {
+      "prop": "allDay",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "events",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "from",
+      "type": "—",
+      "def": "7",
+      "desc": ""
+    },
+    {
+      "prop": "to",
+      "type": "—",
+      "def": "19",
+      "desc": ""
+    },
+    {
+      "prop": "nowLabel",
+      "type": "—",
+      "def": "'Today'",
+      "desc": ""
+    },
+    {
+      "prop": "allDayLabel",
+      "type": "—",
+      "def": "'All day'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "now",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingColumn": [
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "\"'Literata', Georgia, serif\"",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "22",
+      "desc": ""
+    },
+    {
+      "prop": "leading",
+      "type": "—",
+      "def": "1.6",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "760",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "position",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "page",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "standfirst",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "prev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "next",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingHighlight": [
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "\"'Literata', Georgia, serif\"",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "22",
+      "desc": ""
+    },
+    {
+      "prop": "leading",
+      "type": "—",
+      "def": "1.6",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingActions": [
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "[\n  { id: 'highlight', label: 'Highlight', icon: 'highlighter' },\n  { id: 'note', label: 'Note', icon: 'pencil' },\n  { id: 'copy', label: 'Copy', icon: 'copy' },\n]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMore",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingChapterNav": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "prev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "next",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingContents": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Contents'",
+      "desc": ""
+    },
+    {
+      "prop": "chapters",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "progressLabel",
+      "type": "—",
+      "def": "'Through the book'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "304",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "book",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "author",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "current",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "progress",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingPanel": [
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "'Reading panel'",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "[{ value: 'notes', label: 'Notes' }, { value: 'reading', label: 'Reading' }]",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "'notes'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "320",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingNotes": [
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "viewLabel",
+      "type": "—",
+      "def": "'View highlights'",
+      "desc": ""
+    },
+    {
+      "prop": "removeLabel",
+      "type": "—",
+      "def": "'Remove highlight'",
+      "desc": ""
+    },
+    {
+      "prop": "quoteLabel",
+      "type": "—",
+      "def": "'Selected highlight'",
+      "desc": ""
+    },
+    {
+      "prop": "noteLabel",
+      "type": "—",
+      "def": "'Reading note'",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "\"'Literata', Georgia, serif\"",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "quote",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "location",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNoteChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRemove",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingSettings": [
+    {
+      "prop": "fonts",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "22",
+      "desc": ""
+    },
+    {
+      "prop": "minSize",
+      "type": "—",
+      "def": "12",
+      "desc": ""
+    },
+    {
+      "prop": "maxSize",
+      "type": "—",
+      "def": "40",
+      "desc": ""
+    },
+    {
+      "prop": "leadings",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "widths",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "flow",
+      "type": "—",
+      "def": "'scroll'",
+      "desc": ""
+    },
+    {
+      "prop": "flows",
+      "type": "—",
+      "def": "[{ value: 'scroll', label: 'Scroll' }, { value: 'pages', label: 'Pages' }]",
+      "desc": ""
+    },
+    {
+      "prop": "resetLabel",
+      "type": "—",
+      "def": "'Reset defaults'",
+      "desc": ""
+    },
+    {
+      "prop": "labels",
+      "type": "—",
+      "def": "{}",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "themes",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFont",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSize",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "leading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onLeading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onWidth",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFlow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onReset",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReadingOverview": [
+    {
+      "prop": "backLabel",
+      "type": "—",
+      "def": "'Back to my library'",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "resumeLabel",
+      "type": "—",
+      "def": "'Resume reading'",
+      "desc": ""
+    },
+    {
+      "prop": "collectLabel",
+      "type": "—",
+      "def": "'Add to collection'",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "\"'Literata', Georgia, serif\"",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "cover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "author",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "place",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onResume",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCollect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WorkspaceSwitcher": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Workspace'",
+      "desc": ""
+    },
+    {
+      "prop": "workspaces",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AccountMenu": [
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "'Account'",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "align",
+      "type": "—",
+      "def": "'end'",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'md'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "initial",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "OptionRow": [
     {
       "prop": "as",
@@ -2816,6 +4504,12 @@
     },
     {
       "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -3589,7 +5283,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -3669,7 +5363,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -4737,6 +6431,12 @@
       "desc": ""
     },
     {
+      "prop": "align",
+      "type": "—",
+      "def": "'start'",
+      "desc": ""
+    },
+    {
       "prop": "defaultOpen",
       "type": "—",
       "def": "false",
@@ -5715,6 +7415,18 @@
       "desc": ""
     },
     {
+      "prop": "indicator",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "kbd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "shortcut",
       "type": "—",
       "def": "—",
@@ -5728,6 +7440,12 @@
     },
     {
       "prop": "rowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5925,6 +7643,12 @@
       "desc": ""
     },
     {
+      "prop": "mono",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "iconOnly",
       "type": "—",
       "def": "—",
@@ -5943,6 +7667,18 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "children",
       "type": "—",
       "def": "—",
@@ -5951,9 +7687,21 @@
   ],
   "MenuPanel": [
     {
+      "prop": "sheet",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
       "desc": ""
     },
     {
@@ -5973,21 +7721,9 @@
   ],
   "Menu": [
     {
-      "prop": "items",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
       "prop": "align",
       "type": "—",
       "def": "'start'",
-      "desc": ""
-    },
-    {
-      "prop": "offset",
-      "type": "—",
-      "def": "4",
       "desc": ""
     },
     {
@@ -6003,13 +7739,55 @@
       "desc": ""
     },
     {
+      "prop": "closeOnSelect",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "fused",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "role",
+      "type": "—",
+      "def": "'menu'",
+      "desc": ""
+    },
+    {
+      "prop": "sheet",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "panelClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
       "desc": ""
     },
     {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "trigger",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "anchor",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6021,7 +7799,43 @@
       "desc": ""
     },
     {
+      "prop": "offset",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "search",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panelStyle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rootClassName",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6087,6 +7901,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MenuDatePicker": [
@@ -6143,6 +7963,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "MenuMore": [
@@ -6178,6 +8004,12 @@
     },
     {
       "prop": "stayOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6889,6 +8721,24 @@
       "type": "—",
       "def": "false",
       "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "HueStrip": [
@@ -7167,7 +9017,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -7235,7 +9085,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -7459,12 +9309,6 @@
       "desc": ""
     },
     {
-      "prop": "type",
-      "type": "—",
-      "def": "'mono'",
-      "desc": ""
-    },
-    {
       "prop": "filled",
       "type": "—",
       "def": "false",
@@ -7537,6 +9381,18 @@
       "desc": ""
     },
     {
+      "prop": "type",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "trailing",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "onExpand",
       "type": "—",
       "def": "—",
@@ -7592,6 +9448,12 @@
     },
     {
       "prop": "foldSide",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foldTone",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -7692,6 +9554,12 @@
     },
     {
       "prop": "filled",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "floatType",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -7809,6 +9677,12 @@
       "desc": ""
     },
     {
+      "prop": "foldTone",
+      "type": "—",
+      "def": "'ground'",
+      "desc": ""
+    },
+    {
       "prop": "surface",
       "type": "—",
       "def": "'solid'",
@@ -7830,6 +9704,12 @@
       "prop": "ariaLabel",
       "type": "—",
       "def": "'Sections'",
+      "desc": ""
+    },
+    {
+      "prop": "trailing",
+      "type": "—",
+      "def": "—",
       "desc": ""
     },
     {
@@ -8819,6 +10699,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "items",
       "type": "—",
       "def": "—",
@@ -9322,6 +11208,12 @@
     },
     {
       "prop": "seed",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onIntroBreath",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -11713,6 +13605,30 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMinimise",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "title",
       "type": "—",
       "def": "—",
@@ -12006,6 +13922,12 @@
     },
     {
       "prop": "tone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -12412,6 +14334,12 @@
     },
     {
       "prop": "lastRule",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "framed",
       "type": "—",
       "def": "false",
       "desc": ""
@@ -13453,6 +15381,914 @@
       "desc": ""
     }
   ],
+  "Card": [
+    {
+      "prop": "footPad",
+      "type": "—",
+      "def": "'pt-4'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "controls",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onExpand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "addLabel",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footLeft",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footRight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RankedList": [
+    {
+      "prop": "valueLabel",
+      "type": "—",
+      "def": "'Visitors'",
+      "desc": ""
+    },
+    {
+      "prop": "empty",
+      "type": "—",
+      "def": "'No data yet'",
+      "desc": ""
+    },
+    {
+      "prop": "limit",
+      "type": "—",
+      "def": "9",
+      "desc": ""
+    },
+    {
+      "prop": "format",
+      "type": "—",
+      "def": "(n) => {\n  if (n == null || Number.isNaN(n)) return '0'\n  const a = Math.abs(n)\n  if (a >= 1e6) return `${+(n / 1e6).toFixed(1)}M`\n  if (a >= 1e5) return `${Math.round(n / 1e3)}k`\n  if (a >= 1e3) return `${+(n / 1e3).toFixed(1)}k`\n  return `${Math.round(n * 100) / 100}`\n}",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "total",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "column",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "StatTiles": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'sm'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DetailsOverlay": [
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClose",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SectionHead": [
+    {
+      "prop": "folded",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "controls",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FoldedHead": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FloatCard": [
+    {
+      "prop": "lines",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "support",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TaskCard": [
+    {
+      "prop": "done",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'lg'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "group",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "date",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "chip",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToggle",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SourceCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "code",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "message",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "detail",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CaptureCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "image",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpen",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "KanbanColumn": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "count",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ProjectCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "description",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "progress",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LinkCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CoverTile": [
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "192",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "cover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "author",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ContinueCard": [
+    {
+      "prop": "pct",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "resume",
+      "type": "—",
+      "def": "'Resume reading'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "cover",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "author",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "page",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onResume",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lastRead",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AssetRow": [
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "thumb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "LiveCard": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Right now'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "unit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "peak",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "insight",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "note",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "NoteCard": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PositionBlock": [
+    {
+      "prop": "eyebrow",
+      "type": "—",
+      "def": "'Your place'",
+      "desc": ""
+    },
+    {
+      "prop": "pct",
+      "type": "—",
+      "def": "0",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "page",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "Histogram": [
     {
       "prop": "data",
@@ -13573,6 +16409,54 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "legend",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "interval",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "peak",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rules",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "DonutChart": [
@@ -13630,6 +16514,12 @@
       "prop": "fill",
       "type": "—",
       "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "strokeWidth",
+      "type": "—",
+      "def": "2",
       "desc": ""
     }
   ],
@@ -13705,6 +16595,12 @@
       "desc": ""
     },
     {
+      "prop": "weeks",
+      "type": "—",
+      "def": "53",
+      "desc": ""
+    },
+    {
       "prop": "color",
       "type": "—",
       "def": "'var(--kol-palette-blue)'",
@@ -13714,6 +16610,66 @@
       "prop": "label",
       "type": "—",
       "def": "'deploys'",
+      "desc": ""
+    }
+  ],
+  "Legend": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "interval",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "WeeklyBars": [
+    {
+      "prop": "weeks",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "72",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "ProportionBar": [
+    {
+      "prop": "segments",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "8",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
       "desc": ""
     }
   ],
@@ -16175,7 +19131,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -16349,7 +19305,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name,\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -16861,6 +19817,12 @@
   ],
   "Icon": [
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'outline'",
+      "desc": ""
+    },
+    {
       "prop": "size",
       "type": "—",
       "def": "16",
@@ -17225,7 +20187,7 @@
     {
       "prop": "railComponent",
       "type": "—",
-      "def": "function NavRail({ variant, preset, ...props }) {\n  if (variant === 'top') return <TopRail {...props} />\n  const name = preset ?? (variant === 'site' ? 'site' : 'app')\n  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />\n  const Named = RAIL_PRESETS[name]?.component\n  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset \"${name}\"`); return null }\n  return <Named {...props} />\n}",
+      "def": "function NavRail({ variant, preset, ...props }) {\n  if (variant === 'top') return <TopRail {...props} />\n  if (variant === 'float') return <NavRailFloat {...props} />\n  const name = preset ?? (variant === 'site' ? 'site' : 'app')\n  if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />\n  const Named = RAIL_PRESETS[name]?.component\n  if (!Named) { if (import.meta.env?.DEV) console.warn(`NavRail: no rail registered as preset \"${name}\"`); return null }\n  return <Named {...props} />\n}",
       "desc": ""
     },
     {
@@ -17320,6 +20282,12 @@
     },
     {
       "prop": "railToggleKey",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railTrigger",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -17441,6 +20409,12 @@
       "desc": ""
     },
     {
+      "prop": "foldSide",
+      "type": "—",
+      "def": "'left'",
+      "desc": ""
+    },
+    {
       "prop": "onNavigate",
       "type": "—",
       "def": "—",
@@ -17514,6 +20488,836 @@
     },
     {
       "prop": "dock",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foldTone",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Timecode": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "current",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "total",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ToolRail": [
+    {
+      "prop": "tools",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PropertyRail": [
+    {
+      "prop": "sections",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "272",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onCollapse",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DocumentCapsule": [
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "menuItems",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "GlobalActions": [
+    {
+      "prop": "actionLabel",
+      "type": "—",
+      "def": "'Export'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onUndo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRedo",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAction",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "account",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onAccount",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ZoomReadout": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onMenu",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onFit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SceneBreadcrumb": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'video'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "CanvasHint": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'pointer'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "hint",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SelectionMeasure": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PanelsRestore": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Panels'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TopControlsBar": [
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "document",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSearch",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "panels",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "start",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "center",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ReaderBar": [
+    {
+      "prop": "bookmarked",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "toolsLabel",
+      "type": "—",
+      "def": "'Reading tools'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "path",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBack",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onContents",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSearch",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onBookmark",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTools",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ProgressDock": [
+    {
+      "prop": "page",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "pages",
+      "type": "—",
+      "def": "1",
+      "desc": ""
+    },
+    {
+      "prop": "formatPage",
+      "type": "—",
+      "def": "(p, n) => `Page ${p} of ${n}`",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "620",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onPrev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSeek",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailTrigger": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "currentPath",
+      "type": "—",
+      "def": "'/'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onNavigate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "breadcrumb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailFlyout": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "open",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "width",
+      "type": "—",
+      "def": "302",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "active",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "anchor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onOpenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RailDisplayControls": [
+    {
+      "prop": "theme",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "collapseLabel",
+      "type": "—",
+      "def": "'Collapse'",
+      "desc": ""
+    },
+    {
+      "prop": "hideLabel",
+      "type": "—",
+      "def": "'Hide'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onCollapse",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onHide",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "AccountFooter": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "workspace",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "src",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "initial",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPress",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "StatusStrip": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Breadcrumb": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    }
+  ],
+  "FooterStrip": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "start",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "PeriodNav": [
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "'Today'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "onPrev",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onNext",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onToday",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DataStatus": [
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "badge",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "updated",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -19366,6 +23170,56 @@
     },
     {
       "prop": "caption",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ThemeTile": [
+    {
+      "prop": "sample",
+      "type": "—",
+      "def": "'Aa'",
+      "desc": ""
+    },
+    {
+      "prop": "font",
+      "type": "—",
+      "def": "\"'Literata', Georgia, serif\"",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "bg",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "ink",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
       "type": "—",
       "def": "—",
       "desc": ""

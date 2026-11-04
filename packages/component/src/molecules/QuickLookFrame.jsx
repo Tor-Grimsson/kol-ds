@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
-import Button from '../atoms/Button.jsx'
-import CloseButton from '../atoms/CloseButton.jsx'
+import { Icon } from '@kolkrabbi/kol-icons'
+import QuickLookHeader from './QuickLookHeader.jsx'
 
-/* taxonomy-ok: molecule — nests Button (atom) + CloseButton (utility). */
+/* taxonomy-ok: molecule — nests QuickLookHeader (molecule) + kol-icons's Icon. */
 
 /**
  * QuickLookFrame — The preview window. the Finder Quick Look window (user 2026-09-23: *"put them in a container LIKE
@@ -30,8 +30,18 @@ import CloseButton from '../atoms/CloseButton.jsx'
  * @param {Function}  onResize ({ w, h }) => void while the corner is dragged
  * @param {ReactNode} footer   the transport row
  * @param {ReactNode} children the body
+ *
+ * THE UTILITY WINDOW (`variant="float"`, float-everything W6 rows 86 · 88, 2026-11-04 — kol-float--style 46:2840): a
+ * non-modal float window — no scrim, the scene stays live under it. `kol-float-solid` on `--kol-float-window-r`, 20 in,
+ * 18 between its parts; the header is `QuickLookHeader variant="float"` (`icon` · title · `onMinimise` · `onClose`); the
+ * body is the caller's (chip tabs, float fields); `status` is the footer line (`Changes saved automatically`, the
+ * `kol-float-label` role on fg-64) with the resize corner as its glyph at the right — the same drag as the default grip.
+ * @param {'float'}  [variant]
+ * @param {string}   [icon]       float: the window's glyph
+ * @param {Function} [onMinimise] float: the − control
+ * @param {ReactNode} [status]    float: the footer line
  */
-export default function QuickLookFrame({ title, meta, actions, onClose, nav, size: sizeProp, onResize, footer, className = '', children }) {
+export default function QuickLookFrame({ variant, icon, onMinimise, status, title, meta, actions, onClose, nav, size: sizeProp, onResize, footer, className = '', children }) {
   const [own, setOwn] = useState(null)
   const size = sizeProp !== undefined ? sizeProp : own
   const setSize = onResize ?? setOwn
@@ -55,35 +65,29 @@ export default function QuickLookFrame({ title, meta, actions, onClose, nav, siz
   }
   const onPointerUp = () => { drag.current = null }
 
+  const grip = { role: 'separator', 'aria-label': 'Resize', onPointerDown, onPointerMove, onPointerUp, onPointerCancel: onPointerUp }
+  if (variant === 'float') {
+    return (
+      <div ref={ref} style={size ? { width: size.w, height: size.h } : undefined}
+        className={`kol-float-solid flex w-full max-w-[562px] flex-col gap-[18px] rounded-[var(--kol-float-window-r)] p-5 text-fg-emphasis ${className}`.trim()}>
+        {header && <QuickLookHeader variant="float" icon={icon} title={title} actions={actions} onMinimise={onMinimise} onClose={onClose} />}
+        <div className="flex min-h-0 flex-1 flex-col gap-[18px]">{children}</div>
+        {footer}
+        <div className="flex items-center gap-3">
+          <span className="kol-float-label min-w-0 flex-1 truncate text-fg-64">{status}</span>
+          <span {...grip} className="inline-flex size-4 cursor-nwse-resize touch-none items-center justify-center text-oq-64 hover:text-oq-96"><Icon name="expand" size={13} /></span>
+        </div>
+      </div>
+    )
+  }
   const style = size ? { width: size.w, height: size.h, '--kol-ql-frame-h': `${size.h}px`, '--kol-ql-max-w': `${size.w - 2}px` } : undefined
   return (
     <div ref={ref} style={style}
       className={`kol-quicklook${footer ? ' kol-quicklook--footer' : ''}${size ? ' kol-quicklook--sized' : ''} ${className}`.trim()}>
-      {header && (
-        <div className="kol-quicklook-header">
-          {nav?.total > 1 && (
-            /* the pager is its own group: the count sits off the chevrons, and the group sits clear of
-             * the file's name (user 2026-09-23) */
-            <span className="flex items-center gap-1 mr-3">
-              <Button variant="nav" size="sm" iconOnly="chevron-left" onClick={nav.onPrev} aria-label="Previous" />
-              <Button variant="nav" size="sm" iconOnly="chevron-right" onClick={nav.onNext} aria-label="Next" />
-              <span className="kol-mono-12 text-meta tabular-nums ml-3">{nav.index + 1} / {nav.total}</span>
-            </span>
-          )}
-          {title && <span className="kol-mono-12 text-strong truncate">{title}</span>}
-          {meta && <span className="kol-mono-12 text-meta truncate">{meta}</span>}
-          <span className="flex-1" />
-          {actions}
-          {/* THE ESTATE'S CLOSE IDIOM, and every header control wears it (user 2026-09-23): bare at
-            * rest, a wash on hover — a filled container read as a second surface on the header. LAST, at the
-            * far right (user 2026-10-18: *"X should be space between justify on the right"*) */}
-          {onClose && <CloseButton size="sm" onClick={onClose} />}
-        </div>
-      )}
+      {header && <QuickLookHeader title={title} meta={meta} actions={actions} nav={nav} onClose={onClose} />}
       <div className="kol-quicklook-body">{children}</div>
       {footer && <div className="kol-quicklook-footer">{footer}</div>}
-      <span className="kol-quicklook-grip" role="separator" aria-label="Resize"
-        onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} />
+      <span className="kol-quicklook-grip" {...grip} />
     </div>
   )
 }

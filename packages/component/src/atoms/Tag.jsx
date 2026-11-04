@@ -35,12 +35,13 @@ const PALETTE = new Set(['blue', 'teal', 'green', 'yellow', 'red', 'orange', 'pu
  *
  * @param {ReactNode} children   label content
  * @param {string}    text       content fallback when no children (brand SwatchControls)
- * @param {string}    variant    'primary' | 'secondary' | 'inverse' · `tertiary` = secondary's fill, no outline, mono at fg-80 (2026-08-27)
+ * @param {string}    variant    'primary' | 'secondary' | 'inverse' · `tertiary` = secondary's fill, no outline, mono at fg-80 (2026-08-27) · `float` (float-everything W2 row 17, 2026-11-04): a 26 capsule in Inter 500, no uppercase, no `#` — rest oq-04, hover oq-08, `active` fg-16; `md` is the filter bar's 30 chip (row 56)
  * @param {string}    size       'xs' | 'sm' | 'md' | 'lg' — `sm` is the default and
  *                               should stay the answer; `lg` needs a reason
  * @param {boolean}   active     selected state (filter chips)
- * @param {boolean}   hash       prepend `#` (default true); false for plain labels
+ * @param {boolean}   hash       prepend `#` (default true; a float chip never does); false for plain labels
  * @param {string}    icon       leading icon name
+ * @param {number|string} count  a count after the label (float, row 56): mono, one step down
  * @param {Function}  onRemove   renders the dismiss affordance
  * @param {Function}  onClick    makes it a <button>
  */
@@ -52,6 +53,7 @@ export default function Tag({
   active = false,
   hash = true,
   icon,
+  count,
   onRemove,
   onClick,
   color,
@@ -78,7 +80,10 @@ export default function Tag({
     inverse: 'kol-tag--inverse',
     /* secondary's fill, no outline, the mono voice at fg-80 (TagTertiary, 2026-08-27) */
     tertiary: 'kol-tag--tertiary',
+    /* the float capsule (W2 row 17, 2026-11-04) */
+    float: 'kol-tag--float',
   }
+  const float = variant === 'float'
 
   /* TYPE COMES FROM THE HELPER RAMP (user ruling 2026-08-01). The size classes
    * hardcoded font-size + font-weight and set no line-height, so a 10px chip
@@ -111,7 +116,8 @@ export default function Tag({
       onClick={onClick}
     >
       {icon && <Icon name={icon} size={iconSize} />}
-      <span>{hash ? '#' : ''}{content}</span>
+      <span>{hash && !float ? '#' : ''}{content}</span>
+      {count != null && <span className="kol-tag-count">{count}</span>}
       {onRemove && (
         <span
           role="button"

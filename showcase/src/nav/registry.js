@@ -206,13 +206,14 @@ export const CATEGORY_ORDER = [
   /* THE ATOMIC LADDER, for every package (2026-09-30 — reverses 2026-07-30's ownership tiers).
    * `utilities` closes it (2026-08-09 "atoms paint"): purpose without a face, one group.
    * `misc` is the visible bug bucket — it must stay empty. */
-  'atoms', 'molecules', 'organisms', 'utilities',
+  'atoms', 'molecules', 'organisms', 'modules', 'utilities',
   'misc',
 ]
 export const CATEGORY_LABELS = {
   atoms: 'Atoms',
   molecules: 'Molecules',
   organisms: 'Organisms',
+  modules: 'Modules',
   utilities: 'Utilities',
   misc: 'Misc',
 }

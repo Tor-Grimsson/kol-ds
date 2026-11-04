@@ -9,20 +9,23 @@ import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
  * the stage — the randomiser's entry card, with labs' catalog in it: the SAME rows LabsNav
  * publishes to the shell rail (`railExtras`), so there is one catalog, read twice. Sections first,
  * a section's groups after a tap, Back between; a pick runs the row's action and the card goes.
- * Effects and Vector then ask for their media (LabsSourceCard). Modulation is not a door — its one
- * row only opens the params, because modulation lives on every parameter's bind dot — so it is
- * left out here and stays on the rail.
+ * Effects and Vector then ask for their media (LabsSourceCard).
  */
-export default function LabsCatalogCard({ onPicked, onClose }) {
+/* the doors that work ON media — their groups come after the source is picked (plan 26 § 2) */
+const MEDIA_DOORS = new Set(['#rail/sec:effects'])
+
+export default function LabsCatalogCard({ onPicked, onClose, initialOpen = null, hasMedia = true, onNeedMedia }) {
   const { items, dispatch } = useRailExtras()
-  const [open, setOpen] = useState(null)
+  const [open, setOpen] = useState(initialOpen)
   useSheetChrome(onClose)
-  const doors = items.filter((i) => i.path !== '#rail/sec:modulation')
-  const section = doors.find((i) => i.path === open) ?? null
-  const rows = section ? section.sub : doors
+  const section = items.find((i) => i.path === open) ?? null
+  const rows = section ? section.sub : items
   return (
-    <div className="fixed inset-y-0 right-0 left-[var(--fxr-rail,0px)] kol-overlay-scrim flex flex-col items-center overflow-y-auto p-6" style={{ zIndex: 'var(--kol-z-modal)' }}>
-      <div className="my-auto w-full max-w-sm rounded p-8 flex flex-col gap-6" style={{ background: 'var(--kol-surface-primary)' }}>
+    /* On a phone the card starts UNDER the top bar (`top-12`), so the hamburger stays reachable;
+       a tap on the scrim closes it (audit A14 — the card trapped the phone: nav, sheet and
+       transport all under its scrim, no way out but a pick). */
+    <div className="fixed bottom-0 top-12 md:top-0 right-0 left-[var(--fxr-rail,0px)] kol-overlay-scrim flex flex-col items-center overflow-y-auto p-6" style={{ zIndex: 'calc(var(--kol-z-sticky) - 2)' }} /* under the nav drawer's scrim (sticky − 1) — on a phone the drawer opens OVER this chooser (plan 37 § 7.3) */ onClick={(e) => { if (e.target === e.currentTarget) onClose?.() }}>
+      <div className="my-auto w-full max-w-sm rounded p-4 flex flex-col gap-6" style={{ background: 'var(--kol-surface-primary)' }}>
         <span className="kol-eyebrow text-body">{section ? section.label : 'Labs'}</span>
         <div className="flex flex-col gap-2">
           {rows.map((row) => (
@@ -34,6 +37,7 @@ export default function LabsCatalogCard({ onPicked, onClose }) {
               iconLeft={row.icon}
               iconRight={row.icon}
               onClick={() => {
+                if (!section && MEDIA_DOORS.has(row.path) && !hasMedia && onNeedMedia) { onNeedMedia(row.path); return }
                 if (!section && row.sub?.length) { setOpen(row.path); return }
                 if (dispatch?.(row.path)) onPicked?.()
               }}

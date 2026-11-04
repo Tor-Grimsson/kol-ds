@@ -3,8 +3,11 @@
 // component=AssetCard
 import figma from 'figma'
 
+const instance = figma.selectedInstance
+const caption = instance.getString('caption')
+
 export default {
-  example: figma.code`<AssetCard label="Business card" ratio="85 × 55" />`,
+  example: figma.code`<AssetCard caption="${caption}">{children}</AssetCard>`,
   imports: ["import { AssetCard } from \"@kolkrabbi/kol-styleguide\""],
   id: 'AssetCard',
 }

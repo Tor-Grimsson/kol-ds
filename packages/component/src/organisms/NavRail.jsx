@@ -18,6 +18,7 @@ import VectorLoader from '../atoms/VectorLoader.jsx'
 import { useRailSlot } from '../hooks/railSlot.jsx'
 import { RAIL_ROW } from '../hooks/railRow.js'
 import NavRailSite from './NavRailSite.jsx'
+import NavRailFloat from './NavRailFloat.jsx'
 
 /**
  * NavRail — the flat rail. ONE fixed column, every child a direct child of it
@@ -82,7 +83,8 @@ import NavRailSite from './NavRailSite.jsx'
  * EXPANDS (its rows open under it in place) and COLLAPSES. No other words, in code or docs.
  *
  * @param {'app'|'site'|'workshop'} preset  which rail (default `app`); `variant="site"` is the old spelling of `preset="site"`
- * @param {'top'} variant  `top` — the horizontal top rail (TopRail): logomark · items · `actions` (the right slot)
+ * @param {'top'|'float'} variant  `top` — the horizontal top rail (TopRail): logomark · items · `actions` (the right slot);
+ *   `float` — the float sidebar, expanded 280 · collapsed 72 (NavRailFloat.jsx, float-everything W9 rows 127 · 128)
  * @param {Array}  items        `{ icon, path, label, sub?: [{ icon?, path, label }] }`
  *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron expands or enters
  * @param {Array}  bottomItems  pinned below the rule (Settings)
@@ -323,6 +325,7 @@ export function registerRailPreset(name, Component) { RAIL_PRESETS[name] = { ...
 
 export default function NavRail({ variant, preset, ...props }) {
   if (variant === 'top') return <TopRail {...props} />
+  if (variant === 'float') return <NavRailFloat {...props} />
   const name = preset ?? (variant === 'site' ? 'site' : 'app')
   if (name === 'app') return <AppRail {...props} sections={props.sections ?? RAIL_PRESETS.app.sections} />
   const Named = RAIL_PRESETS[name]?.component

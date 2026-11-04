@@ -57,6 +57,51 @@ export function densityFrom(canvas, cols = 160, invert = false) {
   return { cols, rows, data: out }
 }
 
+/* THE OUTLINE (GrowthLineSeedOutline, kol-atlas 2026-11-01): the density's `level` iso-line, by marching squares on
+ * its grid (padded with paper, so every contour closes), as the longest closed ring in 0..1 — `seed({ points })` takes
+ * it. A saddle cell keeps its dark corners apart. Null when nothing crosses the level */
+export function outline(density, level = 0.5) {
+  const { cols, rows, data } = density, W = cols + 2, H = rows + 2
+  const v = (i, j) => (i < 1 || j < 1 || i > cols || j > rows ? 0 : data[(j - 1) * cols + i - 1])
+  /* an edge's key: 2 · its start corner, + 1 when it runs down */
+  const pt = new Map(), link = new Map()
+  const at = (k) => {
+    if (!pt.has(k)) {
+      const c = k >> 1, i = c % W, j = (c - i) / W, a = v(i, j), b = k & 1 ? v(i, j + 1) : v(i + 1, j), t = (level - a) / (b - a)
+      pt.set(k, k & 1 ? [i, j + t] : [i + t, j])
+    }
+    return k
+  }
+  const join = (a, b) => { for (const [p, q] of [[a, b], [b, a]]) { if (!link.has(p)) link.set(p, []); link.get(p).push(at(q)) } }
+  for (let j = 0; j < H - 1; j++) for (let i = 0; i < W - 1; i++) {
+    const tl = v(i, j) >= level, tr = v(i + 1, j) >= level, br = v(i + 1, j + 1) >= level, bl = v(i, j + 1) >= level
+    const top = (j * W + i) * 2, bottom = ((j + 1) * W + i) * 2, left = top + 1, right = (j * W + i + 1) * 2 + 1
+    const e = []
+    if (tl !== tr) e.push(top)
+    if (tr !== br) e.push(right)
+    if (br !== bl) e.push(bottom)
+    if (bl !== tl) e.push(left)
+    if (e.length === 2) join(e[0], e[1])
+    else if (e.length === 4) { if (tl) { join(top, left); join(right, bottom) } else { join(top, right); join(bottom, left) } }
+  }
+  let best = null, bestLen = 0
+  const seen = new Set()
+  for (const start of link.keys()) {
+    if (seen.has(start)) continue
+    const loop = []
+    let prev = -1, cur = start, len = 0
+    while (!seen.has(cur)) {
+      seen.add(cur); loop.push(pt.get(cur))
+      const nx = link.get(cur), nextK = nx[0] !== prev ? nx[0] : nx[1]
+      prev = cur; cur = nextK
+    }
+    for (let k = 0; k < loop.length; k++) { const a = loop[k], b = loop[(k + 1) % loop.length]; len += Math.hypot(a[0] - b[0], a[1] - b[1]) }
+    if (len > bestLen) { bestLen = len; best = loop }
+  }
+  /* padded grid corner (i, j) is the centre of data cell (i − 1, j − 1) */
+  return best && best.map(([i, j]) => [(i - 0.5) / cols, (j - 0.5) / rows])
+}
+
 export class Growth {
   constructor({ w = SIM_W, h = SIM_W, density = null, rand = Math.random, cap = 6000 }) {
     this.w = w; this.h = h
@@ -87,8 +132,11 @@ export class Growth {
     return this.bleed > 0 && (x < 0 || y < 0 || x > this.w || y > this.h)
   }
 
-  /* a small ring of nodes — at (cx, cy) in 0..1, or at the field's centre of darkness */
+  /* a small ring of nodes — at (cx, cy) in 0..1, or at the field's centre of darkness. Or any closed ring
+   * (GrowthLineSeedOutline, kol-atlas 2026-11-01): `seed({ points: [[x, y], …], inset })` in 0..1 (no value past
+   * ±2) or sim px, resampled to the engine's split length (half the local gap) and moved `inset` sim px inward */
   seed(cx, cy, r = 14) {
+    if (cx && cx.points) return this.ring(cx.points, cx.inset)
     if (cx == null && this.density) {
       const { cols, rows, data } = this.density
       let sx = 0, sy = 0, sw = 0
@@ -102,6 +150,40 @@ export class Growth {
       const a = (i / n) * Math.PI * 2
       this.x.push(cx + Math.cos(a) * r); this.y.push(cy + Math.sin(a) * r)
     }
+    this.heat = new Array(n).fill(1); this.hot = n; this.acc = 0; this.full = false
+    this.id = Array.from({ length: n }, (_, i) => i); this.nid = n
+  }
+
+  ring(points, inset = 0) {
+    /* 0..1 when no value passes ±2 — a ring a touch off the frame is still a unit ring; a sim px ring spans hundreds */
+    const unit = points.every(([px, py]) => Math.abs(px) <= 2 && Math.abs(py) <= 2)
+    const P = points.map(([px, py]) => (unit ? [px * this.w, py * this.h] : [px, py]))
+    const x = [], y = []
+    /* walk the closed polyline, a node every half gap */
+    let [ax, ay] = P[P.length - 1], due = 0
+    for (const [bx, by] of P) {
+      const len = Math.hypot(bx - ax, by - ay)
+      let t = due
+      while (t < len) {
+        const px = ax + ((bx - ax) * t) / len, py = ay + ((by - ay) * t) / len
+        x.push(px); y.push(py)
+        t += Math.max(1, this.gap(px, py) * 0.5)
+      }
+      due = t - len; ax = bx; ay = by
+    }
+    const n = x.length
+    if (n < 3) return this.seed()
+    if (inset) {
+      /* the inward normal is the left one when the signed area is positive, the right one when negative */
+      let A = 0
+      for (let i = 0; i < n; i++) { const j = (i + 1) % n; A += x[i] * y[j] - x[j] * y[i] }
+      const sx = x.slice(), sy = y.slice(), s = Math.sign(A) * inset
+      for (let i = 0; i < n; i++) {
+        const p = (i - 1 + n) % n, q = (i + 1) % n, tx = sx[q] - sx[p], ty = sy[q] - sy[p], l = Math.hypot(tx, ty) || 1
+        x[i] = sx[i] - (ty / l) * s; y[i] = sy[i] + (tx / l) * s
+      }
+    }
+    this.x = x; this.y = y
     this.heat = new Array(n).fill(1); this.hot = n; this.acc = 0; this.full = false
     this.id = Array.from({ length: n }, (_, i) => i); this.nid = n
   }

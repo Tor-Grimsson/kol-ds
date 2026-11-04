@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AppStudio, CatalogPage, StudioCreate, StudioCreateAction, StudioDetail } from '@kolkrabbi/kol-shell'
-import { Button, CanvasStudio, downloadBlob, useMediaQuery } from '@kolkrabbi/kol-component'
+import { Button, CanvasStudio, GrowthLineStage, downloadBlob, useMediaQuery } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
@@ -278,10 +278,11 @@ export default function App() {
     action: { label: 'New', onClick: () => navigate('/create') },
     /* quick links on the phone (review 2, § 7.2): fxr's chromes as four doors above the rows, when he turns them on */
     /* SIGNED OUT (HubHomeSignedOut, 2026-10-28, fxr's frames A2 · B2): no files until you sign in — a live stage behind, the
-     * mark, the round + with Sign in, the chromes as the pill (the dock on a desk). The stand-in stage is a slow gradient; fxr
-     * passes its generator's canvas */
+     * mark, the round + with Sign in, the chromes as the pill (the dock on a desk). The stage is the growing line with its
+     * intro (LoaderAppIntro, 2026-11-01): it takes over the app loader, breathes in Atlas's hexagon while Home's chrome
+     * fades in, then grows out to fill; fxr passes its generator's canvas */
     signedOut: !signedIn,
-    stage: <div className="h-full w-full" style={{ background: 'radial-gradient(60% 50% at 70% 40%, var(--kol-color-blue-400, #222d3d), transparent), radial-gradient(40% 40% at 25% 70%, var(--kol-color-orange-300, #c4622d), transparent)', opacity: 0.55 }} />,
+    stage: <GrowthLineStage intro shape="M50 0L93.3 25V75L50 100L6.7 75V25Z" className="text-fg-48" />,
     chromes: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path), ...(c.label === 'Labs' && { sub: labsMenu(navigate) }) })),
     ...(quickLinks && { touch: { label: 'Select chrome', doors: CHROMES.map((c) => ({ icon: c.icon, label: c.label, onPress: () => navigate(c.path) })) } }),
   }

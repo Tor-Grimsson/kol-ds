@@ -140,6 +140,14 @@
       "destination": "/apps/brand-hub/index.html"
     },
     {
+      "source": "/apps/metric/(.*)",
+      "destination": "/apps/metric/index.html"
+    },
+    {
+      "source": "/apps/resume/(.*)",
+      "destination": "/apps/resume/index.html"
+    },
+    {
       "source": "/media/(.*)",
       "destination": "https://r2.kolkrabbi.io/$1"
     },

@@ -101,6 +101,7 @@ His points: *"I feel like you could have created more styleguide components? f.e
 
 ## W7 — Icon sets — approved 2026-10-31 — ✅ built 2026-10-31
 - **07-icons** (canvas #1E1E1E), one section per set, one 24×24 component per icon named by its code name, made with `createNodeFromSvg` from `packages/icons/src`. Every stroke and fill is bound to `oq/96`. The description carries the set, the folder and `<Icon name="…" />`.
+- **2026-11-01 — synced to kol-icons 0.59.0:** 560 new components (uploaded as one combined SVG via `upload_assets`, then `createComponentFromNode`). Each set section now holds one auto-layout frame per code folder (the 18 interface categories). That makes 1002 components, and Code Connect is published for all of them (`figma/icons/`). **28-icon-groups** (page after 07-icons) has one 1200 sheet per set, in light mode on `surface/primary`, and a tile for each icon (an instance plus its name in mono/10) under each group heading. Re-sync: diff names against `packages/icons/src`, upload only the new ones, and do not ungroup imports that carry masks (colour-swatches). **Solid pairs (kol-icons 0.60.0, `<Icon variant>`):** the 72 outline and `-solid` twins are each one component set named for the outline, `variant=outline|solid`, with outline first so it is the default. Their Code Connect reads `variant`, and the old per-variant files are in `_tmp/2026-11-01-icon-solid-code-connect/`. The barrel pair spans two folders (shapes for the outline, commerce for the solid), so its set sits in shapes.
 - **Counts:** interface 263 · signal 109 · identity 10 · external 59 (441, 0 errors). Identity holds only the files whose name matches their folder. No signal name collides with interface.
 - **Added 2026-10-31 (his "yes"):**
   - `external` section: flags (39) on the first rows, then brands (20).
@@ -120,6 +121,17 @@ His points: *"I feel like you could have created more styleguide components? f.e
 - **Not swapped:** the ToggleCheckbox tick, which is a hand-drawn 12×9 svg in the code and not a set icon. The ColorSwatch slash is not an icon.
 - **Code Connect for `Icon` — not done.** A template maps one node, so covering 379 single components would take 379 templates. The cheap route is a `name` variant set, which these components are not. This supersedes the 6.1 note that "glyphs stay as measured vectors".
 - **Payloads:** `_tmp/figma/icons/` (`icons.json` and the `c00–c08` chunks). Paths are rounded to 2 decimals and the clip wrappers are stripped.
+
+### 7.3 — Float exploration glyphs through /lobby-icon — TASK (his word, 2026-11-04)
+- Source: kol-float--style (XY6adCImPaxDuHDO6OdUw9), page `↳　float style`, board W2.13 Icons (node 51:2365): 104 named glyphs, 42 marked missing.
+- 37 have no kol-icons name (about, assets, book, briefs options, capture, collapse, collapsed branch disclosure, color, contents, expand panel, expand sidebar, expand task index, fold briefs/inspector/panel/todos, founder, guide, highlight marker, home, index, inspector options, lockup, logo, look, mark, menu, note, notes, pattern, props, task, tasks, todo options, toggle, tone, unread). 5 share a name but not the glyph (brand, bucket, record, hide, media).
+- Each goes through `/lobby-icon`: pull the vector from the board tile, clean, keyline-check, dedupe against the set, land in a group. Then re-sync 07-icons (W7 method) and Code Connect.
+- Acceptance: every tile on W2.13 reads have; the board heading counts 104 · 0 missing.
+
+### 7.4 — Corner-audit sync (2026-11-04) — ✅ built
+- Source `_tmp/icons/2026-11-04-corner-audit/landed.json`. 122 `changed` masters on Icon masters (29:2) rebuilt in place from `packages/icons/src` (vectors swapped inside the existing component, IDs kept, strokes/fills oq/96, 1.5, round). 33 `added`: 29 single components (619:90–619:178) placed alphabetically in their folder frames; `-solid` twins made sets `variant=outline|solid` — crown-royal 619:194, bars-baseline 619:184, bars-descending 619:190 (outlines keep 596:123 / 596:145). 33 tiles on Icons (355:33898), counts updated.
+- Code Connect: 29 single templates + 3 pair templates published; old bars-baseline/descending singles in `_tmp/2026-11-04-icon-solid-code-connect/`.
+- Open: `pnpm figma:connect` fails on 12 `align-*` templates (outline + `-solid`) that point at variants of the six align sets 607:87–607:92; they need the pair shape.
 
 ## W8 — KeylineGuide — ✅ built 2026-10-31 (his go)
 - `KeylineGuide` on 07-icons (43:107), variants `light=true|false`, drawn from kol-component's `KeylineGuide` SVG (atoms/IconPlate.jsx): dashed diagonals, keyline rects 16×20 · 18×18 · 20×16, centre circle r4. Its colours are literal in the code (#0A8DA4, #CA3ABC, #F2D24B), so they stay raw. Built here instead of linking library--kol-icon's `_icon-grid`, which comes from the old drawing. Code Connect: an `IconPlate … guide` snippet.

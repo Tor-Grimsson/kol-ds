@@ -26,15 +26,28 @@ import { TONE_VARS } from '../utilities/tone.js'
  *   ]} />
  *
  *   row keys: `icon` (kol-icons name or node) · `trailing` (+ `trailingSize`) · `current` fills the row · `indicator`
- *   'dot' (single pick) | 'check' (many-of-N) | 'chevron' · `checked` = 'check' (before the `kbd` cap) · `kbd` · `disabled` + `tooltip` (why) · `items` (a flyout of the same rows).
+ *   'dot' (single pick) | 'check' (many-of-N) | 'chevron' · `checked` = 'check' (before the `kbd` cap) · `kbd` · `disabled` + `tooltip` (why) · `items` (a flyout of the same rows)
+ *   · `tone: 'danger'` the destructive row (the error ink).
  *   `search` ({ placeholder, empty }) puts a search field above the rows and filters them by label.
  *   `children` sit above the rows.
+ *
+ *   THE FLOAT LOOK (float-everything W4, 2026-11-04 — rows 46–60 of the gap map): `variant="float"` on any of them. The
+ *   panel is a list on `--kol-float-list-r` (8), 4 in, the float surface and shadow; its rows are 34, 12 in, Inter 12/500,
+ *   lifted on `--kol-fg-16`; a flyout opens 8 off the row on the same list. `MenuMore variant="float"` is the More sheet —
+ *   `--kol-float-menu-r` (20), 6 in. `MenuTrigger variant="float"` is a `Button variant="float"` capsule on the float well;
+ *   `MenuDatePicker variant="float"` sets its value in mono — the date chip (row 33). Today's defaults do not move.
  */
 
 /* the ⋮ — kol-icons `more-vertical` (user 2026-10-31: *"just make a vertical version"* — was `more` turned 90°) */
 const MORE = <Icon name="more-vertical" size={16} />
 
-export function MenuTrigger({ open = false, iconOnly, icon, iconComponent, children, ...rest }) {
+export function MenuTrigger({ open = false, iconOnly, icon, iconComponent, variant, mono = false, size, children, ...rest }) {
+  /* the float trigger: a capsule on the float well, lit fg-16 while its menu is open; `mono` for a value (the date chip) */
+  if (variant === 'float') {
+    const cls = `kol-menu-trigger kol-menu-trigger--float${mono ? ' kol-menu-trigger--mono' : ''} ${rest.className ?? ''}`.trim()
+    if (iconOnly) return <Button variant="float" size={size ?? 'md'} pressed={open} iconOnly={iconOnly === true ? 'more-vertical' : iconOnly} iconComponent={iconOnly === true ? MORE : iconComponent} {...rest} className={cls} />
+    return <Button variant="float" size={size ?? 'md'} pressed={open} iconLeft={icon} iconComponent={iconComponent} {...rest} className={cls}>{children}</Button>
+  }
   if (iconOnly) {
     return <Button variant="tab" size="sm" pressed={open} iconOnly={iconOnly === true ? 'more-vertical' : iconOnly} iconComponent={iconOnly === true ? MORE : iconComponent} {...rest} className={`kol-menu-trigger ${rest.className ?? ''}`.trim()} />
   }
@@ -43,8 +56,11 @@ export function MenuTrigger({ open = false, iconOnly, icon, iconComponent, child
   return <Button variant="tab" size="sm" pressed={open} iconLeft={icon} iconComponent={iconComponent} {...rest} className={`kol-menu-trigger kol-menu-trigger--quiet ${rest.className ?? ''}`.trim()}>{children}</Button>
 }
 
-export const MenuPanel = ({ className = '', children, ...rest }) => (
-  <div className={`kol-menu-panel ${className}`.trim()} {...rest}>{children}</div>
+/* `variant="float"` the list (8) · `sheet` the More sheet (20) on it */
+const panelClass = (variant, sheet) => (variant === 'float' ? `kol-menu-panel--float${sheet ? ' kol-menu-panel--sheet' : ''}` : '')
+
+export const MenuPanel = ({ variant, sheet = false, className = '', children, ...rest }) => (
+  <div className={`kol-menu-panel ${panelClass(variant, sheet)} ${className}`.replace(/\s+/g, ' ').trim()} {...rest}>{children}</div>
 )
 
 export const MenuLabel = ({ children }) => <div className="kol-menu-label kol-helper-12">{children}</div>
@@ -54,15 +70,17 @@ const glyph = (icon, size) => (typeof icon === 'string' ? <Icon name={icon} size
  * `kbd` a key cap, `trailing` an icon name for an action (download) */
 const indicatorOf = (it) => it.indicator ?? (it.checked ? 'check' : undefined)
 
-function Rows({ items }) {
+function Rows({ items, variant }) {
+  const float = variant === 'float'
   return items.map((it, i) => {
     if (it.divider) return <MenuDivider key={`d${i}`} className="kol-menu-rule" />
     if (it.heading) return <MenuLabel key={`h${i}`}>{it.heading}</MenuLabel>
     const icon = it.icon && <span className="text-oq-88 inline-flex">{glyph(it.icon, 16)}</span>
-    const cls = `kol-menu-row kol-helper-12${it.current ? ' kol-menu-row--current' : ''}`
+    const cls = `kol-menu-row kol-helper-12${it.current ? ' kol-menu-row--current' : ''}${it.tone === 'danger' ? ' kol-menu-row--danger' : ''}`
     const row = it.items?.length && !it.disabled ? (
-      <MenuFlyout flyout iconLeft={icon} label={it.label} rowClass={cls} panelClassName="kol-menu-panel min-w-[200px]" panelStyle={{ marginLeft: 4 }}>
-        <Rows items={it.items} />
+      /* a float flyout is the same list, 8 off the row (row 55) */
+      <MenuFlyout flyout iconLeft={icon} label={it.label} rowClass={cls} panelClassName={`kol-menu-panel ${panelClass(variant)} min-w-[200px]`.replace(/\s+/g, ' ')} panelStyle={{ marginLeft: float ? 8 : 4 }}>
+        <Rows items={it.items} variant={variant} />
       </MenuFlyout>
     ) : (
       <MenuRow href={it.href} disabled={it.disabled} rowClass={cls} onClick={it.onClick} iconLeft={icon} indicator={indicatorOf(it)} kbd={it.kbd}
@@ -89,10 +107,12 @@ function Rows({ items }) {
  *             `kol-tone-*` wrapper floats on that tone's surface
  *   closeOnSelect  false keeps the panel open while rows toggle (a multiselect)
  *   open / onOpenChange  controlled, when the caller needs the state
+ *   variant   'float' — the float list; `sheet` makes it the More sheet (20 radius, 6 in)
+ *   offset    the gap under the trigger (default 4; a fused panel sits at -1, a point anchor at 2 — pass one to override)
  */
 export function Menu({
-  items, trigger, anchor, align = 'start', minWidth, offset = 4, defaultOpen = false, open: openProp, onOpenChange,
-  stayOpen = false, closeOnSelect = true, fused = false, search, role = 'menu',
+  items, trigger, anchor, align = 'start', minWidth, offset, defaultOpen = false, open: openProp, onOpenChange,
+  stayOpen = false, closeOnSelect = true, fused = false, search, role = 'menu', variant, sheet = false,
   panelClassName = '', panelStyle, rootClassName, className = '', children,
 }) {
   const [own, setOwn] = useState(defaultOpen)
@@ -104,7 +124,7 @@ export function Menu({
     open,
     onOpenChange: setOpen,
     placement: anchor ? 'right-start' : align === 'end' ? 'bottom-end' : 'bottom-start',
-    offset: fused ? -1 : anchor ? 2 : offset,
+    offset: offset ?? (fused ? -1 : anchor ? 2 : 4),
     flip: !fused,
     matchReferenceWidth: fused,
     click: !anchor,
@@ -148,13 +168,13 @@ export function Menu({
       )}
       {open && (
         <PopoverPanel popover={popover} panel={false} focus={false}
-          className={`kol-menu-panel${fused ? ' kol-menu-panel--fused' : ' w-max'} ${panelClassName}`.trim()}
+          className={`kol-menu-panel${fused ? ' kol-menu-panel--fused' : ' w-max'} ${panelClass(variant, sheet)} ${panelClassName}`.replace(/\s+/g, ' ').trim()}
           style={{ ...ambient, ...(minWidth ? { minWidth } : null), ...panelStyle }}>
           {/* a row's click closes the menu (it bubbles from `[data-menu-item]`); a flyout row only toggles */}
           <div role="none" className="flex flex-col min-h-0" onClick={(e) => { if (closeOnSelect && e.target.closest('[data-menu-item]')) setOpen(false) }}>
-            {search && <div className="pb-1"><SearchInput variant="outline" size="sm" value={q} onChange={(e) => setQ(e.target?.value ?? e)} onClear={() => setQ('')} placeholder={search.placeholder || 'Search'} /></div>}
+            {search && <div className="pb-1"><SearchInput variant={variant === 'float' ? 'float' : 'outline'} size="sm" value={q} onChange={(e) => setQ(e.target?.value ?? e)} onClear={() => setQ('')} placeholder={search.placeholder || 'Search'} /></div>}
             {typeof children === 'function' ? children({ close: () => setOpen(false) }) : children}
-            {rows.length > 0 && <Rows items={rows} />}
+            {rows.length > 0 && <Rows items={rows} variant={variant} />}
           </div>
         </PopoverPanel>
       )}
@@ -172,7 +192,7 @@ export function Menu({
  * the active filters live INSIDE the menu, an "Active" section on top (a row's click is `onPick` to edit it, its × is
  * `onRemove(f)`, "Clear all" at 2+ is `onClear`), and the trigger holds its pressed ground while any is set. No count.
  */
-export function MenuFilter({ groups = [], onPick, active = [], onRemove, onClear, label = 'Filter', icon = 'filter-lines', align = 'end', minWidth = 224 }) {
+export function MenuFilter({ groups = [], onPick, active = [], onRemove, onClear, label = 'Filter', icon = 'filter-lines', align = 'end', minWidth = 224, variant }) {
   const items = groups.map((g) => {
     if (g.divider) return g
     const one = g.fields?.length === 1 && !g.disabled
@@ -185,8 +205,8 @@ export function MenuFilter({ groups = [], onPick, active = [], onRemove, onClear
   })
   const rowCls = 'kol-menu-row kol-helper-12'
   return (
-    <Menu align={align} minWidth={minWidth} offset={8} items={items}
-      trigger={({ open, props }) => <MenuTrigger open={open || active.length > 0} icon={icon} {...props}>{label}</MenuTrigger>}>
+    <Menu align={align} minWidth={minWidth} offset={8} items={items} variant={variant}
+      trigger={({ open, props }) => <MenuTrigger open={open || active.length > 0} icon={icon} variant={variant} {...props}>{label}</MenuTrigger>}>
       {active.length > 0 && (
         <>
           <MenuLabel>Active</MenuLabel>
@@ -214,7 +234,7 @@ export function MenuFilter({ groups = [], onPick, active = [], onRemove, onClear
  * trigger holds a value, so it wears its chip at rest — the tab's pressed oq-08, the panel's own ground, one family —
  * and the panel opens right-aligned 8px under it (plausible.io measured: 8px, right edges flush).
  */
-export function MenuDatePicker({ groups = [], value, onChange, label, icon = 'calendar', iconComponent, compare, align = 'end', minWidth = 224 }) {
+export function MenuDatePicker({ groups = [], value, onChange, label, icon = 'calendar', iconComponent, compare, align = 'end', minWidth = 224, variant }) {
   const items = [
     ...groups.flatMap((g, i) => [
       ...(i > 0 ? [{ divider: true }] : []),
@@ -222,16 +242,18 @@ export function MenuDatePicker({ groups = [], value, onChange, label, icon = 'ca
     ]),
     ...(compare ? [{ divider: true }, { key: 'compare', label: compare.label, kbd: compare.kbd, onClick: compare.onClick }] : []),
   ]
+  /* the float date chip (row 33): the value in mono on the well, the calendar glyph 16 */
   return (
-    <Menu align={align} minWidth={minWidth} offset={8} items={items}
-      trigger={({ open, props }) => <MenuTrigger open={open} icon={icon} iconComponent={iconComponent} {...props}>{label}</MenuTrigger>} />
+    <Menu align={align} minWidth={minWidth} offset={8} items={items} variant={variant}
+      trigger={({ open, props }) => <MenuTrigger open={open} icon={icon} iconComponent={iconComponent} variant={variant} mono={variant === 'float'} {...props}>{label}</MenuTrigger>} />
   )
 }
 
-/** MenuMore — the ⋮ chip and its rows (`items`, as `Menu`'s); `label` names it for a screen reader. */
-export function MenuMore({ label, items = [], align = 'end', minWidth = 224, defaultOpen, stayOpen }) {
+/** MenuMore — the ⋮ chip and its rows (`items`, as `Menu`'s); `label` names it for a screen reader. `variant="float"` is
+ *  the More sheet (row 53): the ⋮ as a float circle, the rows in a sheet on `--kol-float-menu-r`. */
+export function MenuMore({ label, items = [], align = 'end', minWidth = 224, defaultOpen, stayOpen, variant }) {
   return (
-    <Menu align={align} minWidth={minWidth} offset={8} items={items} defaultOpen={defaultOpen} stayOpen={stayOpen}
-      trigger={({ open, props }) => <MenuTrigger open={open} iconOnly aria-label={label} {...props} />} />
+    <Menu align={align} minWidth={minWidth} offset={8} items={items} defaultOpen={defaultOpen} stayOpen={stayOpen} variant={variant} sheet={variant === 'float'}
+      trigger={({ open, props }) => <MenuTrigger open={open} iconOnly aria-label={label} variant={variant} {...props} />} />
   )
 }

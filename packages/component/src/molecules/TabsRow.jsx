@@ -75,7 +75,22 @@ import { floatSurfaceClass } from '../utilities/tone.js'
  * @param {boolean} [labels=false]  the tab bar with labels: 66 tall, items 58 tall and 84 wide, 4 in, a 24 glyph over an 11 label
  * @param {boolean} [foldable=false]  a sideways swipe (> 40px) folds the pill into a 28×72 edge tab; a tap restores it
  * @param {boolean} [folded] · {Function} [onFoldChange]  the folded state, controlled (else the pill holds it)
- * @param {'left'|'right'} [foldSide='left']  the screen edge the tab sits on
+ * @param {'left'|'right'|'swipe'} [foldSide='left']  the screen edge the tab sits on; `swipe` — the edge the swipe went toward
+ *        (FloatFoldBothSidesGrey, kol-fxr 2026-11-03)
+ * @param {'ground'|'handle'} [foldTone='ground']  the edge tab's look: `ground` is the pill's own; `handle` is the grey edge
+ *        handle (iOS's), `--kol-oq-24` with an `--kol-oq-96` chevron, whatever the pill's `surface`
+ * THE FLOAT ROW'S PARTS (float-everything W5 rows 67 · 78 and W9 row 137, 2026-11-04 — kol-float--style 46:1948, 46:2316,
+ * 48:4586), `variant="float"` only:
+ * @param {'xs'|'sm'|'md'|'lg'} [size]  `xs` — the inspector's chip tabs: 26 capsules in `kol-float-label`, 10 in, the
+ *        selected one fg-16 (row 67); sm · md · lg are the float button heights
+ * @param {'mono'} [type]  `mono` — text tabs: mono labels (`kol-float-timecode`) at the sm height on the list radius, the
+ *        selected one FILLED fg-16, the rest fg-48 (row 137 — the underline's rule replaced by the fill)
+ * A float tab takes `icon` (before the label, oq) and `count` (after it, mono, fg-64) — `Tasks 5` (row 78).
+ * @param {'solid'|'glass-dark'|'glass-light'} [surface]  on `float`: the row sits in its own capsule — the float material,
+ *        6 in, so `size="lg"` tabs make the 56 pill (row 78). Unset, the row is bare as before
+ * @param {ReactNode} [trailing]  inside the pill, after the tabs: the float capsule's (with `surface`) or the stacked
+ *        phone pill's — AppFloatNav's transport puts its Timecode here. With `trailing` the phone pill anchors its LEFT
+ *        edge where a centred pill without it would start, so every slot stays where it was; it grows to the right
  * Tabs are `{ id, label }` or `{ value, label }` (either key), plus `icon` for stacked; a stacked tab's `selected`
  * lights it whatever `value` is — action slots (the transport) light more than one.
  */
@@ -103,16 +118,28 @@ export const tabbarPillSlot = (at, { count, labels = false, split = false } = {}
 /* the collapse's motion — one duration for the width and the glyph swap (300, user 2026-10-23: 180 read as abrupt) */
 const COLLAPSE_MS = 300
 
-export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type = 'mono', filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, surface, split, labels, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
+export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type, trailing, filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, foldTone, surface, split, labels, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
   const look = variant ?? lookLegacy ?? 'underline'
   const wrap = overflow === 'wrap'
   /* `float` (W16, round 3): the chip row as capsules — float heights, pills 4 apart, the selected one oq-16 */
-  if (look === 'float') return <Overflow mode={overflow} value={value}><ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'md'} float ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${className ?? ''}`} /></Overflow>
+  if (look === 'float') {
+    const row = <ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'md'} float floatType={type} ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${surface ? '' : className ?? ''}`} />
+    /* the capsule (row 78): the float material, 6 in, the tabs then the trailing slot */
+    if (surface) {
+      return (
+        <div className={`inline-flex max-w-full items-center gap-1 rounded-full p-1.5 ${floatSurfaceClass(surface)} ${className ?? ''}`.trim()}>
+          <Overflow mode={overflow} value={value}>{row}</Overflow>
+          {trailing && <div className="flex shrink-0 items-center gap-1">{trailing}</div>}
+        </div>
+      )
+    }
+    return <Overflow mode={overflow} value={value}>{row}</Overflow>
+  }
   if (look === 'chip') return <Overflow mode={overflow} value={value}><ChipTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 'sm'} filled={filled} ariaLabel={ariaLabel} className={`${wrap ? 'flex-wrap ' : ''}${className ?? ''}`} /></Overflow>
   if (look === 'text') return <Overflow mode={overflow} value={value}><TextTabs tabs={tabs} value={value} onChange={onChange} size={size ?? 14} tracked={tracked} className={`${wrap ? 'flex-wrap gap-y-2 ' : ''}${className ?? 'gap-6'}`} style={style} /></Overflow>
-  if (look === 'stacked') return <StackedTabs tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} surface={surface} split={split} labels={labels} ariaLabel={ariaLabel} className={className ?? ''} />
-  return <Overflow mode={overflow} value={value}><UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} wrap={wrap} type={type} /></Overflow>
+  if (look === 'stacked') return <StackedTabs trailing={trailing} tabs={tabs} value={value} onChange={onChange} placement={placement} shape={shape} collapsed={collapsed} onExpand={onExpand} edge={edge} border={border} shadow={shadow} dock={dock} active={active} foldable={foldable} folded={folded} onFoldChange={onFoldChange} foldSide={foldSide} foldTone={foldTone} surface={surface} split={split} labels={labels} ariaLabel={ariaLabel} className={className ?? ''} />
+  return <Overflow mode={overflow} value={value}><UnderlineTabs tabs={tabs} value={value} onChange={onChange} onClose={onClose} onMinimise={onMinimise} wrap={wrap} type={type ?? 'mono'} /></Overflow>
 }
 
 /* `overflow="scroll"`: the row in a sideways scroller that fades its clipped edges and keeps the active tab (`data-active`)
@@ -135,11 +162,31 @@ function Overflow({ mode, value, children }) {
 }
 
 /* chip — TabChips verbatim */
-function ChipTabs({ tabs, value, onChange, size, filled, float = false, ariaLabel, className }) {
+function ChipTabs({ tabs, value, onChange, size, filled, float = false, floatType, ariaLabel, className }) {
+  /* the float's two plain rows — the inspector's 26 chips (xs) and the mono text tabs — are drawn here, not by Button:
+   * neither is a Button rung (26 is not a float height; a mono label is not the float button's type) */
+  const plain = float && (size === 'xs' || floatType === 'mono')
   return (
     <div className={`flex items-center ${filled ? 'gap-2' : 'gap-1'}${float ? ' kol-tabs-float' : ''} ${className}`.trim()} role="tablist" aria-label={ariaLabel}>
       {tabs.map((t) => {
         const active = t.id === value
+        if (plain) {
+          const mono = floatType === 'mono'
+          return (
+            <button key={t.id} type="button" role="tab" aria-selected={active} data-active={active || undefined} onClick={() => onChange?.(t.id)}
+              className={`inline-flex shrink-0 items-center whitespace-nowrap cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${mono ? 'kol-float-timecode h-[var(--kol-float-h-sm)] rounded-[var(--kol-float-list-r)] px-3' : 'kol-float-label h-[26px] rounded-full px-2.5'} ${active ? 'bg-fg-16 text-fg-emphasis' : `${mono ? 'text-fg-48' : 'text-fg-64'} hover:bg-fg-08 hover:text-fg-emphasis`}`}>
+              {t.label}
+            </button>
+          )
+        }
+        if (float && (t.icon || t.count != null)) {
+          return (
+            <Button key={t.id} variant="float" size={size} iconLeft={t.icon} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} data-active={active || undefined} onClick={() => onChange?.(t.id)}>
+              {t.label}
+              {t.count != null && <span className="kol-float-ruler ml-0.5 tabular-nums text-fg-64">{t.count}</span>}
+            </Button>
+          )
+        }
         return (
           /* a tab is selected, not pressed — the role's own attribute replaces Button's aria-pressed */
           <Button key={t.id} variant={float ? 'float' : filled ? 'tab-filled' : 'tab'} size={size} pressed={active} role="tab" aria-selected={active} aria-pressed={undefined} data-active={active || undefined} onClick={() => onChange?.(t.id)}>
@@ -174,9 +221,10 @@ function TextTabs({ tabs, value, onChange, size, tracked, className, style }) {
 /* the fold: a sideways swipe past this folds the pill, as frame E's prototype measures it */
 const FOLD_SWIPE = 40
 
-function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, dock = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide = 'left', surface = 'solid', split: splitProp = false, labels = false, ariaLabel = 'Sections', className }) {
+function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar', collapsed = false, onExpand, edge = 'bottom', border = true, shadow = false, dock = false, active: activeShape = 'fill', foldable = false, folded: foldedProp, onFoldChange, foldSide: foldSideProp = 'left', foldTone = 'ground', surface = 'solid', split: splitProp = false, labels = false, ariaLabel = 'Sections', className }) {
   const [foldedOwn, setFoldedOwn] = useState(false)
   const swipe = useRef({ x: null, swiped: false })
+  const [swipeSide, setSwipeSide] = useState('left')
   if (tabs.length === 0) return null
   const phone = placement === 'phone'
   const pill = phone && shape === 'pill'
@@ -199,26 +247,28 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
     onPointerUp: (e) => {
       const { x } = swipe.current
       swipe.current.x = null
-      if (x != null && Math.abs(e.clientX - x) > FOLD_SWIPE) { swipe.current.swiped = true; setFolded(true) }
+      if (x != null && Math.abs(e.clientX - x) > FOLD_SWIPE) { swipe.current.swiped = true; setSwipeSide(e.clientX < x ? 'left' : 'right'); setFolded(true) }
     },
     /* a swipe that ended on a slot must not also press it */
     onClickCapture: (e) => { if (swipe.current.swiped) { swipe.current.swiped = false; e.stopPropagation(); e.preventDefault() } },
     style: { touchAction: 'pan-y' },
   } : {}
   if (isFolded) {
+    const foldSide = foldSideProp === 'swipe' ? swipeSide : foldSideProp
+    const handle = foldTone === 'handle'
     /* THE EDGE TAB (frame E): 28×72 flush to the screen edge, the pill's ground, no border, a chevron pointing back in */
     return (
       <button
         type="button"
         aria-label={`Show ${ariaLabel.toLowerCase()}`}
         onClick={() => setFolded(false)}
-        className={`kol-mobile-tabbar-tab md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] flex items-center justify-center cursor-pointer ${material}`.trim()}
+        className={`kol-mobile-tabbar-tab md:hidden fixed z-[calc(var(--kol-z-sticky)+1)] flex items-center justify-center cursor-pointer ${handle ? '' : material}`.trim()}
         style={{
           [foldSide]: 0,
           [top ? 'top' : 'bottom']: `calc(env(safe-area-inset-${top ? 'top' : 'bottom'}, 0px) + ${TABBAR_PILL_INSET + 8}px)`,
           width: 28, height: 72, padding: 0, border: 'none',
           borderRadius: foldSide === 'left' ? '0 16px 16px 0' : '16px 0 0 16px',
-          ...(glass ? {} : { background: 'var(--kol-surface-secondary)' }), color: RAIL_ROW.rest,
+          ...(handle ? { background: 'var(--kol-oq-24)' } : glass ? {} : { background: 'var(--kol-surface-secondary)' }), color: handle ? RAIL_ROW.active : RAIL_ROW.rest,
         }}
       >
         <Icon name={foldSide === 'left' ? 'chevron-right' : 'chevron-left'} size={18} />
@@ -329,6 +379,8 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         gap: TABBAR_PILL_SPLIT_GAP,
         ...(dock
           ? { left: 'calc(var(--kol-shell-rail-width, 48px) + 64px)', bottom: 64 }
+          /* with a trailing slot the pill grows rightward from where a centred one would start — the slots never move */
+          : trailing ? { left: `calc(50% - ${W / 2}px)`, [top ? 'top' : 'bottom']: inset }
           : { right: `calc(50% - ${W / 2}px)`, [top ? 'top' : 'bottom']: inset }),
         ...swipeProps.style,
       }}
@@ -338,7 +390,7 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         className={`relative flex items-center rounded-full overflow-hidden ${material}`.trim()}
         style={{
           height: TABBAR_PILL_H,
-          width: isCollapsed && !split ? TABBAR_PILL_H : barW,
+          width: isCollapsed && !split ? TABBAR_PILL_H : trailing ? 'auto' : barW,
           padding: labels ? 3 : 4,
           border: edgeLine,
           ...solidLook,
@@ -348,6 +400,7 @@ function StackedTabs({ tabs, value, onChange, placement, shape = 'bar', collapse
         }}
       >
         {row}
+        {trailing && !isCollapsed && <div className="flex flex-none items-center pl-3 pr-4">{trailing}</div>}
         {closeX}
       </div>
       {split && tip(isCollapsed ? { id: last.id, label: 'Close' } : last, (

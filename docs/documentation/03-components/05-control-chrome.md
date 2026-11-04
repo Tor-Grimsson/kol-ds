@@ -3,7 +3,7 @@ title: Control chrome
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-10-02
+updated: 2026-11-04
 verified: 2026-07-08
 description: The button law every interactive control references
 aliases:
@@ -59,6 +59,8 @@ Padding-driven, not fixed-height — the control hugs its content and the paddin
 | **sm** | `4px 12px` | `kol-mono-12` | 26px |
 | **md** | `6px 16px` | `kol-mono-14` | 32px |
 | **lg** | `8px 20px` | `kol-mono-16` | 40px |
+
+**The float rung** (`variant="float"`, float-everything 2026-11-04) runs beside this table, not on it: a capsule whose height and type step together — sm · md · lg **28 · 36 · 44** with Inter 500 at **12 · 13 · 14** (`--kol-float-h-*` · `--kol-float-t-*`; on `pointer: coarse` 36 · 44 · 52, 13 · 15 · 16), an 18 glyph (20), the icon-only square the same height. Button, Input, SearchInput, Textarea (the note on the sheet radius), Dropdown, QuantityInput, SegmentedToggle and TabsRow take it; the chips are their own heights (Tag 26 / 30, Badge 26, Pill 28), the switch 32 × 20, the checkbox plate 18, the menu row 34. Focus is the 2px ring `--kol-float-focus`, disabled 40%, selection `--kol-fg-16`. See [[../04-compositions/24-float-system|the float system]].
 
 ### One height per size, across every family
 

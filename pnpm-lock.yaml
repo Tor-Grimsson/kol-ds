@@ -451,6 +451,9 @@ importers:
       '@kolkrabbi/kol-framework':
         specifier: workspace:*
         version: link:../../packages/framework
+      '@kolkrabbi/kol-hardware':
+        specifier: workspace:*
+        version: link:../../packages/hardware
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../../packages/icons
@@ -2575,6 +2578,9 @@ importers:
       '@kolkrabbi/kol-framework':
         specifier: workspace:*
         version: link:../framework
+      '@kolkrabbi/kol-hardware':
+        specifier: workspace:*
+        version: link:../hardware
       '@kolkrabbi/kol-icons':
         specifier: workspace:*
         version: link:../icons

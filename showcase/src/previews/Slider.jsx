@@ -10,7 +10,7 @@ export const stage = 'md'
  * (SliderDualThumbAndPlayhead, kol-mirror) — a mixer running 23 faders in a
  * 24px row is why `readout="value"` exists, and an in/out trim pair is why
  * `variant="dual"` does. */
-export const variants = ['minimal', 'vertical', 'scrub', 'dual', 'panel']
+export const variants = ['minimal', 'vertical', 'scrub', 'dual', 'panel', 'float']
 
 export default function SliderPreview({ variant = 'minimal' }) {
   const [v, setV] = useState(40)
@@ -81,6 +81,13 @@ export default function SliderPreview({ variant = 'minimal' }) {
         onPlayheadChange={setHead}
       />
       </>)}
+      {variant === 'float' && (
+        /* float (float-everything W2 row 23) — label and readout above, the 3px capsule track under them */
+        <div className="flex w-56 flex-col gap-6">
+          <Slider variant="float" label="Intensity" value={v} onChange={setV} readout="value" formatValue={(n) => `${Math.round(n)}%`} />
+          <Slider variant="float" label="Disabled" value={65} onChange={() => {}} readout="value" formatValue={(n) => `${n}%`} disabled />
+        </div>
+      )}
       {variant === 'panel' && (
         /* panel — the rack slider (was kol-hardware `Fader`): a 2px track and an 8px thumb.
          * Horizontal takes the row and shows a readout; vertical is a fixed height. A 500ms

@@ -9,9 +9,8 @@ import {
 import { ProjectTab, InfraTab, SessionsTab } from '../MetricsDashboard.jsx'
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import useMetricsData from '../useMetricsData.js'
-import { Heatmap } from '@kolkrabbi/kol-dashboards'
+import { Heatmap, Card } from '@kolkrabbi/kol-dashboards'
 import { ResizeHandle } from '@kolkrabbi/kol-component'
-import { Card } from './Report.jsx'
 import { useTen } from './nine.js'
 import { MILESTONES } from '../milestones.js'
 import { umami, useAsync, filterParams, TZ } from './data.js'
@@ -200,8 +199,8 @@ export const Editing = createContext(false)
 const read = (k) => { try { return Number(localStorage.getItem(k)) || null } catch { return null } }
 /* /demo-10 (13.8): a card with one title, in the Report card's header — every card on the page wears it */
 export const OneCard = ({ title, note, children, className = '' }) => (
-  <Card className={className} tabs={[{ key: 't', label: title }]} tab="t" setTab={() => {}}
-    menu={note ? <span className="kol-helper-12 text-fg-48 whitespace-nowrap inline-flex items-center" style={{ height: 'var(--kol-ctl-sm)' }}>{note}</span> : null}>
+  <Card className={className} title={title}
+    controls={note ? <span className="kol-helper-12 text-fg-48 whitespace-nowrap inline-flex items-center" style={{ height: 'var(--kol-ctl-sm)' }}>{note}</span> : null}>
     {children}
   </Card>
 )

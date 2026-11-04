@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Dropdown, LabeledControl, Slider, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, Slider, StepList, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { useLayerEdit } from '../useLayerEdit'
 import { mulberry32, randomSeed } from '../../lib/rng'
@@ -64,7 +64,8 @@ const CTRL_3D = [
 ]
 
 const TAU = Math.PI * 2
-const clamp = (v, a, b) => Math.min(b, Math.max(a, v))
+import { clamp } from '../../../loops/lib/util'
+import { useControlSize } from '../../params/controlSize'
 const round2 = (v) => Math.round(v * 100) / 100
 const rnd = (rng, a, b) => a + rng() * (b - a)
 /* Uniform point in a disk (2D) / ball (3D) — labs inBall (z squashed ×0.8). */
@@ -87,6 +88,7 @@ const recenter3 = (arr) => {
 const labelOf = (opts, t) => opts.find((o) => o.value === t)?.label ?? t
 
 export default function SoftformsLayers({ layer }) {
+  const cs = useControlSize()
   const { updateLayer } = useComposeState()
   const edit = useLayerEdit(layer.id, { history: 'coalesce' })
 
@@ -192,66 +194,43 @@ export default function SoftformsLayers({ layer }) {
 
   return (
     <div className="flex flex-col gap-2">
-      <span className="kol-helper-10 text-meta">Forms</span>
+      <span className="kol-eyebrow text-fg-80">Forms</span>
 
       {/* Rows: reversed so the topmost (last-painted) form sits at the top
           of the list (labs Layers order). */}
-      <div className="flex flex-col gap-1">
-        {forms.map((_, di) => {
-          const i = forms.length - 1 - di
-          const f = forms[i]
-          return (
-            <div
-              key={i}
-              onClick={() => selectForm(i)}
-              className={`flex items-center gap-2 pl-2 pr-1 py-1 rounded cursor-pointer kol-helper-12 ${
-                i === sel
-                  ? 'bg-[color-mix(in_srgb,var(--kol-accent-primary)_26%,transparent)] text-emphasis'
-                  : 'text-body hover:bg-oq-04 hover:text-emphasis'
-              }`}
-            >
-              <span className="kol-helper-10 text-meta shrink-0">{i + 1}</span>
-              <span className="truncate flex-1 min-w-0">{labelOf(typeOpts, f.t)}</span>
-              <Tooltip label="Move form up"><Button
-                tone="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
-                aria-label="Move form up"
-                disabled={i >= forms.length - 1}
-                onClick={(e) => { e.stopPropagation(); swapForm(i, i + 1) }}
-                style={{ transform: 'rotate(180deg)' }}
-              /></Tooltip>
-              <Tooltip label="Move form down"><Button
-                tone="ghost" size="sm" quiet iconOnly="chevron-down" iconSize={12}
-                aria-label="Move form down"
-                disabled={i <= 0}
-                onClick={(e) => { e.stopPropagation(); swapForm(i, i - 1) }}
-              /></Tooltip>
-              <Tooltip label="Duplicate form"><Button
-                tone="ghost" size="sm" quiet iconOnly="copy" iconSize={12}
-                aria-label="Duplicate form"
-                disabled={forms.length >= MAX_FORMS}
-                onClick={(e) => { e.stopPropagation(); dupForm(i) }}
-              /></Tooltip>
-              <Tooltip label="Delete form"><Button
-                tone="ghost" size="sm" quiet iconOnly="trash" iconSize={12}
-                aria-label="Delete form"
-                disabled={forms.length <= minForms}
-                onClick={(e) => { e.stopPropagation(); delForm(i) }}
-              /></Tooltip>
-            </div>
-          )
+      {/* KOL StepList with row slots (kol-component 0.330, the ItemList ticket — plan 51 4.3). Rows are reversed so the
+          topmost (last-painted) form sits at the top (labs Layers order); `d` is the row, `n - 1 - d` the form. */}
+      <StepList
+        size={cs}
+        reorder="grab" /* the drag handle — StepList's arrows grey out at the ends (plan 51 3.1) */
+        activeIndex={sel >= 0 ? forms.length - 1 - sel : null}
+        items={forms.map((_, d) => {
+          const i = forms.length - 1 - d
+          return {
+            id: i, label: labelOf(typeOpts, forms[i].t),
+            actions: [
+              { icon: 'copy', label: 'Duplicate form', hidden: forms.length >= MAX_FORMS, onClick: () => dupForm(i) },
+              { icon: 'trash', label: 'Delete form', hidden: forms.length <= minForms, onClick: () => delForm(i) },
+            ],
+          }
         })}
-      </div>
+        onSelect={(d) => selectForm(forms.length - 1 - d)}
+        onMove={(from, to) => swapForm(forms.length - 1 - from, forms.length - 1 - to)}
+      />
 
-      <Button
-        tone="primary" size="sm" className="w-full" iconLeft="plus" iconSize={12}
-        disabled={forms.length >= MAX_FORMS} onClick={addForm}
-      >
-        Add form
-      </Button>
+      {/* at the cap there is nothing to add — not drawn (plan 51 3.1) */}
+      {forms.length < MAX_FORMS && (
+        <Button
+          tone="primary" size={cs} className="w-full" iconLeft="plus" iconSize={12}
+          onClick={addForm}
+        >
+          Add form
+        </Button>
+      )}
 
       {!is3d && (
         <Tooltip label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"><Button aria-label="Edit forms on the canvas (click to select, drag to move, corners to scale, knob to rotate)"
-          tone="primary" size="sm" className="w-full"
+          tone="primary" size={cs} className="w-full"
           onClick={() => window.dispatchEvent(new CustomEvent('kol:softform-edit', { detail: { id: layer.id, index: Math.max(0, sel) } }))}
         >
           Edit forms on canvas
@@ -260,10 +239,10 @@ export default function SoftformsLayers({ layer }) {
 
       {selForm && (
         <div className="flex flex-col gap-2 pt-1">
-          <span className="kol-helper-10 text-meta">Selected form</span>
+          <span className="kol-eyebrow text-fg-80">Selected form</span>
           <LabeledControl label="Type">
             <Dropdown
-              variant="subtle" size="sm" className="w-full"
+              variant="subtle" size={cs} className="w-full"
               options={typeOpts} value={selForm.t}
               onChange={(v) => writeForms(forms.map((f, i) => (i === sel ? { ...f, t: v } : f)))}
             />
@@ -280,14 +259,14 @@ export default function SoftformsLayers({ layer }) {
         </div>
       )}
 
-      <span className="kol-helper-10 text-meta pt-1">Randomise forms</span>
+      <span className="kol-helper-10 text-meta pt-1">Randomize forms</span>
       <div className="grid grid-cols-2 gap-2">
-        <Button tone="primary" size="sm" onClick={rollColor}>Color</Button>
-        <Button tone="primary" size="sm" onClick={rollTransform}>Transform</Button>
-        <Button tone="primary" size="sm" onClick={rollScale}>Scale</Button>
-        <Button tone="primary" size="sm" onClick={rollAnim}>Animation</Button>
+        <Button tone="primary" size={cs} onClick={rollColor}>Color</Button>
+        <Button tone="primary" size={cs} onClick={rollTransform}>Transform</Button>
+        <Button tone="primary" size={cs} onClick={rollScale}>Scale</Button>
+        <Button tone="primary" size={cs} onClick={rollAnim}>Animation</Button>
       </div>
-      <Button tone="primary" size="sm" className="w-full" onClick={rollRearrange}>Rearrange</Button>
+      <Button tone="primary" size={cs} className="w-full" onClick={rollRearrange}>Rearrange</Button>
     </div>
   )
 }

@@ -244,7 +244,7 @@ export const buildShellSearchItems = () => {
   const icons = Object.entries({ 'kol-icon-set-interface': KOL_ICON_SET_INTERFACE, 'kol-icon-set-signal': KOL_ICON_SET_SIGNAL }).flatMap(([set, groups]) => {
     const setTitle = label(set.replace('kol-icon-set-', ''))
     return [
-      { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icons', keywords: [set], href: `/icons/${set}` },
+      { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icon sets', keywords: [set], href: `/icons/${set}` },
       /* a category is a page over its groups (Round 15, 2026-10-20); its groups file under it. The row
        * files under ITS OWN name: a query that names a section lists that section's rows (the engine's
        * facet jump), so the page's row has to be a member of its section to be offered */

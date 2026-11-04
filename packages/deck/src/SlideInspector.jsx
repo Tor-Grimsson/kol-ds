@@ -42,25 +42,25 @@ const DECK_GREYS = Object.entries(GREYS).map(([token, hex]) => ({ token, hex }))
 /* Icon segments. Every glyph is a shipped v1 name — checked against the set,
    not guessed: align-horizontal-* / align-vertical-* / italic-a / type. */
 const ALIGN_H = [
-  { value: 'left',   label: 'Align left',   icon: 'align-horizontal-left' },
-  { value: 'center', label: 'Align centre', icon: 'align-horizontal-center' },
-  { value: 'right',  label: 'Align right',  icon: 'align-horizontal-right' },
+  { value: 'left',   label: 'Align left',   icon: 'align-horizontal-left-solid' },
+  { value: 'center', label: 'Align centre', icon: 'align-horizontal-center-solid' },
+  { value: 'right',  label: 'Align right',  icon: 'align-horizontal-right-solid' },
 ]
 const ALIGN_V = [
-  { value: 'start',  label: 'Top',    icon: 'align-vertical-top' },
-  { value: 'center', label: 'Middle', icon: 'align-vertical-center' },
-  { value: 'end',    label: 'Bottom', icon: 'align-vertical-bottom' },
+  { value: 'start',  label: 'Top',    icon: 'align-vertical-top-solid' },
+  { value: 'center', label: 'Middle', icon: 'align-vertical-center-solid' },
+  { value: 'end',    label: 'Bottom', icon: 'align-vertical-bottom-solid' },
 ]
 /* the SAME six glyphs as ALIGN_H/ALIGN_V, but these fire an action rather than
    set a property — see the Arrange comment. Kept as its own table so the two
    never get refactored into one by someone tidying up. */
 const ARRANGE_ALIGN = [
-  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },
-  { axis: 'h', mode: 'center', icon: 'align-horizontal-center', title: 'Align horizontal centre' },
-  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right',  title: 'Align right' },
-  { axis: 'v', mode: 'start',  icon: 'align-vertical-top',      title: 'Align top' },
-  { axis: 'v', mode: 'center', icon: 'align-vertical-center',   title: 'Align vertical centre' },
-  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },
+  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left-solid',   title: 'Align left' },
+  { axis: 'h', mode: 'center', icon: 'align-horizontal-center-solid', title: 'Align horizontal centre' },
+  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right-solid',  title: 'Align right' },
+  { axis: 'v', mode: 'start',  icon: 'align-vertical-top-solid',      title: 'Align top' },
+  { axis: 'v', mode: 'center', icon: 'align-vertical-center-solid',   title: 'Align vertical centre' },
+  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom-solid',   title: 'Align bottom' },
 ]
 
 const STYLE_OPTS = [

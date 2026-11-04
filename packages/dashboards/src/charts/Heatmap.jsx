@@ -118,41 +118,41 @@ export function CalendarScale({ color = 'var(--kol-palette-blue)' }) {
   )
 }
 
-/* `days` — Map of 'YYYY-MM-DD' → count; `end` — the last day shown (default today); 53 weeks back, weeks start Monday;
- * `label` names the count in the tooltip */
-export function CalendarHeatmap({ days = new Map(), end = new Date(), color = 'var(--kol-palette-blue)', label = 'deploys' }) {
+/* `days` — Map of 'YYYY-MM-DD' → count; `end` — the last day shown (default today); `weeks` columns back (default 53),
+ * the last one `end`'s week, weeks start Monday; `label` names the count in the tooltip */
+export function CalendarHeatmap({ days = new Map(), end = new Date(), weeks = 53, color = 'var(--kol-palette-blue)', label = 'deploys' }) {
   const { activeIndex, handlers, containerHandlers, containerRef } = useChartTooltip()
   const last = new Date(end.getFullYear(), end.getMonth(), end.getDate())
-  const start = new Date(last); start.setDate(start.getDate() - 52 * 7 - ((last.getDay() + 6) % 7))
-  const weeks = []
+  const start = new Date(last); start.setDate(start.getDate() - (weeks - 1) * 7 - ((last.getDay() + 6) % 7))
+  const cols = []
   for (let d = new Date(start); d <= last; d.setDate(d.getDate() + 1)) {
     const wi = Math.floor((d - start) / (7 * 86400000))
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
-    ;(weeks[wi] ??= [])[(d.getDay() + 6) % 7] = { key, date: new Date(d), value: days.get(key) || 0 }
+    ;(cols[wi] ??= [])[(d.getDay() + 6) % 7] = { key, date: new Date(d), value: days.get(key) || 0 }
   }
-  const max = Math.max(1, ...weeks.flat().filter(Boolean).map((c) => c.value))
+  const max = Math.max(1, ...cols.flat().filter(Boolean).map((c) => c.value))
   const fmt = new Intl.DateTimeFormat('en-GB', { month: 'short' })
   /* the week columns where a month starts; a label within two columns of the next one is skipped, so a one-week month never prints "OctNov" */
-  const starts = weeks.flatMap((w, i) => {
+  const starts = cols.flatMap((w, i) => {
     const first = w.find(Boolean)
-    const prev = weeks[i - 1]?.find(Boolean)
+    const prev = cols[i - 1]?.find(Boolean)
     return first && (!prev || first.date.getMonth() !== prev.date.getMonth()) ? [i] : []
   })
-  const active = activeIndex !== null ? weeks[Math.floor(activeIndex / 7)]?.[activeIndex % 7] : null
+  const active = activeIndex !== null ? cols[Math.floor(activeIndex / 7)]?.[activeIndex % 7] : null
   return (
     <div className="relative flex gap-2 min-w-0" ref={containerRef} {...containerHandlers}>
       <div className="grid shrink-0 pt-5" style={{ gridTemplateRows: 'repeat(7, 1fr)', gap: 3 }}>
         {['Mon', '', 'Wed', '', 'Fri', '', ''].map((d, i) => <span key={i} className="kol-helper-10 text-fg-48 leading-none flex items-center">{d}</span>)}
       </div>
       <div className="flex-1 min-w-0">
-        <div className="grid" style={{ gridTemplateColumns: `repeat(${weeks.length}, 1fr)`, gap: 3 }}>
-          {weeks.map((w, i) => {
+        <div className="grid" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)`, gap: 3 }}>
+          {cols.map((w, i) => {
             const m = starts.includes(i) && !starts.some((j) => j > i && j - i <= 2) ? fmt.format(w.find(Boolean).date) : ''
             return <span key={`m${i}`} className="kol-helper-10 text-fg-48 h-4 whitespace-nowrap overflow-visible">{m}</span>
           })}
         </div>
-        <div className="grid mt-1" style={{ gridTemplateColumns: `repeat(${weeks.length}, 1fr)`, gridTemplateRows: 'repeat(7, auto)', gridAutoFlow: 'column', gap: 3 }}>
-          {weeks.flatMap((w, i) => Array.from({ length: 7 }, (_, r) => {
+        <div className="grid mt-1" style={{ gridTemplateColumns: `repeat(${cols.length}, 1fr)`, gridTemplateRows: 'repeat(7, auto)', gridAutoFlow: 'column', gap: 3 }}>
+          {cols.flatMap((w, i) => Array.from({ length: 7 }, (_, r) => {
             const c = w[r]
             return <span key={`${i}-${r}`} {...(c ? handlers(i * 7 + r) : {})} className="aspect-square rounded-[2px]" style={{ background: c ? STEP_BG(STEP(c.value, max), color) : 'transparent' }} />
           }))}

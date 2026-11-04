@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ColorSwatch, Input, LabeledControl, PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
+import { Button, ColorPickerPopover, ColorSwatch, Input, LabeledControl } from '@kolkrabbi/kol-component'
 import { resolveColor } from '../state'
 import { useControlSize } from '../../params/controlSize'
 
@@ -37,8 +37,6 @@ export function ColorField({ value, onChange, palette, label = 'Color', hideLabe
         : resolved.toUpperCase()
   const isStroke     = label === 'Stroke'
 
-  const [open, setOpen] = useState(false)
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-start', offset: 4 })
 
   /* Hex typing commits on blur / Enter (the CanvasInspector SizeField idiom)
    * — a per-keystroke write would push a partial hex ('#F') into layer +
@@ -65,25 +63,48 @@ export function ColorField({ value, onChange, palette, label = 'Color', hideLabe
    * padding so the full-height 'control-sm' chip sits flush at the box
    * edge — the one-container anatomy. */
   const inBar = inline && hideLabel
+  /* THE PICKER IS KOL's ColorPickerPopover (kol-component 0.330, plan 51 4.4): its square, hue and hex, with fxr's
+     palette references and Theme / None in its footer — the hand-built popover is retired */
   const swatchBtn = (
-    <button
-      type="button"
-      ref={popover.refs.setReference}
-      {...popover.getReferenceProps()}
-      aria-label={`${label}: ${subtitle}`}
-      className={inBar ? 'inline-flex items-center shrink-0 -ml-3 -my-1' : 'inline-flex items-center shrink-0'}
-    >
-      <ColorSwatch
-        hex={resolved}
-        size={inBar ? 'control-sm' : (inline ? 24 : 32)}
-        showTransparent={isNone}
-        transparentTone={isStroke ? 'error' : 'warning'}
-        hoverable={false}
-        /* hairline — a surface-colored hex (#111 on dark) vanishes on the
-           rail without an edge; the DS chip is borderless by default */
-        className="border border-oq-08"
+    <span className={inBar ? 'inline-flex items-center shrink-0 -ml-3 -my-1' : 'inline-flex items-center shrink-0'}>
+      <ColorPickerPopover
+        color={/^#[0-9a-f]{6}/i.test(resolved) ? resolved.slice(0, 7) : '#808080'}
+        onChange={(hex) => onChange(hex.slice(0, 7))}
+        alpha={false} placement="bottom-start" label={`${label}: ${subtitle}`}
+        trigger={(
+          <ColorSwatch
+            hex={resolved}
+            size={inBar ? 'control-sm' : (inline ? 24 : 32)}
+            showTransparent={isNone}
+            transparentTone={isStroke ? 'error' : 'warning'}
+            hoverable={false}
+            className="border border-oq-08"
+          />
+        )}
+        footer={({ close }) => (
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-6 gap-1">
+              {PALETTE_REFS.map((ref) => (
+                <ColorSwatch
+                  key={ref.value}
+                  hex={resolveColor(ref.value, palette) ?? '#000000'}
+                  size="fill"
+                  selected={value === ref.value}
+                  title={ref.label}
+                  onClick={() => { onChange(ref.value); close() }}
+                />
+              ))}
+            </div>
+            <div className="flex gap-2">
+              {autoValue && (
+                <Button tone="sunken" size="sm" className="flex-1 min-w-0" pressed={isVar} onClick={() => { onChange(autoValue); close() }}>Theme</Button>
+              )}
+              <Button tone="sunken" size="sm" className="flex-1 min-w-0" pressed={isNone} onClick={() => { onChange(null); close() }}>None</Button>
+            </div>
+          </div>
+        )}
       />
-    </button>
+    </span>
   )
   /* None / themed show an empty field ('# –' via placeholder), not a
    * hex — a disabled fill claiming #FFFFFF reads as white, and a themed
@@ -111,7 +132,7 @@ export function ColorField({ value, onChange, palette, label = 'Color', hideLabe
       {/* the labs row: uppercase like every SettingsRow beside it (the
           editor's paint bar hides the label; its inspector is label-above) */}
       {!hideLabel && (
-        <span className="kol-helper-10 tracking-widest text-meta whitespace-nowrap">{String(label).toUpperCase()}</span>
+        <span className="kol-eyebrow text-meta whitespace-nowrap">{label}</span>
       )}
       {!hideLabel && <div className="flex-1" />}
       {hexInput}
@@ -127,50 +148,6 @@ export function ColorField({ value, onChange, palette, label = 'Color', hideLabe
   return (
     <LabeledControl label={inline || hideLabel ? null : label}>
       {row}
-      <PopoverPanel
-        popover={popover}
-        panel={false}
-        focus={false}
-        className="bg-surface-secondary border border-oq-08 rounded p-2 flex flex-col gap-2 shadow-lg"
-        style={{ minWidth: 200 }}
-      >
-        <div className="grid grid-cols-6 gap-1">
-          {PALETTE_REFS.map((ref) => (
-            <ColorSwatch
-              key={ref.value}
-              hex={resolveColor(ref.value, palette) ?? '#000000'}
-              size="fill"
-              selected={value === ref.value}
-              title={ref.label}
-              onClick={() => { onChange(ref.value); setOpen(false) }}
-            />
-          ))}
-        </div>
-        {/* Quick states: Theme (auto, flips with light/dark — only offered when
-            the field has an autoValue) and None (disable → transparent). */}
-        <div className="flex items-center gap-2">
-          {autoValue && (
-            <button
-              type="button"
-              onClick={() => { onChange(autoValue); setOpen(false) }}
-              aria-pressed={isVar}
-              className="flex items-center gap-1.5 kol-helper-12 text-fg-64 rounded px-1.5 h-6 border border-oq-08"
-            >
-              <ColorSwatch hex={resolveColor(autoValue, palette) ?? autoValue} size={14} hoverable={false} />
-              Theme
-            </button>
-          )}
-          <button
-            type="button"
-            onClick={() => { onChange(null); setOpen(false) }}
-            aria-pressed={isNone}
-            className="flex items-center gap-1.5 kol-helper-12 text-fg-64 rounded px-1.5 h-6 border border-oq-08"
-          >
-            <ColorSwatch hex="#FFFFFF" size={14} showTransparent transparentTone={isStroke ? 'error' : 'warning'} hoverable={false} />
-            None
-          </button>
-        </div>
-      </PopoverPanel>
     </LabeledControl>
   )
 }

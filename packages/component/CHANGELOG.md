@@ -1,5 +1,77 @@
 # @kolkrabbi/kol-component
 
+## 0.336.1 — 2026-11-04
+
+- Align icons moved to the `-solid` names (kol-icons 0.63.0 gave the bare `align-*` names to new outlines), so the alignment buttons keep their filled look.
+
+## 0.336.0 — 2026-11-04
+
+Float, all of it — W11 Calendar + reader (plan-2026-11-04-float-everything; the gap map's rows 145–152 and 158–161 in kol-float--style). Every part is new; no existing default moves. Needs kol-theme ≥0.211.1 and kol-icons ≥0.61.1.
+
+- **Calendar** — **`CalendarTimeline`** (a year of phases: month head, a 26 row per phase with its fg-16 bar, an `emphasis` row for the span itself, `today`'s line), **`CalendarMonth`** (weeks of 60, today's disc, weekend fg-02, events as 16 bars split and relabelled at each week's edge, packed into lanes, `onSelect`), **`CalendarWeek`** (seven columns with the day's events as chips, `empty`, the `running` phases as cards), **`CalendarDay`** (the all-day lane, hour rows in a 110 gutter, timed `events`, `now`). All on the page ground at the sheet radius, no gridlines (no-borders law).
+- **Reader** — **`ReadingColumn`** (position line · eyebrow · title · standfirst, the prose styled inside — `p` · `h2` · `blockquote` + `cite` · `small` — in the reading face at `size` / `leading` / `width`, the chapter nav last), **`ReadingHighlight`** (a marked passage + `Your highlight · Note 1`), **`ReadingActions`** (Highlight · Note · Copy · ··· in a 40 capsule), **`ReadingChapterNav`** (the two 56 capsules), **`ReadingContents`** (book head, a `TocRow` per chapter, progress on the float ProgressBar), **`ReadingPanel`** (the 320 side sheet: title, fold, Notes · Reading chip track, `children`) with **`ReadingNotes`** and **`ReadingSettings`** as its two sides, **`ReadingOverview`** (cover, metadata Tags, the saved place, Resume · Add to collection). The reading face is `font` (default Literata — the consumer loads it; Georgia stands in); `ReadingSettings` takes the theme row as `themes` (kol-styleguide `ThemeTile`, which kol-component cannot import).
+- **QuantityInput** float — `unit` (`22 px`) and `ariaLabel` (the − + read `Decrease text size`); unset, as before.
+
+## 0.335.0 — 2026-11-04
+
+Float, all of it — W6 Windows · W8 Lists + tables · the kol-component rows of W5 and W9 (plan-2026-11-04-float-everything; the gap map's rows 67 · 68 · 78 · 82–94 · 115–128 · 131 · 135 · 137 · 138 · 140 · 141 in kol-float--style). `variant="float"` is opt-in everywhere; today's defaults render as they did. Needs kol-theme ≥0.211.1 and kol-icons ≥0.61.1 (a float Button's glyph drew blank before it).
+
+- **Windows** — new **`QuickLookHeader`** (QuickLookFrame's header lifted out, unchanged; `variant="float"`: glyph · title · − · ×). **`Dialog variant="float"`** (the float window: `kol-float-solid` on `--kol-float-window-r`, 24 in, the header from `icon` · `title` · `onMinimise`) and **`blocking`** (default true — the scrim stays for a blocking task; `false` drops it). **`useModal` float** — `variant: 'float'` on `prompt` · `confirm` · `alert` · `form` (or the provider), with `header` · `icon` · `body` · `tone: 'danger'`: the destructive confirm, recovery quiet at the left, the next step at the right. **`QuickLookFrame variant="float"`** — the utility window: non-modal, `icon` · `onMinimise`, the body yours, `status` the footer line with the resize corner. **`MediaLibrary variant="float"`** — the 310 asset window (search, cover rows, `onImport`).
+- **New** — `SummaryLine` (`Estimated size · 18.4 MB`), `NoticeBanner` (title · detail · one action), `NavDrawer` (the hidden nav called up: a 280 float overlay with its tree). **`EmptyState variant="float"`**.
+- **Lists + tables** — **`Table variant="float"`** (its own render: mono head, no rules, `align: 'right'`, `sans` columns, `framed` on a sheet; covers and status pills through `render`). **`DocsToc variant="float"`** + new **`TocRow`** (`01 · First interlude`, `current`). **`ContentRow variant="float"`** — the link row (title · `url` · ↗). **`SpecList variant="float"`** + `title` (the info sheet, no dividers). New rows: **`TreeRow`** (glyph · name · count · chevron at xs 26 · sm 32 · md 34 · lg 40), **`FlyoutRow`** (TreeRow md), **`LayerRow`** (eye · lock), **`IndexRow`** (check · title · columns), **`TaskRow`** (check · title · date chip).
+- **Navigation** — **`NavRail variant="float"`** (`NavRailFloat.jsx`, its own path): expanded 280 (switcher · search ⌘K · section labels · TreeRow tree · `footer`) and `collapsed` 72 (44 round slots, the lit one fg-16 with its 3 × 14 bar, expand · search · hide on the well). **`SectionText variant="float"`** — the float page header (mono eyebrow · `kol-float-sheet` · body) — and **`meta`** at the end of the headline's row (`Website traffic · kolkrabbi.io · Umami`).
+- **TabsRow** — float `size="xs"` (the inspector's 26 chips), float `type="mono"` (text tabs, the selected one filled), a float tab's `icon` and `count`, float `surface` (the row in its own capsule — `lg` makes the 56 pill), and **`trailing`** inside the float capsule or the stacked phone pill (kol-shell's transport Timecode now sits inside it). **`SectionLabel variant="float"`** + `onAdd` (the section header's +).
+- The global filter row (row 138) is composed — float Dropdowns · MenuDatePicker float · Tag float — no new part.
+
+## 0.334.0 — 2026-11-04
+
+Float, all of it — W2 Controls · W3 Fields · W4 Menus (plan-2026-11-04-float-everything; the gap map's rows 6–60 in kol-float--style). `variant="float"` is opt-in everywhere; today's defaults render as they did. Needs kol-theme ≥0.211.1. The float roles are tones (W0.5): primary `inverted` · secondary `secondary` · quiet `ghost` · destructive `danger`.
+
+- **Button** — `kbd` (a key cap after the label, inside the button; a leading ⌘ is the `command` glyph) · `tone="danger"` accepted on a float button, the destructive role. Hover · pressed · focus (the 2px ring) · disabled (40%) and the sm · md · lg icon circles were already there; the preview shows them.
+- **`variant="float"`** on **Tag** (a 26 capsule in Inter, `active` fg-16, `onRemove`, `count`; `size="md"` is the filter bar's 30 chip) · **Badge** (the count capsule) · **Pill** (the status capsule with a value) · **ToggleSwitch** (32 × 20 track, one size) · **ToggleCheckbox** (an 18 plate, checked the bare glyph) · **Slider** (label and mono readout over a 3px capsule track) · **QuantityInput** (− value + in one capsule, `size`) · **Dropdown** (the capsule trigger on the well, its list 8 under it on the list radius) · **ViewToggle** (32 rounds — the view switch and a pagination are one shape) · **ProgressBar** (the 4px capsule track) · **Input** (`error` — the mark inside, the message under; the focus ring and disabled were there) · **LabeledControl** (the float hint over a capsule) · **Textarea** (the note field on the sheet radius) · **SearchInput** (the capsule with the drawn ⌘K cap).
+- **SegmentedToggle** — `count` on an option (`Open 5`), drawn on the float.
+- **The Menu family float** — `variant="float"` on `Menu`, `MenuPanel` (+ `sheet`), `MenuTrigger` (+ `mono`), `MenuFilter`, `MenuDatePicker` (the date chip: its value in mono on the well), `MenuMore` (the More sheet on `--kol-float-menu-r`), `ContextMenu`: a list on `--kol-float-list-r`, 34 rows in Inter lifted fg-16, flyouts 8 off the row, the rule through the inset, the section label in the float label role. `MenuRow tone="danger"` (and `{ tone: 'danger' }` in `items`) is the destructive row. `Menu offset` now overrides the fused / anchor defaults.
+- **ContentFilters `variant="float"`** — each group's chips are float Tags with the count of items each shows, in a capsule track.
+- **New atoms** — `Delta` (`↗ 19.8% from 10,740`), `LiveDot` (the breathing dot, a 32 mono count, its words), `SizeChip` (`S · M · B`), `ValueField` (a read-only value in the field's capsule).
+- **New molecules** — `FieldPair` (two Inputs on one line, `X · Y`), `PasswordInput` (the eye reveals), `InlineAddRow` (+ label, Enter adds, ↵ cap), `LinkAddRow` (name · URL · Add link, under an optional head on the sheet), `ColorField` (swatch · name · hex), `PanelsMenu` (name · state · action rows on a sheet), `WorkspaceSwitcher` (label over a Dropdown), `AccountMenu` (the account circle — Avatar or the user glyph — and its float menu).
+
+## 0.333.3 — 2026-11-04
+
+- **Avatar initial in Inter** (his ruling 2026-11-04): `font-narrow font-semibold` → `font-inter font-semibold`. Needs kol-theme ≥0.210.3; the app loads Inter.
+
+## 0.333.2 — 2026-11-03
+
+- **`Button variant="bare"` keeps its type on touch** (BareButtonTouchRung, kol-website metric): it stamps `kol-menu-btn--bare` beside the borrowed `kol-menu-btn`, and kol-theme 0.210.1's touch rung skips it. A bare surface set `kol-helper-12` computes 12px on a phone, as the doc promised.
+
+## 0.333.1 — 2026-11-03
+
+The ladder (taxonomy § The ladder, user rulings), patch — no API change:
+
+- **`Rail` (and its alias `ShellDrawer`) → organisms.** A whole region of the screen, not a small unit.
+- **`ButtonGroup` → molecules.** It paints buttons, stacked or in a row.
+- The old deep paths still resolve (`./molecules/Rail`, `./molecules/ShellDrawer`, `./utilities/ButtonGroup` in `exports`), so `@kolkrabbi/kol-component/molecules/Rail` keeps working.
+
+## 0.333.0 — 2026-11-03
+
+FloatFoldBothSidesGrey (kol-fxr), minor:
+
+- **TabsRow `foldSide="swipe"`** — a foldable pill folds to the edge the swipe went toward (left or right), not one fixed edge.
+- **TabsRow `foldTone="handle"`** — the edge tab is the grey edge handle (iOS's): `--kol-oq-24` ground, `--kol-oq-96` chevron, whatever the pill's `surface`. `foldTone="ground"` (default) is today's tab. Both unset, nothing changes.
+
+## 0.332.0 — 2026-11-01
+
+GrowthLineSeedOutline (kol-atlas), minor:
+
+- **`GrowthLineStage seed="outline"`** starts the line on the shape's edge, inset `minGap`, so it fills inward — the path itself for a path `d`, the density's 0.5 iso-line for the orb or a canvas fn; under `intro` it replaces the centre seed. `seed="centre"` (or none) is today's. A number is still the rng seed. Needs kol-growth 0.5.0.
+
+## 0.331.0 — 2026-11-01
+
+LoaderAppIntro (kol-fxr — the loader is the line), minor:
+
+- **The app loader's runtime lives here now** (`src/utilities/loaderApp.js`): `hideLoaderApp` plus the intro claim — `claimIntro()` · `introClaimed()` · `endIntro()` · `releaseIntro()`. kol-framework re-exports all of it (its documented home); it moved because GrowthLineStage claims the intro and kol-component never imports kol-framework. With `kol-intro` on <html> (stamped by `loaderApp({ intro })`) and nothing claiming, `hideLoaderApp()` waits 600 ms and, still unclaimed, ends the intro and hides the loader at once. Without the stamp it is unchanged.
+- **`GrowthLineStage intro`** claims a stamped intro on mount, hides the loader on its first drawn frame (`minMs: 0`) and ends it with the intro; gone before its first frame it lets go (the 600 ms fallback). No stamp → as 0.322.0.
+- **`GrowthLineStage onIntroBreath`** — fires as the rest begins (3.8 s), and at once where the intro does not play (reduced motion), beside `onIntroEnd`.
+
 ## 0.330.0 — 2026-10-31
 
 **One menu engine** (plan-2026-10-31-menu-engine), minor — public props unchanged:

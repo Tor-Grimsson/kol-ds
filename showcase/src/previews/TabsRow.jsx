@@ -1,9 +1,33 @@
 import { useState } from 'react'
-import { TabsRow } from '@kolkrabbi/kol-component'
+import { TabsRow, Button } from '@kolkrabbi/kol-component'
 
 /* one tab component, four looks — the picker on the toolbar flips it */
 export const stage = 'md'
-export const variants = ['underline', 'chip', 'text', 'stacked']
+export const variants = ['underline', 'chip', 'text', 'stacked', 'float']
+
+/* float (W5 rows 67 · 78, W9 row 137): the inspector's 26 chips · the tab navigation pill with glyphs and counts (lg in a
+ * solid capsule, the trailing slot holding search and the primary action) · the mono text tabs, the selected one filled */
+const NAV = [
+  { id: 'tasks', label: 'Tasks', icon: 'checklist', count: 5 },
+  { id: 'capture', label: 'Capture', icon: 'inbox', count: 3 },
+  { id: 'projects', label: 'Projects', icon: 'folder' },
+  { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { id: 'metrics', label: 'Metrics', icon: 'bar-chart' },
+  { id: 'links', label: 'Links', icon: 'link' },
+]
+function FloatRows() {
+  const [ins, setIns] = useState('design')
+  const [nav, setNav] = useState('tasks')
+  const [view, setView] = useState('overview')
+  return (
+    <div className="flex w-full max-w-[1000px] flex-col gap-8">
+      <TabsRow variant="float" size="xs" tabs={[{ id: 'design', label: 'Design' }, { id: 'animate', label: 'Animate' }]} value={ins} onChange={setIns} ariaLabel="Inspector" />
+      <TabsRow variant="float" size="lg" surface="solid" tabs={NAV} value={nav} onChange={setNav} ariaLabel="Dashboard"
+        trailing={<><Button variant="float" tone="ghost" size="lg" iconOnly="search" aria-label="Search tasks" /><Button variant="float" tone="inverted" size="lg" iconLeft="plus">New task</Button></>} />
+      <TabsRow variant="float" type="mono" tabs={['Overview', 'Website', 'Repositories', 'Audience'].map((l) => ({ id: l.toLowerCase(), label: l }))} value={view} onChange={setView} ariaLabel="View" />
+    </div>
+  )
+}
 
 const TABS = [
   { id: 'overview', label: 'Overview', icon: 'home-01' },
@@ -14,6 +38,11 @@ const TABS = [
 const SIX = ['Tasks', 'Capture', 'Projects', 'Calendar', 'Metrics', 'Links'].map((l) => ({ id: l.toLowerCase(), label: l }))
 
 export default function TabsRowPreview({ variant = 'underline' }) {
+  if (variant === 'float') return <FloatRows />
+  return <Rows variant={variant} />
+}
+
+function Rows({ variant }) {
   const [a, setA] = useState('overview')
   const [b, setB] = useState('specimens')
   const [c, setC] = useState('links')

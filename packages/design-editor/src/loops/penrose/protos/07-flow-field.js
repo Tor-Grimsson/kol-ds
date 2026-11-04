@@ -1,6 +1,6 @@
-import { createNoise2D } from 'simplex-noise'
+import { noiseAngle } from '../../flow/fieldCore.js'
 
-import { clear, strokeOutline, wrapLoop, sampleInside, stampGrid, pc } from '../common.js'
+import { clear, strokeOutline, wrapLoop, sampleInside, stampGrid, pc, inwardDir } from '../common.js'
 
 
 
@@ -14,7 +14,7 @@ import { clear, strokeOutline, wrapLoop, sampleInside, stampGrid, pc } from '../
 // https://tylerxhobbs.com/essays/2020/flow-fields
 export const flowField            = {
   id: '07-flow-field',
-  name: 'FLOW FIELD',
+  name: 'Flow field',
   repo: 'tylerxhobbs.com/essays/2020/flow-fields',
   summary:
     'Simplex noise → angle field, but the particles are ORGANISMS. Each carries energy: grazing the food field (rendered as accent ground) feeds it, moving burns it. Full organisms split — visible birth flashes — starved ones die with a collapse ring. Food regrows; hover pours food, press spins a vortex. The population visibly booms, mows the field bare, crashes, and recovers.',
@@ -34,7 +34,8 @@ export const flowField            = {
 
     const { scale, speed, life: starveTime } = params
 
-    const noise2D = createNoise2D(rng)
+    /* the angle field is the flow core's (plan 37 § 6.2) — same rng draw, same values */
+    const angleAt = noiseAngle(rng, scale)
 
     // ── food field — coarse grid over the sim, alive only inside the mask ──
     const cell = 8
@@ -111,12 +112,15 @@ export const flowField            = {
         const p = orgs[oi]
         p.px = p.x
         p.py = p.y
-        let a = noise2D(p.x * scale, p.y * scale) * Math.PI * 2
+        let a = angleAt(p.x, p.y)
         // food whiskers — steer toward the richer side
         const wd = 12
         const fL = foodAt(p.x + Math.cos(a - 0.7) * wd, p.y + Math.sin(a - 0.7) * wd)
         const fR = foodAt(p.x + Math.cos(a + 0.7) * wd, p.y + Math.sin(a + 0.7) * wd)
-        a += Math.max(-0.8, Math.min(0.8, (fR - fL) * 1.6))
+        /* forage harder + wander (plan 49 5.4): the flow funnelled the whole colony into its sinks, they ate those bare
+           and starved beside a full field — the energy cap above stopped that from hiding as bloat. A stronger turn to the
+           richer side and a little wander spread them back over the food. */
+        a += Math.max(-1.2, Math.min(1.2, (fR - fL) * 4)) + (rng() - 0.5) * 0.6
         const v = speed * (0.6 + 0.8 * p.e)
         let vx = Math.cos(a) * v
         let vy = Math.sin(a) * v
@@ -149,13 +153,19 @@ export const flowField            = {
         if (sdf.sample(p.x + vx, p.y + vy) < -1) { p.x += vx; p.y += vy }
         else if (sdf.sample(p.x + vx, p.y) < -1) { p.x += vx }
         else if (sdf.sample(p.x, p.y + vy) < -1) { p.y += vy }
+        /* blocked at the wall (plan 49 5.4): the flow kept pushing organisms into the edge, where they sat and starved —
+           the whole colony ended as a rim of dots. A blocked one steps back inward instead. */
+        else { const [ix, iy] = inwardDir(sdf, p.x, p.y); p.x += ix * speed * 2; p.y += iy * speed * 2 }
 
         // graze
         const fi = Math.max(0, Math.min(fh - 1, (p.y / cell) | 0)) * fw +
                    Math.max(0, Math.min(fw - 1, (p.x / cell) | 0))
         const bite = Math.min(food[fi], 0.035)
         food[fi] -= bite
-        p.e += bite * 1.6 - 0.0055 // metabolism
+        /* energy caps at 1 (plan 49 5.4, the user: "these two are broken"): at the population cap an organism can't
+           split, so its energy kept climbing — and the head's radius is energy-scaled, so heads swelled into blobs that
+           flooded the frame within seconds */
+        p.e = Math.min(1, p.e + bite * 1.6 - 0.0055) // metabolism
         // split — birth flash
         if (p.e >= 1 && orgs.length < cap) {
           p.e = 0.5
@@ -174,7 +184,9 @@ export const flowField            = {
         } else if (p.hunger > 0) p.hunger--
       }
       // total crash → spores blow in; the boom starts over
-      if (orgs.length === 0) for (let i = 0; i < 12; i++) spawn()
+      /* top up under 12, not only at 0 (plan 49 5.4): a few stragglers pinned at the wall kept it from ever reaching 0, and
+         the frame went quiet for good */
+      if (orgs.length < 12) for (let i = orgs.length; i < 12; i++) spawn()
 
       // ── render ──
       ctx.fillStyle = pc('bg', 0.1)

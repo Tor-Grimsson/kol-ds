@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { getAppSettings, setAppSetting } from '../lib/appSettings'
 import { LabeledControl, SettingsRow } from '@kolkrabbi/kol-component'
 import { NumberField } from '../compose/inspectors/NumberField'
 import { mulberry32, randomSeed, randomizeSchema, mergeRoll } from '../lib/rng'
@@ -42,15 +43,19 @@ const SCOPE_LABELS = { [COLOR_SCOPE]: 'Color', Frame: 'Motion Frame', Form: 'Mot
  */
 export function deriveScopes(schema, layer) {
   const scopes = []
-  const byId = new Map()
+  /* keyed by LABEL, not id (plan 49 2.1, user 2026-10-31: "color color? thats weird. one does nothing"): Penrose's
+     opacity sliders sit in a section named Color beside the colour-param scope also labelled Color — two cells,
+     one name, the second moving only opacities. One label is one cell. */
+  const byLabel = new Map()
   for (const p of visibleParams(schema ?? [], layer)) {
     if (NEVER_ROLL.has(p.key)) continue
     const id = p.type === 'color' ? COLOR_SCOPE : p.section
     if (!id) continue
-    let scope = byId.get(id)
+    const label = SCOPE_LABELS[id] ?? id
+    let scope = byLabel.get(label)
     if (!scope) {
-      scope = { id, label: SCOPE_LABELS[id] ?? id, motion: MOTION_SECTIONS.has(id), params: [] }
-      byId.set(id, scope)
+      scope = { id, label, motion: MOTION_SECTIONS.has(id), params: [] }
+      byLabel.set(label, scope)
       scopes.push(scope)
     }
     scope.params.push(p)
@@ -58,12 +63,36 @@ export function deriveScopes(schema, layer) {
   return scopes
 }
 
-/** The "Randomize all" param set: every visible param EXCEPT the motion
- * sections and Camera (framing + motion stay curated) and curation keys.
+/* A SCOPE THAT IS THE WHOLE ROLL IS NOT A SCOPE (plan 26 § 3; the user: "do both buttons do the same
+ * thing? … shouldnt it be 2 buttons pulse and sweep?"). Scanline's Motion tab had `Randomize motion` and
+ * a `Motion` button over the same two params. A scope whose params ARE the tab's roll set is dropped;
+ * if that leaves none and the roll is small (2–6 params), the subsets are the params themselves. */
+export function tidyScopes(scopes, rollParams) {
+  const all = new Set(rollParams.map((p) => p.key))
+  const same = (sc) => sc.params.length === all.size && sc.params.every((p) => all.has(p.key))
+  const kept = scopes.filter((sc) => !same(sc))
+  if (kept.length || rollParams.length < 2 || rollParams.length > 6) return kept
+  return rollParams.map((p) => ({ id: p.key, label: p.label, motion: MOTION_SECTIONS.has(p.section), params: [p] }))
+}
+
+/* THE SEED ONLY WHERE IT EARNS ITS ROW (plan 26 § 6): it replays a roll — worth a row when the roll
+ * moves more params than you could set back by hand. */
+export const SEED_MIN_PARAMS = 5
+
+/* WHAT RANDOMIZE ALL TOUCHES IS A SETTING (plan 18 § 3; the user: "often I'd just want not to
+ * change color or geometry, but others could randomise"). `rollScopes` holds one switch per scope
+ * id; a scope not named rolls by the old rule — the look on, the motion sections and Camera off. */
+export const scopeDefaultOn = (id) => !MOTION_SECTIONS.has(id) && id !== 'Camera'
+export const rollScopeOn = (id) => { const v = getAppSettings().rollScopes?.[id]; return typeof v === 'boolean' ? v : scopeDefaultOn(id) }
+export const setRollScope = (id, on) => setAppSetting('rollScopes', { ...(getAppSettings().rollScopes ?? {}), [id]: !!on })
+export const rollEffectsOn = () => getAppSettings().rollEffects !== false
+
+/** The "Randomize all" param set: every visible param in a scope that is ON (`rollScopes`;
+ * by default every section but the motion ones and Camera) and no curation key.
  * Per-param noRandom is still honoured downstream by randomizeSchema. */
 export function allScopeParams(schema, layer) {
   return visibleParams(schema ?? [], layer).filter((p) =>
-    !NEVER_ROLL.has(p.key) && !MOTION_SECTIONS.has(p.section) && p.section !== 'Camera')
+    !NEVER_ROLL.has(p.key) && rollScopeOn(p.type === 'color' ? COLOR_SCOPE : p.section))
 }
 
 /**
@@ -94,7 +123,7 @@ export function computeRoll(layer, params, seed, { stripNoRandom = false, withFi
   const patch = { ...mergeRoll(current, rolled), _rollSeed: seed }
   /* A WHOLE-LAYER roll rolls the effect chain too. Scope presses don't —
    * "Colour" means the generator's colours, not the chain's. */
-  if (withFilters) {
+  if (withFilters && rollEffectsOn()) {
     const filters = computeFilterRoll(layer, seed)
     if (filters) patch.filters = filters
   }
@@ -165,7 +194,7 @@ export function useRollSeed(layer) {
 
 /** The editable seed field — commit (Enter/blur) arms the seed for the next
  * roll press. Draft/commit via the shared NumberField idiom. */
-export function SeedField({ seed, inline = false }) {
+export function SeedField({ seed, inline = true }) {
   const cs = useControlSize()
   const field = (
       <NumberField

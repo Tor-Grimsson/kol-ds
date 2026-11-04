@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=61-240
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=385-21254
 // source=packages/shell/src/AppShell.jsx
 // component=AppShell
 import figma from 'figma'

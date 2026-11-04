@@ -6,6 +6,9 @@ import React from 'react'
  *   variant="bare" (default) — label + track, no box
  *   variant="primary"        — filled shell (surface-secondary), button geometry
  *   variant="outline"        — bordered shell (border-oq-16), button geometry
+ *   variant="float"          — the float switch (float-everything W2 row 21, 2026-11-04): a 32 × 20 track with a 14
+ *                              thumb 3 in, off oq-16 / oq-64, on fg-64 / the emphasis ink, the label in Inter 500;
+ *                              one size, the focus ring on the track, disabled 40%
  *
  *   size="xs" / "sm" / "md" (default) / "lg" — shells match button heights
  *     (22/26/32/40); the track scales with size in all variants. xs is the
@@ -36,12 +39,14 @@ const ToggleSwitch = ({
   }
 
   const resolvedVariant = LEGACY_VARIANTS[variant] || variant
+  const float = resolvedVariant === 'float'
 
   const cls = [
     'toggle-switch',
     `toggle-switch--${resolvedVariant}`,
-    `toggle-switch--${size}`,
-    SIZE_TYPE[size],
+    /* a float switch is one size and types in Inter (the theme's `.toggle-switch--float`) */
+    !float && `toggle-switch--${size}`,
+    !float && SIZE_TYPE[size],
     className,
   ].filter(Boolean).join(' ')
 

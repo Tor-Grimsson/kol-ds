@@ -35,7 +35,7 @@ import Kbd from '../atoms/Kbd.jsx'
  * @param {string}   shortcutHint caller-authored kbd chip (e.g. "⌘K"); shown while the value is empty
  * @param {Function} onFocus      (event) => void — input focus
  * @param {string}   size         'xs' | 'sm' | 'md' — kol-control size + matched mono type class (xs = the panel rung, 2026-09-01)
- * @param {string}   variant      'filled' | 'ghost' | 'outline' — kol-control variant, same chrome as Input (ignored when bare/expanding)
+ * @param {string}   variant      'filled' | 'ghost' | 'outline' — kol-control variant, same chrome as Input (ignored when bare/expanding) · `float` (float-everything W3 row 40, 2026-11-04): the capsule on the float well, Inter 500, the glyph 18, the ⌘K cap drawn (`shortcutHint="⌘K"`); the float heights by `size`
  * @param {string}   tone         'default' | 'inverse' — the dark chip for a washed plane (ControlToneInverse, 2026-08-27); on the expanding pill it is the OPEN fill
  * @param {boolean}  bare         borderless inline field for overlay panels (full width, no shell chrome; keeps icon/clear/chip slots)
  * @param {boolean}  expanding    round icon-button pill that animates open into an inline field
@@ -215,7 +215,8 @@ export default function SearchInput({
       ? `kol-control--bare kol-control-${size} flex w-full border border-transparent gap-2`
       : `kol-control${variant ? ` kol-control--${variant}` : ''} kol-control-${size} gap-2${toneClass(tone) ? ` ${toneClass(tone)}` : ''}`,
     'items-center cursor-text',
-    SIZE_TYPE[size],
+    /* the float capsule types itself (Inter 500 at the float size, the theme's `.kol-control--float`) */
+    variant !== 'float' && SIZE_TYPE[size],
     className,
   ].filter(Boolean).join(' ')
 
@@ -250,8 +251,8 @@ export default function SearchInput({
           aria-hidden="true"
           className={`flex items-center shrink-0 ${bare ? 'text-oq-48' : 'text-auto opacity-50'}`}
         >
-          {/* ADJACENT — this glyph sits in the field's line box beside the query */}
-          <Icon name="search" size={iconSize ?? glyphSize(size)} />
+          {/* ADJACENT — this glyph sits in the field's line box beside the query; a float glyph is the float's 18 */}
+          <Icon name="search" size={iconSize ?? (variant === 'float' ? 'var(--kol-float-ic)' : glyphSize(size))} />
         </span>
       )}
       <input

@@ -3,7 +3,7 @@ title: Type classes
 type: reference
 status: active
 created: 2026-07-31
-updated: 2026-10-24
+updated: 2026-11-03
 description: The two families, and when to use which
 aliases:
   - type-classes
@@ -98,6 +98,25 @@ JetBrains Mono ships as **two** `@font-face` rules — roman and italic, each `f
 
 (`heading-06` token exists; class deferred until a consumer needs it. Sizes step up at the responsive breakpoints — see `kol-typography.css`.)
 
+### Float roles — Inter + mono, fixed sizes (float-everything W0.6, 2026-11-04, `kol-type-float-classes.css`)
+
+The float style's twelve voices, carried from the exploration (kol-float--style, W2.0 row 2). Inter is `--kol-font-family-float`, self-hosted at `/fonts/inter/`. Sizes are fixed — a float role is a control-sized voice, not a fluid one. Every `variant="float"` control sets Inter 500 at its size (12 · 13 · 14). Figma: text styles `float/<role>`, bound to `font/float`.
+
+| Class | Size / weight / LH · tracking | Use |
+|---|---|---|
+| `kol-float-display` | 116 / 400 / 110 · −7 | the scene title on the canvas |
+| `kol-float-editorial` | 76 / 300 / 84 · −4.8 | the scene subtitle |
+| `kol-float-sheet` | 38 / 500 / 44 · −1.2 | a sheet's display line |
+| `kol-float-section` | 24 / 500 / 32 | a section heading |
+| `kol-float-window` | 18 / 500 / 24 | a window's title line |
+| `kol-float-body-lg` | 16 / 400 / 24 | artwork body |
+| `kol-float-body` | 14 / 400 / 22 | description |
+| `kol-float-panel` | 13 / 500 / 18 | panel titles, control labels |
+| `kol-float-hint` | 12 / 400 / 18 | hints, tooltips |
+| `kol-float-label` | 11 / 400 / 16 | supporting labels |
+| `kol-float-timecode` | 12 / 400 / 18 · mono | timecode, technical readouts |
+| `kol-float-ruler` | 10 / 400 / 14 · mono | metadata, rulers |
+
 ### Display — one face, since theme 0.59.0
 
 The display ramp is **Right Grotesk Tight, weight 500, no tracking**, 01 → 04 (DisplayTightRamp, user ruling 2026-08-27: *"the lg is correct, MORE correct than the numbered ramp … make 01 and 02 tight 500, replace the lg and retire lg … so we only have one system"*). Before 0.59.0 the ramp was Narrow and the Tight cut lived in a second, size-named system lobbied from the website's elder type. Case is a role — `uppercase` at the call site, `headlineCase="upper"` on `SectionText` — not a transform on the class.
@@ -137,3 +156,7 @@ The earlier line — "no `text-transform`, ever" — was one call about button a
 ## Prose color
 
 `.kol-prose` maps onto the kol-opacity **text roles**, not raw `fg-*` stops — body copy at `--kol-fg-default` (64), `em` climbs to `--kol-fg-strong` (80, italic), `strong` and all headings land on `--kol-fg-emphasis` (full ink); captions/cites sit at `--kol-fg-meta` (48). Edit the role token, every prose consumer follows. Raw stops remain only where a role has no business meaning (blockquote border `fg-32`, code wash `fg-04`).
+
+## Prose wrapping
+
+`.kol-prose` and every `.kol-prose-*` class carry `overflow-wrap: anywhere` from one rule in `kol-typography.css` (`[class^="kol-prose"], [class*=" kol-prose"]`), so a new prose class inherits it. An unbroken path or URL breaks at the column's edge, inside flex and grid items too (`break-word` would not shrink their min-content width); ordinary text breaks as before.

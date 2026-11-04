@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 // variant=raised retired 2026-10-31 → the TONE collection's faint mode (tone="faint" on a wrapper)
-const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline" })
+const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline", "float": "float" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 
 export default {

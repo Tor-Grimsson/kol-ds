@@ -1,0 +1,10 @@
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=296-3425
+// source=packages/icons/src
+// component=Icon
+import figma from 'figma'
+
+export default {
+  example: figma.code`<Icon name="database-cycle" />`,
+  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  id: 'database-cycle',
+}

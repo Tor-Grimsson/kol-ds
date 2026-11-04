@@ -19,8 +19,14 @@ import { useEffect, useState } from 'react'
  * @param {number}   max       upper bound (default 99)
  * @param {string}   controls  'chevron' (default) | 'split'
  * @param {string}   size      'sm' | 'md' | 'lg' — pins the responsive size
+ * @param {'float'}  variant   the float stepper (float-everything W2 row 24, 2026-11-04): a 36 capsule on the float
+ *                             well, − value + in Inter 500 (the glyphs oq, 40% at a bound), the float heights by `size`
+ * @param {string}   unit      FLOAT: a word after the value (`22 px` — the reader's text size, W11 row 151, 2026-11-04)
+ * @param {string}   ariaLabel FLOAT: what the value is; the − + read `Decrease <it>` / `Increase <it>` (default quantity)
  * @param {string}   className extra classes on the root
  */
+import { Icon } from '@kolkrabbi/kol-icons'
+const FLOAT_H = { sm: 'h-[var(--kol-float-h-sm)]', md: 'h-[var(--kol-float-h-md)]', lg: 'h-[var(--kol-float-h-lg)]' }
 
 const SIZE_MAP = {
   sm: { fontSize: 11, paddingY: 12, paddingX: 24, radius: 20, icon: 10 },
@@ -35,6 +41,9 @@ const QuantityInput = ({
   max = 99,
   controls = 'chevron',
   size,
+  variant,
+  unit,
+  ariaLabel = 'quantity',
   className = '',
 }) => {
   const [resolvedSize, setResolvedSize] = useState('md')
@@ -68,6 +77,18 @@ const QuantityInput = ({
   const metrics = SIZE_MAP[resolvedSize] || SIZE_MAP.md
   const increment = () => { if (value < max) onChange?.(value + 1) }
   const decrement = () => { if (value > min) onChange?.(value - 1) }
+
+  /* the float stepper: one capsule, the glyphs at each end, the value between */
+  if (variant === 'float') {
+    const btn = 'inline-flex h-full w-8 shrink-0 items-center justify-center rounded-full text-oq-64 hover:text-oq-96 disabled:opacity-40 disabled:hover:text-oq-64 cursor-pointer disabled:cursor-not-allowed outline-none focus-visible:[box-shadow:var(--kol-float-focus)] transition-colors'
+    return (
+      <div className={`inline-flex items-center rounded-full bg-[var(--kol-float-well)] px-1 kol-float-panel text-fg-emphasis ${FLOAT_H[size] ?? FLOAT_H.md} ${className}`.trim()}>
+        <button type="button" onClick={decrement} disabled={value <= min} className={btn} aria-label={`Decrease ${ariaLabel}`}><Icon name="minus" size={14} /></button>
+        <span className="min-w-6 flex-1 text-center tabular-nums">{value}{unit ? ` ${unit}` : ''}</span>
+        <button type="button" onClick={increment} disabled={value >= max} className={btn} aria-label={`Increase ${ariaLabel}`}><Icon name="plus" size={14} /></button>
+      </div>
+    )
+  }
 
   /* controls="split" — the − value + pill (formerly QuantityStepper). */
   if (controls === 'split') {

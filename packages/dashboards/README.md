@@ -8,6 +8,7 @@ Hand-rolled SVG visualisations (**no d3**), a card family, a responsive dashboar
 
 | Import | What |
 | --- | --- |
+| `Card`, `RankedList`, `StatTiles`, `DetailsOverlay` | the card set — metric's look, for any dashboard (0.9.0) |
 | `DashMetricCard`, `DashListCard`, `DashTableCard`, `DashChartCard`, `DashFeaturedCard`, `DashStackedBarCard`, `DashAlertCard`, `DashSlotCard` | the card family |
 | `LineChart`, `DonutChart`, `Sparkline`, `Heatmap`, `Histogram`, `ScatterPlot`, `Candlestick` | SVG chart primitives |
 | `DashboardGrid`, `GridCard` | responsive grid (container queries) |

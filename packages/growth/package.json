@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-growth",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "The growing line engine, differential growth into shapes",
   "license": "MIT",
   "type": "module",

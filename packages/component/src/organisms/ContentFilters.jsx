@@ -70,9 +70,13 @@ import { filterItems } from '../utilities/searchItems.js'
  * @param {string}  props.countClassName      — the "N of N" type/ink
  * @param {string}  props.tone                — 'default' | 'inverse' — forwarded to the search field (ControlToneInverse,
  *                                              2026-08-27): a page on a wash sets its header row's tone in one place
+ * @param {'float'} props.variant             — the float filter bar (float-everything W4 row 56, 2026-11-04): each group's
+ *                                              chips are `Tag variant="float" size="md"` capsules with the count of items
+ *                                              each would show, in a capsule track 5 in. Everything else stays.
  */
 const ContentFilters = ({
   tone = 'default',
+  variant,
   items,
   title,
   totalCount,
@@ -320,6 +324,9 @@ const ContentFilters = ({
      * rule sits in the components layer. */
     const stacked = group.stack ?? index === 0
     const first = index === 0 && stacked
+    const float = variant === 'float'
+    /* the float chip carries the count of items it would show (row 56) */
+    const countOf = (value) => items.filter((item) => { const v = item[group.key]; return Array.isArray(v) ? v.includes(value) : v === value }).length
     return (
     <div key={group.key} className={`flex flex-col gap-3 ${first ? 'kol-filters-first' : stacked ? 'shrink-0' : 'min-w-0 flex-1'} ${group.className ?? ''}`.trim()}>
       {/* THE CATEGORY LABEL IS THE ACTIVE INK — `kol-helper-12` at `text-fg-96`,
@@ -337,16 +344,17 @@ const ContentFilters = ({
       </h4>
       {/* the fluid group keeps 48px of room on its right (it ran flush to the
         * panel's edge); `group.wrapClassName` is the per-group seam */}
-      <div className={`${stacked ? 'flex flex-col items-start gap-2' : 'flex flex-wrap gap-2 pr-12'} ${group.wrapClassName ?? ''}`.trim()}>
+      <div className={`${float ? 'inline-flex self-start flex-wrap items-center gap-1 rounded-full bg-oq-04 p-[5px]' : stacked ? 'flex flex-col items-start gap-2' : 'flex flex-wrap gap-2 pr-12'} ${group.wrapClassName ?? ''}`.trim()}>
         {group.values.map((value) => (
           <Tag
             key={value}
-            size={tagSize}
-            variant={tagVariant}
+            size={float ? 'md' : tagSize}
+            variant={float ? 'float' : tagVariant}
             hash={false}
+            count={float ? countOf(value) : undefined}
             active={activeFilters.has(`${group.key}:${value}`)}
             onClick={() => toggleFilter(group.key, value)}
-            className={activeFilters.has(`${group.key}:${value}`) ? tagActiveClassName : tagRestClassName}
+            className={float ? undefined : activeFilters.has(`${group.key}:${value}`) ? tagActiveClassName : tagRestClassName}
           >
             {value}
           </Tag>

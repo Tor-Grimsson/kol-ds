@@ -117,6 +117,20 @@ function internalField(field, nx, ny, ph, freq, lens, seed) {
 // accumulator; amp is the displacement amplitude for that path.
 // `spinAng` (radians) rotates the radial/rings/spiral layout — TAU·u·turns from
 // the caller, integer turns ⇒ seamless; rows/columns have no centre to turn about.
+/* THE PATHS ARE GEOMETRY, NOT TIME (the user, 2026-10-10: "super low framerate"; the profile put the
+ * per-frame rebuild at ~14% of a frame). They depend on the layout params, the size and the spin
+ * angle only — so a frame that changes none of those reuses the last set. Read-only downstream. */
+const pathMemo = new Map()   /* ponytail: 8 entries — a grid draws two geometries a frame, several layers share it */
+function pathsFor(geo, W, H, p, spinAng) {
+  const key = `${geo}|${W}|${H}|${p.rows}|${p.arms}|${p.rayCount}|${p.ringCount}|${p.swirl}|${p.turns}|${spinAng}`
+  let paths = pathMemo.get(key)
+  if (!paths) {
+    paths = buildPaths(geo, W, H, p, spinAng)
+    pathMemo.set(key, paths)
+    if (pathMemo.size > 8) pathMemo.delete(pathMemo.keys().next().value)
+  }
+  return paths
+}
 function buildPaths(geo, W, H, p, spinAng) {
   const step = 2
   const out = []
@@ -163,12 +177,15 @@ function buildPaths(geo, W, H, p, spinAng) {
       const n = Math.max(8, Math.floor(circ / step))
       const sl = circ / n
       const off = swirl * (rad / maxR) * TAU + spin
+      // n points, not n+1: a closed path must not repeat its start, or the seam
+      // gets one segment's length counted twice. `closed` tells the walker below
+      // to pre-roll the accumulator around the ring once (see renderScanlines).
       const pts = []
-      for (let j = 0; j <= n; j++) {
+      for (let j = 0; j < n; j++) {
         const ang = (j / n) * TAU + off
         pts.push({ x: cx + Math.cos(ang) * rad, y: cy + Math.sin(ang) * rad, nx: Math.cos(ang), ny: Math.sin(ang), sl })
       }
-      out.push({ pts, amp: (maxR / rings) * 1.6 })
+      out.push({ pts, amp: (maxR / rings) * 1.6, closed: true })
     }
     return out
   }
@@ -248,8 +265,11 @@ function renderScanlines(ctx, u, W, H, p) {
   // Frame's whole-field drift). Multiplier 1±sweep; 0 ⇒ off. 2·ph ⇒ two waves per
   // loop, still integer ⇒ seamless.
   const sweepAmt = p.sweep ?? 0
-  const sweepK = sweepAmt
-    ? (mx, my) => 1 - sweepAmt * 0.5 + sweepAmt * 0.5 * Math.sin(2 * ph - (mx + my) * 0.012)
+  /* …and the sweep rig on top (plan 26 § 5): the filter hands `sweepMul(nx, ny)` — the stacked
+     sweeps' packet at that point as a size multiplier — and it composes with Form › Sweep */
+  const ext = typeof p.sweepMul === 'function' ? p.sweepMul : null
+  const sweepK = sweepAmt || ext
+    ? (mx, my) => (sweepAmt ? 1 - sweepAmt * 0.5 + sweepAmt * 0.5 * Math.sin(2 * ph - (mx + my) * 0.012) : 1) * (ext ? ext(mx / W, my / H) : 1)
     : null
 
   const fieldAt = (x, y) => {
@@ -287,16 +307,34 @@ function renderScanlines(ctx, u, W, H, p) {
   ctx.translate(-W / 2, -H / 2)
 
   for (const geo of geos) {
-    const paths = buildPaths(geo, W, H, p, spinAng)
+    const paths = pathsFor(geo, W, H, p, spinAng)
     const crossAxis = geo === 'rows' ? 'x' : geo === 'columns' ? 'y' : null
     let prev = null
     for (let li = 0; li < paths.length; li++) {
-      const { pts, amp } = paths[li]
+      const { pts, amp, closed } = paths[li]
       const marks = []
       let acc = 0
+      // CLOSED PATHS PRE-ROLL (2026-10-08). The sum starts at 0 on a path's first
+      // point, so the first mark lands one full gap in and the last partial sum is
+      // dropped — on rows that margin sits off-canvas (OVERSCAN); on a ring the
+      // first point is at 3 o'clock, on-canvas, and every ring showed a hole of one
+      // to two gaps there (the user's screenshot). Walk the ring once without
+      // emitting to learn the carry — the field is a function of position, so the
+      // end of lap one IS the start of lap two — then emit from that carry. The
+      // field values are cached, so the second lap costs no fbm.
+      let fs = null
+      if (closed) {
+        fs = new Float32Array(pts.length)
+        for (let k = 0; k < pts.length; k++) {
+          const f = fieldAt(pts[k].x, pts[k].y)
+          fs[k] = f
+          acc += pts[k].sl / lerp(maxGap, minGap, f)
+        }
+        acc -= Math.floor(acc)
+      }
       for (let k = 0; k < pts.length; k++) {
         const pt = pts[k]
-        const f = fieldAt(pt.x, pt.y)
+        const f = fs ? fs[k] : fieldAt(pt.x, pt.y)
         acc += pt.sl / lerp(maxGap, minGap, f)
         if (acc >= 1) {
           acc -= 1
@@ -325,11 +363,17 @@ function renderScanlines(ctx, u, W, H, p) {
         ctx.stroke()
       } else {
         const base = markSize * 1.6
+        /* ONE PATH PER ROW (the user, 2026-10-10: "super low framerate"): a fill per dot was thousands of
+           fill calls a frame; the row's circles as subpaths of one path fill the same pixels (same
+           winding, nonzero) in one call */
+        ctx.beginPath()
         for (const m of marks) {
           const rad = base * (0.45 + m.f) * (sweepK ? sweepK(m.x, m.y) : 1)
           if (rad < 0.3) continue
-          ctx.beginPath(); ctx.arc(m.x, m.y, rad, 0, TAU); ctx.fill()
+          ctx.moveTo(m.x + rad, m.y)
+          ctx.arc(m.x, m.y, rad, 0, TAU)
         }
+        ctx.fill()
       }
     }
   }
@@ -345,34 +389,36 @@ export default {
   kind: '2d',
   duration: 8,
   /* Sub-tab/section metadata mirrors the labs ScanlineEditor rail: Geometry /
-   * Spacing / Field / Mark / Color style sections; Frame / Form animation. */
+   * Spacing / Field / Mark / Color style sections; Frame / Form animation.
+   * Field, Mark and Color render closed, and Randomize all leaves the geometry, counts, field kind,
+   * seed and mark alone (plan 42 § 4.1, 4.2). */
   params: [
-    { key: 'geometry', label: 'Geometry', type: 'select', options: GEOMETRY_OPTIONS, default: 'rows', section: 'Geometry' },
-    { key: 'rows', label: 'Lines', type: 'range', min: 8, max: 260, step: 1, default: 90, section: 'Geometry', when: (l) => (l.geometry ?? 'rows') === 'rows' || l.geometry === 'columns' },
-    { key: 'rayCount', label: 'Rays', type: 'range', min: 16, max: 520, step: 1, default: 200, section: 'Geometry', when: (l) => l.geometry === 'radial' },
-    { key: 'ringCount', label: 'Rings', type: 'range', min: 4, max: 200, step: 1, default: 60, section: 'Geometry', when: (l) => l.geometry === 'rings' },
+    { key: 'geometry', label: 'Geometry', type: 'select', options: GEOMETRY_OPTIONS, noRandom: true, default: 'rows', section: 'Geometry' },
+    { key: 'rows', label: 'Lines', type: 'range', min: 8, max: 260, step: 1, noRandom: true, default: 90, section: 'Geometry', when: (l) => (l.geometry ?? 'rows') === 'rows' || l.geometry === 'columns' },
+    { key: 'rayCount', label: 'Rays', type: 'range', min: 16, max: 520, step: 1, noRandom: true, default: 200, section: 'Geometry', when: (l) => l.geometry === 'radial' },
+    { key: 'ringCount', label: 'Rings', type: 'range', min: 4, max: 200, step: 1, noRandom: true, default: 60, section: 'Geometry', when: (l) => l.geometry === 'rings' },
     { key: 'turns', label: 'Turns', type: 'range', min: 1, max: 30, step: 0.5, default: 6, section: 'Geometry', when: (l) => l.geometry === 'spiral' },
-    { key: 'arms', label: 'Arms', type: 'range', min: 1, max: 8, step: 1, default: 1, section: 'Geometry', when: (l) => l.geometry === 'spiral' },
+    { key: 'arms', label: 'Arms', type: 'range', min: 1, max: 8, step: 1, noRandom: true, default: 1, section: 'Geometry', when: (l) => l.geometry === 'spiral' },
     { key: 'swirl', label: 'Swirl', type: 'range', min: -1, max: 1, step: 0.02, default: 0, section: 'Geometry', when: (l) => l.geometry === 'radial' || l.geometry === 'rings' },
-    { key: 'weave', label: 'Weave', type: 'toggle', default: false, section: 'Geometry', when: (l) => (l.geometry ?? 'rows') === 'rows' || l.geometry === 'columns' },
+    { key: 'weave', label: 'Weave', type: 'toggle', noRandom: true, default: false, section: 'Geometry', when: (l) => (l.geometry ?? 'rows') === 'rows' || l.geometry === 'columns' },
     { key: 'minGap', label: 'Min gap', type: 'range', min: 1, max: 24, step: 0.5, default: 5, section: 'Spacing' },
     { key: 'maxGap', label: 'Max gap', type: 'range', min: 4, max: 64, step: 0.5, default: 24, section: 'Spacing' },
     { key: 'contrast', label: 'Contrast', type: 'range', min: 0.3, max: 4, step: 0.05, default: 1, section: 'Spacing' },
     { key: 'displace', label: 'Displace', type: 'range', min: 0, max: 1, step: 0.02, default: 0, section: 'Spacing' },
     { key: 'invert', label: 'Invert', type: 'toggle', default: false, section: 'Spacing' },
-    { key: 'field', label: 'Field', type: 'select', options: FIELD_OPTIONS, default: 'noise', section: 'Field' },
-    { key: 'freq', label: 'Field scale', type: 'range', min: 0.2, max: 4, step: 0.05, default: 1, section: 'Field', when: (l) => (l.field ?? 'noise') !== 'radial' },
-    { key: 'lens', label: 'Lens', type: 'range', min: 0.3, max: 4, step: 0.05, default: 1.6, section: 'Field', when: (l) => l.field === 'radial' },
-    { key: 'seed', label: 'Seed', type: 'range', min: 0, max: 99, step: 1, default: 0, section: 'Field', when: (l) => (l.field ?? 'noise') === 'noise' },
-    { key: 'mark', label: 'Mark', type: 'select', options: MARK_OPTIONS, default: 'dots', section: 'Mark' },
-    { key: 'markSize', label: 'Mark size', type: 'range', min: 0.2, max: 3, step: 0.05, default: 1, section: 'Mark', when: (l) => (l.mark ?? 'dots') !== 'glyph' },
-    { key: 'dashLen', label: 'Dash length', type: 'range', min: 0.3, max: 3, step: 0.05, default: 1.2, section: 'Mark', when: (l) => l.mark === 'dash' },
-    { key: 'charset', label: 'Charset', type: 'select', options: CHARSET_OPTIONS, default: 'ascii', section: 'Mark', when: (l) => l.mark === 'glyph' },
-    { key: 'fontScale', label: 'Font size', type: 'range', min: 0.4, max: 2, step: 0.05, default: 1, section: 'Mark', when: (l) => l.mark === 'glyph' },
-    { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#06070b', section: 'Color' },
-    { key: 'fg', label: 'Ink', type: 'color', role: 'fg', default: '#f4f1ea', section: 'Color' },
-    { key: 'flow', label: 'Flow · cycles', type: 'range', min: 0, max: 4, step: 1, default: 1, noRandom: true, tab: 'anim', section: 'Frame' },
-    { key: 'spin', label: 'Spin · turns', type: 'range', min: -2, max: 2, step: 1, default: 0, noRandom: true, tab: 'anim', section: 'Frame', when: (l) => l.geometry === 'radial' || l.geometry === 'rings' || l.geometry === 'spiral' },
+    { key: 'field', label: 'Field', type: 'select', options: FIELD_OPTIONS, noRandom: true, default: 'noise', section: 'Field', collapsed: true },
+    { key: 'freq', label: 'Field scale', type: 'range', min: 0.2, max: 4, step: 0.05, default: 1, section: 'Field', collapsed: true, when: (l) => (l.field ?? 'noise') !== 'radial' },
+    { key: 'lens', label: 'Lens', type: 'range', min: 0.3, max: 4, step: 0.05, default: 1.6, section: 'Field', collapsed: true, when: (l) => l.field === 'radial' },
+    { key: 'seed', label: 'Seed', type: 'range', min: 0, max: 99, step: 1, noRandom: true, default: 0, section: 'Field', collapsed: true, when: (l) => (l.field ?? 'noise') === 'noise' },
+    { key: 'mark', label: 'Mark', type: 'select', options: MARK_OPTIONS, noRandom: true, default: 'dots', section: 'Mark', collapsed: true },
+    { key: 'markSize', label: 'Mark size', type: 'range', min: 0.2, max: 3, step: 0.05, default: 1, section: 'Mark', collapsed: true, when: (l) => (l.mark ?? 'dots') !== 'glyph' },
+    { key: 'dashLen', label: 'Dash length', type: 'range', min: 0.3, max: 3, step: 0.05, default: 1.2, section: 'Mark', collapsed: true, when: (l) => l.mark === 'dash' },
+    { key: 'charset', label: 'Charset', type: 'select', options: CHARSET_OPTIONS, noRandom: true, default: 'ascii', section: 'Mark', collapsed: true, when: (l) => l.mark === 'glyph' },
+    { key: 'fontScale', label: 'Font size', type: 'range', min: 0.4, max: 2, step: 0.05, default: 1, section: 'Mark', collapsed: true, when: (l) => l.mark === 'glyph' },
+    { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#06070b', section: 'Color', collapsed: true },
+    { key: 'fg', label: 'Ink', type: 'color', role: 'fg', default: '#f4f1ea', section: 'Color', collapsed: true },
+    { key: 'flow', label: 'Flow', type: 'range', min: -8, max: 8, rMin: 0, rMax: 4, step: 1, default: 1, noRandom: true, tab: 'anim', section: 'Frame' },
+    { key: 'spin', label: 'Spin · turns', type: 'range', min: -8, max: 8, rMin: -2, rMax: 2, step: 1, default: 0, noRandom: true, tab: 'anim', section: 'Frame', when: (l) => l.geometry === 'radial' || l.geometry === 'rings' || l.geometry === 'spiral' },
     { key: 'pulse', label: 'Pulse', type: 'range', min: 0, max: 1, step: 0.05, default: 0, noRandom: true, tab: 'anim', section: 'Form' },
     { key: 'sweep', label: 'Sweep', type: 'range', min: 0, max: 1, step: 0.05, default: 0, noRandom: true, tab: 'anim', section: 'Form', when: (l) => (l.mark ?? 'dots') !== 'lattice' },
   ],

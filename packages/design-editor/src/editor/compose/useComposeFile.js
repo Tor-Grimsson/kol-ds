@@ -1,15 +1,18 @@
 import { useRef } from 'react'
 import { useModal } from '@kolkrabbi/kol-component'
+import { currentView } from '../mode'
 import { useComposeState } from './state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
-import { buildLayersSvg, downloadComposeSvg, downloadComposePng, svgToPngBlob } from './build'
+import { buildLayersSvg as buildLayersSvgRaw, downloadComposeSvg, downloadComposePng, svgToPngBlob } from './build'
 import { warmTextFonts } from '../modes/type/textOutline'
 import { pack } from '../packs'
 import { resolveLayersDeep, makeSmoothingState } from '../params/resolve'
 import { transport } from '../params/transport'
 import { downloadBlob } from '../lib/download'
 import { PRESET_SIZES } from '../shell/aspects'
+import { markSaved, docOf } from './savedMark'
 import { makeZip } from '../lib/zipStore'
+import { atFullRes } from '../lib/previewScale'
 
 /**
  * useComposeFile — the compose frame's save / save-as / export actions,
@@ -50,20 +53,48 @@ function drawSvgToCanvas(g, svgString, w, h) {
   })
 }
 
+/* the long side of a file's thumbnail — the browse surface's tiles are 44–160px */
+const THUMB_PX = 240
+
 const nextFrame = () => new Promise((r) => requestAnimationFrame(r))
+
+/* PHOTOS GO INTO THE SVG AS DATA (plan 26 § 9): every raster export draws the frame as an SVG
+ * inside an <img>, and an SVG loaded as an image fetches NOTHING — a `blob:` upload, a `/media/`
+ * library pick, any URL — so an unfiltered photo came out blank in thumbnails, PNG, batch and
+ * webm alike (a filtered one snapshots its live canvas and was fine). Warm once per export
+ * (`warmImageSrcs`, async), then swap every photo's src for its data URL on the sync build.
+ * Video stays out: build.js draws the live <video> frame itself. */
+const srcData = new Map()   /* src → data URL; ponytail: unbounded, one entry per distinct photo in a session */
+const isStillPhoto = (l) => l.type === 'photo' && l.srcType !== 'video' && l.srcType !== 'webcam' && typeof l.src === 'string' && !l.src.startsWith('data:')
+const toDataUrl = (blob) => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob) })
+async function warmImageSrcs(layers) {
+  const jobs = []
+  const walk = (ls) => { for (const l of ls ?? []) { if (isStillPhoto(l) && !srcData.has(l.src)) jobs.push(l.src); if (Array.isArray(l.children)) walk(l.children) } }
+  walk(layers)
+  await Promise.all([...new Set(jobs)].map(async (src) => {
+    try { const r = await fetch(src); if (r.ok) srcData.set(src, await toDataUrl(await r.blob())) } catch { /* unreachable — exports as before */ }
+  }))
+}
+const inlineSrcs = (layers) => layers.map((l) => {
+  const kids = Array.isArray(l.children) ? inlineSrcs(l.children) : l.children
+  const data = isStillPhoto(l) ? srcData.get(l.src) : null
+  return data || kids !== l.children ? { ...l, ...(data ? { src: data } : {}), ...(kids !== l.children ? { children: kids } : {}) } : l
+})
+const buildLayersSvg = (args) => buildLayersSvgRaw({ ...args, layers: inlineSrcs(args.layers) })
 
 /* Deep scan (groups walked) for kinetic layers — gates the kinetic font-css
  * warm: no kinetic layer, no font fetch. */
 const hasKineticLayer = (ls) => (ls ?? []).some((l) => l.type === 'kinetic' || (l.type === 'group' && hasKineticLayer(l.children)))
 
 export function useComposeFile() {
+  const composeState = useComposeState()
   const {
     layers, palette, aspect, canvasW, canvasH,
     colors, poolId, modeId, locks,
     currentPresetId, currentPresetName,
     setCurrentPresetId, setCurrentPresetName,
     loadPreset,
-  } = useComposeState()
+  } = composeState
   const { addItem, updateItem } = useGeneratorLibrary()
   const modal = useModal()
 
@@ -76,8 +107,11 @@ export function useComposeFile() {
   const liveRef = useRef(null)
   liveRef.current = { layers, palette }
 
+  /* `mode` says where a file opens (plan 09): labs for the labs and randomiser chromes, editor
+   * otherwise; a morph save overrides it with 'morph'. Files saved before keep the inference. */
   const buildSpec = (name) => ({
     intent:  'whole',
+    mode:    currentView() === 'labs' || currentView() === 'randomiser' ? 'labs' : 'editor',
     name:    name ?? null,
     aspect,
     canvasW, canvasH,
@@ -85,14 +119,36 @@ export function useComposeFile() {
     palette: { poolId, modeId, colors, locks },
   })
 
+  /* THE FILE'S THUMBNAIL (2026-10-09 — Files showed a glyph for every file): the frame at save
+   * time, rasterized small onto the item. A failed capture saves without one. */
+  const captureThumb = async () => {
+    try {
+      const args = buildArgs()
+      await warmExportFonts(args.layers)
+      const k = THUMB_PX / Math.max(canvasW, canvasH)
+      const w = Math.round(canvasW * k), h = Math.round(canvasH * k)
+      const c = document.createElement('canvas')
+      c.width = w; c.height = h
+      await drawSvgToCanvas(c.getContext('2d'), buildLayersSvg(args), w, h)
+      return c.toDataURL('image/webp', 0.8)
+    } catch (e) { console.warn('cover: the frame could not be captured —', e?.message || e); return null }
+  }
+  /* the spec plus its thumbnail — every save goes through this */
+  const buildSavedSpec = async (name) => {
+    /* every save goes through here — the status bar's `*` clears against this (plan 29 § 1) */
+    markSaved(docOf(composeState))
+    const thumb = await captureThumb()
+    return { ...buildSpec(name), ...(thumb ? { thumb } : {}) }
+  }
+
   const onSave = async () => {
     if (currentPresetId) {
-      updateItem('preset', currentPresetId, buildSpec(currentPresetName))
+      updateItem('preset', currentPresetId, await buildSavedSpec(currentPresetName))
       return
     }
     const name = await modal.prompt('Name this frame:', '')
     if (name === null) return
-    const id = addItem('preset', buildSpec(name || null))
+    const id = addItem('preset', await buildSavedSpec(name || null))
     if (id) {
       setCurrentPresetId(id)
       setCurrentPresetName(name || null)
@@ -102,7 +158,7 @@ export function useComposeFile() {
   const onSaveAs = async () => {
     const name = await modal.prompt('Save as:', currentPresetName ?? '')
     if (name === null) return
-    const id = addItem('preset', buildSpec(name || null))
+    const id = addItem('preset', await buildSavedSpec(name || null))
     if (id) {
       setCurrentPresetId(id)
       setCurrentPresetName(name || null)
@@ -124,24 +180,27 @@ export function useComposeFile() {
   const warmExportFonts = async (resolvedLayers) => {
     await warmTextFonts(resolvedLayers)
     if (hasKineticLayer(resolvedLayers)) await pack('motion')?.warmFontCss()
+    await warmImageSrcs(resolvedLayers)
   }
-  const onExportSvg = async () => {
+  /* every export renders at full resolution, whatever Settings › Preview resolution says — the live
+     canvases it snapshots are lifted first (lib/previewScale.js) */
+  const onExportSvg = () => atFullRes(async () => {
     const args = buildArgs()
     await warmExportFonts(args.layers)
     downloadComposeSvg(buildLayersSvg(args), `compose-${canvasW}x${canvasH}-${Date.now().toString(36)}.svg`)
-  }
+  })
   /* PNG takes the footer's 1×/2×/3× scale on top of the set W×H (the canvas
    * carries real output pixels; scale is a resolution bump). Guarded so
    * event-object callers (topbar menu onClick) fall back to 1×. SVG is
    * vector — scale doesn't apply. */
-  const onExportPng = async (scale) => {
+  const onExportPng = (scale) => atFullRes(async () => {
     const k = [1, 2, 3].includes(scale) ? scale : 1
     const args = buildArgs()
     await warmExportFonts(args.layers)
     /* rasterScale bakes snapshot/redraw rasters (2d loops, video frames)
      * inside the SVG at k× so they stay crisp when the whole SVG scales. */
     downloadComposePng(buildLayersSvg({ ...args, rasterScale: k }), `compose-${canvasW * k}x${canvasH * k}-${Date.now().toString(36)}.png`, k)
-  }
+  })
 
   /* Render the current frame at an ARBITRARY aspect preset + @Nx scale to a
    * PNG Blob (no download) — the batch-export matrix loops this. The aspect
@@ -167,7 +226,7 @@ export function useComposeFile() {
    * is paused for the run so every size captures the SAME live moment, then
    * restored. `onProgress(done, total)` drives the N/M counter; filenames
    * encode preset+scale (e.g. `compose-9x16@2x.png`). */
-  const runBatchExport = async (jobs, onProgress) => {
+  const runBatchExport = (jobs, onProgress) => atFullRes(async () => {
     if (!jobs?.length) return
     const wasPlaying = transport.isPlaying()
     if (wasPlaying) transport.pause()
@@ -187,7 +246,7 @@ export function useComposeFile() {
     } finally {
       if (wasPlaying) transport.play()
     }
-  }
+  })
 
   /* Bake exactly one transport loop to webm, fully OFFLINE: seek t = i/N per
    * frame, rasterize the resolved frame SVG onto a scratch canvas, and encode
@@ -202,7 +261,7 @@ export function useComposeFile() {
    * transport t + play state are restored after the bake.
    * ponytail: Mediabunny (dynamic import, code-split) — supersedes webm-muxer.
    * WebCodecs-gated — Safari no-ops until it ships VideoEncoder. */
-  const onExportWebm = async (scale, onProgress) => {
+  const onExportWebm = (scale, onProgress) => atFullRes(async () => {
     if (typeof VideoEncoder === 'undefined') return
     const k = [1, 2, 3].includes(scale) ? scale : 1
     /* Warm text + kinetic fonts once — every baked frame builds sync from
@@ -261,7 +320,7 @@ export function useComposeFile() {
       transport.seek(prevT)
       if (wasPlaying) transport.play()
     }
-  }
+  })
 
   /* Live record — capture whatever's happening on screen in REAL time
    * (transport running, params being tweaked), the complement to onExportWebm's
@@ -388,6 +447,8 @@ export function useComposeFile() {
     onSaveSettings, onLoadSettings, openOutputWindow, currentPresetId,
     /* the live frame as a spec — FilesDialog saves through it, so the dialog
      * never has to know what a frame is made of */
-    buildSpec,
+    buildSpec, buildSavedSpec,
+    /* the frame as a small cover — UrlIntents backfills a pre-cover file with it (plan 39 § 3.1) */
+    captureThumb,
   }
 }

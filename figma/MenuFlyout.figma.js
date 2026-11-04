@@ -4,6 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
+// variant float (2026-11-04): the panel's — a flyout row inside Menu variant="float" is float
 const label = instance.getString('label')
 const iconSwap = instance.getInstanceSwap('iconName')
 const icon = (iconSwap && typeof iconSwap.codeConnectId === 'function' && iconSwap.codeConnectId()) || 'layout'

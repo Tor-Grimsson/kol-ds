@@ -1,4 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { mergeRemote } from './mergeRemote'
+import { UnauthorizedError, useLibrarySession, signOutLibrary } from './libraryApi'
 
 /**
  * Generator library — shared multi-asset store across the editor's modes.
@@ -119,6 +121,17 @@ function validatePreset(spec) {
     aspect:  spec.aspect  ?? '1:1',
     layers:  spec.layers,
     palette: spec.palette ?? null,
+    /* a custom canvas keeps its size (loadPreset reads it); `mode` says where the file opens and
+     * `morph` holds a morph file's steps (plan 09) — both were being dropped here */
+    ...(typeof spec.canvasW === 'number' && typeof spec.canvasH === 'number' ? { canvasW: spec.canvasW, canvasH: spec.canvasH } : {}),
+    ...(typeof spec.mode === 'string' ? { mode: spec.mode } : {}),
+    ...(spec.morph && typeof spec.morph === 'object' ? { morph: spec.morph } : {}),
+    /* the frame at save time, a small webp data URL (useComposeFile `captureThumb`) */
+    ...(typeof spec.thumb === 'string' ? { thumb: spec.thumb } : {}),
+    /* a SHIPPED file (shipped.js) — local only, listed by the Library under its group and category */
+    ...(spec.shipped === true ? { shipped: true } : {}),
+    ...(typeof spec.group === 'string' ? { group: spec.group } : {}),
+    ...(typeof spec.sub === 'string' ? { sub: spec.sub } : {}),
   }
 }
 
@@ -249,13 +262,32 @@ function loadFromStorage() {
  * outer copy (`storage` fires cross-tab only). This is the same function the provider seeds
  * from — validators and migrations included — so a host reads fresh with no provider and
  * no second copy of the storage key. */
-export { loadFromStorage as loadLibrary }
+export { loadFromStorage as loadLibrary, saveToStorage as saveLibrary }
+
+/* a shipped file never syncs (shipped.js) — its ops stay on this device; ids are `ship:…` */
+export const isShippedOp = (op) => op?.item?.shipped === true || String(op?.id ?? op?.item?.id ?? '').startsWith('ship:')
 
 function saveToStorage(state) {
   if (typeof window === 'undefined') return
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-  } catch { /* quota / private mode — silent */ }
+  } catch (e) {
+    /* quota / private mode — said out loud: a silent failure here is what left the Library empty (2026-10-24) */
+    console.warn('library: could not save to this browser —', e?.message || e)
+    return
+  }
+  /* every write says so, in-tab — `storage` fires cross-tab only, and Home reads with no provider */
+  window.dispatchEvent(new CustomEvent('kol:library'))
+}
+/* the library's write signal (saveToStorage dispatches `kol:library`) plus `storage` for other tabs */
+export const subscribeLibrary = (onChange) => {
+  window.addEventListener('kol:library', onChange)
+  window.addEventListener('storage', onChange)
+  return () => { window.removeEventListener('kol:library', onChange); window.removeEventListener('storage', onChange) }
+}
+/* the stored library as a string — a stable snapshot for `useSyncExternalStore` (it only changes on a write) */
+export const readLibraryRaw = () => {
+  try { return window.localStorage.getItem(STORAGE_KEY) } catch { return null }
 }
 
 const LibraryContext = createContext(null)
@@ -287,6 +319,8 @@ export function applyDuplicate(arr, id, newId) {
   const src = arr[at]
   const copy = { ...src, id: newId, name: `${src.name || 'Untitled'} copy`, savedAt: Date.now() }
   delete copy.updatedAt
+  /* a copy of a shipped file is the user's — it syncs and lists on Home */
+  delete copy.shipped
   return [...arr.slice(0, at + 1), copy, ...arr.slice(at + 1)]
 }
 
@@ -295,14 +329,44 @@ export function GeneratorLibraryProvider({ children }) {
 
   useEffect(() => { saveToStorage(library) }, [library])
 
-  useEffect(() => {
-    const onStorage = (e) => {
-      if (e.key !== STORAGE_KEY) return
-      setLibrary(loadFromStorage())
-    }
-    window.addEventListener('storage', onStorage)
-    return () => window.removeEventListener('storage', onStorage)
+  /* THE SYNC SEAM (plan 07, 2026-10-08). localStorage stays the session's truth; a backend
+   * `{ hydrate(), push(op) }` is a write-behind target connected on SIGN-IN, never on mount —
+   * a visitor is never asked for anything and the app runs exactly as before without one.
+   * Every explicit verb pushes one op after its local write, fire-and-forget: a failed push
+   * warns and is reconciled by the next sign-in's merge. The draft autosave lives in
+   * compose/state and never comes near this. clearSlot / clearAll / replaceAll are local bulk
+   * resets and push nothing. */
+  const libRef = useRef(library)
+  libRef.current = library
+  const backendRef = useRef(null)
+  const [syncState, setSyncState] = useState('off')
+  const push = useCallback((op) => {
+    const b = backendRef.current
+    if (!b || isShippedOp(op)) return
+    b.push(op).catch((e) => {
+      if (e instanceof UnauthorizedError) signOutLibrary()
+      if (typeof console !== 'undefined') console.warn('library sync: push failed —', e?.message || e)
+    })
   }, [])
+  /* the session is the rail's (libraryApi.js); this provider follows it: hydrate + merge when it
+   * appears or when this provider mounts under one, drop the backend when it goes */
+  const session = useLibrarySession()
+  useEffect(() => {
+    if (!session) { backendRef.current = null; setSyncState('off'); return undefined }
+    let alive = true
+    session.backend.hydrate().then((rows) => {
+      if (!alive) return
+      const { next, pushes } = mergeRemote(libRef.current, rows)
+      backendRef.current = session.backend
+      setLibrary({ ...EMPTY, ...next })
+      setSyncState('on')
+      for (const op of pushes) push(op)
+    }).catch((e) => {
+      if (e instanceof UnauthorizedError) signOutLibrary()
+      if (typeof console !== 'undefined') console.warn('library sync: hydrate failed —', e?.message || e)
+    })
+    return () => { alive = false }
+  }, [session, push])
 
   const addItem = useCallback((slot, spec) => {
     if (!SLOT_KEYS.includes(slot) || !spec) return null
@@ -323,15 +387,17 @@ export function GeneratorLibraryProvider({ children }) {
       ...validated,
     }
     setLibrary((prev) => ({ ...prev, [slot]: [...(prev[slot] ?? []), item] }))
+    push({ op: 'put', kind: slot, item })
     return id
-  }, [])
+  }, [push])
 
   const removeItem = useCallback((slot, id) => {
     setLibrary((prev) => ({
       ...prev,
       [slot]: (prev[slot] ?? []).filter((it) => it.id !== id),
     }))
-  }, [])
+    push({ op: 'remove', kind: slot, id })
+  }, [push])
 
   /* Replace an existing item's fields by id. Preserves the original `id`
    * and `savedAt`, sets `updatedAt: Date.now()`. Used by phase-8 named
@@ -347,22 +413,22 @@ export function GeneratorLibraryProvider({ children }) {
       }
       return
     }
+    const now = Date.now()
+    const rewrite = (it) => ({
+      ...it,
+      ...(typeof spec.name === 'string' ? { name: spec.name } : {}),
+      ...validated,
+      id: it.id,
+      savedAt: it.savedAt,
+      updatedAt: now,
+    })
     setLibrary((prev) => ({
       ...prev,
-      [slot]: (prev[slot] ?? []).map((it) =>
-        it.id === id
-          ? {
-              ...it,
-              ...(typeof spec.name === 'string' ? { name: spec.name } : {}),
-              ...validated,
-              id: it.id,
-              savedAt: it.savedAt,
-              updatedAt: Date.now(),
-            }
-          : it
-      ),
+      [slot]: (prev[slot] ?? []).map((it) => (it.id === id ? rewrite(it) : it)),
     }))
-  }, [])
+    const current = (libRef.current[slot] ?? []).find((it) => it.id === id)
+    if (current) push({ op: 'put', kind: slot, item: rewrite(current) })
+  }, [push])
 
   /* RENAME — the name only. `updateItem` routes through the slot validator and
    * rewrites the whole spec, which is right for an overwrite and wrong for a
@@ -371,7 +437,22 @@ export function GeneratorLibraryProvider({ children }) {
   const renameItem = useCallback((slot, id, name) => {
     if (!SLOT_KEYS.includes(slot) || !id) return
     setLibrary((prev) => ({ ...prev, [slot]: applyRename(prev[slot] ?? [], id, name) }))
-  }, [])
+    const it = applyRename(libRef.current[slot] ?? [], id, name).find((x) => x.id === id)
+    if (it) push({ op: 'put', kind: slot, item: it })
+  }, [push])
+
+  /* COVER BACKFILL (plan 39 § 3.1) — the thumb only, for a file saved before covers existed. Like a
+   * rename it cannot fail validation and leaves `savedAt`/`updatedAt` alone, so the file keeps its
+   * place in RECENT. */
+  const setThumb = useCallback((slot, id, thumb) => {
+    if (!SLOT_KEYS.includes(slot) || !id || typeof thumb !== 'string') return
+    /* never a data URL for a shipped file — its cover is drawn on demand (FileCover) */
+    if ((libRef.current[slot] ?? []).find((x) => x.id === id)?.shipped) return
+    const put = (arr) => arr.map((it) => (it.id === id ? { ...it, thumb } : it))
+    setLibrary((prev) => ({ ...prev, [slot]: put(prev[slot] ?? []) }))
+    const it = put(libRef.current[slot] ?? []).find((x) => x.id === id)
+    if (it) push({ op: 'put', kind: slot, item: it })
+  }, [push])
 
   /* DUPLICATE — a real copy under a new id, `<name> copy`, saved NOW. Returns
    * the new id so the caller can select what it just made. The copy is taken
@@ -381,8 +462,10 @@ export function GeneratorLibraryProvider({ children }) {
     if (!SLOT_KEYS.includes(slot) || !id) return null
     const newId = newItemId()
     setLibrary((prev) => ({ ...prev, [slot]: applyDuplicate(prev[slot] ?? [], id, newId) }))
+    const copy = applyDuplicate(libRef.current[slot] ?? [], id, newId).find((x) => x.id === newId)
+    if (copy) push({ op: 'put', kind: slot, item: copy })
     return newId
-  }, [])
+  }, [push])
 
   const clearSlot = useCallback((slot) => {
     setLibrary((prev) => ({ ...prev, [slot]: [] }))
@@ -407,10 +490,12 @@ export function GeneratorLibraryProvider({ children }) {
     removeItem,
     updateItem,
     renameItem,
+    setThumb,
     duplicateItem,
     clearSlot,
     clearAll,
     replaceAll,
+    syncState,
     savePalette: (spec) => addItem('palette', spec),
     savePattern: (spec) => addItem('pattern', spec),
     saveType:    (spec) => addItem('type',    spec),
@@ -432,6 +517,7 @@ export function useGeneratorLibrary() {
       clearSlot:   () => {},
       clearAll:    () => {},
       replaceAll:  () => {},
+      syncState:   'off',
       savePalette: () => null,
       savePattern: () => null,
       saveType:    () => null,

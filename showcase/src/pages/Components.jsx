@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 import { ContentFilters, EmptyState, SegmentedToggle, SettingsMulti } from '@kolkrabbi/kol-component'
 import { useParams, useSearchParams } from 'react-router-dom'
 import HomeDoc from '../lib/HomeDoc.jsx'
+import CompositionDiagram from '../lib/CompositionDiagram.jsx'
+import { DocSection } from '@kolkrabbi/kol-workshop'
+import { LADDER } from './Library.jsx'
 import PreviewStage from '../lib/PreviewStage.jsx'
 import Fit from '../lib/Fit.jsx'
 import { groupComponents, FUNCTIONS, TOTAL, packageLabel } from '../nav/registry.js'
@@ -138,6 +141,9 @@ export default function Components({ tier, fn }) {
     <div className="flex flex-col gap-8">
       {/* THE HOME (2026-09-30): the space's and each tier's own markdown page, then the live wall */}
       <HomeDoc key={tier ?? fn ?? 'components'} id={tier ?? (fn ? `function-${fn}` : 'components')} />
+
+      {/* THE LADDER (2026-11-03) — what nests in what, the taxonomy's rule drawn */}
+      {!tier && !fn && <DocSection id="the-ladder" title="The ladder"><CompositionDiagram node={LADDER} /></DocSection>}
 
       {!tier && !fn && (
         <div className="flex items-center gap-3">

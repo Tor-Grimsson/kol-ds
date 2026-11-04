@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize, MediaLibrary } from '@kolkrabbi/kol-component'
-import { proxied, isVideoType, getMediaClient } from '../../library/mediaLibrary'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
 import AudioInputRow from '../../params/AudioInputRow'
@@ -13,8 +13,12 @@ import { saveClip } from '../../lib/clipStore'
 import { ensureWebcam } from '../../lib/webcam'
 import { ASPECTS } from '../aspects'
 import BatchExportModal from './BatchExportModal'
+import { useOpenTab } from '../openTab'
+import { currentView } from '../../mode'
 import { useControlSize, stripClamp } from '../../params/controlSize'
 import { Icon } from '@kolkrabbi/kol-icons'
+import MediaPickerDialog from '../../library/MediaPickerDialog'
+import { stillToDataUrl } from '../../lib/stillUpload'
 
 /**
  * EditorFooter — the tabbed rail footer, ported from the labs standard
@@ -41,6 +45,8 @@ const TABS = [
  * where it has the whole width. That takes the transport row out of the
  * drawer's width budget, so the drawer is the desktop rail's 264 again. */
 const TABS_TOUCH = TABS.filter((t) => t.value !== 'transport')
+const FOOTER_TABS = TABS.map((t) => t.label)
+const noTimeline = () => false
 
 /* Tailwind v4 doesn't scan node_modules, so an ARBITRARY value used only inside
  * a package (`h-[26px]`) never gets generated and the toggle collapses. Naming
@@ -94,9 +100,10 @@ function PhotoFileTab({ layer }) {
     const file = e.target.files?.[0]
     e.target.value = '' /* allow re-picking the same file */
     if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => patch({ src: reader.result, srcType: 'image' })
-    reader.readAsDataURL(file)
+    /* IN THE FILE, DOWNSCALED (plan 26 § 13): audit F1 moved this to the clip store because a raw
+     * 5 MB data URL blew the localStorage quota — but a clip-store blob never reaches the saved file.
+     * `stillToDataUrl` is the middle: ~2048px webp, a few hundred KB, carried by the file. */
+    stillToDataUrl(file).then((src) => patch({ src, srcType: 'image' }))
   }
   const onPickVideo = (e) => {
     const file = e.target.files?.[0]
@@ -135,7 +142,7 @@ function PhotoFileTab({ layer }) {
       <Button tone="primary" size={cs} className="w-full" iconLeft="upload" iconSize={12} onClick={() => videoRef.current?.click()}>
         Upload video
       </Button>
-      <Button tone="primary" size={cs} className="w-full" iconLeft="image" iconSize={12} onClick={() => setPickerOpen(true)}>
+      <Button tone="primary" size={cs} className="w-full" iconLeft="nav-library" iconSize={12} onClick={() => setPickerOpen(true)}>
         From library
       </Button>
       <Button tone="primary" size={cs} className="w-full" iconLeft="camera" iconSize={12} onClick={onWebcam}>
@@ -147,7 +154,7 @@ function PhotoFileTab({ layer }) {
         </Button>
       )}
       {/* the DS modal library (2026-10-07) — the editor's own picker is retired; a media layer takes image or video */}
-      <MediaLibrary variant="modal" open={pickerOpen} client={getMediaClient()} accept={['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
+      <MediaPickerDialog open={pickerOpen} accept={['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
     </div>
   )
 }
@@ -175,23 +182,10 @@ function SettingsFileTab({ onSaveSettings, onLoadSettings, onSave, currentPreset
         Load from file
       </Button>
       <input ref={fileRef} type="file" accept="application/json,.json" className="hidden" onChange={onPick} />
-      {err && <span className="kol-helper-10 text-ui-error">{err}</span>}
-      {/* kol Divider's h-px never generates (Tailwind skips node_modules) —
-          use the footer's own border-t divider idiom instead. */}
-      <div className="border-t border-oq-08 my-1" />
-      <Button tone="primary" size={cs} className="w-full" onClick={onSave}>
-        {currentPresetId ? 'Save' : 'Save…'}
-      </Button>
-      {/* Save as… opens the dialog — see MenuTop */}
-      <Button tone="primary" size={cs} className="w-full" onClick={() => openFiles({ focusName: true })}>
-        Save as…
-      </Button>
-      {/* Import and export live in the dialog too — these two buttons stay
-          because they are one click and the dialog is the place you go when
-          one click is not what you wanted. */}
-      <Button tone="primary" size={cs} className="w-full" onClick={() => openFiles()}>
-        Files…
-      </Button>
+      {err && <span className="kol-mono-10 text-ui-error">{err}</span>}
+      {/* Save… · Save as… · Files… left this tab 2026-10-09 (audit C2): they are the File MENU's
+          verbs, and two homes for one verb set drift. The tab keeps what the menu does not have —
+          the on-disk import/export above and the audio source below. */}
     </div>
   )
 }
@@ -205,12 +199,22 @@ export default function EditorFooter() {
    * Transport tab, the touch ▶ sheet, the collapsed dock's ▶ — only exist when the motion pack is
    * loaded. `/core` has no motion and shows no time controls. */
   const TransportBar = pack('motion')?.TransportBar ?? null
-  const tabs = (touch || !TransportBar) ? TABS_TOUCH : TABS
+  /* THE EDITOR SHOWS TRANSPORT ONLY WITH THE TIMELINE (plan 29 § 9, the user: "transport doesnt need
+   * to show by default, just with the timeline"): the tab joins while the dock is up. Labs keeps it
+   * — its stage loop plays on the transport whether or not a track exists. */
+  const timelineUp = (pack('motion')?.useTimelineUp ?? noTimeline)()
+  /* …AND THE WHOLE FOOTER WITH IT (plan 30 § 6, the user: "not out of editor, just out of default,
+   * if you want it then it comes with the transport and timeline"): in the editor the strip is down
+   * until the timeline is up, then Transport · Output · File come together. Labs keeps it always. */
+  const footerDown = currentView() === 'editor' && !!TransportBar && !timelineUp  /* no motion pack, no timeline: Output · File stay */
+  const showTransport = !!TransportBar && !touch && (currentView() !== 'editor' || timelineUp)
+  const tabs = showTransport ? TABS : TABS_TOUCH
   /* ON TOUCH THE FOOTER IS ONE ROW UNTIL A TAB IS OPENED (2026-10-05): the rail is a sheet half
    * the display high there, and Output's eight controls standing open took all of it. No tab is
    * lit at rest; a tap opens one and the same tap closes it. */
-  const [tab, setTab] = useState(touch ? null : (TransportBar ? 'transport' : 'output'))
-  const [transportOpen, setTransportOpen] = useState(false)
+  const [tab, setTab] = useState(touch ? null : (showTransport || currentView() === 'editor' ? 'transport' : 'output'))
+  /* the dock went away under an open Transport tab — fall back to Output */
+  useEffect(() => { if (tab === 'transport' && !showTransport && !touch && !footerDown) setTab('output') }, [tab, showTransport, touch, footerDown])
   const [pngScale, setPngScale] = useState(1)
   const [batchOpen, setBatchOpen] = useState(false)
   const [recording, setRecording] = useState(false)
@@ -228,6 +232,15 @@ export default function EditorFooter() {
    * rail teardown) — onRecordStop reads the hook-stable recorder ref, so the
    * closure is never stale. */
   useEffect(() => () => { onRecordStop() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* Window › Transport · Output · File and File › Batch export… (plan 28) */
+  /* on touch the phone nav's More opens a tab and the same row closes it (plan 41 W4) */
+  useOpenTab(FOOTER_TABS, useCallback((t) => setTab((cur) => (touch && cur === t.toLowerCase() ? null : t.toLowerCase())), [touch]))
+  useEffect(() => {
+    const on = () => setBatchOpen(true)
+    window.addEventListener('kol:open-batch-export', on)
+    return () => window.removeEventListener('kol:open-batch-export', on)
+  }, [])
 
   const toggleRecord = async () => {
     if (recording) { await onRecordStop(); setRecording(false); return }
@@ -254,121 +267,15 @@ export default function EditorFooter() {
     .map((a) => ({ value: a.id, label: a.label }))
 
   /* Figma-style @Nx resolution multiplier (labs SCALE_OPTIONS shape). */
-  const scaleOptions = [1, 2, 3].map((k) => ({ value: k, label: `@${k}x · ${canvasW * k}` }))
+  const scaleOptions = [1, 2, 3].map((k) => ({ value: k, label: `@${k}x · ${canvasW * k} × ${canvasH * k}` }))
 
   const selectedLayer = selectedId && selectedId !== 'canvas' ? findLayerDeep(layers, selectedId) : null
   const photoLayer = selectedLayer?.type === 'photo' ? selectedLayer : null
 
-  /* THE COLLAPSED DOCK — the left rail's pinned row, mirrored. The rule runs
-     the full rail width out past the padding (`-mx-2`, as NavRail's does), and
-     one glyph sits in a 32px box so it lands on the same x as the left rail's. */
-  if (collapsed) {
-    return (
-      <div className="flex flex-col px-2 pb-4">
-        <div className="self-stretch -mx-2 border-t border-oq-08 mb-2" />
-        {TransportBar && (
-          <Tooltip label={playing ? 'Pause' : 'Play'} shortcut="Space">
-            <Button tone="ghost" size="md" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'}
-              onClick={playing ? pause : play} className="self-center" />
-          </Tooltip>
-        )}
-      </div>
-    )
-  }
-
-  return (
-    <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 20px 24px 20px' }}>
-      <div className="flex items-center gap-2">
-        {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
-        {/* the default strip — raised cells, dividers, the selected one on the ground — filling
-          * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs).
-          * ON TOUCH THE TRANSPORT IS ITS FIRST CELL (2026-10-06; the user: "transport new layout
-          * uneven"): a filled ▶ square stood beside the strip as a second shape; now one strip,
-          * the ▶ cell lit while the transport sheet is up. */}
-        <SegmentedToggle
-          value={touch && transportOpen ? 'transport-sheet' : tab}
-          onChange={(v) => { if (v === 'transport-sheet') { setTransportOpen((o) => !o); return } setTab((t) => (touch && t === v ? null : v)) }}
-          options={touch && TransportBar ? [{ value: 'transport-sheet', label: <Icon name="play" size={glyphSize(cs, true)} />, ariaLabel: 'Transport' }, ...tabs] : tabs}
-          size={cs}
-          className={`flex-1 min-w-0 ${cs === 'sm' ? TOGGLE_FIX : (stripClamp(cs) ?? '')}`.trim()}
-        />
-      </div>
-      {/* stays mounted hidden on desktop so playback chrome never re-inits on a
-          tab switch; on touch the bar lives in the sheet below */}
-      {TransportBar && (
-        <div className={tab === 'transport' ? undefined : 'hidden'}>
-          <TransportBar size={cs} />
-        </div>
-      )}
-      {touch && TransportBar && transportOpen && (
-        <div
-          className="fixed inset-x-0 bottom-0 flex items-center gap-3 border-t border-oq-08 bg-surface-primary px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]"
-          /* over the sheet it rises from, UNDER the shell's nav drawer and its scrim (kol-shell:
-             the scrim is sticky − 1). At `--kol-z-modal` it stood on top of an open drawer
-             (2026-10-05). */
-          style={{ zIndex: 'calc(var(--kol-z-sticky) - 2)' }}
-        >
-          <div className="flex-1 min-w-0"><TransportBar size={cs} /></div>
-          <Tooltip label="Close transport"><Button variant="nav" size={cs} iconOnly="x" aria-label="Close transport" onClick={() => setTransportOpen(false)} /></Tooltip>
-        </div>
-      )}
-      {tab === 'output' && (
-        <div className="flex flex-col gap-3">
-          {/* LabeledControlSection, not Section — the rail's one section
-              organism (eyebrow + 8px rows); Section's label was the
-              sentence-case helper the estate stopped writing */}
-          <LabeledControlSection label="Aspect">
-            <Dropdown size={cs} variant="subtle" className="w-full" options={aspectOptions} value={aspect} onChange={setAspect} />
-          </LabeledControlSection>
-          <LabeledControlSection label="Export">
-            <div className="flex items-center gap-3">
-              {/* 'w-full' in className opts out of Dropdown's fixed inline width
-                  so flex-1 can actually size the control. */}
-              <Dropdown size={cs} variant="subtle" className="flex-1 w-full" options={scaleOptions} value={pngScale} onChange={setPngScale} />
-              <span className="kol-helper-10 text-meta whitespace-nowrap">{canvasW * pngScale} × {canvasH * pngScale} px</span>
-            </div>
-            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={() => onExportPng(pngScale)}>
-              Export PNG
-            </Button>
-            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={exportWebm}>
-              Export loop (webm)
-            </Button>
-            {/* Live capture — records the composed frame in real time (transport
-                running, params being tweaked), complementing the deterministic
-                loop bake above. */}
-            <Button tone={recording ? 'inverted' : 'primary'} size={cs} className="w-full" iconLeft={recording ? 'eye-on' : 'download'} iconSize={12} onClick={toggleRecord}>
-              {recording ? 'Stop recording' : 'Record'}
-            </Button>
-            {/* Chromeless output in its own tab — a clean surface to screen-
-                record with OS / tab capture (bypasses the in-app Record path). */}
-            <Button tone="primary" size={cs} className="w-full" iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
-              Open output window
-            </Button>
-            {/* Multi-size matrix — tick aspects × scales, bundle every PNG into
-                one .zip. */}
-            <Button tone="primary" size={cs} className="w-full" iconLeft="copy" iconSize={12} onClick={() => setBatchOpen(true)}>
-              Batch export
-            </Button>
-          </LabeledControlSection>
-        </div>
-      )}
-      {tab === 'file' && (
-        <>
-          {photoLayer
-            ? <PhotoFileTab layer={photoLayer} />
-            : (
-              <SettingsFileTab
-                onSaveSettings={onSaveSettings}
-                onLoadSettings={onLoadSettings}
-                onSave={onSave}
-                currentPresetId={currentPresetId}
-              />
-            )}
-          {/* Audio analyser input for the audio-band modulation sources —
-              File tab per labs (source: Off / Mic / File). */}
-          <AudioInputRow />
-        </>
-      )}
+  /* the batch modal and the bake overlay outlive the strip — File › Batch export… and a running bake
+     work with the footer down (plan 30 § 6) */
+  const modals = (
+    <>
       {webmProgress && (
         /* DS overlay, closeButton off — a bake is not dismissible (ruled
            2026-08-27; it was a hand-rolled scrim at z-[1000] that dismissed
@@ -392,6 +299,114 @@ export default function EditorFooter() {
         baseAspect={aspect}
         defaultScale={pngScale}
       />
+    </>
+  )
+  if (footerDown) return modals
+
+  /* THE COLLAPSED DOCK — the left rail's pinned row, mirrored. The rule runs
+     the full rail width out past the padding (`-mx-2`, as NavRail's does), and
+     one glyph sits in a 32px box so it lands on the same x as the left rail's. */
+  if (collapsed) {
+    return (
+      <div className="flex flex-col px-2 pb-4">
+        <div className="self-stretch -mx-2 border-t border-oq-08 mb-2" />
+        {TransportBar && (
+          <Tooltip label={playing ? 'Pause' : 'Play'} shortcut="Space">
+            <Button tone="ghost" size="md" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'}
+              onClick={playing ? pause : play} className="self-center" />
+          </Tooltip>
+        )}
+        {modals}
+      </div>
+    )
+  }
+
+  /* touch, nothing opened from More: no foot at all (an empty bordered block otherwise) */
+  if (touch && !tab) return <>{modals}</>
+
+  return (
+    <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 16px 20px' }}>
+      {/* ON TOUCH THE STRIP IS GONE (plan 41 W4, frame E): Output and File are rows in the phone nav's
+          More, so the sheet's foot shows only the tab that was opened — or nothing */}
+      {!touch && <div className="flex items-center gap-2">
+        {/* the 26px pin is 'sm' geometry — above it the strip is on the ladder */}
+        {/* the default strip — raised cells, dividers, the selected one on the ground — filling
+          * the row, as fxr drew it (inspector rebuild 2026-09-27: `filled` read as bare tabs).
+          * ON TOUCH THE TRANSPORT IS ITS FIRST CELL (2026-10-06; the user: "transport new layout
+          * uneven"): a filled ▶ square stood beside the strip as a second shape; now one strip,
+          * the ▶ cell lit while the transport sheet is up. */}
+        {/* ON TOUCH THE TRANSPORT LEFT THE STRIP (plan 15 § 2): it is the floating play button over the
+          * canvas (`TransportFab`, the motion pack's `canvas.overlay`), so the row is Output · File. */}
+        {/* THE STRIP STAYS A SEGMENTEDTOGGLE on the desk too (the user, 2026-10-09 — plan 23's
+          * underline TabsRow, spec R3.1, reverted). On touch a second tap on a cell closes its sheet. */}
+        <SegmentedToggle
+          value={tab}
+          onChange={(v) => (touch ? setTab((t) => (t === v ? null : v)) : setTab(v))}
+          options={tabs}
+          size={cs}
+          className={`flex-1 min-w-0 ${stripClamp(cs) ?? ''}`.trim()}
+        />
+      </div>}
+      {/* stays mounted hidden on desktop so playback chrome never re-inits on a
+          tab switch; on touch the bar lives in the sheet below */}
+      {TransportBar && !touch && (
+        <div className={tab === 'transport' ? undefined : 'hidden'}>
+          <TransportBar size={cs} />
+        </div>
+      )}
+      {tab === 'output' && (
+        <div className="flex flex-col gap-3">
+          {/* LabeledControlSection, not Section — the rail's one section
+              organism (eyebrow + 8px rows); Section's label was the
+              sentence-case helper the estate stopped writing */}
+          <LabeledControlSection label="Aspect">
+            <Dropdown size={cs} variant="subtle" className="w-full" options={aspectOptions} value={aspect} onChange={setAspect} />
+          </LabeledControlSection>
+          <LabeledControlSection label="Export">
+            <Dropdown size={cs} variant="subtle" className="w-full" options={scaleOptions} value={pngScale} onChange={setPngScale} />
+            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={() => onExportPng(pngScale)}>
+              Export PNG
+            </Button>
+            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={exportWebm}>
+              Export loop (webm)
+            </Button>
+            {/* Live capture — records the composed frame in real time (transport
+                running, params being tweaked), complementing the deterministic
+                loop bake above. */}
+            <Button tone={recording ? 'inverted' : 'primary'} size={cs} className="w-full" iconLeft={recording ? 'eye-on' : 'download'} iconSize={12} onClick={toggleRecord}>
+              {recording ? 'Stop recording' : 'Record'}
+            </Button>
+            {/* Chromeless output in its own tab — a clean surface to screen-
+                record with OS / tab capture (bypasses the in-app Record path). */}
+            <Button tone="primary" size={cs} className="w-full" iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
+              Open output window
+            </Button>
+            {/* Multi-size matrix — tick aspects × scales, bundle every PNG into
+                one .zip. */}
+            <Button tone="primary" size={cs} className="w-full" iconLeft="layers" iconSize={12} onClick={() => setBatchOpen(true)}>
+              Batch export
+            </Button>
+          </LabeledControlSection>
+        </div>
+      )}
+      {tab === 'file' && (
+        <>
+          {photoLayer
+            ? <PhotoFileTab layer={photoLayer} />
+            : (
+              <SettingsFileTab
+                onSaveSettings={onSaveSettings}
+                onLoadSettings={onLoadSettings}
+                onSave={onSave}
+                currentPresetId={currentPresetId}
+              />
+            )}
+          {/* Audio analyser input for the audio-band modulation sources —
+              File tab per labs (source: Off / Mic / File). */}
+          <AudioInputRow />
+        </>
+      )}
+      {modals}
     </div>
   )
 }

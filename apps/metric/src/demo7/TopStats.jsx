@@ -4,10 +4,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Button, Tooltip, SegmentedToggle, TabsRow, MenuMore } from '@kolkrabbi/kol-component'
-import { LineChart } from '@kolkrabbi/kol-dashboards'
+import { LineChart, Card, StatTiles } from '@kolkrabbi/kol-dashboards'
 import { useNine, useTen, useEleven } from './nine.js'
 import { dailyToSeries } from './Sections.jsx'
-import { CardHead } from './Report.jsx'
 import { umami, useAsync, filterParams, bucketsOf, fmtNum, fmtDuration, fmtRange, fmtBucket, fmtTick, comparisonOf, isDevHost } from './data.js'
 
 const TZ = Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -93,7 +92,7 @@ const COMBINED = [
 const ChartTitle11 = ({ title, view, setView, picked, setPicked }) => (
   /* the chips centred between the tile row's line and this header's rule: the card's 24 above, 24 under them (pb-6) */
   <div className="pb-4">
-    <CardHead title={view === 'combined' ? 'Combined' : title} rightPad="pb-6" right={<div className="flex items-center gap-1">
+    <Card.Head title={view === 'combined' ? 'Combined' : title} rightPad="pb-6" right={<div className="flex items-center gap-1">
       <TabsRow variant="chip" size="sm" value={view} onChange={setView} ariaLabel="Chart" tabs={[{ id: 'trend', label: title }, { id: 'combined', label: 'Combined' }]} />
       <MenuMore label="Series" minWidth={200}
         items={COMBINED.map((c) => {
@@ -134,7 +133,7 @@ function Combined({ picked, period, unit, filters, weekStart, onPick }) {
 const ChartTitle = ({ title, period, view, setView }) => setView ? (
   /* /demo-10: the same header as every other card */
   <div className="pb-4">
-    <CardHead title={view === 'split' ? 'New / returning / bounced' : title} right={<>
+    <Card.Head title={view === 'split' ? 'New / returning / bounced' : title} right={<>
       <TabsRow variant="chip" size="sm" value={view} onChange={setView} ariaLabel="Chart" tabs={[{ id: 'trend', label: title }, { id: 'split', label: 'New / returning / bounced' }]} />
       <span className="kol-helper-12 text-fg-48">{view === 'split' ? 'Last 30d' : fmtRange(period)}</span>
     </>} />
@@ -423,42 +422,8 @@ function ColourStats({ period, unit, filters, metric, setMetric, onPickBucket, w
 
   return (
     <section className={`${eleven ? 'bg-surface-secondary flex flex-col' : 'bg-surface-secondary'} rounded overflow-hidden`} style={nine && !eleven ? { border: '1px solid var(--kol-oq-08)', borderRadius: 'var(--kol-radius-sm)' } : undefined}>
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 border-b border-fg-08 -ml-px w-[calc(100%+1px)]" style={{ ...(nine ? { borderColor: 'var(--kol-oq-08)' } : {}) }}>
-        {tiles.map((t, i) => {
-          const on = t.key === pick.key
-          return (
-            <Button variant="bare" key={t.key} onClick={() => setMetric(t.key)}
-              className={`text-left flex flex-col gap-3 transition-colors ${nine ? '' : on ? 'text-fg-96' : 'text-fg-56 hover:text-fg-88'}`}
-              style={{
-                padding: 'var(--kol-pad-card-lg)',
-                ...(nine ? { color: on ? 'var(--kol-fg-emphasis)' : 'var(--kol-fg-meta)', marginBottom: -1 } : {}),
-                background: on ? (eleven ? 'var(--kol-oq-08)' : 'var(--kol-oq-04)') : 'transparent',
-                boxShadow: `inset 0 -2px 0 ${on ? t.color : 'transparent'}, inset 1px 0 0 var(--kol-oq-08)`,
-              }}>
-              {nine ? (
-                /* the design canvas's tile, verbatim (Main.dc.html: helper-12 label at 0.06em, a 24/500 value) */
-                <>
-                  <span className="kol-helper-12 flex items-center gap-2 uppercase whitespace-nowrap overflow-hidden text-ellipsis" style={{ letterSpacing: '0.06em' }}>
-                    <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: t.color }} />{t.label}
-                  </span>
-                  <span className="flex flex-wrap items-baseline whitespace-nowrap" style={{ gap: '4px 8px' }}>
-                    <span className="kol-mono-20" style={{ fontSize: 24, fontWeight: 500, lineHeight: 1, color: 'var(--kol-surface-on-primary)' }}>{t.now != null ? t.fmt(t.now) : '…'}</span>
-                    <Delta k={t.dk} now={t.now} then={t.then} canvas />
-                  </span>
-                </>
-              ) : (<>
-              <span className="flex items-center gap-2 kol-helper-14 uppercase tracking-wide">
-                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: t.color }} />{t.label}
-              </span>
-              <span className="flex items-baseline gap-2">
-                <span className="kol-mono-24 text-fg-96">{t.now != null ? t.fmt(t.now) : '…'}</span>
-                <Delta k={t.dk} now={t.now} then={t.then} />
-              </span>
-              </>)}
-            </Button>
-          )
-        })}
-      </div>
+      <StatTiles size="lg" selected={pick.key} onSelect={setMetric}
+        items={tiles.map((t) => ({ key: t.key, label: t.label, color: t.color, value: t.now != null ? t.fmt(t.now) : '…', delta: <Delta k={t.dk} now={t.now} then={t.then} canvas /> }))} />
       <div className={eleven ? 'flex-1 min-h-0 flex flex-col' : ''} style={{ padding: 'var(--kol-pad-card-lg)' }}>
         {eleven ? <ChartTitle11 title={pick.host ? `${pick.host} visitors` : pick.label} view={view} setView={setView} picked={picked} setPicked={setPicked} />
           : nine && <ChartTitle title={pick.host ? `${pick.host} visitors` : pick.label} period={period} view={view} setView={ten ? setView : null} />}

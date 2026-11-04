@@ -59,7 +59,7 @@ function palettePx(v, p) {
 
 export const r2_frac_01_flame            = {
   id: 'r2-frac-01-flame',
-  name: 'FLAME FRACTAL',
+  name: 'Flame fractal',
   repo: 'Scott Draves 1992 — flam3.com/flame_draves.pdf',
   summary: 'IFS with nonlinear variations (sinusoidal, spherical, swirl) rendered via log-density histogram. Affine map angles drift over time producing living, breathing filaments.',
   helps: 'Cross-scale fractal detail — zoom into any tendril and sub-tendrils appear. Log-density tone map reveals filament structure only inside the glyph.',
@@ -77,7 +77,7 @@ export const r2_frac_01_flame            = {
     const mapHue = Array.from({ length: N }, (_, i) => i / N)
 
     // persistent log-density histogram — decays slowly instead of clearing
-    const RES = 160
+    const RES = 480 /* was 160 — plan 49 5.3 */
     const hist = new Float32Array(RES * RES * 2) // [freq, color] interleaved
     const DECAY = 0.96
 

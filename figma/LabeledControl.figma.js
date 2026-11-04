@@ -4,10 +4,12 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "panel": "panel" })
+const variant = instance.getEnum('variant', { "default": "default", "panel": "panel", "float": "float" })
 
 export default {
-  example: figma.code`<LabeledControl label="Columns" variant="${variant}">{control}</LabeledControl>`,
+  example: variant === 'float'
+    ? figma.code`<LabeledControl variant="float" label="Email"><Input variant="float" value={value} onChange={setValue} width="100%" /></LabeledControl>`
+    : figma.code`<LabeledControl label="Columns" variant="${variant}">{control}</LabeledControl>`,
   imports: ["import { LabeledControl } from \"@kolkrabbi/kol-component\""],
   id: 'LabeledControl',
 }

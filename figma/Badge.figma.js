@@ -4,12 +4,14 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "secondary": "secondary", "outline": "outline", "success": "success", "warning": "warning", "error": "error", "info": "info" })
+const variant = instance.getEnum('variant', { "default": "default", "secondary": "secondary", "outline": "outline", "success": "success", "warning": "warning", "error": "error", "info": "info", "float": "float" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
 const label = instance.getString('label')
 
 export default {
-  example: figma.code`<Badge variant="${variant}" size="${size}">${label}</Badge>`,
+  example: variant === 'float'
+    ? figma.code`<Badge variant="float">${label}</Badge>`
+    : figma.code`<Badge variant="${variant}" size="${size}">${label}</Badge>`,
   imports: ["import { Badge } from \"@kolkrabbi/kol-component\""],
   id: 'Badge',
 }

@@ -14,7 +14,7 @@ const S = {
 /* ONE ROW, THE VARIANT IN THE PICKER (2026-10-09 — user: "why are we not using a dropdown for
  * variants on the showcase? … just show default and give options to variants, thats the rule").
  * The five used to stack. */
-export const variants = ['default', 'catalog', 'article', 'work', 'typeface']
+export const variants = ['default', 'catalog', 'article', 'work', 'typeface', 'float']
 /* `tone` (ContentCardRowTone, kol-fxr 2026-10-22): the file row on two tones, rest + hover from the bundle */
 export const states = ['specimen', 'tone', 'long title']
 
@@ -22,6 +22,13 @@ export const states = ['specimen', 'tone', 'long title']
 const glyph = <div className="flex h-full w-full items-center justify-center bg-white text-black"><Icon name="layout" size={20} /></div>
 
 export default function ContentRowPreview({ variant = 'default', state = 'specimen' }) {
+  /* float (W8 row 124): the link row — title · url · ↗ */
+  if (variant === 'float') return (
+    <div className="flex w-full max-w-[848px] flex-col gap-2">
+      <ContentRow variant="float" title="Instagram · @kolkrabbi_" url="www.instagram.com/kolkrabbi_" href="https://www.instagram.com/kolkrabbi_" />
+      <ContentRow variant="float" title="Are.na · Float studies" url="www.are.na/kolkrabbi/float" href="https://www.are.na/kolkrabbi/float" />
+    </div>
+  )
   if (state === 'tone') return (
     <div className="flex w-full max-w-[40rem] flex-col gap-4">
       <ContentRow variant="default" tone="grey" onClick={() => {}} title={S.title} date={S.date} size={S.size} />

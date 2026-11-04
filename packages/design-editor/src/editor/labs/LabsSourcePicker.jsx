@@ -1,11 +1,13 @@
 import { useRef, useState } from 'react'
-import { Button, SegmentedToggle, MediaLibrary } from '@kolkrabbi/kol-component'
+import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
 import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
-import { proxied, isVideoType, getMediaClient } from '../library/mediaLibrary'
+import { proxied, isVideoType } from '../library/mediaLibrary'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { saveClip } from '../lib/clipStore'
 import { ensureWebcam } from '../lib/webcam'
 import { useControlSize, stripClamp } from '../params/controlSize'
+import MediaPickerDialog from '../library/MediaPickerDialog'
+import { stillToDataUrl } from '../lib/stillUpload'
 
 /* SVG is `image` by kind in the DS library, so a vector-only door reads the object itself. */
 const isSvgObject = (o) => /\.svg$/i.test(o.key) || /svg/i.test(o.contentType || '')
@@ -56,9 +58,8 @@ function useSourceInput(layer) {
       patch({ src: URL.createObjectURL(file), srcType: 'video' })
       return
     }
-    const reader = new FileReader()
-    reader.onload = () => patch({ src: reader.result, srcType: 'image' })
-    reader.readAsDataURL(file)
+    /* downscaled before it goes in the file (plan 26 § 13) — this read the raw photo, uncapped */
+    stillToDataUrl(file).then((src) => patch({ src, srcType: 'image' }))
   }
 
   const onLibraryPick = (url, { contentType } = {}) => {
@@ -80,7 +81,7 @@ function useSourceInput(layer) {
       <input ref={fileRef} type="file" accept={svgMode ? '.svg,image/svg+xml' : 'image/*,video/*'} className="hidden" onChange={onUpload} />
       {/* THE DS MODAL LIBRARY (2026-10-07) — the editor's own picker is retired; `accept` is what this
          door can take: vector only for an SVG source (`image` by kind, so a function), else image or video. */}
-      <MediaLibrary variant="modal" open={pickerOpen} client={getMediaClient()} accept={svgMode ? isSvgObject : ['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
+      <MediaPickerDialog open={pickerOpen} accept={svgMode ? isSvgObject : ['image', 'video']} onClose={() => setPickerOpen(false)} onSelect={onLibraryPick} />
     </>
   )
   return {
@@ -107,7 +108,7 @@ export function SourceStrip({ layer }) {
   const src = useSourceInput(layer)
   return (
     <>
-      <SegmentedToggle
+      <SegmentedToggle tone="sunken"
         value={null}
         onChange={(v) => ({ library: src.openLibrary, upload: src.openUpload, camera: src.openCamera }[v]?.())}
         options={src.svgMode ? SVG_SOURCE_OPTIONS : SOURCE_OPTIONS}
@@ -152,7 +153,7 @@ export default function LabsSourcePicker({ layer }) {
 export function LabsSourceCard({ layer, title, onBack }) {
   useSheetChrome(onBack)
   return (
-    <div className="fixed inset-y-0 right-0 left-[var(--fxr-rail,0px)] kol-overlay-scrim flex flex-col items-center overflow-y-auto p-6" style={{ zIndex: 'var(--kol-z-modal)' }}>
+    <div className="fixed inset-y-0 right-0 left-[var(--fxr-rail,0px)] kol-overlay-scrim flex flex-col items-center overflow-y-auto p-6" style={{ zIndex: 'calc(var(--kol-z-sticky) - 2)' }} /* under the nav drawer's scrim (sticky − 1) — on a phone the drawer opens OVER this chooser (plan 37 § 7.3) */>
       <div className="my-auto w-full max-w-sm rounded p-8 flex flex-col gap-6" style={{ background: 'var(--kol-surface-primary)' }}>
         <div className="flex flex-col gap-2">
           <span className="kol-eyebrow text-body">{title}</span>

@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
+import QuickLookHeader from './QuickLookHeader.jsx'
 
 /**
  * Modal — promise-based prompt + confirm + alert dialogs.
@@ -58,6 +59,17 @@ import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
  * `values` comes back on cancel too (the toggles as left), so a consumer can remember them either
  * way. Without `options`, confirm still resolves a plain boolean — existing callers untouched.
  *
+ * THE FLOAT (`variant: 'float'` on any call or on the provider, float-everything W6 rows 84 · 85 · 89 · 90, 2026-11-04 —
+ * kol-float--style 46:2795): the window on `kol-float-solid` at `--kol-float-window-r`, 24 in, 18 between its parts.
+ * A `header` (with its `icon`) draws `QuickLookHeader variant="float"` over the title; the title is the heading
+ * (`kol-float-section`… at 20: Inter 500), `body` a line under it in the hint ink; fields are float Inputs, toggles float
+ * ToggleCheckboxes; the actions sit apart — the quiet cancel at the left (`tone="ghost"`), the next step at the right
+ * (`inverted`, or `danger` when `tone: 'danger'` — the destructive confirm). Still a blocking task, so the scrim
+ * stays: the scrim rule is "only when blocking", and a prompt always blocks.
+ *
+ *   await confirm('Delete “Orbit field”?', { variant: 'float', header: 'Delete layer', icon: 'alert-triangle',
+ *     body: 'This removes the layer and its 4 keyframes from Scene 01.', tone: 'danger', okLabel: 'Delete layer', cancelLabel: 'Keep layer' })
+ *
  * Mounted once at the app root (BrandLayout). Renders into `document.body`
  * via portal, so it floats above any rail / scroll-context.
  */
@@ -69,6 +81,8 @@ const ModalCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/ModalCtx')] ??
  * hairline. Each modal keeps its own default (prompts bordered, Dialog lift) until he picks one. */
 const MODAL_VARIANTS = {
   lift: { className: 'kol-overlay-panel', style: {} },
+  /* float (W6, 2026-11-04): the float window — solid ground + the float shadow, the window radius, no edge */
+  float: { className: 'kol-float-solid !rounded-[var(--kol-float-window-r)] text-fg-emphasis', style: {} },
   bordered: { className: 'border border-fg-08', style: { background: 'var(--kol-surface-primary)', color: 'var(--kol-surface-on-primary)' } },
 }
 const modalVariant = (v, fallback) => MODAL_VARIANTS[v] ?? MODAL_VARIANTS[fallback]
@@ -83,20 +97,20 @@ export function ModalProvider({ children, variant = 'bordered' }) {
     })
   }, [])
 
-  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel, type = 'text', placeholder, variant } = {}) =>
-    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, type, placeholder, variant, resolve })),
+  const prompt = useCallback((title, defaultValue = '', { okLabel, cancelLabel, type = 'text', placeholder, variant, header, icon, body } = {}) =>
+    new Promise((resolve) => setState({ kind: 'prompt', title, defaultValue, okLabel, cancelLabel, type, placeholder, variant, header, icon, body, resolve })),
   [])
 
-  const confirm = useCallback((title, { okLabel, cancelLabel, options, variant } = {}) =>
-    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, options: options?.length ? options : null, variant, resolve })),
+  const confirm = useCallback((title, { okLabel, cancelLabel, options, variant, header, icon, body, tone } = {}) =>
+    new Promise((resolve) => setState({ kind: 'confirm', title, okLabel, cancelLabel, options: options?.length ? options : null, variant, header, icon, body, tone, resolve })),
   [])
 
-  const alert = useCallback((title, { okLabel, variant } = {}) =>
-    new Promise((resolve) => setState({ kind: 'alert', title, okLabel, variant, resolve })),
+  const alert = useCallback((title, { okLabel, variant, header, icon, body } = {}) =>
+    new Promise((resolve) => setState({ kind: 'alert', title, okLabel, variant, header, icon, body, resolve })),
   [])
 
-  const form = useCallback((title, fields = [], { okLabel, cancelLabel, variant } = {}) =>
-    new Promise((resolve) => setState({ kind: 'form', title, fields, okLabel, cancelLabel, variant, resolve })),
+  const form = useCallback((title, fields = [], { okLabel, cancelLabel, variant, header, icon, body } = {}) =>
+    new Promise((resolve) => setState({ kind: 'form', title, fields, okLabel, cancelLabel, variant, header, icon, body, resolve })),
   [])
 
   return (
@@ -112,6 +126,7 @@ export function ModalProvider({ children, variant = 'bordered' }) {
 
 function ModalView({ state, closeWith, variant }) {
   const look = modalVariant(variant, 'bordered')
+  const float = variant === 'float'
   const [val, setVal] = useState(state.defaultValue ?? '')
   const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
   const [fieldVals, setFieldVals] = useState(() => Object.fromEntries((state.fields ?? []).map((f) => [f.id, f.defaultValue ?? ''])))
@@ -194,25 +209,28 @@ function ModalView({ state, closeWith, variant }) {
         aria-modal="true"
         aria-labelledby="kol-modal-title"
         onMouseDown={(e) => e.stopPropagation()}
-        className={`kol-modal flex flex-col gap-4 p-5 rounded ${look.className}`}
+        className={float ? `kol-modal flex flex-col gap-[18px] p-6 ${look.className}` : `kol-modal flex flex-col gap-4 p-5 rounded ${look.className}`}
         style={{
           ...look.style,
           minWidth: 320,
           maxWidth: '90vw',
+          ...(float ? { width: 562 } : {}),
         }}
       >
+        {float && state.header && <QuickLookHeader variant="float" icon={state.icon} title={state.header} onClose={cancel} />}
         {/* kol-mono-12, not helper: dialog copy WRAPS, and helper's
           * line-height 1 is single-line chrome only (type protocol). */}
         {/* pre-line: an alert can carry a failure list, one per line */}
-        <p id="kol-modal-title" className="kol-mono-12 text-emphasis whitespace-pre-line">{state.title}</p>
+        <p id="kol-modal-title" className={float ? 'font-[family-name:var(--kol-font-family-float)] text-[20px] font-medium leading-[28px] text-fg-emphasis whitespace-pre-line' : 'kol-mono-12 text-emphasis whitespace-pre-line'}>{state.title}</p>
+        {float && state.body && <p className="kol-float-body text-fg-64 whitespace-pre-line">{state.body}</p>}
         {state.kind === 'prompt' && (
           <Input
             ref={inputRef}
             type={state.type}
             autoComplete={state.type === 'password' ? 'current-password' : undefined}
             placeholder={state.placeholder}
-            variant="outline"
-            size="sm"
+            variant={float ? 'float' : 'outline'}
+            size={float ? 'md' : 'sm'}
             value={val}
             onChange={(e) => setVal(e.target.value)}
             className="w-full"
@@ -226,8 +244,8 @@ function ModalView({ state, closeWith, variant }) {
             autoComplete={f.autoComplete}
             placeholder={f.placeholder}
             aria-label={f.placeholder ?? f.id}
-            variant="outline"
-            size="sm"
+            variant={float ? 'float' : 'outline'}
+            size={float ? 'md' : 'sm'}
             value={fieldVals[f.id]}
             onChange={(e) => setFieldVals((v) => ({ ...v, [f.id]: e.target.value }))}
             className="w-full"
@@ -240,18 +258,27 @@ function ModalView({ state, closeWith, variant }) {
                 key={o.id}
                 label={o.label}
                 hint={o.hint}
+                variant={float ? 'float' : undefined}
                 checked={values[o.id]}
                 onChange={(next) => setValues((v) => ({ ...v, [o.id]: next }))}
               />
             ))}
           </div>
         )}
+        {float ? (
+          /* the float's actions sit apart: recovery quiet at the left, the next step at the right */
+          <div className="flex items-center justify-between gap-3">
+            {state.kind !== 'alert' ? <Button variant="float" tone="ghost" size="md" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button> : <span />}
+            <Button variant="float" tone={state.tone === 'danger' ? 'danger' : 'inverted'} size="md" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
+          </div>
+        ) : (
         <div className="flex gap-2 justify-end">
           {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
           {/* inverted, not primary: since tone-is-the-ground-axis (2026-09-03) primary is the
             * dark ground, so OK drew the same as Cancel and nothing showed what Enter does */}
           <Button tone="inverted"  size="sm" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
         </div>
+        )}
       </div>
     </div>
   )
@@ -296,9 +323,20 @@ export function useModal() {
  * portal). Esc and a press on the scrim close it; Esc is left to an open float inside first.
  *
  *   <Dialog open={open} onClose={() => setOpen(false)} title="Filter by page" width={560}>…</Dialog>
+ *
+ * `variant="float"` (float-everything W6 rows 83 · 84 · 89, 2026-11-04 — kol-float--style 46:2655): the float window —
+ * `kol-float-solid` on `--kol-float-window-r`, 24 in, 18 between its parts, the title drawn as `QuickLookHeader
+ * variant="float"` (`icon` · title · − when `onMinimise` · ×) over the children. `blocking` (default true) keeps the
+ * scrim: a blocking task dims the scene, a utility window does not (row 89) — `blocking={false}` drops the scrim and the
+ * press-outside close and leaves the scene live (QuickLookFrame float is the utility window proper).
+ * @param {'lift'|'bordered'|'float'} [variant='lift']
+ * @param {string}   [icon]       float: the header's glyph
+ * @param {Function} [onMinimise] float: the − control
+ * @param {boolean}  [blocking=true]
  */
-export function Dialog({ open, onClose, title, width = 560, variant = 'lift', children }) {
+export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, children }) {
   const look = modalVariant(variant, 'lift')
+  const float = variant === 'float'
   useEffect(() => {
     if (!open) return undefined
     const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.kol-popover-float')) onClose() }
@@ -308,22 +346,23 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ch
   if (!open || typeof document === 'undefined') return null
   return createPortal(
     <div
-      onMouseDown={onClose}
-      className="kol-overlay-scrim"
+      onMouseDown={blocking ? onClose : undefined}
+      className={blocking ? 'kol-overlay-scrim' : 'pointer-events-none'}
       style={{ position: 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <div
         role="dialog"
-        aria-modal="true"
+        aria-modal={blocking ? 'true' : undefined}
         aria-label={title}
         data-dialog
         onMouseDown={(e) => e.stopPropagation()}
         /* THE OVERLAY PANEL (MetricRebuild, 2026-10-31 — user: the filter dialog read as "a borderless box floating
          * mid-page"): it painted the page's own surface behind an fg-08 hairline, so on a dark page it was the page.
          * `.kol-overlay-panel` is the lift every KOL overlay wears (oq-04, no border — the scrim is the edge). */
-        className={`kol-modal flex flex-col rounded max-h-[85vh] ${look.className}`}
+        className={float ? `kol-modal pointer-events-auto flex flex-col gap-[18px] p-6 max-h-[85vh] overflow-auto ${look.className}` : `kol-modal flex flex-col rounded max-h-[85vh] ${look.className}${blocking ? '' : ' pointer-events-auto'}`}
         style={{ ...look.style, width: `min(${width}px, calc(100vw - 32px))` }}
       >
+        {float && title && <QuickLookHeader variant="float" icon={icon} title={title} onMinimise={onMinimise} onClose={onClose} />}
         {children}
       </div>
     </div>,

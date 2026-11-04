@@ -9,6 +9,7 @@
 // loops via inspector dropdowns, not routes).
 
 import { loopDefaults } from './contract.js'
+import { TIME_PARAMS, TIME_DEFAULTS, VP_PARAMS, VP_DEFAULTS } from './lib/viewport.js'
 import { SHAPE_LOOPS, SHAPE_PRESETS } from './shape/presets.js'
 import { FIELD_LOOPS, FIELD_PRESETS } from './field/presets.js'
 import { PATTERN_LOOPS, PATTERN_PRESETS } from './pattern/presets.js'
@@ -18,6 +19,7 @@ import { PATTERNLOOP_PRESETS } from './patternloop/presets.js'
 /* Penrose = the labs generative-typography prototypes; round2 preset files
  * plug into penrose/presets.js (not here) — this import stays the only one. */
 import { PENROSE_LOOPS, PENROSE_PRESETS } from './penrose/presets.js'
+import gameOfLife from './life/gameOfLife.js'
 import { SCANLINE_LOOPS, SCANLINE_PRESETS } from './scanline/presets.js'
 import { OPTIC_LOOPS, OPTIC_PRESETS } from './optic/presets.js'
 import { ABSTRACT_LOOPS, ABSTRACT_PRESETS } from './abstract/presets.js'
@@ -25,6 +27,7 @@ import { MATH_LOOPS, MATH_PRESETS } from './math/presets.js'
 import { MODULATOR_LOOPS, MODULATOR_PRESETS } from './modulator/presets.js'
 import { DISTRESS_LOOPS, DISTRESS_PRESETS } from './distress/presets.js'
 import { PARATYPE_LOOPS, PARATYPE_PRESETS } from './paratype/presets.js'
+import { FLOW_LOOPS, FLOW_PRESETS } from './flow/presets.js'
 /* GL catalog is DATA ONLY (groups/defs/presets/schemas) — the three.js
  * engines behind it load lazily via gl/host.js when a layer renders. */
 import { GL_GROUPS, GL_LOOPS, GL_PRESETS_BY_GROUP, MESH_PRESETS } from './gl/catalog.js'
@@ -42,6 +45,8 @@ export const GROUPS = [
   { id: 'paratype', label: 'Para-type' },
   { id: 'modulator', label: 'Modulator' },
   { id: 'distress', label: 'Distressor' },
+  { id: 'flow', label: 'Flow' },
+  { id: 'lettergap', label: 'Letter gap' },
   ...GL_GROUPS,
 ]
 export const groupById = (id) => GROUPS.find((g) => g.id === id) || GROUPS[0]
@@ -49,30 +54,105 @@ export const groupById = (id) => GROUPS.find((g) => g.id === id) || GROUPS[0]
 const LOOPS = [
   ...SHAPE_LOOPS, ...FIELD_LOOPS, ...PATTERN_LOOPS, ...PENROSE_LOOPS,
   ...SCANLINE_LOOPS, ...OPTIC_LOOPS, ...ABSTRACT_LOOPS,
-  ...MATH_LOOPS, ...PARATYPE_LOOPS, ...MODULATOR_LOOPS, ...DISTRESS_LOOPS, ...GL_LOOPS,
+  ...MATH_LOOPS, ...PARATYPE_LOOPS, ...MODULATOR_LOOPS, ...DISTRESS_LOOPS, ...FLOW_LOOPS, ...GL_LOOPS, gameOfLife,
 ]
+/* THE TIME-SHAPE FOLD (plan 18 § 4): every def whose clock is `u` — 2d draws and the GL engines
+ * alike — carries the three time params (lib/viewport.js `TIME_PARAMS`), so the Animation tab shows
+ * them and the Motion Form scope rolls them. Not the Penrose sims. Idempotent under HMR. */
+for (const def of LOOPS) {
+  if (def?.group === 'penrose' || !def?.params || def.params.some((p) => p.key === 'vpTime')) continue
+  def.params = [...def.params, ...TIME_PARAMS]
+  if (def.defaults) Object.assign(def.defaults, TIME_DEFAULTS)
+}
+/* THE CAMERA REACHES EVERY 2D GENERATOR (plan 26 § 11): contract.js folds Spin · Zoom · Pulse ·
+ * Wobble onto shape + pattern-rules only, so field, the 55 Penrose sims, distress, paratype and the
+ * modulator had no whole-frame motion at all. contract.js itself calls a wrapping camera on a sim
+ * "still valid but un-schema'd" — schema'd here. Every 2d draw goes through drawLoopFrame, which
+ * applies it; identity defaults, so nothing that exists moves. Engines keep their own cameras. */
+const CAMERA_GROUPS = new Set(['field', 'penrose', 'distress', 'paratype', 'modulator'])
+for (const def of LOOPS) {
+  if (!CAMERA_GROUPS.has(def?.group) || def.kind === 'engine' || !def.params || def.params.some((p) => p.key === 'vpSpin')) continue
+  def.params = [...def.params, ...VP_PARAMS]
+  if (def.defaults) Object.assign(def.defaults, VP_DEFAULTS)
+}
+/* PENROSE'S MATH MOVES TO MATH (plan 49 5.2, user 2026-10-31: "Clifford torus is math not penrose" · "AZIWA TRAIL is
+ * MATH … so is Thomas Cycle" · "MAURER ROSE is MATH · BARABASI ALBERT is MATH · appolonian gasket is MATH · Alpha shape
+ * sweep is MATH · HOPF FIBRATION is MATH"). Only the listing moves: ids, loops and the sims' own params stay, so saved
+ * files open where they were made. Maurer rose joins Parametric; the rest are three new Math categories. */
+const PENROSE_TO_MATH = {
+  'pen-r2-attr-02-aizawa': 'Attractors', 'pen-r2-attr-04-thomas': 'Attractors',
+  'pen-r2-topo-02-hopf': 'Topology', 'pen-r2-topo-03-clifford': 'Topology',
+  'pen-r2-hyp-05-apollonian': 'Geometry', 'pen-r2-geom-02-alpha': 'Geometry', 'pen-r2-net-01-ba': 'Geometry',
+  'pen-r2-spec-04-maurer-rose': 'Parametric',
+}
+const PENROSE_STAYS_SIMS = PENROSE_PRESETS.filter((p) => !PENROSE_TO_MATH[p.id])
+/* GAME OF LIFE (plan 49 10.3) — first in Reaction & Life, beside Lenia and SmoothLife */
+const LIFE_PRESET = { id: 'life-game', label: 'Game of Life', loop: 'life-game', sub: 'Reaction & Life', params: {} }
+const ri = PENROSE_STAYS_SIMS.findIndex((p) => p.sub === 'Reaction & Life')
+const PENROSE_STAYS = ri < 0 ? [...PENROSE_STAYS_SIMS, LIFE_PRESET] : [...PENROSE_STAYS_SIMS.slice(0, ri), LIFE_PRESET, ...PENROSE_STAYS_SIMS.slice(ri)]
+const PENROSE_MATH = PENROSE_PRESETS.filter((p) => PENROSE_TO_MATH[p.id]).map((p) => ({ ...p, sub: PENROSE_TO_MATH[p.id] }))
+/* 3D GENERATORS SAY SO (plan 49 3.3, user 2026-10-31: "you could have applied a 3d pan toggle for the mouse" · "expose 3d
+ * zoom"): a def with a 3D camera is marked `is3D` — the rail adds Orbit (Settings' Grab, C) — and its camera distance (or,
+ * where the engine has none, its field of view) is the "3D zoom" control, in the Animation tab's 3D section, open. */
+const THREE_D_ENGINES = new Set(['scene', 'softforms3d', 'forms', 'environment', 'ribbon'])
+for (const def of LOOPS) {
+  const keys = def?.cameraKeys
+  if (!(THREE_D_ENGINES.has(def?.engine) || (keys?.yaw && keys?.pitch))) continue
+  def.is3D = true
+  const zk = keys?.dist ?? ((def.params ?? []).some((p) => p.key === 'fov') ? 'fov' : null)
+  if (zk) def.params = def.params.map((p) => (p.key === zk ? { ...p, label: '3D zoom', tab: 'anim', section: '3D', collapsed: false, noRandom: true } : p))
+  def.zoom3dKey = zk
+}
+/* GENERATE GENERATES (plan 49 7.2, user 2026-10-31: "THIS IS NOT enough for generate tab. there is literally NOTHING here …
+ * HOW is any of this GENERATE???"). Most defs left every param untabbed, so Generate held the pickers and nothing else and
+ * the picture lived under Style. Rule, on every def with fewer than 3 Generate params: what makes the picture (form, field,
+ * geometry, count, frequency…) moves to Generate; how it looks (colour, glow, grain, material, light, camera) stays in Style. */
+const LOOK_SECTIONS = new Set(['Color', 'Look', 'Glow', 'Finish', 'Post', 'Material', 'Shading', 'Lighting', 'Backdrop', 'Glass', 'Interaction', 'Camera', 'View', '3D'])
+const LOOK_KEY = /^(bg|fg|ink|accent|dim|warm|col[A-Z]|palette|invert|theme|mono|grain|glow|sheen|gloss|irid|spectral|hue|contrast|soft|relief|backdrop|grid(Color|Opacity)|show[A-Z]|opacity|alpha|blend|bgOn)|Opacity$|Color$/
+const isLook = (p) => !FORM_SECTIONS.has(p.section) && (p.type === 'color' || LOOK_SECTIONS.has(p.section) || LOOK_KEY.test(p.key) || p.tab === 'color')
+/* the field camera's Zoom and Angle were always read by the shader (field/camera.js makeCam) but never listed — the
+   `camera` schema reached no rail. They shape the picture, so they join Generate (Flow stays out: the Animation tab's
+   viewport drives motion). */
+const RADIAL_FIELDS = new Set(['rings-field', 'moire', 'halftone'])
+for (const def of LOOPS) {
+  if (!def?.camera || !def.params) continue
+  const have = new Set(def.params.map((p) => p.key))
+  /* a radial field reads only the distance from centre — Angle changes nothing there (plan 49 10.2's probe) */
+  const radial = RADIAL_FIELDS.has(def.id)
+  def.params = [...def.params, ...def.camera.filter((p) => p.key !== 'camFlow' && !(radial && p.key === 'camAngle') && !have.has(p.key)).map((p) => ({ ...p, tab: 'generate' }))]
+}
+const FORM_SECTIONS = new Set(['Form', 'Geometry', 'Field', 'Grid', 'Tiles', 'Spacing', 'Mark', 'Composition', 'Arrangement', 'Primitive', 'Detail'])
+for (const def of LOOPS) {
+  const ps = def?.params
+  if (!ps || def.group === 'penrose') continue
+  if (ps.filter((p) => p.tab === 'generate').length >= 3) continue
+  def.params = ps.map((p) => (!p.tab && !isLook(p) ? { ...p, tab: 'generate' } : p))
+}
 const PRESETS_BY_GROUP = {
   shape: SHAPE_PRESETS,
   pattern: PATTERN_PRESETS,
   patternloop: PATTERNLOOP_PRESETS,
-  penrose: PENROSE_PRESETS,
+  penrose: PENROSE_STAYS,
   field: FIELD_PRESETS,
   scanline: SCANLINE_PRESETS,
   /* optic = labs' EFFECTS > Pattern generator pages; the mesh-gradient GL
    * family is its fourth page (Moiré · Mesh Gradient · Reaction · Halftone). */
   optic: [...OPTIC_PRESETS, ...MESH_PRESETS],
   abstract: ABSTRACT_PRESETS,
-  math: MATH_PRESETS,
+  math: [...MATH_PRESETS, ...PENROSE_MATH],
   paratype: PARATYPE_PRESETS,
   modulator: MODULATOR_PRESETS,
   distress: DISTRESS_PRESETS,
+  /* the effects intake (plan 37 W6) — two groups, one type each in GENERATIVE_TREE */
+  flow: FLOW_PRESETS.filter((p) => p.loop !== 'flow-letter-gap'),
+  lettergap: FLOW_PRESETS.filter((p) => p.loop === 'flow-letter-gap'),
   ...GL_PRESETS_BY_GROUP,
 }
 export const PRESETS = [
-  ...SHAPE_PRESETS, ...PATTERN_PRESETS, ...PATTERNLOOP_PRESETS, ...PENROSE_PRESETS,
+  ...SHAPE_PRESETS, ...PATTERN_PRESETS, ...PATTERNLOOP_PRESETS, ...PENROSE_STAYS,
   ...FIELD_PRESETS,
   ...SCANLINE_PRESETS, ...OPTIC_PRESETS, ...MESH_PRESETS, ...ABSTRACT_PRESETS,
-  ...MATH_PRESETS, ...PARATYPE_PRESETS, ...MODULATOR_PRESETS, ...DISTRESS_PRESETS,
+  ...MATH_PRESETS, ...PENROSE_MATH, ...PARATYPE_PRESETS, ...MODULATOR_PRESETS, ...DISTRESS_PRESETS, ...FLOW_PRESETS,
   ...Object.values(GL_PRESETS_BY_GROUP).flat(),
 ]
 
@@ -205,6 +285,16 @@ export const resolveCameraKeys = (def) => {
    * amount, so at least wheel-zoom works. */
   if (!keys.dist && has('vpZoom')) keys.dist = 'vpZoom'
   return keys.yaw || keys.dist ? keys : null
+}
+
+/* ORBIT IS PER PATCH (plan 51 3.4, user 2026-10-31: "what about 3d orbit toggle for 3d based presets?"): every def with a
+ * drag rig — a 3D camera, an engine's OrbitControls, or a 2D loop's angle/zoom drag — declares its own `orbit` param.
+ * Settings › Grab stays the master; a patch can opt out. The rail draws it as its own row (LoopFields), so the schema
+ * entry is hidden from AutoControls. */
+const ORBIT_PARAM = { key: 'orbit', label: 'Orbit', type: 'toggle', default: true, noRandom: true, tab: 'anim', section: 'Interaction', when: () => false }
+for (const def of LOOPS) {
+  if (!def?.params || def.params.some((p) => p.key === 'orbit')) continue
+  if (def.orbit || resolveCameraKeys(def)) def.params = [...def.params, ORBIT_PARAM]
 }
 
 // Params for a draw call honoring `layer.bgOn` — returns `layer` untouched

@@ -1,0 +1,110 @@
+import { useMemo, useState } from 'react'
+import { ShellSearchOverlay } from '@kolkrabbi/kol-component'
+import { PRESETS, isToolPreset, groupOfPreset, groupById, loopById, presetParams } from '../../loops/registry'
+import { loadLibrary } from '../library/LibraryProvider'
+import { loopSnapshot } from './buildMorph'
+import { useMorph, setMorph, addStep, pickParams } from './morphStore'
+import { useLabsLayer } from '../labs/useLabsLayer'
+
+/**
+ * StepPicker — the Morph rail's picker on `ShellSearchOverlay`, the DS search modal (plan 13; the
+ * user: *"USE THE ASSETS AVAILABLE … we dont need 3 views and a filter system, we just need to make
+ * the picker WORK"*). A field, rows grouped by generator, ↑ ↓ Enter, Escape — all the overlay's.
+ *
+ * Rows, in order: *Current stage* (the generator on the stage as dialled, while it can be a step),
+ * *My files* (saved labs files — randomiser rolls save as labs), then every catalog preset under its
+ * generator. In Blend mode after a first step only that generator is listed (one schema to tween).
+ * Ids are prefixed (`stage` · `file:` · `preset:`) — a file id and a preset id can collide.
+ *
+ * The overlay closes itself after a pick (`onSelect`, then `onClose`), so `onSelect` only adds the
+ * step and `onClose` alone clears `morph.picker`. The first step also puts its generator on the stage.
+ * The browse-panel version it replaces is in `_tmp/2026-10-08-step-picker-browse/`.
+ */
+export function stepFromPreset(p) {
+  const group = groupOfPreset(p.id)
+  const schema = loopById(p.loop)?.params ?? []
+  return { loopId: p.loop, loopGroup: group, presetId: p.id, presetLabel: p.label, params: pickParams(presetParams(p), schema), source: { kind: 'preset', id: p.id, label: p.label } }
+}
+function stepFromFile(item, loopId) {
+  const l = loopId ? loopSnapshot(item, loopId) : (item.layers ?? []).find((x) => x?.type === 'loop')
+  if (!l) return null
+  const schema = loopById(l.loopId)?.params ?? []
+  return { loopId: l.loopId, loopGroup: l.loopGroup, presetId: l.presetId, presetLabel: l.presetLabel, params: pickParams(l, schema), source: { kind: 'file', id: item.id, label: item.name || 'Untitled' } }
+}
+export function stepFromLayer(layer) {
+  const schema = loopById(layer.loopId)?.params ?? []
+  return { loopId: layer.loopId, loopGroup: layer.loopGroup, presetId: layer.presetId, presetLabel: layer.presetLabel, params: pickParams(layer, schema), source: { kind: 'stage', label: layer.presetLabel || 'Stage' } }
+}
+
+export default function StepPicker() {
+  const morph = useMorph()
+  const { layer, setOnly } = useLabsLayer()
+  const open = !!morph.picker
+  const only = morph.mode === 'blend' ? morph.loopId : null
+  const [query, setQuery] = useState('')
+  /* the stage is a plain generator with fewer than two steps, or the step being edited */
+  const stageOk = layer?.type === 'loop' && (morph.steps.length < 2 || morph.editing != null)
+
+  /* every row, and the step each one makes */
+  const { rows, make } = useMemo(() => {
+    const rows = [], make = new Map()
+    if (!open) return { rows, make }
+    if (stageOk && (!only || layer.loopId === only)) {
+      rows.push({ id: 'stage', label: layer.presetLabel || 'Current stage', group: 'Current stage', hint: groupById(layer.loopGroup)?.label })
+      make.set('stage', () => stepFromLayer(layer))
+    }
+    for (const it of (loadLibrary().preset ?? []).filter((x) => !x.shipped)) {
+      if (it.mode === 'morph' || !(only ? loopSnapshot(it, only) : (it.layers ?? []).some((x) => x?.type === 'loop'))) continue
+      const id = `file:${it.id}`
+      rows.push({ id, label: it.name || 'Untitled', group: 'My files' })
+      make.set(id, () => stepFromFile(it, only))
+    }
+    for (const p of PRESETS) {
+      if (isToolPreset(p) || (only && p.loop !== only)) continue
+      const id = `preset:${p.id}`
+      rows.push({ id, label: p.label, group: groupById(groupOfPreset(p.id))?.label ?? p.loop, hint: p.sub })
+      make.set(id, () => stepFromPreset(p))
+    }
+    return { rows, make }
+  }, [open, only, stageOk, layer])
+
+  /* CATEGORIES (shadcn's ⌘K as the aim): the empty field lists the stage and My files, then one
+   * row per generator — a click opens that generator's presets instead of one endless list. The
+   * query still searches every row. The category and back rows are `keepOpen` (kol-component
+   * 0.252.0), so a drill stays in the overlay and its highlight returns to the top row. */
+  const [cat, setCat] = useState(null)
+  const suggestions = useMemo(() => {
+    if (cat) return [{ id: 'back', label: 'All categories', icon: 'arrow-left', group: cat, keepOpen: true }, ...rows.filter((r) => r.id.startsWith('preset:') && r.group === cat)]
+    const counts = new Map()
+    for (const r of rows) if (r.id.startsWith('preset:')) counts.set(r.group, (counts.get(r.group) ?? 0) + 1)
+    const cats = [...counts].map(([g, n]) => ({ id: `cat:${g}`, label: g, icon: 'arrow-right', group: 'Categories', hint: `${n}`, cat: g, keepOpen: true }))
+    return [...rows.filter((r) => !r.id.startsWith('preset:')), ...cats]
+  }, [rows, cat])
+
+  if (!open) return null
+  const needle = query.trim().toLowerCase()
+  const results = needle ? rows.filter((r) => [r.label, r.group, r.hint].some((s) => s && s.toLowerCase().includes(needle))) : []
+
+  const onSelect = (row) => {
+    if (row.keepOpen) { setCat(row.cat ?? null); return }
+    const step = make.get(row.id)?.()
+    if (!step) return
+    if (morph.steps.length === 0) setOnly('loop', { loopGroup: step.loopGroup, presetId: step.presetId, presetLabel: step.presetLabel, loopId: step.loopId, ...step.params })
+    addStep(step)
+  }
+  const onClose = () => { setMorph({ picker: null }); setQuery(''); setCat(null) }
+
+  return (
+    <ShellSearchOverlay
+      open
+      onClose={onClose}
+      suggestions={suggestions}
+      results={results}
+      query={query}
+      onQueryChange={setQuery}
+      onSelect={onSelect}
+      placeholder="Search presets and files"
+      selectLabel="Add step"
+    />
+  )
+}

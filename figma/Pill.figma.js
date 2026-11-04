@@ -4,12 +4,14 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "inverse": "inverse" })
+const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "inverse": "inverse", "float": "float" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 const label = instance.getString('label')
 
 export default {
-  example: figma.code`<Pill variant="${variant}" size="${size}">${label}</Pill>`,
+  example: variant === 'float'
+    ? figma.code`<Pill variant="float">${label}</Pill>`
+    : figma.code`<Pill variant="${variant}" size="${size}">${label}</Pill>`,
   imports: ["import { Pill } from \"@kolkrabbi/kol-component\""],
   id: 'Pill',
 }

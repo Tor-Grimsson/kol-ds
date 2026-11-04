@@ -4,15 +4,16 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary", "inverse": "inverse" })
+const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary", "inverse": "inverse", "float": "float" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
 const label = instance.getString('label').replace(/^#/, '')
 const data = instance.getEnum('data', { "true": "true", "false": "false" })
 
+const count = variant === 'float' ? ' count={5}' : ''
 export default {
   example: data === 'true'
     ? figma.code`<Tag variant="${variant}" size="${size}" hash={false} className="kol-tag--data">${label}</Tag>`
-    : figma.code`<Tag variant="${variant}" size="${size}">${label}</Tag>`,
+    : figma.code`<Tag variant="${variant}" size="${size}"${count}>${label}</Tag>`,
   imports: ["import { Tag } from \"@kolkrabbi/kol-component\""],
   id: 'Tag',
 }

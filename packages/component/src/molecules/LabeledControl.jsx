@@ -31,6 +31,8 @@
  *   variant — `'panel'` is the hardware panel label (was kol-hardware `PanelLabel`, merged
  *            2026-10-01): `kol-helper-8`, uppercase, hugging the control; it takes
  *            `labelPosition` (`top · bottom · left · right`, default bottom), `labelClass` and `gap`.
+ *            `'float'` (float-everything W3 row 37, 2026-11-04): the label over a capsule — the float hint role
+ *            (Inter 12) at fg-64, 8 above the control, no uppercase, no tracking; `inline` keeps the same label.
  *   children — the control body.
  *   className — additional classes on the wrapper.
  */
@@ -63,6 +65,8 @@ export default function LabeledControl({
     )
   }
   const showLabel  = !!label
+  const float = variant === 'float'
+  const labelType = float ? 'kol-float-hint text-fg-64' : 'kol-helper-10 tracking-widest text-meta'
   const labelInner = (
     <>
       {label}
@@ -87,7 +91,7 @@ export default function LabeledControl({
           <span
             /* A LABEL NEVER WRAPS (review 2, § 6.2 — the helper law by construction, 01-foundations/03-typography.md:29):
              * `whitespace-nowrap truncate`, so a long one ends in an ellipsis instead of breaking onto a second line */
-            className={`kol-helper-10 tracking-widest text-meta whitespace-nowrap truncate${text ? ' leading-4' : ''} ${labelAuto ? 'max-w-full min-w-0 sm:flex-1' : 'shrink-0'}`}
+            className={`${labelType} whitespace-nowrap truncate${text ? ' leading-4' : ''} ${labelAuto ? 'max-w-full min-w-0 sm:flex-1' : 'shrink-0'}`}
             style={labelAuto ? undefined : { width: labelWidth }}
           >
             {labelInner}
@@ -101,7 +105,7 @@ export default function LabeledControl({
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
       {showLabel && (
-        <span className="kol-helper-10 tracking-widest text-meta">{labelInner}</span>
+        <span className={labelType}>{labelInner}</span>
       )}
       {children}
     </div>

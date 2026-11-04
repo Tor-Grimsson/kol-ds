@@ -1,5 +1,42 @@
 # @kolkrabbi/kol-icons
 
+## 0.63.0 — 2026-11-04
+
+- **Corner rule:** a rounded corner's radius follows the shorter side of the shape it rounds, measured on the stroke centre-line in the 24 grid: ≥ 16 → r 3.5, 10–16 → 2, 3–10 → 1, < 3 → 0.5 (± 0.15; sharp stays; shapes with a shared edge, like `layout/split`, count as one frame). Shapes (`shapes/*`), organic drawings and dashed strokes are exempt and keep their own radii. About 120 stroke icons were re-rounded; inner strokes were re-ended to meet the new corner curve and each icon's strokes are one path with round caps. Originals are in `_tmp/2026-11-04-icons-pre-corner/`. Hand redraws to the rule: `devices/sd-card`, `files/folder-minus`, `media/video-off`.
+- **kol-icon batch** (Figma 91RgXQdroY01wN96lAiOv1): 33 new icons — `layout/panel-top` · `panel-top-open` · `panel-top-close` · `panel-top-dashed` · `panel-bottom` (+ `-open` · `-close` · `-dashed`) · `panel-left-dashed` · `panel-right-open` · `panel-right-close` · `panel-right-dashed` · `panels-left-bottom` · `panels-right-bottom` · `panels-top-right` · `table-columns` · `table-grid` · `toggle-left` · `toggle-right` · `layout-carousel` · `layout-sidebar-dots`, `devices/monitor-circle` · `mouse-capsule` · `screen-rotate` · `webcam`, `media/speaker-box`, `status/radar-sweep`, `shapes/cube`, `commerce/dessert`, `people/crown-royal` (+ `-solid`), `charts/bars-baseline-solid` · `bars-descending-solid`. `charts/bars-baseline` and `bars-descending` take the batch drawing.
+
+- **Align pairs, outline + solid (the set's convention, `rocket` / `rocket-solid`):** the six `design/align-*` names now draw the new outlines; the filled drawings moved to `align-*-solid`. The `-outline` names never shipped. A consumer that wants the old filled look uses `align-*-solid` or `<Icon variant="solid">`; kol-component's `AlignmentGrid` and kol-deck's `SlideInspector` were moved to `-solid` so they look unchanged. Library: each pair is one set, `variant=outline|solid`.
+
+- **Retired (to `_tmp/2026-11-04-icons-retired/`, the user's ruling on the float review):** `shapes/diamond-plus` (the float "brand" glyph now maps to `shapes/ball`), `places/compass` (`compass-04` wins), `places/compass-03`, `planning/calendar-03` (the user: ugly), `devices/camera-02` (a second camera; `camera` stays), `design/colour-swatches` (another swatch fan; one stays), `people/syringe-solid` (the filled twin of the retired syringe), `people/syringe` (too small to read; syringe-02 stays), `design/swatch-book` (a duplicate of a swatch fan already in the set), `devices/robot` (too dense to read small; `people/robot-head` stays), `layout/container` (the same clipboard as `clipboard`, which now takes `clipboard-check`'s drawing without the check), `actions/pill-knob` (the float "toggle" is the shipped `actions/toggle-oval-02`, the same switch in its on state). Code that imports these names must move: `diamond-plus` → `ball`, `compass` → `compass-04`.
+- `shapes/bin-lid` — the gap where the body met the lid closed: lid, body and handle are one path, round caps, so the joins paint once.
+- `shapes/ring` — the centre is a filled dot (r 4), as the exploration draws record.
+
+- **The float exploration's own glyphs, redrawn from the exploration** (float-everything, `/lobby-icon`; gap map W2.13, Figma XY6adCImPaxDuHDO6OdUw9 node 51:2365): 20 new interface icons, named by shape. `charts/bars-baseline` (metrics) · `charts/bars-descending` (founder) · `layout/sidebar-collapse` (collapse) · `layout/sidebar-expand` (expand sidebar) · `layout/panels-top-left` (index) · `direction/chevron-up-short` (fold todos) · `navigation/dots-three-fine` (inspector options AND todo options: the same drawing, one icon) · `typography/letter-a` (logo) · `status/eye-almond` (look) · `design/pencil-ferrule` (notes) · `shapes/dot-matrix-3x3` (pattern) · `design/sliders-rows` (props) · `planning/list-checks` (tasks) · `files/page-two-lines` (unread).
+- **Eight 0.61/0.62 promotions were wrong redraws and are replaced in place** (old files in `_tmp/2026-11-04-float-icons-replaced/`): `shapes/ring` is now a circle with a centre ring (record), `shapes/bin-lid` (lid and body share one edge, no double stroke), `navigation/lines-three` (18 wide), `media/film-strip`, `shapes/diamond-plus`, `files/inbox`, `design/highlighter`, `typography/lockup` — each at the exploration's own size (the 0.61/0.62 files had been shrunk to 15 and 18 px), 1.5 stroke, on the 18 keyline.
+- **Chess set completed:** `people/chess-bishop` · `chess-knight` · `chess-queen` · `chess-king`, on the same plinth, weight and 2–22 height as `chess-pawn` and `chess-rook`.
+- **Outline aligns:** `design/align-* (outline)` — real 1.5 strokes drawn from the flattened outlines in library--kol-icon (91RgXQdroY01wN96lAiOv1, node 223:20783); the filled `align-*` stay.
+- **Fixed:** `flow/tree` (the trunk path carried a stray fill and sat over the branch rules; now a trunk, an elbow and two stubs between four boxes) and `typography/line-height` (the A's crossbar no longer overlaps the legs; the arrow shaft stops short of the heads).
+- **No two strokes overlap in any of these:** a rule that meets another stroke ends flat on its edge (butt cap) instead of running through it. Dots in `dots-three-fine` and the knight's eye are solid `currentColor`.
+
+## 0.62.0 — 2026-11-04
+
+- **Four more glyphs from the float exploration join kol-icon-set-interface** (float-everything, `/lobby-icon`; gap map W2.13 in kol-float--style): `shapes/bin-lid` (a tapered bin under a lid), `shapes/ring` (a plain circle outline, 18 across), `navigation/lines-three` (three rules, 16 wide) and `media/film-strip` (a frame with sprocket ticks). Each redrawn from the exploration's stroke 2 to stroke 1.5, `currentColor`, no refit (all sit on the 18 keyline or inside).
+- **Near-duplicates, placed as asked:** `lines-three` is the same three rules as `hamburger` (4–20 vs 3.2–20.8); `ring` is `circle` drawn 1 px larger.
+- `brand` was already promoted as `diamond-plus` in 0.61.0; no new file.
+
+## 0.61.1 — 2026-11-04
+
+- **A CSS size draws the glyph** (float-everything W6): `<Icon size="var(--kol-float-ic)">` — every float Button's glyph — wrote the var onto the `<svg>`'s `width`/`height` attributes, which no browser reads, so the glyph drew blank in a box of the right size. The span keeps the CSS size; the svg fills it (`100%`). A number or a px length still lands on the svg as before.
+
+## 0.61.0 — 2026-11-04
+
+- **Four glyphs from the float exploration join kol-icon-set-interface** (float-everything W13, `/lobby-icon`; the gap map's W2.13 board in kol-float--style): `files/inbox` (a tray), `design/highlighter` (a marker), `shapes/diamond-plus`, `typography/lockup` (a mark beside lines). Each carried from its 18 or 15 px drawing into the 24 grid at its own size, stroke 1.5, `currentColor`. `lockup` sits on a 15 keyline — smaller than the set's 18–20; flagged, not rescaled.
+- The other 38 "missing" glyphs on that board were existing drawings under role names (chevrons, dots, the hamburger, the pencil, the bookmark, `home-01`, `list-bullet`, `checklist`, `table`, `film`, `adjust-sliders`, `speaker`, `file-text`, `color-palette`, `book-open`, `trash`, `circle`, `eye-on`, `bar-chart`, `info`) — no new files; five are near matches marked "check" on the board (`panel-left` · `panel-right` · `circles-grid` · `bento-grid` · `font-01`).
+
+## 0.60.0 — 2026-11-01
+
+- **`<Icon variant="solid">`** (user 2026-11-01: *"ONE cloud storm component with said variants"*): the outline name plus `variant="solid"` renders its drawn `-solid` twin (72 pairs). A name with no twin renders the outline. The `-solid` names still resolve, so nothing breaks. Default `variant="outline"`. In the Figma library each pair is one component set.
+
 ## 0.59.0 — 2026-10-31
 
 - **The batch is in: 559 icons join kol-icon-set-interface** (plan-2026-10-31-icon-categories 2.3; user 2026-10-31: put them in). Atlas 164, website 143 and the Claude list 252, as the treated copies in `lobby/archive/_assets/IconTreatment/treated/` (stroke 1.5, 24 box, keyline, `currentColor`), each in the category the plan placed it: `flow` and `commerce` open as folders, the interface set is 814 icons in 18 groups.

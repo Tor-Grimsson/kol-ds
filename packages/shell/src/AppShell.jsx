@@ -5,6 +5,7 @@ import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
 import AppFloatNav from './AppFloatNav.jsx'
+import RailTrigger from './RailTrigger.jsx'
 import { TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESETS } from '@kolkrabbi/kol-component'
 
 /**
@@ -51,6 +52,11 @@ import { TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESE
  *                                        (`NavRail sections`, 2026-10-06 — labs' catalog)
  * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
  *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
+ * @param {Object|boolean} [props.railTrigger]  THE HIDDEN RAIL'S TRIGGER (float-everything W9 row 129, 2026-11-04): while the rail is
+ *                                        hidden, `RailTrigger` at the page's top-left corner (24 in) — the 44 float button and a
+ *                                        breadcrumb, a press opens the whole nav as a float card. `true`, or RailTrigger's props
+ *                                        (`title`, `breadcrumb`, `surface`); the rows are the app's nav. Unset, a hidden rail has no
+ *                                        trigger, as before
  * @param {boolean} [props.railHidden=false]  THE RAIL'S RESTING STATE (HubSignedOutGutterAndSeams, kol-fxr 2026-10-29 — user:
  *                                        *"when you are signed out, we should have the rail already hidden"*): `true` starts the
  *                                        rail hidden and keeps it hidden on every route entry, where `false` (the default) brings
@@ -91,7 +97,10 @@ import { TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESE
  *                                        More's actions, wherever the app passes them — the page's route, typically. THE ONE RULE:
  *                                        the More keeps the app's whole nav (`barItems`, else items + bottomItems) — the page's
  *                                        rows replace the slots, never the way back (a `phoneNav.sheetItems` still wins). Unset,
- *                                        the top float is the app's nav and `barActions`, as 0.97.0
+ *                                        the top float is the app's nav and `barActions`, as 0.97.0.
+ *                                        `floats.fold` (`{ side, tone }`, FloatFoldBothSidesGrey, kol-fxr 2026-11-03) is the top float's
+ *                                        and the transport's `foldSide` · `foldTone` (AppFloatNav) — `{ side: 'swipe', tone: 'handle' }`
+ *                                        folds either way into the grey handle. Unset, each folds to its own edge on its ground
  * @param {Array}  [props.barActions]      `[{ label, icon?, onPress }]` — the page's buttons in the bar's More sheet, under the nav (PhoneNav `actions`)
  * @param {'mobile'|'panel'|'transport'} [props.navVariant='mobile']  THE PHONE PILL'S PRESET (PhoneNavVariants, kol-fxr 2026-10-28 —
  *                                        the Home pill kept its hairline while Labs tuned its own by hand): `mobile` (was `nav`) is no hairline,
@@ -174,6 +183,7 @@ export default function AppShell({
   railSections,
   railToggleKey,
   railHidden = false,
+  railTrigger,
   touch: touchProp,
   appName,
   pageWash,
@@ -424,8 +434,11 @@ export default function AppShell({
           onClick={() => setDrawerOpen(false)}
         />
       )}
-      {bar && <AppFloatNav items={pageRows ?? appNav} actions={floats && floatsProp?.actions ? floatsProp.actions : barActions} shape={touch === 'bar' ? 'bar' : 'pill'} variant={floats ? 'panel' : navVariant} moreItems={moreItems} {...(pageRows && { sheetItems: appNav })} {...phoneNav} currentPath={currentPath} onNavigate={navigate} />}
-      {floats && floatsProp?.transport?.items?.length > 0 && <AppFloatNav variant="transport" foldable {...floatsProp.transport} />}
+      {bar && <AppFloatNav items={pageRows ?? appNav} actions={floats && floatsProp?.actions ? floatsProp.actions : barActions} shape={touch === 'bar' ? 'bar' : 'pill'} variant={floats ? 'panel' : navVariant} moreItems={moreItems} {...(pageRows && { sheetItems: appNav })} {...phoneNav} {...(floats && floatsProp?.fold && { foldSide: floatsProp.fold.side, foldTone: floatsProp.fold.tone })} currentPath={currentPath} onNavigate={navigate} />}
+      {floats && floatsProp?.transport?.items?.length > 0 && <AppFloatNav variant="transport" foldable {...(floatsProp.fold && { foldSide: floatsProp.fold.side, foldTone: floatsProp.fold.tone })} {...floatsProp.transport} />}
+      {navHidden && railTrigger && !bar && !barAside && (
+        <RailTrigger items={appNav} currentPath={currentPath} onNavigate={navigate} className="fixed left-6 top-6 z-[var(--kol-z-sticky)]" {...(railTrigger === true ? {} : railTrigger)} />
+      )}
       {!navHidden && !bar && !barAside && (
         <Rail
           items={items}
@@ -450,12 +463,20 @@ export default function AppShell({
       ...(bar && touch === 'bar' && { '--kol-shell-bar-h': `calc(${TABBAR_H}px + env(safe-area-inset-bottom, 0px))`, paddingBottom: 'var(--kol-shell-bar-h)' }),
       ...(bar && touch === 'pill' && { '--kol-shell-bar-h': '0px', '--kol-shell-bar-clear': `calc(${TABBAR_PILL_H + TABBAR_PILL_INSET}px + env(safe-area-inset-bottom, 0px))` }), ...(barAside && { '--kol-shell-bar-h': '0px' }), ...(floats && { '--kol-shell-bar-h': '0px' }) }}>
         {floats ? (
-          <div className="flex h-dvh flex-col">
+          <div className="relative h-dvh">
             {/* THE STAGE OWNS THE PAGE'S GROUND (PhoneTwoFloatLayout): it paints the wash under the top float too and hands
               * the page `transparent` — PageLayout's rule (kol-components-shell.css), one owner per pixel, no band under the float */}
-            <div className="min-h-0 flex-1 overflow-y-auto" style={{ paddingTop: `calc(env(safe-area-inset-top, 0px) + ${floatClear})`, background: pageWash ?? undefined, '--kol-shell-page-wash': pageWash ? 'transparent' : undefined, '--kol-shell-bar-h': floatClear }}>{children}</div>
+            {/* the stage starts at y=0, UNDER the status bar and the top float — no band (FloatsOverlayNoBands, kol-fxr 2026-11-03) */}
+            {/* the stage is the whole screen and never resizes: the Rail OVERLAYS it, so opening, closing or dragging the Rail
+              * leaves the stage's box alone (FloatsRailOverlaysShadow, kol-fxr 2026-11-03); `isolate` keeps the stage's own
+              * stacking under the Rail */}
+            <div className="isolate h-full overflow-y-auto" style={{ background: pageWash ?? undefined, '--kol-shell-page-wash': pageWash ? 'transparent' : undefined, '--kol-shell-bar-h': floatClear }}>{children}</div>
             {floatsProp?.rail != null && (
-              <div className="shrink-0 overflow-y-auto bg-surface-primary shadow-[var(--kol-shadow-rail-up)]" style={{ maxHeight: floatsProp.railHeight ?? '50dvh', paddingBottom: `calc(${floatClear} + env(safe-area-inset-bottom, 0px))` }}>{floatsProp.rail}</div>
+              /* the Rail's rows run UNDER the transport float; the clear is an absolute spacer past the last row, so it adds
+               * scroll range (the last row scrolls clear) but no height — no band while unscrolled (FloatsOverlayNoBands) */
+              <div className="absolute inset-x-0 bottom-0 overflow-y-auto bg-surface-primary shadow-[var(--kol-shadow-rail-up)]" style={{ maxHeight: floatsProp.railHeight ?? '50dvh' }}>
+                <div className="relative">{floatsProp.rail}<div aria-hidden className="pointer-events-none absolute inset-x-0 top-full" style={{ height: `calc(${floatClear} + env(safe-area-inset-bottom, 0px))` }} /></div>
+              </div>
             )}
           </div>
         ) : children}

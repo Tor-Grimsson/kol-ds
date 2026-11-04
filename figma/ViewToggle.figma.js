@@ -4,11 +4,13 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "text": "text", "icon": "icon", "single": "single" })
+const variant = instance.getEnum('variant', { "text": "text", "icon": "icon", "single": "single", "float": "float" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
 
 export default {
-  example: figma.code`<ViewToggle variant="${variant}" size="${size}" viewMode={view} onViewChange={setView} />`,
+  example: variant === 'float'
+    ? figma.code`<ViewToggle variant="float" viewMode={view} onViewChange={setView} />`
+    : figma.code`<ViewToggle variant="${variant}" size="${size}" viewMode={view} onViewChange={setView} />`,
   imports: ["import { ViewToggle } from \"@kolkrabbi/kol-component\""],
   id: 'ViewToggle',
 }

@@ -777,6 +777,10 @@
       "label": "Mono"
     },
     {
+      "id": "float",
+      "label": "Float roles"
+    },
+    {
       "id": "opacity",
       "label": "Reading hierarchy (descriptors)"
     },

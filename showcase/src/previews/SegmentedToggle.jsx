@@ -12,7 +12,7 @@ const OPTIONS = [
 /* ONE instance; variant and size ride the toolbar pickers (2026-09-30 — the variants used to
  * stack). filled: surface tiles, ring on the SELECTED cell only · tonal: the clicked cell marked
  * by tone, no ring. The stateless action strip below is a different use, not a variant. */
-export const variants = ['default', 'filled', 'tonal']
+export const variants = ['default', 'filled', 'tonal', 'float']
 /* the tones the strip PAINTS (2026-10-01): `sunken` is the only one kol-theme defines for `.kol-seg`
  * — the other six were listed and changed nothing, so the knob looked broken */
 export const tones = ['default', 'sunken']
@@ -20,6 +20,11 @@ export const sizes = ['sm', 'md', 'lg', 'xs']
 
 export default function SegmentedTogglePreview({ variant = 'default', tone = 'default', size = 'sm' }) {
   const [v, setV] = useState('grid')
+  const [status, setStatus] = useState('open')
+  /* float (float-everything W2 row 26): the capsule track, a count after a label */
+  if (variant === 'float') {
+    return <SegmentedToggle variant="float" value={status} onChange={setStatus} size={size} options={[{ value: 'open', label: 'Open', count: 5 }, { value: 'done', label: 'Completed' }]} />
+  }
   return (
     <>
       <SegmentedToggle {...(variant === 'default' ? {} : { variant })} tone={tone} value={v} onChange={setV} options={OPTIONS} size={size} />

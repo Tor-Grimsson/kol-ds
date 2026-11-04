@@ -2,6 +2,7 @@ import { isValidElement } from 'react'
 import { toneClass, VARIANT_TONE } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
+import Kbd from './Kbd.jsx'
 
 /**
  * Button — canonical KOL button. Emits kol-btn* classes (CSS in @kol/theme).
@@ -35,6 +36,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {boolean} props.selected - Selected/active state (toggle highlight)
  * @param {ElementType|ReactNode} props.iconComponent - Icon renderer seam — a component that receives `{ name, size, className, style }` in place of the DS Icon (custom icon registries plug in here), or a pre-rendered node dropped in verbatim where the glyph would go. Defaults to DS Icon.
  * @param {boolean} props.pressed - Toggle state — sets `aria-pressed` (true/false) and `kol-btn-pressed`; a `quiet` button drops its dimming while pressed. Leave undefined for non-toggle buttons.
+ * @param {string} props.kbd - a key cap after the label, inside the button (float-everything W2 row 12, 2026-11-04): `Kbd size="sm"`, a leading ⌘ drawn as the `command` icon. On `variant="float"` the cap takes the button's own ink (`.kol-btn-kbd`). The float roles are tones (W0.5): primary `tone="inverted"` · secondary `tone="secondary"` · quiet `tone="ghost"` · destructive `tone="danger"` — `danger` is accepted as a tone on a float button so the role and the shape are two props.
  */
 const warned = new Set()
 
@@ -63,13 +65,15 @@ const Button = ({
   iconComponent,
   pressed,
   tone = 'default',
+  kbd,
   ...props
 }) => {
   /* `variant="bare"` (MetricRebuild, 2026-10-31): a pressable SURFACE — a stat tile, a bar row, a column head — that
    * draws itself. No kol-btn chrome (ground, size, type, radius); the button keeps its type, the KOL focus ring
-   * (`kol-menu-btn`, as MenuItem's rows) and `disabled`. For a control that looks like a button, use any other variant. */
+   * (`kol-menu-btn`, as MenuItem's rows) and `disabled`;
+   * `kol-menu-btn--bare` keeps it out of the touch rung, so its type holds on every pointer. For a control that looks like a button, use any other variant. */
   if (variant === 'bare') {
-    return <button type={type} onClick={onClick} disabled={disabled} className={`kol-menu-btn ${className}`.trim()} style={style} {...props}>{children}</button>
+    return <button type={type} onClick={onClick} disabled={disabled} className={`kol-menu-btn kol-menu-btn--bare ${className}`.trim()} style={style} {...props}>{children}</button>
   }
   // Two ladders, split on whether a label sits beside the glyph. An icon-only
   // button is a solo glyph in a pinned square, so it takes SOLO (16/20/24) —
@@ -135,7 +139,9 @@ const Button = ({
   /* `tone="sunken"` (ControlToneSunken, 2026-08-28): the dark well + fg-96 ink of the control set, so an
    * icon-only button beside a sunken Dropdown is declared, not painted (kol-website hand-wrote the fill
    * AND guessed the ink — the secondary's dark ink vanished on the forced dark fill). Theme rules. */
-  const toneCls       = toneClass(tone)
+  /* `tone="danger"` is the float's destructive role (W0.5): the danger bundle is a variant's, worn here as a tone so
+   * `variant="float"` keeps the shape slot */
+  const toneCls       = tone === 'danger' ? 'kol-btn-danger' : toneClass(tone)
   const combinedClass = `kol-btn ${variantClass} ${sizeClass} ${animateClass} ${quietClass} ${pressedClass} ${iconOnlyClass} ${radiusClass} ${toneCls} ${className}`.trim().replace(/\s+/g, ' ')
 
   // Render icon with optional hover state
@@ -171,6 +177,13 @@ const Button = ({
     )
   }
 
+  /* the key cap after the label (row 12): ⌘ is drawn, never typed — the Kbd's `command` glyph */
+  const cap = kbd != null && (
+    typeof kbd === 'string' && kbd.startsWith('⌘')
+      ? <Kbd size="sm" icon="command" className="kol-btn-kbd">{kbd.slice(1)}</Kbd>
+      : <Kbd size="sm" className="kol-btn-kbd">{kbd}</Kbd>
+  )
+
   // Render content with icons
   const renderContent = () => {
     // Icon-only button
@@ -188,12 +201,13 @@ const Button = ({
           {(iconLeft || iconLeftHover) && renderIcon(iconLeft, iconLeftHover)}
           {children}
           {(iconRight || iconRightHover) && renderIcon(iconRight, iconRightHover)}
+          {cap}
         </span>
       )
     }
 
     // Text-only button
-    return children
+    return cap ? <>{children}{cap}</> : children
   }
 
   const mergedStyle = style

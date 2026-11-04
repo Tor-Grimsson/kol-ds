@@ -10,6 +10,7 @@ import {
 import { ASPECTS } from '../editor/shell/aspects'
 import { pack } from '../editor/packs'
 import { useAppSettings, setAppSetting } from '../editor/lib/appSettings'
+import { useBindDots, toggleDots } from '../editor/params/dotVisibility'
 import { transport } from '../editor/params/transport'
 
 /**
@@ -46,6 +47,8 @@ const ASPECT_OPTIONS = ASPECTS
   .map((a) => ({ value: a.id, label: a.label }))
   .filter((o) => o.value !== 'custom')
 
+const PREVIEW_RES_OPTIONS = [{ value: 'full', label: 'Full' }, { value: 'half', label: 'Half' }]
+
 const LOOP_LENGTH_OPTIONS = [2, 4, 8, 12, 16].map((n) => ({ value: n, label: `${n} s` }))
 
 /* The sections, as data. `s` is the live store — every `render` reads it, so a
@@ -64,6 +67,21 @@ const sectionsFor = (s) => [
            step. `system` is still reachable from the header control. */
         render: () => <ThemeDarkSwitch />,
       },
+      {
+        label: 'Preview resolution',
+        align: 'fill',
+        /* Half renders the live canvases at half the pixel ratio — smoother playback for recording
+           the pixel-y effects; exports always render full (lib/previewScale.js) */
+        render: () => (
+          <SettingsChoice
+            options={PREVIEW_RES_OPTIONS}
+            value={s.previewRes}
+            onChange={(v) => setAppSetting('previewRes', v)}
+            className="w-full max-w-24"
+            ariaLabel="Preview resolution"
+          />
+        ),
+      },
     ],
   },
   {
@@ -77,7 +95,6 @@ const sectionsFor = (s) => [
             options={ASPECT_OPTIONS}
             value={s.defaultAspect}
             onChange={(v) => setAppSetting('defaultAspect', v)}
-            tone="sunken"
             className="w-full max-w-24"
             ariaLabel="Default aspect"
           />
@@ -92,7 +109,6 @@ const sectionsFor = (s) => [
             options={pack('generators').THEME_OPTIONS}
             value={s.defaultTheme}
             onChange={(v) => setAppSetting('defaultTheme', v)}
-            tone="sunken"
             className="w-full max-w-24"
             ariaLabel="Loop theme"
           />
@@ -110,14 +126,16 @@ const sectionsFor = (s) => [
       },
       {
         label: 'Modulation dots',
-        render: () => (
-          <SettingsSwitch
-            label="Modulation dots"
-            on={s.labsModDots}
-            onChange={(v) => setAppSetting('labsModDots', v)}
-          />
-        ),
+        render: () => <DotsSwitch />,
       },
+    ],
+  },
+  {
+    label: 'Canvas',
+    rows: [
+      { label: 'Grab (C)', render: () => <SettingsSwitch label="Grab (C)" on={!!s.grab} onChange={(v) => setAppSetting('grab', v)} /> },
+      { label: 'Interactions', render: () => <SettingsSwitch label="Interactions" on={s.interactions !== false} onChange={(v) => setAppSetting('interactions', v)} /> },
+      { label: 'Zoom lock (Z)', render: () => <SettingsSwitch label="Zoom lock (Z)" on={!!s.zoomLock} onChange={(v) => setAppSetting('zoomLock', v)} /> },
     ],
   },
   {
@@ -145,7 +163,6 @@ const sectionsFor = (s) => [
             options={LOOP_LENGTH_OPTIONS}
             value={s.defaultLoopSeconds}
             onChange={(n) => { setAppSetting('defaultLoopSeconds', n); transport.setLoopSeconds(n) }}
-            tone="sunken"
             className="w-full max-w-24"
             ariaLabel="Loop length"
           />
@@ -206,19 +223,61 @@ const DEFAULTS = {
   defaultTheme: 'kol',
   autoplay: false,
   clipToFrame: true,
-  labsModDots: false,
   defaultLoopSeconds: 4,
 }
 
-export function DisplaySettingsDrawer({ open, onClose, children }) {
-  const reset = () => {
-    for (const [k, v] of Object.entries(DEFAULTS)) setAppSetting(k, v)
-    transport.setLoopSeconds(DEFAULTS.defaultLoopSeconds)
+/* ONE dots switch for every chrome (audit C4/F3, 2026-10-09): the editor's `dotVisibility` store
+   (the `M` key, `kol-editor-show-dots`) is the setting; `labsModDots` was a second key for the
+   same thing that only labs read. Off by default — the 2026-08-12 ruling: chrome noise at rest. */
+function DotsSwitch() {
+  const on = useBindDots()
+  return <SettingsSwitch label="Modulation dots" on={on} onChange={(v) => { if (v !== on) toggleDots() }} />
+}
+
+/* the store's own defaults, written back through `setAppSetting` — the drawer's foot and the Hub's both */
+const reset = () => {
+  for (const [k, v] of Object.entries(DEFAULTS)) setAppSetting(k, v)
+  transport.setLoopSeconds(DEFAULTS.defaultLoopSeconds)
+}
+
+/**
+ * The Hub's settings — the same rows as TYPED DATA over the same store (studio adoption, 2026-10-24): the
+ * Hub's rail takes data and draws the controls; the editor's own drawer above keeps drawing its JSX. No
+ * Theme row — the Hub draws kol-framework's toggle in the rail's footer (user 2026-10-24).
+ */
+export function useHubSettings() {
+  const s = useAppSettings()
+  const dots = useBindDots()
+  return {
+    sections: [
+      { label: 'Display', rows: [
+        { label: 'Preview resolution', type: 'choice', options: PREVIEW_RES_OPTIONS, value: s.previewRes, onChange: (v) => setAppSetting('previewRes', v) },
+      ] },
+      { label: 'Defaults', rows: [
+        { label: 'Default aspect', type: 'choice', options: ASPECT_OPTIONS, value: s.defaultAspect, onChange: (v) => setAppSetting('defaultAspect', v) },
+        ...(pack('generators') ? [{ label: 'Loop theme', type: 'choice', options: pack('generators').THEME_OPTIONS, value: s.defaultTheme, onChange: (v) => setAppSetting('defaultTheme', v) }] : []),
+        { label: 'Clip to frame', type: 'switch', on: s.clipToFrame, onChange: (v) => setAppSetting('clipToFrame', v) },
+        { label: 'Modulation dots', type: 'switch', on: dots, onChange: (v) => { if (v !== dots) toggleDots() } },
+      ] },
+      { label: 'Canvas', rows: [
+        { label: 'Grab (C)', type: 'switch', on: !!s.grab, onChange: (v) => setAppSetting('grab', v) },
+        { label: 'Interactions', type: 'switch', on: s.interactions !== false, onChange: (v) => setAppSetting('interactions', v) },
+        { label: 'Zoom lock (Z)', type: 'switch', on: !!s.zoomLock, onChange: (v) => setAppSetting('zoomLock', v) },
+      ] },
+      { label: 'Transport', rows: [
+        { label: 'Autoplay', type: 'switch', on: s.autoplay, onChange: (v) => setAppSetting('autoplay', v) },
+        { label: 'Loop length', type: 'choice', options: LOOP_LENGTH_OPTIONS, value: s.defaultLoopSeconds, onChange: (n) => { setAppSetting('defaultLoopSeconds', n); transport.setLoopSeconds(n) } },
+      ] },
+    ],
+    drawer: { onReset: reset },
   }
+}
+
+export function DisplaySettingsDrawer({ open, onClose, children }) {
   return (
     <SettingsPanel
       open={open}
-      variant="drawer"
+      variant="rail"
       title="Display settings"
       onClose={onClose}
       footer={<SettingsFooter onReset={reset} />}

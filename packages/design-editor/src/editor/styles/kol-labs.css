@@ -24,8 +24,13 @@
  * left the ladders unconverged as policy rather than gesture — this is that
  * policy call, made here because it is this app's two rails that sit together. */
 :root {
-  --kol-rail-w: var(--kol-sidenav-w);
+  --kol-rail-w: var(--kol-rail-w-app);
   --kol-rail-w-collapsed: 48px;
+}
+
+/* The app tier's inset (kol-theme 0.190.0) — labs only; the editor keeps its own. */
+.kol-editor-labs :is(.kol-compose-inspector-body, .kol-inspector-rail-body) {
+  padding: var(--kol-pad-rail-app, 16px);
 }
 
 /* PARAM DENSITY + SECTION HAIRLINE — GONE, adopted 2026-08-15.
@@ -163,29 +168,24 @@
 }
 
 /* ───── TOUCH — the params rail is a SHEET along the bottom (2026-10-05) ─────
- * It was a drawer from the right under a top bar (2026-09-01): open, it left 126px of a 390px
- * stage. Now it is the generator's frame — `LabsView` stamps `data-touch` on the wrapper, and the
- * right rail becomes the grid's second ROW: the stage refits in the row above it, the rail's
- * header is the collapse control, and collapsed (`data-params` unset) the rail is gone and a pill
- * stands in for it. The nav is still the shell's drawer. Same rail, same footer. */
+ * On KOL's two floats since plan 46 W1 (kol-shell 0.98.0 `touch="floats"`): AppShell owns the layout — the top
+ * float, the stage under it (inset 98 + safe area), the bottom Rail (`floats.railHeight`, `--kol-shadow-rail-up`,
+ * no rule) and the transport float over it. The params rail is portalled into that Rail (LabsView `rightIn`), so
+ * what is left here is the editor's own frame filling AppShell's stage, and the rail's contents. fxr's hand-rolled
+ * layout (grid rows, the 98 insets, the sheet's cap, shadow and hide) is in `_tmp/2026-10-31-labs-phone-layout/`. */
+.kol-editor-labs[data-touch] .kol-editor-shell {
+  height: 100%;
+}
 .kol-editor-labs[data-touch] .kol-editor-grid {
   grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: minmax(0, 1fr) auto;
-  grid-template-areas: "canvas" "right";
+  grid-template-areas: "canvas";
 }
 .kol-editor-labs[data-touch] .kol-editor-left {
   display: none;
 }
 .kol-editor-labs[data-touch] .kol-editor-right {
-  /* half the display at most — the other half is the picture the controls change; tall on the
-     grabber (`--kol-sheet-h`, PanelHeader.jsx `SHEET_H`) */
-  max-height: var(--kol-sheet-h, 50dvh);
   border-left: 0;
-  overflow: hidden;
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.kol-editor-labs[data-touch]:not([data-params="open"]) .kol-editor-right {
-  display: none;
+  border-top: 0;
 }
 /* the sheet's header is the generator's: no rule under it, the body starting straight below */
 .kol-editor-labs[data-touch] .kol-editor-rail-header {
@@ -251,19 +251,3 @@
   display: block;
 }
 
-/* THE SEGMENTED STRIP WEARS THE SUNKEN TONE (user, 2026-09-01: "sunken on one
- * side and primary on the other … rounded as a group with dividers"). The DS's
- * default SegmentedToggle already has the anatomy — one group radius, 1px
- * dividers, rest cells on surface-secondary (the primary button's fill) — but
- * a 1px shell and a transparent selected cell. ControlToneSunken, which
- * Dropdown · Input · Button · IconFrame · ThemeToggle · ViewToggle(icon) take as
- * `tone="sunken"`, is "the dark well + fg-96 ink + transparent border"; the
- * SegmentedToggle alone has no `tone`, so the same three lines land here,
- * scoped to the labs rail. Both go the day it grows the prop in kol-component. */
-.kol-editor-labs .kol-seg {
-  border-color: transparent;
-}
-.kol-editor-labs .kol-seg-cell.is-active {
-  background: var(--kol-surface-sunken);
-  color: var(--kol-fg-96);
-}

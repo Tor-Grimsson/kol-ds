@@ -732,6 +732,7 @@
    * headings, lede), base for body, Tight for display 01–04 (since 0.59.0).
    * Atomic classes follow the same convention. */
   --kol-font-family-sans:         'Right Grotesk', sans-serif;
+  --kol-font-family-float:        'Inter', sans-serif; /* the float style's sans (float-everything W0.6, 2026-11-04): every `variant="float"` control and the kol-float-* roles */
   --kol-font-family-sans-neutral: 'Public Sans', sans-serif; /* TabsRow type="sans" (2026-10-29). Declared nowhere in kol-theme: the app that renders it adds the Google Fonts css2 link (PublicSansByLink, his ruling 2026-10-28 — hosted cuts were wrong, 2026-10-30) */
   --kol-font-family-sans-narrow:  'Right Grotesk Narrow', 'Right Grotesk', sans-serif;
   --kol-font-family-sans-compact: 'Right Grotesk Compact', 'Right Grotesk', sans-serif;
@@ -952,6 +953,15 @@
 
 .kol-prose > :first-child { margin-top: 0; }
 .kol-prose > :last-child  { margin-bottom: 0; }
+
+/* Every prose class — .kol-prose and each .kol-prose-* (present and future) —
+ * breaks an unbroken path or URL at the column's edge instead of widening the
+ * page (ProseWrapsLongStrings, kol-website 2026-11-03). `anywhere`, not
+ * `break-word`: break-word keeps the string's full min-content width, so a
+ * lede inside a flex row (PageHero's head) still pushed the page 332px wide at
+ * 390. Only a word that cannot fit breaks; ordinary text breaks as before. */
+[class^="kol-prose"],
+[class*=" kol-prose"] { overflow-wrap: anywhere; }
 
 /* ─── Section head — label + title + lede.
        Self-contained: do NOT nest inside .kol-prose, the descendant
@@ -1276,6 +1286,25 @@
 .kol-sheet .tablewrap:not(.kv) td a{color:var(--ink);text-decoration:none}
 .kol-sheet .tablewrap:not(.kv) td a:hover{text-decoration:underline}
 
+/* Inter — the Avatar initial (his ruling 2026-11-04). Variable woff2 from /fonts/inter, served like Right Grotesk. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/InterVariable.woff2') format('woff2-variations'),
+       url('/fonts/inter/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/InterVariable-Italic.woff2') format('woff2-variations'),
+       url('/fonts/inter/InterVariable-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* =============================================================================
  * TAILWIND CONTRACT — font-family exposures
  * Lets JSX use font-display / font-narrow / etc. instead of arbitrary value
@@ -1288,6 +1317,7 @@
   --font-text:    'Right Grotesk', sans-serif;
   --font-serif:   'Right Grotesk', sans-serif;
   --font-narrow:  'Right Grotesk Narrow', 'Right Grotesk', sans-serif;
+  --font-inter:   'Inter', system-ui, sans-serif; /* Avatar initial (his ruling 2026-11-04); @font-face above */
   /* --font-mono lives in kol-typography-mono.css — keeps mono concerns in one file. */
 }
 

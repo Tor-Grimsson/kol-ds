@@ -18,7 +18,7 @@
  *
  * @param {Object} props
  * @param {string} props.children - Text content of the pill
- * @param {string} props.variant - Visual variant: 'primary' | 'secondary' | 'inverse' (deprecated aliases: 'subtle' → primary, 'outline' → secondary) (default: 'primary')
+ * @param {string} props.variant - Visual variant: 'primary' | 'secondary' | 'inverse' (deprecated aliases: 'subtle' → primary, 'outline' → secondary) (default: 'primary') · `float` (float-everything W2 row 20, 2026-11-04): the status capsule with a value — 28 tall, 16 in, Inter 500 on oq-16 (`Reading · 42%`); it carries its own type, so `size` does nothing to it
  * @param {string} props.size - Size variant: 'sm' | 'md' | 'lg' (default: 'sm')
  * @param {string} props.className - Additional classes for customization
  */
@@ -27,10 +27,12 @@ const Pill = ({ children, variant = 'primary', size = 'sm', className = '' }) =>
     primary: 'pill-subtle',
     secondary: 'pill-outline',
     inverse: 'pill-inverse',
+    float: 'pill-float',
     /* deprecated aliases (pre-2026-07-30 vocabulary) */
     subtle: 'pill-subtle',
     outline: 'pill-outline'
   }
+  if (variant === 'float') return <span className={`pill-float ${className}`.trim()}>{children}</span>
 
   const sizeClasses = {
     sm: 'pill-sm',

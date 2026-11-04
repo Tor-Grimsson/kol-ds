@@ -9,7 +9,7 @@ import { buildPatternSvg } from '../modes/pattern/render'
 import { computeFrameGlyphs } from '../modes/type/buildTypeSvg'
 import { getAppSettings } from '../lib/appSettings'
 import { findLayerDeep } from './helpers'
-import { deleteClip, gcClips } from '../lib/clipStore'
+import { deleteClip, gcClips, loadClip, saveClip } from '../lib/clipStore'
 import { scalePathNodes, shiftNode, rotatePathNodes, normalizePath, normalizePathRings } from './path-math'
 import { shapeToPathNodes } from './shape-math'
 import { booleanCombine, computeBoolean, hasBooleanGeometry, isBooleanable, refitBoolLayer } from './boolean-ops'
@@ -128,7 +128,7 @@ function patchLayerDeep(list, id, partial) {
  * free those clips when the subtree is deleted. */
 function collectVideoClipIds(layer, out = []) {
   if (!layer) return out
-  if (layer.srcType === 'video') out.push(layer.id)
+  if (layer.srcType === 'video' || layer.srcType === 'image') out.push(layer.id) /* images are clips too since 2026-10-09 (audit F1); deleteClip is a no-op for an id with no clip */
   if (Array.isArray(layer.children)) for (const c of layer.children) collectVideoClipIds(c, out)
   return out
 }
@@ -331,7 +331,7 @@ function boxFromAnchor(anchor, w, h, vh = CANVAS_H) {
 /* Defaults for a text layer's Type Lab typography fields. Mirrors Type Lab's
  * newFrame() defaults so picking a saved type spec or starting fresh yields
  * the same baseline shape across the two surfaces. */
-const TEXT_DEFAULTS = {
+export const TEXT_DEFAULTS = {
   family:     'right-grotesk',   /* the 2026-08-12 family model (families.js) */
   width:      'Tight',
   weight:     600,
@@ -425,6 +425,8 @@ const ALL_LAYER_TYPES = [
    * Generative types nor Effects (para-type now; interfaces later). Rides
    * the loop render vehicle (loopGroup/presetId/loopId + flat params). */
   { id: 'misc',       label: 'Misc' },
+  /* Affinity's Add Layer — an empty container to drop layers into (plan 32 § 2b), on the group we have */
+  { id: 'group',      label: 'Empty layer' },
 ]
 
 /* The pack each non-core type needs (editor/packs.js) — a type whose pack is absent is not offered. */
@@ -486,6 +488,7 @@ const layerDefaults = (type, vh = CANVAS_H) => {
     case 'text':       return placed(600, 120, { ...TEXT_DEFAULTS, text: 'New text', color: 'palette:dark' })
     /* path geometry comes from the pen tool via `extras`; these are just
      * safe fallbacks so a bare addLayer('path') never yields undefined nodes. */
+    case 'group':      return fullCanvas({ children: [], name: 'Layer' })
     case 'path':       return { nodes: [], closed: false, x: 0, y: 0, w: 1, h: 1, color: null, stroke: 'palette:dark', strokeWidth: 2 }
     default:           return {}
   }
@@ -579,7 +582,9 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * actually selected. */
   const [activePaint, setActivePaint] = useState('fill')   /* 'fill' | 'stroke' */
   const [paintFill,   setPaintFill]   = useState('#FFFFFF') /* hex | null */
-  const [paintStroke, setPaintStroke] = useState('#000000') /* hex | null */
+  /* null: a new shape is FILL ONLY until a stroke is set (the user's 7; Figma, Affinity) — it was
+   * '#000000', a black stroke at weight 0 on every shape */
+  const [paintStroke, setPaintStroke] = useState(null) /* hex | null */
 
   /* ─── Frame: palette ─── */
   const [poolId, setPoolId]   = useState('brand')
@@ -722,6 +727,15 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       setPast(nextPast)
       setFuture([])
     }
+  }, [])
+
+  /* THE LOADED PATCH IS THE FLOOR (plan 49 3.4): a chrome that seeds its stage on mount (Labs' deep link, the frame fit
+   * to the aspect) records those writes too, so undo could walk past what the user opened — back to an empty stage or
+   * an unfitted frame. The host clears the stacks once its boot has settled. */
+  const clearHistory = useCallback(() => {
+    if (txRef.current !== null) return
+    pastRef.current = []; futureRef.current = []
+    setPast([]); setFuture([])
   }, [])
 
   const undo = useCallback(() => {
@@ -912,7 +926,11 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
        * stages, before the terminal engine; a canvas stage sits before the
        * pixi batch AND the engine. */
       let at
-      if (def.kind === 'pixi') {
+      /* a `first` stage (fx-media, plan 26 § 4) moves the picture every later stage works on */
+      if (def.first) {
+        if (chain.some((s) => s.id === filterId)) return null
+        at = 0
+      } else if (def.kind === 'pixi') {
         at = engineIdx >= 0 ? engineIdx : chain.length
       } else {
         const boundary = chain.findIndex((s) => {
@@ -1151,18 +1169,24 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
 
   /* Duplicate resolves DEEP — a nested child clones in place, inserted
    * right above the original within its parent (bool ancestors refit). */
-  const duplicateLayer = useCallback((id) => {
+  /* Returns the clone's id (⌥-drag duplicates and then drags the COPY — audit B6, the user's 28).
+   * `offset: 0` lands the clone on the original, for that drag; the default 24px step is ⌘D's. */
+  const duplicateLayer = useCallback((id, { offset = 24 } = {}) => {
+    const found0 = locateLayer(layersRef.current, id)
+    const nid = found0 ? newId(found0.layer.type) : null
+    if (!nid) return null
     setLayersTracked((prev) => {
       const found = locateLayer(prev, id)
       if (!found) return prev
       const src = found.layer
-      const clone = { ...src, id: newId(src.type) }
+      const clone = { ...src, id: nid }
       /* Group/bool children get fresh ids too — duplicated child ids would
        * make panel-side child edits write into both copies at once. */
       if (Array.isArray(clone.children)) clone.children = reidLayers(clone.children)
-      if (clone.x != null) { clone.x += 24; clone.y += 24 }
+      if (clone.x != null) { clone.x += offset; clone.y += offset }
       return insertLayerDeep(prev, found.parent?.id ?? null, found.index + 1, clone)
     })
+    return nid
   }, [setLayersTracked])
 
   /* Clear the canvas — drop all layers, clear selection, and reset the
@@ -1349,12 +1373,30 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       const bw = single ? CANVAS_W : Math.max(...xs2) - bx
       const bh = single ? virtualHRef.current : Math.max(...ys2) - by
 
+      /* DISTRIBUTE (≥3): the first and last stay, the rest take equal gaps between them along the
+       * axis — Figma / Affinity's distribute spacing. */
+      let spread = null
+      if (mode === 'distribute') {
+        if (located.length < 3) return prev
+        const key = axis === 'h' ? xs : ys
+        const size = located.map((f) => (axis === 'h' ? (f.layer.w ?? 0) : (f.layer.h ?? 0)))
+        const order = located.map((_, i) => i).sort((a, b) => key[a] - key[b])
+        const first = order[0], last = order[order.length - 1]
+        const gap = ((key[last] + size[last]) - key[first] - size.reduce((t, v) => t + v, 0)) / (order.length - 1)
+        spread = {}
+        let at = key[first]
+        order.forEach((i) => { spread[i] = at; at += size[i] + gap })
+      }
+
       let next = prev
       located.forEach((f, i) => {
         const l = f.layer
         let ax = xs[i]
         let ay = ys[i]
-        if (axis === 'h') {
+        if (spread) {
+          if (axis === 'h') ax = spread[i]
+          else ay = spread[i]
+        } else if (axis === 'h') {
           if (mode === 'start')  ax = bx
           if (mode === 'center') ax = bx + (bw - (l.w ?? 0)) / 2
           if (mode === 'end')    ax = bx + bw - (l.w ?? 0)
@@ -1597,6 +1639,24 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       if (Array.isArray(preset.palette.locks)) setLocks(preset.palette.locks)
     }
     const fresh = reidLayers(preset.layers)
+    /* A SAVED FILE RE-LINKS ITS UPLOADS (plan 26 § 13): an upload saved before stills went into the
+       file is a `blob:` src + bytes in this browser's clip store, keyed by the OLD layer id — only the
+       draft restore re-minted it, so an opened file showed nothing. reidLayers keeps the tree's shape,
+       so old and new pair by position: re-key the clip to the new id (gcClips would reap the old one)
+       and swap a live objectURL in, untracked — it is the same picture, not an edit. */
+    const pairs = []
+    const walk = (a, b) => (a ?? []).forEach((l, i) => { pairs.push([l, b[i]]); if (Array.isArray(l?.children)) walk(l.children, b[i]?.children) })
+    walk(preset.layers, fresh)
+    for (const [old, neu] of pairs) {
+      if (!neu || typeof old?.src !== 'string' || !old.src.startsWith('blob:')) continue
+      loadClip(old.id).then((blob) => {
+        if (!blob) return
+        saveClip(neu.id, blob)
+        const url = URL.createObjectURL(blob)
+        const swap = (ls) => ls.map((l) => (l.id === neu.id ? { ...l, src: url } : Array.isArray(l.children) ? { ...l, children: swap(l.children) } : l))
+        setLayers((prev) => swap(prev))
+      })
+    }
     if (preset.intent === 'partial') {
       setLayersTracked((prev) => [...prev, ...fresh])
       /* partial chunks don't claim the loaded-preset slot; the host frame
@@ -1604,7 +1664,8 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     } else {
       /* default: whole-frame replace */
       setLayersTracked(() => fresh)
-      setCurrentPresetId(preset.id ?? null)
+      /* a shipped file is not stored (library/shipped.js) — Save on it asks for a name and makes the user's own */
+      setCurrentPresetId(preset.shipped ? null : preset.id ?? null)
       setCurrentPresetName(preset.name ?? null)
     }
     setSelectedIds([])
@@ -1700,6 +1761,10 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
      * never dropped. Skipped only when localStorage itself is unreachable
      * (below), where the draft can't be trusted — don't nuke on a transient. */
     const resolve = (finalLayers) => { restoreResolvedRef.current = true; gcClips(finalLayers) }
+    /* `?open=<id>` (a file card on Home, plan 08): the user asked for that file, so it wins over the
+     * draft — no restore prompt; UrlIntents loads it. `?preset=` (a labs deep link) is the same
+     * explicit ask — the preset is already on the stage, the prompt stood over it (audit #3). */
+    { const q = new URLSearchParams(window.location.search); if (q.get('open') || q.get('new') || q.get('preset')) { resolve(layersRef.current); return } }
     let raw
     try { raw = localStorage.getItem(draftKey) } catch { restoreResolvedRef.current = true; return }
     if (!raw) { resolve(layersRef.current); return }
@@ -1930,7 +1995,9 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     /* history */
     canUndo,
     canRedo,
-    undo, redo,
+    undo, redo, clearHistory,
+    /* the stacks themselves, for the History panel (G6) — snapshots, oldest first / next first */
+    historyPast: past, historyFuture: future,
     beginTransaction, commitTransaction,
   }), [
     selectedId, selectedIds, select, selectCanvas, toggleSelection, selectMany,
@@ -1947,7 +2014,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     addFilter, removeFilter, toggleFilter, moveFilter, patchFilter, replaceFilter,
     flipLayer, flipSelected, booleanGroup, flattenSelected, convertShapeToPath,
     groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,
-    canUndo, canRedo, undo, redo, beginTransaction, commitTransaction,
+    canUndo, canRedo, undo, redo, clearHistory, beginTransaction, commitTransaction, past, future,
   ])
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

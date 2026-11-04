@@ -7,6 +7,8 @@ import { goLabs, goRandomiser, modeById } from './mode'
 import EditorErrorBoundary from './EditorErrorBoundary'
 import { ToolProvider }       from './state/tools'
 import { GeneratorLibraryProvider } from './library/LibraryProvider'
+import UrlIntents from './library/UrlIntents'
+import { consumeMediaPicks } from './library/mediaPick'
 import { useGlobalShortcuts } from './state/useGlobalShortcuts'
 import { ComposeStateProvider, useComposeState } from './compose/state'
 import { transport } from './params/transport'
@@ -14,7 +16,7 @@ import { getAppSettings } from './lib/appSettings'
 import { PaletteStateProvider } from './modes/palette/state'
 import { PatternStateProvider } from './modes/pattern/state'
 import { TypeStateProvider }    from './modes/type/state'
-import PaletteModal from './color/PaletteModal.jsx'
+import ColorModesWindow from './color/ColorModesWindow'
 import FilesDialogHost from './library/FilesDialogHost'
 import Compose from './Compose'
 
@@ -25,10 +27,17 @@ import Compose from './Compose'
  * providers stay mounted (nesting order preserved from the old registry:
  * ToolProvider > Compose > Palette > Pattern > Type) — the color modal and
  * library flows read palette state, and pattern / type state can still back
- * library items. PaletteModal (the palette generator; NOT color/ColorModal,
- * which is the per-layer color panel in the left rail) mounts inside the
- * stack so it sees palette + compose state; opens on `kol:open-color-modal`.
+ * library items. ColorModesWindow (the one palette generator, plan 39 § 4.1)
+ * mounts in EditorProviders so every chrome (editor, Labs) has it; opens on
+ * `kol:open-color-modes`.
  */
+/* a file picked in the rail's Media library lands as a photo layer (plan 15 § 4) */
+function MediaPickSink() {
+  const { addLayer } = useComposeState()
+  useEffect(() => consumeMediaPicks((d) => addLayer('photo', { src: d.url, srcType: d.srcType })), [addLayer])
+  return null
+}
+
 function EditorBody() {
   /* Global shortcuts (undo / redo / deselect) — mounted here so keyboard
    * works everywhere, not just inside CanvasArea. */
@@ -50,7 +59,7 @@ function EditorBody() {
   return (
     <>
       <Compose />
-      <PaletteModal />
+      <MediaPickSink />
       {/* mounted once, inside the providers — the two File surfaces open it
           through a store rather than owning it (FilesDialog, kol-fxr) */}
       <FilesDialogHost />
@@ -83,7 +92,10 @@ export function EditorProviders({ children, persistDraft = true, draftKey }) {
               <PaletteStateProvider>
                 <PatternStateProvider>
                   <TypeStateProvider>
+                    <UrlIntents />
                     {children}
+                    {/* in the shared stack, not EditorBody, so Labs' Color row opens it too (plan 41 § 6.1) */}
+                    <ColorModesWindow />
                   </TypeStateProvider>
                 </PatternStateProvider>
               </PaletteStateProvider>

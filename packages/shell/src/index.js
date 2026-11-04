@@ -17,6 +17,20 @@ export { NavRail } from '@kolkrabbi/kol-component' // lives in kol-component sin
 // the floating nav, one family (AppFloatNav, kol-fxr 2026-10-30) — PhoneNav and TransportPill are its deprecated aliases
 // on the retirement ledger (PhoneNav's `nav` is `mobile`; TransportPill is `variant="transport"`)
 export { default as AppFloatNav, APP_FLOAT_NAV_VARIANTS } from './AppFloatNav.jsx'
+export { default as Timecode } from './Timecode.jsx'
+// THE FLOAT CHROME (float-everything W5 · W9, 2026-11-04 — the gap map's rows 63–81 and 129–144): the editor's and the
+// workspace's chrome on the float tokens, every boxed part on its `surface`. Composed from kol-component's float controls.
+export { default as ToolRail } from './ToolRail.jsx'
+export { default as PropertyRail } from './PropertyRail.jsx'
+export { default as DocumentCapsule } from './DocumentCapsule.jsx'
+export { default as GlobalActions } from './GlobalActions.jsx'
+export { ZoomReadout, SceneBreadcrumb, CanvasHint, SelectionMeasure } from './CanvasReadouts.jsx'
+export { default as TopControlsBar, PanelsRestore } from './TopControlsBar.jsx'
+export { default as ReaderBar, ProgressDock } from './ReaderBar.jsx'
+export { default as RailTrigger } from './RailTrigger.jsx'
+export { default as RailFlyout } from './RailFlyout.jsx'
+export { default as RailDisplayControls } from './RailDisplayControls.jsx'
+export { AccountFooter, StatusStrip, Breadcrumb, FooterStrip, PeriodNav, DataStatus } from './WorkspaceStrips.jsx'
 export { default as PhoneNav, PHONE_NAV_VARIANTS } from './PhoneNav.jsx'
 export { default as TransportPill } from './TransportPill.jsx'
 export { default as PageShell, PageBleed } from './PageShell.jsx'

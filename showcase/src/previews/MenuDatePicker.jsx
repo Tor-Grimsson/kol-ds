@@ -15,13 +15,15 @@ export function Card() {
 
 export const tones = CONTROL_TONES
 export const aligns = ALIGNS
+/* `float` (float-everything W2 row 33): the date chip — the value in mono on the well, the float list under it */
+export const variants = ['default', 'float']
 
-export default function MenuDatePickerPreview({ tone, align = 'start' }) {
+export default function MenuDatePickerPreview({ tone, align = 'start', variant = 'default' }) {
   const [value, setValue] = useState('28d')
   const [compare, setCompare] = useState(false)
   return (
     <div className={`flex min-h-[120px] w-full items-start justify-center ${toneWrap(tone)}`}>
-      <MenuDatePicker key={align} align={align} groups={GROUPS} value={value} onChange={setValue} label={labelOf(value)}
+      <MenuDatePicker key={align + variant} align={align} variant={variant === 'float' ? 'float' : undefined} groups={GROUPS} value={value} onChange={setValue} label={variant === 'float' ? '2026-07-01' : labelOf(value)}
         compare={{ label: compare ? 'Disable comparison' : 'Compare', kbd: 'X', onClick: () => setCompare((c) => !c) }} />
     </div>
   )

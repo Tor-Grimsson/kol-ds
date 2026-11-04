@@ -14,7 +14,7 @@ import { filterById } from '../../../filters'
 import { loopById } from '../../../loops/registry'
 
 const CATEGORIES = [
-  { id: 'halftone',   label: 'Halftone',   filterIds: ['fx-halftone-dither', 'fx-ascii', 'fx-bitmap'] },   /* labs page order: Dither · ASCII · Bitmap */
+  { id: 'halftone',   label: 'Halftone',   filterIds: ['fx-halftone-dither', 'fx-ascii', 'fx-bitmap', 'fx-riso', 'fx-growth'] },   /* labs page order: Dither · ASCII · Bitmap; Riso (plan 37 § 6.6) after */
   { id: 'scanline',   label: 'Scanline',   filterIds: ['scanline'] },
   /* labs CRT = the four synth pages (Disco · Slitscan · Scan · Symmetry);
    * kaleido/mirror belong to the rack's Post-Processing category. */
@@ -22,25 +22,25 @@ const CATEGORIES = [
   /* glass is a refracting sheet — Refraction, not Pattern. */
   { id: 'refraction', label: 'Refraction', filterIds: ['gl-lens', 'gl-distort', 'fx-chromatic', 'glass'] },
   /* dither is reaction-diffusion — labs Pattern's 'Reaction' bucket. */
-  { id: 'pattern',    label: 'Pattern',    filterIds: ['dither'] },
+  { id: 'pattern',    label: 'Dither',     filterIds: ['dither'] },  /* 'Pattern' named six things (spec R7.3); this one is the dither filter */
 ]
 
 /* THE RACK — labs' category list, canvas + pixi mixed per bucket. A rack
  * category is the nav LEAF under FX RACK; its filters populate the rack
  * surface's "Add effect…" list. `pixiGroup` pulls that pixi tier in. */
 export const FX_RACK_GROUPS = [
-  { id: 'color-adjustments', label: 'Color Adjustments', filterIds: ['fx-hsl', 'fx-hsv', 'fx-brightness', 'fx-contrast', 'fx-rgb', 'fx-invert', 'fx-sepia', 'fx-grayscale', 'fx-enhance'], pixiGroup: 'color-adjustments' },
+  { id: 'color-adjustments', label: 'Color adjustments', filterIds: ['fx-hsl', 'fx-hsv', 'fx-brightness', 'fx-contrast', 'fx-rgb', 'fx-invert', 'fx-sepia', 'fx-grayscale', 'fx-enhance'], pixiGroup: 'color-adjustments' },
   { id: 'blur-sharpen',      label: 'Blur/Sharpen',      filterIds: ['fx-blur', 'fx-sharpen'], pixiGroup: 'blur-sharpen' },
   /* labs' lone Displacement category folds into Distortion here — the one
    * pixi displacement def carries group 'distortion' in this registry. */
   { id: 'distortion',        label: 'Distortion',        filterIds: [], pixiGroup: 'distortion' },
-  { id: 'artistic',          label: 'Artistic Effects',  filterIds: ['fx-pixelate', 'fx-posterize', 'fx-solarize', 'fx-emboss', 'fx-noise'], pixiGroup: 'artistic' },
+  { id: 'artistic',          label: 'Artistic effects',  filterIds: ['fx-pixelate', 'fx-posterize', 'fx-solarize', 'fx-emboss', 'fx-noise'], pixiGroup: 'artistic' },
   { id: 'lighting',          label: 'Lighting',          filterIds: [], pixiGroup: 'lighting' },
   { id: 'stylize',           label: 'Stylize',           filterIds: [], pixiGroup: 'stylize' },
   { id: 'utility',           label: 'Utility',           filterIds: ['fx-threshold'], pixiGroup: 'utility' },
   /* labs' CANVAS_FX_DEFS — the same list every effect page's Post-Processing
    * block adds from. */
-  { id: 'post-processing',   label: 'Post-Processing',   filterIds: ['fx-rgb', 'fx-edge', 'fx-posterize', 'fx-pixelsort', 'fx-mirror', 'fx-kaleido', 'fx-threshold'] },
+  { id: 'post-processing',   label: 'Post-processing',   filterIds: ['fx-rgb', 'fx-edge', 'fx-posterize', 'fx-pixelsort', 'fx-mirror', 'fx-kaleido', 'fx-threshold', 'fx-blocks', 'fx-media', 'fx-slice-wave'] },
 ]
 
 const CLAIMED = new Set([
@@ -152,4 +152,40 @@ export function flatCategories(available) {
         .filter((g) => g.filters.length > 0)
       : [c]
   ))
+}
+
+/* THE LIVE FILTERS MENU (plan 32 § 1; Affinity's `New Live Filter Layer ▸`, the user's reference):
+ * Blur · Sharpen · Distort · Noise · Lighting · Colors — each of our filters in the group Affinity would
+ * put it in — then a divider and the labs families with no Affinity twin. A filter is listed once.
+ * `label` renames a row where Affinity's name is the right one (`fx-blur` is the Gaussian blur). Ids
+ * with no registered filter drop; registered filters no group claims land in Other, so none vanish. */
+export const LIVE_FILTER_GROUPS = [
+  { label: 'Blur', ids: ['fx-blur', 'filter-kawase-blur', 'filter-radial-blur', 'filter-zoom-blur', 'filter-motion-blur', 'filter-tilt-shift', 'filter-backdrop-blur', 'filter-bloom', 'filter-advanced-bloom'] },
+  { label: 'Sharpen', ids: ['fx-sharpen', 'fx-enhance', 'filter-convolution'] },
+  { label: 'Distort', ids: ['filter-twist', 'filter-bulge-pinch', 'filter-shockwave', 'filter-displacement', 'filter-glitch', 'fx-pixelate', 'gl-lens', 'gl-distort', 'fx-mirror', 'fx-kaleido', 'fx-pixelsort', 'gl-slitscan', 'filter-reflection'] },
+  { label: 'Noise', ids: ['fx-noise', 'filter-simplex-noise', 'filter-old-film'] },
+  { label: 'Lighting', ids: ['filter-glow', 'filter-godray', 'filter-simple-lightmap'] },
+  { label: 'Colors', ids: ['filter-adjustment', 'filter-hsl-adjustment', 'fx-hsl', 'fx-hsv', 'fx-brightness', 'fx-contrast', 'fx-rgb', 'filter-rgb-split', 'fx-chromatic', 'fx-invert', 'fx-sepia', 'fx-grayscale', 'fx-posterize', 'fx-solarize', 'fx-threshold', 'filter-color-gradient', 'filter-color-map', 'filter-color-overlay', 'filter-color-replace', 'filter-multi-color-replace', 'fx-edge', 'fx-emboss'] },
+  { divider: true },
+  { label: 'Halftone', ids: ['fx-halftone-dither', 'fx-ascii', 'fx-bitmap', 'fx-riso', 'fx-growth', 'filter-ascii', 'filter-cross-hatch', 'filter-dot'] },
+  { label: 'Scanline', ids: ['scanline'] },
+  { label: 'CRT', ids: ['gl-disco', 'gl-scan', 'gl-trails', 'filter-crt'] },
+  { label: 'Refraction', ids: ['glass'] },
+  { label: 'Dither', ids: ['dither'] },
+  { label: 'Stylize', ids: ['filter-bevel', 'filter-drop-shadow', 'filter-outline'] },
+  { label: 'Post-processing', ids: ['fx-blocks', 'fx-media', 'fx-slice-wave'] },
+]
+const LIVE_LABELS = { 'fx-blur': 'Gaussian Blur', 'fx-chromatic': 'Chromatic Aberration', 'fx-halftone-dither': 'Halftone Dither' }
+export const liveFilterLabel = (f) => LIVE_LABELS[f.id] ?? f.label
+
+/** The groups resolved against the allowed catalog: `{ label, filters }` / `{ divider }`, empty groups
+ * dropped, the unclaimed in a trailing Other. */
+export function liveFilterGroups(filters) {
+  const byId = new Map(filters.map((f) => [f.id, f]))
+  const claimed = new Set(LIVE_FILTER_GROUPS.flatMap((g) => g.ids ?? []))
+  const out = LIVE_FILTER_GROUPS.map((g) => (g.divider ? g : { label: g.label, filters: g.ids.map((id) => byId.get(id)).filter(Boolean) }))
+    .filter((g) => g.divider || g.filters.length)
+  const other = filters.filter((f) => !claimed.has(f.id))
+  if (other.length) out.push({ label: 'Other', filters: other })
+  return out
 }

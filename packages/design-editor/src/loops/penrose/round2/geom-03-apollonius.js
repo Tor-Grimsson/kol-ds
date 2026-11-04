@@ -17,7 +17,7 @@ const PARAMS          = [
 // resolution, then upscale with putImageData to canvas size.
 export const r2_geom_03_apollonius            = {
   id: 'r2-geom-03-apollonius',
-  name: 'APOLLONIUS DIAGRAM',
+  name: 'Apollonius diagram',
   repo: 'raster CPU · additively-weighted Voronoi',
   summary: 'Multi-source wavefront competition inside the glyph. Each seed ignites at a different time; expanding circular wavefronts compete for territory. Cell boundaries are curved hyperbolas/parabolas — distinctly non-Euclidean texture.',
   helps: 'Most visually exotic of the Voronoi family: curved boundaries, competitive territorial dynamics, maps directly to wave propagation physics.',
@@ -40,7 +40,7 @@ export const r2_geom_03_apollonius            = {
     // Render at reduced resolution for performance — SCALE grows on big
     // buffers so the raster stays ≤ ~256² (bounded per-frame cost), and the
     // upscale is a native drawImage blit instead of a per-canvas-pixel JS loop.
-    const SCALE = Math.max(4, Math.ceil(Math.max(sdf.w, sdf.h) / 256))
+    const SCALE = Math.max(4, Math.ceil(Math.max(sdf.w, sdf.h) / 640)) /* was /256 — plan 49 5.3 */
     const rw = Math.ceil(sdf.w / SCALE)
     const rh = Math.ceil(sdf.h / SCALE)
     const imgData = ctx.createImageData(rw, rh) // allocated ONCE, reused each frame

@@ -1,5 +1,44 @@
 # @kolkrabbi/kol-shell
 
+## 0.101.1 — 2026-11-04
+
+- **The transport's Timecode sits inside the pill** (float-everything W5 row 70): `AppFloatNav variant="transport" timecode` passes it to TabsRow's new `trailing` (kol-component 0.335.0) instead of a capsule 8 off the pill. The slots stay where a pill without it puts them; the pill grows rightward. Peer kol-component ≥0.335.0.
+
+## 0.101.0 — 2026-11-04
+
+Float, all of it — W5 Chrome + W9 Navigation (plan-2026-11-04-float-everything; the gap map's rows 63–81 and 129–144, kol-float--style). The editor's and the workspace's chrome on the float tokens, every boxed part on its `surface` (`solid` · `glass-dark` · `glass-light`), composed from kol-component's float controls — nothing forked:
+- **ToolRail** — the tool column: a 52 capsule, 40 slots (`--kol-float-row`) 4 apart, the armed tool lit `--kol-fg-16`, each named beside it by the float Tooltip with its key.
+- **PropertyRail** — the 272 float inspector (`--kol-float-menu-r`, 16 in, 18 between): header with the collapse ⇥, chip tabs (TabsRow float), the selected object's line, sections with an optional + and rows kol-component draws (`fields` two-up Input float · `select` Dropdown · `slider` Slider float · `switch` ToggleSwitch float · `render`). No section hairlines (no-borders law).
+- **AppFloatNav `variant="transport"` `timecode`** `{ current, total }` — the readout in its own capsule 8 off the pill's right end (the ··· idiom), and **Timecode** on its own: `kol-float-timecode`, the total at oq-48.
+- **DocumentCapsule** (← · name ▾ its float menu · ✓ Saved, 48 tall) · **GlobalActions** (undo · redo · the inverted action · the account slot) · **ZoomReadout** (58.3% ▾ ⤢) · **SceneBreadcrumb** · **CanvasHint** · **SelectionMeasure** (handles, label, the size cap) · **TopControlsBar** (one 64 bar: `document` · `tabs` · `onSearch` · `panels` · `action`, or `start` · `center` · `end`) · **PanelsRestore** (Panels ▾ — `children` for kol-component's PanelsMenu, else `items`) · **ReaderBar** (back + path · Contents · search · bookmark · Aa tools) · **ProgressDock** (‹ › · page line · share · the Slider float's track).
+- **RailTrigger** — the rail's hidden state: a 44 float button and the breadcrumb, a press opens the whole nav as a float card (the More sheet's rows, nested levels in place). **RailFlyout** — a section's children beside a 72 rail (34 rows on `--kol-float-list-r`, counts in `kol-float-ruler`; `anchor` hangs it off a row). **RailDisplayControls** — ThemeToggle over a well with Collapse · Hide. **AccountFooter** · **StatusStrip** · **Breadcrumb** · **FooterStrip** · **PeriodNav** · **DataStatus**.
+- kol-theme 0.211.1 carries the chrome's CSS and the float rail's footprints (`--kol-shell-float-rail-open` 280 · `-width` 72 · `-hidden` 0). Peers on kol-theme ≥0.211.1.
+
+## 0.100.0 — 2026-11-03
+
+- **The floats fold either way, into the grey handle** (FloatFoldBothSidesGrey, kol-fxr). AppFloatNav takes `foldSide` and `foldTone` on the nav and the transport and forwards them to TabsRow (`'swipe'` folds to the edge the swipe went toward, `'handle'` is the grey edge tab); unset, the nav folds left and the transport right on the pill's ground, as before. **AppShell `floats.fold = { side, tone }`** sets both for the top float and the transport under `touch="floats"` — the only way an app reaches the top float, since AppHub owns `phoneNav`. Peers on kol-component ≥0.333.0.
+
+## 0.99.4 — 2026-11-03
+
+- **`touch="floats"`: the Rail overlays the stage** (FloatsRailOverlaysShadow, kol-fxr). The stage is the whole screen (`h-dvh`) and never resizes; `floats.rail` is pinned `absolute inset-x-0 bottom-0` over it, up to `railHeight`, on `--kol-shadow-rail-up`, so opening, closing or dragging the Rail leaves the picture where it is. The stage is `isolate`, so its own stacking stays under the Rail; both floats stay over the Rail. The 0.99.3 spacer past the last row stays.
+- **AppFloatNav `panel` preset: `shadow: true`** — the top float carries the transport's drop shadow, now that it floats over the stage and the Rail.
+
+## 0.99.3 — 2026-11-03
+
+- **`touch="floats"`: the floats hover over the content, no bands** (FloatsOverlayNoBands, kol-fxr). The stage loses its `padding-top` (safe area + 98) and starts at y=0, under the status bar and the top float; the wash rule (one owner per pixel) is unchanged. The bottom Rail loses its `padding-bottom` (98 + safe area): its rows run under the transport float, and an absolute spacer past the last row adds the 98 + safe area as scroll range only, so the last row still scrolls clear and nothing shows while unscrolled. Reverses 0.97.0's insets.
+
+## 0.99.2 — 2026-11-03
+
+- **The signed-out Home is pinned to the screen** (HubHomeSignedOutPinned, kol-fxr): its box was `relative min-h-dvh`, and in an iPhone home-screen app (`viewport-fit=cover`) iOS sizes `dvh` short, so the page scrolled and left a band under the dock. It is now `fixed`, from the rail's edge (`--kol-shell-rail-width`) to the screen's, top to bottom; `overflow-hidden` and every child's offsets are unchanged.
+
+## 0.99.1 — 2026-11-01
+
+- **More rows without a `path` are no longer all lit** (MoreRowsNoPathLit, kol-atlas). `MoreRows` and AppFloatNav's More-lit check matched `undefined === undefined` when nothing was active; both now require `i.path != null`.
+
+## 0.99.0 — 2026-11-01
+
+- **HubHome holds its chrome under an intro stage** (LoaderAppIntro, kol-fxr): when the signed-out `stage` is an element with `intro` (GrowthLineStage), the mark, the +, the dock and everything else but the stage start at opacity 0 and fade in (700 ms) 800 ms after the stage's `onIntroBreath` (chained onto the stage's own); the classes leave after, so the sign-in transitions are untouched. Reduced motion: shown at once. Peers on kol-component ≥0.331.0.
+
 ## 0.98.0 — 2026-10-31
 
 - **`AppShell touch="floats"`: `floats.items` · `floats.actions`** (FloatsOwnItems, kol-fxr 2026-10-31 — *"keep it as flexible as possible"*). A page passes its own rows for the top float's slots (`floats.items`, AppFloatNav items) and its More's actions (`floats.actions`). One rule for every app: the More keeps the app's whole nav (`barItems`, else items + bottomItems), so the page's rows replace the slots, never the way back; a `phoneNav.sheetItems` still wins. Unset, nothing changes.

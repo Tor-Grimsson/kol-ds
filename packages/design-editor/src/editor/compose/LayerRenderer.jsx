@@ -3,12 +3,15 @@ import KolLogo from '../../brand/logos/KolLogo'
 import TypeBlock from '../../components/styleguide/TypeBlock'
 import { buildPatternSvg } from '../modes/pattern/render'
 import { getShapeSvg } from '../modes/pattern/shapes'
-import { resolveColor, COVER_TYPES, useComposeState } from './state'
+import { resolveColor, COVER_TYPES, CANVAS_W, CANVAS_H, useComposeState } from './state'
 import { useTool } from '../state/tools'
-import { regularPolygonPoints, starPoints, trianglePoints } from './shape-math'
+import { shapeOutlineD, drawsAsOutline } from './shape-math'
+import { applyVectorFx } from './vectorEffects'
 import { pathD } from './path-math'
 import { computeBooleanCached } from './boolean-ops'
 import { hasBindings, resolveLayer } from '../params/resolve'
+import { shapeMorphDef, crossfadeMorphDef } from '../morph/shape'
+import { warpTime } from '../../loops/lib/viewport'
 import { useTransportCtx, useTransportPlaying, useTransportEpoch, transport } from '../params/transport'
 import { pack } from '../packs'
 import { enabledCanvasStages, enabledEngineStage, pixiStages } from './filterChain'
@@ -19,6 +22,10 @@ import { familyFor, applyCase } from '../modes/type/cuts'
 import { pickCutFor, seedFromBlend } from '../modes/type/axisRandom'
 import { layerFamily, familyCssFor, isOutlineFamily, ensureFamilyLoaded } from '../modes/type/families'
 import { paintAlpha } from './paint'
+import { usePreviewDpr } from '../lib/previewScale'
+import { hasLayerEffects, effectsFilter, effectsFilterId } from './layerEffects'
+import { hasPaintFill, paintBackground } from './paintFill'
+import { canvasOutline } from './masks'
 
 /* The seam (editor/packs.js) — loop/misc layers render through the generators pack, kinetic
  * through motion, filter chains through effects. A layer whose pack is absent renders nothing;
@@ -26,6 +33,11 @@ import { paintAlpha } from './paint'
 const gen = () => pack('generators')
 const fx = () => pack('effects')
 const loopById = (id) => gen()?.loopById(id) ?? null
+/* a Shape-mode morph (plan 10) is a loop layer whose draw is the morph of its steps' outlines; a
+ * Crossfade (plan 14 § 2) one fades step into step. Blend is plain tracks — the generator's own def. */
+const defFor = (layer) => (layer.morph?.mode === 'shape' ? shapeMorphDef(loopById, layer.loopId)
+  : layer.morph?.mode === 'crossfade' ? crossfadeMorphDef(loopById, layer.loopId)
+  : loopById(layer.loopId))
 const loopDrawParams = (loop, layer) => gen().loopDrawParams(loop, layer)
 const resolveCameraKeys = (def) => gen()?.resolveCameraKeys(def) ?? null
 const drawLoopFrame = (...args) => gen().drawLoopFrame(...args)
@@ -78,14 +90,65 @@ export default function LayerRenderer({ layer: rawLayer, palette }) {
    * entry bakes. */
   const rot  = layer.rotation ?? 0
   const flip = layer.flipX || layer.flipY
+  /* shear (G3): skew between the rotate and the mirror — the export emits the same matrix */
+  const skew = (layer.skewX || layer.skewY) ? `skew(${layer.skewX ?? 0}deg, ${layer.skewY ?? 0}deg)` : ''
   const layerStyle = {
     opacity:      layer.opacity ?? 1,
     mixBlendMode: layer.blend && layer.blend !== 'normal' ? layer.blend : undefined,
-    transform: (rot || flip)
-      ? `${rot ? `rotate(${rot}deg)` : ''}${flip ? ` scale(${layer.flipX ? -1 : 1}, ${layer.flipY ? -1 : 1})` : ''}`.trim()
+    transform: (rot || flip || skew)
+      ? `${rot ? `rotate(${rot}deg)` : ''} ${skew}${flip ? ` scale(${layer.flipX ? -1 : 1}, ${layer.flipY ? -1 : 1})` : ''}`.trim()
       : undefined,
+    /* a mask's outline, resolved into this layer's own px by compose/masks.js (G8) */
+    clipPath: layer._clipD ? `path('${layer._clipD}')` : undefined,
   }
 
+  /* LAYER EFFECTS (plan 32 § 2) — one SVG filter beside the layer, worn through CSS `filter`; the
+     element's own box is the filter's user space (origin 0,0) */
+  const fx = hasLayerEffects(layer)
+  if (fx) layerStyle.filter = `url(#${effectsFilterId(layer)})`
+  /* PAINT FILLS (plan 34 § 2) — a gradient / pattern / image / video fill wraps the layer */
+  const body = hasPaintFill(layer) && PAINT_FILL_TYPES.has(layer.type)
+    ? <PaintFillWrap layer={layer} palette={palette} layerStyle={layerStyle} />
+    : renderLayerBody(layer, palette, layerStyle)
+  if (!fx) return body
+  const markup = effectsFilter(layer, { w: layer.w ?? CANVAS_W, h: layer.h ?? CANVAS_H })
+  return (
+    <>
+      <svg width="0" height="0" aria-hidden style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }}>
+        <defs dangerouslySetInnerHTML={{ __html: markup }} />
+      </svg>
+      {body}
+    </>
+  )
+}
+
+/* PAINT FILLS (plan 34 § 2; Figma's paint picker). The wrapper takes the layer's box and its style
+ * (transform, opacity, blend, effects filter, mask clip); inside it the paint draws first — a CSS
+ * background or a <video> — clipped to the shape's outline, then the layer itself at 0,0 with no fill,
+ * so its stroke sits on top. Text wears the paint through `background-clip: text`, its own ink clear.
+ * ponytail: shapes, paths and text only — a bool's outline is computed elsewhere; video on text later. */
+const PAINT_FILL_TYPES = new Set(['shape', 'path', 'text'])
+function PaintFillWrap({ layer, palette, layerStyle }) {
+  const fill = layer.fill
+  const local = { ...layer, x: 0, y: 0 }
+  const isText = layer.type === 'text'
+  const d = isText ? null : canvasOutline(local)
+  const bg = paintBackground(fill, palette)
+  const box = { position: 'absolute', inset: 0, clipPath: d ? `path('${d}')` : undefined }
+  const inner = isText ? { ...local, color: 'transparent' } : { ...local, color: null }
+  return (
+    <div style={{ position: 'absolute', left: layer.x, top: layer.y, width: layer.w, height: layer.h, ...layerStyle,
+      ...(isText ? { ...bg, WebkitBackgroundClip: 'text', backgroundClip: 'text' } : null) }}>
+      {!isText && (fill.type === 'video'
+        ? <video data-fill-video={layer.id} src={fill.src} autoPlay loop muted playsInline crossOrigin="anonymous"
+            style={{ ...box, width: '100%', height: '100%', objectFit: fill.mode === 'fit' ? 'contain' : 'cover' }} />
+        : <div style={{ ...box, ...bg }} />)}
+      {renderLayerBody(inner, palette, {})}
+    </div>
+  )
+}
+
+function renderLayerBody(layer, palette, layerStyle) {
   switch (layer.type) {
     case 'background': return <BackgroundLayer layer={layer} palette={palette} layerStyle={layerStyle} />
     case 'pattern': {
@@ -129,8 +192,14 @@ export default function LayerRenderer({ layer: rawLayer, palette }) {
     case 'misc':   /* misc rides the loop render vehicle */
     case 'loop': {
       if (!gen()) return null
-      const def = loopById(layer.loopId)
-      if (def?.kind === 'engine') return <EngineLoopLayer layer={layer} def={def} layerStyle={layerStyle} />
+      const def = defFor(layer)
+      if (def?.kind === 'engine') {
+        /* a GL loop CARRIES a chain now (plan 26 § 15) — ASCII on a spinning model, live: the engine's
+           canvas is the chain's source, the same way a webcam's live element is */
+        const gs = layer.w != null ? chainFor(layer) : []
+        const gp = layer.w != null ? pixiFor(layer) : []
+        return <EngineLoopLayer layer={layer} def={def} layerStyle={layerStyle} stages={gs} pxStages={gp} />
+      }
       /* Engine filter on a 2d loop (labs relief-over-generated-pattern,
        * HalftonePage): the loop's live canvas feeds the GL engine, canvas
        * stages run in between. */
@@ -165,12 +234,13 @@ function KineticLayer({ layer, layerStyle }) {
    * the morph without touching the stored comp. Absent prop = stored comp
    * untouched (identity passthrough). */
   const comp = useMemo(() => {
-    const c = layer.comp
+    /* every modulated knob (`kin:<element>:<key>`, kinetic/knobs.js applyKnobBridges) — the same bridge, per knob */
+    const c = pack('motion').applyKnobBridges(layer.comp, layer)
     const blend = layer.morphBlend
     if (typeof blend !== 'number' || !c?.instances?.some((x) => x?.morph?.on)) return c
     const b = Math.max(0, Math.min(1, blend))
     return { ...c, instances: c.instances.map((x) => (x.morph?.on ? { ...x, morph: { ...x.morph, blend: b } } : x)) }
-  }, [layer.comp, layer.morphBlend])
+  }, [layer])
 
   useEffect(() => {
     if (!hostRef.current) return undefined
@@ -285,8 +355,9 @@ function chainArgs(layer, stages) {
   return stages.map((s) => ({ def: s.def, params: { ...s.params, id: `${layer.id}:${s.key}` } }))
 }
 
-/* True when any stage subscribes to the transport clock. */
-const chainAnimated = (stages) => stages.some((s) => s.def.animated !== false)
+/* True when any stage can change frame to frame with its CURRENT params (plan 27 § 1 — a still
+ * stage, by `stillOf`, keeps the layer off the transport clock: it paints once per edit). */
+const chainAnimated = (stages) => stages.some((s) => (fx()?.stillOf?.(s.def, s.params) ?? null) == null)
 
 /* Effected layer — ANY positioned layer run through the canvas filter CHAIN
  * (Phase 7 + labs post-FX chain: enabled stages run in order, the output of
@@ -308,8 +379,9 @@ function EffectedLayer({ layer, stages, pxStages = [], palette, layerStyle }) {
   const pixiRef = useRef(null)      /* { key, canvas } pixi result | { pending } */
   const [, forceDraw] = useState(0)
   const isLoop = layer.type === 'loop' || layer.type === 'misc'
-  const loopDef = isLoop ? loopById(layer.loopId) : null
+  const loopDef = isLoop ? defFor(layer) : null
   const tctx = useTransportCtx(isLoop || chainAnimated(stages))
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
   const camKeys = useCameraKeysDrag(loopDef, layer, canvasRef)
 
   useEffect(() => {
@@ -317,7 +389,6 @@ function EffectedLayer({ layer, stages, pxStages = [], palette, layerStyle }) {
     if (!cv) return
     const w = Math.max(1, Math.round(layer.w ?? 1))
     const h = Math.max(1, Math.round(layer.h ?? 1))
-    const dpr = Math.min(2, window.devicePixelRatio || 1)
     /* Pixi result identity rides in the skip signatures so an async pixi land
      * (forceDraw, everything else unchanged) still re-runs this effect and
      * blits the fresh result over the pre-pixi canvas output. */
@@ -345,6 +416,7 @@ function EffectedLayer({ layer, stages, pxStages = [], palette, layerStyle }) {
         sc = document.createElement('canvas')
         sc.width = sbw
         sc.height = sbh
+        sc.getContext('2d', { willReadFrequently: true })   /* redrawn and read back every tick (plan 27 § 4) */
         srcRef.current = { canvas: sc }
       }
       const sg = sc.getContext('2d')
@@ -418,16 +490,24 @@ function EffectedLayer({ layer, stages, pxStages = [], palette, layerStyle }) {
  * is tied to loopId (family swap = rebuild); params re-apply and one frame
  * drives on every render. drive:'dt' engines advance only while the
  * transport plays (dt=0 repaints the held frame). */
-function EngineLoopLayer({ layer, def, layerStyle }) {
+function EngineLoopLayer({ layer, def, layerStyle, stages = [], pxStages = [] }) {
   const canvasRef = useRef(null)
+  /* the chain's output + its reused source (the GL frame copied per tick — the stages key their
+     pixel caches on source identity, so it is invalidated after every copy) */
+  const outRef = useRef(null)
+  const srcRef = useRef(null)
+  const pixiRef = useRef(null)
+  const chained = stages.length > 0 || pxStages.length > 0
   const rig = useRef(null)          /* { host, engine, w, h } */
   const lastTs = useRef(null)
   const [, forceDraw] = useState(0)
   const tctx = useTransportCtx(true)
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
   const orbitMode = useTool().tool === 'orbit'
   /* Param-camera engines (def.cameraKeys, no OrbitControls) — pointer orbit
    * writes the camera params; the def.orbit path below stays engine-owned. */
   const camKeys = useCameraKeysDrag(def.orbit ? null : def, layer, canvasRef)
+  const grab = useGrabKeysDrag(def, layer, canvasRef)
 
   useEffect(() => {
     let dead = false
@@ -451,19 +531,48 @@ function EngineLoopLayer({ layer, def, layerStyle }) {
     if (!r) return
     const w = Math.max(1, Math.round(layer.w ?? 1))
     const h = Math.max(1, Math.round(layer.h ?? 1))
-    if (w !== r.w || h !== r.h) { r.engine.resize(w, h); r.w = w; r.h = h }
+    if (w !== r.w || h !== r.h || dpr !== r.dpr) { r.engine.resize(w, h); r.w = w; r.h = h; r.dpr = dpr }   /* dpr: Preview resolution — engines re-read it in resize */
     r.host.applyParams(def, r.engine, layer)
-    r.host.setCameraDrag?.(def, r.engine, def.orbit && orbitMode)
+    r.host.setCameraDrag?.(def, r.engine, def.orbit && orbitMode && layer.orbit !== false)
     const now = performance.now()
     const dt = transport.isPlaying() && lastTs.current != null ? (now - lastTs.current) / 1000 : 0
     lastTs.current = now
-    r.host.driveEngine(def, r.engine, { u: tctx.t, dt })
+    r.host.driveEngine(def, r.engine, { u: warpTime(tctx.t, layer), dt })
+    const out = outRef.current
+    if (chained && out && canvasRef.current) {
+      const gl = canvasRef.current
+      const bw = Math.round(w * dpr), bh = Math.round(h * dpr)
+      if (!srcRef.current) srcRef.current = document.createElement('canvas')
+      const sc = srcRef.current
+      if (sc.width !== bw) sc.width = bw
+      if (sc.height !== bh) sc.height = bh
+      /* read back every frame by the stages (getImageData) — the browser's hint for that */
+      const sg = sc.getContext('2d', { willReadFrequently: true })
+      sg.setTransform(1, 0, 0, 1, 0, 0)
+      sg.clearRect(0, 0, bw, bh)
+      sg.drawImage(gl, 0, 0, bw, bh)
+      invalidateSource(sc)
+      if (out.width !== bw) out.width = bw
+      if (out.height !== bh) out.height = bh
+      const g = out.getContext('2d')
+      g.setTransform(dpr, 0, 0, dpr, 0, 0)
+      g.clearRect(0, 0, w, h)
+      runChain(g, sc, w, h, chainArgs(layer, stages), tctx.t)
+      if (pxStages.length) runPixiPass(out, g, w, h, pxStages, pixiSig(`gl:${tctx.t}`, stages, pxStages, w, h, dpr), pixiRef, forceDraw)
+    }
   })
 
   /* Orbit mode on: the engine's OrbitControls own the pointer — swallow
    * events so CanvasArea's move-drag router never sees them. */
   const camDrag = def.orbit && orbitMode
+  /* chained: the 2d output draws UNDER the GL canvas, which stays on top at opacity 0 so the orbit
+     drag still lands on it; the output comes FIRST in the DOM so export's `canvas[data-layer-id]`
+     snapshot is the chained frame */
+  const box = { position: 'absolute', left: layer.x, top: layer.y, width: layer.w, height: layer.h }
+  const output = chained ? <canvas ref={outRef} data-layer-id={layer.id} style={{ ...box, pointerEvents: 'none', ...layerStyle }} /> : null
   return (
+    <>
+    {output}
     <canvas
       /* Fresh node per loop — destroyEngine force-loses the old canvas's GL
          context, and getContext on a lost canvas hands three a dead context
@@ -476,10 +585,12 @@ function EngineLoopLayer({ layer, def, layerStyle }) {
       style={{
         position: 'absolute',
         left: layer.x, top: layer.y, width: layer.w, height: layer.h,
-        cursor: camDrag || camKeys ? 'grab' : 'move',
+        cursor: camDrag || camKeys || grab ? 'grab' : 'move',
         ...layerStyle,
+        ...(chained ? { opacity: 0 } : null),
       }}
     />
+    </>
   )
 }
 
@@ -494,7 +605,8 @@ function LoopLayer({ layer, layerStyle }) {
   const canvasRef = useRef(null)
   const lastDraw = useRef(null)
   const tctx = useTransportCtx(true)
-  const def = loopById(layer.loopId)
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
+  const def = defFor(layer)
   const camKeys = useCameraKeysDrag(def, layer, canvasRef)
   useEffect(() => {
     const cv = canvasRef.current
@@ -502,7 +614,6 @@ function LoopLayer({ layer, layerStyle }) {
     if (!cv || !loop) return
     const w = Math.max(1, layer.w ?? 1)
     const h = Math.max(1, layer.h ?? 1)
-    const dpr = Math.min(2, window.devicePixelRatio || 1)
     /* Skip identical redraws. Renders reach here with everything unchanged —
      * paused transport notifies on every mousemove, and dragging ANY layer
      * re-renders the whole stack — and a field loop repaint is 10-100ms.
@@ -905,6 +1016,7 @@ function fitSource(media, w, h, fit, scale = 1, mirror = false) {
   const c = document.createElement('canvas')
   c.width = Math.max(1, Math.round(w * scale))
   c.height = Math.max(1, Math.round(h * scale))
+  c.getContext('2d', { willReadFrequently: true })   /* the chain's first stage reads it back (plan 27 § 4) */
   drawFitted(media, c, fit, mirror)
   return c
 }
@@ -1102,6 +1214,7 @@ function FilteredPhotoLayer({ layer, stages, pxStages = [], layerStyle }) {
   const isLive = isVideo || isWebcam   /* frames advance outside the clock */
   const media = useSourceMedia(layer.src, layer.srcType, layer.id)
   const tctx = useTransportCtx(isLive || chainAnimated(stages))
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
 
   /* Webcam is always live but NOT transport-governed — drive the chain with a
    * self-owned rAF so the feed flows through the filters even while the
@@ -1120,7 +1233,6 @@ function FilteredPhotoLayer({ layer, stages, pxStages = [], layerStyle }) {
     const cv = canvasRef.current
     if (!cv || !media) return
     if (isVideo) syncVideoTransport(media, layer, tctx.epoch, epochRef)
-    const dpr = Math.min(2, window.devicePixelRatio || 1)
     /* Pixi result identity in the skip signature so an async pixi land
      * (forceDraw) re-runs this effect and blits the result (see EffectedLayer). */
     const pixiResult = pxStages.length ? (pixiRef.current?.canvas ?? null) : null
@@ -1224,6 +1336,7 @@ function EngineFilterLayer({ layer, engine, preStages, pxStages = [], layerStyle
   const isLive = isVideo || isWebcam
   const media = useSourceMedia(layer.src, layer.srcType, layer.id)
   const tctx = useTransportCtx(true)
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
   const orbitMode = useTool().tool === 'orbit'
 
   useEffect(() => {
@@ -1274,7 +1387,7 @@ function EngineFilterLayer({ layer, engine, preStages, pxStages = [], layerStyle
       ? { stages: pxStages, ref: pixiRef, forceDraw, token: isLive ? `live:${tctx.t}:${tctx.epoch}` : (layer.src ?? '') }
       : null
     const feed = chainIntoFeed(feedRef, fittedRef.current.canvas, layer, preStages, w, h, tctx.t, pixi)
-    if (w !== r.w || h !== r.h) { r.engine.resize(w, h); r.w = w; r.h = h }
+    if (w !== r.w || h !== r.h || dpr !== r.dpr) { r.engine.resize(w, h); r.w = w; r.h = h; r.dpr = dpr }   /* dpr: Preview resolution — engines re-read it in resize */
     if (r.srcCanvas !== feed) {
       r.host.setSource(filter, r.engine, feed)
       r.srcCanvas = feed
@@ -1283,7 +1396,7 @@ function EngineFilterLayer({ layer, engine, preStages, pxStages = [], layerStyle
       r.host.touchSource?.(filter, r.engine)
     }
     r.host.applyParams(filter, r.engine, { ...engine.params, id: `${layer.id}:${engine.key}` })
-    r.host.setCameraDrag?.(filter, r.engine, filter.orbit && orbitMode)
+    r.host.setCameraDrag?.(filter, r.engine, filter.orbit && orbitMode && engine.params?.orbit !== false)
     const now = performance.now()
     const dt = transport.isPlaying() && lastTs.current != null ? (now - lastTs.current) / 1000 : 0
     lastTs.current = now
@@ -1325,6 +1438,7 @@ function EngineLoopFilterLayer({ layer, loop, engine, preStages, pxStages = [], 
   const lastTs = useRef(null)
   const [, forceDraw] = useState(0)
   const tctx = useTransportCtx(true)
+  const dpr = usePreviewDpr()   /* Settings › Preview resolution (lib/previewScale.js) */
   const orbitMode = useTool().tool === 'orbit'
   /* Param-camera 2d loops (surface/curves) keep their pointer orbit under a
    * GL filter — unless the FILTER owns the pointer (Rutt-Etra orbit). */
@@ -1366,7 +1480,7 @@ function EngineLoopFilterLayer({ layer, loop, engine, preStages, pxStages = [], 
       ? { stages: pxStages, ref: pixiRef, forceDraw, token: `loop:${tctx.t}:${tctx.epoch}` }
       : null
     const feed = chainIntoFeed(feedRef, sc, layer, preStages, w, h, tctx.t, pixi)
-    if (w !== r.w || h !== r.h) { r.engine.resize(w, h); r.w = w; r.h = h }
+    if (w !== r.w || h !== r.h || dpr !== r.dpr) { r.engine.resize(w, h); r.w = w; r.h = h; r.dpr = dpr }   /* dpr: Preview resolution — engines re-read it in resize */
     if (r.srcCanvas !== feed) {
       r.host.setSource(filter, r.engine, feed)
       r.srcCanvas = feed
@@ -1375,7 +1489,7 @@ function EngineLoopFilterLayer({ layer, loop, engine, preStages, pxStages = [], 
       r.host.touchSource?.(filter, r.engine)
     }
     r.host.applyParams(filter, r.engine, { ...engine.params, id: `${layer.id}:${engine.key}` })
-    r.host.setCameraDrag?.(filter, r.engine, filter.orbit && orbitMode)
+    r.host.setCameraDrag?.(filter, r.engine, filter.orbit && orbitMode && engine.params?.orbit !== false)
     const now = performance.now()
     const dt = transport.isPlaying() && lastTs.current != null ? (now - lastTs.current) / 1000 : 0
     lastTs.current = now
@@ -1429,7 +1543,8 @@ function useCameraKeysDrag(def, layer, canvasRef) {
   const keys = useMemo(() => resolveCameraKeys(def), [def])
   /* Orbit MODE (the C tool) drives the camera — not a per-layer toggle, so
    * it can't fight layer-move (the stage does nothing in orbit mode). */
-  const enabled = !!(keys && tool === 'orbit')
+  /* …and the patch's own Orbit (plan 51 3.4): Grab is the master, each patch can opt out */
+  const enabled = !!(keys && tool === 'orbit' && layer.orbit !== false)
   const layerId = layer.id
 
   useEffect(() => {
@@ -1520,6 +1635,69 @@ function useCameraKeysDrag(def, layer, canvasRef) {
   return enabled
 }
 
+/* Drag-to-move for a loop's own shape. A def declares `grabKeys: { x, y }` naming the two params
+ * that place its form (Tunnel: posX/drop, in the shader's units — the layer's height spans 2, y up)
+ * and the layer's `grab` toggle arms it. While armed the drag moves the shape, not the layer: the
+ * native pointerdown stopPropagation keeps CanvasArea's move router off it (useCameraKeysDrag's
+ * idiom), and the Orbit tool still wins. One drag = one undo step. Returns whether it is armed. */
+function useGrabKeysDrag(def, layer, canvasRef) {
+  const { updateLayer, beginTransaction, commitTransaction } = useComposeState()
+  const { tool } = useTool()
+  const live = useRef(null)
+  live.current = layer
+  const keys = def?.grabKeys
+  const enabled = !!(keys && layer.grab && tool !== 'orbit')
+  const layerId = layer.id
+
+  useEffect(() => {
+    if (!enabled) return undefined
+    const cv = canvasRef.current
+    if (!cv) return undefined
+    const schemaOf = (key) => (def.params ?? []).find((q) => q.key === key)
+    const read = (key) => {
+      const v = live.current?.[key]
+      return typeof v === 'number' ? v : (schemaOf(key)?.default ?? 0)
+    }
+    const clamp = (key, v) => {
+      const s = schemaOf(key)
+      return Math.round(Math.min(s?.max ?? Infinity, Math.max(s?.min ?? -Infinity, v)) * 1e4) / 1e4
+    }
+    let drag = null
+    const down = (e) => {
+      e.stopPropagation()
+      drag = { x: e.clientX, y: e.clientY, px: read(keys.x), py: read(keys.y), h: cv.getBoundingClientRect().height || 1 }
+      cv.setPointerCapture?.(e.pointerId)
+      beginTransaction()
+    }
+    const move = (e) => {
+      if (!drag) return
+      const k = 2 / drag.h   /* px → shader units: the height spans 2, and x is aspect-scaled to match */
+      updateLayer(layerId, {
+        [keys.x]: clamp(keys.x, drag.px + (e.clientX - drag.x) * k),
+        [keys.y]: clamp(keys.y, drag.py - (e.clientY - drag.y) * k),
+      })
+    }
+    const up = () => {
+      if (!drag) return
+      drag = null
+      commitTransaction()
+    }
+    cv.addEventListener('pointerdown', down)
+    cv.addEventListener('pointermove', move)
+    cv.addEventListener('pointerup', up)
+    cv.addEventListener('pointercancel', up)
+    return () => {
+      cv.removeEventListener('pointerdown', down)
+      cv.removeEventListener('pointermove', move)
+      cv.removeEventListener('pointerup', up)
+      cv.removeEventListener('pointercancel', up)
+      if (drag) commitTransaction()
+    }
+  }, [enabled, def, layerId, keys, canvasRef, updateLayer, beginTransaction, commitTransaction])
+
+  return enabled
+}
+
 /* `fit` controls how shape SVG content fills the layer bounds.
  *   - `fill`    — stretch to bounds (preserveAspectRatio="none"). Default.
  *   - `contain` — preserve aspect, letterboxed (preserveAspectRatio default).
@@ -1572,8 +1750,9 @@ function ShapeLayer({ layer, palette, layerStyle }) {
         width: layer.w, height: layer.h,
         color,
         cursor: 'move',
-        /* a line's box can be ~0px tall; it lets its hit band (below) out */
-        overflow: kind === 'line' ? 'visible' : 'hidden',
+        /* a line's box can be ~0px tall; it lets its hit band (below) out — and a vector effect
+           (offset, zigzag, distress) grows the outline past the box, so it draws out too */
+        overflow: kind === 'line' || drawsAsOutline(layer) ? 'visible' : 'hidden',
         ...layerStyle,
       }}
     >
@@ -1608,9 +1787,10 @@ function ShapeLayer({ layer, palette, layerStyle }) {
           width="100%" height="100%"
           viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`}
           preserveAspectRatio="none"
-          style={{ display: 'block' }}
+          style={{ display: 'block', overflow: 'visible' }}
         >
-          <rect
+          <RectOrOutline
+            layer={layer}
             x={half} y={half}
             width={Math.max(0, (layer.w ?? 0) - sw)}
             height={Math.max(0, (layer.h ?? 0) - sw)}
@@ -1629,9 +1809,11 @@ function ShapeLayer({ layer, palette, layerStyle }) {
           width="100%" height="100%"
           viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`}
           preserveAspectRatio="none"
-          style={{ display: 'block' }}
+          style={{ display: 'block', overflow: 'visible' }}
         >
-          <ellipse
+          {/* a partial arc draws as a pie (shape-math), the whole ring as the ellipse it always was */}
+          <EllipseOrArc
+            layer={layer}
             cx={(layer.w ?? 0) / 2}
             cy={(layer.h ?? 0) / 2}
             rx={Math.max(0, (layer.w ?? 0) / 2 - half)}
@@ -1650,10 +1832,10 @@ function ShapeLayer({ layer, palette, layerStyle }) {
           width="100%" height="100%"
           viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`}
           preserveAspectRatio="none"
-          style={{ display: 'block' }}
+          style={{ display: 'block', overflow: 'visible' }}
         >
-          <polygon
-            points={trianglePoints(layer.w ?? 0, layer.h ?? 0, half)}
+          <path
+            d={shapeOutlineD(layer)}
             fill={hasFill ? 'currentColor' : 'none'}
             stroke={strokeColor ?? 'none'}
             strokeWidth={sw}
@@ -1702,10 +1884,10 @@ function ShapeLayer({ layer, palette, layerStyle }) {
           width="100%" height="100%"
           viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`}
           preserveAspectRatio="none"
-          style={{ display: 'block' }}
+          style={{ display: 'block', overflow: 'visible' }}
         >
-          <polygon
-            points={regularPolygonPoints(layer.w ?? 0, layer.h ?? 0, layer.sides ?? 5, half)}
+          <path
+            d={shapeOutlineD(layer)}
             fill={hasFill ? 'currentColor' : 'none'}
             stroke={strokeColor ?? 'none'}
             strokeWidth={sw}
@@ -1720,10 +1902,10 @@ function ShapeLayer({ layer, palette, layerStyle }) {
           width="100%" height="100%"
           viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`}
           preserveAspectRatio="none"
-          style={{ display: 'block' }}
+          style={{ display: 'block', overflow: 'visible' }}
         >
-          <polygon
-            points={starPoints(layer.w ?? 0, layer.h ?? 0, layer.points ?? 5, layer.innerRatio ?? 0.5, half)}
+          <path
+            d={shapeOutlineD(layer)}
             fill={hasFill ? 'currentColor' : 'none'}
             stroke={strokeColor ?? 'none'}
             strokeWidth={sw}
@@ -1752,8 +1934,8 @@ function PathLayer({ layer, palette, layerStyle }) {
    * holes punch through. Plain paths keep the single-ring fast path. */
   const hasHoles    = (layer.holes?.length ?? 0) > 0
   const d           = hasHoles
-    ? [layer.nodes ?? [], ...layer.holes].map((r) => pathD(r, true)).join(' ')
-    : pathD(layer.nodes ?? [], layer.closed)
+    ? [layer.nodes ?? [], ...layer.holes].map((r) => pathD(applyVectorFx(layer, r, true), true)).join(' ')
+    : pathD(applyVectorFx(layer, layer.nodes ?? [], layer.closed), layer.closed)
 
   return (
     <svg
@@ -1922,7 +2104,8 @@ function TextLayer({ layer, palette, layerStyle }) {
         <TypeBlock
           value={{ ...layer, familyCss, color, strokeColor: sw > 0 ? strokeColor : null, strokeWidth: sw }}
           selected={selectedId === layer.id}
-          onChange={(patch) => updateLayer(layer.id, patch)}
+          editOnMount={!!layer.editOnMount}
+          onChange={(patch) => updateLayer(layer.id, { ...patch, editOnMount: undefined })} /* the flag is one-shot: cleared on the first commit */
           className="w-full"
         />
       )}
@@ -1996,3 +2179,17 @@ function TextLayer({ layer, palette, layerStyle }) {
 }
 
 export { COVER_TYPES }
+
+/* An ellipse layer: the whole ring as <ellipse>, a partial arc (arcStart/arcEnd) as the pie path. */
+function EllipseOrArc({ layer, cx, cy, rx, ry, ...paint }) {
+  return drawsAsOutline(layer)
+    ? <path d={shapeOutlineD(layer)} {...paint} />
+    : <ellipse cx={cx} cy={cy} rx={rx} ry={ry} {...paint} />
+}
+
+/* A rect layer: the <rect> it always was, or the outline path when a vector effect bends it. */
+function RectOrOutline({ layer, x, y, width, height, rx, ...paint }) {
+  return drawsAsOutline(layer)
+    ? <path d={shapeOutlineD(layer)} {...paint} />
+    : <rect x={x} y={y} width={width} height={height} rx={rx} {...paint} />
+}

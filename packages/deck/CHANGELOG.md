@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-deck
 
+## 0.2.3 — 2026-11-04
+
+- Align icons moved to the `-solid` names (kol-icons 0.63.0 gave the bare `align-*` names to new outlines), so the alignment buttons keep their filled look.
+
 ## 0.2.2 — 2026-10-29
 
 - **The filmstrip clears the frame's rail by itself** (LayoutsAppPages): with no `railLeft` it starts where the editor does, measured, so it never covers a site rail or an app rail, dragged or collapsed. A `railLeft` still wins.

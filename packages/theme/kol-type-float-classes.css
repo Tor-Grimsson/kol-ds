@@ -1,0 +1,36 @@
+/**
+ * kol-type-float-classes — the float style's type roles (float-everything W0.6 · W1.1, 2026-11-04).
+ *
+ * Twelve roles, Inter for the interface and JetBrains Mono for precision, carried from the exploration's
+ * "Complete type scale" (kol-float--style, W2.0 row 2). Each class sets family · size · weight · line-height ·
+ * tracking, so a float surface never reaches for a kol-sans-* or kol-mono-* class. Sizes are fixed — a float role
+ * is a control-sized voice, not a fluid one. The Figma text styles are `float/<role>` (library n48kE…), bound to
+ * `font/float` = Inter (`font/mono` for timecode and ruler).
+ *
+ *   role        size / weight / lh · tracking   use
+ *   display     116 / 400 / 110 · -7            the scene title on the canvas
+ *   editorial    76 / 300 /  84 · -4.8          the scene subtitle
+ *   sheet        38 / 500 /  44 · -1.2          a sheet's display line
+ *   section      24 / 500 /  32                 a section heading
+ *   window       18 / 500 /  24                 a window's title line
+ *   body-lg      16 / 400 /  24                 artwork body
+ *   body         14 / 400 /  22                 description
+ *   panel        13 / 500 /  18                 panel titles and control labels
+ *   hint         12 / 400 /  18                 hints and tooltips
+ *   label        11 / 400 /  16                 supporting labels
+ *   timecode     12 / 400 /  18  mono           timecode, technical readouts
+ *   ruler        10 / 400 /  14  mono           metadata, rulers
+ */
+
+.kol-float-display  { font-family: var(--kol-font-family-float); font-size: 116px; font-weight: 400; line-height: 110px; letter-spacing: -7px; }
+.kol-float-editorial{ font-family: var(--kol-font-family-float); font-size: 76px;  font-weight: 300; line-height: 84px;  letter-spacing: -4.8px; }
+.kol-float-sheet    { font-family: var(--kol-font-family-float); font-size: 38px;  font-weight: 500; line-height: 44px;  letter-spacing: -1.2px; }
+.kol-float-section  { font-family: var(--kol-font-family-float); font-size: 24px;  font-weight: 500; line-height: 32px; }
+.kol-float-window   { font-family: var(--kol-font-family-float); font-size: 18px;  font-weight: 500; line-height: 24px; }
+.kol-float-body-lg  { font-family: var(--kol-font-family-float); font-size: 16px;  font-weight: 400; line-height: 24px; }
+.kol-float-body     { font-family: var(--kol-font-family-float); font-size: 14px;  font-weight: 400; line-height: 22px; }
+.kol-float-panel    { font-family: var(--kol-font-family-float); font-size: 13px;  font-weight: 500; line-height: 18px; }
+.kol-float-hint     { font-family: var(--kol-font-family-float); font-size: 12px;  font-weight: 400; line-height: 18px; }
+.kol-float-label    { font-family: var(--kol-font-family-float); font-size: 11px;  font-weight: 400; line-height: 16px; }
+.kol-float-timecode { font-family: var(--kol-font-family-mono);  font-size: 12px;  font-weight: 400; line-height: 18px; }
+.kol-float-ruler    { font-family: var(--kol-font-family-mono);  font-size: 10px;  font-weight: 400; line-height: 14px; }

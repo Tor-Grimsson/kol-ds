@@ -63,8 +63,13 @@ const MODE_KEY = 'kol-editor:mode'
 export const getMode = () => {
   try { return localStorage.getItem(MODE_KEY) } catch { return null }
 }
+/* the account follows the remembered chrome (plan 43 § 3.2, accountPrefs) */
+let modeListener = null
+export const setModeListener = (fn) => { modeListener = fn }
 export const setMode = (id) => {
+  const was = getMode()
   try { id ? localStorage.setItem(MODE_KEY, id) : localStorage.removeItem(MODE_KEY) } catch { /* storage blocked */ }
+  if (id && id !== was) modeListener?.(id)
 }
 
 /* Router bridge (2026-08-27): App.jsx registers the router's `navigate` so a
@@ -104,6 +109,7 @@ export const goChooser = () => {
 const PATH_TO_MODE = {
   '/editor': 'editor',
   '/labs': 'labs',
+  '/morph': 'labs', /* the labs chrome, Morph rail open (plan 10) */
   '/randomiser': 'randomiser',
 }
 

@@ -17,8 +17,22 @@
  * @param {string}  footer   optional note above a top hairline
  * @param {boolean} gated    hide unless placeholders are switched on (default false)
  * @param {string}  className extra classes on the wrapper
+ * @param {'float'} [variant]  `float` (float-everything W6 row 92, 2026-11-04 — kol-float--style 46:3073): the empty panel
+ *                   on a float — the title in `kol-float-window` (Inter 18), the body in `kol-float-body` on fg-64, the
+ *                   footer pinned to the panel's foot in `kol-float-hint` (`Panel stays open.`), no rule above it. It
+ *                   fills its panel's height (`flex-1`) so the footer lands at the bottom.
  */
-export default function EmptyState({ eyebrow, title, body, footer, gated = false, className = '' }) {
+export default function EmptyState({ eyebrow, title, body, footer, gated = false, variant, className = '' }) {
+  if (variant === 'float') {
+    return (
+      <div className={`flex min-h-0 flex-1 flex-col${gated ? ' kol-placeholder' : ''} ${className}`.trim()}>
+        {eyebrow && <p className="kol-float-label mb-1 text-fg-64">{eyebrow}</p>}
+        {title && <p className="kol-float-window mb-3 text-fg-emphasis">{title}</p>}
+        {body && <p className="kol-float-body whitespace-pre-line text-fg-64">{body}</p>}
+        {footer && <p className="kol-float-hint mt-auto pt-6 text-fg-64">{footer}</p>}
+      </div>
+    )
+  }
   return (
     <div className={`${gated ? 'kol-placeholder' : ''}${className ? ` ${className}` : ''}` || undefined}>
       {/* helper (line-height 1) is single-line chrome ONLY — title and footer

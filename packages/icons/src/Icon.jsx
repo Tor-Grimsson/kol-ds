@@ -6,6 +6,7 @@
  *
  * @param {Object} props
  * @param {string} props.name - Icon name (matches SVG filename without extension)
+ * @param {'outline'|'solid'} props.variant - solid renders the name's `-solid` twin when it ships one (default: outline)
  * @param {number|string} props.size - Icon size (default: 16)
  * @param {string} props.className - Additional classes
  * @param {Object} props.style - Inline styles
@@ -154,13 +155,24 @@ const applySizeToMarkup = (markup, sizeValue) => {
   })
 }
 
+/* VARIANT (2026-11-01, user: "ONE cloud storm component with said variants"): a solid twin is the outline's
+ * `variant="solid"` — `<Icon name="cloud-storm" variant="solid" />` renders `cloud-storm-solid`. A name with no
+ * solid twin renders its outline, so a variant never blanks an icon. The `-solid` names keep resolving. */
+const withVariant = (name, variant) => {
+  if (variant !== 'solid' || !name || name.endsWith('-solid')) return name
+  const solid = `${RENAMED_ICONS[name] ?? name}-solid`
+  return setOf(solid) || CUSTOM[solid] ? solid : name
+}
+
 const Icon = ({
-  name,
+  name: baseName,
+  variant = 'outline',
   size = 16,
   className = '',
   style = {},
   children
 }) => {
+  const name = withVariant(baseName, variant)
   const ready = useIconsReady(RENAMED_ICONS[name] ?? name)
 
   // If children are provided, render directly (for custom icons)
@@ -205,7 +217,10 @@ const Icon = ({
     return null
   }
 
-  const sizedMarkup = applySizeToMarkup(svgMarkup, dimension)
+  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size="var(--kol-float-ic)"` (every float
+   * Button glyph) wrote `width="var(--kol-float-ic)"` onto the <svg>, which no browser reads — the glyph drew blank in
+   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */
+  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\d+(\.\d+)?(px)?$/.test(dimension) ? dimension : '100%')
 
   /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings
    * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree

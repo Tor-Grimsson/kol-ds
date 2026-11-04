@@ -44,7 +44,7 @@ import SliderPanel from './SliderPanel.jsx'
  * @param {Object} props.style - forwarded to the wrapper; the seam for `--kol-slider-track` / `--kol-slider-playhead`
  * @param {number} props.defaultValue - alt-click the control resets to this (falls back to `min`). Same contract on Knob
  * @param {'input'|'value'|'none'} props.readout - `input` (default) an editable Input · `value` a plain right-aligned span, Knob's own display-only readout · `none`
- * @param {'minimal'|'dual'|'scrub'|'panel'} props.variant - `dual` = two thumbs on one rail · `scrub` = a media scrubber: the thin track with the 4 × 28 pill knob (`.kol-playback-scrub`; `PlaybackBar`'s, 2026-10-02) · `panel` = the rack slider (was kol-hardware `Fader`, merged 2026-10-01): a drawn 2px track for a hardware panel; takes `value · onChange · min · max · step · label` plus `onHold`
+ * @param {'minimal'|'dual'|'scrub'|'panel'|'float'} props.variant - `dual` = two thumbs on one rail · `scrub` = a media scrubber: the thin track with the 4 × 28 pill knob (`.kol-playback-scrub`; `PlaybackBar`'s, 2026-10-02) · `panel` = the rack slider (was kol-hardware `Fader`, merged 2026-10-01): a drawn 2px track for a hardware panel; takes `value · onChange · min · max · step · label` plus `onHold` · `float` (float-everything W2 row 23, 2026-11-04): the label and a mono readout on one line, the 3px capsule track under them — the run fg-64 to a 12 thumb (`.kol-slider-float`); `readout` is `value` there, `formatValue` its words (`65%`)
  * @param {'horizontal'|'vertical'} props.direction - `vertical` stands the track upright at `height`, label above and readout below (2026-10-02 — the volume ranges were hand-drawn for want of it). On `panel`, horizontal takes the row and shows a readout
  * @param {number} props.height - vertical only — the track's length in px (default 96; panel 60)
  * @param {string} props['aria-label'] - names the range when there is no visible `label`
@@ -254,6 +254,31 @@ const Slider = ({
   const vertical = direction === 'vertical'
   const scrub = variant === 'scrub'
   const length = vertical ? height ?? 96 : size
+
+  /* the float slider: label · readout above, the capsule track below; the run is the value as a percent on the track */
+  if (variant === 'float') {
+    const pct = max > min ? ((value - min) / (max - min)) * 100 : 0
+    return (
+      <div className={`flex flex-col gap-1 ${disabled ? 'opacity-40' : ''} ${className}`.trim()} style={{ ...(length ? { width: length } : null), ...style }} onClick={onAltReset}>
+        {(label || readout !== 'none') && (
+          <div className="flex items-center justify-between gap-3">
+            {label && <label htmlFor={sliderId} className="kol-float-hint text-fg-emphasis whitespace-nowrap">{label}</label>}
+            {readout !== 'none' && <span className="kol-float-timecode text-fg-emphasis">{displayValue}</span>}
+          </div>
+        )}
+        <input
+          id={sliderId}
+          type="range"
+          min={min} max={max} step={step} value={value}
+          onChange={handleChange}
+          disabled={disabled}
+          aria-label={ariaLabel}
+          className="kol-slider-float w-full min-w-0"
+          style={{ '--kol-slider-pct': `${pct}%` }}
+        />
+      </div>
+    )
+  }
 
   const labelNode = label && (
     <label

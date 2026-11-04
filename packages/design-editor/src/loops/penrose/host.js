@@ -20,6 +20,7 @@
 // live keys (declared per proto in presets.js) or colours instead.
 
 import { loadFonts as loadEditorFonts, FONTS as EDITOR_FONTS } from '../../kinetic/fonts.js'
+import { recordRoles } from './roles.js'
 import { transport } from '../../editor/params/transport.js'
 import { themeById, DEFAULT_THEME } from '../lib/themes.js'
 import { setPalette, syncOpacity } from './palette.js'
@@ -50,13 +51,14 @@ const MASK_PARAMS = [
   /* Default 'none' — generation-first (user ruling 2026-08-09): the sim owns
    * the full frame; picking a glyph/shape here is the opt-in that makes a
    * FORM interact with the generation. */
-  { key: 'shape', label: 'Shape', type: 'select', default: 'none', tab: 'generate', options: SHAPE_SOURCES.map((s) => ({ value: s.id, label: s.label })) },
+  { key: 'shape', label: 'Shape', type: 'select', default: 'none', tab: 'generate', noRandom: true, options: SHAPE_SOURCES.map((s) => ({ value: s.id, label: s.label })) },
   { key: 'glyph', label: 'Glyph', type: 'text', rows: 1, default: 'A', tab: 'generate', when: isGlyph },
   { key: 'customSvg', label: 'SVG code', type: 'text', rows: 4, placeholder: '<svg viewBox="0 0 24 24"><path d="…"/></svg>', default: '', tab: 'generate', noRandom: true, when: (l) => l.shape === 'custom' },
   { key: 'font', label: 'Font', type: 'select', default: DEFAULT_FONT, tab: 'generate', when: isGlyph, options: EDITOR_FONTS.map((f) => ({ value: f.family, label: f.label })) },
   { key: 'weight', label: 'Weight', type: 'select', default: '700', tab: 'generate', when: isGlyph, options: ['300', '400', '500', '700', '900'].map((w) => ({ value: w, label: w })) },
   { key: 'seed', label: 'Seed', type: 'range', min: 1, max: 99, step: 1, default: 1, tab: 'generate', noRandom: true },
   { key: 'resolution', label: 'Resolution', type: 'range', min: 480, max: 1920, step: 60, default: LOGICAL, tab: 'generate', noRandom: true },
+  { key: 'downsample', label: 'Downsample', type: 'range', min: 1, max: 12, step: 1, default: 1, tab: 'generate', noRandom: true },
 ]
 
 /* Five-role colour params. bg/fg/accent are patched by the editor's theme
@@ -64,18 +66,32 @@ const MASK_PARAMS = [
  * forward-compat but today only change via their ColorFields — defaults come
  * from the KOL theme so presets read as a scheme out of the box. */
 const COLOR_PARAMS = [
-  { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: T.bg },
-  { key: 'fg', label: 'Foreground', type: 'color', role: 'fg', default: T.fg },
-  { key: 'accent', label: 'Accent', type: 'color', role: 'accent', default: T.accent },
-  { key: 'dim', label: 'Dim', type: 'color', role: 'dim', default: T.dim },
-  { key: 'warm', label: 'Warm', type: 'color', role: 'warm', default: T.warm },
+  { section: 'Color', collapsed: true, key: 'bg', label: 'Background', type: 'color', role: 'bg', default: T.bg },
+  { section: 'Color', collapsed: true, key: 'fg', label: 'Foreground', type: 'color', role: 'fg', default: T.fg },
+  { section: 'Color', collapsed: true, key: 'accent', label: 'Accent', type: 'color', role: 'accent', default: T.accent },
+  { section: 'Color', collapsed: true, key: 'dim', label: 'Dim', type: 'color', role: 'dim', default: T.dim },
+  { section: 'Color', collapsed: true, key: 'warm', label: 'Warm', type: 'color', role: 'warm', default: T.warm },
   /* Per-role opacity boosters (labs settings.js 0–5 model; dim boots at 5 —
    * prototypes author dim strokes at very low alpha and rely on the boost). */
-  { key: 'fgOpacity', label: 'Foreground opacity', type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
-  { key: 'accentOpacity', label: 'Accent opacity', type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
-  { key: 'dimOpacity', label: 'Dim opacity', type: 'range', min: 0, max: 5, step: 0.1, default: 5 },
-  { key: 'warmOpacity', label: 'Warm opacity', type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
+  { section: 'Color', collapsed: true, noRandom: true, key: 'fgOpacity', label: 'Foreground opacity', when: () => false /* LAYERS owns it (plan 49 4.3) */, type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
+  { section: 'Color', collapsed: true, noRandom: true, key: 'accentOpacity', label: 'Accent opacity', when: () => false /* LAYERS owns it (plan 49 4.3) */, type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
+  { section: 'Color', collapsed: true, noRandom: true, key: 'dimOpacity', label: 'Dim opacity', when: () => false /* LAYERS owns it (plan 49 4.3) */, type: 'range', min: 0, max: 5, step: 0.1, default: 5 },
+  { section: 'Color', collapsed: true, noRandom: true, key: 'warmOpacity', label: 'Warm opacity', when: () => false /* LAYERS owns it (plan 49 4.3) */, type: 'range', min: 0, max: 5, step: 0.1, default: 1 },
 ]
+
+/* THE PENROSE ROLL (plan 42 § 1.2): Randomize all rolls the look, not the structure. These keys are
+ * counts, caps, grid resolution, iterations, timesteps, recursion depth and form switches across the
+ * 55 sims — `noRandom`, so they keep their own scope buttons (the rest roll inside the middle half
+ * of their sliders, lib/rng.js). No key here is look in another sim. */
+const STRUCTURAL = new Set([
+  'addPerSec', 'agents', 'attempts', 'attractorCount', 'autoSeeds', 'cadence', 'count', 'cx', 'cy', 'd',
+  'depth', 'dropsPerFrame', 'dt', 'dyefade', 'edgesPerSec', 'erasers', 'f1', 'f2', 'fibers', 'fillOpacity',
+  'iter', 'iters', 'lattice', 'loop', 'm', 'margin', 'maxCircles', 'maxDepth', 'maxIter', 'maxNodes',
+  'maxRelax', 'maxStuck', 'modeA', 'modeB', 'n', 'N', 'N0', 'nebula', 'nWalkers', 'outlines', 'outward',
+  'particles', 'plants', 'points', 'pts', 'res', 'reverse', 'samples', 'seedN', 'seeds', 'seedsPerFrame',
+  'showAxis', 'showLoad', 'spawnRate', 'steps', 'stepsPerFrame', 'substeps', 'tail', 'trails', 'walkers',
+])
+const curate = (q) => (STRUCTURAL.has(q.key) ? { ...q, noRandom: true } : q)
 
 /* ── labs param schema → editor schema grammar ────────────────────────────
  *   int              → range (step 1)         · label kept verbatim
@@ -85,7 +101,8 @@ const COLOR_PARAMS = [
  *                      numeric flag when the values are numbers)
  *   color            → color (no role — authored, untinted by the theme) */
 function translateParam(p) {
-  const base = { key: p.key, label: p.label ?? p.key, default: p.default }
+  /* `unlabeled` marks a key-as-label fallback so schemas.check.mjs can still fail on it */
+  const base = { key: p.key, label: p.label ?? p.key, ...(p.label == null ? { unlabeled: true } : {}), default: p.default }
   switch (p.type) {
     case 'int': return { ...base, type: 'range', min: p.min, max: p.max, step: p.step ?? 1 }
     case 'range': return { ...base, type: 'range', min: p.min, max: p.max, step: p.step ?? 0.01 }
@@ -111,16 +128,15 @@ const hexToRGBA = (hex, a) => {
   return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${a})`
 }
 function syncPalette(p) {
-  const fg = p.fg ?? T.fg
-  setPalette({
-    bg: p.bg ?? T.bg,
-    fg,
-    accent: p.accent ?? T.accent,
-    dim: p.dim ?? T.dim,
-    warm: p.warm ?? T.warm,
-    grid: hexToRGBA(fg, 0.07),
-  })
-  return [p.bg ?? T.bg, fg, p.accent ?? T.accent, p.dim ?? T.dim, p.warm ?? T.warm].join('|')
+  /* A HIDDEN LAYER IS THE BACKGROUND (plan 49 4.3): opacity 0 on a role swaps that role's colour for the background here,
+     where every colour path reads it — pc(), the ramp fields (which ignore opacity), the tint mapper and the colours a
+     sim cached at init (a palette change re-inits it) — so hiding works on every sim, not only the pc() ones. */
+  const bg = p.bg ?? T.bg
+  const role = (k, d) => (Number(p[`${k}Opacity`]) === 0 ? bg : p[k] ?? d)
+  const fg = role('fg', T.fg)
+  const pal = [bg, fg, role('accent', T.accent), role('dim', T.dim), role('warm', T.warm)]
+  setPalette({ bg, fg, accent: pal[2], dim: pal[3], warm: pal[4], grid: hexToRGBA(fg, 0.07) })
+  return pal.join('|')
 }
 
 /* ── module-side sim state, LRU-capped (buffers + packed geometry are big) ── */
@@ -263,26 +279,34 @@ function createState(proto, w, h, p) {
  *   opts.live — proto param keys the sim reads per-step via `params.x`
  *   (excluded from the structural signature → edits act live, bindable). */
 export function protoLoop(proto, opts = {}) {
-  const live = new Set(opts.live ?? [])
+  const live = new Set([...(opts.live ?? []), ...Object.values(proto.cameraKeys ?? {})]) /* the view never restarts a sim (plan 51 3.4) */
   const structuralKeys = (proto.params ?? []).map((q) => q.key).filter((key) => !live.has(key))
   const protoParamKeys = (proto.params ?? []).map((q) => q.key)
-  return {
+  const def = {
     id: `penrose-${proto.id}`,
     label: proto.name,
     group: 'penrose',
     kind: '2d',
     duration: DURATION,
-    params: [...MASK_PARAMS, ...COLOR_PARAMS, ...(proto.params ?? []).map(translateParam)],
+    ...(proto.cameraKeys ? { cameraKeys: proto.cameraKeys } : {}),
+    /* what it is (plan 49 6.1) — the sim's own source line, then its summary */
+    about: { basis: [proto.repo, proto.summary].filter(Boolean).join(' — ') || undefined },
+    /* the sim's own knobs first, the closed Color section last (plan 42 § 1.1) */
+    /* the pointer is every sim's protagonist (the life laws) — it declares itself with a toggle, on (plan 49 3.2) */
+    params: [...MASK_PARAMS, ...(proto.params ?? []).map(translateParam).map(curate), { key: 'mouse', label: 'Mouse', type: 'toggle', default: true, noRandom: true, section: 'Interaction' }, ...COLOR_PARAMS],
     // u only gates stepping (pauses with the transport) — see header.
     draw(ctx, u, w, h, p) {
       const paletteSig = syncPalette(p)
       syncOpacity(p)
       const s = getState(proto, structuralKeys, w, h, p)
       /* The layer's live box (virtual px) — s.pointer maps through it. */
-      s.layerBox = { x: p.x ?? 0, y: p.y ?? 0, w: p.w ?? 0, h: p.h ?? 0 }
+      s.layerBox = p.mouse === false ? null : { x: p.x ?? 0, y: p.y ?? 0, w: p.w ?? 0, h: p.h ?? 0 } /* Mouse off → s.pointer() is null */
       if (s.paletteSig !== paletteSig) {
         s.paletteSig = paletteSig
-        s.mapColor = makeMapper({ bg: p.bg ?? T.bg, fg: p.fg ?? T.fg, accent: p.accent ?? T.accent, dim: p.dim ?? T.dim, warm: p.warm ?? T.warm })
+        /* hidden roles (opacity 0, plan 49 4.3): their ORIGINAL colour maps to the background too — a sim that cached pc()
+           strings at init still hands out the old colour */
+        const hidden = ['fg', 'accent', 'dim', 'warm'].filter((k) => Number(p[`${k}Opacity`]) === 0).map((k) => p[k] ?? T[k])
+        s.mapColor = makeMapper({ bg: p.bg ?? T.bg, fg: p.fg ?? T.fg, accent: p.accent ?? T.accent, dim: p.dim ?? T.dim, warm: p.warm ?? T.warm, hidden })
       }
       if (s.ready && u !== s.lastU) {
         if (s.lastU != null) {
@@ -300,7 +324,24 @@ export function protoLoop(proto, opts = {}) {
        * translucent bg, so the toggle stays hidden and bg always paints.) */
       ctx.fillStyle = p.bg ?? T.bg
       ctx.fillRect(0, 0, w, h)
-      ctx.drawImage(s.buf, 0, 0, w, h)
+      /* DOWNSAMPLE (plan 49 5.3, user 2026-10-31: "I liike to downsample but thats because I choose it. not because i start
+         with low resolution assets") — pixelation as a choice: 1 is the sim at full resolution, n draws it through an n-times
+         smaller canvas with nearest-neighbour back up */
+      const ds = Math.max(1, Math.round(p.downsample ?? 1))
+      if (ds > 1) {
+        const sw = Math.max(1, Math.round(w / ds)), sh = Math.max(1, Math.round(h / ds))
+        const tmp = (s.dsCanvas ??= document.createElement('canvas'))
+        if (tmp.width !== sw || tmp.height !== sh) { tmp.width = sw; tmp.height = sh }
+        tmp.getContext('2d').drawImage(s.buf, 0, 0, sw, sh)
+        const was = ctx.imageSmoothingEnabled
+        ctx.imageSmoothingEnabled = false
+        ctx.drawImage(tmp, 0, 0, w, h)
+        ctx.imageSmoothingEnabled = was
+      } else ctx.drawImage(s.buf, 0, 0, w, h)
     },
   }
+  /* LAYERS learns what this sim draws (plan 49 4.3): the colour paths report into this sim's set while it draws */
+  const drawSim = def.draw
+  def.draw = (ctx, u, w, h, p) => { recordRoles(def.id); try { return drawSim(ctx, u, w, h, p) } finally { recordRoles(null) } }
+  return def
 }

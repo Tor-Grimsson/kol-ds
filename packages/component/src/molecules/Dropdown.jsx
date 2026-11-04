@@ -26,6 +26,10 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
  *                                 differed by. Use the tone.
  *   variant="outline"           — bordered trigger; open panel carries the
  *     same border, trigger's bottom edge acts as the divider
+ *   variant="float"             — the float select (float-everything W2 row 25 · W4 row 54, 2026-11-04): the
+ *     trigger a `kol-btn-float` capsule on the float well (a `tone` still wins), the float heights by `size`
+ *     (sm 28 · md 36 · lg 44); its list opens 8 under it on `--kol-float-list-r`, the trigger's width, 34 rows
+ *     in Inter, the current row lifted fg-16 with the dot, no hairline. Still rest and open only.
  *
  * Legacy aliases (pre-law variants, kept so call-sites don't break):
  *   default → primary · subtle → primary · minimal → outline
@@ -157,6 +161,7 @@ const Dropdown = ({
   /* `variant="raised"` retires into `tone="faint"` (2026-10-31) — the alias, until nobody passes it */
   if (variant === 'raised') { variant = undefined; tone = 'faint' }
   const resolvedVariant = LEGACY_VARIANTS[variant] || variant
+  const float = resolvedVariant === 'float'
 
   /* The panel is `Menu fused` (plan-2026-10-31-menu-engine W1.3): below the trigger, never flipped (the fused edge
    * assumes below), the trigger's width, a listbox. */
@@ -212,8 +217,10 @@ const Dropdown = ({
      * never leaks into Button's variant set */
     resolvedVariant === 'grey' ? 'kol-dd-trigger--grey' : resolvedVariant === 'raised' ? 'kol-dd-trigger--raised' : resolvedVariant && `kol-btn-${resolvedVariant}`,
     `kol-btn-${resolvedSize}`,
-    SIZE_TYPE[resolvedSize],
+    /* a float trigger types itself (Inter 500 at the float size) */
+    !float && SIZE_TYPE[resolvedSize],
     'kol-dd-trigger',
+    float && 'kol-dd-trigger--float',
     /* ICON-ONLY: the pinned square from Button's own class, so a tool-rail
      * dropdown is the same box as the icon button beside it at every rung
      * (editor-set-is-behind-its-source, kol-fxr 2026-09-03 — its ToolPalette
@@ -258,7 +265,7 @@ const Dropdown = ({
             </span>
             {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
               * keyed off the trigger's data-state, no inline styles */}
-            <Icon name="chevron-down" size={indicatorSize(resolvedSize)} className="kol-dd-caret" />
+            <Icon name="chevron-down" size={float ? 'var(--kol-float-ic)' : indicatorSize(resolvedSize)} className="kol-dd-caret" />
           </>
         )}
         {/* a consumer's own trigger mark — the tool-palette corner fold rides
@@ -277,7 +284,9 @@ const Dropdown = ({
       closeOnSelect={!multiple}
       rootClassName={`kol-dd-root relative inline-block align-middle ${className}`}
       trigger={trig}
-      panelClassName={`${resolvedVariant ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)} ${inPanel ? 'kol-hw-panel' : ''}`.replace(/\s+/g, ' ').trim()}
+      variant={float ? 'float' : undefined}
+      offset={float ? 8 : undefined}
+      panelClassName={`${resolvedVariant && !float ? `kol-dd-panel--${resolvedVariant}` : ''} ${toneClass(tone)} ${inPanel ? 'kol-hw-panel' : ''}`.replace(/\s+/g, ' ').trim()}
       panelStyle={{
         '--kol-dd-max-rows': maxRows ?? 10,
         /* a row is the trigger's height; the panel's max-height reads it */
@@ -299,7 +308,9 @@ const Dropdown = ({
                 /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28) — the indicator marks the current value. */
                 hover={false}
                 size={resolvedSize}
-                rowClass={ROW[resolvedSize] ?? ROW.sm}
+                /* a float row is the float list's (`.kol-menu-panel--float .kol-menu-row`), whatever the trigger's rung; the
+                 * current one is lifted (row 54: "selected / checked") — still no hover */
+                rowClass={float ? `kol-menu-row${isActive ? ' kol-menu-row--current' : ''}` : (ROW[resolvedSize] ?? ROW.sm)}
                 height={rowHeight}
                 onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
                 onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}

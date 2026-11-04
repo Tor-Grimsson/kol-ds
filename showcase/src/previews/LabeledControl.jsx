@@ -5,11 +5,20 @@ export const stage = 'md'
 
 /* `panel` is the hardware panel label (was kol-hardware `PanelLabel`): helper-8, uppercase,
  * hugging the control, in four positions. */
-export const variants = ['default', 'panel']
+export const variants = ['default', 'panel', 'float']
 
 export default function LabeledControlPreview({ variant = 'default' }) {
   const [n, setN] = useState(8)
   const [hex, setHex] = useState('AD5038')
+  const [email, setEmail] = useState('alex@studio.design')
+  /* float (float-everything W3 row 37): the float hint over a capsule */
+  if (variant === 'float') {
+    return (
+      <LabeledControl variant="float" label="Email" className="w-80">
+        <Input variant="float" type="email" value={email} onChange={(e) => setEmail(e.target.value)} width="100%" />
+      </LabeledControl>
+    )
+  }
   if (variant === 'panel') {
     const dot = <span className="block size-2 rounded-full bg-fg-64" />
     return (

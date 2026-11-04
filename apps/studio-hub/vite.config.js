@@ -1,13 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { devFavicon } from '@kolkrabbi/kol-framework/vite'
+import { devFavicon, loaderApp } from '@kolkrabbi/kol-framework/vite'
 
 // An apps/* member: runs locally on `pnpm studio-hub` (the Studio hub — the workstation shape around a studio), and publishes into the
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/studio-hub.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [devFavicon({ label: 'S' }), react(), tailwindcss()],
+  // THE LOADER IS THE LINE (LoaderAppIntro, 2026-11-01): a load of Home paints the loader's ground only and the signed-out
+  // stage's line takes over on its first frame
+  plugins: [devFavicon({ label: 'S' }), loaderApp({ graphic: '../../packages/icons/src/kol-icon-set-identity/kolkrabbi/kolkrabbi-favicon.svg', intro: command === 'build' ? '/apps/studio-hub/' : true }), react(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
   // on its own port, so `pnpm studio-hub` stays an ordinary localhost root.

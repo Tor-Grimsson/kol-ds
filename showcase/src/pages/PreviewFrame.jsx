@@ -8,8 +8,10 @@ import ErrorBoundary from '../lib/ErrorBoundary.jsx'
 export default function PreviewFrame() {
   const { name } = useParams()
   /* the card's variant picker rides the iframe's URL — a framed preview has no other way to hear it */
-  const variant = useSearchParams()[0].get('variant') ?? undefined
+  const [params] = useSearchParams()
+  const variant = params.get('variant') ?? undefined
+  const size = params.get('size') ?? undefined
   const C = PREVIEWS[name]?.Component
   if (!C) return <p className="kol-mono-14 text-meta p-6">No preview named “{name}”.</p>
-  return <div className="min-h-dvh w-full bg-surface-primary"><ErrorBoundary><C key={variant} variant={variant} /></ErrorBoundary></div>
+  return <div className="min-h-dvh w-full bg-surface-primary"><ErrorBoundary><C key={`${variant}-${size}`} variant={variant} size={size} /></ErrorBoundary></div>
 }

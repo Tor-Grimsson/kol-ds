@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-growth
 
+## 0.5.0 — 2026-11-01
+
+- **`seed({ points, inset })` — any closed ring** (GrowthLineSeedOutline, kol-atlas). Points in 0..1 (no value past ±2) or sim px, resampled to the engine's split length (half the local gap) and moved `inset` sim px inward. `seed()` and `seed(cx, cy, r)` are unchanged.
+- **`outline(density, level = 0.5)`** — the density's iso-line by marching squares, the longest closed ring in 0..1, or null.
+- **`pathRing(d, aspect, fit, n = 512)`** — a path `d`'s own outline in 0..1, placed as `pathCanvas` places it.
+- `src/selftest.mjs` checks the ring: a square's outline, resampled to half the gap, inset inside it, the same in 0..1 and sim px, and it grows.
+
 ## 0.4.0 — 2026-10-31
 
 - **The line cools instead of freezing** (GrowthLineIntro, kol-fxr plan 45). With `settle` > 0 every node carries a heat 1 → 0 that fades by 1/settle a step; its motion, a split beside it, `poke`, or a warm neighbour pressing a fifth into its gap (less 0.15 a hop) raise it. Force and growth scale with heat, the last quarter tapers, the step is halved (it overshot every step), so nothing stops mid-move — 0.3.0's step-count freeze left a rubber-string rim and a hard stop. New fields: `heat`, `hot` (nodes still warm), `full`, `id` (stable node ids).

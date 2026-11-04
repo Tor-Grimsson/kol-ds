@@ -31,13 +31,17 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 95 entries
+## Queue — 96 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [FloatFoldBothSidesGrey](done/FloatFoldBothSidesGrey.md) | **kol-fxr** — opt-in fold: `foldSide="swipe"` (either edge, by swipe direction), `foldTone="handle"` (grey edge handle); AppFloatNav forwards, AppShell `floats.fold` reaches the top float | 2026-11-03 | 🟢 `closed` — kol-component 0.333.0 · kol-shell 0.100.0 |
+| 🟢 | [FloatsOverlayNoBands](done/FloatsOverlayNoBands.md) | **kol-fxr** — `touch="floats"`: the floats overlay the content; no top band under the top float (stage `padding-top`), no padded foot under the transport (Rail `padding-bottom`). Reverses the PhoneTwoFloatLayout insets | 2026-11-03 | 🟢 `closed` — kol-shell 0.99.3 |
+| 🟢 | [HubHomeSignedOutPinned](done/HubHomeSignedOutPinned.md) | **kol-fxr** — HubHome signed out: pin the box to the screen (`fixed`, from the rail's edge), not `min-h-dvh`; iOS home-screen apps size `dvh` short, so Home scrolls with a band under the dock | 2026-11-03 | 🟢 `closed` — kol-shell 0.99.2 |
+| 🟢 | [MoreRowsNoPathLit](done/MoreRowsNoPathLit.md) | **kol-atlas** — kol-shell MoreRows: rows with no `path` all get `aria-current="page"` (undefined === undefined), so every row is lit | 2026-11-01 | 🟢 `closed` — kol-shell 0.99.1 |
 | 🟢 | [RailDragHoldsWidth](done/RailDragHoldsWidth.md) | **kol-fxr** — NavRail: a drag keeps its width (no snap), a click still snaps collapsed ⇄ expanded and resets it; a max width instead of the open width; rows follow the width | 2026-10-31 | 🔵 `filed` |
 | 🟢 | [OriginPicker](done/OriginPicker.md) | **kol-fxr** — a 3×3 transform-origin value picker (`value [x, y]`, radiogroup, arrow keys, on the control ramp); fxr's last hand-built control with no KOL part | 2026-10-31 | 🔵 `filed` |
 | 🟢 | [BezierPathEditor](done/BezierPathEditor.md) | **kol-fxr** — a 2D bezier node editor: nodes with in/out handles, drag, add (double-click), delete; a value of points | 2026-10-31 | 🟢 `closed` 2026-10-31 → kol-component 0.330.0 |
@@ -70,7 +74,7 @@ accrues entries and never closes.
 | 🟢 | [OverviewTocAndLibraryIcons](done/OverviewTocAndLibraryIcons.md) | **kol-website** — CategoryPage `view="toc"` + `head` choice; PageHero `size="compact"`, PageSection `level="page"`; DocumentLibrary `assetsView` / `langView` icons + chips; kol-icons file-type glyphs | 2026-10-29 | 🟢 `closed` 2026-10-29 · framework 0.65.0 · styleguide 0.18.0 · icons 0.53.0 |
 | 🟢 | [NavRailRowProps](done/NavRailRowProps.md) | **kol-website** — site rail rows take `case` and `icon` at every level (category · group · page · action), as props with today's look the default; plus `trailing` · `className` · `title` · `external` per node | 2026-10-29 | 🟢 `closed` 2026-10-29 · component 0.317.0 |
 | 🟢 | [WorkshopSearchScope](done/WorkshopSearchScope.md) | **kol-hq** — Settings › Search: a Scope `choice` row (All · This · Pick, per-space switches under Pick) replaces This space only; search and the tab bar follow it, the active space never hides | 2026-10-29 | 🟢 `closed` 2026-10-29 · workshop 0.44.0 |
-| 🔵 🔴 | [BrandLabToolWindow](inbox/BrandLabToolWindow.md) | **kol-atlas** — one window for the four labs (established KOL anatomy, resizable, rail tabs, LabeledControl, one tone), Color Lab feature list + accessibility, Combo Lab unbranded on Color Lab's palette, Lockup Lab from the branded-house sheets. **Do not ship before the user reviews** | 2026-10-29 | 🔵 `filed` |
+| 🟢 | [BrandLabToolWindow](done/BrandLabToolWindow.md) | **kol-atlas** — one window for the four labs (established KOL anatomy, resizable, rail tabs, LabeledControl, one tone), Color Lab feature list + accessibility, Combo Lab unbranded on Color Lab's palette, Lockup Lab from the branded-house sheets. **Do not ship before the user reviews** | 2026-10-29 | 🟢 `closed` — kol-styleguide 0.18.x, closed on his word |
 | 🟢 | [DocsTocRailChildren](done/DocsTocRailChildren.md) | **kol-atlas** — `DocsToc` rail: a `toc` entry takes `children`, one tick each under its section (in place of the inert `minors`), label on hover under the lens, click to scroll, tracked by the spy; no `children`, no change | 2026-10-30 | 🟢 `closed` 2026-10-30 · component 0.317.7 · theme 0.200.6 |
 | 🟢 | [ReaderBlockRenderers](done/ReaderBlockRenderers.md) | **kol-hq** — `DocumentationReader` takes a `blocks` prop (block type → consumer renderer, `null` falls through) so a consumer can draw e.g. a ref card's keys table as keycaps; prop only, no visuals | 2026-10-29 | 🟢 `closed` 2026-10-29 · workshop 0.43.0 |
 | 🟢 | [BrandLabToolGaps](done/BrandLabToolGaps.md) | **kol-atlas** — TypeScaleLab outputs sizes/line heights only (no role map, weight, tracking, mono face, colour); ColorLab has no contrast check, dark mode or text opacity. Needs a scope ruling with the user | 2026-10-29 | 🟢 `closed` 2026-10-29 · styleguide 0.17.0 |
@@ -194,6 +198,9 @@ accrues entries and never closes.
 | 🟢 | [ModulatableControls](done/ModulatableControls.md) | **kol-mirror** — `Knob` (and the sliders) take modulation as props: an expression in the readout (compiled by `kol-hardware/signal`) and a source list + assign gesture + indicator. Mirror's `RotaryDial` wraps the knob only for this | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
 | 🟢 | [TransportAndTimeline](done/TransportAndTimeline.md) | **kol-mirror** — one KOL transport (clock) + the timeline that reads it — scrub, playhead, loop window; fxr's keyframe lanes ride on it. fxr and mirror each carry their own pair | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
 | 🟢 | [UseFloatingHook](done/UseFloatingHook.md) | **kol-mirror** — lift kol-monitor's `useFloating` (drag a panel, scale from a corner) into kol-hardware frames — mirror carries a copy | 2026-10-28 ← kol-mirror | 🟢 `closed` 2026-10-28 — kol-hardware 0.8.0 |
+| 🟢 | [BareButtonTouchRung](done/BareButtonTouchRung.md) | **kol-website** — the touch rung types every bare Button 16px (it matches `kol-menu-btn`), though bare "keeps its type"; plus a `weeks` prop on CalendarHeatmap | 2026-11-03 ← kol-website | 🟢 `closed` — kol-theme 0.210.1 · kol-component 0.333.2 · kol-dashboards 0.8.0 |
+| 🟢 | [ProseWrapsLongStrings](done/ProseWrapsLongStrings.md) | **kol-website** — `kol-prose-*` text (PageSection's lede) never wraps an unbroken path or URL, so a phone page scrolls sideways | 2026-11-03 ← kol-website | 🟢 `closed` — kol-theme 0.210.2 |
+| 🟢 | [DashboardCardSet](done/DashboardCardSet.md) | **kol-website** — metric's card look (Card, RankedList, StatTiles, DetailsOverlay) into kol-dashboards so record's Dashboard wears it too | 2026-11-03 ← kol-website | 🟢 `closed` — kol-dashboards 0.9.0 |
 
 ## Closed
 
@@ -207,6 +214,8 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [GrowthLineSeedOutline](done/GrowthLineSeedOutline.md) | **kol-atlas** — GrowthLineStage `seed="outline"`: the line starts on the shape's edge and fills inward; kol-growth `seed({ points })` takes a ring, `outline` / `pathRing` trace it | 2026-11-01 | 2026-11-01 | `closed` — **kol-growth 0.5.0 · kol-component 0.332.0** live; receipt to kol-atlas |
+| 🟢 | [LoaderAppIntro](done/LoaderAppIntro.md) | **kol-fxr** — the app loader is the line: `loaderApp({ intro })` ground only, `GrowthLineStage intro` claims it and drops the loader on its first frame, HubHome fades its chrome in on the breath | 2026-11-01 | 2026-11-01 | `closed` — **kol-component 0.331.0 · kol-framework 0.69.0 · kol-shell 0.99.0** live; receipt to kol-fxr |
 | 🟢 | [CanvasStudioSnapPositions](done/CanvasStudioSnapPositions.md) | **kol-mirror** — `CanvasStudio` binds monitor's 1–9 snap positions (numpad-laid pan, no zoom), the `snap` row in `CANVAS_KEYS` | 2026-10-25 | 2026-10-25 | `closed` — **kol-component 0.302.0** live; receipt to kol-mirror |
 | 🟢 | [HubHomeBackReveal](done/HubHomeBackReveal.md) | **kol-monitor** — `HubHome` takes `backReveal` (page-level, a file's own wins); Home's cards turn whole with `flip-card` | 2026-10-24 | 2026-10-24 | `closed` — **kol-shell 0.82.0** live; receipt to kol-monitor |
 | 🟢 | [RailKit](done/RailKit.md) | **kol-monitor** — the rail kit, `Rail variant` + `footer`, the tier tokens, `SettingsPanel tier`, `apps/rails`, `19-rails.md`; the app width on round 18 | 2026-10-24 | 2026-10-24 | `closed` — **kol-component 0.301.0 · kol-theme 0.189.0** live; receipt to kol-monitor |
@@ -527,6 +536,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 | 🟢 | [ag-init-report-handoff-not-outbox](outbox/ag-init-report-handoff-not-outbox.md) | **dotfiles** — `~/.dotfiles/lobby/INDEX.md` | 🟢 closed 2026-10-05 — `ag-init` steps 6 + 7: a newer handoff is reported in one line, unanswered outbox receipts are not flagged; verified from this repo's boots on 2026-10-03 | **none** |
 | 🟢 | [TiltFamilyForks](outbox/TiltFamilyForks.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🟢 closed — executed there 2026-08-27 on component `^0.110.0`; the three local tilt forks retired | **none** — the DS side shipped |
 | 🟢 | [ShellSettingsPairRetired](outbox/ShellSettingsPairRetired.md) | **kol-mirror** + **kol-monitor** — each repo's `lobby/INDEX.md` | 🟢 closed in both — the swap shipped 2026-08-30 under the forcing bump (filed 2026-08-30, kol-shell 0.21.0) | **none** |
+| ⚫ | [FloatTimeline](outbox/FloatTimeline.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | ⚫ withdrawn 2026-11-04, the same day — the user: the DS builds the timeline itself in `packages/design-editor` after refreshing the mirror from fxr | **none** |
 | 🟢 | [SettingsMastheadCluster](outbox/SettingsMastheadCluster.md) | **kol-fxr** + **kol-mirror** + **kol-monitor** — each repo's `lobby/INDEX.md` | 🟢 closed in all three — adopted and in `done/`; fxr the first to render it (filed 2026-08-30, kol-shell 0.27.0 · kol-theme 0.106.0) | **none** |
 | 🟢 | [ArticleCardSizeSpec](outbox/ArticleCardSizeSpec.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🟢 answered 2026-08-15 — ListingCardSpec returned, executed as kol-content 0.7.0 | **none** |
 
@@ -534,6 +544,24 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-04 | **`FloatTimeline` withdrawn** the same day — the user: *"you don't choose what to build … that includes timeline and everything"*; built here in `packages/design-editor` after the mirror refresh from fxr |
+| 2026-11-04 | **`FloatTimeline` filed to kol-fxr** — float-everything W12: the timeline panel is the editor's; its remainder here is the mirror refresh + the gap-map rows |
+| 2026-11-03 | FloatFoldBothSidesGrey closed — kol-component 0.333.0 · kol-shell 0.100.0; receipt to kol-fxr |
+| 2026-11-03 | **`FloatFoldBothSidesGrey` filed** by kol-fxr — floats fold to either side, grey handle, opt-in |
+| 2026-11-03 | **`FloatsRailOverlaysShadow`: kol-fxr explains its local fix** — the withdrawal crossed kol-shell 0.99.4; fxr renders its own overlay Rail (`floats.rail: null`) and the float shadow in CSS, and stays on 0.99.3. Note appended to `archive/FloatsRailOverlaysShadow.md` |
+| 2026-11-03 | **`FloatsRailOverlaysShadow` withdrawn** by kol-fxr — editor work stays in fxr (user ruling); moved to `archive/` |
+| 2026-11-03 | **`FloatsRailOverlaysShadow` filed** by kol-fxr — floats Rail overlays the stage; top float shadow |
+| 2026-11-03 | FloatsOverlayNoBands closed — kol-shell 0.99.3; receipt to kol-fxr |
+| 2026-11-03 | **`FloatsOverlayNoBands` filed** by kol-fxr — floats overlay the content, no reserved bands |
+| 2026-11-03 | HubHomeSignedOutPinned closed — kol-shell 0.99.2; receipt to kol-fxr |
+| 2026-11-03 | **`HubHomeSignedOutPinned` filed** by kol-fxr — signed-out Home box pinned to the screen; iOS home-screen apps size `dvh` short |
+| 2026-11-01 | MoreRowsNoPathLit filed from kol-atlas |
+| 2026-11-01 | MoreRowsNoPathLit closed — kol-shell 0.99.1 |
+| 2026-11-03 | BrandLabToolWindow closed on his word — kol-styleguide 0.18.x; edge-resize point not built |
+| 2026-11-01 | **`GrowthLineSeedOutline` closed** → kol-growth 0.5.0 · kol-component 0.332.0 — ring `seed`, `outline` / `pathRing`, GrowthLineStage `seed="outline"`; apps/growth Outline page; receipt returned to kol-atlas (raise `cap` to fill the centre) |
+| 2026-11-01 | GrowthLineSeedOutline filed from kol-atlas |
+| 2026-11-01 | **`LoaderAppIntro` closed** → kol-component 0.331.0 · kol-framework 0.69.0 · kol-shell 0.99.0 — `loaderApp({ intro })`, the claim beside `hideLoaderApp` (600 ms fallback), GrowthLineStage claims + `onIntroBreath`, HubHome chrome fade; studio-hub shows the handoff; receipt returned to kol-fxr |
+| 2026-11-01 | **`LoaderAppIntro` filed** by kol-fxr — loaderApp intro mode hands the load to GrowthLineStage intro; HubHome chrome fades in on the breath; for Atlas |
 | 2026-10-31 | **`BezierPathEditor` closed** → kol-component 0.330.0 (`BezierPathEditor` (atom) exported); receipt returned to kol-fxr, remainder there: adopt it |
 | 2026-10-31 | **`ColorPickerPopoverExtras` closed** → kol-component 0.330.0 (`ColorPickerPopover` `footer` slot); receipt returned to kol-fxr, remainder there: adopt it |
 | 2026-10-31 | **`FunctionPlot` closed** → kol-component 0.330.0 (`FunctionPlot` (atom) exported); receipt returned to kol-fxr, remainder there: adopt it |
@@ -1337,3 +1365,9 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-10-31 | **`FloatsOwnItems` closed** → **kol-shell@0.98.0**. kol-shell 0.98.0. AppShell touch="floats" takes floats.items (AppFloatNav items for the top float's slots) and floats.actions ([{ label, icon?, onPress, sub? }], replacing barActions as More's actions); unset, it is exactly 0.97.0. The rule for every app: More always holds the app's whole nav, so a page's rows replace the slots, never the way back (phoneNav.sheetItems still overrides). Nested submenus on every AppFloatNav variant: items[].sub[].sub to any depth, the same row shape, a chevron on a row that opens a level. On the dock a level opens beside its parent (the + menu's card); on every phone variant it replaces the rows under a Back row. A leaf runs onPress (or routes its path) and closes every level; Escape and an outside press close all; ↑↓ move, → / Enter open, ← back. studio-hub shows Labs › Generative › Fields › Noise on the dock and the phone pill, and /chrome/labs* passing its own rows. Note: a page that rebuilds its rows while a level is open keeps the old rows until it is reopened. |
 | 2026-10-31 | **`RailDragHoldsWidth` closed** → **kol-component@0.327.0**. kol-component 0.327.0, NavRail's app rail (useRailDrag): a drag follows the pointer from 48 to a max of 560 and stays where it is let go — no snap, no jump (sampled across the release). A click on the grab (or Enter / Space) still snaps: any width above 48 → 48, 48 → the open width (--kol-shell-rail-open, 380), so a click resets a custom width. Below 160 the rail is icons only (a container query hides labels, section chevrons and the title), and railOpen / onSnap / aria-expanded report from that 160 threshold, live during a drag. Checked on studio-hub at 1440, light and dark: 380 → drag 300 → 302 after 1 s; drag 560 → 560; drag 900 → 560; click 300 → 48 → 380; drag 122 → icons only. Notes: the width is not persisted; a click at an icons-only custom width (e.g. 120) collapses to 48; the rail is now a container, so a position:fixed element placed inside the rail slot positions against the rail (popovers and tooltips portal to body and are unaffected). |
 | 2026-10-31 | **`OriginPicker` closed** → **kol-component@0.329.0**. kol-component 0.329.0: OriginPicker, a new atom. value [x, y] (each 0, 0.5 or 1), onChange([x, y]), size xs · sm · md, tone, ariaLabel. A radiogroup of nine radios with roving tabindex: arrows move x / y and focus together (no wrap), one tab stop; each point named (left top … right bottom). Heights match the field at every size (xs 22 · sm 26 · md 32, light and dark); dots oq-24 at rest, oq-48 on hover, the selected dot in the accent; no border. Figma: component set OriginPicker (283:1047) on 03-atoms, size × value × state, bound to tone/bg, radius, oq and accent; Code Connect uploaded. |
+| 2026-11-03 | **`BareButtonTouchRung` filed from kol-website** — bare Button skips the touch rung; CalendarHeatmap `weeks` |
+| 2026-11-03 | BareButtonTouchRung closed — kol-theme 0.210.1 · kol-component 0.333.2 · kol-dashboards 0.8.0; receipt to kol-website |
+| 2026-11-03 | **`ProseWrapsLongStrings` filed from kol-website** — prose classes wrap unbroken strings |
+| 2026-11-03 | ProseWrapsLongStrings closed — kol-theme 0.210.2 (`overflow-wrap: anywhere` on every prose class); receipt to kol-website |
+| 2026-11-03 | **`DashboardCardSet` filed from kol-website** — metric's cards into kol-dashboards for every dashboard |
+| 2026-11-03 | DashboardCardSet closed — kol-dashboards 0.9.0 (`Card` · `RankedList` · `StatTiles` · `DetailsOverlay`); apps/metric on them; receipt to kol-website |

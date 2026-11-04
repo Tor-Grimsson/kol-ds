@@ -70,7 +70,7 @@ const scan = {
     ...sec('Look',
       toggle('mono', 'Mono'),
       /* tint only mixes in on the mono path */
-      { key: 'tint', label: 'Tint', type: 'color', default: '#9fe7ff', when: (l) => !!l.mono },
+      { key: 'tint', label: 'Tint', type: 'color', role: 'accent', default: '#9fe7ff', when: (l) => !!l.mono },
       range('opacity', 'Line opacity', 0.05, 1, 0.05, 1)),
     ...sec('Camera',
       /* manual rig vs motion preset — each side yields to the other */
@@ -193,7 +193,7 @@ const lens = {
       /* the SDF's circle branch has no corners */
       { ...range('radius', 'Corner radius', 0, 0.3, 0.005, 0.08), when: (l) => (l.shape ?? 'panel') !== 'circle' },
       /* uEdge — rim highlight width along the lens boundary (labs dflt 0.025) */
-      range('edge', 'Edge', 0, 0.08, 0.002, 0.025)),
+      range('edge', 'Edge', 0, 0.08, 0.001, 0.025)),
     ...sec('Position',
       range('glassX', 'Lens X', 0, 1, 0.01, 0.5),
       range('glassY', 'Lens Y', 0, 1, 0.01, 0.5)),
@@ -208,7 +208,7 @@ const lens = {
       range('sheen', 'Sheen', 0, 1.5, 0.05, 0.5),
       range('lightAngle', 'Light angle', 0, 360, 1, 45),
       range('tintAmt', 'Tint amount', 0, 1, 0.02, 0),
-      { key: 'tint', label: 'Tint', type: 'color', default: '#ffffff', when: (l) => (l.tintAmt ?? 0) > 0 }),
+      { key: 'tint', label: 'Tint', type: 'color', role: 'accent', default: '#ffffff', when: (l) => (l.tintAmt ?? 0) > 0 }),
     /* NB: the engine's `bg` only paints contain-mode bars, and `fit` is pinned
      * to cover here — param removed as unreachable (audit). */
     ...sec('Motion',

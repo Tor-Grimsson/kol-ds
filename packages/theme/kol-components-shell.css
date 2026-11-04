@@ -24,6 +24,12 @@
   /* the open rail is the rail width — 380, the same as a side rail (his ruling 2026-10-25: *"navrail expanded also gets the
      same width as we just set"*); it ramped 264 · 320 from 1536 until then */
   --kol-shell-rail-open: 380px;
+  /* THE FLOAT RAIL'S FOOTPRINTS (float-everything W9 row 144, 2026-11-04 — the exploration's `Navigation layout
+   * footprints`): expanded 280 · rail 72 · hidden 0, beside the app rail's 48 / 380 above and the site rail's 240
+   * (kol-framework `--kol-sidenav-w`). Pinned states reflow the content; overlays (RailTrigger's card, RailFlyout) never. */
+  --kol-shell-float-rail-open: 280px;
+  --kol-shell-float-rail-width: 72px;
+  --kol-shell-float-rail-hidden: 0px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin.
    * ONE LADDER FOR THE ESTATE (two-page-scaffolds-one-job, kol-client-olina
    * 2026-09-03): this is `--kol-pad-section-x`, the page-content ladder every
@@ -264,7 +270,7 @@
   padding: 0 12px;
   gap: var(--kol-float-gap-ic);
 }
-.kol-more-sheet-float .kol-btn.kol-btn-float[aria-current="page"] { background: var(--kol-oq-16); color: var(--kol-fg-emphasis); }
+.kol-more-sheet-float .kol-btn.kol-btn-float[aria-current="page"] { background: var(--kol-fg-16); color: var(--kol-fg-emphasis); } /* fg-16, not oq-16 (float-everything W0.3, 2026-11-04) */
 .kol-phone-nav-more {
   position: fixed;
   left: 12px;
@@ -307,6 +313,19 @@
     transition: none;
   }
 }
+
+/* ── THE FLOAT CHROME (float-everything W5 · W9, 2026-11-04) — kol-shell's ToolRail, PropertyRail, DocumentCapsule,
+   TopControlsBar, ReaderBar, ProgressDock, RailTrigger, RailFlyout, RailDisplayControls, PeriodNav: every control on them
+   is a kol-component float Button; what Tailwind cannot say is here. The lit slot is the float selection (`--kol-fg-16`,
+   W0.3), the More sheet's rule. ── */
+.kol-float-chrome .kol-btn.kol-btn-float.kol-btn-pressed,
+.kol-float-chrome .kol-btn.kol-btn-float[aria-current="page"] { background: var(--kol-fg-16); color: var(--kol-fg-emphasis); }
+/* ToolRail: the slot is the float row (40, 48 on touch), not the 36 icon button */
+.kol-tool-rail .kol-btn.kol-btn-float.kol-btn-icon { width: var(--kol-float-row); height: var(--kol-float-row); }
+/* RailFlyout: 34 rows on the list round, 12 in, the glyph 12 off the label */
+.kol-rail-flyout .kol-btn.kol-btn-float { height: 34px; padding: 0 12px; gap: 12px; border-radius: var(--kol-float-list-r); font-size: var(--kol-float-t-sm); }
+/* the float Slider's track fills a dock's column */
+.kol-progress-dock .kol-slider-float { width: 100%; }
 
 /* ── StudioDetail — the preview's hover veil (kol-shell 0.78.0, 2026-10-24): "Click to expand" over the image on hover
    only; the overlay itself is opacity 0 inline, so a touch device never sees it until a tap opens the full view ── */

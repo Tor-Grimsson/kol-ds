@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "workbench/01-using-the-workbench.md",
+                "file": "visual-reference/INDEX.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "01-using-the-workbench"
+              "title": "INDEX"
             }
           }
         ]
@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -185,6 +187,11 @@
   },
   "active": "09fadf7867a73193",
   "lastOpenFiles": [
+    "visual-reference/Untitled.md",
+    "sott um okt.png",
+    "visual-reference/INDEX.md",
+    "documentation/00-overview/03-install.md",
+    "documentation/00-overview/01-package-topology.md",
     "llm-context/session-log/2026-06-26-docs-front-door-and-gameplan.md",
     "llm-context/session-log/2026-06-26-workbench-stories-backfill.md",
     "INDEX.md"

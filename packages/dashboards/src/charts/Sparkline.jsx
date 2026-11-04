@@ -1,10 +1,13 @@
+/** Sparkline — one trend line in a box, no axes: the series normalised to the height, an optional fill under it. Inside
+ * `StatTiles variant="float"` it is the tile's trend (float-everything W10 row 154, 2026-11-04) at `strokeWidth` 1.5. */
 import { useMemo } from 'react'
 
 const Sparkline = ({
   data = [],
   color = 'var(--kol-surface-on-primary)',
   height = 24,
-  fill = false
+  fill = false,
+  strokeWidth = 2
 }) => {
   const path = useMemo(() => {
     if (data.length < 2) return ''
@@ -21,9 +24,10 @@ const Sparkline = ({
       .join(' ')
   }, [data])
 
-  if (!path) return null
-
+  /* the gradient id is a hook, so it sits above the empty-data return (hooks never run conditionally) */
   const id = useMemo(() => `spark-${Math.random().toString(36).slice(2, 8)}`, [])
+
+  if (!path) return null
 
   return (
     <svg
@@ -51,7 +55,7 @@ const Sparkline = ({
         d={path}
         fill="none"
         stroke={color}
-        strokeWidth="2"
+        strokeWidth={strokeWidth}
         strokeLinejoin="round"
         strokeLinecap="round"
         vectorEffect="non-scaling-stroke"

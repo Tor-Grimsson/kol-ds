@@ -11,7 +11,7 @@ import { clear, strokeOutline, wrapLoop, sampleInside, stampGrid, rampRGB, roleR
 
 const PARAMS          = [
   { key: 'agents',   type: 'int',   min: 300,  max: 3000, default: 1000, step: 100,   label: 'agents' },
-  { key: 'sensAng',  type: 'range', min: 0.1,  max: 1.5,  default: 0.45, step: 0.02,  label: 'sensor angle' },
+  { key: 'sensAng',  type: 'range', min: 0.1,  max: 1.5,  default: 0.45, step: 0.01,  label: 'sensor angle' },
   { key: 'sensDist', type: 'range', min: 3,    max: 30,   default: 11,   step: 0.5,   label: 'sensor dist' },
   { key: 'deposit',  type: 'range', min: 0.01, max: 0.3,  default: 0.08, step: 0.01,  label: 'deposit' },
   { key: 'decay',    type: 'range', min: 0.85, max: 0.99, default: 0.95, step: 0.005, label: 'decay' },
@@ -19,12 +19,12 @@ const PARAMS          = [
   { key: 'interact', type: 'range', min: 0, max: 3, step: 0.1, default: 1, label: 'interaction' },
 ]
 
-const GS    = 160
+const GS    = 400 /* was 160 — plan 49 5.3 */
 const N_FOOD = 6  // food nodes
 
 export const r2_phys_02_chemotaxis            = {
   id: 'r2-phys-02-chemotaxis',
-  name: 'CHEMOTAXIS PHYSARUM',
+  name: 'Chemotaxis Physarum',
   repo: 'Tero et al. 2010 Science + Jones 2010',
   summary: 'A diffusing food field placed at glyph-interior nodes steers agents long-range. Veins converge on food sources and form Steiner-tree-like networks — the letterform is vascularized.',
   helps: 'Directed growth produces topologically meaningful veins tied to the glyph structure rather than random space-filling.',

@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { ToggleSwitch } from '@kolkrabbi/kol-component'
 
-export const variants = ['bare', 'primary', 'outline']
+/* float (float-everything W2 row 21): the 32 × 20 track, one size */
+export const variants = ['bare', 'primary', 'outline', 'float']
 export const sizes = ['md', 'xs', 'sm', 'lg']
 
 export default function ToggleSwitchPreview({ variant = 'bare', size = 'md' }) {

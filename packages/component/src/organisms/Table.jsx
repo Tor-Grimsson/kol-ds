@@ -17,6 +17,15 @@ import { INDICATOR } from '../hooks/glyphLadders.js'
  * sorts itself needs no state from the page. Pass `sortValue(row)` when the
  * rendered cell is not what should be compared (a chip, a link, a date
  * string).
+ *
+ * FLOAT (`variant="float"`, float-everything W8 rows 115 · 116, 2026-11-04 — kol-float--style 48:2780 analytics,
+ * 48:3257 catalog): its own render, none of `.kol-table`'s rules. The head in mono (`kol-float-ruler`, 10, uppercase
+ * by the table's role) on the emphasis ink; body cells in `kol-float-timecode` (mono 12) on fg-64, or the float sans
+ * (`kol-float-hint`) for a column with `sans: true`; 12 · 16 in a cell, no rules between rows (the no-borders law —
+ * rows lift fg-08 under the pointer instead). `align: 'right'` right-aligns a column (the numbers, the share). A cell's
+ * `render` draws covers and status pills (`Pill variant="float"`) — the catalog's cover · title · status row.
+ * `framed` sets it on a sheet (surface-secondary on `--kol-float-menu-r`, 8 in) — the catalog; unframed it sits on
+ * whatever float holds it — the analytics card.
  */
 const collator = new Intl.Collator(undefined, { numeric: true, sensitivity: 'base' })
 
@@ -33,7 +42,7 @@ const WIDTHS = {
   column: '',
 }
 
-const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false, lastRule = false }) => {
+const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false, lastRule = false, framed = false }) => {
   const [sort, setSort] = useState({ key: null, dir: null })
 
   const cycle = (key) =>
@@ -54,6 +63,8 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
       return collator.compare(String(x ?? ''), String(y ?? '')) * sign
     })
   }, [rows, columns, sort])
+
+  if (variant === 'float') return <FloatTable caption={caption} columns={columns} rows={sorted} sort={sort} cycle={cycle} framed={framed} rowClassName={rowClassName} className={`${WIDTHS[width] ?? WIDTHS.panel} ${className}`.trim()} />
 
   const variantClass = variant === 'simple' ? 'kol-table--simple' : ''
   /* compact — record-surface density (RecordManager, 2026-08-09): the default
@@ -110,6 +121,44 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
       </tbody>
     </table>
   </div>
+  )
+}
+
+function FloatTable({ caption, columns, rows, sort, cycle, framed, rowClassName, className }) {
+  const align = (c) => (c.align === 'right' ? 'text-right' : 'text-left')
+  return (
+    <div className={`w-full overflow-x-auto ${framed ? 'rounded-[var(--kol-float-menu-r)] bg-surface-secondary p-2' : ''} ${className}`.trim()}>
+      <table className="w-full border-collapse">
+        {caption ? <caption className="sr-only">{caption}</caption> : null}
+        <thead>
+          <tr>
+            {columns.map((c) => (
+              <th key={c.accessor} scope="col" style={c.style} className={`kol-float-ruler whitespace-nowrap px-4 py-3 font-normal uppercase text-fg-emphasis first:pl-3 ${align(c)}`}
+                aria-sort={sort.key === c.accessor ? (sort.dir === 'asc' ? 'ascending' : 'descending') : undefined}>
+                {c.sortable ? (
+                  <button type="button" onClick={() => cycle(c.accessor)} className="inline-flex items-center gap-1 uppercase cursor-pointer">
+                    {c.header}
+                    <Icon name={sort.key === c.accessor && sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={10} className={sort.key === c.accessor ? 'text-oq-96' : 'opacity-0'} />
+                  </button>
+                ) : c.header}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={row.id ?? row.token ?? i} className={`group${rowClassName ? ` ${rowClassName(row, i)}` : ''}`}>
+              {columns.map((c) => (
+                <td key={c.accessor} style={c.style}
+                  className={`${c.sans ? 'kol-float-hint' : 'kol-float-timecode'} whitespace-nowrap px-4 py-3 text-fg-64 group-hover:bg-fg-08 group-hover:text-fg-emphasis first:rounded-l-[var(--kol-float-list-r)] first:pl-3 last:rounded-r-[var(--kol-float-list-r)] ${align(c)}`}>
+                  {c.render ? c.render(row) : row[c.accessor] ?? '—'}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
 

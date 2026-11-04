@@ -1,16 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
 import { EditorProviders } from '../Editor'
+import FilesDialogHost from '../library/FilesDialogHost'
 import { Button } from '@kolkrabbi/kol-component'
 import { OutputStage } from '../OutputView'
 import { useComposeState, CANVAS_W } from '../compose/state'
 import { PRESET_SIZES } from '../shell/aspects'
 import { transport } from '../params/transport'
 import { useTheme } from '@kolkrabbi/kol-framework'
-import { firstPresetPatch, loopById, resolveCameraKeys } from '../../loops/registry'
+import { firstPresetPatch, loopById } from '../../loops/registry'
 import { useTool } from '../state/tools'
 import LabsSourcePicker from '../labs/LabsSourcePicker'
 import { isTabletSized, goDesktop, isMobileDevice, wantsDesktop, useNarrow } from './device'
-import { goLabs, modeById, setMountedView } from '../mode'
+import { goLabs, modeById, navigateTo, setMountedView } from '../mode'
 import { MODE_ICONS } from '../labs/catalog'
 import CategoryScreen, { SPREAD } from './CategoryScreen'
 import MobileOverlay from './MobileOverlay'
@@ -50,7 +51,7 @@ function EntryScreen({ onGenerate, onEffects, chromes }) {
         {chromes ? (
           <div className="flex flex-col gap-2">
             <span className="kol-eyebrow text-body">Select chrome</span>
-            <span className="kol-mono-16 text-emphasis">Effexor FXR</span>
+            <span className="kol-mono-16 text-emphasis">FXR</span>
           </div>
         ) : (
           <span className="kol-eyebrow text-body">{modeById('randomiser').label}</span>
@@ -66,6 +67,12 @@ function EntryScreen({ onGenerate, onEffects, chromes }) {
           {chromes && (
             <Button tone="primary" size="lg" className={SPREAD} iconLeft={MODE_ICONS.labs} iconRight={MODE_ICONS.labs} onClick={goLabs}>
               {modeById('labs').label}
+            </Button>
+          )}
+          {/* Morph is a labs chrome (plan 10) — on a phone this card covers the rail, so it needs its own door */}
+          {chromes && (
+            <Button tone="primary" size="lg" className={SPREAD} iconLeft="swap" iconRight="swap" onClick={() => navigateTo('/morph')}>
+              Morph
             </Button>
           )}
         </div>
@@ -85,7 +92,12 @@ function MobileBody() {
   /* …and the FRAME follows the window too (2026-10-05): under 768 a desk window gets the sheet,
      where the 264px rail left the stage 126px of a 390 window. The doors above stay the device's. */
   const narrow = useNarrow()
-  const start = () => 'entry'
+  /* a file opened by URL (`?open=`, plan 09) lands on the live screen — the chooser is for an empty stage */
+  /* …and Home's phone doors (`?start=category|effects`) skip the chooser — Home already was it */
+  const start = () => {
+    const q = new URLSearchParams(window.location.search)
+    return q.get('open') ? 'live' : q.get('start') === 'category' ? 'category' : 'entry'
+  }
   const [screen, setScreen] = useState(start)   /* entry | category | live */
   /* Effects: the input media first, then the effect sheet — and the media is
      KEPT while effects are browsed (the sheet's Back only closes the sheet) */
@@ -102,21 +114,33 @@ function MobileBody() {
    * any controls. Capture-phase so a second finger suspends the sim-pointer
    * forwarding (no accidental grabs mid-pinch); scale clamps 0.5–3 and
    * sticks until Start over. */
-  const [stageScale, setStageScale] = useState(1)
-  const pinchRef = useRef({ pts: new Map(), startDist: 0, startScale: 1 })
+  /* PINCH ABOUT THE FINGERS + TWO-FINGER MOVE (plan 35 § 1; the user: "I still cant pinch zoom
+     move with 2 fingers"). The stage view is { s, x, y } — `translate(x,y) scale(s)`, origin 0 0 —
+     and the point under the fingers' starting midpoint stays under their current midpoint, so a
+     pinch zooms where the fingers are and moving two fingers moves the stage. Live values go
+     straight onto the transform; state is written once, on release (plan 18 § 2's rule). */
+  const [stageView, setStageView] = useState({ s: 1, x: 0, y: 0 })
+  const stageRef = useRef(null)
+  const pinchRef = useRef({ pts: new Map(), start: null, live: { s: 1, x: 0, y: 0 } })
   const tapRef = useRef(null)
-  const pinchDist = () => {
+  const twoFinger = () => {
     const [a, b] = [...pinchRef.current.pts.values()]
-    return Math.hypot(a.x - b.x, a.y - b.y)
+    return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 }
   }
+  const viewCss = (v) => `translate(${v.x}px, ${v.y}px) scale(${v.s})`
   const onPinchDown = (e) => {
     pinchRef.current.pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
     tapRef.current = pinchRef.current.pts.size === 1
       ? { id: e.pointerId, x: e.clientX, y: e.clientY, t: performance.now() }
       : null
     if (pinchRef.current.pts.size === 2) {
-      pinchRef.current.startDist = pinchDist()
-      pinchRef.current.startScale = stageScale
+      const r = stageRef.current?.getBoundingClientRect()
+      const g = twoFinger()
+      /* the wrapper's untransformed origin: its rect minus the current translate */
+      const ox = (r?.left ?? 0) - stageView.x, oy = (r?.top ?? 0) - stageView.y
+      pinchRef.current.start = { ...g, ox, oy, v: stageView,
+        px: (g.mx - ox - stageView.x) / stageView.s, py: (g.my - oy - stageView.y) / stageView.s }
+      pinchRef.current.live = stageView
       transport.setStagePointer(null)
       e.stopPropagation()
     }
@@ -125,24 +149,29 @@ function MobileBody() {
     const p = pinchRef.current
     if (!p.pts.has(e.pointerId)) return
     p.pts.set(e.pointerId, { x: e.clientX, y: e.clientY })
-    if (p.pts.size >= 2 && p.startDist > 0) {
+    if (p.pts.size >= 2 && p.start) {
       e.stopPropagation()
-      setStageScale(Math.min(3, Math.max(0.5, p.startScale * (pinchDist() / p.startDist))))
+      const g = twoFinger(), st = p.start
+      const s2 = Math.min(4, Math.max(0.5, st.v.s * (g.d / st.d)))
+      p.live = { s: s2, x: g.mx - st.ox - s2 * st.px, y: g.my - st.oy - s2 * st.py }
+      if (stageRef.current) stageRef.current.style.transform = viewCss(p.live)
     }
   }
   const onPinchEnd = (e) => {
-    /* Tap = re-trigger, but only where touch has no richer meaning already:
-     * penrose presses, camera orbits and engine pointer-nudges keep theirs. */
+    /* ONE TAP PLAYS / PAUSES (plan 35 § 3; the user: "one tap should start stop transport") — the
+     * Space verb on a desk. A tap is a press that did not move, so a camera orbit or an engine
+     * nudge (both DRAGS) loses nothing; only penrose, whose presses ARE the piece, keeps its tap.
+     * (The rewind this replaced also skipped every loop with a camera map — and `vpZoom` gives
+     * nearly every loop one, so a tap did nothing almost everywhere.) Rewind is the sheet's button. */
     const tap = tapRef.current
     if (tap && tap.id === e.pointerId && e.type === 'pointerup' && screen === 'live'
-        && performance.now() - tap.t < 350 && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 12
-        && active?.type === 'loop') {
-      const def = loopById(active.loopId)
-      if (def && def.group !== 'penrose' && def.kind !== 'engine' && !resolveCameraKeys(def)) transport.rewind()
+        && performance.now() - tap.t < 350 && Math.hypot(e.clientX - tap.x, e.clientY - tap.y) < 12) {
+      const def = active?.type === 'loop' ? loopById(active.loopId) : null
+      if (def?.group !== 'penrose') transport.toggle()
     }
     if (tap?.id === e.pointerId) tapRef.current = null
     pinchRef.current.pts.delete(e.pointerId)
-    if (pinchRef.current.pts.size < 2) pinchRef.current.startDist = 0
+    if (pinchRef.current.pts.size < 2 && pinchRef.current.start) { pinchRef.current.start = null; setStageView(pinchRef.current.live) }
   }
 
   /* re-stamps a saved theme choice on mount (kol-framework's store) */
@@ -189,7 +218,7 @@ function MobileBody() {
     if (!patch) return
     const id = addLayer('loop', patch)
     setActiveId(id)
-    transport.play()
+    /* NOTHING AUTO-STARTS (plan 49 10.1, user 2026-10-31: "NEVER AUTO START, just start on play") */
     setScreen('live')
   }
 
@@ -208,9 +237,18 @@ function MobileBody() {
     const virtualH = Math.round(CANVAS_W * canvasH / canvasW)
     const id = addLayer('photo', { fit: 'cover', x: 0, y: 0, w: CANVAS_W, h: virtualH })
     setActiveId(id)
-    transport.play()
+    /* NOTHING AUTO-STARTS (plan 49 10.1, user 2026-10-31: "NEVER AUTO START, just start on play") */
     setScreen('live')
   }
+  /* the door's param is read once, then dropped — Start over lands on the chooser, not the door again */
+  useEffect(() => {
+    const url = new URL(window.location.href)
+    const door = url.searchParams.get('start')
+    if (!door) return
+    if (door === 'effects') { setFxFlow(true); startInsert() }
+    url.searchParams.delete('start')
+    window.history.replaceState(window.history.state, '', url)
+  }, [])   // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Output-tab aspect control: a real aspect id re-frames the composition
    * (setAspect) AND refits the active full-frame layer to the new frame —
@@ -231,7 +269,7 @@ function MobileBody() {
      * clip is freed here — mobile never runs the desktop's load-time gc. */
     for (const l of [...layers]) removeLayer(l.id)
     setActiveId(null)
-    setStageScale(1)
+    setStageView({ s: 1, x: 0, y: 0 })
     setFxFlow(false)
     setScreen(start())
   }
@@ -249,8 +287,9 @@ function MobileBody() {
           ending above the sheet, a canvas still at its old size overran the box
           for a frame, and mobile Chrome read that as a wider page and zoomed out. */}
       <div
+        ref={stageRef}
         className="absolute inset-y-0 left-0 touch-none overflow-hidden"
-        style={{ transform: `scale(${stageScale})`, right: railShown ? 'var(--kol-sidenav-w, 320px)' : 0, bottom: sheetH ?? 0 }}
+        style={{ transform: viewCss(stageView), transformOrigin: '0 0', right: railShown ? 'var(--kol-sidenav-w, 320px)' : 0, bottom: sheetH ?? 0 }}
         onPointerDownCapture={onPinchDown}
         onPointerMoveCapture={onPinchMove}
         onPointerUpCapture={onPinchEnd}
@@ -303,6 +342,8 @@ export default function MobileView() {
   return (
     <EditorProviders persistDraft={false}>
       <MobileBody />
+      {/* ⌘O opens the Files overlay here too (plan 08) */}
+      <FilesDialogHost />
     </EditorProviders>
   )
 }

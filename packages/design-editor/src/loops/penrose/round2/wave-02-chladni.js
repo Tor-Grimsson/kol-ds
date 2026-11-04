@@ -12,7 +12,7 @@ import { num } from '../knobs.js'
 import { clear, strokeOutline, wrapLoop, rampRGB, roleRGB } from '../common.js'
 
 const PARAMS          = [
-  { key: 'res',   type: 'int',   min: 80, max: 180, default: 140, step: 20,  label: 'grid res' },
+  { key: 'res',   type: 'int',   min: 80, max: 400, default: 300, step: 20,  label: 'grid res' },
   { key: 'modeA', type: 'int',   min: 1,  max: 12,  default: 3,   step: 1,   label: 'mode A index' },
   { key: 'modeB', type: 'int',   min: 1,  max: 12,  default: 5,   step: 1,   label: 'mode B index' },
   { key: 'speed', type: 'range', min: 0.05, max: 1.0, default: 0.25, step: 0.05, label: 'beat speed' },
@@ -26,13 +26,13 @@ const MODES                          = [
 
 export const r2_wave_02_chladni            = {
   id: 'r2-wave-02-chladni',
-  name: 'CHLADNI MEMBRANE',
+  name: 'Chladni membrane',
   repo: 'Chladni 1787 · Müller arXiv:1308.5523',
   summary: 'Standing-wave superposition on the glyph-shaped membrane. Two eigenmodes beat against each other; bright regions vibrate, the dark nodal band reveals where sand would settle in Chladni\'s original experiment.',
   helps: 'The glyph IS the membrane — its geometry uniquely determines the nodal topology.',
   params: PARAMS,
   init({ ctx, sdf, W, H, params, clock }) {
-    const G  = num(params, 'res', 140)
+    const G  = num(params, 'res', 300)
     const N  = G * G
 
     // Pre-compute SDF mask and bounding box

@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
 import FilesDialog from './FilesDialog'
-import { useFilesDialog, closeFiles } from './filesDialogStore'
+import { useFilesDialog, closeFiles, openFiles } from './filesDialogStore'
+import { matchCombo } from '../state/keymap'
 import { useComposeState } from '../compose/state'
 import { useComposeFile } from '../compose/useComposeFile'
 import { useGeneratorLibrary } from './LibraryProvider'
+import { currentView } from '../mode'
 
 /**
  * FilesDialogHost — binds `FilesDialog` to the editor's own verbs and mounts it
@@ -17,8 +20,26 @@ import { useGeneratorLibrary } from './LibraryProvider'
 export default function FilesDialogHost() {
   const { open, focusName } = useFilesDialog()
   const { loadPreset, setCurrentPresetId, setCurrentPresetName } = useComposeState()
-  const { onLoadSettings, onSaveSettings, buildSpec } = useComposeFile()
+  const { onLoadSettings, onSaveSettings, buildSavedSpec, onSave } = useComposeFile()
   const { addItem } = useGeneratorLibrary()
+
+  /* ⌘O / Ctrl+O — the Files overlay from any chrome (plan 08). Lives here, with the dialog, so every
+   * chrome that mounts the host answers it; preventDefault stops the browser's own Open. */
+  useEffect(() => {
+    const onKey = (e) => {
+      /* ⌘S / Ctrl+S — Save patch (user, 2026-10-08), labs + morph + the randomiser: the dialog opens on
+       * its name field and Save current writes a NEW file each time, so rolls collect as morph steps */
+      if (matchCombo(e, 'Mod+S') && ['labs', 'randomiser'].includes(currentView())) { e.preventDefault(); openFiles({ focusName: true }); return }
+      /* the editor's File › Save ⌘S and Save as… ⇧⌘S (plan 28) — Save as opens the dialog on its name */
+      if (currentView() === 'editor' && matchCombo(e, 'Mod+Shift+S')) { e.preventDefault(); openFiles({ focusName: true }); return }
+      if (currentView() === 'editor' && matchCombo(e, 'Mod+S')) { e.preventDefault(); onSave(); return }
+      if (!matchCombo(e, 'Mod+O')) return
+      e.preventDefault()
+      if (open) closeFiles(); else openFiles()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open, onSave])
 
   return (
     <FilesDialog
@@ -41,8 +62,8 @@ export default function FilesDialogHost() {
       onExportItem={(item, name) => onSaveSettings(name, item)}
       /* SAVE AS lands here instead of `modal.prompt` — the dialog shows the
        * names already taken while you pick one, which a prompt cannot. */
-      onSaveCurrent={(name) => {
-        const id = addItem('preset', buildSpec(name))
+      onSaveCurrent={async (name) => {
+        const id = addItem('preset', await buildSavedSpec(name))
         if (!id) return
         setCurrentPresetId(id)
         setCurrentPresetName(name)

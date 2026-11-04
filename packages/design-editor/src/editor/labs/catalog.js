@@ -3,6 +3,9 @@ import { groupById, presetsInGroup, presetsInSub, presetLayerPatch } from '../..
 import { KINETIC_TREE, KINETIC_PRESETS, presetComp } from '../../kinetic/presets'
 import { FILTERS } from '../../filters'
 import { effectCategories, FX_RACK_GROUPS } from '../compose/inspectors/effectCategories'
+import { openColorModes } from '../color/ColorModesWindow'
+import { MORPH_TYPES, morphPresets, firstMorphPreset, loadMorphPreset } from '../morph/presets'
+import { getMorph } from '../morph/morphStore'
 
 /**
  * The labs CATALOG — the section/group/category tree and its pick semantics,
@@ -37,10 +40,11 @@ export const GROUP_ICONS = {
   'gen:Loops': 'refresh',
   'gen:Math': 'sum',
   'gen:Penrose': 'a-framed',
+  'gen:Flow': 'wave',                /* plan 37's intake had none — fell back to a square (plan 41 § 7.1) */
+  'gen:Letter Gap': 'letter-spacing',
   'gen:Drift': 'dith-flow',
   'gen:Gradients': 'circle',
   'gen:Soft Forms': 'paint-drop',
-  'gen:Soft Forms 3D': 'ball',
   'gen:3D Scene': 'ball',
   'kin:Type': 'font-01',
   'kin:Kinetic': 'font-01',
@@ -58,7 +62,7 @@ export const SECTION_ICONS = {
   generative: 'layers',
   vector: 'pen-nib',
   composition: 'type',
-  modulation: 'frequency',
+  morph: 'swap',
   mode: 'mode-toggle-01',
 }
 
@@ -114,11 +118,14 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
    * From library | Upload empty state (see ./LabsSourcePicker), which is
    * exactly labs' behaviour on e.g. /radar/ascii. An existing photo layer
    * keeps its source, so browsing effects doesn't make you re-pick media. */
+  /* the media stage (fx-media, pinned first — plan 26 § 4) rides along when the effect is swapped */
+  const keptMedia = () => (layer?.type === 'photo' ? (layer.filters ?? []).filter((s) => s?.id === 'fx-media') : [])
   const pickEffect = (filterId, patch) => {
-    const id = setOnly('photo', { ...carriedSource(), filters: [], fxGroup: null })
+    const keep = keptMedia()
+    const id = setOnly('photo', { ...carriedSource(), filters: keep, fxGroup: null })
     if (id) {
       addFilter(id, filterId)
-      if (patch) patchFilter(id, 0, patch)
+      if (patch) patchFilter(id, keep.length, patch)
     }
     window.dispatchEvent(new CustomEvent('kol:open-effects'))
   }
@@ -126,7 +133,7 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
   /* A rack CATEGORY leaf (labs /radar/effects/<group>): an empty effect
    * stack scoped to that category — the rail becomes the rack surface. */
   const pickRackGroup = (groupId) => {
-    setOnly('photo', { ...carriedSource(), filters: [], fxGroup: groupId })
+    setOnly('photo', { ...carriedSource(), filters: keptMedia(), fxGroup: groupId })
     window.dispatchEvent(new CustomEvent('kol:open-effects'))
   }
 
@@ -145,7 +152,7 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
   }
 
   const activePresetId = layer?.presetId ?? null
-  const activeFilterId = layer?.filters?.[0]?.id ?? null
+  const activeFilterId = (layer?.filters ?? []).find((s) => s?.id !== 'fx-media')?.id ?? null
   const activePreset = activePresetId
     ? presetsInGroup(layer?.loopGroup).find((p) => p.id === activePresetId) ?? null
     : null
@@ -186,6 +193,11 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
   })
 
   return [
+    /* COLOR (plan 41 § 6.1) — Color Modes' home in Labs: a row at the section level that opens the
+       one palette window (`color/ColorModesWindow`), not a section. First in the stream because the
+       rail folds a row after a section marker into that section. */
+    { id: 'color', label: 'Color', icon: 'clr-tri', onSelect: openColorModes, pages: [] },
+
     { id: 'sec:effects', label: 'Effects' },
     ...effectCategories(FILTERS).map((cat) => ({
       id: `fx:${cat.id}`,
@@ -210,7 +222,7 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
               label: lk.label,
               onSelect: () => pickEffect('scanline', lk.patch),
               active: !layer?.fxGroup && activeFilterId === 'scanline'
-                && scanlineLookOf(layer?.filters?.[0]?.params) === lk.label,
+                && scanlineLookOf((layer?.filters ?? []).find((s) => s?.id === 'scanline')?.params) === lk.label,
             }))
             : cat.filters.map((f) => ({
               label: f.label ?? f.id,
@@ -225,6 +237,20 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
       label: entry.label,
       icon: GROUP_ICONS[`gen:${entry.label}`] ?? 'square',
       pages: generativeRows(entry),
+    })),
+
+    /* MORPH (plan 47 W2) — a METHOD with the full ladder: its TYPES are the modes, a type's CATEGORIES the generators
+       its runs start from; a category row lands on its first run, the Preset dropdown (Morph's header) walks the rest */
+    { id: 'sec:morph', label: 'Morph' },
+    ...MORPH_TYPES.map((t) => ({
+      id: `morph:${t.id}`,
+      label: t.label,
+      icon: t.icon,
+      pages: [...new Set(morphPresets().filter((p) => p.type === t.id).map((p) => p.category))].map((category) => ({
+        label: category,
+        onSelect: () => loadMorphPreset(firstMorphPreset(t.id, category)),
+        active: (() => { const p = morphPresets().find((x) => x.id === getMorph().presetId); return p?.type === t.id && p.category === category })(),
+      })),
     })),
 
     /* VECTOR — the ported kol-apps instruments (plan 02 step 4): tools that
@@ -262,15 +288,5 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
       icon: GROUP_ICONS[`misc:${entry.label}`] ?? 'square',
       pages: entry.groups.flatMap((gid) => leafRows(gid, 'misc')),
     })),
-
-    /* Modulation has no nav target of its own: every param's bind dot is the
-       entry point and the shaping UI is the rail's Motion tab. One hop. */
-    { id: 'sec:modulation', label: 'Modulation' },
-    {
-      id: 'mod:animation',
-      label: 'Animation',
-      icon: 'frequency',
-      onSelect: () => window.dispatchEvent(new CustomEvent('kol:open-params')),
-    },
   ]
 }

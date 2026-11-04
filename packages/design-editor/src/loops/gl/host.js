@@ -128,7 +128,8 @@ export function applyParams(def, engine, params) {
       const y = (st.y - (params.y ?? 0)) / h
       if (x >= 0 && x <= 1 && y >= 0 && y <= 1) p = { x, y, down: !!st.down }
     }
-    engine.setPointer(p)
+    /* a def's Mouse toggle off → the pointer reaches nothing (plan 49 3.2) */
+    engine.setPointer(params.mouse === false ? null : p)
   }
   /* Background toggle (scene-type engines, def.bgToggle): the renderers are
    * alpha:true — clear-alpha 0 makes the backdrop transparent. Runs AFTER
@@ -167,6 +168,12 @@ function applyEngineParams(def, engine, params) {
           roughness: params.roughness, metalness: params.metalness,
           color: params.sceneColor, flatShading: !!params.flatShading, rounding: params.rounding,
           showAxis: !!params.showAxis, axisLength: params.axisLength, axisOpacity: params.axisOpacity,
+          /* plan 26 § 15 — the Model's file and the Lighting section */
+          meshSrc: params.primitive === 'mesh' ? params.meshSrc : null, meshType: params.meshType,
+          light: {
+            key: params.lightKey, keyAngle: params.lightAngle, keyElevation: params.lightElevation,
+            fill: params.lightFill, rim: params.lightRim, ambient: params.lightAmbient, orbit: params.lightOrbit,
+          },
         },
       })
       return

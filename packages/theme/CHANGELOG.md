@@ -1,5 +1,39 @@
 # @kolkrabbi/kol-theme
 
+## 0.211.1 — 2026-11-04
+
+Float, all of it — W5 Chrome + W9 Navigation (kol-shell 0.101.0), in `kol-components-shell.css`:
+- **The float rail's footprints** (W9 row 144): `--kol-shell-float-rail-open` 280 · `--kol-shell-float-rail-width` 72 · `--kol-shell-float-rail-hidden` 0, beside the app rail's 48 / 380.
+- **The float chrome's CSS**: `.kol-float-chrome` lights a pressed or current float Button with `--kol-fg-16` (the More sheet's rule); ToolRail's slot is `--kol-float-row` (40, 48 on touch); RailFlyout's rows are 34 on `--kol-float-list-r`; the float Slider fills ProgressDock's column.
+
+And W2 Controls · W3 Fields · W4 Menus (kol-component 0.334.0) — the float rules for the controls, fields and menus; every default is untouched:
+- **kol-components-atoms.css** (the FLOATING STYLE section): `.kol-btn-kbd` (the cap inside a float button takes its ink) · `.toggle-switch--float` (32 × 20 track, 14 thumb, the ring on the track) · `.toggle-checkbox--float` (an 18 plate, no hairline) · `.kol-slider-float` (a 3px capsule track, the run fg-64 up to a 12 thumb via `--kol-slider-pct`) · the float note field (`.kol-control--float.kol-control--textarea` on `--kol-float-menu-r`) · `.kol-control-error` · `.kol-seg-count` · the float ViewToggle's ring.
+- **kol-components-molecules.css** (a new FLOAT CHIPS AND MENUS section at the end): `.kol-tag--float` (+ `--md`, `.kol-tag-count`) · `.pill-float` · `.kol-badge-float` · `.kol-menu-panel--float` (+ `--sheet`): 34 rows 12 in, Inter 12/500, lifted `--kol-fg-16`, the rule and label, the kbd cap · `.kol-menu-row--danger` (the error ink, any panel) · the fused float list (no hairline, all corners) · `.kol-dd-trigger--float` (the well, the float heights restated over the trigger's rung rules, round while open) · `.kol-menu-trigger--float` (+ `--mono`).
+
+## 0.211.0 — 2026-11-04
+
+Float, all of it — W0 + W1 (plan-2026-11-04-float-everything; the gap map in kol-float--style). The float style's foundations, from the exploration's own values:
+- **`--kol-font-family-float`** = Inter, and **twelve `kol-float-*` type roles** in the new `kol-type-float-classes.css` (display 116 · editorial 76 · sheet 38 · section 24 · window 18 · body-lg 16 · body 14 · panel 13 · hint 12 · label 11 · timecode 12 mono · ruler 10 mono). Every `variant="float"` control now sets Inter at weight 500: Button, Input, Tooltip, SegmentedToggle, TabsRow — they rendered the component's mono before.
+- **Float radii** (W0.1): `--kol-float-list-r` 8 (touch 10) new · `--kol-float-menu-r` 26 → **20** (30 → 24) · `--kol-float-window-r` 28 (32) new. The More sheet is 20 now.
+- **Float focus** (W0.2): `--kol-float-focus`, a 2px ring of the ink on `:focus-visible` of every float control; round 3 had none. Disabled float controls are 40%.
+- **Float selection** (W0.3): `--kol-fg-16`, not `--kol-oq-16`, on the TabsRow float pressed chip and the More sheet's current row — translucent, so glass shows through.
+- Figma (library n48kE…): `radius/float/list · sheet · window`, `type/font/float` = Inter, text styles `float/<role>` ×12.
+
+## 0.210.4 — 2026-11-04
+
+- **Inter is loaded**: `@font-face` for Inter (variable, normal + italic, 100–900) from `/fonts/inter/`, served like Right Grotesk. `font-inter` now renders Inter, not the system font.
+
+## 0.210.3 — 2026-11-04
+
+- **`font-inter`** (his ruling 2026-11-04): `--font-inter: 'Inter', system-ui, sans-serif` in the Tailwind contract, for the Avatar initial. Not loaded by kol-theme: the app adds the Google Fonts link, like Public Sans.
+
+## 0.210.2 — 2026-11-03
+
+- **Prose wraps an unbroken string** (ProseWrapsLongStrings, kol-website): `.kol-prose` and every `.kol-prose-*` class take `overflow-wrap: anywhere` from one rule (`[class^="kol-prose"], [class*=" kol-prose"]`), so a path or URL in a lede breaks at the column's edge instead of scrolling a phone page sideways. Only a word that cannot fit breaks; ordinary text is unchanged. `anywhere` rather than the asked `break-word`: break-word keeps the min-content width, so a lede in a flex row (PageHero) still widened the page.
+
+## 0.210.1 — 2026-11-03
+
+- **The touch rung skips a bare Button** (BareButtonTouchRung, kol-website metric): `:not(.kol-menu-btn--bare)` joins the rung's `:where()`, so `Button variant="bare"` keeps the type its className gives it on a coarse pointer; MenuItem's rows still type 16 / 22. Specificity unchanged.
 
 ## 0.210.0 — 2026-10-31
 

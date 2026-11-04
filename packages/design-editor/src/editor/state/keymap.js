@@ -32,6 +32,7 @@ export const SHORTCUTS = [
   { id: 'redo',        combo: 'Mod+Shift+Z', label: 'Redo',                     section: 'Edit', views: ['editor'] },
   { id: 'redo-alt',    combo: 'Mod+Y',       label: 'Redo',                     section: 'Edit', hidden: true, views: ['editor'] },
   { id: 'duplicate',   combo: 'Mod+D',       label: 'Duplicate selection',      section: 'Edit', views: ['editor'] },
+  { id: 'select-all',  combo: 'Mod+A',       label: 'Select all layers',        section: 'Edit', views: ['editor'] },
   { id: 'delete-back', combo: 'Backspace',   label: 'Delete selection',         section: 'Edit', views: ['editor'] },
   { id: 'delete-fwd',  combo: 'Delete',      label: 'Delete selection',         section: 'Edit', hidden: true, views: ['editor'] },
 
@@ -45,6 +46,8 @@ export const SHORTCUTS = [
   { id: 'toggle-visibility', combo: 'H',                  label: 'Toggle visibility',    section: 'Layer', views: ['editor'] },
   { id: 'flip-h',            combo: 'Shift+H',            label: 'Flip horizontal',      section: 'Layer', views: ['editor'] },
   { id: 'flip-v',            combo: 'Shift+V',            label: 'Flip vertical',        section: 'Layer', views: ['editor'] },
+  /* Illustrator's Create Outlines chord (the user's 6): a shape (or a boolean) becomes an editable path */
+  { id: 'convert-path',      combo: 'Mod+Shift+O',        label: 'Convert to path',      section: 'Layer', views: ['editor'] },
   { id: 'nudge-left',        combo: 'ArrowLeft',          label: 'Nudge ← 1px',          section: 'Layer', views: ['editor'] },
   { id: 'nudge-right',       combo: 'ArrowRight',         label: 'Nudge → 1px',          section: 'Layer', views: ['editor'] },
   { id: 'nudge-up',          combo: 'ArrowUp',            label: 'Nudge ↑ 1px',          section: 'Layer', views: ['editor'] },
@@ -63,7 +66,7 @@ export const SHORTCUTS = [
   { id: 'tool-rect',    combo: 'R', label: 'Rectangle tool',    section: 'Tools', views: ['editor'] },
   { id: 'tool-ellipse', combo: 'O', label: 'Ellipse tool',      section: 'Tools', views: ['editor'] },
   { id: 'tool-zoom',    combo: 'Z', label: 'Zoom tool',         section: 'Tools', views: ['editor'] },
-  { id: 'tool-orbit',   combo: 'C', label: 'Orbit tool (3D camera)', section: 'Tools', views: ['editor', 'labs'] },
+  { id: 'tool-orbit',   combo: 'C', label: 'Grab / orbit (Settings › Canvas › Grab in Labs)', section: 'Tools', views: ['editor', 'labs'] },
 
   /* View */
   { id: 'toggle-grid',  combo: 'G', label: 'Show/hide grid',    section: 'View' },
@@ -85,7 +88,13 @@ export const SHORTCUTS = [
 
   /* View */
   { id: 'show-shortcuts', combo: 'S',     label: 'Show / hide shortcuts',   section: 'View' },
-  /* The settings DRAWER, not the `/settings` page (that is the rail's ⌥6).
+  { id: 'show-shortcuts', combo: '?',     label: 'Show / hide shortcuts',   section: 'View', hidden: true }, /* the convention everywhere else (audit A12) */
+  /* Bound in FilesDialogHost, where the dialog lives (passive here, like `,`). Mod+O, not O: O is the Ellipse tool. */
+  { id: 'open-files',     combo: 'Mod+O', label: 'Files',                   section: 'View', passive: true },
+  { id: 'save',           combo: 'Mod+S', label: 'Save',                    section: 'View', passive: true, views: ['editor'] },
+  { id: 'save-as',        combo: 'Mod+Shift+S', label: 'Save as…',          section: 'View', passive: true, views: ['editor'] },
+  { id: 'save-patch',     combo: 'Mod+S', label: 'Save patch',              section: 'View', passive: true, views: ['labs', 'randomiser'] },
+  /* The settings DRAWER, not the `/settings` page (that is the rail's ⌥7).
    * Bound in `EditorShell.jsx`, where the drawer lives — `passive` here for the
    * same reason `fps` is: declared for the cheat sheet, dispatched at the
    * surface that owns it. EVERY chrome renders EditorShell, so it answers in
@@ -98,21 +107,46 @@ export const SHORTCUTS = [
    * (`usePlaceholders().toggle`, kol-component 0.46.0). No longer `passive`:
    * it was passive because components/Hint.jsx bound its own window listener,
    * and that duplicate listener is gone. */
-  { id: 'toggle-hints',   combo: 'I',     label: 'Show / hide placeholder text', section: 'View' },
+  /* `I` is the eyedropper (the user's 17, 2026-10-09) — it was the placeholder-text dev toggle,
+     which keeps a hidden chord so nothing is lost. */
+  { id: 'eyedrop',        combo: 'I',         label: 'Eyedropper — sample a color from the canvas', section: 'Color', views: ['editor'] },
+  { id: 'toggle-hints',   combo: 'Shift+I',   label: 'Show / hide placeholder text', section: 'View', hidden: true },
   { id: 'toggle-rulers',  combo: 'Shift+R', label: 'Show / hide rulers',    section: 'View', views: ['editor'] },
+  /* Affinity / InDesign's preview mode (the user's 2): the frame edge, its ratio label, rulers,
+     guides and grid off — the composition alone */
+  { id: 'view-preview',   combo: 'W',       label: 'Preview mode — hide frame edge, label, rulers, guides', section: 'View', views: ['editor'] },
   { id: 'pan',            combo: 'Space', label: 'Play / pause · hold + drag to pan', section: 'View', passive: true },
   /* Handled inside the canvas viewport (window keydown, input-guarded) —
    * documented here for the cheat sheet only. */
   { id: 'fps',            combo: 'F',     label: 'Toggle fps readout',      section: 'View', passive: true },
+  /* VIEW › ZOOM (plan 33; Affinity's rows and keys). ⌘= ⌘- ⌘0 are the DS viewport's own window keys
+     (PanZoomViewport) — passive here so they are listed and run from the menu, never bound twice.
+     ⌘1–⌘4 are real percentages (100% = one frame px per screen px). In a Chrome / Firefox TAB the
+     browser keeps ⌘1–⌘8 for its tabs; the installed app window has none, so they reach the editor. */
+  { id: 'zoom-in',        combo: 'Mod+=',       label: 'Zoom in',            section: 'View', passive: true, views: ['editor'] },
+  { id: 'zoom-out',       combo: 'Mod+-',       label: 'Zoom out',           section: 'View', passive: true, views: ['editor'] },
+  { id: 'zoom-fit',       combo: 'Mod+0',       label: 'Zoom to fit',        section: 'View', passive: true, views: ['editor'] },
+  { id: 'zoom-width',     combo: 'Mod+Alt+0',   label: 'Zoom to width',      section: 'View', views: ['editor'] },
+  { id: 'zoom-selection', combo: 'Mod+Shift+0', label: 'Zoom to selection',  section: 'View', views: ['editor'] },
+  { id: 'zoom-100',       combo: 'Mod+1',       label: 'Zoom 100%',          section: 'View', views: ['editor'] },
+  { id: 'zoom-200',       combo: 'Mod+2',       label: 'Zoom 200%',          section: 'View', views: ['editor'] },
+  { id: 'zoom-400',       combo: 'Mod+3',       label: 'Zoom 400%',          section: 'View', views: ['editor'] },
+  { id: 'zoom-800',       combo: 'Mod+4',       label: 'Zoom 800%',          section: 'View', views: ['editor'] },
   /* Labs — bound by `useLabsKeys` in labs/LabsParams.jsx, NOT by the canvas
      handler. Declared here so the cheat sheet stops showing the editor's
      answer for `R` while standing in labs. */
-  { id: 'labs-reset',  combo: 'R',       label: 'Reset to defaults', section: 'Labs', views: ['labs'] },
+  { id: 'labs-reset',  combo: 'R',       label: 'Reset to defaults', section: 'Labs', views: ['labs', 'randomiser'] },
   /* the stage's zoom — the −/100%/+ chips left the stage 2026-10-06 (LabsStage binds these) */
   { id: 'labs-zoom-in',  combo: 'Plus',  label: 'Zoom the stage in',  section: 'Labs', views: ['labs'], passive: true },
   { id: 'labs-zoom-out', combo: '-',     label: 'Zoom the stage out', section: 'Labs', views: ['labs'], passive: true },
   { id: 'labs-zoom-fit', combo: '0',     label: 'Fit the stage',      section: 'Labs', views: ['labs'], passive: true },
-  { id: 'labs-reroll', combo: 'Shift+R', label: 'Reroll',            section: 'Labs', views: ['labs'] },
+  /* previous / next (plan 49 2.3) — handled in LabsView (presetStep.js); passive here, listed for the sheet */
+  { id: 'labs-zoom-lock',     combo: 'Z', label: 'Zoom lock (Settings › Canvas)', section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-preset-prev',   combo: 'H', label: 'Previous preset (or ←)',   section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-preset-next',   combo: 'L', label: 'Next preset (or →)',       section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-category-prev', combo: 'K', label: 'Previous category (or ↑)', section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-category-next', combo: 'J', label: 'Next category (or ↓)',     section: 'Labs', views: ['labs'], passive: true },
+  { id: 'labs-reroll', combo: 'Shift+R', label: 'Reroll',            section: 'Labs', views: ['labs', 'randomiser'] },
 ]
 
 const KEY_LABELS = {
@@ -171,6 +205,8 @@ export function matchCombo(event, combo) {
   const { needsMod, needsShift, needsAlt, key } = parseCombo(combo)
   const modPressed = isMac() ? event.metaKey : event.ctrlKey
 
+  /* `?` is a shifted glyph on every layout — match the glyph itself, not the shift state */
+  if (key === '?') return event.key === '?' && !modPressed && !event.altKey
   if (needsMod !== modPressed) return false
   if (needsShift !== event.shiftKey) return false
   if (needsAlt !== event.altKey) return false
@@ -180,7 +216,8 @@ export function matchCombo(event, combo) {
    * same reason AppLayout's ⌥-digit map reads `Digit1`… Non-Alt combos keep
    * matching `e.key`, which is what every existing entry means. */
   if (key.length === 1) {
-    if (needsAlt) {
+    /* …and SHIFT rewrites a digit (⇧0 is `)`), so a Shift+digit combo is physical too (⇧⌘0, plan 33) */
+    if (needsAlt || (needsShift && /^[0-9]$/.test(key))) {
       const code = codeFor(key)
       return code ? event.code === code : event.key.toLowerCase() === key.toLowerCase()
     }
@@ -211,6 +248,20 @@ export function matchAny(event, shortcuts = SHORTCUTS, view) {
 /* Render a combo as glyphs for display: 'Mod+Shift+Z' → '⌘⇧Z'. */
 export function comboLabel(combo) {
   return combo.split('+').map((p) => KEY_LABELS[p] ?? p).join('')
+}
+
+/* IS THE KEY THE FOCUSED ELEMENT'S, NOT A SHORTCUT? Text entry owns every key. A slider, switch or
+ * swatch (`<input type="range">` and kin) owns only the keys it acts on — arrows, Home/End/Page,
+ * Space, Enter — and lets the rest through. Every handler used to bail on ANY input, so a slider
+ * that kept focus after a drag swallowed R, Shift+R and the rest (2026-10-09). */
+const NON_TEXT = new Set(['range', 'checkbox', 'radio', 'button', 'submit', 'reset', 'color', 'file'])
+const CONTROL_KEYS = /^(Arrow|Home$|End$|Page| $|Enter$)/
+export function isTyping(e) {
+  const t = e.target
+  if (!t) return false
+  if (t.isContentEditable || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT') return true
+  if (t.tagName !== 'INPUT') return false
+  return !NON_TEXT.has(t.type) || CONTROL_KEYS.test(e.key)
 }
 
 /* True when a shortcut applies in `view`. No `views` field = universal, which

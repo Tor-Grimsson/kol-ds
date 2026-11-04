@@ -48,6 +48,10 @@
  *                    to 724px — a document's own page (DocumentIndex). A level sets actions inline, and the bottom rhythm
  *                    to `--kol-page-header-mb` (40px; content 16px). Unset = the section family as before.
  * @param {ReactNode} media        a mark above the eyebrow (a logo, an SVG) — with a `level` only
+ * @param {ReactNode} meta         a fact at the far end of the HEADLINE's row (float-everything W9 row 140, 2026-11-04 —
+ *                    `Website traffic · kolkrabbi.io · Umami`): the source or scope, in mono on fg-64 (`kol-float-timecode`
+ *                    under `variant="float"`, else `kol-mono-12 text-meta`), baseline-aligned with the title. Unset, nothing
+ * `variant="float"` — the float page header (see SECTION_TEXT_LEVELS.float).
  */
 export const HEADLINE_ROLE = {
   pull: 'kol-section-text-pull',
@@ -74,6 +78,11 @@ export const SECTION_TEXT_LEVELS = {
   /* document (DocumentIndexFigma, kol-atlas 2026-10-31) — the Research page header, the workspace sheet's: 36/1.2 bold
    * display face at −0.005em, 12 under it; the lede 15/1.6 in the body face to a 724 edge */
   document: { title: 'font-[family-name:var(--kol-font-family-sans)] text-[36px] font-bold leading-[1.2] tracking-[-0.005em]', lede: 'm-0 font-[family-name:var(--kol-font-family-sans-neutral)] text-[15px] leading-[1.6] text-fg-96', measure: '724px' },
+  /* float (float-everything W9 row 135, 2026-11-04 — kol-float--style 48:4542): the float page header — the eyebrow in
+   * mono (`kol-float-ruler`, fg-64, `STUDIO / WORKSPACE`), the title in `kol-float-sheet` (Inter 38/500), the subtitle
+   * in `kol-float-body` on fg-64; 8 between, 24 under. A section heading on the float is this with
+   * `headlineClass="kol-float-window"` and a `meta` (row 140). */
+  float: { title: 'kol-float-sheet', lede: 'kol-float-body text-fg-64', eyebrow: 'kol-float-ruler text-fg-64', gap: 'gap-2', mb: '24px' },
 }
 
 export default function SectionText({
@@ -124,6 +133,7 @@ export default function SectionText({
   /* deprecated alias of `variant` (2026-10-31) */
   level,
   media,
+  meta,
 }) {
   /* a LEVEL fills the header defaults; an explicit prop always wins */
   const variant = variantProp ?? level
@@ -153,7 +163,11 @@ export default function SectionText({
    * *"more aligned like 'Studio'"* — it sat on the subtitle's line); centred on the title, not on its baseline */
   const headRow = actionsPlacement === 'head' && !!actions && !!headline
   const inlineHead = (actionsPlacement === 'inline' && !!actions && !body && !!headline) || headRow
-  const headlineNode = headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>
+  const titleNode = headline && <Headline className={cls(`kol-section-text-headline ${headlineClass ?? (HEADLINE_ROLE[headlineSize] ?? HEADLINE_ROLE['heading-02'])}${headlineCase === 'upper' ? ' kol-section-text-caps' : ''}`, 'headline')} style={slotStyle.headline}>{headline}</Headline>
+  /* `meta` rides the headline's row, at its far end */
+  const headlineNode = titleNode && meta
+    ? <div className="flex self-stretch items-baseline justify-between gap-6">{titleNode}<span className={`${variant === 'float' ? 'kol-float-timecode text-fg-64' : 'kol-mono-12 text-meta'} shrink-0`}>{meta}</span></div>
+    : titleNode
   const bodyNode = body && (typeof body === 'string'
     ? <p className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</p>
     : <div className={cls(bodyClass, 'body')} style={slotStyle.body}>{body}</div>)

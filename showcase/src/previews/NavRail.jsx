@@ -9,7 +9,36 @@ export const frame = 520
 /* THE THREE PRESETS (2026-10-24, user: *"app = studio, site = brand, workshop"*): `app` the studio rail — the hubs;
  * `site` the brand rail — brand.kolkrabbi.io; `workshop` the workshop rail — ui.kolkrabbi.io. One rail, three names;
  * the picker here is the preset. The words: a section ENTERS and EXITS, or EXPANDS and COLLAPSES. */
-export const variants = ['app', 'site', 'workshop', 'top']
+export const variants = ['app', 'site', 'workshop', 'top', 'float']
+
+/* float (W9 rows 122 · 127 · 128): the float sidebar, expanded 280 beside its collapsed 72 rail — one tree */
+const FLOAT = [
+  { heading: 'WORKSPACE' },
+  { icon: 'home-01', label: 'Home', path: '/' },
+  { icon: 'grid', label: 'Dashboard', path: '/dashboard', sub: [
+    { icon: 'checklist', label: 'Tasks', path: '/dashboard/tasks', count: 5 },
+    { icon: 'inbox', label: 'Capture', path: '/dashboard/capture', count: 3 },
+    { icon: 'folder', label: 'Projects', path: '/dashboard/projects' },
+    { icon: 'calendar', label: 'Calendar', path: '/dashboard/calendar' },
+    { icon: 'bar-chart', label: 'Metrics', path: '/dashboard/metrics' },
+    { icon: 'link', label: 'Links', path: '/dashboard/links' },
+  ] },
+  { icon: 'file', label: 'Documents', path: '/documents', sub: [{ icon: 'file', label: 'Founder', path: '/documents/founder' }] },
+  { icon: 'book-open', label: 'Resume', path: '/resume' },
+  { heading: 'STUDIO & LIBRARY' },
+  { icon: 'folder', label: 'Studio', path: '/studio' },
+  { icon: 'image', label: 'Prints', path: '/prints' },
+  { icon: 'layers', label: 'Assets', path: '/assets' },
+]
+function FloatPreview() {
+  const [path, setPath] = useState('/dashboard/tasks')
+  return (
+    <div className="flex h-[720px] items-stretch gap-6 p-4">
+      <NavRail variant="float" items={FLOAT} currentPath={path} onNavigate={setPath} title="Studio" onSwitch={() => {}} onSearch={() => {}} defaultExpanded={['/dashboard']} />
+      <NavRail variant="float" collapsed items={FLOAT} currentPath={path} onNavigate={setPath} onCollapsedChange={() => {}} onSearch={() => {}} onHide={() => {}} />
+    </div>
+  )
+}
 
 /* top: the Atlas /lab bar rebuilt from the rail's parts — the mark, the app name, the open entry's views on the right */
 function TopPreview() {
@@ -67,6 +96,7 @@ const NAV_TREE = [
 export default function NavRailPreview({ variant = 'app' }) {
   const [path, setPath] = useState(variant === 'site' ? '/components/nav-rail' : '/')
   if (variant === 'top') return <TopPreview />
+  if (variant === 'float') return <FloatPreview />
   if (variant === 'workshop') {
     /* the workshop rail — kol-workshop's ShellSidebar, registered as the preset; its routes, its own chrome */
     return (

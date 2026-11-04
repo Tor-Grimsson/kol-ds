@@ -8,6 +8,9 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *   variant="filled" (default) — persistent solid bg
  *   variant="ghost"            — legacy alias, resolves to outline
  *   variant="outline"          — bordered, transparent bg
+ *   variant="float"            — the note field (float-everything W3 row 42, 2026-11-04): the float well on the
+ *                                sheet radius (`--kol-float-menu-r`), Inter 500 at the md float type, 12 / 16 in;
+ *                                the grip stays, the focus ring is the float's
  *
  *   size="sm" / "md" (default) / "lg" — padding + type class
  *
@@ -53,7 +56,8 @@ export default function Textarea({
     `kol-control--${resolvedVariant}`,
     'kol-control--textarea',
     `kol-control-${size}`,
-    SIZE_TYPE[size],
+    /* the float note carries its own type (the theme's `.kol-control--float.kol-control--textarea`) */
+    resolvedVariant !== 'float' && SIZE_TYPE[size],
     'relative block w-full',
     className,
   ].filter(Boolean).join(' ')

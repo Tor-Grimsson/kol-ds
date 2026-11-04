@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Button, PopoverPanel, usePopover, useMediaQuery, VectorLoader, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import { cloneElement, isValidElement, useEffect, useState } from 'react'
+import { Button, PopoverPanel, usePopover, useMediaQuery, usePrefersReducedMotion, VectorLoader, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import AppFloatNav from './AppFloatNav.jsx'
 import WalkthroughPanel from './WalkthroughPanel.jsx'
 import MoreRows from './MoreSheet.jsx'
@@ -101,6 +101,14 @@ const HUB_VIEWS = [
   { value: 'saved', label: 'SAVED' },
 ]
 
+/* the signed-out chrome under an intro stage: every child but the stage, and the dock inside AppFloatNav's `contents` wrapper
+ * (a `display: contents` box takes no opacity) — held at 0, then faded in 700 ms after 800 ms */
+const CHROME_FADE = {
+  hold: '[&>:not([data-hub-stage])]:opacity-0 [&>.contents>*]:opacity-0',
+  show: '[&>:not([data-hub-stage])]:transition-opacity [&>:not([data-hub-stage])]:duration-700 [&>:not([data-hub-stage])]:delay-800 '
+    + '[&>.contents>*]:transition-opacity [&>.contents>*]:duration-700 [&>.contents>*]:delay-800',
+}
+
 /* RECENT is the newest files — fxr, mirror and monitor each wrote twelve */
 const RECENT_FILES = 12
 
@@ -191,6 +199,17 @@ export default function HubHome({
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [formOpen]) // eslint-disable-line react-hooks/exhaustive-deps
+  /* THE CHROME WAITS FOR THE BREATH (LoaderAppIntro, kol-fxr 2026-11-01): under an intro stage (GrowthLineStage `intro`)
+   * everything here but the stage starts at opacity 0 and fades in (700 ms) 800 ms into the breath — the stage's
+   * `onIntroBreath`, chained onto its own — then the classes leave, so the sign-in transitions are untouched */
+  const reduced = usePrefersReducedMotion()
+  const introStage = isValidElement(stage) && !!stage.props.intro
+  const [chrome, setChrome] = useState(() => (introStage && !reduced ? 'hold' : null))
+  useEffect(() => {
+    if (chrome !== 'show') return undefined
+    const t = setTimeout(() => setChrome(null), 1500)
+    return () => clearTimeout(t)
+  }, [chrome])
   const coarse = useTouchPrimary()
   const narrow = useMediaQuery('(max-width: 767px)')
   const [view, setView] = useState(defaultView ?? views?.[0]?.value)
@@ -281,13 +300,15 @@ export default function HubHome({
     const outActions = typeof signedOutActions === 'function' ? signedOutActions(outDefaults) ?? [] : outDefaults
     const { open: _o, onClose: _c, ...form } = signInForm ?? {}
     return (
-      <div className="relative min-h-dvh overflow-hidden" data-hub-signed-out>
+      <div className={`fixed inset-y-0 right-0 left-[var(--kol-shell-rail-width)] overflow-hidden${chrome ? ` ${CHROME_FADE[chrome]}` : ''}`} data-hub-signed-out>
         {/* the rest of Home turns surface-secondary under an open sign-in column (a desk only) */}
         <div className={`absolute inset-0 bg-surface-secondary transition-opacity duration-300 max-md:hidden ${formOpen ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
         {/* the column overlays the stage, never resizes it — a stage that sizes to its box would reseed. It SLIDES half the
           * column right instead, so the growth's centre sits in the middle of the grey that is left (kol-fxr 2026-10-30 — user:
           * *"when shelf opens, then growth center shifts to center the gray visible area"*) */}
-        {stage && <div className={`absolute inset-0 transition-transform duration-300 ${formOpen ? 'md:translate-x-[336px]' : ''}`} aria-hidden="true">{stage}</div>}
+        {stage && <div className={`absolute inset-0 transition-transform duration-300 ${formOpen ? 'md:translate-x-[336px]' : ''}`} aria-hidden="true" data-hub-stage>{introStage
+          ? cloneElement(stage, { onIntroBreath: () => { stage.props.onIntroBreath?.(); setChrome((c) => (c === 'hold' ? 'show' : c)) } })
+          : stage}</div>}
         {signInForm && (
           <aside aria-label={form.title} aria-hidden={!formOpen} inert={!formOpen} className={`absolute inset-y-0 left-0 w-[672px] px-16 flex flex-col justify-center bg-surface-primary transition-transform duration-300 max-md:hidden ${formOpen ? 'translate-x-0' : '-translate-x-full'}`}>
             {formOpen && <AccountForm {...form} />}

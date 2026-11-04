@@ -40,7 +40,8 @@ export function useContextMenu() {
   return { open: !!state, x: state?.x, y: state?.y, payload: state?.payload ?? null, openAt, close }
 }
 
-export default function ContextMenu({ menu, children, className = '' }) {
+/** `variant="float"` (float-everything W4 row 55, 2026-11-04): the float list — the list radius, 34 rows, the float flyouts */
+export default function ContextMenu({ menu, children, variant, className = '' }) {
   /* ONE ESCAPE, ONE LEVEL (kol-fxr 2026-10-08: a menu opened inside a FullscreenOverlay took the
    * dialog with it). Open, the menu is the top layer, so the overlay under it ignores that Escape. */
   useEffect(() => {
@@ -50,7 +51,7 @@ export default function ContextMenu({ menu, children, className = '' }) {
   }, [menu.open])
   if (!menu.open) return null
   return (
-    <Menu anchor={{ x: menu.x, y: menu.y }} open onOpenChange={(v) => { if (!v) menu.close() }} panelClassName={`min-w-44 ${className}`.trim()}>
+    <Menu anchor={{ x: menu.x, y: menu.y }} open onOpenChange={(v) => { if (!v) menu.close() }} variant={variant} panelClassName={`min-w-44 ${className}`.trim()}>
       {/* Any click inside closes — a menu item that leaves the menu open after acting is the one interaction people
         * report as broken. Items keep their own onClick; this runs after it on the way up. */}
       <div onClick={menu.close} role="none" className="flex flex-col">

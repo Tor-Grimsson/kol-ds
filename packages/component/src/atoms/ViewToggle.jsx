@@ -15,6 +15,10 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *                      option's label; active = on (kol-control--filled),
  *                      inactive = off (bare text). Use for compact on/off
  *                      where a segmented two-button toggle is overkill.
+ *   variant="float"  — the float rounds (float-everything W2 row 35, 2026-11-04): each option a 32 circle, 4 apart,
+ *                      no well; a glyph (`icon`, 16) or a label (Inter 11/500 — a page number); the lit one fg-16
+ *                      on the emphasis ink, the rest fg-64 with an fg-08 hover; the float focus ring. Pagination and
+ *                      the view switch are one shape.
  *
  * Built on the .kol-control shell. Default options use grid / view-list
  * icons; consumers can pass `options` to override. `iconVariant` picks the
@@ -49,6 +53,29 @@ const ViewToggle = ({
 }) => {
   const isIconVariant   = variant === 'icon'
   const isSingleVariant = variant === 'single'
+
+  if (variant === 'float') {
+    return (
+      <div className={`kol-view-toggle--float inline-flex items-center gap-1 ${className}`.trim()}>
+        {options.map((option) => {
+          const active = option.onClick ? !!option.pressed : viewMode === option.value
+          const button = (
+            <button
+              key={option.value}
+              type="button"
+              onClick={option.onClick ?? (() => onViewChange(option.value))}
+              aria-label={option.icon ? option.label : undefined}
+              aria-pressed={option.onClick && option.pressed == null ? undefined : active}
+              className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer kol-float-label font-medium ${active ? 'bg-fg-16 text-fg-emphasis' : 'text-fg-64 hover:bg-fg-08 hover:text-fg-emphasis'}`}
+            >
+              {option.icon ? <Icon name={option.icon} size={16} variant={iconVariant} /> : option.label}
+            </button>
+          )
+          return option.icon ? <Tooltip key={option.value} label={option.label}>{button}</Tooltip> : button
+        })}
+      </div>
+    )
+  }
 
   if (isSingleVariant) {
     const [offOpt, onOpt] = options

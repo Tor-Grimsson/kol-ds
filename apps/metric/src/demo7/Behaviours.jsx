@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Button, SearchInput, Dropdown } from '@kolkrabbi/kol-component'
-import { Card, List } from './Report.jsx'
+import { Card, RankedList } from '@kolkrabbi/kol-dashboards'
 import { umami, report, useAsync, filterParams, fmtNum } from './data.js'
 
 const GOALS = [
@@ -42,7 +42,7 @@ export default function BehavioursCard({ period, filters, total, onFilter }) {
         { key: 'explore', label: 'Explore' },
       ]}
       tab={active === 'properties' ? `prop:${prop}` : active === 'funnels' ? `funnel:${funnel}` : tab}
-      setTab={pick}
+      onTab={pick}
     >
       {active === 'goals' && <Goals period={period} filters={filters} total={total} onFilter={onFilter} />}
       {active === 'properties' && <Properties period={period} name={prop} total={total} />}
@@ -95,7 +95,7 @@ function Properties({ period, name, total }) {
   )
   if (!name) return <div className="py-16 text-center kol-helper-12 text-fg-48">No properties recorded yet</div>
   const rows = (Array.isArray(data) ? data : []).map((v) => ({ label: String(v.value ?? '(none)'), value: v.total, unit: 'events' }))
-  return <List rows={rows} total={total} column={name} valueLabel="Events" loading={loading} limit={50} />
+  return <RankedList rows={rows} total={total} column={name} valueLabel="Events" loading={loading} limit={50} />
 }
 
 /* ── Funnels: steps as columns, drop-off between them ────────────────── */

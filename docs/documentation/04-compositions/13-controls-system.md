@@ -3,7 +3,7 @@ title: Hardware system
 type: reference
 status: canonical
 created: 2026-09-01
-updated: 2026-09-27
+updated: 2026-11-04
 verified: 2026-09-27
 description: Hardware panel controls and the signal engine
 aliases:
@@ -34,7 +34,7 @@ Hardware panel controls for instruments — mixers, synths, racks, decks: everyt
 
 ## Tier
 
-A `kol-component` `Slider` is app chrome. A `Fader` is a 2px track on a 24px-tall eurorack panel. The two coexist; the rack never swaps its controls for app atoms (user ruling 2026-08-30: churn for a checker's benefit). Two exports are renamed only where the name already lives in kol-component: `Fader` (the rack `Slider`) and `PanelLabel` (was `LabeledControl`). The panel's text field, select and ‹ value › stepper are NOT here: they are `Input size="xs" onCommit`, `Dropdown size="xs"` and `Stepper size="xs" options` — the `xs` rung (ControlsXsRung, 2026-09-01) is what let them collapse onto the app atoms; `IconButton` stays because its lit border and momentary pulse are hardware semantics.
+A `kol-component` `Slider` is app chrome. A `Fader` is a 2px track on a 24px-tall eurorack panel. The two coexist; the rack never swaps its controls for app atoms (user ruling 2026-08-30: churn for a checker's benefit). Two exports are renamed only where the name already lives in kol-component: `Fader` (the rack `Slider`) and `PanelLabel` (was `LabeledControl`). The panel's text field, select and ‹ value › stepper are NOT here: they are `Input size="xs" onCommit`, `Dropdown size="xs"` and `Stepper size="xs" options` — the `xs` rung (ControlsXsRung, 2026-09-01) is what let them collapse onto the app atoms; `IconButton` stays because its lit border and momentary pulse are hardware semantics. The float look (`variant="float"` on the app atoms — capsules 28 · 36 · 44 in Inter, float-everything 2026-11-04) is app chrome too: a rack never takes it, and a float control never sits on a panel.
 
 ## Groups
 

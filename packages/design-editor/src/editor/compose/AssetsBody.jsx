@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import KolLogo, { KOL_LOGO_VARIANTS, KOL_LOGO_NATURAL_DIMS } from '../../brand/logos/KolLogo'
-import { AssetGrid, MediaTile, ViewToggle, Tooltip } from '@kolkrabbi/kol-component'
+import { AssetGrid, ContentRow, MediaTile, ViewToggle } from '@kolkrabbi/kol-component'
 import { listMedia, mediaSrc, isImageType, bucketOptions, DEFAULT_BUCKET } from '../library/mediaLibrary'
 import { useComposeState } from './state'
 import { CANVAS_W, CANVAS_H } from './state'
@@ -38,7 +38,7 @@ function ImageThumbs() {
   if (state.status === 'error' || (state.status === 'ready' && !state.items.length)) return null
   return (
     <div className="flex flex-col gap-3">
-      <p className="kol-helper-10 uppercase tracking-widest text-meta">Images</p>
+      <p className="kol-eyebrow text-meta">Images</p>
       {state.status === 'loading' ? (
         <p className="kol-helper-12 text-meta">Loading…</p>
       ) : (
@@ -73,7 +73,7 @@ export default function AssetsBody() {
   return (
     <div className="px-4 py-3 flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <p className="kol-helper-10 uppercase tracking-widest text-meta">Logos</p>
+        <p className="kol-eyebrow text-meta">Logos</p>
         <ViewToggle
           variant="icon"
           viewMode={view}
@@ -81,42 +81,34 @@ export default function AssetsBody() {
           options={VIEW_OPTIONS}
         />
       </div>
+      {/* the DS surfaces, not a button grid / <ul> built here (audit #6): the same `MediaTile` on
+          `AssetGrid` the Images block below draws, and `ContentRow` for the list */}
       {view === 'grid' ? (
-        <div className="grid grid-cols-2 gap-2">
+        <AssetGrid cols={2} gap="gap-2">
           {KOL_LOGO_VARIANTS.map((variant) => (
-            <Tooltip key={variant} label={variant}><button aria-label={variant}
-              type="button"
+            <MediaTile
+              key={variant}
+              name={variant}
+              preview={<span className="block h-full w-full p-3 text-emphasis"><KolLogo variant={variant} className="block w-full h-full" /></span>}
               onClick={() => insertLogo(variant)}
-              className="bg-oq-04 hover:bg-oq-08 rounded p-3 flex flex-col items-center gap-2 cursor-pointer"
-            >
-              <span className="block w-full h-12 text-emphasis">
-                <KolLogo variant={variant} className="block w-full h-full" />
-              </span>
-              <span className="kol-helper-10 text-meta normal-case tracking-normal truncate w-full text-center">
-                {variant}
-              </span>
-            </button></Tooltip>
+            />
+          ))}
+        </AssetGrid>
+      ) : (
+        <div className="flex flex-col">
+          {KOL_LOGO_VARIANTS.map((variant) => (
+            <ContentRow
+              key={variant}
+              variant="file"
+              title={variant}
+              titleClass="kol-mono-12 text-emphasis truncate"
+              thumb={32}
+              ratio="4 / 3"
+              media={<span className="block h-full w-full text-emphasis"><KolLogo variant={variant} className="block w-full h-full" /></span>}
+              onClick={() => insertLogo(variant)}
+            />
           ))}
         </div>
-      ) : (
-        <ul className="flex flex-col">
-          {KOL_LOGO_VARIANTS.map((variant) => (
-            <li key={variant}>
-              <Tooltip label={variant}><button aria-label={variant}
-                type="button"
-                onClick={() => insertLogo(variant)}
-                className="w-full flex items-center gap-3 px-2 py-1.5 rounded hover:bg-oq-04 cursor-pointer text-left"
-              >
-                <span className="block w-8 h-6 shrink-0 text-emphasis">
-                  <KolLogo variant={variant} className="block w-full h-full" />
-                </span>
-                <span className="kol-helper-12 text-emphasis normal-case tracking-normal truncate flex-1">
-                  {variant}
-                </span>
-              </button></Tooltip>
-            </li>
-          ))}
-        </ul>
       )}
       <ImageThumbs />
     </div>

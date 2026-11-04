@@ -12,7 +12,7 @@ import { clear, strokeOutline, wrapLoop, sampleInside, stampGrid, roleRGB } from
 
 const PARAMS          = [
   { key: 'agents',   type: 'int',   min: 200,  max: 2000, default: 800,  step: 100,  label: 'agents/species' },
-  { key: 'sensAng',  type: 'range', min: 0.1,  max: 1.5,  default: 0.45, step: 0.02, label: 'sensor angle' },
+  { key: 'sensAng',  type: 'range', min: 0.1,  max: 1.5,  default: 0.45, step: 0.01, label: 'sensor angle' },
   { key: 'sensDist', type: 'range', min: 3,    max: 30,   default: 9,    step: 0.5,  label: 'sensor dist' },
   { key: 'deposit',  type: 'range', min: 0.01, max: 0.3,  default: 0.09, step: 0.01, label: 'deposit' },
   { key: 'decay',    type: 'range', min: 0.85, max: 0.99, default: 0.95, step: 0.005, label: 'decay' },
@@ -20,12 +20,12 @@ const PARAMS          = [
   { key: 'interact', type: 'range', min: 0, max: 3, step: 0.1, default: 1, label: 'interaction' },
 ]
 
-const GS = 160
+const GS = 400 /* was 160 — plan 49 5.3 */
 const N_SPECIES = 2
 
 export const r2_phys_03_multispecies            = {
   id: 'r2-phys-03-multispecies',
-  name: 'COMPETITIVE PHYSARUM',
+  name: 'Competitive Physarum',
   repo: 'Jones 2010 + Softology 2019 species matrix',
   summary: 'Two species each attract their own trail and repel the other. Territory boundaries and interlocking vein nets emerge from the stigmergic cross-inhibition — the glyph interior splits into living territories.',
   helps: 'High visual dynamism throughout territorial formation; two-tone color makes species borders immediately legible.',

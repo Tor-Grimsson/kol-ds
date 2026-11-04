@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from 'react'
 import useScrollSpy from '../hooks/useScrollSpy.js'
+import TocRow from './TocRow.jsx'
 
 /**
  * DocsToc — A page's table of contents. on-page table of contents for long docs pages: a flat list of
@@ -74,7 +75,10 @@ import useScrollSpy from '../hooks/useScrollSpy.js'
  * knowledge and does not belong in the package.
  *
  * @param {Array<{id: string, label: string, children?: Array<{id: string, label: string}>}>} toc  headings to render + observe; RAIL: `children` are the section's entries, one tick each in place of `minors`
- * @param {'list'|'rail'} variant  render (default 'list' — the docs-sidebar column)
+ * @param {'list'|'rail'|'float'} variant  render (default 'list' — the docs-sidebar column); `float` (float-everything
+ *                               W8 row 121, 2026-11-04) — the numbered contents list: one `TocRow` per heading
+ *                               (`01 · First interlude`), the one in view lifted fg-16 as `current`
+ * @param {boolean}  numbered    FLOAT: number the rows 01, 02 … (default true)
  * @param {Function} onNavigate  (event) => void — optional click handler on every link
  * @param {string}   rootMargin  IntersectionObserver rootMargin passed to the
  *                               spy. Default keeps the ported source's tighter
@@ -101,6 +105,7 @@ export default function DocsToc({
   position = 'right',
   minSections = 2,
   ariaLabel = 'On this page',
+  numbered = true,
   className = '',
 }) {
   /* Children are observed too, in document order; the active SECTION is the
@@ -110,6 +115,16 @@ export default function DocsToc({
     { rootMargin, root },
   )
   const activeSection = toc.find((item) => item.id === activeId || item.children?.some((c) => c.id === activeId))?.id
+
+  if (variant === 'float') {
+    return (
+      <nav aria-label={ariaLabel} className={`flex flex-col gap-0.5 ${className}`.trim()}>
+        {toc.map((item, i) => (
+          <TocRow key={item.id} number={numbered ? i + 1 : undefined} label={item.label} href={`#${item.id}`} current={activeSection === item.id} onClick={onNavigate} />
+        ))}
+      </nav>
+    )
+  }
 
   if (variant === 'rail') {
     return (

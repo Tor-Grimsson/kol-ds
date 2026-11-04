@@ -5,6 +5,8 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const label = instance.getString('label')
+// variant float (2026-11-04) is the panel's — Menu variant="float" draws every row float; tone=danger is the destructive row
+const tone = instance.getEnum('tone', { "default": "default", "danger": "danger" })
 const current = instance.getEnum('current', { "true": "true", "false": "false" })
 const disabled = instance.getEnum('disabled', { "true": "true", "false": "false" })
 const iconOn = instance.getBoolean('icon')
@@ -25,6 +27,7 @@ else if (check) keys.push("indicator: 'check'")
 if (kbd) keys.push("kbd: 'D'")
 if (trailOn) keys.push(`trailing: '${trailing}'`)
 if (disabled === 'true') keys.push('disabled: true')
+if (tone === 'danger') keys.push("tone: 'danger'")
 
 export default {
   example: figma.code`{ ${keys.join(', ')}, onClick }`,

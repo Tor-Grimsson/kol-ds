@@ -3,6 +3,9 @@
  *
  * Converted from Badge.tsx (shadcn/CVA) → plain JSX with kol- CSS variables.
  * CSS classes live in components.css under 2-LABELS → Badges.
+ *
+ * `variant="float"` (float-everything W2 row 18, 2026-11-04): the count capsule — 26 tall, 10 in, Inter 500 on
+ * oq-16 — `3 effects`. The status tones keep today's look.
  */
 
 import { Icon } from '@kolkrabbi/kol-icons'
@@ -19,7 +22,8 @@ const VARIANT_MAP = {
   outline: 'kol-badge-outline',
   success: 'kol-badge-success',
   warning: 'kol-badge-warning',
-  info: 'kol-badge-info'
+  info: 'kol-badge-info',
+  float: 'kol-badge-float'
 }
 
 const SIZE_MAP = {

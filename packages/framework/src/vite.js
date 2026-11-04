@@ -43,9 +43,18 @@ export function devFavicon({ label = 'K', ground = '#7C5CFF', ink = '#FFFFFF' } 
  * @param {string} opts.graphic   an SVG — the markup itself, or a path (relative to the app root) to an .svg file;
  *                                draw it in `currentColor` so it takes the ground's ink
  * @param {number} [opts.size=64] the mark's edge in px
+ * @param {boolean|string|string[]} [opts.intro] THE LOADER IS THE LINE (LoaderAppIntro, kol-fxr 2026-11-01): on these
+ *                                paths (`true` = `/`) with motion allowed, a pre-paint script stamps `kol-intro` on <html>
+ *                                and the loader shows its ground only — a stage that claims the intro (GrowthLineStage
+ *                                `intro`) draws over it and hides it on its first frame; unclaimed, `hideLoaderApp()`
+ *                                lets it go after 600 ms. Off (default), the HTML is byte-identical to the plain loader
  */
-export function loaderApp({ graphic, size = 64 } = {}) {
+export function loaderApp({ graphic, size = 64, intro } = {}) {
   let root = process.cwd()
+  const paths = intro === true ? ['/'] : intro ? [].concat(intro) : null
+  const stamp = paths
+    ? `<script>try{if(${JSON.stringify(paths)}.includes(location.pathname)&&!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('kol-intro')}catch(e){}</script>`
+    : ''
   const css = `#kol-loader-app{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#FAFAFA;color:#0E0E11;transition:opacity 240ms ease}`
     + `@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) #kol-loader-app{background:#121215;color:#FFFFFF}}`
     + `:root[data-theme="dark"] #kol-loader-app{background:#121215;color:#FFFFFF}`
@@ -53,6 +62,7 @@ export function loaderApp({ graphic, size = 64 } = {}) {
     + `#kol-loader-app.is-done{opacity:0;pointer-events:none}`
     + `@keyframes kol-loader-app-pulse{50%{opacity:.35}}`
     + `@media (prefers-reduced-motion: reduce){#kol-loader-app svg{animation:none}#kol-loader-app{transition:none}}`
+    + (paths ? `.kol-intro #kol-loader-app svg{display:none}` : '')
   return {
     name: 'kol-loader-app',
     configResolved(config) { root = config.root },
@@ -65,7 +75,7 @@ export function loaderApp({ graphic, size = 64 } = {}) {
       }
       svg = svg.replace(/<\?xml[^>]*>/, '').replace(/<!--[\s\S]*?-->/g, '')
       return html
-        .replace('</head>', `<style id="kol-loader-app-css">${css}</style></head>`)
+        .replace('</head>', `${stamp}<style id="kol-loader-app-css">${css}</style></head>`)
         .replace(/<body([^>]*)>/, `<body$1><div id="kol-loader-app" aria-hidden="true">${svg}</div>`)
     },
   }

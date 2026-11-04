@@ -5,10 +5,13 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const dialog = instance.getEnum('dialog', { "confirm": "confirm", "prompt": "prompt" })
-const variant = instance.getEnum('variant', { "bordered": "bordered", "lift": "lift" })
+const variant = instance.getEnum('variant', { "bordered": "bordered", "lift": "lift", "float": "float" })
 const xv = variant === 'lift' ? ", variant: 'lift'" : ''
 
-const example = dialog === 'prompt'
+const example = variant === 'float'
+  ? figma.code`const { confirm } = useModal()
+const ok = await confirm('Delete “Orbit field”?', { variant: 'float', header: 'Delete layer', icon: 'alert-triangle', body: 'This removes the layer and its 4 keyframes.', tone: 'danger', okLabel: 'Delete layer', cancelLabel: 'Keep layer' })`
+  : dialog === 'prompt'
   ? figma.code`const { prompt } = useModal()
 const name = await prompt('Name this frame:', 'Untitled'${xv ? `, { variant: 'lift' }` : ''})`
   : figma.code`const { confirm } = useModal()

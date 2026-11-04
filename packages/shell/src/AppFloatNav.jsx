@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { TabsRow, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, tabbarPillWidth, tabbarPillSlot, floatSurfaceClass, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
+import Timecode from './Timecode.jsx'
 
 /* taxonomy-ok: molecule — TabsRow's pill + MoreRows sheets of Buttons */
 
@@ -38,6 +39,9 @@ import MoreRows, { FloatMenu } from './MoreSheet.jsx'
  * @param {'fill'|'circle'} active  the lit slot's shape (TabsRow `active`); frame E is `circle`
  * @param {boolean} foldable    a sideways swipe folds the pill into a left edge tab; a tap on the tab restores it
  * @param {boolean} folded · {Function} onFoldChange  the folded state, so the app can keep it (else PhoneNav holds it)
+ * @param {'left'|'right'|'swipe'} foldSide · {'ground'|'handle'} foldTone  TabsRow's, forwarded (FloatFoldBothSidesGrey, kol-fxr
+ *                              2026-11-03): `swipe` folds to the edge the swipe went toward, `handle` is the grey edge tab.
+ *                              Unset: the nav's left edge (the transport's right) and the pill's ground, as before
  * @param {boolean} moreKeepsOpen  More opens its sheet without collapsing the pill to the ×, and More lights only while
  *                              its sheet is open; nothing else closes
  * An item may carry `onPress` (a panel, not a route — the app owns what it opens and whether a second tap closes it) and
@@ -48,7 +52,7 @@ import MoreRows, { FloatMenu } from './MoreSheet.jsx'
  * any prop still overrides it. `PHONE_NAV_VARIANTS` is the table, and TransportPill reads its own row from it.
  * @param {'mobile'|'dock'|'panel'|'transport'} variant  `mobile` (was `nav`) — an app's phone nav: no hairline, no shadow, the lit slot a circle
  *                              (AppShell's default). `panel` — frame E's panel picker: on top, foldable, More keeps the panel
- *                              open, no hairline. `transport` — TransportPill's look: the shadow, it floats over content.
+ *                              open, no hairline, the shadow (it floats over the stage and the Rail — FloatsRailOverlaysShadow). `transport` — TransportPill's look: the shadow, it floats over content.
  *                              Unset, the props alone decide, as before
  * @param {boolean} shadow      the pill's drop shadow (TabsRow `shadow`) — for a pill that floats over content
  *
@@ -94,7 +98,7 @@ import MoreRows, { FloatMenu } from './MoreSheet.jsx'
 export const APP_FLOAT_NAV_VARIANTS = {
   /* `mobile` was PhoneNav's `nav` (user ruling 2026-10-30: renamed so it is not reached for off mobile); there is no `nav` */
   mobile: { border: false, shadow: false, active: 'circle' },
-  panel: { placement: 'top', foldable: true, moreKeepsOpen: true, border: false, shadow: false, active: 'circle' },
+  panel: { placement: 'top', foldable: true, moreKeepsOpen: true, border: false, shadow: true, active: 'circle' },
   transport: { border: false, shadow: true, active: 'circle' },
   dock: { dock: true, border: false, shadow: false, active: 'circle' },
 }
@@ -110,7 +114,7 @@ export default function AppFloatNav(props) {
   return props.variant === 'transport' ? <Transport {...props} /> : <FloatNav {...props} />
 }
 
-function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], shape = 'bar', variant, placement: placementProp, border: borderProp, shadow: shadowProp, active: activeProp, foldable: foldableProp, folded, onFoldChange, moreKeepsOpen: keepsOpenProp, moreItems, sheetItems, dock: dockProp, menuBorder = false, surface = 'solid', labels = false }) {
+function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], shape = 'bar', variant, placement: placementProp, border: borderProp, shadow: shadowProp, active: activeProp, foldable: foldableProp, folded, onFoldChange, moreKeepsOpen: keepsOpenProp, moreItems, sheetItems, dock: dockProp, menuBorder = false, surface = 'solid', labels = false, foldSide = 'left', foldTone }) {
   const preset = APP_FLOAT_NAV_VARIANTS[variant] ?? {}
   const placement = placementProp ?? preset.placement ?? 'bottom'
   const border = borderProp ?? preset.border ?? true
@@ -147,7 +151,7 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
   const before = moreRows.filter((i) => !i.foot)
   const after = moreRows.filter((i) => i.foot)
   const active = activePath(items, currentPath)
-  const value = open || inMore.some((i) => i.path === active) ? MORE : active
+  const value = open || inMore.some((i) => i.path != null && i.path === active) ? MORE : active
 
   const key = (i) => i.path ?? i.id ?? i.label
   const tabs = inBar.map((i) => ({ value: key(i), label: i.label, icon: i.icon, selected: sub === key(i) || (i.selected ?? (moreKeepsOpen ? key(i) === active : undefined)) }))
@@ -257,7 +261,8 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
         foldable={foldable}
         folded={folded}
         onFoldChange={(v) => { if (v) setOpen(false); onFoldChange?.(v) }}
-        foldSide="left"
+        foldSide={foldSide}
+        foldTone={foldTone}
         tabs={tabs}
         value={value}
         onChange={press}
@@ -270,7 +275,7 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
 /**
  * Transport (`variant="transport"`, was TransportPill) — The transport, on a phone, as a pill (TransportPill, kol-fxr 2026-10-27, frame E). PhoneNav's pill —
  * the same TabsRow, so the slots, the 28px glyphs and the 44×44 circle are the nav's — holding ACTIONS instead of
- * destinations. It floats over the open panel, so it carries the shadow the nav does not, and folds to a RIGHT edge tab.
+ * destinations. It floats over the open Rail and carries the shadow, as the `panel` nav does, and folds to a RIGHT edge tab.
  *
  * A slot fires `onPress`; `selected` lights it (play and pause are a radio pair the consumer owns, so both are just
  * `selected`). A slot named in `sheetFor` opens a sheet of rows anchored above it instead, lit while open; a row runs its
@@ -282,8 +287,11 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
  * @param {'bottom'|'top'} placement  the pill's edge (default bottom)
  * @param {boolean} foldable     a sideways swipe folds it into the right edge tab
  * @param {boolean} folded · {Function} onFoldChange  the folded state, controlled (else the pill holds it)
+ * @param {Object|string} timecode  THE TIMECODE (float-everything W5 rows 69 · 70, 2026-11-04): `{ current, total? }` (or the
+ *                               current alone) drawn by `Timecode` INSIDE the pill, after the slots — TabsRow's `trailing`
+ *                               (kol-component ≥0.335.0); the slots stay where a pill without it puts them. Unset, no readout
  */
-function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable = false, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false }) {
+function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable = false, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false, foldSide = 'right', foldTone, timecode }) {
   const [sheet, setSheet] = useState(null)
   useEffect(() => {
     if (!sheet) return undefined
@@ -311,6 +319,7 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
     ...(top ? { bottom: 'auto' } : {}),
     width: 'max-content', minWidth: 160,
   }
+  const tc = timecode == null ? null : typeof timecode === 'string' ? { current: timecode } : timecode
 
   return (
     <>
@@ -339,8 +348,10 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
         foldable={foldable}
         folded={folded}
         onFoldChange={(v) => { if (v) setSheet(null); onFoldChange?.(v) }}
-        foldSide="right"
+        foldSide={foldSide}
+        foldTone={foldTone}
         ariaLabel="Transport"
+        trailing={tc ? <Timecode {...tc} /> : undefined}
         tabs={tabs}
         onChange={press}
       />

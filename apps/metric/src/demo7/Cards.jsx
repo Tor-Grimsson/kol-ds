@@ -4,7 +4,7 @@
 import { useState } from 'react'
 import { Icon, KOL_ICON_SET_EXTERNAL_NAMES } from '@kolkrabbi/kol-icons'
 import { MenuMore } from '@kolkrabbi/kol-component'
-import { Card, List, Details } from './Report.jsx'
+import { Card, RankedList, DetailsOverlay } from '@kolkrabbi/kol-dashboards'
 import WorldMap from './WorldMap.jsx'
 import REGIONS from './regions.json'
 import { umami, report, useAsync, filterParams, countryName, isDevHost, fmtNum, fmtDuration } from './data.js'
@@ -65,6 +65,9 @@ function useRows(load, deps, comparison) {
 }
 
 const asRows = (list, map = (r) => ({ label: r.x, value: r.y })) => (Array.isArray(list) ? list.filter((r) => r.x != null).map(map) : [])
+/* RankedList's rows: each carries its comparison value; a row Umami cannot filter on is not clickable */
+const ranked = (data) => data?.rows?.map((r) => ({ ...r, prev: data.prev?.get(r.key ?? r.label), disabled: !r.filter }))
+const pick = (onFilter) => onFilter && ((r) => onFilter(r.filter))
 
 /* the extra columns each kind of row carries when expanded (guided tour: "Expanded view adds …") */
 const pct = (v) => `${Math.round(v)}%`
@@ -100,7 +103,7 @@ function useDetails() {
   const state = useAsync(() => (d ? d.load() : null), d?.id)
   return {
     open: (title, columns, load) => setD({ id: `${title}${Date.now()}`, title, columns, load }),
-    el: d && <Details open title={d.title} columns={[{ key: 'label', label: d.columns.label }, ...d.columns.cols]} rows={state.data} loading={state.loading} onClose={() => setD(null)} />,
+    el: d && <DetailsOverlay open title={d.title} columns={[{ key: 'label', label: d.columns.label }, ...d.columns.cols]} rows={state.data} loading={state.loading} onClose={() => setD(null)} />,
   }
 }
 
@@ -132,11 +135,11 @@ export function SourcesCard({ period, comparison, filters, total, onFilter }) {
     <Card
       tabs={[{ key: 'channel', label: 'Channels' }, { key: 'referrer', label: 'Sources' }, { key: 'campaigns', label: 'Campaigns', options: UTM }]}
       tab={tab}
-      setTab={setTab}
+      onTab={setTab}
       onExpand={() => details.open(col === 'Source' ? 'Top sources' : col, { label: col, cols: tab === 'referrer' ? EXPANDED.visitors : [{ key: 'value', label: u ? 'Pageviews' : 'Visitors', fmt: fmtNum }] },
         () => (tab === 'referrer' ? expanded('referrer', period, filters, (r) => ({ label: r.x, value: r.y, icon: <Favicon host={r.x} /> })) : load(period)))}
     >
-      <List rows={data?.rows} prev={data?.prev} total={total} column={col} valueLabel={u ? 'Pageviews' : 'Visitors'} loading={loading} onFilter={onFilter}
+      <RankedList rows={ranked(data)} total={total} column={col} valueLabel={u ? 'Pageviews' : 'Visitors'} loading={loading} onPick={pick(onFilter)}
         empty={u ? 'No UTM-tagged visits in this period' : 'No data yet'} />
       {details.el}
     </Card>
@@ -164,11 +167,11 @@ export function PagesCard({ period, comparison, filters, total, onFilter }) {
     <Card
       tabs={[{ key: 'path', label: 'Top pages' }, { key: 'entry', label: 'Entry pages' }, { key: 'exit', label: 'Exit pages' }]}
       tab={tab}
-      setTab={setTab}
+      onTab={setTab}
       onExpand={() => details.open({ path: 'Top pages', entry: 'Entry pages', exit: 'Exit pages' }[tab], { label: col, cols: EXPANDED[tab] }, () => expanded(tab, period, filters, (r) => ({ label: r.x, value: r.y })))}
-      menu={<MenuMore label="Break down by" minWidth={200} items={[{ heading: 'Break down by' }, ...[{ key: 'path', label: 'Path' }, { key: 'url', label: 'URL' }].map((o) => ({ key: o.key, label: o.label, current: o.key === by, indicator: o.key === by ? 'dot' : undefined, onClick: () => setBy(o.key) }))]} />}
+      controls={<MenuMore label="Break down by" minWidth={200} items={[{ heading: 'Break down by' }, ...[{ key: 'path', label: 'Path' }, { key: 'url', label: 'URL' }].map((o) => ({ key: o.key, label: o.label, current: o.key === by, indicator: o.key === by ? 'dot' : undefined, onClick: () => setBy(o.key) }))]} />}
     >
-      <List rows={data?.rows} prev={data?.prev} total={total} column={col} valueLabel={val} loading={loading} onFilter={onFilter} />
+      <RankedList rows={ranked(data)} total={total} column={col} valueLabel={val} loading={loading} onPick={pick(onFilter)} />
       {details.el}
     </Card>
   )
@@ -188,15 +191,16 @@ export function LocationsCard({ period, comparison, filters, total, onFilter }) 
   const col = { country: 'Country', region: 'Region', city: 'City' }[type]
   return (
     <Card
+      className="min-h-[437px]" /* the map tab keeps the list tabs' height (plausible.io: ~430 at 402) — switching never jumps */
       tabs={[{ key: 'map', label: 'Map' }, { key: 'country', label: 'Countries' }, { key: 'region', label: 'Regions' }, { key: 'city', label: 'Cities' }]}
       tab={tab}
-      setTab={setTab}
+      onTab={setTab}
       onExpand={() => details.open(`${col === 'City' ? 'Cities' : col === 'Country' ? 'Countries' : 'Regions'}`, { label: col, cols: [{ key: 'value', label: 'Visitors', fmt: fmtNum }, { key: 'share', label: '%', fmt: (v) => `${v}%` }] },
         () => metrics(type, period, filters).then((l) => asRows(l, rowOf[type]).map((r) => ({ ...r, share: total ? Math.round((r.value / total) * 1000) / 10 : 0 }))))}
     >
       {tab === 'map'
         ? <WorldMap rows={data?.rows} loading={loading} onFilter={onFilter} />
-        : <List rows={data?.rows} prev={data?.prev} total={total} column={col} loading={loading} onFilter={onFilter} />}
+        : <RankedList rows={ranked(data)} total={total} column={col} loading={loading} onPick={pick(onFilter)} />}
       {details.el}
     </Card>
   )
@@ -217,11 +221,11 @@ export function DevicesCard({ period, comparison, filters, total, onFilter }) {
     <Card
       tabs={[{ key: 'browser', label: 'Browsers' }, { key: 'os', label: 'Operating systems' }, { key: 'device', label: 'Devices' }]}
       tab={tab}
-      setTab={setTab}
+      onTab={setTab}
       onExpand={() => details.open({ browser: 'Browsers', os: 'Operating systems', device: 'Devices' }[tab], { label: col, cols: EXPANDED.visitors },
         () => expanded(tab, period, filters, rowOf[tab]))}
     >
-      <List rows={data?.rows} prev={data?.prev} total={total} column={col} loading={loading} onFilter={onFilter} />
+      <RankedList rows={ranked(data)} total={total} column={col} loading={loading} onPick={pick(onFilter)} />
       {details.el}
     </Card>
   )

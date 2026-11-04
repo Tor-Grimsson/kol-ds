@@ -8,6 +8,7 @@
 //
 // Exports are appended as each component lands.
 export { default as MoodTile } from './MoodTile.jsx'
+export { default as ThemeTile } from './ThemeTile.jsx'
 export { default as ColorAnatomy } from './ColorAnatomy.jsx'
 /* group-word-first names (LayoutGroup, 2026-10-31); the old names are aliases on the retirement ledger */
 export { default as BlockType, default as TypeBlock } from './BlockType.jsx'

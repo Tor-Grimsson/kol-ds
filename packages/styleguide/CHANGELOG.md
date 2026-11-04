@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.21.0 — 2026-11-04
+
+- **`ThemeTile`** (float-everything W2 row 34 — the exploration's reading-theme pick, `Aa Night · Paper · Sepia`): an 88 × 64 tile painted in the theme's own `bg` and `ink`, the `sample` (default `Aa`) at 22 in the reading face (`font`, default Literata), the `label` under it in Inter 10; `selected` wears the float focus ring; with `onClick` it is a button, so a row of them is a pick.
+
 ## 0.20.0 — 2026-10-31
 
 **IconBrowser goes icons-first, opt-in** (IconTreatment — the user: "I really just need to see the icons … toggle hide things, and filters using DS components"). Every default renders as before.

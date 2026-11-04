@@ -1,8 +1,8 @@
 import { Icon } from '@kolkrabbi/kol-icons'
-import { Fragment, useEffect, useRef, useState } from 'react'
-import { Button,
-  Dropdown, LabeledControl, Slider, Textarea, SegmentedToggle, ViewToggle,
-  ToggleCheckbox, usePopover, PopoverPanel, MenuRow, Tooltip } from '@kolkrabbi/kol-component'
+import { Fragment, useEffect, useState } from 'react'
+import { BezierPathEditor, Button,
+  Dropdown, LabeledControl, SettingsRow, Slider, Textarea, SegmentedToggle,
+  ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
 import { ColorField } from './ColorField'
 import { TreePicker } from './TreePicker'
 import { resolveColor } from '../state'
@@ -10,11 +10,11 @@ import { isBinding } from '../../params/resolve'
 import { mulberry32 } from '../../lib/rng'
 import { useRollSeed, SeedField } from '../../params/rolls'
 import { KINETIC_PRESETS, KINETIC_TREE, presetComp, mergeInstance } from '../../../kinetic/presets'
-import { KINETIC_KNOBS, knobOptions, knobRange, randomiseComp } from '../../../kinetic/knobs'
+import { KINETIC_KNOBS, knobOptions, knobRange, randomiseComp, knobBridgeKey } from '../../../kinetic/knobs'
 import { OPENTYPE_FEATURES } from '../../../kinetic/features'
-import { DEFAULT_POINTS, buildPath } from '../../../kinetic/paths'
+import { DEFAULT_POINTS } from '../../../kinetic/paths'
 import { THEME_OPTIONS, DEFAULT_THEME, resolveTheme } from '../../../loops/lib/themes'
-import { useControlSize } from '../../params/controlSize'
+import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
 
 /**
  * KineticPanel — the kinetic-type layer's control surface (extracted from
@@ -68,7 +68,6 @@ const NEW_MOTION = { mode: 'glyphwave', cycles: 1, phase: 0.5, amp: 0.3, axis: '
  * fontSize scales proportionally; offset moves by delta; the rest copy. */
 const GROUP_KEYS = new Set(['align', 'italic', 'fill', 'fontSize', 'vfWght', 'offsetX', 'offsetY'])
 
-const iconBtnStyle = { lineHeight: 0, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }
 
 /* short group tag (a·b·c…) so grouped rows read as a set (labs groupTag) */
 const groupTag = (gid, groups) => (gid ? String.fromCharCode(97 + (groups.indexOf(gid) % 26)) : null)
@@ -190,9 +189,10 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
    * the seed persists on the layer (`_rollSeed`) and a manually-typed seed
    * reproduces the roll once. Discrete history entry, like a preset pick. */
   const seed = useRollSeed(layer)
-  const onRandomise = () => {
+  /* `tabs` narrows a roll to one scope: 'style' is the Type cell, 'anim' the Motion cell (the knob catalog's tabs) */
+  const onRandomise = (tabs = null) => {
     const s = seed.take()
-    updateLayer(layer.id, { comp: randomiseComp(comp, idx, mulberry32(s >>> 0)), _rollSeed: s })
+    updateLayer(layer.id, { comp: randomiseComp(comp, idx, mulberry32(s >>> 0), tabs), _rollSeed: s })
   }
   const onRandomiseAll = () => {
     const s = seed.take()
@@ -201,6 +201,18 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
     insts.forEach((_, i) => { next = randomiseComp(next, i, rng) })
     updateLayer(layer.id, { comp: next, _rollSeed: s })
   }
+  /* THE LOOP RAIL'S ROLLS FOR TYPE (plan 40 § 4.3, user 2026-10-24: *"kinetic and type dont have any ranomise
+     options"*): another preset of this category · a theme + invert · back to the preset */
+  const onRollPreset = () => {
+    const here = KINETIC_PRESETS.find((p) => p.id === layer.presetId)
+    const pool = KINETIC_PRESETS.filter((p) => p.id !== here?.id && (!here || p.sub === here.sub))
+    if (pool.length) applyPreset(pool[Math.floor(mulberry32(seed.take() >>> 0)() * pool.length)])
+  }
+  const onRollColor = () => {
+    const rng = mulberry32(seed.take() >>> 0)
+    applyTheme(THEME_OPTIONS[Math.floor(rng() * THEME_OPTIONS.length)].value, rng() < 0.5)
+  }
+  const onReset = () => applyPreset(KINETIC_PRESETS.find((p) => p.id === layer.presetId) ?? KINETIC_PRESETS[0])
 
   /* Theme / invert quick-set (ParametersPanel's loop-theme semantics, applied
    * comp-natively): resolveTheme → frame bg + every element's fill. Discrete. */
@@ -223,10 +235,16 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
 
   return (
     <>
+      {/* the strip first (spec R3.2, the user's 19) */}
+      {tabStrip}
+
       {picker && <KineticPicker layer={layer} onPreset={applyPreset} />}
 
+      {/* ELEMENTS ON GENERATE ONLY (plan 40 § 4.1, user 2026-10-24: *"Elements is in both GENERATE and STYLE and
+          ANIMATE? why?"*) — Style and Animation act on the element picked here, and say which */}
+      {(tab === 'generate' || tab === 'labs-effect') ? (
       <div className="flex flex-col gap-1">
-        <span className="kol-helper-10 text-meta">Elements</span>
+        <span className="kol-eyebrow text-fg-80">Elements</span>
         <ElementList
           insts={insts} idx={idx} onSelect={selectElement} onWrite={writeInstances}
           marked={marked} onMark={toggleMark} onGroup={groupMarked} onUngroup={ungroupMarked}
@@ -238,48 +256,54 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
           Edit on canvas
         </Button></Tooltip>
       </div>
-
-      {tabStrip}
+      ) : insts.length > 1 && (
+        <span className="kol-helper-12 text-meta truncate">Element {idx + 1} · {selInst?.text || '—'}</span>
+      )}
 
       {(tab === 'generate' || tab === 'labs-effect') && (
         <>
-          <LabeledControl label="Text">
+          {/* a textarea cannot share a line: label above, uppercased at render (spec R5.7) */}
+          <LabeledControl label={'Text'.toUpperCase()}>
             <Textarea
               variant="filled" size={cs} rows={2} axis="y"
               value={insts[idx]?.text ?? ''}
               onChange={(e) => patchInstance(idx, { text: e.target.value })}
             />
           </LabeledControl>
-          <div className="grid grid-cols-2 gap-2">
-            <LabeledControl label="Theme">
+          <div className="flex flex-col gap-2">
+            <SettingsRow label="Theme" align="fill" labelWidth={RAIL_LABEL_W}>
               <Dropdown
                 variant="subtle" size={cs} className="w-full"
                 options={THEME_OPTIONS}
                 value={layer.themeId ?? DEFAULT_THEME}
                 onChange={(id) => applyTheme(id, !!layer.themeInvert)}
               />
-            </LabeledControl>
-            <LabeledControl label="Invert">
-              <ViewToggle
+            </SettingsRow>
+            <SettingsRow label="Invert" align="fill" labelWidth={RAIL_LABEL_W}>
+              <SegmentedToggle size={cs} className="w-full"
                 options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
-                viewMode={layer.themeInvert ? 'on' : 'off'}
-                onViewChange={(v) => applyTheme(layer.themeId ?? DEFAULT_THEME, v === 'on')}
+                value={layer.themeInvert ? 'on' : 'off'}
+                onChange={(v) => applyTheme(layer.themeId ?? DEFAULT_THEME, v === 'on')}
               />
-            </LabeledControl>
+            </SettingsRow>
           </div>
           <ColorField
-            label="Text colour"
+            inline
+            label="Text color"
             value={insts[0]?.fill}
             onChange={(v) => onAllFill(resolveColor(v, palette) ?? v)}
             palette={palette}
           />
+          <Button tone="primary" size={cs} className="w-full" onClick={onRollPreset}>Randomize preset</Button>
+          <div className="flex gap-2">
+            <Button tone="primary" size={cs} className="flex-1 min-w-0" onClick={() => onRandomise()}>Randomize all</Button>
+            <Tooltip label="Reset to defaults"><Button tone="primary" size={cs} iconOnly="refresh" aria-label="Reset to defaults" onClick={onReset} className="shrink-0" /></Tooltip>
+          </div>
           <div className="grid grid-cols-2 gap-2">
-            <Button tone="primary" size={cs} onClick={onRandomise}>
-              Randomise
-            </Button>
-            <Button tone="primary" size={cs} onClick={onRandomiseAll}>
-              All elements
-            </Button>
+            <Button tone="primary" size={cs} onClick={onRollColor}>Color</Button>
+            <Button tone="primary" size={cs} onClick={() => onRandomise(['style'])}>Type</Button>
+            <Button tone="primary" size={cs} onClick={() => onRandomise(['anim'])}>Motion</Button>
+            <Button tone="primary" size={cs} onClick={onRandomiseAll}>All elements</Button>
           </div>
           <SeedField seed={seed} />
         </>
@@ -306,7 +330,7 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
               (labs EditControls order) — injected at the arrangement anchor. */}
           {k.key === 'arrangement' && (
             <>
-              <span className="kol-helper-10 text-meta">OpenType</span>
+              <span className="kol-eyebrow text-fg-80">OpenType</span>
               <OpenTypeMenu
                 value={selInst?.opentype ?? {}}
                 onToggle={(tag, on) => patchInstance(idx, { opentype: { ...(selInst?.opentype ?? {}), [tag]: on } })}
@@ -314,9 +338,11 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
             </>
           )}
           {k.section && k.section !== knobs[i - 1]?.section && (
-            <span className="kol-helper-10 text-meta">{k.section}</span>
+            <span className="kol-eyebrow text-fg-80">{k.section}</span>
           )}
-          <KineticKnob knob={k} comp={viewFor(k)} idx={idx} palette={palette} onWrite={writeKnob} />
+          <KineticKnob knob={k} comp={viewFor(k)} idx={idx} palette={palette} onWrite={writeKnob}
+            /* a motion-layer view (stack entry 2+) is a swap-in over the comp — no flat key can address it */
+            bridge={MOTION_KEYS.has(k.key) && mIdx > 0 ? null : { layer, setProp, renderAnimate, key: knobBridgeKey(idx, k.key) }} />
           {/* custom-arrangement point editor — the labs CustomPathEditor as a
               rail mini editor, anchored under the arrangement toggles. */}
           {k.key === 'showPath' && selInst?.path?.type === 'custom' && (
@@ -343,7 +369,7 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
  */
 function KineticPicker({ layer, onPreset }) {
   const current = KINETIC_PRESETS.find((p) => p.id === layer.presetId) ?? KINETIC_PRESETS[0]
-  return <TreePicker tree={KINETIC_TREE} presets={KINETIC_PRESETS} current={current} onPick={onPreset} />
+  return <TreePicker tree={KINETIC_TREE} presets={KINETIC_PRESETS} current={current} onPick={onPreset} inline />
 }
 
 /**
@@ -401,7 +427,7 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
               onClick={() => onSelect(i)}
               className={`flex items-center gap-2 pl-2 pr-1 py-1 rounded cursor-pointer kol-helper-12 ${
                 i === idx
-                  ? 'bg-[color-mix(in_srgb,var(--kol-accent-primary)_26%,transparent)] text-emphasis'
+                  ? 'bg-oq-08 text-emphasis'
                   : 'text-body hover:bg-oq-04 hover:text-emphasis'
               }`}
             >
@@ -416,42 +442,42 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
                 aria-label="Duplicate element"
                 onClick={(e) => { e.stopPropagation(); duplicate(i) }}
               /></Tooltip>
-              <Tooltip label="Remove element"><Button
+              <span className={(insts.length <= 1) ? 'invisible pointer-events-none' : 'contents'} aria-hidden={(insts.length <= 1) || undefined}><Tooltip label="Delete element"><Button
                 tone="ghost" size={cs} quiet iconOnly="x" iconSize={10}
-                aria-label="Remove element"
-                disabled={insts.length <= 1}
+                aria-label="Delete element"
                 onClick={(e) => { e.stopPropagation(); remove(i) }}
-              /></Tooltip>
+              /></Tooltip></span>
             </div>
           )
         })}
       </div>
-      <div className="grid grid-cols-2 gap-1">
-        <Button tone="primary" size={cs} disabled={marked.length < 2} onClick={onGroup}>
-          Group
-        </Button>
-        <Button tone="primary" size={cs} disabled={!marked.length} onClick={onUngroup}>
-          Ungroup
-        </Button>
-      </div>
+      {marked.length > 0 && ( /* not drawn when it cannot act (plan 51 3.1) */
+        <div className="grid grid-cols-2 gap-1">
+          {marked.length >= 2 && (
+            <Button tone="primary" size={cs} onClick={onGroup}>
+              Group
+            </Button>
+          )}
+          <Button tone="primary" size={cs} onClick={onUngroup}>
+            Ungroup
+          </Button>
+        </div>
+      )}
       <div className="flex items-center gap-1">
         <Button tone="primary" size={cs} className="flex-1" iconLeft="plus" iconSize={12} onClick={add}>
           Add element
         </Button>
-        <Tooltip label="Move element up"><Button
-          tone="ghost" size={cs} quiet style={iconBtnStyle}
+        {/* the DS icon button on the rail's rung (R6.7) — a hand-styled glyph child sat at 22 */}
+        <span className={(idx <= 0) ? 'invisible pointer-events-none' : 'contents'} aria-hidden={(idx <= 0) || undefined}><Tooltip label="Move element up"><Button
+          tone="ghost" size={cs} quiet iconOnly="chevron-down" className="rotate-180"
           aria-label="Move element up"
-          disabled={idx <= 0} onClick={() => move(-1)}
-        >
-          <Icon name="chevron-down" size={12} style={{ transform: 'rotate(180deg)' }} />
-        </Button></Tooltip>
-        <Tooltip label="Move element down"><Button
-          tone="ghost" size={cs} quiet style={iconBtnStyle}
+          onClick={() => move(-1)}
+        /></Tooltip></span>
+        <span className={(idx >= insts.length - 1) ? 'invisible pointer-events-none' : 'contents'} aria-hidden={(idx >= insts.length - 1) || undefined}><Tooltip label="Move element down"><Button
+          tone="ghost" size={cs} quiet iconOnly="chevron-down"
           aria-label="Move element down"
-          disabled={idx >= insts.length - 1} onClick={() => move(1)}
-        >
-          <Icon name="chevron-down" size={12} />
-        </Button></Tooltip>
+          onClick={() => move(1)}
+        /></Tooltip></span>
       </div>
     </>
   )
@@ -463,25 +489,38 @@ function ElementList({ insts, idx, onSelect, onWrite, marked, onMark, onGroup, o
  * literal hex at write time — the SVG engine paints raw fill strings (same
  * trade-off as "Edit in Pattern mode"). min/max resolve via knobRange (the
  * VF axis knobs track the instance font's real fvar range). */
-function KineticKnob({ knob: k, comp, idx, palette, onWrite }) {
+function KineticKnob({ knob: k, comp, idx, palette, onWrite, bridge }) {
   const cs = useControlSize()
   const value = k.get(comp, idx)
   const write = (v) => onWrite(k, v)
   if (k.type === 'color') {
-    return <ColorField label={k.label} value={value} onChange={(v) => write(resolveColor(v, palette) ?? v)} palette={palette} />
+    return <ColorField label={k.label} value={value} onChange={(v) => write(resolveColor(v, palette) ?? v)} palette={palette} inline />
   }
   if (k.type === 'select') {
     return (
-      <LabeledControl label={k.label}>
+      <SettingsRow label={k.label} align="fill" labelWidth={RAIL_LABEL_W}>
         <Dropdown variant="subtle" size={cs} className="w-full" options={knobOptions(k, comp, idx)} value={value} onChange={write} />
-      </LabeledControl>
+      </SettingsRow>
     )
   }
   const { min, max } = knobRange(k, comp, idx)
+  /* the modulate dot (plan 40 § 5.1): bound → graph-driven, read-only (the AutoControls convention); a number left by
+     an unbind is the knob's value until the next edit moves it back into the comp */
+  const raw = bridge && bridge.layer[bridge.key]
+  const bound = isBinding(raw)
+  const shown = typeof raw === 'number' ? raw : value
+  const slide = typeof raw === 'number' ? (v) => bridge.setProp(bridge.key, v) : write
   return (
-    <LabeledControl label={k.label}>
-      <Slider min={min} max={max} step={k.step ?? 1} value={typeof value === 'number' ? value : min} onChange={write} />
-    </LabeledControl>
+    <SettingsRow label={k.label} align="fill" labelWidth={RAIL_LABEL_W}>
+      <div className="flex flex-1 items-center gap-2">
+        <div className="flex-1 min-w-0">
+          {bound
+            ? <div className="kol-helper-12 text-meta italic px-1">animated</div>
+            : <Slider min={min} max={max} step={k.step ?? 1} value={typeof shown === 'number' ? shown : min} onChange={slide} displayWidth={String(max).length} className="flex-1" />}
+        </div>
+        {bridge?.renderAnimate?.({ key: bridge.key, label: k.label, type: 'range', min, max, step: k.step ?? 1, default: typeof value === 'number' ? value : min })}
+      </div>
+    </SettingsRow>
   )
 }
 
@@ -496,20 +535,20 @@ function MotionStack({ motions, mIdx, onSelect, onAdd, onRemove }) {
   ]
   return (
     <div className="flex flex-col gap-1">
-      <span className="kol-helper-10 text-meta">Motion layers</span>
+      <span className="kol-eyebrow text-fg-80">Motion layers</span>
       <div className="flex items-center gap-1">
         <div className="flex-1 min-w-0">
-          <SegmentedToggle variant="filled" value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
+          <SegmentedToggle size={cs} value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
         </div>
         <Tooltip label="Add motion layer"><Button
           tone="ghost" size={cs} quiet iconOnly="plus" iconSize={12}
           aria-label="Add motion layer" onClick={onAdd}
         /></Tooltip>
-        <Tooltip label="Remove motion layer (the primary can only be set to None)"><Button
+        <span className={(mIdx === 0) ? 'invisible pointer-events-none' : 'contents'} aria-hidden={(mIdx === 0) || undefined}><Tooltip label="Delete motion layer (the primary can only be set to None)"><Button
           tone="ghost" size={cs} quiet iconOnly="x" iconSize={10}
-          aria-label="Remove motion layer"
-          disabled={mIdx === 0} onClick={onRemove}
-        /></Tooltip>
+          aria-label="Delete motion layer"
+          onClick={onRemove}
+        /></Tooltip></span>
       </div>
     </div>
   )
@@ -520,6 +559,7 @@ function MotionStack({ motions, mIdx, onSelect, onAdd, onRemove }) {
  * per feature with a check when on; clicking toggles and keeps the menu open
  * (no single-pick close); the trigger shows the active count. */
 function OpenTypeMenu({ value = {}, onToggle }) {
+  const cs = useControlSize()
   const [open, setOpen] = useState(false)
   const popover = usePopover({
     open, onOpenChange: setOpen,
@@ -529,43 +569,29 @@ function OpenTypeMenu({ value = {}, onToggle }) {
 
   return (
     <div className="relative w-full">
-      <button
+      <Button
         ref={popover.refs.setReference}
         {...popover.getReferenceProps()}
-        type="button"
-        className="w-full flex items-center justify-between kol-helper-12 rounded"
-        style={{
-          border: '1px solid transparent',
-          borderRadius: open ? '4px 4px 0 0' : '4px',
-          backgroundColor: 'var(--kol-surface-secondary)',
-          color: 'var(--kol-surface-on-primary)',
-          padding: '4px 12px',
-          cursor: 'pointer',
-        }}
-        aria-haspopup="listbox"
-        aria-expanded={open}
+        tone="primary" size={cs} className="w-full justify-between" iconRight="chevron-down"
+        aria-haspopup="listbox" aria-expanded={open}
       >
-        <span>{count ? `${count} feature${count > 1 ? 's' : ''}` : 'None'}</span>
-        <Icon
-          name="chevron-down" size={10} className="ml-auto"
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 300ms' }}
-        />
-      </button>
+        {count ? `${count} feature${count > 1 ? 's' : ''}` : 'None'}
+      </Button>
       <PopoverPanel
         popover={popover}
         panel={false}
         focus={false}
-        style={{ backgroundColor: 'var(--kol-surface-secondary)', color: 'var(--kol-surface-on-primary)', borderRadius: '0 0 4px 4px', zIndex: 200 }}
+        style={{ backgroundColor: 'var(--kol-surface-secondary)', color: 'var(--kol-surface-on-primary)', borderRadius: '0 0 4px 4px', zIndex: 'var(--kol-z-dropdown)' }}
       >
         <div className="flex max-h-[300px] flex-col items-stretch overflow-y-auto" role="listbox">
           {OPENTYPE_FEATURES.map((f) => (
-            <MenuRow
+            <MenuDropdownItem
               key={f.tag}
               onClick={() => onToggle(f.tag, !value[f.tag])}
-              indicator={value[f.tag] ? 'check' : undefined}
+              shortcut={value[f.tag] ? <Icon name="check" size={11} /> : undefined}
             >
               {f.label}
-            </MenuRow>
+            </MenuDropdownItem>
           ))}
         </div>
       </PopoverPanel>
@@ -580,65 +606,27 @@ function OpenTypeMenu({ value = {}, onToggle }) {
  * build the engine walks (buildPath 'custom'). */
 function CustomPathPoints({ inst, layer, onPoints }) {
   const cs = useControlSize()
-  const boxRef = useRef(null)
-  const drag = useRef(null)
   const stored = inst?.path?.points
   const points = Array.isArray(stored) && stored.length >= 2 ? stored : DEFAULT_POINTS
   const ratio = layer.w > 0 && layer.h > 0 ? layer.w / layer.h : 1
-  const d = buildPath('custom', 100, 100, { points }).d
-
-  const onDown = (i) => (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    e.currentTarget.setPointerCapture(e.pointerId)
-    drag.current = { i }
-  }
-  const onMove = (e) => {
-    const dg = drag.current
-    const box = boxRef.current
-    if (!dg || !box) return
-    const r = box.getBoundingClientRect()
-    if (!r.width || !r.height) return
-    const nx = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width))
-    const ny = Math.max(0, Math.min(1, (e.clientY - r.top) / r.height))
-    onPoints(points.map((p, k) => (k === dg.i ? [Number(nx.toFixed(3)), Number(ny.toFixed(3))] : p)))
-  }
-  const onUp = (e) => { drag.current = null; try { e.currentTarget.releasePointerCapture(e.pointerId) } catch { /* */ } }
 
   return (
     <div className="flex flex-col gap-2">
-      <div
-        ref={boxRef}
-        className="relative w-full rounded border border-oq-08 overflow-hidden"
-        style={{ aspectRatio: `${ratio}` }}
-      >
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <path d={d} fill="none" stroke="var(--kol-accent-primary)" strokeWidth={1.5} vectorEffect="non-scaling-stroke" />
-        </svg>
-        {points.map((p, i) => (
-          <div
-            key={i}
-            onPointerDown={onDown(i)}
-            onPointerMove={onMove}
-            onPointerUp={onUp}
-            className="absolute cursor-grab rounded-full"
-            style={{
-              left: `${p[0] * 100}%`, top: `${p[1] * 100}%`,
-              width: 12, height: 12, marginLeft: -6, marginTop: -6,
-              background: 'var(--kol-accent-primary)',
-              border: '2px solid white',
-              boxShadow: '0 0 0 1px rgba(0,0,0,0.5)',
-            }}
-          />
-        ))}
-      </div>
+      {/* the editor is KOL's BezierPathEditor (kol-component 0.330, plan 51 4.4): the custom path's points as corner nodes */}
+      <BezierPathEditor
+        value={points.map(([x, y]) => ({ x, y }))}
+        onChange={(pts) => onPoints(pts.map((p) => [Number(p.x.toFixed(3)), Number(p.y.toFixed(3))]))}
+        aspect={ratio} size={cs} minPoints={2} ariaLabel="Custom path points"
+      />
       <div className="grid grid-cols-2 gap-2">
         <Button tone="primary" size={cs} onClick={() => onPoints([...points, [0.5, 0.5]])}>
           Add point
         </Button>
-        <Button tone="primary" size={cs} disabled={points.length <= 2} onClick={() => onPoints(points.slice(0, -1))}>
-          Remove point
-        </Button>
+        {points.length > 2 && ( /* not drawn when it cannot act (plan 51 3.1) */
+          <Button tone="primary" size={cs} onClick={() => onPoints(points.slice(0, -1))}>
+            Remove point
+          </Button>
+        )}
       </div>
     </div>
   )
@@ -659,11 +647,11 @@ function MorphBlendKnob({ layer, setProp, insts, renderAnimate }) {
     ? <div className="kol-helper-12 text-meta italic px-1">animated</div>
     : <Slider min={p.min} max={p.max} step={p.step} value={value} onChange={(v) => setProp(p.key, v)} />
   return (
-    <LabeledControl label={p.label}>
-      <div className="flex items-center gap-2">
+    <SettingsRow label={p.label} align="fill" labelWidth={RAIL_LABEL_W}>
+      <div className="flex flex-1 items-center gap-2">
         <div className="flex-1 min-w-0">{control}</div>
         {renderAnimate(p)}
       </div>
-    </LabeledControl>
+    </SettingsRow>
   )
 }

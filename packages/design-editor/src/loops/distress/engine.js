@@ -105,7 +105,7 @@ const getParsed = (src, frequency) => {
 
 /* the source's getModeOffset, verbatim recipes; uPhase is the one addition
  * (a whole-TAU phase advance per loop, so wave modes animate seamlessly) */
-const modeOffset = (mode, index, t, strength, freq, seed, uPhase) => {
+export const modeOffset = (mode, index, t, strength, freq, seed, uPhase) => {
   const base = random(seed + index * 12.9898)
   const alt = random(seed * 2.133 + index * 78.233)
   const a = base - 0.5
@@ -163,7 +163,7 @@ const toPath = (points, closed) => {
   return path
 }
 
-const MODE_OPTIONS = [
+export const MODE_OPTIONS = [
   { value: 'print-press', label: 'Print press' },
   { value: 'noise', label: 'Noise' },
   { value: 'jitter', label: 'Jitter' },
@@ -183,7 +183,7 @@ export default {
   params: [
     { key: 'bg', label: 'Background', type: 'color', role: 'bg', default: '#121215' },
     { key: 'ink', label: 'Ink', type: 'color', role: 'fg', default: '#e8e4dc' },
-    { key: 'mode', label: 'Mode', type: 'select', options: MODE_OPTIONS, default: 'print-press' },
+    { key: 'mode', noRandom: true, label: 'Mode', type: 'select', options: MODE_OPTIONS, default: 'print-press' },
     { key: 'amount', label: 'Amount', type: 'range', min: 0, max: 80, step: 1, default: 24 },
     { key: 'frequency', label: 'Frequency', type: 'range', min: 1, max: 100, step: 1, default: 30 },
     { key: 'smoothness', label: 'Smoothness', type: 'range', min: 0, max: 100, step: 1, default: 20 },

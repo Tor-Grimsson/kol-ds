@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { colord } from 'colord'
 import { Slider } from '@kolkrabbi/kol-component'
+import { Button, SettingsRow, Stepper, Tooltip } from '@kolkrabbi/kol-component'
 import { Dropdown } from '@kolkrabbi/kol-component'
-import { LabeledControl } from '@kolkrabbi/kol-component'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
 import { SwatchStack, EyedropPick } from '@kolkrabbi/kol-component'
 import { HueStrip, SBSquare, WheelTriangle } from '@kolkrabbi/kol-component'
 import { useColorTarget } from './useColorTarget'
@@ -11,18 +10,22 @@ import { useComposeState, resolveColor } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { findLayerDeep } from '../compose/helpers'
 import { pickFromCanvas } from './canvasEyedropper'
+import { useControlSize, RAIL_LABEL_W } from '../params/controlSize'
 
+/* ONE VIEW PICKER (plan 29 § 12): Affinity's `RGB ▾` top-right beside the swatches — the user's
+ * reference. The old Hue · Wheel · Sliders strip and the HSL/RGB strip under Sliders fold into it. */
 const MODE_OPTIONS = [
-  { value: 'hue',     label: 'Hue'     },
-  { value: 'wheel',   label: 'Wheel'   },
-  { value: 'sliders', label: 'Sliders' },
+  { value: 'hue',   label: 'Hue'   },
+  { value: 'wheel', label: 'Wheel' },
+  { value: 'hsl',   label: 'HSL'   },
+  { value: 'rgb',   label: 'RGB'   },
 ]
 
 /**
  * ColourPanel — Hue / Wheel / Sliders modes, all live-bound to the active
  * color target (canvas fill or selected layer's color).
  *
- * Mode picker (top-right) switches the body. Each mode reads/writes the same
+ * View picker (a dropdown top-right, beside the swatches) switches the body. Each mode reads/writes the same
  * underlying color via `useColorTarget` and the local opacity state drives
  * the layer's `opacity` (or canvas fill opacity).
  */
@@ -36,16 +39,21 @@ export function ColourBody() {
    * app-level paint state always exists). No "no target" fallback needed. */
   const target = useColorTarget({ history: 'coalesce' })
   const [mode, setMode] = useState('hue')
+  const cs = useControlSize()
 
   return (
-    <div className="p-4 flex flex-col gap-3 h-full min-h-0">
-      <TopRow mode={mode} setMode={setMode} target={target} />
-      <div className="flex-1 min-h-0 flex flex-col">
-        {mode === 'hue'     && <HueMode     target={target} />}
-        {mode === 'wheel'   && <WheelMode   target={target} />}
-        {mode === 'sliders' && <SlidersMode target={target} />}
+    /* AFFINITY'S ORDER (plan 30 § 14, the user's Swatches reference): the swatch pair, the pipette and
+       Opacity on one row; the view picker a full-width row under it, as the Swatches tab's palette
+       picker is; then the body — the pane sizes to its content, and a dragged height (plan 31 § 8)
+       lands in the square */
+    <div className="p-4 flex flex-col gap-3 flex-1 min-h-0">
+      <TopRow target={target} />
+      <Dropdown size={cs} variant="subtle" className="w-full" ariaLabel="Color view" options={MODE_OPTIONS} value={mode} onChange={setMode} />
+      <div className="flex flex-col flex-1 min-h-0">
+        {mode === 'hue'   && <HueMode     target={target} />}
+        {mode === 'wheel' && <WheelMode   target={target} />}
+        {(mode === 'hsl' || mode === 'rgb') && <SlidersMode target={target} model={mode} />}
       </div>
-      <OpacityRow />
     </div>
   )
 }
@@ -63,7 +71,10 @@ export default function ColourPanel() {
 
 /* ────────── Top row: front swatch + eyedrop pick + mode select ────────── */
 
-function TopRow({ mode, setMode, target }) {
+const NATIVE_EYEDROP = typeof window !== 'undefined' && 'EyeDropper' in window
+
+function TopRow({ target }) {
+  const cs = useControlSize()
   /* Read activePaint from the target (already clamped to a supported paint)
    * so SwatchStack's "front" indicator always matches what the picker
    * actually writes. */
@@ -89,6 +100,14 @@ function TopRow({ mode, setMode, target }) {
       }
     }
   }
+  /* `I` (keymap `eyedrop`, 2026-10-09 — the user's 17): the same pick the pipette button makes.
+     A ref so the listener always calls the latest closure (layers · palette · focused paint). */
+  const pickRef = useRef(onPickEyedrop); pickRef.current = onPickEyedrop
+  useEffect(() => {
+    const on = () => pickRef.current()
+    window.addEventListener('kol:eyedrop', on)
+    return () => window.removeEventListener('kol:eyedrop', on)
+  }, [])
   const fillColor   = fillHex   ?? '#FFFFFF'
   const strokeColor = strokeHex ?? '#000000'
   const sampleColor = activePaint === 'stroke' ? strokeColor : fillColor
@@ -103,16 +122,16 @@ function TopRow({ mode, setMode, target }) {
         onClear={onClear}
       />
       <EyedropPick sampleColor={sampleColor} onPick={onPickEyedrop} />
-      <div className="ml-auto">
-        <Dropdown
-          variant="subtle"
-          size="sm"
-          options={MODE_OPTIONS}
-          value={mode}
-          onChange={setMode}
-          className="w-[110px]"
-        />
-      </div>
+      {/* THE PIPETTE IN EVERY BROWSER (spec R6.9, the user's 12): the DS button renders only where
+          `window.EyeDropper` exists (Chromium) — but this pick samples our own canvas and never
+          calls that API, so where the DS hides it (Firefox, Safari) the same pick gets a plain DS
+          icon button. Retires when EyedropPick drops its gate (plan 17 #6). */}
+      {!NATIVE_EYEDROP && (
+        <Tooltip label="Eyedropper" shortcut="I">
+          <Button tone="ghost" quiet size={cs} iconOnly="eyedrop" aria-label="Eyedropper" onClick={onPickEyedrop} />
+        </Tooltip>
+      )}
+      <OpacityField />
     </div>
   )
 }
@@ -131,9 +150,12 @@ function HueMode({ target }) {
   const onSV  = (s, v) => setHex(colord({ h: hsv.h, s, v }).toHex())
 
   return (
-    <div className="flex flex-col gap-3 w-full h-full min-h-0">
+    <div className="flex flex-col gap-3 w-full flex-1 min-h-0">
       <HueStrip hue={hsv.h} onChange={onHue} />
-      <div className="flex-1 min-h-0 rounded-[2px] overflow-hidden">
+      {/* a real 2D square, not a strip (plan 30 § 14: "why can't I drag vertically"); a taller pane
+          goes to the square (plan 31 § 8). The floor is 64, not 160 (plan 37 § 8.8 — the user: "it
+          shouldnt have min height, or at least not as large"): a short pane shrinks it, never scrolls. */}
+      <div className="flex-1 min-h-16 rounded-[2px] overflow-hidden">
         <SBSquare hue={hsv.h} sat={hsv.s} val={hsv.v} onChange={onSV} />
       </div>
     </div>
@@ -156,8 +178,7 @@ function WheelMode({ target }) {
   )
 }
 
-function SlidersMode({ target }) {
-  const [model, setModel] = useState('hsl')
+function SlidersMode({ target, model }) {
   const c = colord(target.hex)
   const setHex = (next) => target.onChange(next.toUpperCase())
 
@@ -165,7 +186,6 @@ function SlidersMode({ target }) {
     const { r, g, b } = c.toRgb()
     return (
       <div className="flex flex-col gap-3">
-        <ModelToggle model={model} setModel={setModel} />
         <SliderRow label="R" hint={`${r}`} max={255} value={r} onChange={(v) => setHex(colord({ r: v, g, b }).toHex())} />
         <SliderRow label="G" hint={`${g}`} max={255} value={g} onChange={(v) => setHex(colord({ r, g: v, b }).toHex())} />
         <SliderRow label="B" hint={`${b}`} max={255} value={b} onChange={(v) => setHex(colord({ r, g, b: v }).toHex())} />
@@ -176,7 +196,6 @@ function SlidersMode({ target }) {
   const { h, s, l } = c.toHsl()
   return (
     <div className="flex flex-col gap-3">
-      <ModelToggle model={model} setModel={setModel} />
       <SliderRow label="H" hint={`${Math.round(h)}°`} max={360} value={Math.round(h)} onChange={(v) => setHex(colord({ h: v, s, l }).toHex())} />
       <SliderRow label="S" hint={`${Math.round(s)}%`} max={100} value={Math.round(s)} onChange={(v) => setHex(colord({ h, s: v, l }).toHex())} />
       <SliderRow label="L" hint={`${Math.round(l)}%`} max={100} value={Math.round(l)} onChange={(v) => setHex(colord({ h, s, l: v }).toHex())} />
@@ -184,27 +203,17 @@ function SlidersMode({ target }) {
   )
 }
 
-const MODEL_OPTIONS = [
-  { value: 'hsl', label: 'HSL' },
-  { value: 'rgb', label: 'RGB' },
-]
-function ModelToggle({ model, setModel }) {
-  return (
-    <div className="flex items-center">
-      <SegmentedToggle variant="filled" value={model} onChange={setModel} options={MODEL_OPTIONS} />
-    </div>
-  )
-}
-
+/* the rail's one row (spec R5.1): uppercase label in the 112 column, the slider fills, its
+   readout as wide as the channel's longest value (R6.1) */
 function SliderRow({ label, hint, max, value, onChange }) {
   return (
-    <LabeledControl inline label={label} hint={hint}>
-      <Slider min={0} max={max} value={value} onChange={onChange} />
-    </LabeledControl>
+    <SettingsRow label={label} hint={hint} align="fill" labelWidth={RAIL_LABEL_W}>
+      <Slider min={0} max={max} value={value} onChange={onChange} displayWidth={String(max).length} className="flex-1" />
+    </SettingsRow>
   )
 }
 
-function OpacityRow() {
+function OpacityField() {
   const { selectedId, layers, canvasFillOpacity, setCanvasFillOpacity } = useComposeState()
 
   const isCanvas = selectedId === 'canvas'
@@ -212,7 +221,7 @@ function OpacityRow() {
 
   /* Coalesce like LayerInspector's opacity slider — a drag fires per tick,
    * and each raw updateLayer would push its own undo entry. */
-  const edit = useLayerEdit(layer?.id ?? null, { history: 'coalesce' })
+  const edit = useLayerEdit(layer && !layer.locked ? layer.id : null, { history: 'coalesce' }) /* one lock rule */
 
   /* Local fallback so dragging always moves the slider, even with no target. */
   const [localOpacity, setLocalOpacity] = useState(100)
@@ -229,10 +238,15 @@ function OpacityRow() {
       ? (v) => edit.setProp('opacity', v / 100)
       : setLocalOpacity
 
+  /* AFFINITY'S `Opacity: 100 %` (plan 30 § 14): the header row's right end, a stepper, not a slider
+     row at the pane's foot. Typed values clamp to 0–100. */
+  const cs = useControlSize()
+  const set = (e) => { const v = Math.round(Number(e.target.value)); if (Number.isFinite(v)) onChange(Math.max(0, Math.min(100, v))) }
   return (
-    <LabeledControl inline label="Opacity">
-      <Slider min={0} max={100} value={value} onChange={onChange} />
-    </LabeledControl>
+    <label className="ml-auto flex items-center gap-2">
+      <span className="kol-helper-10 text-meta">Opacity</span>
+      <Stepper size={cs} min={0} max={100} value={value} onChange={set} className="w-[64px]" aria-label="Opacity" />
+    </label>
   )
 }
 

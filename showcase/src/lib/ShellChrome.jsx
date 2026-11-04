@@ -154,7 +154,7 @@ const rowsOf = (list) => list.map((x) => ({ id: x.id, label: x.label, path: x.pa
  * other group wears the folder, any other Docs or Styles page the file. */
 const RAIL_ICONS = {
   'lib-components': 'component-01', 'lib-blocks': 'layout', 'lib-templates': 'panel-left', 'tpl-blocks': 'rows', 'lib-apps': 'desktop', 'lib-sets': 'layers', 'lib-packages': 'database',
-  'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-utilities': 'nav-settings',
+  'cmp-atoms': 'atomic-atom', 'cmp-molecules': 'atomic-molecule-01', 'cmp-organisms': 'atomic-organism-01', 'cmp-modules': 'layout', 'cmp-utilities': 'nav-settings',
   'set-cards': 'rectangle',
   'spec-foundations': 'slider-01', 'spec-color': 'paint-drop', 'spec-typography': 'type', 'spec-tones': 'opacity',
   'docs-shell': 'layout', 'docs-menus': 'hamburger', 'docs-loaders': 'refresh', 'docs-type-roles': 'aa',

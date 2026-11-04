@@ -12,6 +12,7 @@
         "ContentText",
         "Icon",
         "Input",
+        "Kbd",
         "Modal",
         "Popover",
         "Tag",
@@ -29,31 +30,6 @@
       "external": [
         "@floating-ui/react",
         "gsap"
-      ]
-    },
-    "bento-wall": {
-      "kol": [
-        "AssetPlaceholder",
-        "BackgroundVideo",
-        "Button",
-        "Icon",
-        "Image",
-        "TiltBento"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "motion",
-        "registerIcons",
-        "tone",
-        "useInViewAttention",
-        "usePrefersReducedMotion",
-        "useTilt"
-      ],
-      "external": [
-        "framer-motion",
-        "hls.js"
       ]
     },
     "color-picker": {
@@ -87,8 +63,11 @@
         "ColorSwatch",
         "Icon",
         "Input",
+        "Kbd",
+        "Menu",
         "MenuItem",
         "Popover",
+        "SearchInput",
         "ShapeDropdown",
         "TransparentX"
       ],
@@ -103,30 +82,12 @@
         "@floating-ui/react"
       ]
     },
-    "cta-band": {
-      "kol": [
-        "Button",
-        "CtaGlobal",
-        "Icon",
-        "SectionText"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "registerIcons",
-        "sectionBleed",
-        "sectionHeights",
-        "sectionSurface",
-        "tone"
-      ],
-      "external": []
-    },
     "feature-showcase": {
       "kol": [
         "Button",
         "FeaturesCardSection",
         "Icon",
+        "Kbd",
         "SectionCardItem",
         "SectionCards",
         "SectionText"
@@ -149,12 +110,16 @@
     "filter-bar": {
       "kol": [
         "AssetPlaceholder",
+        "Button",
         "Divider",
         "Dropdown",
         "Icon",
         "Input",
+        "Kbd",
+        "Menu",
         "MenuItem",
         "Popover",
+        "SearchInput",
         "Tag",
         "ViewToggle"
       ],
@@ -167,35 +132,6 @@
       ],
       "external": [
         "@floating-ui/react"
-      ]
-    },
-    "hero-full-bleed": {
-      "kol": [
-        "AssetPlaceholder",
-        "BackgroundVideo",
-        "Button",
-        "ContentMedia",
-        "EmblaNav",
-        "FeaturedCarousel",
-        "FullBleedHero",
-        "Icon",
-        "Image",
-        "OverlayGlassPanel",
-        "SectionText"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "registerIcons",
-        "sectionBleed",
-        "sectionSurface",
-        "tone",
-        "useSectionTheme"
-      ],
-      "external": [
-        "embla-carousel-react",
-        "hls.js"
       ]
     },
     "inspector-panel": {
@@ -227,48 +163,6 @@
         "@floating-ui/react"
       ]
     },
-    "media-carousel": {
-      "kol": [
-        "AssetPlaceholder",
-        "BackgroundVideo",
-        "EmblaNav",
-        "FeaturedCarousel",
-        "Icon",
-        "Image",
-        "OverlayGlassPanel"
-      ],
-      "local": {},
-      "support": [
-        "iconNames",
-        "registerIcons"
-      ],
-      "external": [
-        "embla-carousel-react",
-        "hls.js"
-      ]
-    },
-    "newsletter-signup": {
-      "kol": [
-        "Button",
-        "Icon",
-        "Input",
-        "NewsletterBand",
-        "SectionNewsletter",
-        "SectionText"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "registerIcons",
-        "sectionBleed",
-        "sectionHeights",
-        "sectionSurface",
-        "tone",
-        "useSectionTheme"
-      ],
-      "external": []
-    },
     "palette-reference": {
       "kol": [
         "ColorRamp",
@@ -286,84 +180,13 @@
         "@floating-ui/react"
       ]
     },
-    "product-panel": {
-      "kol": [
-        "Button",
-        "CloseButton",
-        "Divider",
-        "Dropdown",
-        "Icon",
-        "IconFrame",
-        "MenuItem",
-        "Pill",
-        "Popover",
-        "PriceDisplay",
-        "ProductDetailLayout",
-        "QuantityInput",
-        "SpecList",
-        "TabsRow"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "railRow",
-        "registerIcons",
-        "tone"
-      ],
-      "external": [
-        "@floating-ui/react"
-      ]
-    },
-    "search-modal": {
-      "kol": [
-        "Button",
-        "CloseButton",
-        "CommandOverlay",
-        "Divider",
-        "Dropdown",
-        "FullscreenOverlay",
-        "Icon",
-        "IconFrame",
-        "Kbd",
-        "LabeledControl",
-        "MenuItem",
-        "OptionRow",
-        "Popover",
-        "Rail",
-        "RailKit",
-        "SearchInput",
-        "SegmentedToggle",
-        "SettingsPanel",
-        "ShellSearchOverlay",
-        "ShortcutsOverlay",
-        "Tag",
-        "ToggleSwitch"
-      ],
-      "local": {},
-      "support": [
-        "glyphLadders",
-        "iconNames",
-        "layerStack",
-        "motion",
-        "railRow",
-        "registerIcons",
-        "tone",
-        "useGrabEdge",
-        "useMediaQuery",
-        "usePrefersReducedMotion"
-      ],
-      "external": [
-        "@floating-ui/react",
-        "gsap"
-      ]
-    },
     "settings-form": {
       "kol": [
         "Button",
         "Divider",
         "Icon",
         "Input",
+        "Kbd",
         "LabeledControl",
         "Textarea",
         "ToggleSwitch"
@@ -379,36 +202,43 @@
     },
     "shell-rail-states": {
       "kol": [
+        "About",
         "Button",
         "CloseButton",
         "CommandOverlay",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
+        "HubSettingsRail",
         "Icon",
         "IconFrame",
         "Input",
         "Kbd",
         "LabeledControl",
+        "LabeledControlSection",
+        "Menu",
         "MenuItem",
         "OptionRow",
         "Popover",
         "Rail",
+        "RailFoot",
         "RailKit",
         "RailRow",
         "RailSection",
         "RightRail",
         "SearchInput",
         "SegmentedToggle",
+        "SettingsFooter",
+        "SettingsLinks",
         "SettingsPanel",
         "SettingsSections",
-        "SettingsSwitch",
         "ShellHeader",
         "ShellNavColumn",
         "ShellSidebar",
         "ShortcutsOverlay",
         "Slider",
         "SliderPanel",
+        "TabsRow",
         "Tag",
         "TagGraph",
         "TagModeContext",
@@ -441,7 +271,9 @@
         "useDragResize",
         "useGrabEdge",
         "useMediaQuery",
-        "usePrefersReducedMotion"
+        "usePrefersReducedMotion",
+        "useScrollFade",
+        "warnJsx"
       ],
       "external": [
         "@floating-ui/react",
@@ -507,14 +339,6 @@
         "iconNames",
         "registerIcons"
       ],
-      "external": []
-    },
-    "site-footer": {
-      "kol": [
-        "PortalFooter"
-      ],
-      "local": {},
-      "support": [],
       "external": []
     },
     "type-scale": {
@@ -600,6 +424,7 @@
         "MediaLibraryPages",
         "MediaPlayer",
         "MediaTile",
+        "Menu",
         "MenuItem",
         "Modal",
         "ModalProvider",
@@ -648,6 +473,7 @@
       "support": [
         "armLongPress",
         "createIndex",
+        "credentials",
         "formatSize",
         "glyphLadders",
         "iconNames",
@@ -668,6 +494,7 @@
         "railRow",
         "railSlot",
         "ratios",
+        "registerCredentialedOrigin",
         "registerIcons",
         "search",
         "searchItems",
@@ -682,6 +509,7 @@
         "useMediaQuery",
         "usePlayback",
         "usePrefersReducedMotion",
+        "useScrollFade",
         "warnJsx"
       ],
       "external": [
@@ -715,7 +543,9 @@
         "Icon",
         "IconFrame",
         "Input",
+        "Kbd",
         "MaterialSummary",
+        "Menu",
         "MenuItem",
         "NotationPanel",
         "PiecePalette",
@@ -723,6 +553,7 @@
         "PlaybackControls",
         "Popover",
         "PopoverPanel",
+        "SearchInput",
         "SetupPanel",
         "Table",
         "VariationTree"
@@ -800,6 +631,7 @@
         "ContentText",
         "Icon",
         "Input",
+        "Kbd",
         "Modal",
         "Popover",
         "SizeOrDownload",
@@ -814,6 +646,107 @@
         "motion",
         "registerIcons",
         "tone"
+      ],
+      "external": [
+        "@floating-ui/react",
+        "gsap"
+      ]
+    },
+    "controls": {
+      "kol": [
+        "Button",
+        "ChannelStrip",
+        "CloseButton",
+        "ContextMenu",
+        "CurveEditor",
+        "Divider",
+        "Dropdown",
+        "EnvelopeGenerator",
+        "Fader",
+        "FlipCard",
+        "FlipToggle",
+        "FullscreenOverlay",
+        "Icon",
+        "IconButton",
+        "IconFrame",
+        "Input",
+        "InspectorSection",
+        "JackSocket",
+        "Kbd",
+        "Knob",
+        "KnobPanel",
+        "LabeledControl",
+        "LabeledControlSection",
+        "LabeledJack",
+        "LayerStack",
+        "Menu",
+        "MenuDatePicker",
+        "MenuDivider",
+        "MenuFilter",
+        "MenuItem",
+        "MenuMore",
+        "MenuRow",
+        "ModuleFrame",
+        "ModuleHeader",
+        "MultiSelect",
+        "PageHeader",
+        "PageShell",
+        "PanelLabel",
+        "ParamSheet",
+        "Popover",
+        "PopoverPanel",
+        "Rail",
+        "RailKit",
+        "RockerSwitch",
+        "SearchInput",
+        "SectionText",
+        "SegmentedToggle",
+        "SettingsMulti",
+        "SettingsRow",
+        "SettingsSwitch",
+        "SignalReference",
+        "SignalScope",
+        "Slider",
+        "SliderPanel",
+        "Stepper",
+        "TabsRow",
+        "TimelineDock",
+        "Toggle",
+        "ToggleCheckbox",
+        "ToggleSwitch",
+        "Tooltip",
+        "XYPad"
+      ],
+      "local": {
+        "..": [
+          "App",
+          "AppControls",
+          "Compositions",
+          "Menus",
+          "Parametric",
+          "Specimen"
+        ]
+      },
+      "support": [
+        "adsr",
+        "armLongPress",
+        "defaultCurveFor",
+        "expression",
+        "glyphLadders",
+        "iconNames",
+        "layerStack",
+        "layerTree",
+        "motion",
+        "railRow",
+        "reference",
+        "registerIcons",
+        "tone",
+        "useContextMenu",
+        "useGrabEdge",
+        "useMediaQuery",
+        "usePopover",
+        "usePrefersReducedMotion",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -835,9 +768,12 @@
         "IconFrame",
         "Input",
         "InspectorRail",
+        "Kbd",
         "LayerStack",
+        "Menu",
         "MenuItem",
         "Popover",
+        "SearchInput",
         "SegmentedToggle",
         "SelectionOverlay",
         "TabsRow",
@@ -856,7 +792,8 @@
         "registerIcons",
         "tone",
         "useDragResize",
-        "useGrabEdge"
+        "useGrabEdge",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -874,9 +811,12 @@
         "Icon",
         "IconFrame",
         "Input",
+        "Kbd",
+        "Menu",
         "MenuItem",
         "Pill",
         "Popover",
+        "SearchInput",
         "Slider",
         "SliderPanel",
         "SpecimenSectionHeader",
@@ -920,6 +860,7 @@
         "Icon",
         "IconFrame",
         "Input",
+        "Kbd",
         "KindPreview",
         "MediaPlayer",
         "PdfPage",
@@ -934,6 +875,7 @@
       "local": {},
       "support": [
         "armLongPress",
+        "credentials",
         "glyphLadders",
         "iconNames",
         "id3",
@@ -942,6 +884,7 @@
         "mediaKinds",
         "motion",
         "parseFrontmatter",
+        "registerCredentialedOrigin",
         "registerIcons",
         "tone",
         "usePlayback"
@@ -961,6 +904,7 @@
         "FullscreenOverlay",
         "Icon",
         "IconFrame",
+        "Kbd",
         "LoaderIntro",
         "LoaderOverlay",
         "Table",
@@ -1017,6 +961,7 @@
         "MediaPlayer",
         "MediaTile",
         "MediaViewer",
+        "Menu",
         "MenuItem",
         "Modal",
         "OptionRow",
@@ -1050,6 +995,7 @@
         "armLongPress",
         "createIndex",
         "createMediaClient",
+        "credentials",
         "formatSize",
         "glyphLadders",
         "iconNames",
@@ -1065,6 +1011,7 @@
         "parseFrontmatter",
         "railRow",
         "ratios",
+        "registerCredentialedOrigin",
         "registerIcons",
         "search",
         "searchItems",
@@ -1076,7 +1023,8 @@
         "useMarquee",
         "useMediaQuery",
         "usePlayback",
-        "usePrefersReducedMotion"
+        "usePrefersReducedMotion",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -1089,9 +1037,16 @@
     },
     "metrics-dashboard": {
       "kol": [
+        "AssetRow",
         "Badge",
+        "Button",
         "Candlestick",
+        "CaptureCard",
+        "Card",
         "CardHeader",
+        "CloseButton",
+        "ContinueCard",
+        "CoverTile",
         "DashAlertCard",
         "DashChartCard",
         "DashFeaturedCard",
@@ -1102,33 +1057,62 @@
         "DashTableCard",
         "DashTooltip",
         "DashboardGrid",
+        "DetailsOverlay",
+        "Divider",
         "DonutChart",
+        "FloatCard",
+        "FoldedHead",
+        "FullscreenOverlay",
         "GridCard",
         "Heatmap",
         "Histogram",
         "Icon",
+        "IconFrame",
+        "KanbanColumn",
+        "Kbd",
+        "Legend",
         "LegendRow",
         "LineChart",
+        "LinkCard",
+        "LiveCard",
+        "Menu",
+        "MenuItem",
         "MetricsDashboard",
+        "NoteCard",
         "Popover",
+        "PositionBlock",
+        "ProgressLine",
+        "ProjectCard",
+        "ProportionBar",
+        "RankedList",
         "ScatterPlot",
+        "SearchInput",
+        "SectionHead",
         "SegmentedToggle",
+        "SourceCard",
         "Sparkline",
-        "Table"
+        "StatTiles",
+        "Table",
+        "TaskCard",
+        "ToggleCheckbox",
+        "WeeklyBars"
       ],
       "local": {},
       "support": [
         "demo-data",
+        "float",
         "formatB2Size",
         "formatMetric",
         "glyphLadders",
         "iconNames",
+        "layerStack",
         "metrics-constants",
         "registerIcons",
         "timeAgo",
         "tone",
         "useChartTooltip",
         "useCountUp",
+        "useMediaQuery",
         "useMetricsData"
       ],
       "external": [
@@ -1156,6 +1140,7 @@
         "Kbd",
         "LabeledControl",
         "Logomark",
+        "Menu",
         "MenuItem",
         "Modal",
         "OptionRow",
@@ -1289,6 +1274,7 @@
         "useNavHidden",
         "usePixiApp",
         "usePrefersReducedMotion",
+        "useScrollFade",
         "useTouchGestures",
         "wireColors"
       ],
@@ -1304,9 +1290,11 @@
     },
     "overlays": {
       "kol": [
+        "AccountForm",
         "Button",
         "CloseButton",
         "CommandOverlay",
+        "Dialog",
         "Divider",
         "Dropdown",
         "FullscreenOverlay",
@@ -1316,6 +1304,7 @@
         "Kbd",
         "LabeledControl",
         "LabeledControlSection",
+        "Menu",
         "MenuItem",
         "ModalProvider",
         "OptionRow",
@@ -1328,6 +1317,7 @@
         "SettingsPanel",
         "SettingsRow",
         "ShortcutsOverlay",
+        "TabsRow",
         "Tag",
         "ToggleCheckbox",
         "ToggleSwitch"
@@ -1336,10 +1326,12 @@
         "..": [
           "CommandModes",
           "Overlays",
+          "SignIn",
           "Specimen"
         ]
       },
       "support": [
+        "floatSurfaceClass",
         "glyphLadders",
         "iconNames",
         "layerStack",
@@ -1352,7 +1344,8 @@
         "useGrabEdge",
         "useMediaQuery",
         "useModal",
-        "usePrefersReducedMotion"
+        "usePrefersReducedMotion",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -1368,12 +1361,15 @@
         "Dropdown",
         "Icon",
         "IconFrame",
+        "Kbd",
+        "Menu",
         "MenuItem",
         "Pill",
         "Popover",
         "PriceDisplay",
         "ProductDetailLayout",
         "QuantityInput",
+        "SearchInput",
         "SpecList",
         "TabsRow"
       ],
@@ -1384,7 +1380,8 @@
         "railRow",
         "registerIcons",
         "tone",
-        "usePrefersReducedMotion"
+        "usePrefersReducedMotion",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -1412,6 +1409,7 @@
         "KolKnob",
         "LabeledControl",
         "Logomark",
+        "Menu",
         "MenuItem",
         "ModuleFrame",
         "ModuleHeader",
@@ -1612,6 +1610,7 @@
         "MediaPlayer",
         "MediaTile",
         "MediaViewer",
+        "Menu",
         "MenuItem",
         "Modal",
         "OptionRow",
@@ -1646,6 +1645,7 @@
       "support": [
         "armLongPress",
         "createIndex",
+        "credentials",
         "formatSize",
         "glyphLadders",
         "iconNames",
@@ -1661,6 +1661,7 @@
         "parseFrontmatter",
         "railRow",
         "ratios",
+        "registerCredentialedOrigin",
         "registerIcons",
         "search",
         "searchItems",
@@ -1673,7 +1674,8 @@
         "useMediaQuery",
         "usePlayback",
         "usePointerSort",
-        "usePrefersReducedMotion"
+        "usePrefersReducedMotion",
+        "useScrollFade"
       ],
       "external": [
         "@floating-ui/react",
@@ -1696,6 +1698,7 @@
         "Icon",
         "Image",
         "Input",
+        "Kbd",
         "OverlayGlassPanel",
         "SectionCardItem",
         "SectionCards",
@@ -1740,6 +1743,7 @@
         "Kbd",
         "LabeledControl",
         "LabeledControlSection",
+        "Menu",
         "MenuItem",
         "PageHeader",
         "PageShell",
@@ -1780,6 +1784,7 @@
         "useGrabEdge",
         "useMediaQuery",
         "usePrefersReducedMotion",
+        "useScrollFade",
         "warnJsx"
       ],
       "external": [
@@ -1812,6 +1817,7 @@
         "Image",
         "ImageBlock",
         "Input",
+        "Kbd",
         "Modal",
         "OverlayGlassPanel",
         "Pill",
@@ -1849,66 +1855,116 @@
     },
     "styleguide": {
       "kol": [
+        "ActionButton",
         "AssetCard",
         "AssetGrid",
         "AssetPlaceholder",
         "AssetTable",
+        "BlockSwatch",
+        "BlockType",
         "BrandAvatar",
         "BusinessCardBack",
         "BusinessCardFront",
+        "Button",
+        "CardLogo",
         "ClearspaceDiagram",
+        "CloseButton",
+        "CodeBlock",
         "ColorAnatomy",
         "ColorInputRow",
+        "ColorLab",
+        "ColorPickerPopover",
         "ColorRamp",
         "ColorSwatch",
         "ComboLab",
+        "CopyButton",
+        "Divider",
+        "Dropdown",
         "EmailSignature",
         "Envelope",
         "FeatureSplit",
+        "FullscreenOverlay",
         "Icon",
+        "IconFrame",
         "Input",
+        "Kbd",
+        "LabWindow",
+        "LabeledControl",
         "Letterhead",
         "LetterheadCorrespondence",
-        "LogoCard",
+        "Lockup",
+        "LockupLab",
         "LogoScaling",
+        "Menu",
+        "MenuItem",
         "MoodTile",
+        "PaletteHarmonyWheel",
         "Popover",
         "PostEditorial",
         "PostPhoto",
         "PostProduct",
         "PostType",
         "ProsePreview",
+        "QuickLookFrame",
+        "Rail",
+        "RailKit",
+        "SearchInput",
         "SectionSplit",
         "SectionText",
+        "SegmentedToggle",
+        "SettingsPanel",
+        "SettingsSections",
+        "Slider",
+        "SliderPanel",
+        "SpectrumControls",
         "SpectrumGrid",
         "StoryPhoto",
         "StoryType",
-        "Swatch",
         "Table",
+        "TabsRow",
         "ToggleSwitch",
+        "Tooltip",
         "TransparentX",
-        "TypeBlock",
+        "TypeLab",
         "TypeSample",
-        "TypeSpecCard",
-        "ViewToggle"
+        "TypeSpecCard"
       ],
       "local": {},
       "support": [
+        "armLongPress",
+        "colorLab",
+        "colorMath",
+        "comboLab",
         "comboLayouts",
         "comboMath",
         "cssVar",
         "glyphLadders",
+        "hexToHsl",
+        "hslToHex",
         "iconNames",
+        "layerStack",
+        "lockupLab",
+        "motion",
+        "railRow",
         "registerIcons",
         "sectionBleed",
         "sectionHeights",
         "sectionSurface",
         "tone",
+        "typeLab",
         "typographyCuts",
+        "useDragResize",
+        "useGrabEdge",
+        "useMediaQuery",
+        "usePrefersReducedMotion",
+        "useScrollFade",
         "useSectionTheme"
       ],
       "external": [
-        "@floating-ui/react"
+        "@floating-ui/react",
+        "gsap",
+        "react-syntax-highlighter",
+        "react-syntax-highlighter/dist/esm/styles/prism"
       ]
     },
     "work-portfolio": {
@@ -1972,6 +2028,7 @@
         "ContentText",
         "Icon",
         "Input",
+        "Kbd",
         "Modal",
         "Popover",
         "Tag",
@@ -1999,6 +2056,7 @@
         "Button",
         "Icon",
         "Image",
+        "Kbd",
         "TiltBento"
       ],
       "local": {},
@@ -2022,6 +2080,7 @@
       "kol": [
         "Button",
         "Icon",
+        "Kbd",
         "SectionCta",
         "SectionText"
       ],
@@ -2041,6 +2100,7 @@
       "kol": [
         "Button",
         "Icon",
+        "Kbd",
         "SectionCta",
         "SectionText"
       ],
@@ -2060,6 +2120,7 @@
       "kol": [
         "Button",
         "Icon",
+        "Kbd",
         "SectionCta",
         "SectionText"
       ],
@@ -2093,6 +2154,7 @@
       "kol": [
         "Button",
         "Icon",
+        "Kbd",
         "SectionCardItem",
         "SectionCards",
         "SectionText"
@@ -2177,6 +2239,7 @@
         "FeaturedCarousel",
         "Icon",
         "Image",
+        "Kbd",
         "OverlayGlassPanel",
         "SectionHero",
         "SectionText"
@@ -2233,6 +2296,7 @@
         "FeaturedCarousel",
         "Icon",
         "Image",
+        "Kbd",
         "OverlayGlassPanel",
         "SectionHero",
         "SectionText"
@@ -2257,6 +2321,7 @@
         "Button",
         "Icon",
         "Input",
+        "Kbd",
         "SectionNewsletter",
         "SectionText"
       ],
@@ -2278,6 +2343,7 @@
         "AssetPlaceholder",
         "Button",
         "Icon",
+        "Kbd",
         "SectionSplit",
         "SectionText"
       ],
@@ -2316,6 +2382,7 @@
         "AssetPlaceholder",
         "Button",
         "Icon",
+        "Kbd",
         "SectionSplit",
         "SectionText"
       ],
@@ -2338,6 +2405,7 @@
         "AssetPlaceholder",
         "Button",
         "Icon",
+        "Kbd",
         "SectionSplit",
         "SectionText"
       ],
@@ -2360,6 +2428,7 @@
         "AssetPlaceholder",
         "Button",
         "Icon",
+        "Kbd",
         "SectionSplit",
         "SectionText"
       ],

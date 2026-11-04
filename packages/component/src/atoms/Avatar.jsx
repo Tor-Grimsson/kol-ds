@@ -43,7 +43,7 @@ export default function Avatar({ initial, src, alt = '', size = 'sm', className 
 
   return (
     <span
-      className={`${shell} inline-flex items-center justify-center text-emphasis font-narrow font-semibold`}
+      className={`${shell} inline-flex items-center justify-center text-emphasis font-inter font-semibold`}
     >
       {initial}
     </span>

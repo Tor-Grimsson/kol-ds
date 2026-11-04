@@ -6,6 +6,7 @@ import Divider from '../atoms/Divider.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import Input from '../atoms/Input.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
+import SearchInput from '../molecules/SearchInput.jsx'
 import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import MediaTile from '../molecules/MediaTile.jsx'
@@ -1049,6 +1050,14 @@ function PickerShell({ onClose, onPick }) {
  * @param {boolean}  flat         start in flat mode
  * @param {Function} onClose  modal only — Esc, backdrop, close button
  * @param {Function} onSelect `(url, { contentType, kind })`. In `modal` it also closes.
+ *
+ * `float` (float-everything W6 row 87, 2026-11-04 — kol-float--style 46:2960): the asset window — a 310 float panel,
+ * non-modal (no scrim, the scene stays live), `kol-float-solid` on the sheet radius, 20 in. The title in
+ * `kol-float-window` with the × · a float SearchInput · the files as rows (a 44 × 54 cover on 6, the name in Inter 13,
+ * `ext · size` in mono 10, a check on the picked one) — a press picks (`onSelect`) · `onImport` draws `+ Import`
+ * (a float button, secondary) beside the count. Same `open` · `client` · `accept` · `onClose` · `onSelect` as `modal`.
+ * @param {string}   title     float: the window's title (default `Assets`)
+ * @param {Function} onImport  float: shows the import button · {string} importLabel (default `Import`)
  */
 export default function MediaLibrary({
   variant = 'page',
@@ -1063,6 +1072,7 @@ export default function MediaLibrary({
   ...pageProps
 }) {
   const opts = { client, accept, pageSize, defaultSort, flat }
+  if (variant === 'float') return open ? withProvider(<FloatPicker onClose={onClose} onPick={onSelect} {...pageProps} />, opts) : null
   if (variant === 'modal') {
     if (!open) return null
     return withProvider(<PickerShell onClose={onClose} onPick={onSelect} />, opts)
@@ -1136,6 +1146,51 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
         )}
       </div>
     </FullscreenOverlay>
+  )
+}
+
+/* THE ASSET WINDOW (`variant="float"`, W6 row 87) — read-only, a picker: rows from the provider, the search its own */
+function FloatPicker({ onClose, onPick, onImport, importLabel = 'Import', title = 'Assets', className = '' }) {
+  const { sorted, search, setSearch, mediaUrl, loading, error } = useMediaLibrary()
+  const [picked, setPicked] = useState(null)
+  const files = sorted.filter((o) => o.type !== 'folder')
+  const pick = (o) => { setPicked(o.key); onPick?.(mediaUrl(o.fullKey ?? o.key), { contentType: o.contentType, kind: o.kind }) }
+  return (
+    <section role="dialog" aria-label={title} className={`kol-float-solid flex w-[310px] max-w-full flex-col gap-4 rounded-[var(--kol-float-menu-r)] p-5 ${className}`.trim()}>
+      <div className="flex items-center gap-3">
+        <span className="kol-float-window min-w-0 flex-1 truncate text-fg-emphasis">{title}</span>
+        {onClose && (
+          <button type="button" aria-label="Close" onClick={onClose} className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-oq-64 hover:bg-fg-08 hover:text-oq-96 cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
+            <Icon name="x" size={16} />
+          </button>
+        )}
+      </div>
+      <SearchInput variant="float" value={search ?? ''} onChange={(e) => setSearch(e.target.value)} placeholder="Search assets…" />
+      <ul className="m-0 flex max-h-[320px] list-none flex-col gap-1 overflow-y-auto p-0 [scrollbar-width:none]">
+        {error && <li className="kol-float-hint text-ui-error">Couldn’t load: {error}</li>}
+        {!error && loading && <li className="kol-float-hint text-fg-64">Loading…</li>}
+        {!error && !loading && files.length === 0 && <li className="kol-float-hint text-fg-64">Nothing here.</li>}
+        {files.map((o) => (
+          <li key={o.key}>
+            <button type="button" onClick={() => pick(o)} aria-pressed={picked === o.key}
+              className={`flex w-full items-center gap-3 rounded-[var(--kol-float-list-r)] p-1 text-left cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${picked === o.key ? 'bg-fg-16' : 'hover:bg-fg-08'}`}>
+              <span className="h-[54px] w-11 shrink-0 overflow-hidden rounded-md bg-fg-08"><Thumb row={o} mediaUrl={mediaUrl} /></span>
+              <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                <span className="kol-float-hint truncate text-fg-emphasis" style={{ fontSize: 13 }}>{o.displayKey}</span>
+                <span className="kol-float-ruler truncate uppercase text-fg-64">{[o.key.split('.').pop(), formatSize(o.size)].filter(Boolean).join(' · ')}</span>
+              </span>
+              {picked === o.key && <Icon name="check" size={14} className="mr-2 shrink-0 text-oq-96" />}
+            </button>
+          </li>
+        ))}
+      </ul>
+      {(onImport || files.length > 0) && (
+        <div className="flex items-center gap-3">
+          {onImport && <Button variant="float" tone="secondary" size="md" iconLeft="plus" onClick={onImport}>{importLabel}</Button>}
+          <span className="kol-float-label text-fg-64">{files.length} {files.length === 1 ? 'asset' : 'assets'}</span>
+        </div>
+      )}
+    </section>
   )
 }
 

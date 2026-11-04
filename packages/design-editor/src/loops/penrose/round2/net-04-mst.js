@@ -10,15 +10,15 @@ import { clear, strokeOutline, wrapLoop, sampleInside, repelPoints, pc } from '.
 // bigger node cluster at the cursor and the veins grow out to meet it.
 
 const PARAMS = [
-  { key: 'N', type: 'int', min: 40, max: 400, default: 220, step: 10 },
-  { key: 'edgesPerSec', type: 'int', min: 2, max: 80, default: 30, step: 1 },
+  { key: 'N', label: 'nodes', type: 'int', min: 40, max: 400, default: 220, step: 10 },
+  { key: 'edgesPerSec', label: 'edges/sec', type: 'int', min: 2, max: 80, default: 30, step: 1 },
   { key: 'depthBias', type: 'range', min: 0, max: 1, default: 0.6, step: 0.05, label: 'medialBias' },
   { key: 'interact', type: 'range', min: 0, max: 3, step: 0.1, default: 1, label: 'interaction' },
 ]
 
 export const r2_net_04_mst = {
   id: 'r2-net-04-mst',
-  name: 'MST MEDIAL AXIS VEIN',
+  name: 'MST medial axis vein',
   repo: 'Kruskal (1956) + Blum medial axis (1967)',
   summary:
     'Dense node field biased toward the medial axis; Kruskal MST grows shortest-first as a THICK vein network — backbone edges heavy, growth front glowing and pulsing. Dissolve-and-regrow churn; press bursts new nodes for the veins to reach.',

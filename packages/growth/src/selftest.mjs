@@ -1,6 +1,6 @@
 // node src/selftest.mjs — the engine with no density field (no DOM): it grows to the cap, a seed repeats, poke moves nodes.
 import assert from 'node:assert/strict'
-import { Growth, mulberry32 } from './index.js'
+import { Growth, mulberry32, outline } from './index.js'
 
 const grow = (seed) => {
   const g = new Growth({ w: 400, h: 300, rand: mulberry32(seed), cap: 600 })
@@ -36,4 +36,21 @@ c.setParams({ minGap: 6, maxGap: 24, contrast: 1.4, growth: 8, bleed: 30 })
 c.seed()
 for (let i = 0; i < 600 && c.x.length < c.cap; i++) c.step()
 assert.ok(c.x.every((v, i) => v >= -30 && v <= 230 && c.y[i] >= -30 && c.y[i] <= 180), 'held inside the bled frame')
+/* a ring seed (GrowthLineSeedOutline): a solid square's 0.5 iso-line, resampled to half the local gap and inset inward */
+const sq = { cols: 40, rows: 30, data: new Float32Array(1200) }
+for (let j = 8; j < 22; j++) for (let i = 10; i < 30; i++) sq.data[j * 40 + i] = 1
+const edge = outline(sq)
+assert.ok(edge && edge.length > 40, 'the square has an outline')
+const o = new Growth({ w: 400, h: 300, density: sq, rand: mulberry32(1) })
+o.setParams({ minGap: 6, maxGap: 24 })
+o.seed({ points: edge, inset: 4 })
+const on = o.x.length, steps = o.x.map((v, i) => Math.hypot(o.x[(i + 1) % on] - v, o.y[(i + 1) % on] - o.y[i]))
+assert.ok(on > 50 && Math.max(...steps) <= 12.5, `resampled to half the gap (${on} nodes, longest ${Math.max(...steps).toFixed(1)})`)
+assert.ok(o.x.every((v, i) => v > 100 && v < 300 && o.y[i] > 80 && o.y[i] < 220), 'inset inside the square')
+const px = new Growth({ w: 400, h: 300, density: sq })
+px.setParams({ minGap: 6, maxGap: 24 })
+px.seed({ points: edge.map(([a, b]) => [a * 400, b * 300]), inset: 4 })
+assert.equal(px.x.length, on, 'sim px and 0..1 seed the same ring')
+for (let i = 0; i < 300; i++) o.step()
+assert.ok(o.x.length > on, 'an outline-seeded line grows')
 console.log('kol-growth selftest ok')

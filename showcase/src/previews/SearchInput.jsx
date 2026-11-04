@@ -13,7 +13,8 @@ export function Card() {
   )
 }
 
-export const variants = ['filled', 'ghost', 'outline']
+/* `float` (float-everything W3 row 40): the capsule on the well with the drawn ⌘K cap */
+export const variants = ['filled', 'ghost', 'outline', 'float']
 export const tones = ['default', 'inverse']
 export const sizes = ['md', 'xs', 'sm']
 
@@ -31,6 +32,7 @@ export default function SearchInputPreview({ variant = 'filled', tone = 'default
         onChange={(e) => setA(e.target.value)}
         onClear={() => setA('')}
         shortcutHint="⌘K"
+        placeholder={variant === 'float' ? 'Search assets…' : undefined}
       />
       {/* bare body plan — the search modal's field, chrome off */}
       <SearchInput

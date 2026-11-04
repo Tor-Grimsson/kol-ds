@@ -10,7 +10,8 @@ const OPTIONS = [
 
 /* ONE instance; variant and size ride the toolbar pickers (2026-09-30, the names audit — the
  * three variants used to stack side by side, one of them open). */
-export const variants = ['primary', 'grey', 'outline']
+/* `float` (float-everything W2 row 25 · W4 row 54): the capsule on the well, its list 8 under it */
+export const variants = ['primary', 'grey', 'outline', 'float']
 
 /* xs is the panel rung (ControlsXsRung, 2026-09-01) — opt-in; the default stays sm */
 export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'faint', 'sunken']

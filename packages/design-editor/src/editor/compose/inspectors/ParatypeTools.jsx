@@ -1,7 +1,9 @@
 import { Button, Dropdown, LabeledControl, XYPad, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
 import { visibleParams } from '../../params/schema'
+import { isBinding } from '../../params/resolve'
 import { loopById } from '../../../loops/registry'
+import { useControlSize } from '../../params/controlSize'
 
 /**
  * ParatypeTools — the paratype loop's extra control surface, mounted once in
@@ -18,19 +20,20 @@ import { loopById } from '../../../loops/registry'
  * Axis choices persist on the layer as `_xyX` / `_xyY` (the `_framePreset`
  * off-schema idiom) so they survive reselection.
  */
-export default function ParatypeTools({ layer, patch, tab }) {
+export default function ParatypeTools({ layer, patch, tab, renderAnimate }) {
   if (layer?.loopId !== 'paratype-glyph') return null
   if (tab === 'generate') return <FlattenAction layer={layer} />
-  if (tab === 'style') return <ExplorePad layer={layer} patch={patch} />
+  if (tab === 'style') return <ExplorePad layer={layer} patch={patch} renderAnimate={renderAnimate} />
   return null
 }
 
 function FlattenAction({ layer }) {
+  const cs = useControlSize()
   const { flattenParatype } = useComposeState()
   if (!flattenParatype) return null
   return (
     <Tooltip label="Flatten the glyph(s) to vector shape layers (one-way)"><Button aria-label="Flatten the glyph(s) to vector shape layers (one-way)"
-      tone="primary" size="sm" className="w-full"
+      tone="primary" size={cs} className="w-full"
       onClick={() => flattenParatype(layer.id)}
     >
       Flatten to vector
@@ -38,7 +41,8 @@ function FlattenAction({ layer }) {
   )
 }
 
-function ExplorePad({ layer, patch }) {
+function ExplorePad({ layer, patch, renderAnimate }) {
+  const cs = useControlSize()
   const loop = loopById(layer.loopId)
   const axes = visibleParams(loop?.params ?? [], layer).filter((q) => q.type === 'range')
   if (axes.length < 2) return null
@@ -56,6 +60,10 @@ function ExplorePad({ layer, patch }) {
   if (!xDef || !yDef) return null
 
   const val = (key, def) => (typeof layer[key] === 'number' ? layer[key] : def.default)
+  /* EACH AXIS TAKES A MODULATE DOT (plan 40 § 5.1, user 2026-10-24: *"in paratype there is no way to modulate the xy
+     pad?"*) — the axes are the loop's own flat params, so the dot is the same BindDot; a bound axis is the graph's and
+     the pad stops writing it */
+  const bound = (key) => isBinding(layer[key])
   const snap = (v, def) => {
     const st = def.step ?? 1
     return st < 1 ? Number((Math.round(v / st) * st).toFixed(4)) : Math.round(v)
@@ -64,21 +72,27 @@ function ExplorePad({ layer, patch }) {
 
   return (
     <>
-      <span className="kol-helper-10 text-meta">Explore</span>
+      <span className="kol-eyebrow text-fg-80">Explore</span>
       <div className="grid grid-cols-2 gap-2">
         <LabeledControl label="X axis">
-          <Dropdown
-            variant="subtle" size="sm" className="w-full"
-            options={options} value={xKey}
-            onChange={(v) => patch({ _xyX: v })}
-          />
+          <div className="flex items-center gap-2">
+            <Dropdown
+              variant="subtle" size={cs} className="w-full min-w-0"
+              options={options} value={xKey}
+              onChange={(v) => patch({ _xyX: v })}
+            />
+            {renderAnimate?.(xDef)}
+          </div>
         </LabeledControl>
         <LabeledControl label="Y axis">
-          <Dropdown
-            variant="subtle" size="sm" className="w-full"
-            options={options} value={yKey}
-            onChange={(v) => patch({ _xyY: v })}
-          />
+          <div className="flex items-center gap-2">
+            <Dropdown
+              variant="subtle" size={cs} className="w-full min-w-0"
+              options={options} value={yKey}
+              onChange={(v) => patch({ _xyY: v })}
+            />
+            {renderAnimate?.(yDef)}
+          </div>
         </LabeledControl>
       </div>
       <XYPad
@@ -86,7 +100,7 @@ function ExplorePad({ layer, patch }) {
         xMin={xDef.min ?? 0} xMax={xDef.max ?? 1}
         yMin={yDef.min ?? 0} yMax={yDef.max ?? 1}
         xLabel={xDef.label} yLabel={yDef.label}
-        onChange={(x, y) => patch({ [xKey]: snap(x, xDef), [yKey]: snap(y, yDef) })}
+        onChange={(x, y) => patch({ ...(!bound(xKey) && { [xKey]: snap(x, xDef) }), ...(!bound(yKey) && { [yKey]: snap(y, yDef) }) })}
       />
     </>
   )

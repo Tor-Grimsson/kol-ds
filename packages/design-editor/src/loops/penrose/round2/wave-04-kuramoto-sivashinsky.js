@@ -12,7 +12,7 @@ import { num } from '../knobs.js'
 import { clear, strokeOutline, wrapLoop, rampRGB, roleRGB, stampGrid } from '../common.js'
 
 const PARAMS          = [
-  { key: 'res',   type: 'int',   min: 64,  max: 128, default: 96,  step: 16,   label: 'grid res (2ⁿ)' },
+  { key: 'res',   type: 'int',   min: 64,  max: 256, default: 256,  step: 16,   label: 'grid res (2ⁿ)' },
   { key: 'dt',    type: 'range', min: 0.1, max: 0.8, default: 0.3, step: 0.05, label: 'Δt' },
   { key: 'scale', type: 'range', min: 0.5, max: 4.0, default: 1.5, step: 0.1,  label: 'domain scale' },
   { key: 'steps', type: 'int',   min: 1,   max: 6,   default: 2,   step: 1,    label: 'steps/frame' },
@@ -55,13 +55,13 @@ function fft1d(re              , im              , inv         )       {
 
 export const r2_wave_04_kuramoto_sivashinsky            = {
   id: 'r2-wave-04-kuramoto-sivashinsky',
-  name: 'KURAMOTO-SIVASHINSKY CHAOS',
+  name: 'Kuramoto-Sivashinsky chaos',
   repo: 'Kuramoto & Tsuzuki 1976',
   summary: 'Fourth-order PDE producing sustained spatiotemporal chaos. Energy injected at intermediate scales, damped at small scales, cascaded by the nonlinear ∇²u·∇u term. Cells crawl and merge indefinitely — never repeats.',
   helps: 'Best choice for an endlessly looping fill texture with no transient settling — the chaos is intrinsic, not decaying.',
   params: PARAMS,
   init({ ctx, sdf, W, H, rng, params, pointer }) {
-    let G     = num(params, 'res', 96)
+    let G     = num(params, 'res', 256)
     let dt    = num(params, 'dt', 0.3)
     let scale = num(params, 'scale', 1.5)
     let steps = num(params, 'steps', 2)

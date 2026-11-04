@@ -34,6 +34,11 @@
     "source": "kol-r2b2/src/KindPreview.jsx#L78-L87",
     "date": null
   },
+  "BezierPathEditor — a 2D bezier node editor: nodes with in/out handles, drag, add (double-click), delete; a value of points": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr `compose/inspectors/ProfileEditor.jsx` (the organic band's edge profile) and `KineticPanel.jsx` `CustomPathPoints` (a kinetic layer's custom path)",
+    "date": null
+  },
   "Button (tone primary, hover)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/compose/inspectors/LayerInspector.jsx#L275",
@@ -67,6 +72,11 @@
   "ColorPickerPopover": {
     "repo": "kol-monitor",
     "source": "kol-monitor/src/components/atoms/ColorPicker.jsx#L28-L154",
+    "date": null
+  },
+  "ColorPickerPopoverExtras — a footer slot on ColorPickerPopover for swatches and quick states": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr `compose/inspectors/ColorField.jsx` builds its own colour popover from SBSquare + HueStrip because ColorPickerPopover has nowhere for its palette-reference swatches (Primary · Secondary · Light · Dark · Accent · Background) and its Theme / None buttons.",
     "date": null
   },
   "ColorRampNarrowCaptions": {
@@ -219,9 +229,19 @@
     "source": "kol-ds-ui/packages/design-editor/src/editor/compose/useComposeFile.js + editor/library/LibraryProvider.jsx",
     "date": null
   },
+  "TabsRow fold (stacked pill) · AppFloatNav · AppShell touch=\"floats\"": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Labs on a phone; kol-component TabsRow.jsx (StackedTabs fold), kol-shell AppFloatNav.jsx#L260 + #L342",
+    "date": null
+  },
   "FloatingStyleAndSignInDemos": {
     "repo": "kol-fxr",
     "source": "kol-fxr — canvas \"FXR logged-out Home\", page Round 3 (https://claude.ai/artifact/W81QSMMdZXXWFrFBtGWjZP); kol-shell HubHome.jsx#L262-L277 · PhoneNav · TransportPill; kol-theme kol-components-shell.css .kol-more-sheet",
+    "date": null
+  },
+  "AppShell touch=\"floats\"": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Labs on a phone, kol-shell 0.99.2 AppShell.jsx#L452-459",
     "date": null
   },
   "AppShell touch=\"floats\" — the top float's rows": {
@@ -259,9 +279,19 @@
     "source": "kol-website/pnpm-workspace.yaml#L8-L14",
     "date": null
   },
+  "FunctionPlot — a plot of y = f(u) over one loop with a cursor at the current u": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr `params/ModulationEditor.jsx`",
+    "date": null
+  },
   "GrowthLineStage + kol-growth (the line settles, the intro)": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/loops/growth/engine.js#L1-L319 · kol-fxr/src/components/HomeStage.jsx#L1-L190",
+    "date": null
+  },
+  "GrowthLineSeedOutline": {
+    "repo": "kol-atlas",
+    "source": "kol-atlas/apps/workspace/src/components/Home.jsx#L8-L52",
     "date": null
   },
   "GrowthLineStage": {
@@ -319,6 +349,11 @@
     "source": "kol-fxr plan 44 (`~/dev/projects/kol-fxr/.kol/llm-plan/44-logged-out-home-and-the-fonts.md`)",
     "date": null
   },
+  "HubHome (signed-out page box)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr — Home signed out, kol-shell 0.98.0 HubHome.jsx#L284",
+    "date": null
+  },
   "PageHeader / HubSettings (kol-shell)": {
     "repo": "kol-fxr",
     "source": "kol-fxr /settings at 390 (AppHub's HubSettings, kol-shell 0.62.0)",
@@ -347,6 +382,11 @@
   "IconToggle": {
     "repo": "kol-mirror",
     "source": "kol-mirror/src/components/hall-of-mirrors/SymphonyMixer.jsx#L1037-L1079",
+    "date": null
+  },
+  "ItemList — a reorderable list of rows: number · swatch · eye · name · inline control · actions, one row selected": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr `compose/inspectors/LayerRow.jsx`",
     "date": null
   },
   "KindPreview": {
@@ -382,6 +422,11 @@
   "ListingCardThumbBorder": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/routes/Stack.jsx#L155-L175",
+    "date": null
+  },
+  "loaderApp intro mode → GrowthLineStage intro → HubHome chrome fade (the loader is the line)": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr/index.html#L6-L11 · kol-fxr/src/components/intro.js · kol-fxr/src/main.jsx#L34-L37 · kol-fxr/src/components/HomeStage.jsx#L29-L130",
     "date": null
   },
   "kol-media-client (packages/media-client)": {
@@ -454,6 +499,11 @@
     "source": "kol-component@0.280.0/src/molecules/Modal.jsx#L131-L139 (the prompt's Input)",
     "date": null
   },
+  "MoreRowsNoPathLit": {
+    "repo": "kol-shell",
+    "source": "kol-shell/src/MoreSheet.jsx#L66 (kol-shell 0.99.0), seen in kol-atlas/apps/workspace/src/components/Home.jsx",
+    "date": null
+  },
   "NavLinkUnderline": {
     "repo": "kol-website",
     "source": "kol-website/apps/web/src/styles/animations.css#L66-L88",
@@ -477,6 +527,11 @@
   "PageHeaderMonoTitle": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/pages/HomePage.jsx#L51 · kol-fxr/src/pages/LibraryPage.jsx#L84",
+    "date": null
+  },
+  "ParamBindDot — the small dot beside a param row that shows it is bound (modulated) and opens a menu": {
+    "repo": "kol-fxr",
+    "source": "kol-fxr `params/BindDot.jsx`",
     "date": null
   },
   "kol-icons/playback/pause": {

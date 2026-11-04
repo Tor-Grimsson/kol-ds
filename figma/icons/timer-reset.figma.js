@@ -1,0 +1,10 @@
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=296-3669
+// source=packages/icons/src
+// component=Icon
+import figma from 'figma'
+
+export default {
+  example: figma.code`<Icon name="timer-reset" />`,
+  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  id: 'timer-reset',
+}

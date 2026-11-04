@@ -98,9 +98,9 @@ const cpKnob = (pt, axis) => ({
 
 export const KINETIC_KNOBS = [
   // ── Style ──
-  { key: 'bg', label: 'Background', tab: 'style', type: 'color', noRandom: true,
+  { key: 'bg', label: 'Background', tab: 'style', type: 'color', role: 'bg', noRandom: true,
     get: (c) => c.bg, set: (c, v) => ({ ...c, bg: v }) },
-  { key: 'fill', label: 'Fill', tab: 'style', type: 'color', noRandom: true,
+  { key: 'fill', label: 'Fill', tab: 'style', type: 'color', role: 'fg', noRandom: true,
     get: (c, i = 0) => inst(c, i)?.fill, set: (c, v, i = 0) => patchInst(c, { fill: v }, i) },
   { key: 'font', label: 'Font', tab: 'style', type: 'select', options: FONT_OPTIONS, noRandom: true,
     get: (c, i = 0) => inst(c, i)?.font,
@@ -159,7 +159,7 @@ export const KINETIC_KNOBS = [
   { key: 'pathRadius', label: 'Radius', tab: 'style', section: 'Arrangement', type: 'range', min: 0.2, max: 1, step: 0.01, rMin: 0.5, rMax: 1,
     when: (c, i = 0) => ['circle', 'ellipse', 'spiral'].includes(ptype(c, i)),
     get: (c, i = 0) => inst(c, i)?.path?.radius ?? 0.72, set: (c, v, i = 0) => patchPath(c, { radius: v }, i) },
-  { key: 'turns', label: 'Turns', tab: 'style', section: 'Arrangement', type: 'range', min: 1, max: 6, step: 1, rMin: 2, rMax: 5,
+  { key: 'turns', label: 'Turns', tab: 'style', section: 'Arrangement', type: 'range', min: 1, max: 8, rMin: 1, rMax: 6, step: 1, rMin: 2, rMax: 5,
     when: (c, i = 0) => ptype(c, i) === 'spiral',
     get: (c, i = 0) => inst(c, i)?.path?.turns ?? 3, set: (c, v, i = 0) => patchPath(c, { turns: Math.round(v) }, i) },
   { key: 'amp', label: 'Amplitude', tab: 'style', section: 'Arrangement', type: 'range', min: 0, max: 1, step: 0.05, rMin: 0.2, rMax: 0.7,
@@ -241,7 +241,7 @@ export const KINETIC_KNOBS = [
       { value: 'sweepShift', label: 'Sweep shift' },
     ],
     get: mode, set: (c, v, i = 0) => patchMotion(c, { mode: v }, i) },
-  { key: 'cycles', label: 'Cycles', tab: 'anim', type: 'range', min: 1, max: 4, step: 1, rMin: 1, rMax: 3,
+  { key: 'cycles', label: 'Cycles', tab: 'anim', type: 'range', min: 1, max: 8, rMin: 1, rMax: 4, step: 1, rMin: 1, rMax: 3,
     when: (c, i = 0) => mode(c, i) !== 'none',
     get: (c, i = 0) => inst(c, i)?.motion?.cycles ?? 1, set: (c, v, i = 0) => patchMotion(c, { cycles: Math.round(v) }, i) },
   { key: 'motionAmp', label: 'Amount', tab: 'anim', type: 'range', min: 0.05, max: 1, step: 0.05, rMin: 0.15, rMax: 0.6,
@@ -272,7 +272,7 @@ export const KINETIC_KNOBS = [
   { key: 'stagger', label: 'Stagger', tab: 'anim', type: 'range', min: 0, max: 1, step: 0.01,
     get: (c) => inst(c)?.stagger ?? 0,
     set: (c, v) => patchAll(c, (x, i, n) => ({ stagger: v, phase: n > 1 ? (i / n) * v : 0 })) },
-  { key: 'spin', label: 'Spin', tab: 'anim', type: 'range', min: 0, max: 4, step: 1, rMin: 0, rMax: 3,
+  { key: 'spin', label: 'Spin', tab: 'anim', type: 'range', min: -8, max: 8, rMin: 0, rMax: 4, step: 1, rMin: 0, rMax: 3,
     when: (c, i = 0) => ptype(c, i) === 'radial' || ptype(c, i) === 'rings',
     get: (c, i = 0) => inst(c, i)?.path?.spin ?? 1, set: (c, v, i = 0) => patchPath(c, { spin: Math.round(v) }, i) },
 ]
@@ -291,10 +291,11 @@ export const knobRange = (k, comp, i = 0) => ({
 // evaluated against the progressively patched comp) — the LoopFields
 // randomise idiom, comp-native. `rng` is a 0..1 source (pass a seeded
 // mulberry32 stream for reproducible rolls; defaults to Math.random).
-export function randomiseComp(comp, i = 0, rng = Math.random) {
+export function randomiseComp(comp, i = 0, rng = Math.random, tabs = null) {
   let next = comp
   for (const k of KINETIC_KNOBS) {
     if (k.noRandom || k.type === 'color') continue
+    if (tabs && !tabs.includes(k.tab)) continue
     if (k.when && !k.when(next, i)) continue
     if (k.type === 'range') {
       const r = knobRange(k, next, i)
@@ -307,6 +308,22 @@ export function randomiseComp(comp, i = 0, rng = Math.random) {
       const opts = knobOptions(k, next, i)
       if (opts.length) next = k.set(next, opts[Math.floor(rng() * opts.length)].value, i)
     }
+  }
+  return next
+}
+
+/* MODULATED KNOBS (plan 40 § 5.1, user 2026-10-24: *"M for modulate doesnt work in Composition?"*). A kinetic knob lives
+ * inside the comp, per element, where a BindDot cannot reach — so its binding lives FLAT on the layer as
+ * `kin:<element>:<knob key>` (morphBlend's bridge, generalised). resolveLayer turns a binding into a number each frame
+ * and this writes every such number into the comp the engine draws; the stored comp is never touched. */
+export const knobBridgeKey = (i, key) => `kin:${i}:${key}`
+export function applyKnobBridges(comp, layer) {
+  let next = comp
+  for (const key in layer) {
+    const m = /^kin:(\d+):(.+)$/.exec(key)
+    if (!m || typeof layer[key] !== 'number') continue
+    const k = KINETIC_KNOBS.find((x) => x.key === m[2])
+    if (k?.type === 'range') next = k.set(next, layer[key], Number(m[1]))
   }
   return next
 }

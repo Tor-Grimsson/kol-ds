@@ -25,12 +25,12 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {string} className - Extra classes on the wrapper
  */
 const ALIGN_BUTTONS = [
-  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left',   title: 'Align left' },
-  { axis: 'h', mode: 'center', icon: 'align-horizontal-center', title: 'Align horizontal center' },
-  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right',  title: 'Align right' },
-  { axis: 'v', mode: 'start',  icon: 'align-vertical-top',      title: 'Align top' },
-  { axis: 'v', mode: 'center', icon: 'align-vertical-center',   title: 'Align vertical center' },
-  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom',   title: 'Align bottom' },
+  { axis: 'h', mode: 'start',  icon: 'align-horizontal-left-solid',   title: 'Align left' },
+  { axis: 'h', mode: 'center', icon: 'align-horizontal-center-solid', title: 'Align horizontal center' },
+  { axis: 'h', mode: 'end',    icon: 'align-horizontal-right-solid',  title: 'Align right' },
+  { axis: 'v', mode: 'start',  icon: 'align-vertical-top-solid',      title: 'Align top' },
+  { axis: 'v', mode: 'center', icon: 'align-vertical-center-solid',   title: 'Align vertical center' },
+  { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom-solid',   title: 'Align bottom' },
 ]
 
 export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = 'sm', className = '' }) {

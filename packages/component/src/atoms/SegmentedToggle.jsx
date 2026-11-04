@@ -29,8 +29,10 @@
  *               strip (canvas alignment, transform cluster); onChange is the
  *               action dispatch.
  *   onChange  — handler (newValue) => void
- *   options   — [{ value, label, ariaLabel?, tooltip?, disabled? }] — a cell whose label is not a string
+ *   options   — [{ value, label, ariaLabel?, tooltip?, disabled?, count? }] — a cell whose label is not a string
  *               (a glyph) shows its `ariaLabel` as a KOL Tooltip; `tooltip` overrides it.
+ *               `count` (float-everything W2 row 26, 2026-11-04): a number after the label, mono one step down,
+ *               12 off the label — `Open 5`; drawn on `variant="float"` (`.kol-seg-count`), ignored elsewhere.
  *               `disabled` (kol-fxr 2026-10-09): the cell draws the family's disabled ink
  *               (`aria-disabled`, not the attribute — the tooltip still gives the reason),
  *               refuses the press, and ←/→ step over it. It may still be the current `value`
@@ -120,6 +122,7 @@ export default function SegmentedToggle({ value, onChange, options = [], variant
             className={['kol-seg-cell', cellType, isActive && 'is-active'].filter(Boolean).join(' ')}
           >
             {opt.label}
+            {float && opt.count != null && <span className="kol-seg-count">{opt.count}</span>}
           </button>
           </Tooltip>
         )

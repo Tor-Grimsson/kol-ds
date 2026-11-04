@@ -3,7 +3,7 @@ title: Names
 type: reference
 status: active
 created: 2026-09-30
-updated: 2026-10-01
+updated: 2026-11-03
 description: What every level and kind is called
 aliases:
   - names
@@ -134,8 +134,10 @@ Called **Block** until 2026-10-01 — that is shadcn's word, and the user ruled 
 confused with a **hardware module** (kol-hardware's `ModuleFrame` · `ModuleHeader`: one unit in a
 rack) — that is a component family, this is a tier of the Library.
 
-A composition of shells and tools — sidenavs, headers, footers, heroes, panels, toolbars — shown at
-every width to show **how it breakpoints**. Copied whole into a page.
+**The layer above organisms** (user ruling 2026-11-03): a page frame (AppShell, AppStudio, AppHub,
+SiteLayout) or a page arrangement (hero, footer, CTA band), shown at every width to show **how it
+breakpoints**. It is a layer on the ladder, not a set of examples; an example that is only one
+organism in a frame is that organism, not a module. Ladder: [[../03-components/00-taxonomy|taxonomy § The ladder]].
 
 ## Card
 

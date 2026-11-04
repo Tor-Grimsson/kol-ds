@@ -18,7 +18,7 @@
  *    the playbook arc. ──────────────────────────────────────────────────── */
 export const TIERS = {
   /* kol-styleguide */
-  MoodTile: 'atoms', ClearspaceDiagram: 'molecules', LogoScaling: 'atoms',
+  MoodTile: 'atoms', ThemeTile: 'atoms', ClearspaceDiagram: 'molecules', LogoScaling: 'atoms',
   ColorAnatomy: 'molecules', AssetTable: 'molecules',
   /* comboLayouts.jsx — the palette-combination slabs ComboLab arranges, also
    * exported standalone for a guide that wants one. Surfaced 2026-08-15 when
@@ -81,6 +81,17 @@ export const TIERS = {
   DashAlertCard: 'molecules', DashTableCard: 'molecules',
   Histogram: 'molecules', Candlestick: 'molecules', ScatterPlot: 'molecules',
   LineChart: 'molecules', DonutChart: 'molecules', Heatmap: 'molecules', CalendarHeatmap: 'molecules', CalendarScale: 'atoms',
+  /* the card set (DashboardCardSet, 2026-11-03): a card, its rows and its tiles are assemblies; the expanded
+   * view is an overlay surface */
+  Card: 'molecules', RankedList: 'molecules', StatTiles: 'molecules', DetailsOverlay: 'organisms',
+  /* the float cards (float-everything W7 · W10, 2026-11-04): every card is an assembly of nameable parts — a head,
+   * rows, a pill, a progress line; a column holding cards is still a card-sized unit, not a region. The three charts
+   * are single drawings beside Sparkline: a key, a row of bars, one bar. */
+  SectionHead: 'molecules', FoldedHead: 'molecules', FloatCard: 'molecules', TaskCard: 'molecules',
+  SourceCard: 'molecules', CaptureCard: 'molecules', KanbanColumn: 'molecules', ProjectCard: 'molecules',
+  LinkCard: 'molecules', CoverTile: 'molecules', ContinueCard: 'molecules', AssetRow: 'molecules',
+  LiveCard: 'molecules', NoteCard: 'molecules', PositionBlock: 'molecules',
+  Legend: 'atoms', WeeklyBars: 'atoms', ProportionBar: 'atoms',
   MetricsDashboard: 'organisms',
   /* kol-workshop */
   /* RailSection is a MOLECULE (user ruling 2026-10-01): a toggle, a link, a count and a body —
@@ -98,7 +109,7 @@ export const TIERS = {
    * that disagreed about which sections exist (2026-08-01). */
   RightRail: 'molecules',
   TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
-  ShellLayout: 'organisms', DocumentationReader: 'organisms', SearchPage: 'organisms', ResultRow: 'molecules',
+  ShellLayout: 'modules', DocumentationReader: 'organisms', SearchPage: 'organisms', ResultRow: 'molecules',
   /* Exhibit sections — the scaffold a workshop section is declared against, so
    * the next one is content only. ExhibitCard and ExhibitLinkCard are ATOMS by
    * the placement test (each paints alone and composes no KOL component);
@@ -138,9 +149,16 @@ export const TIERS = {
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
   SettingsColophon: 'molecules', SettingsLinks: 'molecules', SettingsShortcuts: 'molecules',
   NavRail: 'organisms', AppFloatNav: 'organisms', AccountForm: 'molecules', WalkthroughPanel: 'organisms',
+  /* the float chrome (float-everything W5 · W9, 2026-11-04) */
+  Timecode: 'atoms', ZoomReadout: 'atoms', SceneBreadcrumb: 'atoms', CanvasHint: 'atoms', SelectionMeasure: 'atoms', StatusStrip: 'atoms',
+  ToolRail: 'molecules', DocumentCapsule: 'molecules', GlobalActions: 'molecules', PanelsRestore: 'molecules', ReaderBar: 'molecules', ProgressDock: 'molecules',
+  RailTrigger: 'molecules', RailFlyout: 'molecules', RailDisplayControls: 'molecules', AccountFooter: 'molecules', Breadcrumb: 'molecules', FooterStrip: 'molecules', PeriodNav: 'molecules', DataStatus: 'molecules',
+  PropertyRail: 'organisms', TopControlsBar: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
-  CatalogPage: 'organisms', AppHub: 'organisms', AppStudio: 'organisms', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
-  PageShell: 'utilities',
+  CatalogPage: 'organisms', AppHub: 'modules', AppStudio: 'modules', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
+  PageShell: 'modules',
+  /* the page frames, Modules on the ladder (user ruling 2026-11-03, taxonomy § The ladder) */
+  SiteLayout: 'modules', WebsiteLayout: 'modules',
   /* kol-hardware — the panel tier: a rack control is an atom of ITS ladder */
   /* control + label + value is a molecule (user ruling 2026-10-01) — Fader draws all three */
   Fader: 'molecules', Toggle: 'atoms', RockerSwitch: 'atoms', FlipToggle: 'atoms',
@@ -191,6 +209,17 @@ export const FUNCTIONS_BY_NAME = {
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   LabeledControl: 'input', Label: 'input',
   Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
+  /* the float parts (float-everything W2 · W3 · W4, 2026-11-04) */
+  Delta: 'display', LiveDot: 'display', SizeChip: 'display', ValueField: 'display', ThemeTile: 'input',
+  FieldPair: 'input', PasswordInput: 'input', InlineAddRow: 'input', LinkAddRow: 'input', ColorField: 'input',
+  PanelsMenu: 'overlay', WorkspaceSwitcher: 'input', AccountMenu: 'overlay',
+  /* float-everything W6 · W8 (0.335.0) */
+  SummaryLine: 'display', QuickLookHeader: 'overlay', NoticeBanner: 'display', NavDrawer: 'navigation',
+  TreeRow: 'navigation', FlyoutRow: 'navigation', TocRow: 'navigation', LayerRow: 'input', IndexRow: 'display', TaskRow: 'input',
+  /* float-everything W11 — calendar + reader (0.336.0) */
+  CalendarTimeline: 'display', CalendarMonth: 'display', CalendarWeek: 'display', CalendarDay: 'display',
+  ReadingColumn: 'display', ReadingHighlight: 'display', ReadingActions: 'action', ReadingChapterNav: 'navigation',
+  ReadingContents: 'navigation', ReadingPanel: 'overlay', ReadingNotes: 'input', ReadingSettings: 'input', ReadingOverview: 'display',
   ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
@@ -258,6 +287,11 @@ export const FUNCTIONS_BY_NAME = {
   useModal: 'utility', usePopover: 'utility', useEyedropper: 'utility',
   useMediaLibrary: 'utility', useChessControls: 'utility', useTheme: 'utility',
   useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', AppFloatNav: 'navigation', AccountForm: 'input', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
+  /* the float chrome (float-everything W5 · W9, 2026-11-04) */
+  Timecode: 'display', ZoomReadout: 'display', SceneBreadcrumb: 'wayfinding', CanvasHint: 'display', SelectionMeasure: 'display', StatusStrip: 'feedback',
+  ToolRail: 'input', PropertyRail: 'input', DocumentCapsule: 'navigation', GlobalActions: 'action', TopControlsBar: 'navigation', PanelsRestore: 'action',
+  ReaderBar: 'navigation', ProgressDock: 'navigation', RailTrigger: 'navigation', RailFlyout: 'navigation', RailDisplayControls: 'action',
+  AccountFooter: 'display', Breadcrumb: 'wayfinding', FooterStrip: 'display', PeriodNav: 'navigation', DataStatus: 'feedback',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -290,7 +324,7 @@ export const FUNCTIONS_BY_NAME = {
   /* the structural-fork hook (ColumnBrowserStackMode, 2026-09-03) */
   useMediaQuery: 'utility', useRailKey: 'utility',
   /* framework */
-  AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', CategoryPage: 'structure',
+  AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', WebsiteLayout: 'structure', CategoryPage: 'structure',
   MarkdownPage: 'structure', LinkPreview: 'overlay', documentTabs: 'utility', documentFiles: 'utility',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', AssetTable: 'display',
@@ -353,6 +387,13 @@ export const FUNCTIONS_BY_NAME = {
   Histogram: 'display', Candlestick: 'display', ScatterPlot: 'display', LineChart: 'display',
   DonutChart: 'display', Sparkline: 'display', Heatmap: 'display',
   DashboardGrid: 'structure', GridCard: 'structure', DashTooltip: 'overlay',
+  Card: 'structure', RankedList: 'display', StatTiles: 'display', DetailsOverlay: 'overlay',
+  /* the float cards (2026-11-04) */
+  SectionHead: 'structure', FoldedHead: 'navigation', FloatCard: 'display', TaskCard: 'display',
+  SourceCard: 'feedback', CaptureCard: 'display', KanbanColumn: 'structure', ProjectCard: 'display',
+  LinkCard: 'navigation', CoverTile: 'media', ContinueCard: 'display', AssetRow: 'display',
+  LiveCard: 'display', NoteCard: 'display', PositionBlock: 'display',
+  Legend: 'display', WeeklyBars: 'display', ProportionBar: 'display',
   MetricsDashboard: 'display',
   /* workshop */
   ShellLayout: 'structure', ShellNavColumn: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
@@ -449,9 +490,9 @@ export const EXEMPT = {
  * Providers/contexts render nothing themselves — a card would always be a
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
-  'Layout', 'SiteLayout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
+  'Layout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
   /* the website frame and what it provides (2026-10-28): a frame, like SiteLayout; providers and the no-op RouteLoader render nothing */
-  'WebsiteLayout', 'CursorProvider', 'WorkViewProvider', 'RouteLoader',
+  'CursorProvider', 'WorkViewProvider', 'RouteLoader',
   'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext', 'ShellSearchScopeContext',
 ]
 

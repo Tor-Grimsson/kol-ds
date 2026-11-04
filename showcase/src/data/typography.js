@@ -123,6 +123,23 @@ const helperRows = [
   { cls: '.kol-helper-8' },
 ]
 
+/* Float — kol-float-<role>: the float style's twelve voices, Inter + mono, fixed sizes
+ * (float-everything W0.6, 2026-11-04). Measured live like the mono scales. */
+const floatRows = [
+  { cls: '.kol-float-display' },
+  { cls: '.kol-float-editorial' },
+  { cls: '.kol-float-sheet' },
+  { cls: '.kol-float-section' },
+  { cls: '.kol-float-window' },
+  { cls: '.kol-float-body-lg' },
+  { cls: '.kol-float-body' },
+  { cls: '.kol-float-panel' },
+  { cls: '.kol-float-hint' },
+  { cls: '.kol-float-label' },
+  { cls: '.kol-float-timecode' },
+  { cls: '.kol-float-ruler' },
+]
+
 /* ============================================================================
  * Cuts loaded (Right Grotesk family)
  * ============================================================================ */
@@ -260,6 +277,26 @@ export const TYPOGRAPHY_SECTIONS = [
     tables: [
       { caption: '.kol-mono-N — body / values, weight 400, with leading', columns: 'mono', rows: monoRows },
       { caption: '.kol-helper-N — labels, weight 500, line-height 1, letter-spaced', columns: 'mono', rows: helperRows },
+    ],
+  },
+
+  {
+    id: 'float',
+    label: '14 — type · float',
+    title: 'Float roles',
+    intro:
+      "Inter for the interface, JetBrains Mono for precision: the float " +
+      "style's twelve voices, .kol-float-<role>, at fixed sizes. Carried from " +
+      "the float exploration (kol-float--style, 2026-11-04); the family token " +
+      "is --kol-font-family-float. Every variant=\"float\" control sets Inter " +
+      "500 at its own size (12 · 13 · 14).",
+    reasoning:
+      "A float surface is a window over a scene, so its type is control-sized " +
+      "and fixed — it never steps with the breakpoints the way the sans sets " +
+      "do. Display and editorial are the canvas's own voice; the rest are the " +
+      "chrome's. Timecode and ruler stay mono because digits must line up.",
+    tables: [
+      { caption: '.kol-float-<role> — Inter 400 / 300 / 500 and mono 400, fixed', columns: 'mono', rows: floatRows },
     ],
   },
 

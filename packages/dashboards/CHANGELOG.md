@@ -1,5 +1,21 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.10.0 — 2026-11-04
+
+- **Float, all of it — W7 cards + tiles and W10 charts** (plan-2026-11-04-float-everything; the gap map's rows 95–114 and 153–157, each built to the exploration piece). Needs kol-theme ≥ 0.211.0 (the float tokens, Inter and the `kol-float-*` roles). The float look: a 20 sheet (`--kol-float-menu-r`) on the secondary surface, Inter through the float type roles and JetBrains Mono for numbers, no rim, selection at fg-16, the 2px focus ring, hover fg-08.
+  - **`variant="float"`** on **`Card`** (`count` · `meta` · `description` · `value` · `onFold` + `folded` · `addLabel` + `onAdd`; the group card, the card with options + fold, the collapsed group), **`StatTiles`** (lg: the stat tile with `delta`, `note` and a `spark` sparkline; sm: the small metric tile with its window), **`RankedList`** (Inter rows, the 8 round bar) and **`LineChart`** (`tabs` + `tab` + `onTab` metric selector, `legend` + `interval`, the y scale with grid rules, a `dashed` series, `peak`; the record card form is `Card variant="float"` around it).
+  - **New cards:** `SectionHead` (a float card's head — title · count · meta · value · controls · fold), `FoldedHead` (the folded pill), `FloatCard` (the glass recipe sheet), `TaskCard` (checkbox · title · group · date pill · chip; `size` sm for a group's rows, `selected`), `SourceCard`, `CaptureCard`, `KanbanColumn`, `ProjectCard`, `LinkCard`, `CoverTile`, `ContinueCard`, `AssetRow`, `LiveCard` (its live dot drawn inline until W2's LiveDot lands), `NoteCard`, `PositionBlock`.
+  - **New charts:** `Legend` (`items` `{ label, color?, dashed? }` + `interval`), `WeeklyBars` (`weeks` `{ count, label, current? }`), `ProportionBar` (`segments` `{ value, color?, label? }` down the ink ladder). `Sparkline` takes `strokeWidth` and no longer calls a hook after its empty-data return.
+  - Shared inside the package: `cards/_shared/float.js` (the sheet's classes) and `cards/_shared/ProgressLine.jsx` (the 4 / 6px progress line of ProjectCard, ContinueCard, PositionBlock). No new CSS — every float value is a kol-theme token worn inline.
+
+## 0.9.0 — 2026-11-03
+
+- **The card set** (DashboardCardSet, kol-website): metric's cards, carried class for class from its app code, general enough for a dashboard that is not analytics. **`Card`** — one header for a single `title`, a `tabs` row and a tab with `options` (a `Menu`), `controls` + `onExpand` on the right, `footLeft` / `footRight`; `Card.Head` is the header alone. **`RankedList`** — rows of any `{ label, value, icon?, display?, prev?, disabled? }`, a column head, `onPick(row)`, `limit`, `empty` / `loading`. **`StatTiles`** — static or selectable (`selected` + `onSelect`) number tiles, any count, `size` sm (in a card body) or lg (a section's head). **`DetailsOverlay`** — the expanded table: search, sortable columns. Phone rules built in (min-width steps): tabs 12 apart, row labels 14 under md and two lines, rows 36 apart, tiles 2 across, values 20 → 24. Peer `kol-component` ≥ 0.323.0 (`Menu`).
+
+## 0.8.0 — 2026-11-03
+
+- **`CalendarHeatmap weeks`** (BareButtonTouchRung, kol-website metric): the number of week columns, the last one `end`'s week (default 53, output unchanged). Month labels stay over their first week, so a phone can show the last 26 weeks without a sideways scroller.
+
 ## 0.7.1 — 2026-10-31
 
 - **`CalendarHeatmap` month labels** (kol-website metric): a label within two week-columns of the next month's is skipped, so a first month with one week no longer prints "OctNov".

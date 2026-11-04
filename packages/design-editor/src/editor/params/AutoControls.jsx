@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Input, Dropdown, ViewToggle, ToggleSwitch, SegmentedToggle, LabeledControl, SettingsRow, LabeledControlSection, Textarea } from '@kolkrabbi/kol-component'
+import { Input, Slider, Dropdown, ViewToggle, ToggleSwitch, SegmentedToggle, LabeledControl, SettingsRow, LabeledControlSection, Textarea, AccordionPanel } from '@kolkrabbi/kol-component'
 import Hint from '../components/Hint'
 import { visibleParams, isAnimatable, paramTab, paramSection } from './schema'
 import { isBinding, resolveValue } from './resolve'
@@ -49,7 +49,7 @@ import { useControlSize, RAIL_LABEL_W, stripClamp } from './controlSize'
  * (user, 2026-08-27) — same "labeled control group" idea, older type role.
  * The hairline still comes from `divided`; nothing here is styled locally.
  */
-export default function AutoControls({ schema, layer, setProp, palette, renderAnimate, tab, emptyHint, inline = false }) {
+export default function AutoControls({ schema, layer, setProp, palette, renderAnimate, tab, emptyHint, inline = true }) {
   let params = visibleParams(schema, layer)
   if (tab) params = params.filter((p) => paramTab(p) === tab)
   if (params.length === 0) {
@@ -96,11 +96,19 @@ export default function AutoControls({ schema, layer, setProp, palette, renderAn
           kol-labs.css then out-specified it back to 8px — Section's default IS
           8px, so dropping both lands on the same rendering with nothing
           overriding anything. */}
-      {groups.map((g) => (
+      {groups.map((g) => {
+        /* ONE BOX WIDTH PER SECTION (plan 41 § 7.4, user 2026-10-26: "why is speed not the same width
+           as phase?") — the widest range box in the section sets every range box in it */
+        const chars = Math.max(0, ...g.params.filter((p) => p.type === 'range').map(rangeChars))
+        /* THE CLOSED SECTION (plan 42 § 0.1): a section any of whose params carries `collapsed: true`
+           renders as the DS AccordionPanel, shut until pressed — the 12-knob rule's overflow. Its
+           params still roll when their scope is on; closing hides, it never curates. */
+        const closed = g.section && g.params.some((p) => p.collapsed)
+        const body = (
         <LabeledControlSection
           key={g.params[0].key}
-          label={g.section && g.section !== g.params[0].label ? g.section : undefined}
-          divided
+          label={!closed && g.section && g.section !== g.params[0].label ? g.section : undefined}
+          divided={!closed}
         >
           {g.params.map((p) => {
             const bound = isBinding(layer[p.key])
@@ -115,13 +123,24 @@ export default function AutoControls({ schema, layer, setProp, palette, renderAn
                 bound={bound}
                 animate={animate}
                 inline={inline}
+                chars={chars || undefined}
               />
             )
           })}
         </LabeledControlSection>
-      ))}
+        )
+        return closed ? <AccordionPanel key={g.params[0].key} title={g.section}>{body}</AccordionPanel> : body
+      })}
     </>
   )
+}
+
+/* AS WIDE AS ITS LONGEST VALUE (spec R6.1): the range's widest end plus its decimals — a 0–200
+   radius is three characters, a 0.025 step five. Per param; a section takes its widest (§ 7.4). */
+function rangeChars(p) {
+  const stepDecimals = p.step && p.step < 1 ? (String(p.step).split('.')[1]?.length ?? 2) : 0
+  return Math.max(2, String(Math.round(p.max ?? 0)).length, String(Math.round(p.min ?? 0)).length)
+    + (stepDecimals ? stepDecimals + 1 : 0)
 }
 
 /* RangeField — the range control with DIRECT INPUT. One editable box does it
@@ -131,7 +150,7 @@ export default function AutoControls({ schema, layer, setProp, palette, renderAn
  * live resolved value every transport tick — so you see the modulation move —
  * and the box shows the expression (editable) or the live value. Subscribes to
  * the transport only when bound, so unbound params pay nothing. */
-function RangeField({ param: p, layer, setProp }) {
+function RangeField({ param: p, layer, setProp, chars: sectionChars }) {
   const cs = useControlSize()
   const raw = layer[p.key]
   const bound = isBinding(raw)
@@ -146,6 +165,8 @@ function RangeField({ param: p, layer, setProp }) {
   const shown = boundExpr
     ? (raw.transform?.expr ?? 'wave(t)')
     : (p.format ? String(p.format(numVal)) : (stepDecimals ? numVal.toFixed(stepDecimals) : String(Math.round(numVal))))
+  /* the section's width when AutoControls passes one (§ 7.4), else this range's own (spec R6.1) */
+  const chars = sectionChars ?? rangeChars(p)
   const [draft, setDraft] = useState(shown)
   const [editing, setEditing] = useState(false)
   useEffect(() => { if (!editing) setDraft(shown) }, [shown, editing])
@@ -170,20 +191,25 @@ function RangeField({ param: p, layer, setProp }) {
 
   return (
     <div className="flex items-center gap-3">
-      <input
-        type="range"
-        min={p.min} max={p.max} step={p.step ?? 1}
-        value={numVal}
-        disabled={bound}
-        onChange={(e) => setProp(p.key, Number(e.target.value))}
-        className="slider-black flex-1 w-full cursor-pointer"
-        style={bound ? { opacity: 0.7 } : undefined}
-      />
+      {/* the DS slider, readout off — the value field beside it is the readout (audit E1; this was
+          the one native range input left in src/) */}
+      {/* bound: the modulation drives the value, so no disabled slider — the field beside it edits the expression (plan 51 3.1) */}
+      {!bound && (
+        <Slider
+          min={p.min} max={p.max} step={p.step ?? 1}
+          value={numVal}
+          onChange={(v) => setProp(p.key, Number(v))}
+          readout="none"
+          className="flex-1"
+        />
+      )}
       <Input
         /* 5 chars holds "0.025" and a 4-digit value; 6 was a third of a touch
            row (user, 2026-09-01: "unnecessarily wide"). An expression still
            types in — the field scrolls. */
-        type="text" variant="filled" size={cs} chars={5}
+        /* the shell sized in `ch`, not the HTML `size` attribute — `size` pads past N characters, so
+           "0.70" sat in a 72px box and the slider got ~42px (plan 26 § 7) */
+        type="text" variant="filled" size={cs} width={`calc(${chars}ch + 24px)`}
         value={draft}
         title="Number sets a constant · an expression like sin(t) binds it"
         onFocus={(e) => { setEditing(true); e.target.select() }}
@@ -202,8 +228,11 @@ function RangeField({ param: p, layer, setProp }) {
 /* the labs rail's label column — `RAIL_LABEL_W`, shared with the picker stack
    and LoopFields' rows so every control in the rail starts on one x */
 const INLINE_LABEL_W = RAIL_LABEL_W
+/* a switch row's height = the rung's control height, so it stands as tall as a dropdown row.
+   Written out per rung: Tailwind only emits a class it can read whole. */
+const ROW_H = { xs: 'h-[var(--kol-ctl-xs)]', sm: 'h-[var(--kol-ctl-sm)]', md: 'h-[var(--kol-ctl-md)]', lg: 'h-[var(--kol-ctl-lg)]' }
 
-function ParamControl({ param: p, layer, setProp, palette, bound, animate, inline }) {
+function ParamControl({ param: p, layer, setProp, palette, bound, animate, inline, chars }) {
   const cs = useControlSize()
   const raw = layer[p.key]
   const value = raw === undefined ? p.default : raw
@@ -234,7 +263,7 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
     /* Direct input + live modulation readout, both in one field (RangeField):
      * type a number for a constant or an expression to bind it; a bound track
      * shows the resolved value moving. */
-    control = <RangeField param={p} layer={layer} setProp={setProp} />
+    control = <RangeField param={p} layer={layer} setProp={setProp} chars={chars} />
   } else if (p.type === 'select') {
     control = (
       <Dropdown
@@ -246,12 +275,12 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
     )
   } else if (p.type === 'segmented') {
     /* THE LABS SKIN HAS ONE SEGMENTED CONTROL (user, 2026-09-01): the DS
-     * SegmentedToggle — one group radius, dividers, the sunken selected cell
-     * (kol-labs.css) — for tab strips and option pairs alike. ViewToggle's
+     * SegmentedToggle, `tone="sunken"` (no outer border, dark selected cell, grey cells,
+     * dividers; plan 41 § 4.8, user 2026-10-27) — for tab strips and option pairs alike. ViewToggle's
      * bare tiles beside it were two answers to one question. The editor
      * keeps ViewToggle with the rest of its inspector. */
     control = inline ? (
-      <SegmentedToggle
+      <SegmentedToggle tone="sunken"
         size={cs} className={`w-full ${stripClamp(cs) ?? ''}`}
         options={p.options ?? []}
         value={value}
@@ -280,7 +309,7 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
       /* labelled pair in the labs skin: the same SegmentedToggle as
        * `segmented`, spanning the control column like a dropdown */
       control = (
-        <SegmentedToggle
+        <SegmentedToggle tone="sunken"
           size={cs} className={`w-full ${stripClamp(cs) ?? ''}`}
           options={[{ value: 'off', label: offLabel }, { value: 'on', label: onLabel }]}
           value={value ? 'on' : 'off'}
@@ -326,6 +355,13 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
    * uppercases too, instead of reading as the odd sentence-case line out. */
   /* a plain bool in the editor skin: label left, switch right, the row's own sentence-case voice */
   const plainBool = p.type === 'toggle' && !p.labels && !inline
+  /* …and the row stands as tall as a dropdown's (the user: "same height as dropdown row items") */
+  /* a bare switch: SettingsRow wraps it in an inline-flex span that sits on the text baseline, so the
+     12px switch rode 6px below the label's middle (the user, 2026-10-09: "align this properly — middle").
+     Same LabeledControl the row draws, with a block flex that centres. */
+  if (rowInline && align === 'end' && !hint) {
+    return <LabeledControl inline label={String(p.label).toUpperCase()} labelWidth={INLINE_LABEL_W}><div className={`flex w-full items-center justify-end ${ROW_H[cs] ?? ''}`}>{body}</div></LabeledControl>
+  }
   return rowInline
     ? <SettingsRow label={p.label} hint={hint} align={align} labelWidth={INLINE_LABEL_W}>{body}</SettingsRow>
     : <LabeledControl inline={plainBool} label={inline ? String(p.label).toUpperCase() : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>

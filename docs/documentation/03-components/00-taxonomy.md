@@ -3,7 +3,7 @@ title: Component taxonomy
 type: reference
 status: canonical
 created: 2026-07-15
-updated: 2026-10-01
+updated: 2026-11-03
 verified: 2026-07-04
 description: The tier axis and the function axis
 aliases:
@@ -36,6 +36,29 @@ Every KOL component is classified on **two independent axes**. They answer diffe
 | **Function** | *What does it do for a user?* | Finding a component ("I need an input"). |
 
 A component has exactly one Tier **and** exactly one Function. `Slider` is a *molecule* (Tier) and an *input* (Function) at the same time. When you're browsing to find something, Function is what you want; when you're placing a new file or reasoning about composition, Tier is what you want.
+
+---
+
+## The ladder (user ruling 2026-11-03)
+
+One ladder, one word per layer. Each layer is made of the ones below it.
+
+```
+Components
+├─ Atoms       one element            Button, Input, Tag
+├─ Molecules   a small unit           Slider, MenuRow, ButtonGroup
+├─ Organisms   a region               Rail, Table, ContentFilters
+├─ Modules     a page frame or        AppShell, AppStudio, AppHub, SiteLayout,
+│              a page arrangement     hero, footer, CTA band
+└─ Utilities   no face of its own     Tooltip, AsciiCursor
+Apps           a whole tool           studio-hub, metric
+```
+
+- **Not the classic atomic ladder.** There is no templates/pages tier; Module is the one layer above organisms.
+- **Module is a layer, not an example set.** A showcase example that is only one organism in a frame is not a module: the organism is the thing.
+- **A component that holds a rail** is a Module if it is the page layout, and an Organism if it is one region of a page.
+- **ButtonGroup is a molecule.** It paints buttons, stacked or in a row, and replaces the 2026-08-09 utilities call below.
+- Figma's library uses this same tree (`.kol/llm-context/plan-2026-11-03-figma-mirrors-showcase.md`).
 
 ---
 

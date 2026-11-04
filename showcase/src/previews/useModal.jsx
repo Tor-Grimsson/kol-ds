@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { ModalProvider, useModal, Button } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
@@ -56,7 +57,27 @@ function Triggers() {
   )
 }
 
-export default function UseModalPreview() {
+/* float (W6 rows 84 · 85): the float window — the destructive confirm opens at once so the preview shows it */
+function FloatConfirm() {
+  const { confirm, prompt } = useModal()
+  const destructive = () => confirm('Delete “Orbit field”?', {
+    variant: 'float', header: 'Delete layer', icon: 'alert-triangle', tone: 'danger',
+    body: 'This removes the layer and its 4 keyframes from Scene 01. You can undo this after closing the dialog.',
+    okLabel: 'Delete layer', cancelLabel: 'Keep layer',
+  })
+  useEffect(() => { destructive() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  return (
+    <div className="flex gap-2">
+      <Button variant="float" tone="danger" size="md" onClick={destructive}>Delete layer</Button>
+      <Button variant="float" tone="secondary" size="md" onClick={() => prompt('Name this frame', 'Untitled', { variant: 'float', header: 'Frame', icon: 'layers' })}>Prompt</Button>
+    </div>
+  )
+}
+
+export const variants = ['default', 'float']
+
+export default function UseModalPreview({ variant = 'default' }) {
+  if (variant === 'float') return <ModalProvider><FloatConfirm /></ModalProvider>
   return (
     <ModalProvider>
       <Triggers />

@@ -2,12 +2,22 @@ import { useState } from 'react'
 import { ViewToggle, Dropdown, Input, Button, IconFrame } from '@kolkrabbi/kol-component'
 import { ThemeToggle } from '@kolkrabbi/kol-framework'
 
-export const variants = ['text', 'icon', 'single']
+export const variants = ['text', 'icon', 'single', 'float']
 export const tones = ['default', 'primary', 'secondary', 'inverted', 'outline', 'ghost', 'grey', 'sunken']
 export const sizes = ['sm', 'xs', 'md']
 
 export default function ViewTogglePreview({ variant = 'text', tone = 'default', size = 'sm' }) {
   const [view, setView] = useState('grid')
+  const [page, setPage] = useState('1')
+  /* float (float-everything W2 row 35): 32 rounds — the view switch and a pagination are one shape */
+  if (variant === 'float') {
+    return (
+      <div className="flex items-center gap-8">
+        <ViewToggle variant="float" viewMode={view} onViewChange={setView} />
+        <ViewToggle variant="float" viewMode={page} onViewChange={setPage} options={['1', '2', '3'].map((n) => ({ value: n, label: n }))} />
+      </div>
+    )
+  }
   return (
     <>
       <ViewToggle viewMode={view} onViewChange={setView} variant={variant} tone={tone} size={size} />

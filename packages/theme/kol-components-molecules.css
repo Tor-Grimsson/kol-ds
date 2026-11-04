@@ -2630,3 +2630,77 @@ article[role="button"]:focus-visible {
   background-color: var(--kol-fg-02);
   border-radius: var(--kol-radius-sm);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+ * THE FLOAT CHIPS AND MENUS (float-everything W2 · W4, 2026-11-04 — the gap map's rows 17–20 and 46–60, kol-float--style).
+ * `variant="float"` on Tag, Pill, Badge, the Menu family, Dropdown and ContentFilters; today's defaults are untouched.
+ * Capsules in Inter 500; selection is `--kol-fg-16` (W0.3), the focus ring `--kol-float-focus` (W0.2), disabled 40% (W0.7).
+ * A menu list rounds on `--kol-float-list-r` (8), the More sheet on `--kol-float-menu-r` (20); rows are 34, 12 in.
+ * Doubled classes outrank the size class each component also stamps (`.kol-tag--sm`, `.pill-sm`, `.kol-badge-md`).
+ * ═══════════════════════════════════════════════════════════════ */
+/* Tag (row 17): a 26 capsule 10 in, rest oq-04 / fg-64, hover oq-08, selected fg-16 / emphasis; no uppercase — the label is Inter */
+.kol-tag.kol-tag--float {
+  height: 26px; padding: 0 10px; gap: 7px; border-radius: 999px; border-color: transparent;
+  background-color: var(--kol-oq-04); color: var(--kol-fg-64);
+  font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: normal; text-transform: none;
+}
+.kol-tag.kol-tag--float.kol-tag--md { height: 30px; padding: 0 14px; font-size: 12px; } /* the filter bar's chip (row 56) */
+.kol-tag.kol-tag--float:hover { background-color: var(--kol-oq-08); color: var(--kol-fg-emphasis); }
+.kol-tag.kol-tag--float.is-active { background-color: var(--kol-fg-16); color: var(--kol-fg-emphasis); border-color: transparent; }
+.kol-tag.kol-tag--float:focus-visible { outline: none; box-shadow: var(--kol-float-focus); }
+.kol-tag--float .kol-tag-count { font-family: var(--kol-font-family-mono); font-size: 10px; font-weight: 400; color: var(--kol-fg-64); }
+.kol-tag--float .kol-tag-dismiss { color: var(--kol-oq-64); }
+/* Pill (row 20): a 28 capsule with a value, oq-16 / emphasis */
+.pill-float.pill-float {
+  display: inline-flex; align-items: center; height: 28px; padding: 0 16px; border-radius: 999px; border: 0;
+  background-color: var(--kol-oq-16); color: var(--kol-fg-emphasis);
+  font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: normal;
+}
+/* Badge (row 18): the count capsule, 26, oq-16 / emphasis */
+.kol-badge.kol-badge-float {
+  height: 26px; padding: 0 10px; border-radius: 999px; border: 0;
+  background-color: var(--kol-oq-16); color: var(--kol-fg-emphasis);
+  font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 500; line-height: 1;
+}
+/* the Menu panel (rows 46–55): a list on the list radius, 4 in; the More sheet (`--sheet`) on the menu radius, 6 in.
+ * Solid: the float surface (surface-secondary lifted by the float shadow) unless a tone rode in from the trigger. */
+.kol-menu-panel.kol-menu-panel--float {
+  border-radius: var(--kol-float-list-r); padding: 4px;
+  background-color: var(--kol-tone-panel-bg, var(--kol-surface-secondary)); box-shadow: var(--kol-shadow-float);
+  font-family: var(--kol-font-family-float);
+}
+.kol-menu-panel.kol-menu-panel--float.kol-menu-panel--sheet { border-radius: var(--kol-float-menu-r); padding: var(--kol-float-inset); }
+/* the row: 34 tall, 12 in, radius 6, Inter 12 at fg-88; hovered, current or opened it lifts on fg-16 */
+.kol-menu-panel--float .kol-menu-row {
+  height: 34px; padding-inline: 12px; border-radius: 6px; gap: 8px; color: var(--kol-fg-88);
+  font-family: var(--kol-font-family-float); font-size: 12px; font-weight: 500; line-height: 1; letter-spacing: normal; text-transform: none;
+}
+.kol-menu-panel--float .kol-menu-row:hover,
+.kol-menu-panel--float .kol-menu-row--current,
+.kol-menu-panel--float .kol-menu-row[aria-expanded="true"] { background-color: var(--kol-fg-16); color: var(--kol-fg-emphasis); }
+.kol-menu-panel--float .kol-menu-row:focus-visible { outline: none; box-shadow: var(--kol-float-focus); }
+.kol-menu-panel--float .kol-menu-row:disabled { opacity: 0.4; }
+/* the destructive row (row 50): `MenuRow tone="danger"` — the error ink, the same lift */
+.kol-menu-panel .kol-menu-row.kol-menu-row--danger { color: var(--ui-error); }
+/* a rule runs through the panel's inset (row 51); the section label is the float label role (row 52) */
+.kol-menu-panel--float .kol-menu-rule { border-color: var(--kol-oq-08); margin: 4px -4px; }
+.kol-menu-panel--float.kol-menu-panel--sheet .kol-menu-rule { margin: 4px calc(var(--kol-float-inset) * -1); }
+.kol-menu-panel--float .kol-menu-label { padding: 8px 12px 4px; font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: 0.02em; color: var(--kol-fg-64); }
+.kol-menu-panel--float .kol-menu-kbd { border-color: var(--kol-oq-16); color: var(--kol-oq-64); }
+/* the fused list under a float select (row 54): detached 8 under the capsule, all four corners on the list radius, no hairline */
+.kol-menu-panel.kol-menu-panel--fused.kol-menu-panel--float { border-radius: var(--kol-float-list-r); padding: 0; }
+.kol-menu-panel--float .kol-dd-div { display: none; }
+.kol-menu-panel--float .kol-dd-list { padding: 4px; }
+/* the float select trigger (row 25): a capsule on the float well, the float heights (the trigger's own rung rules outrank
+ * `.kol-btn-float`'s, so each height is restated), round while open */
+:where(.kol-dd-trigger--float) { --kol-tone-bg: var(--kol-float-well); --kol-tone-fg: var(--kol-surface-on-primary); --kol-tone-panel-bg: var(--kol-surface-secondary); }
+.kol-dd-trigger.kol-btn-float.kol-btn-sm { height: var(--kol-float-h-sm); }
+.kol-dd-trigger.kol-btn-float.kol-btn-md { height: var(--kol-float-h-md); }
+.kol-dd-trigger.kol-btn-float.kol-btn-lg { height: var(--kol-float-h-lg); }
+.kol-dd-trigger.kol-dd-trigger--float.kol-dd-trigger--open { border-radius: 999px; }
+.kol-dd-trigger.kol-dd-trigger--float:focus-visible { outline: none; box-shadow: var(--kol-float-focus); }
+/* the float menu trigger (rows 33 · 59): a capsule on the well; the date chip's value is mono */
+.kol-btn.kol-btn-float.kol-menu-trigger--float { --kol-tone-bg: var(--kol-float-well); --kol-tone-fg: var(--kol-surface-on-primary); --kol-tone-pressed-bg: var(--kol-fg-16); --kol-tone-pressed-fg: var(--kol-fg-emphasis); }
+.kol-btn.kol-btn-float.kol-menu-trigger--float.kol-menu-trigger--mono { font-family: var(--kol-font-family-mono); font-weight: 400; }
+/* the open trigger keeps its lift under the pointer (the tab's rule): the press that opened it leaves the pointer there */
+.kol-btn.kol-btn-float.kol-menu-trigger--float.kol-btn-pressed:not(.kol-dd-trigger):hover { background-color: var(--kol-tone-pressed-bg); color: var(--kol-tone-pressed-fg); }

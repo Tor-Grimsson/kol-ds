@@ -28,6 +28,8 @@ import { Icon } from '@kolkrabbi/kol-icons'
 - **Vite-only** (`import.meta.glob`).
 
 > The `variant` prop was removed in 0.8.0 with the legacy solid cut — the set is a **single stroke cut**; intentional solids are their own named icons (e.g. `star-solid`).
+>
+> **`variant` is back in 0.60.0 (2026-11-01), as a pointer and not as a cut.** `<Icon name="cloud-storm" variant="solid" />` renders the drawn twin `cloud-storm-solid`. A name with no `-solid` twin renders its outline, and the `-solid` names still resolve on their own. No parallel tree comes back: a solid exists only where it was drawn (72 pairs today). In Figma each pair is one component set with `variant=outline|solid`.
 
 ## kol-icon-set-interface
 

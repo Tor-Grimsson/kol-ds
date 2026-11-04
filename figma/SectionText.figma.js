@@ -4,13 +4,13 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "page": "page", "app": "app", "section": "section", "content": "content", "document": "document" })
+const variant = instance.getEnum('variant', { "page": "page", "app": "app", "section": "section", "content": "content", "document": "document", "float": "float" })
 const eyebrow = instance.getBoolean('eyebrow') ? figma.code` eyebrow="${instance.getString('eyebrowText')}"` : ''
 const headline = instance.getString('headline')
 const body = instance.getBoolean('lede') ? figma.code` body="${instance.getString('body')}"` : ''
 
 export default {
-  example: figma.code`<SectionText variant="${variant}"${eyebrow} headline="${headline}"${body} />`,
+  example: variant === 'float' ? figma.code`<SectionText variant="float" eyebrow="Studio  /  Workspace" headline="Dashboard" body="Tasks, projects, links — your living workspace." />` : figma.code`<SectionText variant="${variant}"${eyebrow} headline="${headline}"${body} />`,
   imports: ["import { SectionText } from \"@kolkrabbi/kol-component\""],
   id: 'SectionText',
 }

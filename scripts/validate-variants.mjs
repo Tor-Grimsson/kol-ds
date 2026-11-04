@@ -40,7 +40,6 @@ const ALLOWED_INVERTED = {
   'packages/component/src/molecules/Modal.jsx': 'the dialog OK — primary is the dark ground since tone-is-the-ground-axis, so OK drew the same as Cancel',
   'apps/catalog/src/App.jsx': 'the floating Variants button — Round 16 drew it inverted over the page',
   'packages/shell/src/HubHome.jsx': 'the masthead\'s round button — the catalog\'s Variants button, inverted over the page (user 2026-10-23: "a component like apps/catalog")',
-  'showcase/src/blocks/hero-full-bleed.jsx': 'site hero — the second CTA of a pair',
   'showcase/src/blocks/feature-showcase.jsx': 'site hero — the second CTA of a pair',
   'showcase/src/cards/split-image-right.jsx': 'site section — the second CTA of a pair',
   'showcase/src/cards/split-image-left.jsx': 'site section — the second CTA of a pair',
@@ -49,6 +48,12 @@ const ALLOWED_INVERTED = {
   'showcase/src/sets/section-set.jsx': 'site section — the second CTA of a pair',
   'showcase/src/previews/FeatureSplit.jsx': 'site section — the second CTA of a pair',
   'showcase/src/previews/SectionSplit.jsx': 'site section — the second CTA of a pair',
+  'showcase/src/previews/Button.jsx': 'the float primary role IS the inverted tone (float-everything W0.5, 2026-11-04) — the preview shows the four roles',
+  'packages/component/src/molecules/PanelsMenu.jsx': 'the row\'s primary action (Show) is the float primary role, inverted (float-everything W4 row 57, 2026-11-04)',
+  'showcase/src/previews/Dialog.jsx': 'the float window\'s next step (Export video, Sign in) is the float primary role, inverted (float-everything W6 rows 83 · 84 · 90, 2026-11-04)',
+  'showcase/src/previews/TabsRow.jsx': 'the tab pill\'s New task is the float primary role, inverted (float-everything W5 row 78, 2026-11-04)',
+  'packages/component/src/molecules/ReadingNotes.jsx': 'View highlights is the float primary role, inverted (float-everything W11 row 150, 2026-11-04)',
+  'packages/component/src/organisms/ReadingOverview.jsx': 'Resume reading is the float primary role, inverted (float-everything W11 row 152, 2026-11-04)',
 }
 
 /* V3 (2026-10-01): the six Button variants that were tones under a second name — deprecated

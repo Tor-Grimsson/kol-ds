@@ -30,12 +30,12 @@ const BODY = {
   'toc-preview-theming': 'Links are mono type at reduced emphasis, lifting to full emphasis on hover and while active.',
 }
 
-export const variants = ['list', 'rail']
+export const variants = ['list', 'rail', 'float']
 
 export default function DocsTocPreview({ variant = 'list' }) {
   return (
-    <div className="flex w-full items-start gap-10">
-      <div className="w-40 shrink-0">
+    <div className={`flex w-full items-start gap-10${variant === 'float' ? ' max-md:flex-col' : ''}`}>
+      <div className={variant === 'float' ? 'w-[280px] shrink-0' : 'w-40 shrink-0'}>
         <p className="kol-helper-10 text-meta mb-3">On this page</p>
         <DocsToc toc={TOC} variant={variant} />
       </div>

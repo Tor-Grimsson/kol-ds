@@ -64,6 +64,10 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *   slotRight — its trailing mirror: an interactive node inside the shell, after the unit /
  *     suffix — a combo field's chevron (the design editor's type size, 2026-09-27: the chevron
  *     sat OUTSIDE the field as a second control). Not aria-hidden: it is a control.
+ *   error — the field's error (float-everything W3 row 36, 2026-11-04): `true` marks it (`aria-invalid`, the
+ *     alert-triangle in the error ink at the trailing edge); a string is also the message under the field, in
+ *     the float hint role (Inter 12) with the info glyph. On the float it is the field's third state beside focus
+ *     (the 2px ring) and disabled (40%); on the default look the mark and the message are the same.
  *
  * Chrome (bg/border/padding/transition/disabled) comes from .kol-control;
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
@@ -91,6 +95,7 @@ export default function Input({
   iconSize = null,
   placeholder,
   disabled = false,
+  error,
   width,
   className = '',
   inputClassName = '',
@@ -161,6 +166,14 @@ export default function Input({
 
   const propertyLen = Math.max(String(value ?? placeholder ?? '').length, 1)
 
+  /* the error: a mark inside, a message under (row 36) */
+  const errorMark = error ? <span aria-hidden="true" className="kol-control-error flex items-center shrink-0 pl-2 text-[var(--ui-error)]"><Icon name="alert-triangle" size={14} /></span> : null
+  const errorText = typeof error === 'string' && error ? (
+    <span role="alert" className={`flex items-center gap-1.5 ${resolvedVariant === 'float' ? 'kol-float-label' : 'kol-mono-10'} text-fg-64`}>
+      <Icon name="info" size={12} />{error}
+    </span>
+  ) : null
+
   /* Pin inner input height to the typography token's line-height. Without
    * this the `<input>` renders ~0.5px taller than the equivalent <button>
    * or <label> at the same kol-mono-N — Chromium computes input height
@@ -186,11 +199,12 @@ export default function Input({
     inputClassName,
   ].filter(Boolean).join(' ')
 
-  return (
+  const shell = (
     <label
       className={shellCls}
       style={width ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}
       aria-disabled={disabled || undefined}
+      aria-invalid={error ? true : undefined}
     >
       {slotLeft && (
         <span className="flex items-center shrink-0 pr-2">{slotLeft}</span>
@@ -236,6 +250,9 @@ export default function Input({
       {slotRight && (
         <span className="flex items-center shrink-0 pl-1 ml-auto">{slotRight}</span>
       )}
+      {errorMark}
     </label>
   )
+  /* a message under the field wraps the shell; without one the shell is the whole atom, as before */
+  return errorText ? <span className="inline-flex flex-col gap-1.5" style={width ? { width: typeof width === 'number' ? `${width}px` : width } : undefined}>{shell}{errorText}</span> : shell
 }

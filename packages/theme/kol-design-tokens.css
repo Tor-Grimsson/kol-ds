@@ -184,10 +184,16 @@
   --kol-float-ic: 18px;
   --kol-float-row: 40px;
   --kol-float-gap-ic: 10px;
-  --kol-float-menu-r: 26px;
+  --kol-float-menu-r: 20px;
+  --kol-float-list-r: 8px;
+  --kol-float-window-r: 28px;
   --kol-float-inset: 6px;
   --kol-float-tip-h: 24px;
   --kol-float-tip-t: 11px;
+  /* THE FLOAT RADII (float-everything W0.1, 2026-11-04, from the exploration's own scale): a bare list 8 · a sheet or
+   * panel 20 (the More sheet, inspector, cards) · a window 28 · a control is a pill. menu-r was 26 (round 3). */
+  /* THE FLOAT FOCUS RING (W0.2): 2px of the ink, on every float control's :focus-visible. Round 3 had none. */
+  --kol-float-focus: 0 0 0 2px var(--kol-surface-on-primary);
   /* the field's well, on whatever float holds it — the light tier; dark below */
   --kol-float-well: rgb(0 0 0 / 0.06);
 
@@ -240,7 +246,9 @@
     --kol-float-ic: 20px;
     --kol-float-row: 48px;
     --kol-float-gap-ic: 12px;
-    --kol-float-menu-r: 30px;
+    --kol-float-menu-r: 24px;
+    --kol-float-list-r: 10px;
+    --kol-float-window-r: 32px;
     --kol-float-tip-h: 28px;
     --kol-float-tip-t: 12px;
   }

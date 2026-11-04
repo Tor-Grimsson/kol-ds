@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.330.0",
+  "version": "0.336.1",
   "description": "The core component library",
   "license": "MIT",
   "type": "module",
@@ -9,6 +9,9 @@
   "exports": {
     ".": "./src/index.js",
     "./atoms/RotaryDial": "./src/molecules/Knob.jsx",
+    "./molecules/Rail": "./src/organisms/Rail.jsx",
+    "./molecules/ShellDrawer": "./src/organisms/ShellDrawer.jsx",
+    "./utilities/ButtonGroup": "./src/molecules/ButtonGroup.jsx",
     "./atoms/*": "./src/atoms/*.jsx",
     "./molecules/*": "./src/molecules/*.jsx",
     "./organisms/*": "./src/organisms/*.jsx",
@@ -31,7 +34,7 @@
     "react-syntax-highlighter": "^16.1.1"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-icons": ">=0.22.0",
+    "@kolkrabbi/kol-icons": ">=0.61.1",
     "framer-motion": "^12.0.0",
     "gsap": "^3.13.0",
     "hls.js": "^1.6.0",

@@ -26,11 +26,17 @@ const renderItem = (filteredItems) => (
 export const stage = 'full'
 
 export const tones = ['default', 'inverse']
+/* `float` (float-everything W4 row 56): the capsule chips with counts in a capsule track */
+export const variants = ['default', 'float']
 
-export default function ContentFiltersPreview({ tone = 'default' }) {
+export default function ContentFiltersPreview({ tone = 'default', variant = 'default' }) {
   return (
     <ContentFilters
+      key={variant}
       tone={tone}
+      variant={variant === 'float' ? 'float' : undefined}
+      filtersOpen={variant === 'float' ? true : undefined}
+      onFiltersOpenChange={variant === 'float' ? () => {} : undefined}
       title="Catalogue"
       items={items}
       totalCount={items.length}
