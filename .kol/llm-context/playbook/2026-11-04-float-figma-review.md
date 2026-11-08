@@ -384,3 +384,18 @@
   checks → nesting diff 43/43 missing 0 (named remaining are the code's raw elements: TimelineDock track rows + Close button, PropertyRail select wrapper, SlideInspector layers toggle); loose glyphs 0 page-wide; 0 duplicate master names; audit 0 errors Organisms + Molecules; 0 unlinked on every page scanned; Code Connect 7 new + PropertyRail, ToolPalette, SettingsPanel, LabeledControl rewritten, publish exit 0
   look → _tmp/2026-11-06-figma-library-layout/figma/q-*.png (43 + q-MenuBar)
   fix → PropertyRail tab=2 lights Animate (3 variants); ToolPalette/tool's 11 instances sit in an off-document tree (ActionBar 699:45118, no parent) — no screen shows them; IconLoader exposed as `glyph` on every variant [10:05 GMT]
+
+[05:44 GMT · 2026-11-08] · plan-2026-11-08-library-round5 W1–W4 (kol-figma-agent)
+  fields → _Field 1702:1173 (19: default · outline xs/sm/md rest/disabled, float sm/md rest/focus/disabled, float textarea) behind every Input (12) + Textarea (5) variant; grip 6→12; ToggleCheckbox media on Image; 29 headers "Used by … · outside …" from import sites
+  sets → App 1704:7740 · Site 1704:7741 · Reference 1704:7742, rows of 6, 11,720 wide
+  catalog → CatalogGrid layout × card (7) from the screens' real cards; CatalogPage 13 = PageShell › PageHeader + body(ContentFilters + CatalogGrid) + VariantsControl (bool); 12 Catalog screens are CatalogPage instances
+  hubs → HubHome signed-in = CatalogPage app + FloatActionMenu, AppHub home = AppShell › HubHome; ↳ Hubs page 1712:28106 hub desktop + phone measured on vite :5291 (PID killed); only apps/hub passes home= among the AppHub apps
+  checks → nesting Atoms 53/53, Modules 252/252; invalid assets 0/0
+
+## 2026-11-08 07:34 · markdown documents (plan-2026-11-08-markdown-documents)
+  table → MarkdownTable + /row to _trash as _MarkdownTable, 0 instances outside; Site parts re-stacked
+  used by → 154 Molecules + 12 _trash headers from import sites; file-wide "Consumers:" 0
+  code → MarkdownPage variant research (default) · article · site (VARIANTS map; site wash through --kol-shell-page-wash, one layer in SiteLayout); IndexCard exported from framework
+  figma → markdown-page parts 1727:14527–14626 + markdown-page/document 1728:15144 (instances only), IndexCard label/meta, PageCover 1731:15014; vite :5297 (PIDs 61233, 87803 killed)
+  checks → audit 0 errors; nesting Organisms 107/107, Molecules 14/14; invalid assets 0 unused (1 blank name of his fixed: "block parts")
+  pagecover → retired: _PageCover 1731:15014 + frame to _trash, 0 instances, Shell re-flowed

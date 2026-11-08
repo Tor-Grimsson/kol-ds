@@ -150,7 +150,7 @@ export const TIERS = {
   SideNav: 'organisms', ShellHeader: 'organisms', PortalFooter: 'organisms', CategoryPage: 'organisms',
   PageHero: 'organisms', PageSection: 'organisms',
   /* the document page (plan-2026-10-28-document W5.2) */
-  MarkdownPage: 'organisms', LinkPreview: 'molecules',
+  MarkdownPage: 'organisms', LinkPreview: 'molecules', IndexCard: 'molecules',
   /* kol-shell */
   Logomark: 'atoms', VectorLoader: 'atoms',
   TabStrip: 'molecules', TouchDeviceOverlay: 'molecules',
@@ -231,7 +231,7 @@ export const FUNCTIONS_BY_NAME = {
   CalendarTimeline: 'display', CalendarMonth: 'display', CalendarWeek: 'display', CalendarDay: 'display',
   ReadingColumn: 'display', ReadingHighlight: 'display', ReadingActions: 'action', ReadingChapterNav: 'navigation',
   ReadingContents: 'navigation', ReadingPanel: 'overlay', ReadingNotes: 'input', ReadingSettings: 'input', ReadingOverview: 'display',
-  ColorSwatch: 'display', SwatchTile: 'display', SwatchCaption: 'display', TransparentX: 'display', CodeBlock: 'display',
+  ColorSwatch: 'display', SwatchTile: 'display', SwatchCaption: 'display', TypeTester: 'input', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
@@ -338,7 +338,7 @@ export const FUNCTIONS_BY_NAME = {
   useMediaQuery: 'utility', useRailKey: 'utility', useRailKeys: 'utility', useFloatPresence: 'utility',
   /* framework */
   AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', WebsiteLayout: 'structure', CategoryPage: 'structure',
-  MarkdownPage: 'structure', LinkPreview: 'overlay', documentTabs: 'utility', documentFiles: 'utility',
+  MarkdownPage: 'structure', LinkPreview: 'overlay', IndexCard: 'navigation', documentTabs: 'utility', documentFiles: 'utility',
   /* styleguide */
   MoodTile: 'media', ColorAnatomy: 'display', AssetTable: 'display',
   ClearspaceDiagram: 'display', LogoScaling: 'display', ComboLab: 'display',

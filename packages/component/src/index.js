@@ -197,6 +197,7 @@ export { default as ShellSearchOverlay } from './organisms/ShellSearchOverlay.js
 /* the keymap sheet — moved in from kol-shell 2026-09-28 so the workshop shell and the apps open ONE sheet on S */
 export { default as ShortcutsOverlay, shortcutInScope } from './organisms/ShortcutsOverlay.jsx'
 export { default as Slider } from './molecules/Slider.jsx'
+export { default as TypeTester } from './molecules/TypeTester.jsx'
 export { default as SpecList } from './molecules/SpecList.jsx'
 export { default as SpectrumControls, HueStrip, SBSquare, WheelTriangle, AlphaStrip } from './organisms/SpectrumControls.jsx'
 export { default as ColorPickerPopover } from './organisms/ColorPickerPopover.jsx'

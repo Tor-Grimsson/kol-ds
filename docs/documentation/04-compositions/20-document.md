@@ -53,6 +53,7 @@ A folder of markdown files rendered as pages inside the site frame, with a conte
 
 | Prop | Default | What it does |
 |---|---|---|
+| `variant` | `'research'` | the render style — a map of block → the theme's existing classes, no styling of its own (2026-11-08): `research` the `.kol-sheet` reading above · `article` the website article (`.kol-prose`) · `site` the brand guide's voices on its ground (the `fg-02` wash, as SiteLayout's `pageWash` lays it, read through `--kol-shell-page-wash` so inside the frame there is one wash): `PageHero` (title, frontmatter `label` · `description`), a Chapters section of `IndexCard`s, one `PageSection` per `##` with its blocks in `.kol-prose`. `numbered` draws its gutter in `research` only |
 | `source` | `''` | the file's text, frontmatter included |
 | `numbered` | `false` | a numbered document (kol-atlas's `proj`): `.proj`, the number gutter, milestone · phase · item levels (`data-ms`, plain, `.tb`), `####` items counted `1.1.n` |
 | `linkNotes` | `false` | every external link becomes a numbered note too (kol-atlas's Project and SEO + GEO) |

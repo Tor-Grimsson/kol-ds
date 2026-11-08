@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-framework
 
+## 0.71.0 — 2026-11-08
+
+- **`MarkdownPage variant`** — three render styles, each a map of block → the theme's existing classes (no styling in the component): `research` (default, the `.kol-sheet` reading, unchanged), `article` (`.kol-prose`, the website article) and `site` (the brand guide's voices: `PageHero` from title + frontmatter `label` / `description`, a Chapters `PageSection` of `IndexCard`s, one `PageSection` per `##` with its blocks in `.kol-prose`, on the `fg-02` ground read through `--kol-shell-page-wash`, so inside SiteLayout the plane's wash is the only one). Note numbers (`.fnn`) are written only in `research`; a prose `ol` counts its own.
+- **`IndexCard`** — the contents card (label · title · meta · arrow) is its own export, lifted from `DocumentIndex.jsx`; `Contents` (the brand book's Chapters, DocumentIndex cards, the site variant's Chapters) draws it.
+
 ## 0.70.0 — 2026-11-04
 
 - **SiteLayout `railKeys`** (RailShortcutsAllFrames, kol-website) — `\` expands ↔ collapses the site rail (its own `kol-sidenav` state), `⇧\` hides ↔ shows it (the track goes to 0; kept as `kol-sidenav-hidden`; the phone drawer ignores it). On by default, `false` off, `{ collapse, hide }` rebinds — kol-component's `useRailKeys`, the same prop as kol-shell's AppShell and FloatLayout. Peers on kol-component ≥0.339.0.

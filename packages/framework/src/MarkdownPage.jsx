@@ -1,6 +1,9 @@
 import { useContext, useLayoutEffect, useMemo } from 'react'
 import { CodeBlock, DocsToc, Table } from '@kolkrabbi/kol-component'
 import { ShellTocContext } from './SiteLayout.jsx'
+import PageHero from './PageHero.jsx'
+import PageSection from './PageSection.jsx'
+import { Contents } from './DocumentIndex.jsx'
 import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
 
 /* MARKDOWN PAGE — a markdown file as a document page (plan-2026-10-28-document W3.2, born in apps/document, home here
@@ -12,6 +15,13 @@ import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
  * `.tablewrap` (a key–value table plain), `CodeBlock` for fences, the `.media` figure grid, blockquote with `cite`,
  * `.tb` item text. No class of its own.
  *
+ *   variant      the render style, a map of block → the theme's existing classes (VARIANTS below; no styling here):
+ *                'research' (default) — the research reading above, `.kol-sheet`, today's look;
+ *                'article' — the website article, `.kol-prose`'s element sheet;
+ *                'site' — the brand guide's voices without the brand guide: `PageHero` (title · frontmatter `label` ·
+ *                `description`), a Chapters section of `IndexCard`s, then one `PageSection` per ## with its blocks in
+ *                `.kol-prose` (2026-11-08, the user: "markdown-page/document/site … research … article — 3 different
+ *                markdown render styles")
  *   source       the file's text, frontmatter included
  *   numbered     a numbered document (kol-atlas's `proj`): `.proj`, the number gutter, `data-ms` levels, `.tb` items
  *   toc          'frame' (default): the headings go to the frame's TOC rail through ShellTocContext, nothing drawn here;
@@ -127,7 +137,7 @@ function Notes({ list = [], ms, ctx }) {
     <ol className="fns" data-ms={ms ? '' : undefined} start={list[0].n}>
       {list.map(({ key, n, def: d }) => (
         <li key={key} id={`fn-${n}`}>
-          <span className="fnn">{n}.</span>
+          {ctx.sheet && <span className="fnn">{n}.</span>}
           {d.url ? <><a href={d.url} target="_blank" rel="noopener">{d.text}</a> <span className="url">{shortUrl(d.url)}</span></> : <Inline tokens={d.tokens ?? []} ctx={ctx} />}
         </li>
       ))}
@@ -205,7 +215,7 @@ function Blocks({ blocks, sectionId, sources, ctx }) {
         out.push(<L key={i} className={sources ? 'fns src' : tb()} data-ms={ms()}>{b.items.map((it, j) => {
           /* a Sources item: number, text, and the short address of its first link (the engine's rule) */
           const u = sources && it.tokens.find((t) => t.type === 'link' && isExternal(t.url))?.url
-          return <li key={j}>{sources && <span className="fnn">{j + 1}.</span>}<Inline tokens={it.tokens} ctx={ctx} />{u && <> <span className="url">{shortUrl(u)}</span></>}</li>
+          return <li key={j}>{sources && ctx.sheet && <span className="fnn">{j + 1}.</span>}<Inline tokens={it.tokens} ctx={ctx} />{u && <> <span className="url">{shortUrl(u)}</span></>}</li>
         })}</L>)
         break
       }
@@ -222,15 +232,28 @@ function Blocks({ blocks, sectionId, sources, ctx }) {
   return out
 }
 
-export default function MarkdownPage({ source = '', numbered = false, toc = 'frame', linkNotes = false, fit = 'cover', ratio, resolveLink = (u) => u, assetUrl = () => null }) {
+/* block → class, per variant. `page` the outer inset, `root` the article's class, `proj` the numbered document's class
+ * (only the sheet draws the number gutter), `sheet` the note numbers written as text (`.fnn`; a prose `ol` counts its own). `site` has no article: PageHero, the Chapters and a PageSection per chapter,
+ * its blocks under `root`. */
+const VARIANTS = {
+  research: { page: 'kol-page', root: 'kol-sheet', proj: 'proj', sheet: true, maxWidth: 980 },
+  article: { page: 'kol-page', root: 'kol-prose', maxWidth: 980 },
+  /* the brand guide's ground, the fg-02 wash SiteLayout's `pageWash` lays under brand pages — painted here so the page reads
+   * without the frame, through `--kol-shell-page-wash` (what is left to paint): inside SiteLayout it is `transparent`, so
+   * the plane's wash is the only one, never two translucent layers (2026-11-08) */
+  site: { page: 'bg-[color:var(--kol-shell-page-wash,var(--kol-fg-02))]', root: 'kol-prose mt-12', chapters: { label: 'Overview', title: 'Chapters' } },
+}
+
+export default function MarkdownPage({ variant = 'research', source = '', numbered = false, toc = 'frame', linkNotes = false, fit = 'cover', ratio, resolveLink = (u) => u, assetUrl = () => null }) {
   const { fields, body } = useMemo(() => splitFrontmatter(source), [source])
   const fm = Object.fromEntries(fields)
   const parsed = useMemo(() => parseDocsMarkdown(body, { numbered }), [body, numbered])
   const h1 = parsed.introBlocks.find((b) => b.type === 'heading1')
   const title = h1?.content ?? fm.title ?? ''
-  const proj = numbered
+  const v = VARIANTS[variant] ?? VARIANTS.research
+  const proj = numbered && Boolean(v.proj)
   const notes = useMemo(() => collectNotes(parsed, linkNotes), [parsed, linkNotes])
-  const ctx = { notes, proj, linkNotes, fit, ratio, resolveLink, assetUrl }
+  const ctx = { notes, proj, sheet: Boolean(v.sheet), linkNotes, fit, ratio, resolveLink, assetUrl }
 
   /* two sections with one heading (a research paper repeats its brand names) get one anchor each */
   const seen = {}
@@ -245,20 +268,44 @@ export default function MarkdownPage({ source = '', numbered = false, toc = 'fra
   }, [onFrame, setToc, body]) // eslint-disable-line react-hooks/exhaustive-deps
   const rail = toc === 'rail' || (toc === 'frame' && !onFrame)
 
+  const railToc = rail && tocItems.length > 1 && <DocsToc variant="rail" toc={tocItems} onNavigate={jumpTo} className="hidden xl:flex" />
+  const heading = (s) => <><Marks marks={s.marks} lead /><Inline tokens={s.tokens ?? [{ type: 'text', content: s.heading }]} ctx={ctx} /><Marks marks={s.marks} /></>
+  const intro = parsed.introBlocks.filter((b) => b.type !== 'heading1')
+
+  if (variant === 'site') {
+    return (
+      <div className={`${v.page}${rail ? ' xl:pr-32' : ''}`}>
+        <PageHero label={fm.label} title={title} lede={fm.description} />
+        {intro.length > 0 && <PageSection id="a-intro"><div className={v.root}><Blocks blocks={intro} sectionId="intro" ctx={ctx} /></div></PageSection>}
+        {sections.length > 1 && (
+          <PageSection id="a-chapters" label={v.chapters.label} title={v.chapters.title}>
+            <Contents index={sections.map((s, i) => ({ id: `a-${s.id}`, label: s.num ?? String(i + 1).padStart(2, '0'), title: s.heading }))} />
+          </PageSection>
+        )}
+        {sections.map((s, i) => (
+          <PageSection key={`${i}-${s.id}`} id={`a-${s.id}`} label={s.num ?? String(i + 1).padStart(2, '0')} title={heading(s)}>
+            <div className={v.root}><Blocks blocks={s.blocks} sectionId={parsed.sections[i].id} sources={s.sources} ctx={ctx} /></div>
+          </PageSection>
+        ))}
+        {railToc}
+      </div>
+    )
+  }
+
   return (
     /* the page's inset is `.kol-page`, as site-hub's Sheet wears it — the frame paints the plane, the page its margins */
-    <div className={`kol-page${rail ? ' xl:pr-32' : ''}`}>
-      <article className={`kol-sheet${proj ? ' proj' : ''}`} style={{ maxWidth: 980 }}>
+    <div className={`${v.page}${rail ? ' xl:pr-32' : ''}`}>
+      <article className={`${v.root}${proj ? ` ${v.proj}` : ''}`} style={{ maxWidth: v.maxWidth }}>
         <h1>{title}</h1>
-        <Blocks blocks={parsed.introBlocks.filter((b) => b.type !== 'heading1')} sectionId="intro" ctx={ctx} />
+        <Blocks blocks={intro} sectionId="intro" ctx={ctx} />
         {sections.map((s, i) => (
           <section key={`${i}-${s.id}`} id={`a-${s.id}`}>
-            <h2>{s.num && <span className="num">{s.num}</span>}<Marks marks={s.marks} lead /><Inline tokens={s.tokens ?? [{ type: 'text', content: s.heading }]} ctx={ctx} /><Marks marks={s.marks} /></h2>
+            <h2>{s.num && <span className="num">{s.num}</span>}{heading(s)}</h2>
             <Blocks blocks={s.blocks} sectionId={parsed.sections[i].id} sources={s.sources} ctx={ctx} />
           </section>
         ))}
       </article>
-      {rail && tocItems.length > 1 && <DocsToc variant="rail" toc={tocItems} onNavigate={jumpTo} className="hidden xl:flex" />}
+      {railToc}
     </div>
   )
 }

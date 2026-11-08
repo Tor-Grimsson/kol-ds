@@ -37,6 +37,8 @@ export { default as documentTabs } from './documentTabs.js'
 export { default as documentFiles } from './documentFiles.js'
 /* a folder's index page — contents cards or a table, its files in Quick Look (moved from kol-styleguide 2026-10-31, LayoutGroup) */
 export { default as DocumentIndex } from './DocumentIndex.jsx'
+/* the contents card — a chapter as label · title · meta · arrow; the brand book's Chapters are these (2026-11-08) */
+export { default as IndexCard } from './IndexCard.jsx'
 /* a document page's header — the title (SectionText variant="document") over the tabs + menus row (2026-10-31) */
 export { default as DocumentHeader } from './DocumentHeader.jsx'
 export { default as documentLibrary, matchOriginals, kindAndTitle, libraryLinks, KINDS as DOCUMENT_KINDS, LANGS as DOCUMENT_LANGS } from './documentLibrary.js'

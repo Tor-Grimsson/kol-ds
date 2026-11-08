@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { FileQuickLook, SectionText, KIND_LABEL, Table } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
+import IndexCard from './IndexCard.jsx'
 
 /* taxonomy-ok: organism — a folder's index page: its header, the contents (cards or a table) and the Quick Look over its files */
 
@@ -86,21 +87,6 @@ export function Contents({ index, onNavigate }) {
         </div>
       ))}
     </div>
-  )
-}
-
-/* The book's index card — the Contents row: a label, the title, one small line and the arrow (kol-branding's IndexCard,
- * the in-page anchor half). */
-function IndexCard({ href, onClick, label, title, meta }) {
-  return (
-    <a href={href} onClick={onClick} className="kol-card kol-card-interactive flex items-center justify-between gap-4 px-4 py-3 no-underline group">
-      <span className="flex min-w-0 flex-col gap-1">
-        {label && <span className="kol-mono-12 text-meta uppercase">{label}</span>}
-        <span className="kol-mono-14 text-emphasis">{title}</span>
-        {meta && <span className="kol-mono-10 text-meta mt-1">{meta}</span>}
-      </span>
-      <Icon name="arrow-right" size={16} className="shrink-0 text-oq-48 group-hover:text-emphasis transition-colors" />
-    </a>
   )
 }
 

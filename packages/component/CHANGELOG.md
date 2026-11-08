@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.352.0 — 2026-11-08
+
+- **New: `TypeTester`** (molecule, lobby TypeTester) — one live type-testing block: a style `Dropdown` and Size / Leading / Spacing `Slider`s over an editable sample, ported class-for-class from kol-website's foundry `FontPreviewItem`. `fontFamily`, `fontStyle`, `text`, `styles` (`{label, value}[]`, the value is the font-weight), `initialStyle` (by label or value, default `'Regular'`), `initialSize` (64), `initialLeading` (10; 0–50 → 90–140%), `lineClamp`. The website's weight map, sample passage and size ladder stay with the caller.
+
 ## 0.351.0 — 2026-11-08
 
 - **New: `SwatchCaption`** (molecule) — the name, value and meta lines under a swatch, the text block of the Swatch family: `name`, `value`, `meta`, `layout` `'inline'` (name and value on one baseline row, meta under) · `'stacked'` (default), `tone` `'muted'` (default: quiet name, strong value) · `'strong'` (emphasised truncating name, quiet value), and `rowClass` · `nameClass` · `valueClass` · `metaClass` to replace a slot's classes whole. It renders siblings, so the parent owns the gap.

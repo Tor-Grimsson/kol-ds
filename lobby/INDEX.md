@@ -31,13 +31,14 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 106 entries
+## Queue — 107 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🔵 | [TypeTester](inbox/TypeTester.md) | **kol-foundry** — kol-website's `FontPreviewItem` (style dropdown + Size / Leading / Spacing sliders over an editable sample) as a DS molecule; kol-website foundry pages and kol-kerner's Tester page consume it | 2026-11-08 | 🔵 `filed` |
 | 🟢 | [ColumnStripHoldsStill](done/ColumnStripHoldsStill.md) | **kol-website** — MediaLibrary Columns view slides the strip to its far right on every click (`MediaLibraryPages` scrolls to `scrollWidth` on each `prefix`/`pickedFile` change); only mouse and arrows may move it | 2026-11-05 | 🔵 `filed` |
 | 🟢 | [FloatActionStatesAndMotion](done/FloatActionStatesAndMotion.md) | **kol-website** — the inverted + button: hover = slight opacity drop (not grey), press scale, + rotates into × · motion (ease, reduced-motion aware) across the float rail, cards, flyout and search | 2026-11-04 | 🔵 `filed` |
 | 🟢 | [FloatActionMenuExport](done/FloatActionMenuExport.md) | **kol-website** — export HubHome's private `HomeMenu` (fxr's inverted + / × with the float card to its left) as a shared part, and `FloatLayout bar.menu` to place it top right | 2026-11-04 | 🔵 `filed` |
@@ -557,6 +558,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-08 | 🔵 TypeTester filed from kol-foundry (kol-kerner plan 03 W6.1) |
 | 2026-11-05 | **`GeneratorWindowsFromDS` filed into kol-fxr** — the generator settings window and the `Settings*` controls (kol-component 0.343.0) for plan 53, with the engine params the KOL copy shows disabled |
 | 2026-11-05 | **`ColumnStripHoldsStill` filed from kol-website** — Columns view never slides sideways on a click; only mouse and arrows move the strip |
 | 2026-11-04 | **`DragResizeBottomWake` closed** — kol-component 0.338.1 live; receipt to kol-website |
