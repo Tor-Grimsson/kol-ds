@@ -18,3 +18,4 @@ _tmp/
 
 # kol-resume export output (apps/resume/out)
 out/
+.vercel

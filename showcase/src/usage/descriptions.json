@@ -118,6 +118,8 @@
   "TextFold": "Long text folded short on phones.",
   "PageControls": "The page's own controls, one strip.",
   "ColorSwatch": "Fixed-size color chip atom.",
+  "SwatchTile": "A color swatch with its name and value under it.",
+  "SwatchCaption": "The name, value and meta lines under a swatch.",
   "Dropdown": "Pick one value from a list.",
   "MultiSelect": "Several settings in one dropdown.",
   "FieldRow": "One labelled field in a record.",

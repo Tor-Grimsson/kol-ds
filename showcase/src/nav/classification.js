@@ -160,7 +160,7 @@ export const TIERS = {
   Timecode: 'atoms', ZoomReadout: 'atoms', SceneBreadcrumb: 'atoms', CanvasHint: 'atoms', SelectionMeasure: 'atoms', StatusStrip: 'atoms',
   ToolRail: 'molecules', DocumentCapsule: 'molecules', GlobalActions: 'molecules', PanelsRestore: 'molecules', ReaderBar: 'molecules', ProgressDock: 'molecules',
   RailTrigger: 'molecules', RailFlyout: 'molecules', RailDisplayControls: 'molecules', AccountFooter: 'molecules', Breadcrumb: 'molecules', FooterStrip: 'molecules', PeriodNav: 'molecules', DataStatus: 'molecules',
-  PropertyRail: 'organisms', TopControlsBar: 'organisms',
+  PropertyRail: 'organisms', TopControlsBar: 'organisms', FloatActionMenu: 'molecules',
   /* the app's menu bar (plan-2026-11-05-float-editor W1.1) */
   MenuBar: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
@@ -235,7 +235,7 @@ export const FUNCTIONS_BY_NAME = {
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
-  Tooltip: 'overlay', MenuItem: 'overlay', MenuPopover: 'overlay',
+  Tooltip: 'overlay', MenuItem: 'overlay', MenuList: 'overlay',
   MenuDropdownItem: 'overlay', MenuDropdownDivider: 'overlay',
   MenuDropdownNest: 'overlay', FullscreenOverlay: 'overlay',
   /* the Menu* family (metric Round 4, 2026-10-31) */
@@ -303,7 +303,7 @@ export const FUNCTIONS_BY_NAME = {
   ToolRail: 'input', PropertyRail: 'input', DocumentCapsule: 'navigation', GlobalActions: 'action', TopControlsBar: 'navigation', PanelsRestore: 'action',
   ReaderBar: 'navigation', ProgressDock: 'navigation', RailTrigger: 'navigation', RailFlyout: 'navigation', RailDisplayControls: 'action',
   AccountFooter: 'display', Breadcrumb: 'wayfinding', FooterStrip: 'display', PeriodNav: 'navigation', DataStatus: 'feedback',
-  FloatLayout: 'structure',
+  FloatLayout: 'structure', FloatActionMenu: 'overlay',
   MenuBar: 'navigation',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
@@ -335,7 +335,7 @@ export const FUNCTIONS_BY_NAME = {
   TYPE_LABELS: 'utility', BOOL_OP_LABELS: 'utility', SHAPE_KIND_LABELS: 'utility', labelForLayer: 'utility', rowLabelForLayer: 'utility', findLayerDeep: 'utility',
   pathD: 'utility', pathBounds: 'utility', shiftNode: 'utility', normalizePath: 'utility', scalePathNodes: 'utility', normalizePathRings: 'utility', rotatePathNodes: 'utility', dist: 'utility', nearestSegmentT: 'utility', splitSegment: 'utility', smoothNode: 'utility',
   /* the structural-fork hook (ColumnBrowserStackMode, 2026-09-03) */
-  useMediaQuery: 'utility', useRailKey: 'utility',
+  useMediaQuery: 'utility', useRailKey: 'utility', useRailKeys: 'utility', useFloatPresence: 'utility',
   /* framework */
   AppShell: 'structure', PageLayout: 'structure', SiteLayout: 'structure', WebsiteLayout: 'structure', CategoryPage: 'structure',
   MarkdownPage: 'structure', LinkPreview: 'overlay', documentTabs: 'utility', documentFiles: 'utility',
@@ -520,7 +520,7 @@ export const DOCS_ONLY = [
 
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
-  'MenuPopover', 'QuantityStepper',
+  'QuantityStepper',
   /* SegmentedToggle = ButtonGroup layout="joined" (2026-11-06, plan-2026-11-06-buttons-page 2.7) */
   'SegmentedToggle',
   /* MenuDropdownItem · MenuDropdownDivider · MenuDropdownNest = MenuRow · MenuDivider · MenuFlyout (2026-10-31, the Menu* family) */
