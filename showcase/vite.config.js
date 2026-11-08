@@ -80,7 +80,11 @@ export default defineConfig({
     dedupe: ['react', 'react-dom'],
     /* the Float set mounts apps/float, whose visual editor reads design-editor's /core — the one BUILT package
      * (ARCHITECTURE §4), so alias its source as apps/editor and apps/float do */
-    alias: [{ find: /^@kolkrabbi\/design-editor\/core$/, replacement: fileURLToPath(new URL('../packages/design-editor/src/core.jsx', import.meta.url)) }],
+    alias: [
+      { find: /^@kolkrabbi\/design-editor$/, replacement: fileURLToPath(new URL('../packages/design-editor/src/index.jsx', import.meta.url)) },
+      { find: /^@kolkrabbi\/design-editor\/core$/, replacement: fileURLToPath(new URL('../packages/design-editor/src/core.jsx', import.meta.url)) },
+      { find: /^@kolkrabbi\/design-editor\/(generators|effects|motion)$/, replacement: fileURLToPath(new URL('../packages/design-editor/src/packs', import.meta.url)) + '/$1.js' },
+    ],
   },
   /* the moves log is written by the middleware above, and _tmp/ is scratch — neither should ever wake HMR */
   server: {
