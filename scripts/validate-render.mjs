@@ -43,9 +43,9 @@ const ROUTES = {
   /* an object names a control to PRESS after the route loads — an overlay (the picker, the viewer)
    * is nothing until something opens it, and a route alone never measured one */
   media: ['', 'library', { path: 'picker', press: 'Pick media' }, { path: 'picker/b', press: 'Pick media' }, { path: 'viewer', press: 'tt-01.jpg' }],
-  notes: ['', '#list'],
+  note: ['', '#list'],
   presentation: ['', '#list'],
-  'notes-hub': ['#/', '#/notes'],
+  'note-hub': ['#/', '#/notes'],
   'presentation-hub': ['#/', '#/decks'],
   editor: ['', 'labs', 'randomiser', 'core'],
   'editor-hub': ['', 'library', 'settings', 'labs', 'randomiser'],

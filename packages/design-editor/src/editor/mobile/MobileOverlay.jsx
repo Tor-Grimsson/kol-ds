@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Button, SegmentedToggle, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { pack } from '../packs'
 import { useComposeFile } from '../compose/useComposeFile'
 import { transport, useTransport } from '../params/transport'
 import { groupById, loopById, presetsInGroup, presetLayerPatch } from '../../loops/registry'
-import CategoryScreen, { SPREAD } from './CategoryScreen'
+import CategoryScreen from './CategoryScreen'
+import { SPREAD } from './device'
 import EffectScreen from './EffectScreen'
 import { deriveScopes, allScopeParams, computeRoll, computePresetRoll, computeFilterRoll, useRollSeed } from '../params/rolls'
 import { resolvedChain } from '../compose/filterChain'
@@ -106,7 +107,7 @@ function packRows(cells, size) {
 
 function ScopeStrips({ cells, size }) {
   return packRows(cells, size).map((row, i) => (
-    <SegmentedToggle
+    <ButtonGroup layout="joined"
       key={i}
       value={null}
       onChange={(v) => row.find((c) => c.value === v)?.run()}
@@ -124,7 +125,7 @@ const LOOP_CHIP_OPTS = [2, 4, 8, 16].map((s) => ({ value: String(s), label: `${s
 function LoopChips({ size }) {
   const { loopSeconds, setLoopSeconds } = useTransport()
   return (
-    <SegmentedToggle
+    <ButtonGroup layout="joined"
       value={String(loopSeconds)}
       onChange={(v) => setLoopSeconds(Number(v))}
       options={LOOP_CHIP_OPTS}
@@ -327,7 +328,7 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
               phone width. Descendant selectors into DS internals are the
               sanctioned escape — a consumer cannot reach `.kol-seg-cell`
               otherwise, and the size ladder stays `lg`. */}
-          <SegmentedToggle
+          <ButtonGroup layout="joined"
             value={activeTab}
             onChange={setTab}
             options={tabs}
@@ -427,8 +428,8 @@ export default function MobileOverlay({ layer, onSwitchCategory, onInsert, onRes
 
           {activeTab === 'output' && (
             <div className="flex flex-col gap-2 pt-3">
-              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size={cs} ariaLabel="Aspect" />
-              <SegmentedToggle value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size={cs} ariaLabel="Aspect (landscape) and fill" />
+              <ButtonGroup layout="joined" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_1} size={cs} ariaLabel="Aspect" />
+              <ButtonGroup layout="joined" value={aspectValue} onChange={onAspect} options={ASPECT_ROW_2} size={cs} ariaLabel="Aspect (landscape) and fill" />
               <div className="grid grid-cols-2 gap-2">
                 {/* a roll as a file — a labs file, so it is a morph step under From my files (⌘S at a desk) */}
                 <Button tone="primary" size={cs} onClick={() => openFiles({ focusName: true })}>Save…</Button>

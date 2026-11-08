@@ -3,7 +3,7 @@ title: Rail and overlay
 type: reference
 status: active
 created: 2026-10-17
-updated: 2026-10-17
+updated: 2026-11-04
 description: Two words for edge and overlay surfaces
 aliases:
   - rail
@@ -14,6 +14,7 @@ sources:
   - packages/component/src/molecules/Rail.jsx
   - packages/component/src/organisms/CommandOverlay.jsx
   - packages/component/src/hooks/useDragResize.js
+  - packages/component/src/hooks/useRailKeys.js
 tags:
   - domain/compositions
   - domain/architecture
@@ -36,4 +37,13 @@ pushing it is a prop (`mode`), not a third word. `SettingsPanel`'s two presentat
 `variant="drawer"` is a rail, `variant="overlay"` an overlay — the prop values are API and stay.
 
 `useDragResize` resizes a rail from any edge: `side` `left` · `right` · `top` · `bottom`, the size in
-`--<token>-w` (sides) or `--<token>-h` (top and bottom).
+`--<token>-w` (sides) or `--<token>-h` (top and bottom). On a top or bottom Rail the grab pill wakes on the y axis and travels along x (0.338.1).
+
+**The rail keys** (RailShortcutsAllFrames, 2026-11-04) are one rule in every frame that draws a nav rail — `AppShell`, `SiteLayout` and `FloatLayout`, each through kol-component's `useRailKeys` with its own state:
+
+| Key | Does |
+|---|---|
+| `\` | expands ↔ collapses the rail (the app rail's grab toggle, the site rail's `kol-sidenav` state, the float rail's 280 ↔ 72) |
+| `⇧\` | hides ↔ shows it; showing returns it as it was (the site rail's hide is kept as `kol-sidenav-hidden`) |
+
+Ignored while typing and with ⌘ / ⌃ / ⌥ held. One prop on all three: `railKeys={false}` turns them off, `railKeys={{ collapse, hide }}` rebinds (`'\\'`, `'shift+\\'`). `AppShell railToggleKey` is the old alias for `hide`. The Hub lists both in its keymap as **Rail** (`railShortcuts`).

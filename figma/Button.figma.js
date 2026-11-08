@@ -3,38 +3,33 @@
 // component=Button
 import figma from 'figma'
 
+// axes = what the code uses (2026-11-06): role · size · content · state · shape. Color is NOT a property: it is the
+// instance's `tone` variable mode (in code `tone="…"` or a `kol-tone-*` wrapper), which Code Connect cannot read.
 const instance = figma.selectedInstance
+const role = instance.getEnum('role', { "default": "default", "nav": "nav", "tab-filled": "tab-filled" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
-const iconOnly = instance.getEnum('iconOnly', { "true": "true", "false": "false" })
-const variant = instance.getEnum('variant', { "default": "default", "nav": "nav", "tab": "tab", "tab-filled": "tab-filled", "accent": "accent", "danger": "danger", "float": "float" })
-const pressed = instance.getEnum('pressed', { "true": "true", "false": "false" })
-const disabled = instance.getEnum('disabled', { "true": "true", "false": "false" })
-const swap = instance.getInstanceSwap('icon')
-// the swapped icon's own Code Connect id is its code name (figma/icons/*.figma.js); a layer name never follows a swap
-const icon = (swap && typeof swap.codeConnectId === 'function' && swap.codeConnectId()) || 'search'
-
-const tone = instance.getEnum('tone', { "default": "default", "primary": "primary", "inverted": "inverted", "secondary": "secondary", "ghost": "ghost", "danger": "danger" })
-const radius = instance.getEnum('radius', { "sm": "sm", "full": "full" })
+const content = instance.getEnum('content', { "text": "text", "icon": "icon" })
+const state = instance.getEnum('state', { "rest": "rest", "quiet": "quiet", "pressed": "pressed", "disabled": "disabled", "hover": "rest" })
+const shape = instance.getEnum('shape', { "square": "square", "round": "round" })
+// the glyph lives in a nested IconLoader (2026-11-07): read its `glyph` swap; a layer name never follows a swap
+const glyphOf = (layer, fallback) => {
+  const n = instance.findInstance(layer)
+  const s = n && typeof n.getInstanceSwap === 'function' ? n.getInstanceSwap('glyph') : null
+  return (s && typeof s.codeConnectId === 'function' && s.codeConnectId()) || fallback
+}
+const icon = glyphOf('icon', 'search')
 const iconLeftOn = instance.getBoolean('iconLeft')
-const leftSwap = instance.getInstanceSwap('iconLeftName')
-const left = (leftSwap && typeof leftSwap.codeConnectId === 'function' && leftSwap.codeConnectId()) || 'search'
+const left = glyphOf('iconLeft', 'search')
 const iconRightOn = instance.getBoolean('iconRight')
-const rightSwap = instance.getInstanceSwap('iconRightName')
-const right = (rightSwap && typeof rightSwap.codeConnectId === 'function' && rightSwap.codeConnectId()) || 'chevron-down'
-// extra props, in the order the code reads them
-const xr = radius === 'full' ? ' radius="full"' : ''
-const xd = disabled === 'true' ? ' disabled' : ''
+const right = glyphOf('iconRight', 'chevron-down')
+const v = role === 'nav' ? 'variant="nav" ' : role === 'tab-filled' ? 'variant="tab-filled" ' : ''
+const r = shape === 'round' ? ' radius="full"' : ''
+const xs = (state === 'pressed' ? ' pressed' : '') + (state === 'disabled' ? ' disabled' : '') + (state === 'quiet' ? ' quiet' : '')
 const xl = (iconLeftOn ? ` iconLeft="${left}"` : '') + (iconRightOn ? ` iconRight="${right}"` : '')
-// tone: the float roles (inverted · secondary · ghost · danger) are the `tone` variant; elsewhere tone is the `tone` collection's variable mode (W24), which Code Connect can't read, so the snippet inherits it
-const ground = (variant !== 'default' ? `variant="${variant}" ` : '') + (tone !== 'default' && tone !== 'primary' ? `tone="${tone}" ` : '')
 export default {
-  example: iconOnly === 'true'
-    ? pressed === 'true'
-      ? figma.code`<Button ${ground}size="${size}"${xr} iconOnly="${icon}" aria-label="${icon}" pressed${xd} />`
-      : figma.code`<Button ${ground}size="${size}"${xr} iconOnly="${icon}" aria-label="${icon}"${xd} />`
-    : pressed === 'true'
-      ? figma.code`<Button ${ground}size="${size}"${xr}${xl} pressed${xd}>${instance.getString('label')}</Button>`
-      : figma.code`<Button ${ground}size="${size}"${xr}${xl}${xd}>${instance.getString('label')}</Button>`,
+  example: content === 'icon'
+    ? figma.code`<Button ${v}size="${size}" iconOnly="${icon}" aria-label="${icon}"${r}${xs} />`
+    : figma.code`<Button ${v}size="${size}"${xl}${xs}>${instance.getString('label')}</Button>`,
   imports: ["import { Button } from \"@kolkrabbi/kol-component\""],
   id: 'Button',
 }

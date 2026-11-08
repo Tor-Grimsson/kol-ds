@@ -22,7 +22,7 @@ export { default as AssetPlaceholder } from './utilities/AssetPlaceholder.jsx'
 export { default as Avatar } from './atoms/Avatar.jsx'
 export { default as Badge } from './atoms/Badge.jsx'
 export { default as Button } from './atoms/Button.jsx'
-export { default as CloseButton } from './atoms/CloseButton.jsx'
+export { default as CloseButton } from './molecules/CloseButton.jsx'
 export { default as ActionButton } from './molecules/ActionButton.jsx'
 export { default as FileIcon } from './atoms/FileIcon.jsx'
 export { default as SizeOrDownload } from './atoms/SizeOrDownload.jsx'
@@ -41,7 +41,7 @@ export { default as ExitPreview } from './utilities/ExitPreview.jsx'
 export { default as Figure } from './atoms/Figure.jsx'
 /* which file origins a preview fetches with the sign-in cookie (Quick Look on private files, 2026-10-28) */
 export { registerCredentialedOrigin, credentialsFor } from './utilities/credentials.js'
-export { default as FullscreenOverlay } from './utilities/FullscreenOverlay.jsx'
+export { default as FullscreenOverlay } from './molecules/FullscreenOverlay.jsx'
 /* the overlay layer stack — which open layer owns Escape; exported so a layer in another package
  * (kol-shell's walkthrough) joins the same stack instead of a second one (2026-10-09) */
 export { pushLayer, popLayer, isTopLayer } from './utilities/layerStack.js'
@@ -55,6 +55,7 @@ export { default as OverlayGlassPanel } from './utilities/OverlayGlassPanel.jsx'
 export { default as Pill } from './atoms/Pill.jsx'
 export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
 export { floatSurfaceClass, FLOAT_SURFACES } from './utilities/tone.js'
+export { floatMotion, FLOAT_MOTION } from './utilities/motion.js'
 /* armLongPress — the touch hold the panel value controls report (moved from kol-hardware 2026-10-01) */
 export { armLongPress } from './utilities/armLongPress.js'
 export { default as ContextMenu, useContextMenu } from './molecules/ContextMenu.jsx'
@@ -67,7 +68,7 @@ export { default as SearchInput } from './molecules/SearchInput.jsx'
 export { default as InspectorSection, default as Section } from './molecules/InspectorSection.jsx'
 export { default as SectionText, SECTION_TEXT_LEVELS } from './molecules/SectionText.jsx'
 export { default as SectionLabel } from './atoms/SectionLabel.jsx'
-export { default as SegmentedToggle } from './atoms/SegmentedToggle.jsx'
+export { default as SegmentedToggle } from './molecules/SegmentedToggle.jsx'
 /* a page's variants — the pinned slider button and its panel of segmented rows (OneVariantsControl, 2026-10-29; catalog's) */
 export { default as VariantsControl } from './molecules/VariantsControl.jsx'
 export { default as Stepper } from './molecules/Stepper.jsx'
@@ -83,6 +84,7 @@ export { default as InlineAddRow } from './molecules/InlineAddRow.jsx'
 export { default as LinkAddRow } from './molecules/LinkAddRow.jsx'
 export { default as ColorField } from './molecules/ColorField.jsx'
 export { default as PanelsMenu } from './molecules/PanelsMenu.jsx'
+export { default as ModalHeader } from './molecules/ModalHeader.jsx'
 /* float-everything W6 · W8 (0.335.0) */
 export { default as SummaryLine } from './molecules/SummaryLine.jsx'
 export { default as QuickLookHeader } from './molecules/QuickLookHeader.jsx'
@@ -156,6 +158,8 @@ export { default as ColorRamp } from './molecules/ColorRamp.jsx'
 export { default as TextFold } from './molecules/TextFold.jsx'
 export { default as PageControls } from './molecules/PageControls.jsx'
 export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
+export { default as SwatchTile } from './molecules/SwatchTile.jsx'
+export { default as SwatchCaption } from './molecules/SwatchCaption.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
 /* MultiSelect — several pick-one settings in one dropdown, a column each (2026-10-01, first cut) */
 export { default as MultiSelect } from './molecules/MultiSelect.jsx'
@@ -173,8 +177,13 @@ export { default as ContentItem } from './molecules/ContentItem.jsx'
 export { default as ContentCollection } from './organisms/ContentCollection.jsx'
 export { MenuItem, MenuRow, MenuDivider, MenuFlyout, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from './molecules/MenuItem.jsx'
 export { Menu, MenuTrigger, MenuPanel, MenuLabel, MenuFilter, MenuDatePicker, MenuMore } from './molecules/Menu.jsx'
-export { MenuPopover } from './molecules/MenuPopover.jsx'
+export { MenuList } from './molecules/MenuList.jsx'
 export { ModalProvider, useModal, Dialog } from './molecules/Modal.jsx'
+/* the generator settings window's controls (plan-2026-11-05-float-editor W7.2) — `Dialog variant="settings"`'s rows */
+export {
+  SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle,
+  SettingsText, SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
+} from './molecules/SettingsControls.jsx'
 export { default as Combobox } from './molecules/Combobox.jsx'
 export { default as PaletteHarmonyWheel } from './molecules/PaletteHarmonyWheel.jsx'
 export { default as PropertyInput } from './molecules/PropertyInput.jsx'
@@ -252,7 +261,7 @@ export { default as SectionSplit } from './organisms/SectionSplit.jsx'
 export { default as SectionCards } from './organisms/SectionCards.jsx'
 export { default as SectionCta, default as CtaGlobal } from './organisms/SectionCta.jsx'
 export { default as SectionFaq } from './organisms/SectionFaq.jsx'
-export { default as LoaderOverlay } from './utilities/LoaderOverlay.jsx'
+export { default as LoaderOverlay } from './molecules/LoaderOverlay.jsx'
 /* dev chrome: name an element, agree on a cell, emit one sync line */
 export { default as QuadrantSync } from './utilities/QuadrantSync.jsx'
 export { default as MediaLibrary, MediaLibraryProvider, useMediaLibrary, MediaPicker } from './organisms/MediaLibrary.jsx'
@@ -324,6 +333,7 @@ export { SOLO, ADJACENT, INDICATOR, glyphSize, indicatorSize } from './hooks/gly
 
 // hooks
 export { default as usePrefersReducedMotion } from './hooks/usePrefersReducedMotion.js'
+export { default as useFloatPresence } from './hooks/useFloatPresence.js'
 export { default as useReveal } from './hooks/useReveal.js'
 export { default as useScrollSpy } from './hooks/useScrollSpy.js'
 export { default as useScrollFade } from './hooks/useScrollFade.js'
@@ -352,6 +362,9 @@ export { default as useHistory } from './hooks/useHistory.js'
  * `EditorShell` needs resizable rails and cannot import framework. framework
  * re-exports it, so no consumer specifier changed. */
 export { default as useDragResize } from './hooks/useDragResize.js'
+/* one keyboard rule for every nav rail — `\` expand ↔ collapse, `⇧\` hide ↔ show (RailShortcutsAllFrames, 2026-11-04);
+ * AppShell, FloatLayout and kol-framework's SiteLayout call it with their own setters */
+export { default as useRailKeys, RAIL_KEYS, railShortcuts } from './hooks/useRailKeys.js'
 export { default as usePlaceholders } from './hooks/usePlaceholders.js'
 export { resolveCssVar, resolveCssColor, isLight } from './hooks/cssVar.js'
 

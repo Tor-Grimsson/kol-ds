@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, Divider, Input, Knob, SegmentedToggle, Slider } from '@kolkrabbi/kol-component'
+import { Button, Divider, Input, Knob, ButtonGroup, Slider } from '@kolkrabbi/kol-component'
 import ParamSheet from './ParamSheet.jsx'
 import Toggle from '../switches/Toggle.jsx'
 import SignalScope from '../indicators/SignalScope.jsx'
@@ -84,7 +84,7 @@ export function useEnvelopeGenerator({
 
 /** The Equation | ADSR toggle, for a host that puts it in its own masthead. */
 export function EnvelopeModeToggle({ generator, size = 'sm', className = '' }) {
-  return <SegmentedToggle value={generator.mode} onChange={generator.setMode} options={MODES} size={size} ariaLabel="Mode" className={className} />
+  return <ButtonGroup layout="joined" value={generator.mode} onChange={generator.setMode} options={MODES} size={size} ariaLabel="Mode" className={className} />
 }
 
 /* mirror's Eyebrow — the box's name above it. `bare` when the child draws its own box. */

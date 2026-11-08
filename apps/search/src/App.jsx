@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
 import { MemoryRouter } from 'react-router-dom'
-import { Button, Dropdown, Input, PageHeader, Pill, SegmentedToggle, ShellSearchOverlay, Tag, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, Input, PageHeader, Pill, ButtonGroup, ShellSearchOverlay, Tag, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell'
 import { createIndex, search } from '@kolkrabbi/kol-search'
 import { TagGraph } from '@kolkrabbi/kol-workshop'
@@ -215,7 +215,7 @@ export default function App() {
 
   const actions = (
     <span className="flex items-center gap-2">
-      <SegmentedToggle size="sm" value={view} onChange={setView} options={VIEWS} ariaLabel="View" />
+      <ButtonGroup layout="joined" size="sm" value={view} onChange={setView} options={VIEWS} ariaLabel="View" />
       <Tooltip label="Scope">
         <Dropdown value={scope} onChange={setScope} options={SCOPES} />
       </Tooltip>

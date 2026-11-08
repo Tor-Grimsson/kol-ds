@@ -6,9 +6,11 @@ import figma from 'figma'
 const instance = figma.selectedInstance
 const variant = instance.getEnum('variant', { "default": "default", "halo": "halo" })
 const size = instance.getEnum('size', { "24": "24", "32": "32" })
+// one chip per state (2026-11-07): transparent nests TransparentX
+const state = instance.getEnum('state', { "rest": "", "selected": " selected", "transparent": " transparent" })
 
 export default {
-  example: figma.code`<ColorSwatch hex={hex} variant="${variant}" size={${size}} selected={selected} onClick={pick} />`,
+  example: figma.code`<ColorSwatch hex={hex} variant="${variant}" size={${size}} ${state} onClick={pick} />`,
   imports: ["import { ColorSwatch } from \"@kolkrabbi/kol-component\""],
   id: 'ColorSwatch',
 }

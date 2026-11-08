@@ -15,7 +15,7 @@ import { DEFAULT_CURVE } from '../../../loops/pattern/fields/organicField.js'
  * node array (`waveCurve`) to a LUT via sampleCurveLUT/customWave when
  * waveProfile === 'custom'.
  */
-import { clamp } from '../../../loops/lib/util'
+import { clamp } from '../../lib/util'
 
 /* THE EDITOR IS KOL's BezierPathEditor (kol-component 0.330, plan 51 4.4). fxr keeps its value — y ∈ −1…1 up, handles
    as hlx/hly/hrx/hry — and its rules, applied in onChange: the ends sit at x 0 and 1 and share y (the profile tiles),

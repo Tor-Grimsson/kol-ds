@@ -22,7 +22,7 @@ import {
   ProsePreview,
   SpectrumGrid,
   ColorRamp,
-  ColorSwatch,
+  SwatchTile,
   ColorInputRow,
 } from '@kolkrabbi/kol-component'
 import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
@@ -217,10 +217,7 @@ export default function StyleguideSet() {
         {/* Standalone chips */}
         <div className="flex flex-wrap gap-4">
           {BRAND_CHIPS.map((c) => (
-            <div key={c.hex} className="flex flex-col items-start gap-1.5">
-              <ColorSwatch hex={c.hex} size={48} radius="sm" title={`${c.name} ${c.hex}`} />
-              <span className="kol-helper-10 text-meta">{c.name}</span>
-            </div>
+            <SwatchTile key={c.hex} hex={c.hex} name={c.name} value={null} size={48} title={`${c.name} ${c.hex}`} />
           ))}
         </div>
 

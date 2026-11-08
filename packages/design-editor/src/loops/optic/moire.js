@@ -1,4 +1,4 @@
-import { hexToRgb } from '../lib/util.js'
+import { hexToRgb } from '../../editor/lib/util.js'
 import { glPass, rgb01 } from '../lib/glPass.js'
 import { fieldRes } from '../field/fieldGL.js'
 

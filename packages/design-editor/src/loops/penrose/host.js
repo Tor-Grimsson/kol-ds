@@ -22,7 +22,7 @@
 import { loadFonts as loadEditorFonts, FONTS as EDITOR_FONTS } from '../../kinetic/fonts.js'
 import { recordRoles } from './roles.js'
 import { transport } from '../../editor/params/transport.js'
-import { themeById, DEFAULT_THEME } from '../lib/themes.js'
+import { themeById, DEFAULT_THEME } from '../../editor/lib/themes.js'
 import { setPalette, syncOpacity } from './palette.js'
 import { makeSDF, setLoopClock, collectSteps } from './common.js'
 import { makeMapper, tintedContext } from './tint.js'

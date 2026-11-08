@@ -7,6 +7,7 @@ const instance = figma.selectedInstance
 // variant=raised retired 2026-10-31 → the TONE collection's faint mode (tone="faint" on a wrapper)
 const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline", "float": "float" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
+// open=true (2026-11-07) shows the Menu it renders: MenuPanel's rows under the trigger — state, not a prop
 
 export default {
   example: figma.code`<Dropdown variant="${variant}" size="${size}" options={options} value={value} onChange={setValue} />`,

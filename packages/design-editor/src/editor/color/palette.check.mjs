@@ -7,7 +7,7 @@ const load = (p) => vite.ssrLoadModule(new URL(p, import.meta.url).pathname)
 const { rollPalette, RELATIONS, okL, generatePalette, assignRoles, hexToOklch } = await load('./palette.js')
 const { mulberry32, randomizeSchema } = await load('../lib/rng.js')
 const { themeParams } = await load('../../loops/theme.js')
-const { THEMES, resolveTheme } = await load('../../loops/lib/themes.js')
+const { THEMES, resolveTheme } = await load('../lib/themes.js')
 const bad = []
 const ok = (c, m) => { if (!c) bad.push(m) }
 

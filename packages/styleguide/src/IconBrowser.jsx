@@ -11,7 +11,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * pages/IconsGallery.jsx), exported as a component (LayoutGroup, 2026-10-31 — kol-atlas's Icons-2 view was a second copy
  * of it). The page around it — its title, intro, the set's groups — is the page's.
  *
- * An item is a kol-icons name, or raw SVG: `{ name, group, type?, svg? }`. With an `svg` key the glyph is that markup
+ * An item is a kol-icons name, or raw SVG: `{ name, group, type?, tags?, svg? }` (`tags` feed the search). With an `svg` key the glyph is that markup
  * sized to the plate, and `svg: null` is a gap — an empty dashed plate.
  *
  * @param {Array}  items         the icons, `{ name, group, type?, svg? }` — `group` is the label the chips read
@@ -272,7 +272,8 @@ export default function IconBrowser({ items = [], filterGroups, title = 'Icons',
       items={shown}
       title={title}
       totalCount={items.length}
-      searchKeys={['name']}
+      /* `tags` (kol-icons KOL_ICON_TAGS, 2026-11-05): search finds an icon by what it is for — "lab" finds the flasks */
+      searchKeys={['name', 'tags']}
       filterGroups={dropdown ? [] : groups}
       mutuallyExclusiveFilters={groups.map((g) => g.key)}
       showCountOnlyWhenFiltering
@@ -299,13 +300,14 @@ export default function IconBrowser({ items = [], filterGroups, title = 'Icons',
         /* A NUMBER SIZES THE COLUMN (2026-10-17): the column is twice the plate, never under the name's floor; Fit keeps six across */
         /* labels off packs the wall: no name floor, the plate and a little air */
         const onTile = selecting ? (name, e) => pick(name, e, rows) : copy
+        /* the reporter sits BESIDE the wall, never in it: ContentCollection wraps every child in a grid <li>, so a
+         * child that renders nothing still took the first slot (the gallery's empty first tile, 2026-11-05) */
         const report = selectable && <ShownRows rows={rows} onRows={setVisible} />
         const cols = !labels
           ? { min: size === 'fit' ? '88px' : `${Math.round(size * 1.5)}px`, gap: 12 }
           : size === 'fit' ? { cols: 6, minCol: '160px' } : { min: `${Math.max(size * 2, nameType(size)[1])}px` }
-        return layout === 'list' ? (
+        return <>{report}{layout === 'list' ? (
           <ContentCollection form="list">
-            {report}
             {rows.map((item) => (
               <ContentRow
                 key={item.name}
@@ -321,15 +323,13 @@ export default function IconBrowser({ items = [], filterGroups, title = 'Icons',
           </ContentCollection>
         ) : perRowControl ? (
           <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${perRow}, minmax(0, 1fr))` }}>
-            {report}
             {rows.map((item) => <Tile key={item.name} item={item} size={size} ground={ground} guide={guide} copied={copied} onCopy={onTile} labels={labels} selecting={selecting} selected={selectedSet.has(item.name)} onContextMenu={contextMenu} />)}
           </div>
         ) : (
           <ContentCollection form="grid" {...cols}>
-            {report}
             {rows.map((item) => <Tile key={item.name} item={item} size={size} ground={ground} guide={guide} copied={copied} onCopy={onTile} labels={labels} selecting={selecting} selected={selectedSet.has(item.name)} onContextMenu={contextMenu} />)}
           </ContentCollection>
-        )
+        )}</>
       }}
     />
   )

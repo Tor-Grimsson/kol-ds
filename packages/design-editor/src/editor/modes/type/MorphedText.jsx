@@ -20,7 +20,7 @@ import { curveBlend } from './curveMath'
 
 const FALLBACK_VIEWBOX_PAD = 0.15
 
-import { lerp } from '../../../loops/lib/util'
+import { lerp } from '../../lib/util'
 
 function commandsToPath(cmds) {
   const out = []

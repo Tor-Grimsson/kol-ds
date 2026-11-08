@@ -1,5 +1,5 @@
 import { HARMONIES, harmonyColors, hexToHsl } from '@kolkrabbi/kol-component'
-import { THEMES } from '../../loops/lib/themes.js'
+import { THEMES } from '../lib/themes.js'
 
 /**
  * palette — ONE palette shape every layer reads (plan 37 W5, lobby `color-pass-one-palette-for-every-layer`).

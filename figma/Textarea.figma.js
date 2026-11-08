@@ -4,13 +4,12 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline", "float": "float" })
-const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
-
+// size sm · md (2026-11-07); filled is the default look; color is the instance's `tone` mode.
+const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const sz = size === 'md' ? '' : ` size="${size}"`
+const dis = instance.getEnum('state', { "rest": "", "disabled": " disabled" })
 export default {
-  example: variant === 'float'
-    ? figma.code`<Textarea variant="float" value={value} onChange={setValue} placeholder="Add a note…" />`
-    : figma.code`<Textarea variant="${variant}" size="${size}" value={value} onChange={setValue} placeholder="…" />`,
+  example: figma.code`<Textarea${sz} value={value} onChange={setValue}${dis} />`,
   imports: ["import { Textarea } from \"@kolkrabbi/kol-component\""],
   id: 'Textarea',
 }

@@ -1,4 +1,4 @@
-import { TAU, lerp, mixHex } from '../lib/util.js'
+import { TAU, lerp, mixHex } from '../../editor/lib/util.js'
 import { FILL_PARAMS, SHAPE_FILL_PARAMS, paintFill, isGradient, fillRuleOf } from '../lib/fill.js'
 
 // Rose curve — a rhodonea r=cos(kθ); integer k sets the petals. A periodic

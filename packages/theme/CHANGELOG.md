@@ -1,5 +1,32 @@
 # @kolkrabbi/kol-theme
 
+## 0.216.1 — 2026-11-07
+
+plan-2026-11-07-menu-system 1.2:
+- **Changed: `.kol-menu-rule` inks the Divider's line** — MenuDivider is now the Divider atom (kol-component 0.348.0), so the panel's rule colour (oq-16; float oq-08) is set on its inner line (`.kol-menu-rule > div`), not `border-color`. Margins unchanged; renders as before.
+
+## 0.216.0 — 2026-11-07
+
+ProgressBar on the slider's track:
+- **New: the shared track** (kol-components-atoms.css) — `--kol-track-h` · `--kol-track-r` · `--kol-track-bg` · `--kol-track-run`, declared on `.kol-track` / `.slider-black` (2px, square, `var(--kol-slider-track, fg-64)`, run the thumb's ink) and `.kol-track--float` / `.kol-slider-float` (3px capsule, oq-16, run `var(--kol-slider-float-run, fg-64)`). `.kol-track` + `.kol-track-run` draw it on a div. The slider's track pseudo-elements now read the tokens; both sliders render as before, and `--kol-slider-track` still inherits from any ancestor.
+
+## 0.215.0 — 2026-11-06
+
+plan-2026-11-06-buttons-page 2.2:
+- **Changed: a float button's side padding is on the spacing scale** — `--kol-float-px-sm · md · lg` = 12 · 16 · 20 (16 · 20 · 24 on `pointer: coarse`), was `height × 0.42` (11.76 · 15.12 · 18.48).
+
+## 0.213.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W7.6:
+- **New: `--kol-slider-float-run`** — the float slider's run (`.kol-slider-float`, kol-components-atoms.css) reads it, falling back to `--kol-fg-64` as before. The design editor's generator Rails set it to the KOL accent.
+
+## 0.212.0 — 2026-11-04
+
+FloatActionStatesAndMotion (kol-website):
+- **The float state and motion tokens** (kol-design-tokens.css, beside the float sizes): `--kol-float-hover-opacity` 0.88 · `--kol-float-press-scale` 0.96 · `--kol-float-enter-scale` 0.96 · `--kol-float-enter-shift` 4px · `--kol-float-duration` 200ms · `--kol-float-duration-rail` 300ms · `--kol-float-ease` (the house curve).
+- **The inverted float ladder** (kol-components-atoms.css): `Button variant="float" tone="inverted"` and `.kol-float-action` (FloatActionMenu's round +) keep their fill on hover and press — hover drops the opacity, press scales — instead of the grey `oq-inverse-40` · `-48`, which the square inverted Button keeps. `.kol-float-action.is-float` wears `--kol-shadow-float`. Every float button eases its states on the float clock.
+- **The float family's motion** (kol-animation.css): `.kol-float-motion` (a card in and out, from its trigger's side via `data-side`, out under `data-exit`), `.kol-float-fade`, `.kol-float-rail` (width transition, rows fade in, `is-entering` · `is-exiting`), `.kol-float-turn` (the + turns 45°), the float rows' hover; all off under `prefers-reduced-motion`.
+
 ## 0.211.1 — 2026-11-04
 
 Float, all of it — W5 Chrome + W9 Navigation (kol-shell 0.101.0), in `kol-components-shell.css`:

@@ -1,5 +1,77 @@
 # @kolkrabbi/kol-shell
 
+## 0.116.0 — 2026-11-07
+
+plan-2026-11-07-menu-system W4.1 — needs kol-component ≥0.349.0:
+- **Changed: MoreRows' account row (an action with `avatar`) renders kol-component's `ModalHeader`** — same row, same press; no API change.
+
+## 0.115.0 — 2026-11-06
+
+plan-2026-11-06-buttons-page 2.3 — needs kol-theme ≥0.215.0:
+- **Changed: DocumentCapsule's name ▾ is a `MenuTrigger variant="float"`** (was a hand-rolled `<button>`): clear at rest on the capsule, lit while its menu is open, 8 in at the side.
+
+## 0.114.0 — 2026-11-06
+
+plan-2026-11-06-buttons-page 1.4:
+- **New: `DocumentCapsule statusIcon`** — an icon before the status (`check` for a saved document). The "✓" in `status="✓ Saved"` was a text character; pass `status="Saved" statusIcon="check"`.
+
+## 0.112.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W7.6:
+- **New: PropertyRail carries a tool Rail** — `onExpand` (the ↗ to the tool's expanded form, beside the ⇥), `collapsible` sections (`open` · `onToggle`: a chevron, the title in `kol-float-panel`, `meta` at the end), `labeled` rows (the label in a 110 column, the control right) and `subhead` rows (a group's caps head), a `footer`, and `density="compact"` (8 between rows, 24 before a section, 20 before a subhead). Everything else as before; the design editor's generator Rails are the first.
+
+## 0.111.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W2b:
+- **New: `MenuBar variant="capsule"`** — his phone menu capsule (frame 06, 19:9544): the menus on a float sheet (the secondary surface, the window round, 20 in), each trigger the float label role in caps at fg-48 with a 10 chevron, lit fg-96 while open. The same menus, lists and keys as the bar; `bar` (default) unchanged.
+
+## 0.110.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W2:
+- **Fixed: `MenuBar` labels sat high in their pill** — the trigger's line box is the pill now (leading 26, was 13: a 13 line box centred in 26 started on a half pixel). The label's cap centre on the pill's centre, measured in Chromium and Firefox (0 at 2×; ±0.5 at 1×, the 9px cap's own rounding); his frame 20:13601 draws the caps on the same rows.
+- **New: `ToolRail orientation="horizontal"`** — the slots in a row, each named above (the phone's tool row, his frame 06). Default `vertical`, as before.
+- **Fixed: `DocumentCapsule`'s ▾ never opened its `menuItems`** — an `onClick={undefined}` after the popover's props wiped its press.
+- `MoreSheet`'s level context is made once on a global key (the relative-imports gate).
+
+## 0.108.0 — 2026-11-04
+
+FloatActionStatesAndMotion (kol-website) — needs kol-component ≥0.341.0, kol-theme ≥0.212.0:
+- **FloatActionMenu's state ladder** — rest the solid inverted circle (with `variant="float"`, the float shadow) · hover the same fill at `--kol-float-hover-opacity` · pressed `--kol-float-press-scale` · open the × on the same fill. It greyed on hover until now.
+- **FloatActionMenu `iconMotion`** — `'rotate'` (default) turns the + 45° into the × and back; `'swap'` exchanges the icon as before.
+- **`motion` on FloatActionMenu, RailTrigger, RailFlyout, TopControlsBar and FloatLayout** — `true` (default) the `--kol-float-*` tokens · `false` none · `{ duration, ease }` per app. FloatLayout hands it to every piece: the rail's expand ↔ collapse and hide ↔ show (the width opens from and closes to 0), RailFlyout and RailTrigger's card in and out, the search modal, the + and its card.
+
+## 0.107.0 — 2026-11-04
+
+FloatActionMenuExport (kol-website):
+- **`FloatActionMenu`** — HubHome's private `HomeMenu`, exported as is: the inverted round `more` / `plus` (× while open), its sheet to the LEFT, top edges level, 12 off; `variant="float"` + `surface` dress the sheet. HubHome draws it as before.
+- **TopControlsBar `menu`** — `[{ label, icon?, onPress }]`, FloatActionMenu (`plus`, the float sheet on the bar's `surface`) at the very end. FloatLayout's `bar.menu` puts it in the top-right corner.
+
+## 0.106.0 — 2026-11-04
+
+FloatSearchAndPanels (kol-website):
+- **FloatLayout `panels`** — `false` drops Panels ⌄ from the bar; the way back is RailTrigger's Show navigation row and `⇧\`. Default `true`, as before.
+- **FloatLayout `search`** — CommandOverlay's props; the frame draws the search modal on its own `surface`. The app keeps the data (`results`).
+- Peer kol-component ≥0.340.0.
+
+## 0.105.1 — 2026-11-04
+
+- **AppShell: `⇧\` shows the app rail as it was** — open or collapsed, the state it had when it hid (FloatLayout's `lastShown`, now on the app rail too). It came back at its 48 rest. Peer kol-component ≥0.339.1.
+
+## 0.105.0 — 2026-11-04
+
+Two kol-website tickets on the float frame and the rail keys (RailShortcutsAllFrames · FloatRailOverlayShadowRestore):
+- **`railKeys` on AppShell and FloatLayout** — `\` expands ↔ collapses the rail, `⇧\` hides ↔ shows it (FloatLayout back to `lastShown`); on by default, `false` off, `{ collapse, hide }` rebinds (kol-component's `useRailKeys`). A controlled `rail` + `onRailChange` still wins.
+- **`railToggleKey` is an alias** for `railKeys.hide`: `'\\'` keeps `\` hiding as before. The Hub stops passing it, so every Hub app gets the rule, and lists both keys in its keymap (sheet, ⌘K, Settings) as **Rail**.
+- **FloatLayout `railMode`** — `push` (default, as before) or `overlay`: the rail floats over the content at the 24 inset, the content keeps its full width, so expand, collapse and hide never move the page; the top bar and Panels ⌄ keep their places, the hidden state's RailTrigger sits over the bar's start.
+- **RailTrigger `onRestore`** — the card ends on a **Show navigation** row that brings the rail back as it was; FloatLayout passes its `lastShown` (the Panels ⌄ path). The card no longer draws a blank row for a nav `{ heading }`.
+- Peer kol-component ≥0.339.0.
+
+## 0.104.0 — 2026-11-04
+
+The exploration frames, 1:1 (plan-2026-11-04-float-figma-review W1.3 and W3.5):
+- **GlobalActions: undo and redo are one glyph pair** — redo draws kol-icons `redo`, the mirror of `undo` (it drew `rotate-right`, a circular arrow from another family).
+- **SelectionMeasure draws its outline** — a 1px rim on oq-64 round the selected thing, the handles centred on it: with a size cap (the measure, kol-float--style 9:8594) eight 6 handles, corners and edge middles; without (the selected row, 9:14340) four 4 corner handles. It drew four 8 corner handles and no outline.
+
 ## 0.103.0 — 2026-11-04
 
 The float chrome's missing seams (plan-2026-11-04-float-operational W1 + W4.2):

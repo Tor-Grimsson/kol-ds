@@ -171,7 +171,7 @@ const FIELD_COMPLEX = {
 
 /* ── Viewport camera (labs LoopsShell.jsx FRAME/FORM_PRESETS, verbatim) ────
  * The universal 2d camera the contract layer folds onto shape + pattern-rules
- * defs (loops/contract.js → loops/lib/viewport.js). Frame = the whole loop
+ * defs (loops/contract.js → editor/lib/viewport.js). Frame = the whole loop
  * moves (spin/zoom) · Form = it modulates in place (pulse/wobble). Loops with
  * their OWN tables above (pattern-rules, scanline, the math family) keep
  * them — this is the default for vp-carrying loops without native motion. */

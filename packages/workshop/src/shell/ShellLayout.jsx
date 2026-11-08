@@ -197,6 +197,25 @@ const writeSettings = (next) => {
 /* A search item in either shape — the kol-search item (`title · kind · space ·
  * category · tags · headings · keywords · description · href`) or the search modal's
  * older row (`label · sectionLabel · …`). Both keep working. */
+/* TIES TAKE TURNS (2026-11-05 — "chess" showed one icon row before All results): the engine breaks a tied score
+ * alphabetically, so a flat cut of 12 gave six Chess organisms (`Chess …` sorts ahead of `chess-bishop`) every slot
+ * the eighteen chess icons tied with. Inside one score the groups now take turns, each keeping its own order; a
+ * stronger hit still outranks a weaker one, and the cut is the same 12. */
+const QUICK_MAX = 12
+const quickList = (ranked) => {
+  const out = []
+  for (let i = 0; i < ranked.length && out.length < QUICK_MAX;) {
+    let j = i
+    while (j < ranked.length && ranked[j].score === ranked[i].score) j++
+    const lanes = new Map()
+    ranked.slice(i, j).forEach((r) => { const g = r.item.category ?? ''; lanes.set(g, [...(lanes.get(g) ?? []), r]) })
+    const queues = [...lanes.values()]
+    for (let k = 0; queues.some((q) => k < q.length); k++) queues.forEach((q) => { if (k < q.length) out.push(q[k]) })
+    i = j
+  }
+  return out.slice(0, QUICK_MAX)
+}
+
 const toSearchItem = (item, i) => ({
   ...item,
   id: item.id ?? item.href ?? `${item.label ?? item.title}-${i}`,
@@ -534,7 +553,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
   const searchIndex = useMemo(() => createIndex((searchItems ?? []).map(toSearchItem)), [searchItems])
   const quickScope = scopedIds ? { space: scopedIds } : {}
   const searchResults = searchQuery
-    ? search(searchIndex, searchQuery, { scope: quickScope, limit: 12 }).results.map(({ item, reasons, highlights }) => {
+    ? quickList(search(searchIndex, searchQuery, { scope: quickScope }).results).map(({ item, reasons, highlights }) => {
       const titleHit = reasons.some((r) => r.field === 'title')
       const first = reasons.find((r) => r.hit)
       return {

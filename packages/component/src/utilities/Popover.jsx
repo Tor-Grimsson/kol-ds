@@ -1,5 +1,7 @@
 import { cloneElement, createContext, isValidElement, useContext, useLayoutEffect, useState, version as reactVersion } from 'react'
 import { toneClass, TONE_VARS } from './tone.js'
+import { floatMotion } from './motion.js'
+import useFloatPresence from '../hooks/useFloatPresence.js'
 import {
   useFloating,
   autoUpdate,
@@ -260,6 +262,10 @@ function TooltipOn({
  *   focus           — wrap in FloatingFocusManager (default: true)
  *   className       — extra classes on the panel
  *   style           — extra inline styles merged with floatingStyles
+ *   motion          — the float card's enter and leave (FloatActionStatesAndMotion, 2026-11-04): unset, the panel
+ *                     mounts and unmounts as it always has; `true` · `{ duration, ease }` fades it in and out from its
+ *                     trigger's side (`.kol-float-motion`, `--kol-float-*`), held in the tree while it leaves; `false`
+ *                     the same card with no motion
  */
 /* how many floats this one is opened from inside — context crosses portals, the DOM order does not */
 const FloatDepth = (globalThis[Symbol.for('@kolkrabbi/kol-component/FloatDepth')] ??= createContext(0))
@@ -278,18 +284,21 @@ export function PopoverPanel({
    * that, so nothing existing moves; a tone paints that tone's ground instead,
    * through the same `toneClass` every other control uses. */
   tone,
+  motion,
   className = '',
   style: extraStyle,
 }) {
   const depth = useContext(FloatDepth)
-  if (!popover.open) return null
+  const fm = motion == null ? null : floatMotion(motion)
+  const presence = useFloatPresence(popover.open, fm?.ms ?? 0)
+  if (!(fm ? presence.mounted : popover.open)) return null
 
   const { refs, floatingStyles, context, getFloatingProps } = popover
   /* kol-popover-float rides every floating node (panel chrome or not): it
    * carries the stacking guarantee — floats must top overlay chrome
    * (.kol-overlay z-100), or a dropdown inside a FullscreenOverlay renders
    * under the sheet and its options can't be clicked. */
-  const cls = ['kol-popover-float', panel && 'kol-popover', tone && toneClass(tone), className].filter(Boolean).join(' ')
+  const cls = ['kol-popover-float', panel && 'kol-popover', tone && toneClass(tone), fm && 'kol-float-motion', className].filter(Boolean).join(' ')
 
   /* `data-editor-keep-selection` mirrors the marker on the EditorShell
    * root. Popovers render via FloatingPortal (mounted on <body>, outside
@@ -301,9 +310,11 @@ export function PopoverPanel({
   const node = (
     <div
       ref={refs.setFloating}
-      style={{ ...floatingStyles, ...(depth ? { '--kol-float-depth': depth } : null), ...extraStyle }}
+      style={{ ...floatingStyles, ...(depth ? { '--kol-float-depth': depth } : null), ...fm?.style, ...extraStyle }}
       className={cls}
       data-editor-keep-selection
+      data-side={fm ? popover.placement?.split('-')[0] : undefined}
+      data-exit={fm && presence.exiting ? '' : undefined}
       {...getFloatingProps()}
     >
       <FloatDepth.Provider value={depth + 1}>{children}</FloatDepth.Provider>

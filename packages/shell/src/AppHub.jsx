@@ -8,7 +8,7 @@ import HubSettingsRail, { hubThemeToggle } from './HubSettingsRail.jsx'
 import HubDev from './HubDev.jsx'
 import { warnJsx } from './warnJsx.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, ShortcutsOverlay, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
+import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, ShortcutsOverlay, railShortcuts, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubSettingsRail / HubDev (relative) + kol-component's CommandOverlay */
 
@@ -28,7 +28,7 @@ import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, Shor
  * Router-agnostic like AppShell: pass `currentPath` + `onNavigate`, and your router's element
  * (`<Outlet/>`) as children.
  *
- * KEYS: `,` toggles Settings · `S` toggles the shortcuts sheet · `⇧S` the shortcuts rail · `\` hides the rail ·
+ * KEYS: `,` toggles Settings · `S` toggles the shortcuts sheet · `⇧S` the shortcuts rail · `\` expands ↔ collapses the rail · `⇧\` hides ↔ shows it (AppShell's `railKeys`, listed in the keymap as Rail) ·
  * ⌥1…9 walks the rail top to bottom, mark first, Settings last · ⌘K / Ctrl+K the search modal. None fire while typing.
  *
  * ⌘K IS ONE MODAL (user 2026-10-23, HubHomeContract's review: *"no search command k"*; one modal, not two): the
@@ -172,7 +172,7 @@ function HubFrame({
   dev,
   media,
   signIn,
-  shortcuts = [],
+  shortcuts: appShortcuts = [],
   themeToggle,
   settingsPath = '/settings',
   homePath = '/',
@@ -186,6 +186,8 @@ function HubFrame({
 }) {
   /* `shell.foot`: the rail's pinned foot as the app edits it — the rest of `shell` is AppShell's */
   const { foot: footEdit, ...shellProps } = shell ?? {}
+  /* the app's keymap, then the rail keys (RailShortcutsAllFrames, 2026-11-04) — the sheet, ⌘K, Settings and the rail read one list */
+  const shortcuts = [...appShortcuts, ...railShortcuts(shellProps.railKeys)]
   const [sheet, setSheet] = useState(false)
   const [rail, setRail] = useState(false)
   const [search, setSearch] = useState(false)
@@ -425,7 +427,6 @@ function HubFrame({
       onNavigate={go}
       iconComponent={railIcon}
       appName={app.name}
-      railToggleKey={'\\'}
       railHidden={railHidden}
       settingsPath={settingsPage ? settingsPath : undefined}
       settingsKey={settingsPage ? ',' : undefined}

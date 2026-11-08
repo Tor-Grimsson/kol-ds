@@ -9,7 +9,8 @@ import { isSurfaceAdmitted, isComponentAdmitted, anyComponentsAdmitted, isChapte
 /* Chapter folder → display label. THE rule, imported — it was written here and
  * in vault.js byte-identically until 2026-08-01. See nav/labels.js. */
 import { labelFromSlug as label } from './labels.js'
-import { KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL } from '@kolkrabbi/kol-icons'
+import { KOL_ICON_TAGS } from '@kolkrabbi/kol-icons'
+import { ICON_SETS } from './icon-sets.js'
 
 /**
  * shell-nav — the adapter from the showcase's own data into the shapes
@@ -241,8 +242,9 @@ export const buildShellSearchItems = () => {
   const specimens = DOCS_SPECIMENS.map((g) => ({ id: g.id, title: g.label, kind: 'specimen', space: 'styles', category: 'Foundations', href: g.path }))
   /* the icon sets, their groups and every icon (2026-10-09 — ⌘K found none of them); an icon
    * opens its group's page */
-  const icons = Object.entries({ 'kol-icon-set-interface': KOL_ICON_SET_INTERFACE, 'kol-icon-set-signal': KOL_ICON_SET_SIGNAL }).flatMap(([set, groups]) => {
-    const setTitle = label(set.replace('kol-icon-set-', ''))
+  /* every set from the one registry (2026-11-05 — identity and external never indexed while this listed two by hand);
+   * an icon's tags (KOL_ICON_TAGS) ride its keywords, so "lab" finds the flasks */
+  const icons = Object.entries(ICON_SETS).flatMap(([set, { title: setTitle, groups }]) => {
     return [
       { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icon sets', keywords: [set], href: `/icons/${set}` },
       /* a category is a page over its groups (Round 15, 2026-10-20); its groups file under it. The row
@@ -251,7 +253,7 @@ export const buildShellSearchItems = () => {
       ...(ICON_CATEGORIES[set] ?? []).map((c) => ({ id: `icons-${set}-c-${c.slug}`, title: c.name, kind: 'icon category', space: 'styles', category: c.name, keywords: [setTitle, ...c.groups.map(label)], href: `/icons/${set}/${c.slug}` })),
       ...Object.entries(groups).flatMap(([folder, names]) => [
         { id: `icons-${set}-${folder}`, title: label(folder), kind: 'icon group', space: 'styles', category: categoryOf(set, folder)?.name ?? setTitle, href: `/icons/${set}/${folder}` },
-        ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), keywords: [setTitle], href: `/icons/${set}/${folder}` })),
+        ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), keywords: [setTitle, ...(KOL_ICON_TAGS[name] ?? [])], href: `/icons/${set}/${folder}` })),
       ]),
     ]
   })

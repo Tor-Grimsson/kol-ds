@@ -151,7 +151,7 @@ Named by what they hold (ruling D2, 2026-09-29 — `-shell` apps were Shell + Hu
 | `apps/studio` | Shell + Hub + the Studio pages, placeholders | the reference for the Studio — the workstation shape |
 | `apps/catalog` | the Catalog alone | the reference for the Catalog — the masthead option, the engine in its search |
 | `apps/<tool>` | the tool alone | the tool judged without chrome |
-| `apps/<tool>-hub` | Shell + Hub + the tool | the app as it ships — `media-hub`, `notes-hub`, `presentation-hub` |
+| `apps/<tool>-hub` | Shell + Hub + the tool | the app as it ships — `media-hub`, `note-hub`, `presentation-hub` |
 | `apps/<engine>` | the engine, as a lab | `markdown`, `search` — input in, what the engine reads out |
 
 The showcase's `/apps` groups them by layer; each has a home at `/app/<name>` with its spec (layers, packages, opt-ins, port, what a consumer repo sets).
@@ -205,7 +205,7 @@ Known tools that ride this anatomy — the roster to be sorted next session:
 - **media** — the media browser (`apps/media`)
 - **brand** — on VOYAGER (`apps/voyager-fixture`): `apps/brand` is the HOME over the catalogue and `apps/brand-lab` (2026-10-27); `apps/brand-sections` (apps/brand until then) is the CATALOGUE of brand building blocks (kol-styleguide's blocks in kol-framework's `PageLayout`), and `apps/brand-hub` is a client's HOME — kol-styleguide's `Brand` (BRAND and ASSETS over one manifest) and `BrandGuide` (the guide outline, blank and filled) on kol-framework's `SiteLayout` and the site rail (2026-10-27; it was `AppHub`), with notes · decks · media as opt-in tools and the editor as an opt-in app. That home is what the DS offers the `brand.<domain>` sites (brand.kolkrabbi.io, brand.olina-productions.xyz)
 - **presentation editor** — the deck editor (`apps/presentation`, `apps/presentation-hub`)
-- **note editor** — notes (kol-olina's brand notes page; `DocumentEditor` is its file-shaped sibling; `apps/notes`, `apps/notes-hub`)
+- **note editor** — notes (kol-olina's brand notes page; `DocumentEditor` is its file-shaped sibling; `apps/note`, `apps/note-hub`)
 - **the fxr editor** — `@kolkrabbi/design-editor`
 - **labs** and **generator** — alternate chromes on the editor
 - the monitor rack, the mirror tool, and more

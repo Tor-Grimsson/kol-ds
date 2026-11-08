@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import IconPlate from '../atoms/IconPlate.jsx'
 import IconToggle from '../atoms/IconToggle.jsx'
 import Pill from '../atoms/Pill.jsx'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from '../molecules/ButtonGroup.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 
 /* taxonomy-ok: organism — a toolbar of atoms over a wall of IconPlate pairs */
@@ -71,11 +71,11 @@ export default function CompareGrid({ items = [], labels = { a: 'A', b: 'B' }, d
   return (
     <div className={`flex flex-col gap-6 ${className}`.trim()}>
       <div className="flex flex-wrap items-center gap-4">
-        <SegmentedToggle ariaLabel="Size" value={size} onChange={setSize} options={SIZES.map((v) => ({ value: v, label: String(v) }))} size="sm" />
+        <ButtonGroup layout="joined" ariaLabel="Size" value={size} onChange={setSize} options={SIZES.map((v) => ({ value: v, label: String(v) }))} size="sm" />
         <ViewToggle variant="icon" options={GROUNDS} viewMode={ground} onViewChange={setGround} />
         <IconToggle icon="grid" label="Guide" title="Keyline guide" pressed={guide} onChange={setGuide} size="sm" />
         {hasStates && (
-          <SegmentedToggle
+          <ButtonGroup layout="joined"
             ariaLabel="Show"
             value={filter}
             onChange={setFilter}

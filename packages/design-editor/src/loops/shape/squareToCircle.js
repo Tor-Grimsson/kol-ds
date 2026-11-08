@@ -1,4 +1,4 @@
-import { TAU, lerp, mixHex } from '../lib/util.js'
+import { TAU, lerp, mixHex } from '../../editor/lib/util.js'
 import { FILL_PARAMS, paintFill, isGradient } from '../lib/fill.js'
 
 // Square ↔ circle — a superellipse whose exponent eases between a circle (n=2)

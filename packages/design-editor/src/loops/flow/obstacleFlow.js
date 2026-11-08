@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 import { uniform, cylinder, streamline, strokeLine, orbitAt } from './fieldCore.js'
 
 // Obstacle flow (E4, after dvdp *261016*) — horizontal streamlines bending round moving circles,

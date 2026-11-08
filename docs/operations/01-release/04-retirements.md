@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-10-31
+updated: 2026-11-08
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -38,6 +38,10 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `MenuDropdownDivider` | component | `MenuDivider` — same component, same props | 2026-10-31 |
 | Dropdown `variant="raised"` | component | `tone="faint"` — the same oq-06 ground; the variant only ever differed by colour | 2026-10-31 |
 | `MenuDropdownNest` | component | `MenuFlyout` — same component, same props | 2026-10-31 |
+| `SegmentedToggle` | component | `ButtonGroup layout="joined"` — same props, same DOM; one component for a group of buttons (plan-2026-11-06-buttons-page 2.7) | 2026-11-06 |
+| `kol-component/atoms/CloseButton` (deep path) | component | `kol-component/molecules/CloseButton` or the barrel — the file moved to `molecules/` (it composes Button and IconFrame); the old path is an `exports` alias | 2026-11-07 |
+| `kol-component/utilities/FullscreenOverlay` (deep path) | component | `kol-component/molecules/FullscreenOverlay` or the barrel — moved with CloseButton (it composes one; a utility may not import a molecule); kol-website and media-fixture import the old path | 2026-11-07 |
+| `kol-component/utilities/LoaderOverlay` (deep path) | component | `kol-component/molecules/LoaderOverlay` or the barrel — moved with FullscreenOverlay, which it wraps | 2026-11-07 |
 | `kol-dd-menu` | theme | `kol-menu-panel` — same rule (`Menu`'s panel) | 2026-10-31 |
 | `PageHeader` | component | `SectionText` with `level` (page · app · section · content) — `title` → `headline`, `subtitle` → `body`, `titleClass` → `headlineClass` | 2026-10-22 |
 | `PAGE_HEADER_ROLES` | component | `SECTION_TEXT_LEVELS` | 2026-10-22 |
@@ -63,7 +67,6 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | `SubPageHero` | framework | `PageHero` (`backTo` / `backLabel` kept) | 2026-09-03 |
 | `AppShell` | framework | `PageLayout` (+ `pageWash`, `bare`; kol-shell's `AppShell` is a different component, unchanged) | 2026-09-03 |
 | `PageLayout` | framework | `SiteLayout` — the same frame, named for the rail variant it frames (`variant="site"`); `AppShell` now aliases `SiteLayout` too | 2026-10-24 |
-| `MenuPopover` | component | `MenuItem` | 2026-07-02 |
 | `TabChips` | component | `TabsRow variant="chip"` (same props) | 2026-10-17 |
 | `MobileTabBar` | component | `TabsRow variant="stacked" placement="phone"` (same props; `TABBAR_H` from TabsRow) | 2026-10-17 |
 | `TabStrip` | shell | kol-component's `TabsRow variant="text"` (`options` → `tabs`) | 2026-10-17 |
@@ -121,6 +124,10 @@ Type and chrome classes retire the same way — the marker line above the rule i
 | `kol-card-kicker` | theme | `kol-eyebrow` — the eyebrow has one name; the props `kicker` (ContentText) and `label` (SectionText + the sections) are aliases too, documented on the components (the gate cannot see props) | 2026-08-27 |
 
 ## History
+
+- 2026-11-07 — **Three deep-path aliases** (`atoms/CloseButton`, `utilities/FullscreenOverlay`, `utilities/LoaderOverlay`) on the ledger: the files moved to `molecules/`, the old subpaths stay in kol-component's `exports`. ⚠️ This gate reads barrel exports, not the `exports` map, so it cannot age these out; drop them by hand once no repo imports the old path (kol-website `apps/media/src/KindOverview.jsx` and media-fixture did on the day).
+
+- 2026-11-07 — **`MenuPopover` dropped** (R3: deprecated 2026-07-02, no importer in the estate; plan-2026-11-07-menu-system 1.2). Export removed from `kol-component` 0.348.0, source and its workbench story quarantined to `_tmp/2026-11-07-menupopover/`, BREAKING in the changelog. Use `MenuItem` — same props.
 
 - 2026-09-26 — **The four elder display classes dropped** (R3: 30 days, nobody imports them): `kol-display-lg` · `kol-display-section` · `kol-display-section-sm` · `kol-display-subsection`. Rules removed from `kol-theme/kol-typography.css`, the block quarantined to `_tmp/2026-09-26-elder-display-classes/`, BREAKING in the theme changelog. Use `kol-sans-display-01` / `-02` / `-03` + `uppercase`.
 

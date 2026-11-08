@@ -1,7 +1,7 @@
 import { ThemeTile } from '@kolkrabbi/kol-styleguide'
 import { useState } from 'react'
 import {
-  Badge, Button, Delta, Dropdown, Kbd, LiveDot, MenuDatePicker, Pill, ProgressBar, QuantityInput, SegmentedToggle, SizeChip,
+  Badge, Button, Delta, Dropdown, Kbd, LiveDot, MenuDatePicker, Pill, ProgressBar, QuantityInput, ButtonGroup, SizeChip,
   Slider, Tag, ToggleCheckbox, ToggleSwitch, ViewToggle, floatSurfaceClass,
 } from '@kolkrabbi/kol-component'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
@@ -112,7 +112,7 @@ export default function Controls() {
 
           <Part name="SegmentedToggle count" slug="segmented-toggle">
             <Plate surface={surface}>
-              <SegmentedToggle variant="float" surface={surface} value={status} onChange={setStatus} options={[{ value: 'open', label: 'Open', count: 5 }, { value: 'done', label: 'Completed', count: 12 }]} ariaLabel="Status" />
+              <ButtonGroup layout="joined" variant="float" surface={surface} value={status} onChange={setStatus} options={[{ value: 'open', label: 'Open', count: 5 }, { value: 'done', label: 'Completed', count: 12 }]} ariaLabel="Status" />
             </Plate>
           </Part>
 

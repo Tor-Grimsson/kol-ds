@@ -5,6 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const tab = instance.getEnum('tab', { "settings": "settings", "shortcuts": "shortcuts" })
+// `sections` (slot): the app's LabeledControlSection blocks — each row a SettingsRow (LabeledControl inline)
 
 export default {
   example: figma.code`<HubSettingsRail open={open} onClose={close} app={app} sections={sections} shortcuts={shortcuts} tab="${tab}" onTabChange={setTab} onReset={reset} />`,

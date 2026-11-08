@@ -1,7 +1,38 @@
 # @kolkrabbi/design-editor
 
+## 0.32.0 — 2026-11-06
 
-## 0.27.0 — 2026-11-04
+needs kol-shell ≥0.114.0:
+- **Changed: `FloatLabsView` runs on kol-shell `FloatLayout`** (plan-2026-11-05-float-editor 3.2, his ruling: A and B *"neither is using float correctly"*) — the Labs catalog is the frame's nav Rail (expanded · collapsed with flyouts · hidden), the capsule (commands in its ▾), transport and actions in the bar, LabsParams in the inspector slot, the mode switch in the bottom Rail. The `variant` prop and the A · B switch are gone.
+- **Changed: the float editor's save state** passes `status="Saved" statusIcon="check"` — the check is an Icon, not a "✓" character.
+
+## 0.30.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W7.6 — needs kol-shell ≥0.112.0, kol-theme ≥0.213.0:
+- **New: fxr's generator and repeat engines** — `src/generate/` copied verbatim from kol-fxr (two owners: fxr keeps its own, this copy never feeds back) with its checks (`node src/generate/<name>.check.mjs` — ascii · controls · field · letter · stipple, all pass), and fxr's editor side: `editor/generate/` generateCore · GenerateLayer · RepeatLayer · rings · useGenerateFont · useGenerateImage, the `generate` and `repeat` layer types (canvas, export as `<g>`, Expand — `flattenGenerate` · `flattenRepeat`), the inspector's Generate settings… / Expand.
+- **Changed: every generator control is bound to the engine** (`windows.js` `bind`) — Generate's eight styles (Stipple / Mosaic's cell shape picks Mosaic), Field, Lights, Image, Second source, Ramp, Mask, Warp, Randomness, Frame; Repeat's radial · grid · mirror; Apply places a live layer, Expand bakes it. Disabled, no engine param: Line Screen's Angle and Flare, Repeat's Align to path.
+- **New: the generator Rails** (`GeneratorRail.jsx`, his 32:16215) — Tools › Generate · Repeat · Paratype letter opens the tool's Rail (kol-shell PropertyRail, compact) in the right-hand column; its ↗ expands to the settings dialog, one state (`editor/generate/store.js`).
+
+## 0.29.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W2b · W7 — needs kol-component ≥0.343.0, kol-shell ≥0.111.0:
+- **New: Transform and Appearance cards** in the float chrome (his 19:10125 · 19:10192) — the inspector's own fields in his float look (`AxisField` under the float chrome: 32 high, radius 8, the float well); Appearance is the float blend select, the float Opacity slider, fill · stroke · none swatches (`PaintPopover bare`) and the stroke weight. They step out while the inspector is open.
+- **Changed: the object inspector's tabs are Design · Motion · Effects** (his 19:10408). Design holds the layer's line, Transform, Appearance, Effects (Drop shadow · Layer blur), a Geometry pane for the rest of the classic Transform (align, origin, skew, flips, corners, the lock, resizing), the generator's Generate · Style (`ParametersPanel only`) and a pattern's surface; Motion is the generator's Animation. The open inspector leads the card stack (frame 04). Cards take `holds` · `yields` · `lead`; `check:float` 0 missing.
+- **New: the phone's ⋮ and menu capsule** (frame 06) — File · Edit · View · More on kol-shell's `MenuBar variant="capsule"`, the app menu and Help in the ⋮.
+- **New: the generator windows** — Tools › Generate…, Repeat…, Paratype letter… open `GeneratorWindow` (`editor/generate/`) on `Dialog variant="settings"`; the windows are data (`windows.js`, his window spec name for name). Wired controls move the live preview; the rest render disabled, their params fxr's (`fxrControls()`).
+
+## 0.28.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W2 — needs kol-shell ≥0.110.0, kol-component ≥0.342.0, kol-dashboards ≥0.13.0 (a new peer):
+- **New: `FloatDesignEditor`** (root and `core` entries) — the editor in the float chrome: `FloatEditorShell` (`editor/float/`) beside `EditorShell`, which is untouched. Same engine and state — compose, tools, the panels registry and its tabs, the workspace store — under his Section 5: kol-shell's `MenuBar` (rows from `useFloatMenus`, every MenuTop command as data), the document capsule and breadcrumb, the transport on the clock, undo · redo · Export · account, the ToolRail and its ⋮, the registry's tabs as float cards (Typography · Color/Swatches/Stroke · Layers/Assets/History/Navigator · Design/Parameters/Effects/Pattern · Output), the text options toolbar, the floating Timeline, the mode switch; a phone layout at < 768 (the menus fold into the capsule's ▾).
+- **New: `pnpm check:float`** — MenuTop's rows, the editor keymap, the rail's tools / band / footer and the registry's tabs against the float chrome's data; 0 missing.
+- `CanvasArea` draws the float selection (name above, size under) under the float chrome; `LayerInspector` leaves the text surface to the float Typography card; `TextSurface bare`; a press in a menu-engine panel keeps the selection. The classic chrome renders as before.
+- Mirror note: `Editor.jsx`, `core.jsx`, `CanvasArea.jsx`, `LayerInspector.jsx`, `TextPanel.jsx` now differ from kol-fxr's.
+
+
+## 0.27.1 — 2026-11-04
+
+- **Fixed: the core → pack seam** — `pnpm check:core` is green again (10 reaches → 0; it was 2 before 0.25.0's refresh). The pure helpers the core uses moved to its side and the packs import them back, one copy each: `loops/lib/{util,themes,viewport,sandbox}.js` → `editor/lib/`, and the distress mode recipes (`modeOffset` · `MODE_OPTIONS`) out of `loops/distress/engine.js` into `editor/compose/distressModes.js`. `SPREAD` moved from `mobile/CategoryScreen` to `mobile/device.js` and `MODE_ICONS` from `labs/catalog` to `mode.js`. `library/shipped.js` and `color/PaletteBody.jsx` read the loop registry and kinetic presets through `pack()` instead of importing them (the generators pack now also carries `GROUPS` and `stepFromPreset`); a core with no generators pack ships only the editor's own files. No API or behaviour change.
 
 - **New: `TimelineRail` + `timelineView`** on the root and `core` entries (float-views W3.1 — apps/float's visual editor, kol-float--style 9:8594). The Timeline's float sheet (toolbar · ruler · rows · playhead) with no engine under it: a layout hands it rows as data, every handler optional. `Timeline` now renders the editor's state through the same Rail — one drawing, not two; behaviour unchanged. A row's `layer.icon` overrides its type's glyph and a clip lane takes a `label` (unset, the loop's length as before). Mirror note: `editor/params/Timeline.jsx` and `core.jsx` now differ from kol-fxr's — carry them back before the next mirror refresh.
 

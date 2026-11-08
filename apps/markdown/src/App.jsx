@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { CodeBlock, Dropdown, PageHeader, SegmentedToggle, Table, Tag, Textarea, Tooltip } from '@kolkrabbi/kol-component'
+import { CodeBlock, Dropdown, PageHeader, ButtonGroup, Table, Tag, Textarea, Tooltip } from '@kolkrabbi/kol-component'
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell'
 import { DocumentationReader } from '@kolkrabbi/kol-workshop'
 import {
@@ -230,7 +230,7 @@ export default function App() {
           />
         </div>
         <div className="flex min-h-0 flex-col gap-4">
-          <SegmentedToggle value={view} onChange={setView} options={VIEWS} size="sm" ariaLabel="View" />
+          <ButtonGroup layout="joined" value={view} onChange={setView} options={VIEWS} size="sm" ariaLabel="View" />
           <div className="flex min-h-0 flex-1 flex-col gap-8 overflow-y-auto pb-12">
             {view === 'rendered' && <Rendered path={path} raw={raw} />}
             {view === 'frontmatter' && <Frontmatter raw={raw} />}

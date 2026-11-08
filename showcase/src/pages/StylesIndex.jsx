@@ -3,7 +3,7 @@ import { DocSection } from '@kolkrabbi/kol-workshop'
 import { Table } from '@kolkrabbi/kol-component'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { DOCS_GUIDES, DOCS_SPECIMENS } from '../nav/shell-nav.js'
-import { ICON_SETS } from './IconsGallery.jsx'
+import { ICON_SETS } from '../nav/icon-sets.js'
 import { labelFromSlug } from '../nav/labels.js'
 
 /**

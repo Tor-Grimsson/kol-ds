@@ -5,7 +5,7 @@
  * category first, then a group — which is why Editing · Misc · Color from the round became
  * Design tools · Other · Color & gradient. */
 export const ICON_CATEGORIES = {
-  /* interface (kol-icons 0.58.0, plan-2026-10-31-icon-categories): the folders ARE the user's 18 categories, so no
+  /* interface (kol-icons 0.58.0, plan-2026-10-31-icon-categories): the folders ARE the user's 18 categories (20 since 2026-11-05: `communication` split out of people, then `games` — the chess sets), so no
    * category layer sits over them — each folder is its own page */
   'kol-icon-set-interface': [],
   'kol-icon-set-signal': [

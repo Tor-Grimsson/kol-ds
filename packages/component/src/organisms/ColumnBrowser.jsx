@@ -670,6 +670,9 @@ export default function ColumnBrowser({
     return { col, idx: Math.max(0, idx) }
   }
   const [cursor, setCursor] = useState(() => seedCursor(prefix))
+  /* the column an arrow key just landed in; the reveal effect below scrolls it in and clears it */
+  const revealCol = useRef(null)
+  const arrowTo = (c) => { revealCol.current = c.col; setCursor(c) }
   useEffect(() => {
     if (keepCursor.current) { keepCursor.current = false; return }
     setCursor(seedCursor(prefix))
@@ -749,7 +752,7 @@ export default function ColumnBrowser({
         shiftAnchor.current.last = idx
         const a = shiftAnchor.current.idx
         const keyOf = (it) => (it.type === 'folder' ? lv[col] + it.name : it.o.key)
-        setCursor({ col, idx })
+        arrowTo({ col, idx })
         onSelectKeys(items.slice(Math.min(a, idx), Math.max(a, idx) + 1).map(keyOf), false)
         return
       }
@@ -757,13 +760,13 @@ export default function ColumnBrowser({
       /* an arrow that did not move the cursor does nothing — re-landing on an
        * open folder re-fired onPrefix (ColumnBrowserCursorSeed) */
       if (idx === cursor.idx && col === cursor.col) return
-      setCursor({ col, idx })
+      arrowTo({ col, idx })
       land(lv[col], items[idx])
     } else if (e.key === 'ArrowRight') {
       // Into the open folder's column, first row.
       if (lv[col + 1]) {
         const next = itemsAt(lv[col + 1])
-        setCursor({ col: col + 1, idx: 0 })
+        arrowTo({ col: col + 1, idx: 0 })
         land(lv[col + 1], next[0])
       }
     } else if (col > 0) {
@@ -771,7 +774,7 @@ export default function ColumnBrowser({
       const parentItems = itemsAt(lv[col - 1])
       const opened = lv[col].slice(lv[col - 1].length)
       const idx = Math.max(0, parentItems.findIndex((it) => it.type === 'folder' && it.name === opened))
-      setCursor({ col: col - 1, idx })
+      arrowTo({ col: col - 1, idx })
       pick(null)
       selectOnly(lv[col])
       onPrefix(lv[col])
@@ -843,13 +846,16 @@ export default function ColumnBrowser({
     onSelect: (keys, additive) => onSelectKeys?.(keys, additive),
   })
   const isPicked = (key) => selectedKeys?.has(key)
-  /* THE DEEPEST COLUMN STAYS IN VIEW (user 2026-09-23: arrowing onto a file left the preview
-   * clipped under the frame's right edge). Whenever the trail or the pick changes, the strip scrolls
-   * to its end — the newest column, or the preview, is always the one you just reached. */
+  /* THE STRIP HOLDS STILL (ColumnStripHoldsStill, user 2026-11-05, superseding 2026-09-23's
+   * slide-to-end: *"nothing ever moves your horizontal location other then the mouse or the
+   * arrows. never auto slide between columns."*). A click never scrolls the strip. An arrow key
+   * that lands in a column off-screen brings THAT column in by the least amount — never the end. */
   useEffect(() => {
-    const box = marquee.ref.current
-    if (box && box.scrollWidth > box.clientWidth) box.scrollTo({ left: box.scrollWidth, behavior: 'smooth' })
-  }, [prefix, picked?.key, selectedKeys?.size, previewPlacement]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (revealCol.current == null) return
+    const ul = marquee.ref.current?.querySelectorAll(':scope > .kol-column-browser-column')[revealCol.current]
+    revealCol.current = null
+    ul?.scrollIntoView({ inline: 'nearest', block: 'nearest', behavior: 'smooth' })
+  }, [cursor]) // eslint-disable-line react-hooks/exhaustive-deps
 
   if (stack) {
     /* THE CURRENT LEVEL IS THE LIST (StackModeChromeAndAncestors, kol-r2b2

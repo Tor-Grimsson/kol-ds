@@ -22,16 +22,29 @@ import { Icon } from '@kolkrabbi/kol-icons'
  *                               `{ type: 'slider', id?, label, value, onChange, min?, max?, step?, formatValue? }` (Slider float) ·
  *                               `{ type: 'switch', id?, label, icon?, on, onChange }` (ToggleSwitch float) ·
  *                               `{ id?, render }` — anything else
+ *                               `{ type: 'labeled', id?, label, render }` — the tool Rail's row (generator Rails, plan-2026-11-05-float-editor
+ *                               W7.6): the label in a 110 column, the control in the rest ·
+ *                               `{ type: 'subhead', id?, label, meta? }` — a group's caps head inside a section (LIGHTS / POINT EDITOR) ·
+ *                               a section may also be `collapsible` (`open` · `onToggle(open)`): its head is the chevron and the
+ *                               title in `kol-float-panel`, `meta` at the far end, its rows shown while open
+ * @param {'regular'|'compact'} density  `compact` — the tool Rail's rhythm (his generator frames 32:16215): 8 between rows,
+ *                               24 before a section, 20 before a subhead; `regular` (default) the inspector's 18
+ * @param {Function} onExpand    the ↗ in the header — the tool's expanded form (the settings dialog); unset, none
+ * @param {ReactNode} footer     the Rail's foot (a status line, the tool's action), after the sections
  * @param {'solid'|'glass-dark'|'glass-light'} surface  what the sheet is made of (default `solid`)
  * @param {number}   width       the sheet's width (default 272)
  * @param {string}   className
  */
-export default function PropertyRail({ title, onCollapse, tabs, tab, onTab, selected, sections = [], surface = 'solid', width = 272, className = '' }) {
+export default function PropertyRail({ title, onCollapse, onExpand, density = 'regular', tabs, tab, onTab, selected, sections = [], footer, surface = 'solid', width = 272, className = '' }) {
+  const compact = density === 'compact'
   return (
-    <div className={`kol-property-rail kol-float-chrome flex flex-col gap-[18px] p-4 rounded-[var(--kol-float-menu-r)] ${floatSurfaceClass(surface, true)} ${className}`.trim()} style={{ width }}>
+    <div className={`kol-property-rail kol-float-chrome flex flex-col ${compact ? 'gap-2' : 'gap-[18px]'} p-4 rounded-[var(--kol-float-menu-r)] ${floatSurfaceClass(surface, true)} ${className}`.trim()} style={{ width }}>
       <div className="flex items-center justify-between">
         <span className="kol-float-panel text-emphasis">{title}</span>
-        {onCollapse && <Button variant="float" tone="ghost" size="sm" iconOnly="skip-end" aria-label="Collapse" onClick={onCollapse} />}
+        <span className="flex items-center gap-1">
+          {onExpand && <Button variant="float" tone="ghost" size="sm" iconOnly="arrow-upright" aria-label="Expand" onClick={onExpand} />}
+          {onCollapse && <Button variant="float" tone="ghost" size="sm" iconOnly="skip-end" aria-label="Collapse" onClick={onCollapse} />}
+        </span>
       </div>
       {tabs?.length > 0 && <TabsRow variant="float" size="xs" tabs={tabs} value={tab} onChange={onTab} ariaLabel={`${title} tabs`} />}
       {selected && (
@@ -44,22 +57,46 @@ export default function PropertyRail({ title, onCollapse, tabs, tab, onTab, sele
         </div>
       )}
       {sections.map((s, i) => (
-        <section key={s.id ?? s.label ?? i} className="flex flex-col gap-[18px]">
-          {(s.label || s.onAdd || s.meta) && (
+        <section key={s.id ?? s.label ?? i} className={`flex flex-col ${compact ? `gap-2${i > 0 ? ' pt-4' : ''}` : 'gap-[18px]'}`} data-section={s.id ?? s.label}>
+          {s.collapsible ? (
+            <button type="button" aria-expanded={!!s.open} onClick={() => s.onToggle?.(!s.open)}
+              className="flex items-center gap-1.5 text-left focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] rounded-sm">
+              <Icon name="chevron-down" size={12} className={`text-oq-64 transition-transform ${s.open ? '' : '-rotate-90'}`} />
+              <span className="kol-float-panel text-emphasis flex-1 min-w-0">{s.label}</span>
+              {s.meta && <span className="kol-float-timecode text-oq-64">{s.meta}</span>}
+            </button>
+          ) : (s.label || s.onAdd || s.meta) && (
             <div className="flex items-center justify-between">
               <span className="kol-float-label text-oq-64">{s.label}</span>
               {s.onAdd && <Button variant="float" tone="ghost" size="sm" iconOnly="plus" aria-label={`Add to ${s.label}`} onClick={s.onAdd} />}
               {s.meta && <span className="kol-float-timecode text-emphasis">{s.meta}</span>}
             </div>
           )}
-          {(s.rows ?? []).map((r, j) => <Row key={r.id ?? j} row={r} />)}
+          {(!s.collapsible || s.open) && (s.rows ?? []).map((r, j) => <Row key={r.id ?? j} row={r} compact={compact} />)}
         </section>
       ))}
+      {footer && <div className={compact ? 'pt-4' : undefined}>{footer}</div>}
     </div>
   )
 }
 
-function Row({ row: r }) {
+function Row({ row: r, compact }) {
+  if (r.type === 'labeled') {
+    return (
+      <div className="flex items-center gap-1.5 min-h-7" data-control={r.label}>
+        <span className="kol-float-hint text-oq-64 w-[110px] shrink-0 truncate">{r.label}</span>
+        <div className="flex-1 min-w-0 flex items-center gap-1.5">{r.render()}</div>
+      </div>
+    )
+  }
+  if (r.type === 'subhead') {
+    return (
+      <div className={`flex items-center justify-between ${compact ? 'pt-3' : 'pt-1'}`}>
+        <span className="kol-float-label text-oq-64">{r.label}</span>
+        {r.meta && <span className="kol-float-label text-fg-emphasis">{r.meta}</span>}
+      </div>
+    )
+  }
   if (r.render) return r.render()
   if (r.type === 'fields') {
     return (

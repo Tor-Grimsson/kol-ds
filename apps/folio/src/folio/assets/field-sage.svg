@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="212.039" height="111.374" viewBox="0 0 212.039 111.374" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Diffused sage field" filter="url(#filter0_f_0_59)">
+<ellipse cx="106.02" cy="55.687" rx="87.8141" ry="37.4816" fill="#789D8C"/>
+</g>
+<defs>
+<filter id="filter0_f_0_59" x="0" y="0" width="212.039" height="111.374" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="9.10269" result="effect1_foregroundBlur_0_59"/>
+</filter>
+</defs>
+</svg>

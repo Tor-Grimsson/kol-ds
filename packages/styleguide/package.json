@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-styleguide",
-  "version": "0.22.1",
+  "version": "0.24.0",
   "private": false,
   "description": "Brand guide components and the brand tool",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "./src/*": "./src/*"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.317.0",
+    "@kolkrabbi/kol-component": ">=0.350.0",
     "@kolkrabbi/kol-framework": ">=0.66.0",
     "@kolkrabbi/kol-icons": ">=0.53.0",
     "@kolkrabbi/kol-print": ">=0.1.0",

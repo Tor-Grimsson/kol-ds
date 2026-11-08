@@ -1,5 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from './ButtonGroup.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -42,7 +42,7 @@ export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = '
         const cells = strip(axis)
         if (!cells.length) return null
         return (
-          <SegmentedToggle
+          <ButtonGroup layout="joined"
             key={axis}
             variant="filled"
             size={size}

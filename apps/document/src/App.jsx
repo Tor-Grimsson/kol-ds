@@ -196,7 +196,7 @@ function AppFrame() {
   const navigate = useNavigate()
   const current = APP_ITEMS.find((i) => pathname === i.path || pathname.startsWith(`${i.path}/`))?.path ?? pathname
   return (
-    <AppShell items={APP_ITEMS} currentPath={current} onNavigate={navigate} railToggleKey={'\\'}>
+    <AppShell items={APP_ITEMS} currentPath={current} onNavigate={navigate}>
       {/* the pages carry their own `.kol-page` inset, so no PageShell here; the same tabs header; the TOC is the DS rail */}
       <TabsHeader />
       <Outlet context={{ toc: 'rail' }} />

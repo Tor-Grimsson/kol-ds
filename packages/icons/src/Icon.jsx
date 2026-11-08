@@ -105,8 +105,11 @@ export const registerIcons = (globMap) => {
  *     punched hole)
  *   user-interface → metrics → metric (2026-10-09: it is the metrics app's mark, moved to `identity`)
  *   metrics → metric (2026-10-28: one word, singular, the app's own name — `apps/metric`, metric.kolkrabbi.io)
- *   rack → rack-v (2026-10-09: beside the new rack-h) */
-export const RENAMED_ICONS = { overlap: 'transparency', customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v' }
+ *   rack → rack-v (2026-10-09: beside the new rack-h)
+ *   flask-round → lab-flask · flask-conical → lab-conical · beaker → lab-beaker (2026-11-05: the family word leads)
+ *   cube-dashed-02 → cube-dashed · select-frame-02 → select-frame · kanban-02 → kanban · calendar-02 → calendar ·
+ *     direction-opposite → swap (2026-11-05: same drawing twice; the copy moved out) */
+export const RENAMED_ICONS = { overlap: 'transparency', customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v', 'flask-round': 'lab-flask', 'flask-conical': 'lab-conical', beaker: 'lab-beaker', 'cube-dashed-02': 'cube-dashed', 'select-frame-02': 'select-frame', 'kanban-02': 'kanban', 'calendar-02': 'calendar', 'direction-opposite': 'swap', 'nav-rack': 'rack-v', 'lines-three': 'hamburger' }
 
 /* A REGISTERED GLYPH NEVER OVERRIDES A DS NAME (user 2026-10-24: kol-mirror registered its own set over the resolver and
  * its `refresh` replaced the DS's in the settings rail's reset — *"how can it register its own in a FIXED PRESET OF

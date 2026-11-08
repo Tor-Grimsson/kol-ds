@@ -4,14 +4,16 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "filled": "filled", "outline": "outline", "float": "float" })
-const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
-// state (float-everything W3 row 36, 2026-11-04): focus is the field's own (click in); error is the `error` message; disabled is `disabled`
-const state = instance.getEnum('state', { "default": "default", "focus": "focus", "error": "error", "disabled": "disabled" })
-const xs = state === 'error' ? ' error="Enter a valid email address."' : state === 'disabled' ? ' disabled' : state === 'focus' ? ' autoFocus' : ''
-
+// variant default · property × size xs · sm · md (2026-11-07, the values the code uses). Color is the instance's `tone` mode
+// (filled = primary, outline = outline — the code's tone aliases), which Code Connect cannot read.
+const variant = instance.getEnum('variant', { "default": "default", "property": "property" })
+const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
+const sz = size === 'md' ? '' : ` size="${size}"`
+const dis = instance.getEnum('state', { "rest": "", "disabled": " disabled" })
 export default {
-  example: figma.code`<Input variant="${variant}" size="${size}" value={value} onChange={setValue} placeholder="Placeholder"${xs} />`,
+  example: variant === 'property'
+    ? figma.code`<Input variant="property"${sz} affordance="X" value={value} onChange={setValue}${dis} />`
+    : figma.code`<Input${sz} value={value} onChange={setValue} placeholder="Search"${dis} />`,
   imports: ["import { Input } from \"@kolkrabbi/kol-component\""],
   id: 'Input',
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from '../molecules/ButtonGroup.jsx'
 import GalleryCarousel from './GalleryCarousel.jsx'
 import MediaTileGallery from './MediaTileGallery.jsx'
 import MediaViewer from './MediaViewer.jsx'
@@ -38,7 +38,7 @@ export default function MediaGalleryModes({
         <div className="flex items-center justify-between gap-4">
           {title ? <span className="kol-helper-12 text-meta">{title}</span> : <span />}
           {modes.length > 1 && (
-            <SegmentedToggle size="sm" ariaLabel="View" value={mode} onChange={setMode}
+            <ButtonGroup layout="joined" size="sm" ariaLabel="View" value={mode} onChange={setMode}
               options={modes.map((m) => ({ value: m, label: LABELS[m] }))} />
           )}
         </div>

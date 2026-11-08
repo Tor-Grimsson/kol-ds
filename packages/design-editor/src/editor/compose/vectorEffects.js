@@ -1,4 +1,4 @@
-import { modeOffset, MODE_OPTIONS } from '../../loops/distress/engine'
+import { modeOffset, MODE_OPTIONS } from './distressModes'
 
 /**
  * VECTOR EFFECTS — effects that move GEOMETRY, not pixels (the user's 22 and 23). The first is the

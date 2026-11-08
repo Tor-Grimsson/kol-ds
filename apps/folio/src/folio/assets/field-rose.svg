@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="162.777" height="152.068" viewBox="0 0 162.777 152.068" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Diffused rose field" filter="url(#filter0_f_0_42)">
+<ellipse cx="81.3887" cy="76.0342" rx="58.8997" ry="53.5452" fill="#BF8996"/>
+</g>
+<defs>
+<filter id="filter0_f_0_42" x="0" y="0" width="162.777" height="152.068" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="11.2445" result="effect1_foregroundBlur_0_42"/>
+</filter>
+</defs>
+</svg>

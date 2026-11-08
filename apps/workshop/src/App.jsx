@@ -19,7 +19,7 @@ import {
   ShellContentWidthContext,
 } from '@kolkrabbi/kol-workshop'
 import { buildTagCounts } from '@kolkrabbi/kol-markdown'
-import { SegmentedToggle, SettingsChoice, Table, Tag, useScrollSpy } from '@kolkrabbi/kol-component'
+import { ButtonGroup, SettingsChoice, Table, Tag, useScrollSpy } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { CORPUS, DOC_MODULES, SPACES, DEV_PAGES, COMPONENTS, BLOCKS, SETS, componentHref, docSpace } from 'workshop-fixture'
 
@@ -120,7 +120,7 @@ function SpaceRail({ space, mode, setMode, onNavigate }) {
       <div className="shell-rail-stack">
         <div>
           <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
-          <SegmentedToggle options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} value={mode} onChange={setMode} size="sm" />
+          <ButtonGroup layout="joined" options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} value={mode} onChange={setMode} size="sm" />
         </div>
         <ShellSidebar routes={mode === 'atomic' ? componentTree : functionTree} basePath="/" label="Components" onNavigate={onNavigate} />
       </div>

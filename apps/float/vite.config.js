@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
+import svgr from 'vite-plugin-svgr'
 import { devFavicon } from '@kolkrabbi/kol-framework/vite'
 import { fileURLToPath } from 'node:url'
 
@@ -11,7 +12,7 @@ const SRC = fileURLToPath(new URL('../../packages/design-editor/src', import.met
 // showcase's output so the current state is viewable at ui.kolkrabbi.io/apps/float.
 // Rules: docs/operations/07-apps-tier/01-tier-rules.md
 export default defineConfig(({ command }) => ({
-  plugins: [devFavicon({ label: 'Fl' }), react(), tailwindcss()],
+  plugins: [devFavicon({ label: 'Fl' }), react(), svgr(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
   // on its own port, so `pnpm float` stays an ordinary localhost root.
@@ -37,7 +38,11 @@ export default defineConfig(({ command }) => ({
   // crashes at runtime with a null dispatcher. Force one.
   resolve: {
     dedupe: ['react', 'react-dom'],
-    alias: [{ find: /^@kolkrabbi\/design-editor\/core$/, replacement: SRC + '/core.jsx' }],
+    alias: [
+      { find: /^@kolkrabbi\/design-editor$/, replacement: SRC + '/index.jsx' },
+      { find: /^@kolkrabbi\/design-editor\/core$/, replacement: SRC + '/core.jsx' },
+      { find: /^@kolkrabbi\/design-editor\/(generators|effects|motion)$/, replacement: SRC + '/packs/$1.js' },
+    ],
   },
 
   optimizeDeps: {

@@ -15,10 +15,12 @@ import React from 'react'
  *   stretches to the row (DividerHeightFill, kol-monitor 2026-10-18: eurorack panels separate
  *   jack and knob groups with full-height rules); `className` padding insets it
  * @param {string} props.opacity - Opacity level (01, 02, 04, 08, 12, 16, 24, 32, 48, 64, 80, 88, 96) (default: '08')
+ * @param {'fg'|'oq'} props.ink - the ramp the rule is drawn on (default 'fg'); 'oq' the opaque ramp — a menu's rule
+ *   (MenuDivider, plan-2026-11-07-menu-system W1.2), whose translucent fg would show through a filled panel
  */
-const Divider = ({ variant = 'horizontal', className = '', opacity = '08', inverse = false, height = 16 }) => {
+const Divider = ({ variant = 'horizontal', className = '', opacity = '08', inverse = false, height = 16, ink = 'fg' }) => {
   const isVertical = variant === 'vertical'
-  const opacityClass = inverse ? `bg-fg-inverse-${opacity}` : `bg-fg-${opacity}`
+  const opacityClass = inverse ? `bg-${ink}-inverse-${opacity}` : `bg-${ink}-${opacity}`
 
   if (isVertical) {
     /* THE RULE IS CENTRED ON WHAT IT SEPARATES, not stretched to the row.

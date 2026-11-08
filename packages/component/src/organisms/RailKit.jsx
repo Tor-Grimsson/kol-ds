@@ -1,4 +1,4 @@
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from '../molecules/ButtonGroup.jsx'
 import Button from '../atoms/Button.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import { RAIL_ROW } from '../hooks/railRow.js'
@@ -50,7 +50,7 @@ export function RailHeader({ title, subtitle, actions }) {
 
 /** RailTabs — segmented tabs across the rail: `tabs` `[{ value, label }]`, controlled by `value` / `onChange`. */
 export function RailTabs({ tabs = [], value, onChange, ariaLabel = 'Tabs', className = '' }) {
-  return <SegmentedToggle size="sm" className={`w-full ${className}`.trim()} options={tabs} value={value} onChange={onChange} ariaLabel={ariaLabel} />
+  return <ButtonGroup layout="joined" size="sm" className={`w-full ${className}`.trim()} options={tabs} value={value} onChange={onChange} ariaLabel={ariaLabel} />
 }
 
 /** RailHint — one quiet line of guidance under a row or a group; a sentence, never a label. */

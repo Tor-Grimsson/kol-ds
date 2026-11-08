@@ -89,7 +89,7 @@ export default function VisualEditor() {
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-surface-primary">
       {/* the top bar: the document, the modes, the global actions */}
-      <DocumentCapsule name="Still in motion" status="✓ Saved" onBack={noop} onMenu={noop} className="absolute left-6 top-8" />
+      <DocumentCapsule name="Still in motion" status="Saved" statusIcon="check" onBack={noop} onMenu={noop} className="absolute left-6 top-8" />
       <div className={`absolute inset-x-0 top-2 h-[82px] pointer-events-none [&_nav]:pointer-events-auto ${PILL_BOX}`}>
         <AppFloatNav variant="mobile" shape="pill" labels placement="top" items={MODES} sheetItems={MORE} currentPath="/editor" onNavigate={noop} />
       </div>
@@ -101,8 +101,9 @@ export default function VisualEditor() {
       {/* the canvas: its line above, the scene, the hint under it */}
       <SceneBreadcrumb name="Scene 01" meta="1920 × 1080 · 30 fps · 12 s" className="absolute left-32 top-[123px]" />
       <ZoomReadout value="58.3%" onMenu={noop} onFit={noop} className="absolute left-[1110px] top-[117px]" />
-      {/* the artwork is black in either theme, so the selection on it takes dark-theme ink (`.dark`) */}
-      <div className="dark absolute left-32 top-[152px] w-[1120px] h-[630px] overflow-hidden bg-ab-black text-ab-white shadow-[var(--kol-shadow-float)]">
+      {/* the artwork is dark in either theme (`.dark`, so the well and the selection take dark-theme values): the float well
+       * the frame draws (9:8893, not black) */}
+      <div className="dark absolute left-32 top-[152px] w-[1120px] h-[630px] overflow-hidden bg-[var(--kol-float-well)] text-ab-white shadow-[var(--kol-shadow-float)]">
         <p className="absolute left-12 top-9 font-[family-name:var(--kol-font-family-mono)] text-[11px] tracking-[1.4px] whitespace-pre opacity-60">FORM STUDIES    /    001</p>
         <p className="absolute left-12 top-[142px] kol-float-display">STILL</p>
         <p className="absolute left-12 top-[264px] kol-float-editorial">IN MOTION</p>

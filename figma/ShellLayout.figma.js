@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=63-283
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1470-6292
 // source=packages/workshop/src/shell/ShellLayout.jsx
 // component=ShellLayout
 import figma from 'figma'

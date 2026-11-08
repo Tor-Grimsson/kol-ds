@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom'
 import { useResume } from '../data.jsx'
 import { pick } from '../lib/i18n.js'
 import { readKitOptions } from '../lib/kitOptions.js'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 
 // The letter markdown carries `[Role]` / `[Company]` tokens. Left blank they
 // fall back to a generic phrasing, so the letter reads as a real letter whether
@@ -29,7 +29,7 @@ export default function CoverLetter({ preview = false, lang = 'en', role, compan
       {/* Variant picker — only when there's more than one letter to choose from.
           Hidden in the whole-kit preview, which renders the default letter only. */}
       {!preview && LETTERS.length > 1 && (
-        <SegmentedToggle
+        <ButtonGroup layout="joined"
           value={id}
           onChange={setId}
           options={LETTERS.map((l) => ({ value: l.id, label: l.label }))}

@@ -67,26 +67,30 @@ export function CanvasHint({ icon = 'pointer', hint, className = '' }) {
 }
 
 /**
- * SelectionMeasure — The selection's frame on the canvas (float-everything W5 row 76, 2026-11-04): four corner handles
- * around `children`, the object's label above (`kol-float-label`) and the size cap under it (`kol-float-ruler` on the
- * `--kol-float-list-r` round). The exploration's `Selection measurement` (kol-float--style 9:8895).
+ * SelectionMeasure — The selection's frame on the canvas (float-everything W5 row 76, 2026-11-04): a 1px outline on
+ * oq-64 hugging `children` and its handles, the object's label above (`kol-float-label`) and the size cap under it
+ * (`kol-float-ruler` on the `--kol-float-list-r` round). The exploration's `Selection measurement` (kol-float--style
+ * 9:8594: outline + eight 6 handles centred on it); since 0.104.0 the outline is drawn (float-figma-review W3.5).
  *
- * @param {number|string} width · {number|string} height  the cap's numbers ("754 × 771"); both unset, no cap — the
- *                         handles alone (the selected brief, kol-float--style 9:14640)
+ * @param {number|string} width · {number|string} height  the cap's numbers ("754 × 771") — the measure: eight 6 handles
+ *                         (corners + edge middles). Both unset, no cap — the selected row: four 4 corner handles
+ *                         (the selected brief, kol-float--style 9:14340)
  * @param {string}   label     the object's name, above the frame
  * @param {ReactNode} children  the selected thing
  * @param {string}   className
  */
 export function SelectionMeasure({ width, height, label, children, className = '' }) {
-  const handle = 'absolute size-2 bg-[var(--kol-surface-on-primary)]'
+  const measure = width != null || height != null
+  /* a handle is centred on the outline: 6 (the measure) or 4 (the selected row), corners first, then the edge middles */
+  const handle = `absolute ${measure ? 'size-1.5 -m-[3px]' : 'size-1 -m-0.5'} bg-[var(--kol-surface-on-primary)]`
+  const spots = measure
+    ? ['top-0 left-0', 'top-0 left-full', 'top-full left-0', 'top-full left-full', 'top-0 left-1/2', 'top-full left-1/2', 'top-1/2 left-0', 'top-1/2 left-full']
+    : ['top-0 left-0', 'top-0 left-full', 'top-full left-0', 'top-full left-full']
   return (
     <div className={`kol-selection-measure relative inline-block ${className}`.trim()}>
       {children}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-        <span className={`${handle} -top-1 -left-1`} />
-        <span className={`${handle} -top-1 -right-1`} />
-        <span className={`${handle} -bottom-1 -left-1`} />
-        <span className={`${handle} -bottom-1 -right-1`} />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 shadow-[0_0_0_1px_var(--kol-oq-64)]">
+        {spots.map((at) => <span key={at} className={`${handle} ${at}`} />)}
       </div>
       {label && <span className="kol-float-label text-oq-64 absolute left-0 bottom-full mb-2 whitespace-nowrap">{label}</span>}
       {(width != null || height != null) && <span className="kol-float-ruler text-emphasis absolute left-1/2 top-full mt-2 -translate-x-1/2 whitespace-nowrap px-2 py-1 rounded-[var(--kol-float-list-r)] bg-oq-08">{width} × {height}</span>}

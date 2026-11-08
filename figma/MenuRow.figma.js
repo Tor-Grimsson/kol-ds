@@ -1,32 +1,34 @@
 // url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=273-323
-// source=packages/component/src/molecules/Menu.jsx
+// source=packages/component/src/molecules/MenuItem.jsx
 // component=MenuRow
 import figma from 'figma'
 
 const instance = figma.selectedInstance
+// the glyph lives in a nested IconLoader (2026-11-07): read its `glyph` swap
+const glyphOf = (layer, fallback) => {
+  const n = instance.findInstance(layer)
+  const s = n && typeof n.getInstanceSwap === 'function' ? n.getInstanceSwap('glyph') : null
+  return (s && typeof s.codeConnectId === 'function' && s.codeConnectId()) || fallback
+}
 const label = instance.getString('label')
 // variant float (2026-11-04) is the panel's — Menu variant="float" draws every row float; tone=danger is the destructive row
 const tone = instance.getEnum('tone', { "default": "default", "danger": "danger" })
-const current = instance.getEnum('current', { "true": "true", "false": "false" })
-const disabled = instance.getEnum('disabled', { "true": "true", "false": "false" })
+// state + indicator in words (plan-2026-11-07-menu-system W2.1); variant select is Dropdown's row
+const state = instance.getEnum('state', { "rest": "rest", "current": "current", "disabled": "disabled" })
+const indicator = instance.getEnum('indicator', { "none": "none", "check": "check", "dot": "dot", "chevron": "chevron" })
 const iconOn = instance.getBoolean('icon')
-const iconSwap = instance.getInstanceSwap('iconName')
-const icon = (iconSwap && typeof iconSwap.codeConnectId === 'function' && iconSwap.codeConnectId()) || 'layout'
-const check = instance.getBoolean('check')
-const dot = instance.getBoolean('dot')
+const icon = glyphOf('icon', 'layout')
 const kbd = instance.getBoolean('kbd')
 const trailOn = instance.getBoolean('trailing')
-const trailSwap = instance.getInstanceSwap('trailingName')
-const trailing = (trailSwap && typeof trailSwap.codeConnectId === 'function' && trailSwap.codeConnectId()) || 'download'
+const trailing = glyphOf('trailing', 'download')
 // a row is one entry of Menu's `items` (Menu builds the MenuRow)
 const keys = [`label: '${label}'`]
 if (iconOn) keys.push(`icon: '${icon}'`)
-if (current === 'true') keys.push('current: true')
-if (dot) keys.push("indicator: 'dot'")
-else if (check) keys.push("indicator: 'check'")
+if (state === 'current') keys.push('current: true')
+if (indicator !== 'none') keys.push(`indicator: '${indicator}'`)
 if (kbd) keys.push("kbd: 'D'")
 if (trailOn) keys.push(`trailing: '${trailing}'`)
-if (disabled === 'true') keys.push('disabled: true')
+if (state === 'disabled') keys.push('disabled: true')
 if (tone === 'danger') keys.push("tone: 'danger'")
 
 export default {

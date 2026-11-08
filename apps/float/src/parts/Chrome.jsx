@@ -57,6 +57,10 @@ export default function Chrome() {
       {(surface) => (
         <>
           <Part name="ToolRail" slug="tool-rail"><ToolRail tools={TOOLS} value={tool} onChange={setTool} surface={surface} /></Part>
+          <Part name="ToolRail with its ⋮" slug="tool-rail">
+            <ToolRail tools={TOOLS.slice(0, 4)} value={tool} onChange={setTool} surface={surface}
+              more={[{ label: 'Hand', icon: 'hand', kbd: 'H', onClick: noop }, { label: 'Reset colours', icon: 'refresh', kbd: 'D', onClick: noop }]} />
+          </Part>
           <Part name="PropertyRail" slug="property-rail">
             <PropertyRail surface={surface} title="Properties" onCollapse={noop}
               tabs={[{ value: 'design', label: 'Design' }, { value: 'animate', label: 'Animate' }]} tab={tab} onTab={setTab}
@@ -79,7 +83,7 @@ export default function Chrome() {
             </div>
             <Timecode current="00:04:12" total="00:12:00" />
           </Part>
-          <Part name="DocumentCapsule" slug="document-capsule"><DocumentCapsule name="Still in motion" status="✓ Saved" onBack={noop} menuItems={DOC_MENU} surface={surface} /></Part>
+          <Part name="DocumentCapsule" slug="document-capsule"><DocumentCapsule name="Still in motion" status="Saved" statusIcon="check" onBack={noop} menuItems={DOC_MENU} surface={surface} /></Part>
           <Part name="GlobalActions" slug="global-actions">
             <GlobalActions onUndo={noop} onRedo={noop} onAction={noop} onAccount={noop} />
             <GlobalActions onUndo={noop} onRedo={noop} onAction={noop} account={{ initial: 'K', label: 'Kolkrabbi' }} onAccount={noop} />

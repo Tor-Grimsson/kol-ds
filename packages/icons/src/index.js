@@ -24,6 +24,13 @@
 export { default as Icon, registerIcons, RENAMED_ICONS } from './Icon.jsx';
 import { RENAMED_ICONS } from './Icon.jsx';
 import CUTS from './cuts.json';
+import TAGS from './tags.json';
+
+/* SEARCH TAGS (2026-11-05) — `{ name: tags[] }` for every glyph in all four sets (identity: every file in its
+ * folders, not only the icon). Synonyms and uses a person types — "lab" for the flasks — not the name split again.
+ * `node scripts/validate-icon-tags.mjs` (gate `icon-tags`) fails when a glyph has none. */
+export const KOL_ICON_TAGS = TAGS
+export const getTags = (name) => TAGS[name] ?? []
 
 /* kol-icon-set-interface — the curated set, grouped by folder (keys-only, no SVG
  * content): `{ group: names[] }`. KOL_ICON_SET_INTERFACE_NAMES is the flat sorted list. */

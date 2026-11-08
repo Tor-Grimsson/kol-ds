@@ -1,8 +1,11 @@
+import { Image } from '@kolkrabbi/kol-component'
+
 /**
  * MoodTile — image tile with a centered logo overlay.
  *
  * A cover-cropped photo in a 4:3 frame, an optional centered brand-logo
- * overlay, and an optional caption below. Image and logo are consumer-injected
+ * overlay, and an optional caption below. The photo is the kol-component
+ * `Image` atom (2026-11-07) — a missing src keeps the frame as a placeholder. Image and logo are consumer-injected
  * (no app coupling): pass an image `src` / `alt` and a `logo` node.
  *
  * Class contract (chrome lives in @kolkrabbi/kol-theme →
@@ -25,7 +28,7 @@ export default function MoodTile({ src, alt = '', logo, overlay = true, caption 
   return (
     <figure className="kol-mood-tile">
       <div className="kol-mood-tile-frame relative rounded-[4px] overflow-hidden aspect-[4/3]">
-        <img src={src} alt={alt} loading="lazy" />
+        <Image src={src} alt={alt} />
         {overlay && logo && (
           <div className="kol-mood-tile-overlay text-emphasis absolute inset-0 flex items-center justify-center pointer-events-none">
             <span className="kol-brand-logo">{logo}</span>

@@ -112,3 +112,25 @@ export const GRAB_COLUMN = {
   range: 1,
   travel: { duration: 2.8, ease: EASE.outGsap },
 }
+
+/* THE FLOAT FAMILY'S MOTION (FloatActionStatesAndMotion, kol-website 2026-11-04). The CSS side is `--kol-float-*` in
+ * kol-design-tokens.css and `.kol-float-motion` · `-rail` · `-turn` in kol-animation.css; these are the same numbers for
+ * the one thing CSS cannot do — hold a card in the tree while it leaves. */
+export const FLOAT_MOTION = { duration: DURATION.base, rail: DURATION.slow, hoverOpacity: 0.88, pressScale: 0.96 }
+
+/**
+ * floatMotion — the `motion` prop of the float pieces and FloatLayout, resolved once:
+ *   true (default)       the tokens
+ *   false                no motion — the durations go to 0ms
+ *   { duration, ease }   per app: `duration` in ms (both clocks), `ease` a CSS curve or a cubic-bezier array (EASE.*)
+ * Returns `{ style, ms, rail }`: `style` sets the `--kol-float-*` vars on the piece's root (or nothing), `ms` / `rail` how long
+ * a card or the rail is held in the tree while it leaves.
+ */
+export function floatMotion(motion = true) {
+  if (motion === false) return { style: { '--kol-float-duration': '0ms', '--kol-float-duration-rail': '0ms' }, ms: 0, rail: 0 }
+  const o = motion && typeof motion === 'object' ? motion : {}
+  const style = {}
+  if (o.duration != null) style['--kol-float-duration'] = style['--kol-float-duration-rail'] = `${o.duration}ms`
+  if (o.ease) style['--kol-float-ease'] = Array.isArray(o.ease) ? `cubic-bezier(${o.ease.join(', ')})` : o.ease
+  return { style: Object.keys(style).length ? style : undefined, ms: o.duration ?? FLOAT_MOTION.duration, rail: o.duration ?? FLOAT_MOTION.rail }
+}

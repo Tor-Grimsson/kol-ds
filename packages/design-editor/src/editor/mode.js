@@ -25,6 +25,10 @@ export const MODES = [
 
 export const modeById = (id) => MODES.find((m) => m.id === id) ?? null
 
+/* Mode-door rows (MODES above) — shipped drawings only: desktop is the
+ * compositor chrome, globe the labs output, refresh the randomiser. */
+export const MODE_ICONS = { editor: 'desktop', labs: 'globe', randomiser: 'refresh' }
+
 /* ── The route map ───────────────────────────────────────────────────
  *
  * 2026-08-15: the app got a real router (`App.jsx`), so a view is a PATH, not

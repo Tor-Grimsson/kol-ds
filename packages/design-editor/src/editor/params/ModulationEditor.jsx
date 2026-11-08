@@ -7,7 +7,7 @@ import { isBinding } from './resolve'
 import { compileExpr } from './expr'
 import { transport } from './transport'
 import { useControlSize } from './controlSize'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 
 /**
  * ModulationEditor — the transform editor for ONE bound param (range / invert /
@@ -122,7 +122,7 @@ export function ModulationEditor({ layer, param, setProp }) {
       </LabeledControl>
       <div className="grid grid-cols-2 gap-2">
         <LabeledControl label="Invert">
-          <SegmentedToggle size={cs} className="w-full"
+          <ButtonGroup layout="joined" size={cs} className="w-full"
             options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
             value={tr?.invert ? 'on' : 'off'}
             onChange={(v) => patchTransform({ invert: v === 'on' })}

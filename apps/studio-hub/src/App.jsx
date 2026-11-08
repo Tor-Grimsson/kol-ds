@@ -421,7 +421,7 @@ export default function App() {
         ),
       }}
       use={{
-        path: '/studio', label: 'Studio', icon: 'nav-rack',
+        path: '/studio', label: 'Studio', icon: 'rack-v',
         children: (
           <div className="flex h-dvh flex-col">
             <CanvasStudio className="flex-1" view={canvasView} onViewChange={setCanvasView} fit={phone}>

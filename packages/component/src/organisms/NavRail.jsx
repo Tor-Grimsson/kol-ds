@@ -103,6 +103,9 @@ import NavRailFloat from './NavRailFloat.jsx'
  *   (2026-10-01), here too on the user's word (2026-10-02). The rows sit in their own scroll
  *   region between the mark and the pinned bottom rows, so a list longer than the window scrolls
  *   and runs out under the fade instead of being cut by the edge. `false` draws the list plain.
+ * @param {{ current: Function }} [toggleRef]  the app and site rails fill it with their expand ↔ collapse toggle — the
+ *   frame's `\` key (useRailKeys, 2026-11-04) presses it. The app rail's also carries `open` and `snap(open)`, so AppShell
+ *   can bring it back from a hide as it was
  */
 const RAIL_W = '--kol-shell-rail-width'
 const CLOSED = 48
@@ -158,7 +161,10 @@ function useRailDrag(railRef, grabRef, onSnap, snapRef, enabled = true) {
     const report = (w) => { const on = w >= RAIL_LABELS; if (on !== labelled) { labelled = on; onSnap(on) } }
     const snapTo = (w) => {
       gsap.to(root, { [RAIL_W]: `${w}px`, ...GRAB.snap, overwrite: 'auto' })
-      report(w)
+      /* a snap always reports — a remount (StrictMode's second effect, AppShell's show-as-it-was) can leave this closure's
+       * `labelled` behind the rail's state, and a deduped report then never closed it */
+      labelled = w >= RAIL_LABELS
+      onSnap(labelled)
     }
     /* the ONLY way out of this effect (RailSectionPressOpensRail, kol-fxr
      * 2026-08-30). `snapTo` closes over the animation and the CLOSED/open
@@ -375,6 +381,7 @@ function AppRail({
   drawer = false,
   fade = true,
   sections = 'expand',
+  toggleRef,
 }) {
   const railRef = useRef(null)
   const grabRef = useRef(null)
@@ -403,6 +410,8 @@ function AppRail({
    * and it no-ops on its own — no second argument needed */
   useGrabEdge(grabRef)
   useRailDrag(railRef, grabRef, setRailOpen, snapOpenRef, !drawer)
+  /* the frame's `\` key (useRailKeys) — the grab strip's own click: expanded ↔ collapsed */
+  if (toggleRef) toggleRef.current = Object.assign(() => snapOpenRef.current?.(!railOpen), { open: railOpen, snap: (o) => snapOpenRef.current?.(o) })
   if (hidden) return null
   const enterMode = (sections === 'fold' ? 'expand' : sections) === 'enter'
   const enters = (item) => enterMode && !!item.sub?.some((s) => s.sub?.length > 0)

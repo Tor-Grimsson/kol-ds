@@ -13,10 +13,19 @@
  * secondary surface, Inter, no rim, 20 inset. Its head is a `SectionHead` — `title` with a mono `count` ("1 open"),
  * `meta` or `description` under it, `value` at the right, `controls` and the fold chevron (`onFold`; `folded` keeps
  * only the head — the collapsed group). `addLabel` + `onAdd` draw the add row under the body: a sunken float pill with
- * a + and the ↵ hint. Rows inside are `TaskCard size="sm"`. The float sheet has no tabs and no foot.
+ * a + and the ↵ hint. Rows inside are `TaskCard size="sm"`.
+ *
+ * THE EDITOR CARD (plan-2026-11-05-float-editor W1.2; his frame 20:14470 — Typography · Colour/Swatches ·
+ * Layers/Assets/History · Transform · Appearance): `variant="float"` with `tabs` (`[{ key, label }]`) draws the head as
+ * a tab row — the lit tab in the float panel role with its 2px rule, the rest in the label role at fg-48 — and the
+ * chevron flush right. `tab` / `onTab` control it; unset, the card keeps its own (the first). `children` may be a
+ * function of the lit tab's key. `foot` is the slot under the rows (the Layers actions), 16 below them.
+ * `defaultFolded` (a boolean) makes the fold the card's own — the chevron toggles it with no `onFold`. `radius="window"`
+ * is the editor's round (`--kol-float-window-r`, 28) in place of the sheet's 20. A stack is data: map it.
  *
  * Phone (kol-website metric, 2026-11-03): tabs 12 apart and the header gap 8 below md; the active underline sits
  * inside the scroller (pb-px / -mb-px), so a tab row never scrolls up and down and catches a phone's vertical swipe. */
+import { useState } from 'react'
 import { Button, Menu } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import SectionHead from './SectionHead.jsx'
@@ -34,11 +43,12 @@ const TabButton = ({ active, open, children, ...rest }) => (
   </Button>
 )
 
-export default function Card({ variant, title, count, meta, description, value, tabs, tab, onTab, controls, onExpand, folded, onFold, addLabel, onAdd, footLeft, footRight, footPad = 'pt-4', className = '', children }) {
+export default function Card({ variant, title, count, meta, description, value, tabs, tab, onTab, controls, onExpand, folded, onFold, defaultFolded, addLabel, onAdd, foot, radius, footLeft, footRight, footPad = 'pt-4', className = '', children }) {
   if (variant === 'float') {
     return (
       <FloatSheet title={title} count={count} meta={meta} description={description} value={value} controls={controls}
-        folded={folded} onFold={onFold} addLabel={addLabel} onAdd={onAdd} className={className}>{children}</FloatSheet>
+        tabs={tabs} tab={tab} onTab={onTab} folded={folded} onFold={onFold} defaultFolded={defaultFolded} addLabel={addLabel} onAdd={onAdd}
+        foot={foot} radius={radius} className={className}>{children}</FloatSheet>
     )
   }
   const list = tabs ?? [{ key: 't', label: title }]
@@ -79,13 +89,24 @@ export default function Card({ variant, title, count, meta, description, value, 
   )
 }
 
-/* the float sheet: SectionHead, the body, the add row; `folded` keeps the head alone (row 107) */
-function FloatSheet({ title, count, meta, description, value, controls, folded = false, onFold, addLabel, onAdd, className = '', children }) {
+/* the float sheet: SectionHead, the body, the add row, the foot; `folded` keeps the head alone (row 107). The fold and
+ * the tab are the caller's when it passes them, the card's own when it does not (`defaultFolded`, the first tab). */
+function FloatSheet({ title, count, meta, description, value, controls, tabs, tab, onTab, folded, onFold, defaultFolded, addLabel, onAdd, foot, radius, className = '', children }) {
+  const [ownFolded, setOwnFolded] = useState(!!defaultFolded)
+  const [ownTab, setOwnTab] = useState(tabs?.[0]?.key)
+  const isFolded = folded ?? ownFolded
+  const fold = onFold ?? (defaultFolded !== undefined ? () => setOwnFolded((v) => !v) : undefined)
+  const current = tab ?? ownTab
+  const pick = (k) => { if (tab === undefined) setOwnTab(k); onTab?.(k) }
+  const body = typeof children === 'function' ? children(current) : children
+  const sheet = radius === 'window' ? SHEET.replace('--kol-float-menu-r', '--kol-float-window-r') : SHEET
   return (
-    <section className={`${SHEET} flex flex-col p-5 ${className}`.trim()}>
-      <SectionHead title={title} count={count} meta={meta} description={description} value={value} controls={controls} folded={folded} onFold={onFold} />
-      {!folded && children && <div className="flex-1 min-h-0 flex flex-col pt-4">{children}</div>}
-      {!folded && addLabel && (
+    <section className={`${sheet} flex flex-col p-5 ${className}`.trim()}>
+      <SectionHead title={title} count={count} meta={meta} description={description} value={value} controls={controls}
+        tabs={tabs} tab={current} onTab={pick} folded={isFolded} onFold={fold} />
+      {!isFolded && body && <div className="flex-1 min-h-0 flex flex-col pt-4">{body}</div>}
+      {!isFolded && foot && <div className="flex items-center gap-2 pt-4">{foot}</div>}
+      {!isFolded && addLabel && (
         <button type="button" onClick={onAdd} style={WELL}
           className={`flex items-center gap-2.5 w-full h-[var(--kol-float-h-md)] px-3.5 mt-4 rounded-full text-left ${PRESS}`}>
           <Icon name="plus" size={16} className="text-oq-64 shrink-0" />

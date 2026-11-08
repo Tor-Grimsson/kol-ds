@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 import { FILL_PARAMS, paintFill, isGradient } from '../lib/fill.js'
 
 // Arc sweep — a radar-style wedge sweeping a whole number of turns per loop, with

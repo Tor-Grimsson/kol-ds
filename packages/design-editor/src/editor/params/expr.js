@@ -1,4 +1,4 @@
-import { SHADOWED_GLOBALS } from '../../loops/lib/sandbox'
+import { SHADOWED_GLOBALS } from '../lib/sandbox'
 /**
  * expr — expression evaluator for the 'expr' modulation source (Phase 9+).
  * Port of labs' foundational lib (kol-labs-single/src/lib/exprParam.js): a
@@ -66,7 +66,7 @@ const PRELUDE = `
 const cache = new Map()
 const LIVE_RE = /\b(level|bass|mid|high|rand)\b/
 
-/* the shadowed-globals list lives in ONE place — loops/lib/sandbox.js (audit G3) */
+/* the shadowed-globals list lives in ONE place — editor/lib/sandbox.js (audit G3) */
 
 /**
  * Compile an expression string. Cached by string. Returns

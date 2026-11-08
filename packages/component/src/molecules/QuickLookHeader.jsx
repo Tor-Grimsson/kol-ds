@@ -1,6 +1,6 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
-import CloseButton from '../atoms/CloseButton.jsx'
+import CloseButton from './CloseButton.jsx'
 
 /* taxonomy-ok: molecule — nests Button (atom) + CloseButton (utility). */
 

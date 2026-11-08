@@ -4,19 +4,18 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-// variant (float-everything W2 row 21, 2026-11-04): float is the 32 × 20 track, one size
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
-const xv = variant === 'float' ? ' variant="float"' : ''
+// variant bare · outline · primary × size sm · md × checked (2026-11-07); `labelled` hides the label.
+const variant = instance.getEnum('variant', { "bare": "bare", "outline": "outline", "primary": "primary" })
+const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
 const checked = instance.getEnum('checked', { "true": "true", "false": "false" })
-const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
+const labelled = instance.getBoolean('labelled')
 const label = instance.getString('label')
-/* labelled=false is the bare 30x12 row switch (SettingsSwitch: no label, size sm) */
-const labelled = instance.getEnum('labelled', { "true": true, "false": false })
-
+const xv = (variant === 'bare' ? '' : ` variant="${variant}"`) + (size === 'md' ? '' : ` size="${size}"`)
+const dis = instance.getEnum('state', { "rest": "", "disabled": " disabled" })
 export default {
   example: labelled
-    ? figma.code`<ToggleSwitch${xv} label="${label}" checked={${checked}} size="${size}" onChange={setChecked} />`
-    : figma.code`<ToggleSwitch${xv} checked={${checked}} size="${size}" onChange={setChecked} aria-label="Label" />`,
+    ? figma.code`<ToggleSwitch${xv} label="${label}" checked={${checked}} onChange={setChecked}${dis} />`
+    : figma.code`<ToggleSwitch${xv} checked={${checked}} onChange={setChecked} aria-label="${label}"${dis} />`,
   imports: ["import { ToggleSwitch } from \"@kolkrabbi/kol-component\""],
   id: 'ToggleSwitch',
 }

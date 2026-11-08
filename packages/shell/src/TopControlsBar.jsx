@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import FloatActionMenu from './FloatActionMenu.jsx'
 import { Button, TabsRow, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import DocumentCapsule from './DocumentCapsule.jsx'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
@@ -47,11 +48,14 @@ export function PanelsRestore({ label = 'Panels', children, items, surface = 'so
  * @param {Function}  onSearch   the search glyph's press; unset, no glyph
  * @param {Object}    panels     PanelsRestore's props (`items` or `children`); unset, no Panels
  * @param {Object}    action     `{ label, icon?, onPress }` — the primary action (New task), the inverted float capsule
+ * @param {Array}     menu       `[{ label, icon?, onPress }]` — FloatActionMenu at the very end, the + and its float sheet (fxr's Home corner)
  * @param {ReactNode} start · {ReactNode} center · {ReactNode} end  the three regions, when the props above are not the bar
  * @param {'solid'|'glass-dark'|'glass-light'} surface  what every float on the bar is made of (default `solid`)
+ * @param {boolean|Object} [motion=true]  FloatActionMenu's (`menu`): `true` the `--kol-float-*` tokens · `false` none ·
+ *                                `{ duration, ease }` per app (FloatActionStatesAndMotion, 2026-11-04)
  * @param {string}    className
  */
-export default function TopControlsBar({ document, tabs, tab, onTab, onSearch, panels, action, start, center, end, surface = 'solid', className = '' }) {
+export default function TopControlsBar({ document, tabs, tab, onTab, onSearch, panels, action, menu, start, center, end, surface = 'solid', motion = true, className = '' }) {
   return (
     <div className={`kol-top-controls kol-float-chrome flex items-center gap-4 h-16 ${className}`.trim()}>
       <div className="flex items-center gap-4">
@@ -70,6 +74,7 @@ export default function TopControlsBar({ document, tabs, tab, onTab, onSearch, p
           <>
             {panels && <PanelsRestore {...panels} surface={surface} />}
             {action && <Button variant="float" tone="inverted" size="lg" iconLeft={action.icon ?? 'plus'} onClick={action.onPress}>{action.label}</Button>}
+            {menu?.length > 0 && <FloatActionMenu actions={menu} icon="plus" variant="float" surface={surface} motion={motion} />}
           </>
         )}
       </div>

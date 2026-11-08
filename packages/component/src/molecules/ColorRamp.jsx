@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import ColorSwatch from './ColorSwatch.jsx'
-import { resolveCssVar, isLight } from '../hooks/cssVar.js'
+import SwatchTile from './SwatchTile.jsx'
+import { resolveCssVar } from '../hooks/cssVar.js'
 
 /**
  * ColorRamp — One row of color chips. one specimen row of color chips for a token-doc page. A label
@@ -16,7 +16,7 @@ import { resolveCssVar, isLight } from '../hooks/cssVar.js'
  *            both the fill and the printed value. This is the old Ramp mode.
  *
  * Precedence: colors > vars > ramp/stops. The local Chip/Swatch dups the two
- * source files carried are gone — every chip is a DS ColorSwatch. The anchor
+ * source files carried are gone — every chip is a DS SwatchTile (size 'grid', 2026-11-07). The anchor
  * marker is a dot whose fill flips black/white through isLight so it reads on
  * any stop.
  *
@@ -98,20 +98,7 @@ export default function ColorRamp({
           const fill = c.literal ?? `var(${c.token})`
           const isAnchor = anchor != null && (anchor === c.stop || anchor === c.name || anchor === i)
           return (
-            <div key={c.key} className="flex min-w-0 flex-col gap-1.5">
-              <div className="relative">
-                <ColorSwatch hex={fill} size="fill" radius="sm" title={`${c.name} ${value}`} />
-                {isAnchor && value && (
-                  <span className="absolute inset-0 flex items-center justify-center" aria-hidden="true">
-                    <span className="w-2.5 h-2.5 rounded-full" style={{ background: isLight(value) ? '#000' : '#fff' }} />
-                  </span>
-                )}
-              </div>
-              <div className="flex min-w-0 flex-col items-start gap-0.5 leading-tight">
-                <span className="kol-helper-10 text-emphasis max-w-full truncate">{c.name}{isAnchor && ' ★'}</span>
-                <span className="kol-helper-10 text-meta max-w-full truncate">{value}</span>
-              </div>
-            </div>
+            <SwatchTile key={c.key} hex={fill} name={c.name} value={value} size="grid" anchor={isAnchor} title={`${c.name} ${value}`} />
           )
         })}
       </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Button, SegmentedToggle, ToggleSwitch, ToggleCheckbox, Slider, Stepper, Dropdown, Input, Knob, XYPad,
+  Button, ButtonGroup, ToggleSwitch, ToggleCheckbox, Slider, Stepper, Dropdown, Input, Knob, XYPad,
   LabeledControl, InspectorSection, LabeledControlSection, SettingsRow, SettingsSwitch,
 } from '@kolkrabbi/kol-component'
 import Specimen from '../Specimen.jsx'
@@ -45,9 +45,9 @@ export default function AppControls() {
       </Specimen>
 
       <Specimen title="SegmentedToggle" ships="kol-component · SegmentedToggle">
-        <SegmentedToggle value={view} onChange={setView} options={VIEWS} size="sm" />
-        <SegmentedToggle variant="filled" value={view} onChange={setView} options={VIEWS} size="sm" />
-        <SegmentedToggle variant="tonal" value={view} onChange={setView} options={VIEWS} size="sm" />
+        <ButtonGroup layout="joined" value={view} onChange={setView} options={VIEWS} size="sm" />
+        <ButtonGroup layout="joined" variant="filled" value={view} onChange={setView} options={VIEWS} size="sm" />
+        <ButtonGroup layout="joined" variant="tonal" value={view} onChange={setView} options={VIEWS} size="sm" />
       </Specimen>
 
       <Specimen title="Switch · Checkbox" ships="kol-component · ToggleSwitch · ToggleCheckbox">
@@ -98,7 +98,7 @@ export default function AppControls() {
       <Specimen title="Panel formats" ships="kol-component · InspectorSection · LabeledControlSection · SettingsRow">
         <div className="flex w-64 flex-col gap-4 rounded-[var(--kol-radius-sm)] bg-surface-primary p-4">
           <InspectorSection label="ASPECT" divided>
-            <SegmentedToggle value={view} onChange={setView} options={VIEWS} size="xs" />
+            <ButtonGroup layout="joined" value={view} onChange={setView} options={VIEWS} size="xs" />
           </InspectorSection>
           <InspectorSection label="FILL" divided>
             <Slider label="Opacity" min={0} max={100} value={v} onChange={setV} />

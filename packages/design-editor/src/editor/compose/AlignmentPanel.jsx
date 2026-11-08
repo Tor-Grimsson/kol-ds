@@ -1,5 +1,5 @@
 import { Icon } from '@kolkrabbi/kol-icons'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { useComposeState } from './state'
 import { useControlSize } from '../params/controlSize'
 
@@ -30,8 +30,8 @@ export default function AlignmentPanel() {
     <div className="grid grid-cols-2 gap-2">
       {/* three aligns a strip (plan 34 § 3 — four overflowed the rail and clipped); distribute lives in
           Layer › Align, which still reads the full H_OPTS / V_OPTS */}
-      <SegmentedToggle size={cs} ariaLabel="Horizontal alignment" value={null} options={ALIGN_H} onChange={(m) => alignSelected('h', m)} className="w-full" />
-      <SegmentedToggle size={cs} ariaLabel="Vertical alignment" value={null} options={ALIGN_V} onChange={(m) => alignSelected('v', m)} className="w-full" />
+      <ButtonGroup layout="joined" size={cs} ariaLabel="Horizontal alignment" value={null} options={ALIGN_H} onChange={(m) => alignSelected('h', m)} className="w-full" />
+      <ButtonGroup layout="joined" size={cs} ariaLabel="Vertical alignment" value={null} options={ALIGN_V} onChange={(m) => alignSelected('v', m)} className="w-full" />
     </div>
   )
 }

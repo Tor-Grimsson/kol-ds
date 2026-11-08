@@ -18,7 +18,7 @@ import { DEFAULTS } from './defaults.js'
 export { DEFAULTS }
 /* the tool's extras (footer, file formats, ⇧R) and its keymap — same subpath, same reason */
 export { useMediaTool, TOOL_SHORTCUTS } from './tool.jsx'
-/* the notes and decks tools' wiring (apps/notes, apps/presentation, media-hub's tabs) — same subpath */
+/* the notes and decks tools' wiring (apps/note, apps/presentation, media-hub's tabs) — same subpath */
 export { useNotesTool, useDecksTool } from './libraryTools.jsx'
 /* useBrandTool (the Kolkrabbi brand for the brand apps) retired 2026-09-29 — apps/brand and
  * apps/brand-hub render VOYAGER from voyager-fixture; the file is in _tmp/2026-09-29-media-fixture-brand-tool/ */

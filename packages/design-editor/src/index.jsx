@@ -29,3 +29,5 @@ export { default } from './core'
  * (OutputView, which needs none, moved there).
  */
 export { LabsView, LABS_DRAFT_KEY, MobileView }
+/* FloatLabsView — Labs in the float chrome, on kol-shell's FloatLayout (plan-2026-11-05-float-editor 3.2) */
+export { default as FloatLabsView } from './editor/labs/FloatLabs'

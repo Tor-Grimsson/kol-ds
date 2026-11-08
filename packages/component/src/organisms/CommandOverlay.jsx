@@ -2,13 +2,19 @@ import { useEffect, useId, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
-import Kbd from '../atoms/Kbd.jsx'
-import OptionRow from '../molecules/OptionRow.jsx'
+import TabsRow from '../molecules/TabsRow.jsx'
+import Button from '../atoms/Button.jsx'
+import { floatSurfaceClass } from '../utilities/tone.js'
+import { floatMotion } from '../utilities/motion.js'
+import useFloatPresence from '../hooks/useFloatPresence.js'
 import { shortcutInScope } from './ShortcutsOverlay.jsx'
 
 /* ONE COLUMN (2026-09-30): rows, headings and footer sit on the field's own
  * geometry — the p-2 inset, then the md control's 1px ring + 16px pad — so
  * every glyph and word lines up under the field's icon and caret. */
+
+/* the foot's rule runs the card's full width: out through the card's inset, the hints 12 in from the rows' edge */
+const RULE = { margin: '6px calc(-1 * var(--kol-float-inset)) calc(-1 * var(--kol-float-inset))', paddingInline: 'calc(var(--kol-float-inset) + 12px)' }
 
 /* Rows bucketed by `group` in first-seen order, rank kept inside a group —
  * one heading per group; arrows rove this order, not the engine's. */
@@ -148,6 +154,20 @@ function unfold(rows, opened) {
  * @param {string}   [selectLabel] the footer's Enter line while a row is highlighted (default
  *                                 `Go to page`) — a modal whose rows are not pages says what
  *                                 Enter does instead (the rack's module search: `Add module`)
+ * @param {'solid'|'glass-dark'|'glass-light'} [surface='solid']  ONE SEARCH STYLE (plan-2026-11-05-float-editor 7.7, his
+ *                                 frame float-more 30:914 — *"anchored search (along with same style regular search)"*):
+ *                                 every search modal is the float card — RailTrigger's (`kol-more-sheet-float` on
+ *                                 `--kol-float-menu-r`, the float surface and shadow), the float SearchInput, the float
+ *                                 rows (Inter, `--kol-float-row`, the lit row fg-16, the hint right), eyebrow groups, and
+ *                                 the key-hint foot under a full-width rule. `surface` only picks what the card is made of
+ * @param {Array}    [tabs]        `[{ id, label }]` — his All · Actions · Tools · Pages: the first shows every row, the
+ *                                 rest the rows whose `tab` is their id. Tab / ⇧Tab step through them from the field
+ * @param {Object|Element} [anchor] a ref (or element) the card ANCHORS ABOVE — the dock's ⌘K: the card takes the anchor's
+ *                                 left and width, 16 over its top, the page undimmed. Unset, the card is centred
+ * @param {string}   [shortcutHint] the field's key cap while it is empty (his `⌘K`)
+ * @param {boolean|Object} [motion=true]  with `surface`, the card fades and scales in and out over a fading scrim, held in
+ *                                 the tree while it leaves (FloatActionStatesAndMotion, 2026-11-04): `true` the
+ *                                 `--kol-float-*` tokens · `false` none · `{ duration, ease }` per app
  */
 export default function CommandOverlay({
   open,
@@ -176,7 +196,16 @@ export default function CommandOverlay({
   mode = 'search',
   shortcuts = [],
   currentPath,
+  surface = 'solid',
+  tabs,
+  anchor,
+  shortcutHint,
+  motion = true,
 }) {
+  const float = true
+  const fm = floatMotion(motion)
+  const presence = useFloatPresence(open, float ? fm.ms : 0)
+  const exit = float && presence.exiting ? '' : undefined
   const panelRef = useRef(null)
   const listRef = useRef(null)
   const listId = useId()
@@ -192,7 +221,21 @@ export default function CommandOverlay({
   if (mode === 'go') mode = 'search'
   const placeholder = placeholderProp ?? MODE_PLACEHOLDER[mode] ?? 'Search…'
   const selectLabel = selectLabelProp ?? MODE_LABEL[mode] ?? 'Go to page'
-  const base = mode === 'shortcuts' ? shortcutFolds(shortcuts, currentPath) : groupRows(query ? rawResults : suggestions)
+  const [tab, setTab] = useState(null)
+  const tabNow = tabs?.some((t) => t.id === tab) ? tab : tabs?.[0]?.id
+  const inTab = (r) => !tabs || (tabNow === tabs[0].id ? !r.tabOnly : r.tab === tabNow)
+  const base = mode === 'shortcuts' ? shortcutFolds(shortcuts, currentPath) : groupRows((query ? rawResults : suggestions).filter(inTab))
+  /* the anchored card: the anchor's left and width, 16 over its top — read as it draws (a hidden first frame could not
+   * take the focus), and again on resize */
+  const [, reflow] = useState(0)
+  useEffect(() => {
+    if (!open || !anchor) return undefined
+    const on = () => reflow((n) => n + 1)
+    window.addEventListener('resize', on)
+    return () => window.removeEventListener('resize', on)
+  }, [open, anchor])
+  const anchorRect = presence.mounted && anchor ? (anchor.current ?? anchor)?.getBoundingClientRect?.() : null
+  const place = anchorRect ? { left: anchorRect.left, width: anchorRect.width, bottom: window.innerHeight - anchorRect.top + 16 } : null
   const results = unfold(base, opened)
   /* a `disabled` row is drawn but never active: ↑↓ step over it, Enter and click never reach
    * `onSelect` (ShellSearchDisabledRow, kol-monitor 2026-10-15 — a module with no room on the rack) */
@@ -211,7 +254,7 @@ export default function CommandOverlay({
     const prev = document.activeElement
     ;(panelRef.current?.querySelector('input') ?? panelRef.current)?.focus()
     setOpened(new Set(base.filter((r) => r.items && r.open).map((r) => r.id)))
-    return () => { setOpened(new Set()); if (prev instanceof HTMLElement) prev.focus() }
+    return () => { setOpened(new Set()); setTab(null); if (prev instanceof HTMLElement) prev.focus() }
   }, [open])
 
   /* Roving row resets to the top on every query change / reopen — and when the ROWS change under an
@@ -220,7 +263,7 @@ export default function CommandOverlay({
    * consumer passing a fresh array every render does not snap the highlight back to the top. */
   /* the BASE rows, not the unfolded ones: opening a category must not throw the highlight back to the top */
   const rowsKey = base.map((r) => r.id).join('\u0000')
-  useEffect(() => { setActiveIndex(Math.max(0, results.findIndex((r) => !r.disabled))); setNavigated(false) }, [query, open, rowsKey]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { setActiveIndex(Math.max(0, results.findIndex((r) => !r.disabled))); setNavigated(false) }, [query, open, rowsKey, tabNow]) // eslint-disable-line react-hooks/exhaustive-deps
 
   /* Keep the active row visible inside the scrolling list. */
   useEffect(() => {
@@ -228,7 +271,7 @@ export default function CommandOverlay({
     listRef.current?.querySelectorAll('[role="option"]')[active]?.scrollIntoView({ block: 'nearest' })
   }, [active])
 
-  if (!open) return null
+  if (!(float ? presence.mounted : open)) return null
 
   /* A row that KEEPS THE MODAL OPEN — `keepOpen`, or an `action` row (the contract below always said
    * so; until 0.252.0 every pick closed — ShellSearchOverlayActionKeepsOpen, kol-fxr 2026-10-13). It
@@ -296,22 +339,34 @@ export default function CommandOverlay({
       if (active >= 0) select(results[active])
       else onExpand?.()
     } else if (e.key === 'Tab') {
-      /* Focus trap — the input is the search modal's only tab stop. */
+      /* Focus trap — the input is the search modal's only tab stop; with `tabs`, Tab / ⇧Tab step through them */
       e.preventDefault()
+      if (tabs?.length) {
+        const at = tabs.findIndex((t) => t.id === tabNow)
+        setTab(tabs[(at + (e.shiftKey ? -1 : 1) + tabs.length) % tabs.length].id)
+      }
     }
   }
 
+  /* the foot's hints — his "↑↓ Navigate · ↵ Run · Esc Close"; Enter's word names what Enter does NOW */
+  const enterWord = results.length > 0
+    ? (results[active]?.fold ? (opened.has(results[active].id) ? 'Collapse' : 'Expand') : noField ? 'Collapse' : selectLabel)
+    : enterLabel
+  const hint = 'flex items-center gap-1.5 text-oq-64'
+  const hintBtn = `${hint} hover:text-fg-emphasis transition-colors cursor-pointer`
+
   return (
-    <div className="fixed inset-0 flex items-start justify-center pt-[20vh]" style={{ zIndex: 'var(--kol-z-modal, 100)' }}>
+    <div className={`fixed inset-0 ${place ? '' : 'flex items-start justify-center pt-[20vh]'}`} style={{ zIndex: 'var(--kol-z-modal, 100)', ...fm.style }}>
       {/* A BUTTON, not a div (OverlayScrimTapDismiss, 2026-09-01): iOS Safari
         * does not bubble tap-clicks from non-interactive elements, so the div's
         * onClick never fired on a phone and the only way out was the close
         * control. A button always fires — and it ends the other half of the
-        * defect, an interactive target carrying `aria-hidden`. */}
+        * defect, an interactive target carrying `aria-hidden`. Anchored, the page stays undimmed. */}
       <button
         type="button"
         aria-label="Close search"
-        className="absolute inset-0 kol-overlay-scrim"
+        className={`absolute inset-0 ${place ? 'cursor-default' : 'kol-overlay-scrim kol-float-fade'}`}
+        data-exit={exit}
         onClick={onClose}
       />
       <div
@@ -322,7 +377,10 @@ export default function CommandOverlay({
         role="dialog"
         aria-modal="true"
         aria-label="Search"
-        className={`kol-overlay-panel mx-4 ${noField ? 'outline-none ' : ''}${expanded ? 'max-w-[var(--kol-content-panel)]' : 'max-w-lg'}`}
+        data-exit={exit}
+        data-side={place ? 'top' : undefined}
+        style={place ? { position: 'fixed', left: place.left, width: place.width, bottom: place.bottom } : undefined}
+        className={`kol-command kol-more-sheet kol-more-sheet-float kol-float-chrome kol-float-motion ${floatSurfaceClass(surface, true)} overflow-hidden ${place ? '' : `relative w-full mx-4 ${expanded ? 'max-w-[var(--kol-content-panel)]' : 'max-w-xl'}`} ${noField ? 'outline-none' : ''}`.replace(/\s+/g, ' ').trim()}
       >
         {/* THE MODE, said out loud (user 2026-08-01: "how do you set search
           * mode? theres no helper, message or mode clearly readble"). Two
@@ -330,33 +388,36 @@ export default function CommandOverlay({
           * to a destination) — and the only signal was whether chips happened
           * to be present. The chips ARE the mode, so they get a label. */}
         {chips.length > 0 && (
-          <div className="flex flex-wrap items-center gap-1.5 px-4 pt-3">
-            <span className="kol-helper-10 text-fg-48 shrink-0">FILTERING BY</span>
+          <div className="flex flex-wrap items-center gap-1.5 px-3 pt-2 pb-1">
+            <span className="kol-float-label text-oq-64 shrink-0">Filtering by</span>
             {chips.map((t) => (
               <Tag key={t} onRemove={() => onRemoveChip?.(t)}>{t}</Tag>
             ))}
           </div>
         )}
-        {/* A REAL FIELD, inset in the panel (2026-09-30, shadcn's search modal as
-          * the aim) — the flush `bare` strip read as a hole, not a control. */}
-        {!noField && (
-        <div className="kol-tone-grey p-2 flex items-center gap-2">
         {/* THE BACK ARROW TAKES THE SEARCH GLYPH'S SLOT (user 2026-10-18: *"why would the back move the input?!"*) —
           * a button beside the field shrank it and shifted the caret on every drill-in */}
-        <SearchInput
-          className="w-full min-w-0 flex-1"
-          value={query}
-          onChange={(e) => onQueryChange?.(e.target.value)}
-          placeholder={chips.length > 0 ? 'Narrow these results…' : placeholder}
-          onKeyDown={handleKeyDown}
-          onBack={back}
-          backLabel={backLabel}
-          role="combobox"
-          aria-expanded={results.length > 0}
-          aria-controls={listId}
-          aria-activedescendant={active >= 0 ? optionId(results[active]) : undefined}
-        />
-        </div>
+        {!noField && (
+          <SearchInput
+            className="w-full min-w-0"
+            value={query}
+            onChange={(e) => onQueryChange?.(e.target.value)}
+            placeholder={chips.length > 0 ? 'Narrow these results…' : placeholder}
+            onKeyDown={handleKeyDown}
+            onBack={back}
+            backLabel={backLabel}
+            shortcutHint={shortcutHint}
+            variant="float"
+            size="lg"
+            role="combobox"
+            aria-expanded={results.length > 0}
+            aria-controls={listId}
+            aria-activedescendant={active >= 0 ? optionId(results[active]) : undefined}
+          />
+        )}
+        {/* his tabs — All · Actions · Tools · Pages — the float TabsRow under the field */}
+        {tabs?.length > 0 && !expanded && (
+          <TabsRow variant="float" size="md" tabs={tabs} value={tabNow} onChange={setTab} className="pt-2" />
         )}
 
         {/* WHY THIS IS NOT `molecules/Dropdown` (asked 2026-08-01). Dropdown is
@@ -364,14 +425,14 @@ export default function CommandOverlay({
           * options. This is a COMBOBOX — a text query filtering a live list
           * whose rows carry a `group`, a `hint`, and may fire an `action`
           * instead of selecting a value. Same ARIA family, different control.
-          * Folding one into the other would mean giving Dropdown a query, a
-          * hint slot and an action escape hatch, i.e. building this inside it.
           *
-          * THE ROW CONTRACT (was documented nowhere):
+          * THE ROW CONTRACT:
           *   label     the row's text, match-highlighted against the query
-          *   group     section heading the row files under — 'Atoms', 'Documentation', 'Tags'
+          *   group     section heading the row files under — 'Atoms', 'Recent', 'Pages'
+          *   tab       the `tabs` id it shows under (every row shows under the first); `tabOnly` — only under its own
+          *             (an empty Actions tab lists every action, which All leaves to Recent)
           *   icon      optional leading glyph (kol-icons name)
-          *   hint      subtext shown when the LABEL was not what matched
+          *   hint      the right-hand line — a key, a page, what matched when the LABEL did not
           *   href      a destination; dismisses the search modal
           *   action    a closure, run by the consumer's `onSelect`; the search modal STAYS OPEN (tag rows)
           *   disabled  drawn muted, skipped by ↑↓, never reaches `onSelect`; `disabledHint` replaces
@@ -380,82 +441,60 @@ export default function CommandOverlay({
           *             its items, a "← All" row back); the consumer swaps `suggestions`/`results`
           * Built by `buildShellSearchItems` (showcase/src/nav/shell-nav.js). */}
         {expanded ? (
-          <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto">{children}</div>
+          <div className="border-t border-fg-08 max-h-[70vh] overflow-y-auto" style={RULE}>{children}</div>
         ) : results.length > 0 && (
           /* FIXED BODY HEIGHT — the panel holds still while the list narrows. */
-          <ul
-            ref={listRef}
-            id={listId}
-            role="listbox"
-            className={`kol-tone-grey h-80 overflow-y-auto px-2 pb-2${noField ? ' pt-2' : ''}`}
-          >
+          <ul ref={listRef} id={listId} role="listbox" className="h-80 overflow-y-auto">
             {results.map((item, i) => {
               const heading = (item.group ?? '') !== (results[i - 1]?.group ?? '') || i === 0
               return (
                 <li key={item.id} role="presentation">
                   {heading && item.group && (
                     /* the rail's eyebrow (user 2026-10-18: *"sections shoudl be uppercase eyebrow like in siderail"*) */
-                    <p className="kol-eyebrow text-fg-80 px-4 border-x border-transparent pt-3 pb-2">{item.group}</p>
+                    <p className="kol-eyebrow text-oq-64 px-3 pt-3 pb-2">{item.group}</p>
                   )}
-                  <OptionRow
+                  {/* the float row: RailTrigger's card row, lit on the float selection while it is the cursor */}
+                  <Button
                     id={optionId(item)}
                     role="option"
                     aria-selected={i === active}
                     aria-disabled={item.disabled || undefined}
-                    active={i === active}
-                    disabled={item.disabled}
-                    icon={item.icon}
-                    /* a fold's key row sits under its category's label, past the chevron */
-                    leading={item.indent ? <span className="inline-block w-4" /> : undefined}
-                    label={<HighlightMatch label={item.label} query={query} ranges={item.highlights} />}
-                    hint={(item.disabled && item.disabledHint) || item.hint}
-                    /* preventDefault keeps focus in the input through the click */
+                    tabIndex={-1}
+                    variant="nav"
+                    size="lg"
+                    className={`kol-btn-float w-full justify-start${i === active ? ' kol-btn-pressed' : ''}${item.disabled ? ' opacity-40' : ''}`}
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => select(item)}
                     onMouseEnter={() => { if (!item.disabled) { setActiveIndex(i); setNavigated(true) } }}
-                  />
+                  >
+                    {/* the glyph drawn here, not as `iconLeft` — Button would wrap it and the label in a span that does not take the row */}
+                    <span className="flex min-w-0 flex-1 items-center" style={{ gap: 'var(--kol-float-gap-ic)' }}>
+                      {item.indent ? <span className="inline-block w-4 shrink-0" /> : item.icon && (typeof item.icon === 'string' ? <Icon name={item.icon} size="var(--kol-float-ic)" className="shrink-0 text-oq-88" /> : item.icon)}
+                      <span className="truncate text-left"><HighlightMatch label={item.label} query={query} ranges={item.highlights} /></span>
+                      {((item.disabled && item.disabledHint) || item.hint) && <span className="kol-float-hint ml-auto truncate pl-3 text-oq-64">{(item.disabled && item.disabledHint) || item.hint}</span>}
+                    </span>
+                  </Button>
                 </li>
               )
             })}
           </ul>
         )}
-        {/* THE FOOTER SAYS WHAT ENTER DOES — always, not only once typing. */}
+        {/* THE FOOT — his key hints under a rule that runs the card's full width; it always says what Enter does. */}
         {!expanded && (results.length > 0 || (query && (enterLabel || onOpenResults))) && (
-          <div className="border-t border-fg-08 py-2">
-            {/* Enter's line names what Enter does NOW: a row is highlighted → it opens that row;
-              * no rows → it commits the query. */}
-            {(results.length > 0 || enterLabel) && (
-              /* 44px on touch — a finger-sized line */
-              <p className="flex items-center gap-2 kol-helper-12 text-fg-48 mx-2 px-4 border-x border-transparent pointer-coarse:min-h-11">
-                <Kbd icon="corner-down-left" />
-                {results.length > 0
-                  ? (results[active]?.fold ? (opened.has(results[active].id) ? 'Collapse' : 'Expand') : noField ? 'Collapse' : selectLabel)
-                  : enterLabel}
-                {/* the second action on the same line, right — ⌘↵, the footer's idiom for "the other one" */}
-                {folds.length > 0 && !query && (
-                  <button
-                    type="button"
-                    className="ml-auto flex items-center gap-2 text-fg-48 hover:text-fg-default transition-colors cursor-pointer"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={toggleAll}
-                  >
-                    <Kbd icon="command"><Icon name="corner-down-left" size={12} /></Kbd>
-                    {allOpen ? 'Collapse all' : 'Expand all'}
-                  </button>
-                )}
-              </p>
+          <div className="kol-float-hint flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-fg-08 py-3 pointer-coarse:min-h-11" style={RULE}>
+            {results.length > 1 && <span className={hint}><span aria-hidden>↑↓</span>Navigate</span>}
+            {enterWord && <span className={hint}><span aria-hidden>↵</span>{enterWord}</span>}
+            <button type="button" className={hintBtn} onMouseDown={(e) => e.preventDefault()} onClick={onClose}><span aria-hidden>Esc</span>Close</button>
+            {/* ⌘↵ — the other one: every fold open or shut, or THE RESULTS LINK (user 2026-10-01: *"make 'all
+              * results...' at the bottom also be a link to the results page"*) — the door ⌘Enter opens */}
+            {folds.length > 0 && !query && (
+              <button type="button" className={`${hintBtn} ml-auto`} onMouseDown={(e) => e.preventDefault()} onClick={toggleAll}>
+                <span aria-hidden>⌘↵</span>{allOpen ? 'Collapse all' : 'Expand all'}
+              </button>
             )}
-            {/* THE RESULTS LINE IS A LINK (user 2026-10-01: *"make 'all results...' at the bottom
-              * also be a link to the results page"*) — the same door ⌘Enter opens. */}
             {query && onOpenResults && (
-              <button
-                type="button"
-                className="flex items-center gap-2 kol-helper-12 text-fg-48 hover:text-fg-default transition-colors mx-2 px-4 border-x border-transparent pt-1"
-                onMouseDown={(e) => e.preventDefault()}
-                onClick={() => { onOpenResults(query); onClose?.() }}
-              >
-                <Kbd icon="command"><Icon name="corner-down-left" size={12} /></Kbd>
-                {resultsLabel}
+              <button type="button" className={`${hintBtn} ml-auto min-w-0`} onMouseDown={(e) => e.preventDefault()} onClick={() => { onOpenResults(query); onClose?.() }}>
+                <span aria-hidden>⌘↵</span><span className="truncate">{resultsLabel}</span>
               </button>
             )}
           </div>

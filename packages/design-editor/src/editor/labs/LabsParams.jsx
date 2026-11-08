@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, SegmentedToggle, ToggleSwitch, Divider, Dropdown, LabeledControlSection, SettingsRow, Tag, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, ToggleSwitch, Divider, Dropdown, LabeledControlSection, SettingsRow, Tag, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import AutoControls from '../params/AutoControls'
@@ -93,7 +93,7 @@ function ChipsRow({ options, active, onPick, spread = false, pills = false }) {
      and the source strip (gone — the File tab has every source action). They are the DS strip now,
      the selected sibling lit; `spread` is the strip's own equal cells. */
   return (
-    <SegmentedToggle tone="sunken"
+    <ButtonGroup layout="joined" tone="sunken"
       value={active ?? null}
       onChange={onPick}
       options={options}
@@ -230,7 +230,7 @@ function EffectSurface({ layer, showMod }) {
       })),
     ]
     return (
-      <Surface title="Effects" fx tabStrip={<SegmentedToggle tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      <Surface title="Effects" fx tabStrip={<ButtonGroup layout="joined" tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
         {tab === 'effect' && (
           <>
             <LabeledControlSection label="Effect stack" divided>
@@ -264,7 +264,7 @@ function EffectSurface({ layer, showMod }) {
   /* Bare photo (uploaded, no effect picked yet): fit params, nothing else. */
   if (!stage) {
     return (
-      <Surface chips={chips} active={null} onPick={onChip} spread={isTrio} fx tabStrip={<SegmentedToggle tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      <Surface chips={chips} active={null} onPick={onChip} spread={isTrio} fx tabStrip={<ButtonGroup layout="joined" tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
         <AutoControls schema={PHOTO_SCHEMA} layer={layer} setProp={edit.setProp} palette={palette} renderAnimate={(p) => <BindDot layer={layer} param={p} setProp={edit.setProp} />} tab={tab === 'anim' ? 'anim' : 'style'} emptyHint="Pick an effect from the nav." />
       </Surface>
     )
@@ -293,7 +293,7 @@ function EffectSurface({ layer, showMod }) {
   const auto = { layer: paramsView, setProp: setStageProp, palette, renderAnimate, inline: true }
   return (
     <Surface chips={chips} active={stage.id} onPick={onChip} spread={isTrio} title={title} fx scope={stage.id} ghostLabels={stage.def.params.map((p) => p.label).filter(Boolean)}
-      tabStrip={<SegmentedToggle tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
+      tabStrip={<ButtonGroup layout="joined" tone="sunken" value={tab} onChange={setTab} options={LABS_TABS} size={cs} className={stripClamp(cs)} />}>
       {tab === 'effect' && (
         <>
           {head.length > 0 && <AutoControls schema={head} {...auto} />}
@@ -346,7 +346,7 @@ function EffectSurface({ layer, showMod }) {
           {stage.def.orbit && (
             <LabeledControlSection label="Interaction" divided>
               <SettingsRow label="ORBIT (C)" align="fill" labelWidth={RAIL_LABEL_W}>
-                <SegmentedToggle tone="sunken" size={cs} className="w-full" value={appSettings.grab && paramsView.orbit !== false ? 'on' : 'off'}
+                <ButtonGroup layout="joined" tone="sunken" size={cs} className="w-full" value={appSettings.grab && paramsView.orbit !== false ? 'on' : 'off'}
                   options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
                   onChange={(v) => { setStageProp('orbit', v === 'on'); if (v === 'on' && !appSettings.grab) setAppSetting('grab', true) }} />
               </SettingsRow>
@@ -527,7 +527,7 @@ function GenerativeSurface({ layer, showMod, tree }) {
     <Surface
       title={groupLabel} chips={chips} active={layer.presetId} onPick={onChip} pills scope={layer.loopId}
       ghostLabels={(loopById(layer.loopId)?.params ?? []).filter((p) => p.type !== 'color' && p.label).map((p) => p.label)}
-      tabStrip={<SegmentedToggle tone="sunken" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}
+      tabStrip={<ButtonGroup layout="joined" tone="sunken" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}
     >
       {/* INPUTS (plan 48) — an input wired to the generator's best params, first in the Animation tab */}
       {tab === 'anim' && <InputRows schema={loopById(layer.loopId)?.params ?? []} layer={layer} setProp={edit.setProp} inputs={loopById(layer.loopId)?.inputs} />}
@@ -567,7 +567,7 @@ function KineticSurface({ layer, showMod }) {
   )
 
   return (
-    <Surface title={title} tabStrip={<SegmentedToggle tone="sunken" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}>
+    <Surface title={title} tabStrip={<ButtonGroup layout="joined" tone="sunken" value={tab} onChange={setTab} options={cs === 'sm' ? GEN_TABS : GEN_TABS_TOUCH} size={cs} className={stripClamp(cs)} />}>
       <KineticPanel
         layer={layer} setProp={edit.setProp} updateLayer={updateLayer} palette={palette}
         /* noop, not undefined — MorphBlendKnob calls it unconditionally */

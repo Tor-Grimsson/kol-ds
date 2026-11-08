@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // Bars wave — a row of vertical bars whose heights are a travelling sine wave.
 // Integer `cycles` (time) + integer `waves` (space) ⇒ frame(0)===frame(1).

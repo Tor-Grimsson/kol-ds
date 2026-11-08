@@ -10,7 +10,7 @@ export default defineConfig(({ command }) => ({
   plugins: [devFavicon({ label: 'B' }), react(), tailwindcss()],
 
   // The slug only exists in the built output. In dev the app is served at `/`
-  // on its own port, so `pnpm notes` stays an ordinary localhost root.
+  // on its own port, so `pnpm note` stays an ordinary localhost root.
   base: command === 'build' ? '/apps/brand-sections/' : '/',
 
   build: {

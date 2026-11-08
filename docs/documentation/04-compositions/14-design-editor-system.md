@@ -3,7 +3,7 @@ title: Design-editor system
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-10-05
+updated: 2026-11-05
 verified: 2026-10-05
 description: The editor and its parts
 aliases:
@@ -32,6 +32,12 @@ ruling, from kol-fxr — which had been publishing it from the app's own
 `package.json` for two months, so no gate, roster or taxonomy check had ever
 touched it and it sat at 0.1.0 pinning `^0.1.1` peers and a `kol-loader` that
 no longer exists.
+
+**Two owners since 2026-11-04 (user ruling).** *"fxr owns its version and DS has a copy to make the float version."*
+kol-fxr owns its editor and never consumes this package. `packages/design-editor` is KOL's own copy and the base the
+float versions are made from (`TimelineRail`, `timelineView`, the float views in `apps/float`). It is **no longer
+refreshed from fxr's source**: the 2026-11-04 refresh was the last, and a part that exists in both (tools, inspector,
+transport, colour picker, layer row) stays in both on purpose.
 
 ## The split
 
@@ -96,8 +102,8 @@ they are built FROM its internals, not on top of its component.
 
 ## The chromes
 
-Five screens over one engine, all exported, all reachable in `apps/editor` (one rail, the drawer on
-a phone):
+Six screens over one engine, all exported; the first five reachable in `apps/editor` (one rail, the drawer on
+a phone), the float editor in `apps/float`:
 
 | route | chrome | export |
 |---|---|---|
@@ -106,6 +112,60 @@ a phone):
 | `/randomiser` | two tools — **Generator** and **Effects**. Effects asks for the input media first and keeps it while effects are browsed; the sheet's Back only closes the sheet | `MobileView` |
 | `/core` | the editor with no layer packs — what `@kolkrabbi/design-editor/core` gives | `DesignEditor` from `/core` |
 | `/output` | chromeless, no rail — the recording surface | `OutputView` |
+| apps/float `/views/float-editor` | **the float editor** — the compositor in the float chrome (FloatEditorShell, below) | `FloatDesignEditor` |
+| apps/float `/views/float-labs` | **Labs in the float chrome** (plan 3.2, 2026-11-06) — kol-shell `FloatLayout`: the catalog as the frame's nav Rail (expanded · collapsed with flyouts · hidden, `\` and `⇧\`), capsule (commands in its ▾) · transport · actions in the bar, LabsParams in the inspector slot, the mode switch in the bottom Rail; the A · B switch is gone; LabsView untouched | `FloatLabsView` |
+
+**The dock and ⌘K** (0.31.0, plan 7.7): View › Tools puts the tools in the left Rail or a bottom dock (the phone's default) — kol-shell's horizontal ToolRail with each family's ▾, hand, undo and the ⌘K pill. ⌘K (`FloatCommandSearch`) lists every menu-bar leaf (Actions), every tool and every page under All · Actions · Tools · Pages, opening on Recent; anchored on the dock while it is up, the centred search modal otherwise.
+
+**The float editor** (design-editor 0.28.0, plan-2026-11-05-float-editor W2). `FloatEditorShell`
+(`editor/float/`) sits beside `EditorShell`, which stays as is: the same engine and state — compose,
+tools, the panels registry and its tabs, the workspace store — under his Section 5 (Figma
+7K5v68l4tblHPFuiLdokRu 20:12208). kol-shell's `MenuBar` on top (its rows `useFloatMenus` — every
+MenuTop command as data, the Window rows under View › Cards), then the canvas edge to edge with the
+chrome floating over it: DocumentCapsule + Breadcrumb top-left, the transport on the clock top-centre,
+GlobalActions top-right, ToolRail and its ⋮ left, the cards right (scrolling), the mode switch
+bottom-left, the Timeline along the bottom while it is up. **The cards are data** (`registry.cards`
+in `float/FloatCompose.jsx`): every registry tab sits in a dashboards `Card variant="float"` —
+Typography (the text surface, out of the inspector under this chrome) · Color/Swatches/Stroke ·
+Layers/Assets/History/Navigator · Transform · Appearance · the object inspector (Design · Motion ·
+Effects, his 19:10408) · Output (the rail footer). **0.29.0 (W2b):** Transform and Appearance are their
+own cards (his 19:10125 · 19:10192) on the inspector's own fields in his float look — `AxisField` under
+the float chrome is 32 high, radius 8, on the float well; Appearance is the float blend select, the float
+Opacity slider, fill · stroke (hollow) · none swatches (`PaintPopover bare`) and the stroke weight. The
+inspector's Design tab is his: the layer's line, Transform, Appearance, Effects (Drop shadow · Layer blur
+add the effect and open its tab), then a Geometry pane for what his frame has no field for (align,
+origin, skew, flips, corners, the lock, text resizing), the generator's Generate · Style
+(`ParametersPanel only`) and a pattern's surface; Motion is the generator's Animation. A card may
+`hold` tabs (their openers light the tab holding them), `yield` to another (Transform and Appearance
+step out while the inspector is open) and `lead` (the open inspector heads the stack, frame 04).
+Every opener the rails answered unfolds the card holding that tab. A text layer selected brings the
+text options toolbar (family · style · size). The selection draws `SelectionOverlay variant="float"`
+(name above, size under). Under 768 (his frame 06) the menu bar becomes his menu capsule — File ·
+Edit · View · More (Layer, Text, Vector, Tools as levels), kol-shell `MenuBar variant="capsule"` — and
+the app menu and Help sit in the ⋮ top-right; the tools are a row. **The generator windows** (0.29.0, W7): Tools › Generate…,
+Repeat… and Paratype letter… open `editor/generate/GeneratorWindow.jsx` on kol-component's `Dialog
+variant="settings"` (his 12:2282). The windows are data (`editor/generate/windows.js`, his window spec
+name for name): Generate's Field · Ramp · the style · Mask · Warp · Randomness · Frame, its seven styles;
+Repeat's mode tabs and their rows; the Paratype letter's Glyph · Metrics · Weights · Expressive.
+**fxr's engines** (0.30.0, W7.6): `src/generate/` is fxr's generator and repeat engine copied verbatim
+(field · geom · glyphs · path · raster · repeat · presets · fonts · `styles/` · index, and its `*.check.mjs`
+— `node src/generate/<name>.check.mjs`, all pass); two owners — fxr keeps its own, this copy never feeds
+back. fxr's editor side came with it (`editor/generate/` generateCore · GenerateLayer · RepeatLayer · rings ·
+useGenerateFont · useGenerateImage; the `generate` and `repeat` layer types, their canvas render, their
+export as `<g>` and Expand — `flattenGenerate` · `flattenRepeat`). Every control `bind`s to the engine's
+flat params (`{ get, set }`), so the tool's state IS those params (`editor/generate/store.js`, one per tool,
+`useGeneratorTool` in `tool.jsx`): presets, a reopened layer and both forms read back the same numbers.
+The engine draws eight styles from the seven names (Stipple / Mosaic's cell shape None draws Stipple, Hex ·
+Square Mosaic). Disabled — no engine param: Line Screen's Angle and Flare, Repeat's Align to path.
+**Two forms, one state:** Tools › Generate · Repeat · Paratype letter opens the tool's **Rail**
+(`GeneratorRail.jsx` — kol-shell's PropertyRail `density="compact"`, his 32:16215 frames' content and order:
+a label column, collapsible sections, the field map live, the copy grid, the glyph with its guides, a status
+foot; the slider run, the toggles and Generate on the KOL accent) in the right-hand column; its ↗ expands to
+the dialog. Generate's foot button and the dialog's Apply place a live `generate` layer (then every edit
+lands on it); Repeat goes live once it has a source (the selection by default), Paratype on the first edit;
+Expand bakes it. The inspector's Generate tab and a double-click on the layer reopen its tool on it.
+`pnpm check:float` holds MenuTop's rows, the keymap, the rail's tools, band and
+footer, and the registry's tabs against the float chrome's data — 0 missing.
 
 `/core` is a full page load in and out: packs register module-globally when an entry is imported, so
 an SPA hop would reach `/core` with every pack already in. `currentView()` reads the LAST path

@@ -1,4 +1,4 @@
-import { TAU, hexToRgb } from '../lib/util.js'
+import { TAU, hexToRgb } from '../../editor/lib/util.js'
 import { FILL_PARAMS, paintFill, isGradient } from '../lib/fill.js'
 
 // Orbit dots — concentric dots, each ring completing a whole number of

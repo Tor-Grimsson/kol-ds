@@ -51,7 +51,6 @@ export default function App() {
          * closes only on `currentPath`, so press its own scrim (kol-fxr's AppLayout does the same) */
         if (api && p?.startsWith(api.RAIL_EXTRA_PREFIX) && extras.dispatch?.(p)) document.querySelector('.kol-shell-drawer-scrim')?.click()
       }}
-      railToggleKey={'\\'}
       touch="drawer"
       railSections="enter"
       pageWash="var(--kol-fg-02)"

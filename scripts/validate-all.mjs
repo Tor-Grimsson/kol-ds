@@ -44,6 +44,7 @@ const GATES = [
   ['tags', 'validate-tags.mjs'],
   ['retirements', 'validate-retirements.mjs'],
   ['icon-cuts', 'extract-icon-cuts.mjs'],
+  ['icon-tags', 'validate-icon-tags.mjs'],
   ['motion', 'validate-motion.mjs'],
   ['props', 'validate-props.mjs'],
   ['dd-trigger', 'validate-dd-trigger.mjs'],

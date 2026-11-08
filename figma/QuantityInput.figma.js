@@ -2,18 +2,18 @@
 // source=packages/component/src/molecules/QuantityInput.jsx
 // component=QuantityInput
 import figma from 'figma'
-
+// variant float (the capsule, hugs its value) · default with controls chevron | split
 const instance = figma.selectedInstance
-// variant float (2026-11-04): the float stepper, − value + on the float well; `unit` is the word after the value
+const variant = instance.getEnum('variant', { "float": "float", "default": "default" })
+const controls = instance.getEnum('controls', { "chevron": "chevron", "split": "split" })
 const size = instance.getEnum('size', { sm: 'sm', md: 'md', lg: 'lg' })
 const value = instance.getString('value')
-const hasUnit = instance.getBoolean('unit')
-const unit = instance.getString('unitText')
+const un = instance.getBoolean('unit') ? ` unit="${instance.getString('unitText')}"` : ''
 const sz = size !== 'md' ? ` size="${size}"` : ''
-const un = hasUnit ? ` unit="${unit}"` : ''
-
 export default {
-  example: figma.code`<QuantityInput variant="float" value={${value}} onChange={setValue}${un}${sz} />`,
+  example: variant === 'float'
+    ? figma.code`<QuantityInput variant="float" value={${value}} onChange={setValue}${un}${sz} />`
+    : figma.code`<QuantityInput value={${value}} onChange={setValue}${controls === 'split' ? ' controls="split"' : ''} />`,
   imports: ["import { QuantityInput } from \"@kolkrabbi/kol-component\""],
   id: 'QuantityInput',
 }

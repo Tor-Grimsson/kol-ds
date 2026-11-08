@@ -1,4 +1,4 @@
-import { TAU, clamp01, lerp } from '../lib/util.js'
+import { TAU, clamp01, lerp } from '../../editor/lib/util.js'
 
 // Scanlines — cumulative-sum variable-density scanline engine. Canvas2D.
 //

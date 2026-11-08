@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-icons
 
+## 0.66.0 — 2026-11-05
+
+- **New interface group `games`** (18): the twelve solid and outlined chess pieces from the Figma library (node 437:5529) as `chess-<piece>-black` and `chess-<piece>-white` for pawn, rook, bishop, knight, king and queen, beside the six outline `chess-*` moved out of `people`. The twelve are solid drawings (fill `currentColor`, outlines as even-odd cut-outs), fitted to the keyline (20, kings and queens 18) and centred; each black and white pair shares its fit.
+- Tags for all 18 (chess, game, board, piece, strategy, plus the piece).
+
 ## 0.64.0 — 2026-11-04
 
 - **Import batch: 71 icons** from the Figma import frame, each fitted to the keyline (18 near-square, 20 otherwise, centred), stroke 1.5, one path, `currentColor`, round caps and joins. Added by group:

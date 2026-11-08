@@ -28,6 +28,9 @@ export { ZoomReadout, SceneBreadcrumb, CanvasHint, SelectionMeasure } from './Ca
 export { default as TopControlsBar, PanelsRestore } from './TopControlsBar.jsx'
 export { default as ReaderBar, ProgressDock } from './ReaderBar.jsx'
 export { default as RailTrigger } from './RailTrigger.jsx'
+export { default as FloatActionMenu } from './FloatActionMenu.jsx'
+// the app's menu bar inside the browser, menus as data (plan-2026-11-05-float-editor W1.1)
+export { default as MenuBar } from './MenuBar.jsx'
 export { default as RailFlyout } from './RailFlyout.jsx'
 export { default as RailDisplayControls } from './RailDisplayControls.jsx'
 export { AccountFooter, StatusStrip, Breadcrumb, FooterStrip, PeriodNav, DataStatus } from './WorkspaceStrips.jsx'

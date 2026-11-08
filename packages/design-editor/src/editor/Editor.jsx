@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Button, ModalProvider } from '@kolkrabbi/kol-component'
 import { useBelow, EDITOR_BELOW } from './mobile/device'
-import { SPREAD } from './mobile/CategoryScreen'
-import { MODE_ICONS } from './labs/catalog'
-import { goLabs, goRandomiser, modeById } from './mode'
+import { SPREAD } from './mobile/device'
+import { goLabs, goRandomiser, modeById, MODE_ICONS } from './mode'
 import EditorErrorBoundary from './EditorErrorBoundary'
 import { ToolProvider }       from './state/tools'
 import { GeneratorLibraryProvider } from './library/LibraryProvider'
@@ -19,6 +18,7 @@ import { TypeStateProvider }    from './modes/type/state'
 import ColorModesWindow from './color/ColorModesWindow'
 import FilesDialogHost from './library/FilesDialogHost'
 import Compose from './Compose'
+import FloatCompose from './float/FloatCompose'
 
 /**
  * Editor — the whole app, mounted at `/`.
@@ -38,7 +38,7 @@ function MediaPickSink() {
   return null
 }
 
-function EditorBody() {
+function EditorBody({ children }) {
   /* Global shortcuts (undo / redo / deselect) — mounted here so keyboard
    * works everywhere, not just inside CanvasArea. */
   useGlobalShortcuts()
@@ -58,7 +58,7 @@ function EditorBody() {
 
   return (
     <>
-      <Compose />
+      {children ?? <Compose />}
       <MediaPickSink />
       {/* mounted once, inside the providers — the two File surfaces open it
           through a store rather than owning it (FilesDialog, kol-fxr) */}
@@ -118,6 +118,19 @@ export default function Editor() {
   return (
     <EditorProviders>
       {narrow && !anyway ? <NarrowWindowNote onContinue={() => setAnyway(true)} /> : <EditorBody />}
+    </EditorProviders>
+  )
+}
+
+/**
+ * FloatEditor — the editor in the float chrome (plan-2026-11-05-float-editor W2): the same providers and boot as
+ * `Editor`, its body `FloatCompose` (FloatEditorShell) in place of Compose. No narrow-window card — the float chrome
+ * has a phone layout of its own (his frame 06).
+ */
+export function FloatEditor() {
+  return (
+    <EditorProviders>
+      <EditorBody><FloatCompose /></EditorBody>
     </EditorProviders>
   )
 }

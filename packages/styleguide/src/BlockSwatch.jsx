@@ -1,4 +1,4 @@
-import { ColorSwatch } from '@kolkrabbi/kol-component'
+import { SwatchTile } from '@kolkrabbi/kol-component'
 
 /**
  * BlockSwatch — A documented color swatch (Swatch until 2026-10-31; the old name is an alias on the retirement ledger). the DOCUMENTED swatch: a specimen bar over its meta row (name, hex),
@@ -53,36 +53,6 @@ export default function BlockSwatch({ hex, name, anchor = false, height = 96, cl
       </div>
     </div>
   )
-  return (
-    /* gap 6 — .kol-swatch */
-    <div className={`flex flex-col ${className}`.trim()} style={{ gap: 6 }}>
-      {/* .kol-swatch-chip: full column width, 96 tall, radius 4. ColorSwatch's
-          'stretch' size fills this box, so the atom owns the paint and the
-          frame while the specimen depth stays the page's decision. */}
-      <div className="relative w-full" style={{ height }}>
-        <ColorSwatch hex={hex} size="stretch" radius="sm" />
-        {anchor && (
-          <span
-            aria-label="Canonical anchor"
-            className="absolute inset-0 flex items-center justify-center pointer-events-none"
-          >
-            {/* difference blend so the dot reads on any stop, light or dark —
-                the forks' trick, kept verbatim */}
-            <span
-              className="block rounded-full"
-              style={{ width: 10, height: 10, background: 'white', mixBlendMode: 'difference' }}
-            />
-          </span>
-        )}
-      </div>
-      {/* .kol-swatch-meta: row, space-between, baseline, wrapping */}
-      <div
-        className="kol-helper-10 flex flex-row flex-wrap items-baseline justify-between"
-        style={{ gap: '4px 12px' }}
-      >
-        {name && <span className="text-meta">{name}</span>}
-        <span className="text-strong font-semibold">{hex.toUpperCase()}</span>
-      </div>
-    </div>
-  )
+  /* the chip form is kol-component's SwatchTile (2026-11-07) — the same geometry, now drawn in one place */
+  return <SwatchTile hex={hex} name={name} anchor={anchor} height={height} className={className} />
 }

@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // Letter gap (E2, after contemporarytype × posterkraft) — a word list where each word holds its
 // line while the gaps between its letters breathe; the gap can be decorated. Each gap's width is a

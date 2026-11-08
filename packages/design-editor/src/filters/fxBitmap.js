@@ -15,7 +15,7 @@
  * where Amount < 100 — at 100 the cells are pure photo luma.
  */
 
-import { TAU, clamp01 } from '../loops/lib/util.js'
+import { TAU, clamp01 } from '../editor/lib/util.js'
 import { sinHash2 as hash2, registerSourceCache, stillUnless } from './fxCore.js'
 import { NO_SWEEP, sweepStates, evalSweeps, anyReveal } from './sweeps.js'
 

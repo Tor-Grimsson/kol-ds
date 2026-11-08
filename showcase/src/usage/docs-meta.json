@@ -226,6 +226,10 @@
     "typeClasses": [],
     "composes": []
   },
+  "FLOAT_MOTION": {
+    "typeClasses": [],
+    "composes": []
+  },
   "ContextMenu": {
     "typeClasses": [],
     "composes": [
@@ -1402,6 +1406,7 @@
       "Tag",
       "Kbd",
       "OptionRow",
+      "Button",
       "Icon"
     ]
   },
@@ -2797,6 +2802,10 @@
     "composes": []
   },
   "TimeSet": {
+    "typeClasses": [],
+    "composes": []
+  },
+  "RAIL_KEYS": {
     "typeClasses": [],
     "composes": []
   },

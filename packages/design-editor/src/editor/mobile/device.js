@@ -1,6 +1,10 @@
 import { useSyncExternalStore } from 'react'
 import { withView, navigateTo } from '../mode'
 
+/* Full-width card row: label pinned left, glyph pinned right (Button centers
+ * its content span by default — stretch it and spread). */
+export const SPREAD = 'w-full [&>span]:w-full [&>span]:justify-between'
+
 /* Mobile-chrome gating. Primary-pointer coarse + real touch = phone/tablet →
  * the generative MobileView; a tablet with a keyboard/trackpad reports a fine
  * primary pointer and gets the desktop editor natively. */

@@ -24,7 +24,7 @@
    the showcase does not otherwise import — are scanned where they live. */
 @source "../../packages/notes/src";
 @source "../../packages/deck/src";
-@source "../../apps/notes/src";
+@source "../../apps/note/src";
 @source "../../apps/presentation/src";
 @source "../../apps/media/src";
 @source "../../apps/media-fixture/src";

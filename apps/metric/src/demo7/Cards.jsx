@@ -4,9 +4,7 @@
 import { useState } from 'react'
 import { Icon, KOL_ICON_SET_EXTERNAL_NAMES } from '@kolkrabbi/kol-icons'
 import { MenuMore } from '@kolkrabbi/kol-component'
-import { Card, RankedList, DetailsOverlay } from '@kolkrabbi/kol-dashboards'
-import WorldMap from './WorldMap.jsx'
-import REGIONS from './regions.json'
+import { Card, RankedList, DetailsOverlay, WorldMap, REGION_NAMES as REGIONS } from '@kolkrabbi/kol-dashboards'
 import { umami, report, useAsync, filterParams, countryName, isDevHost, fmtNum, fmtDuration } from './data.js'
 
 const FLAGS = new Set(KOL_ICON_SET_EXTERNAL_NAMES)

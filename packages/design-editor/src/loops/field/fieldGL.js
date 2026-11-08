@@ -1,5 +1,5 @@
 import { glPass, rgb01 } from '../lib/glPass.js'
-import { hexToRgb } from '../lib/util.js'
+import { hexToRgb } from '../../editor/lib/util.js'
 import { makeCam } from './camera.js'
 
 // The field family on the GPU (plan 27 § 2) — replaces the per-pixel JS rasterizer (raster.js,

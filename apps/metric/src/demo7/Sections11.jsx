@@ -4,9 +4,8 @@
  * tabs, deploy activity is a year of days, and no `·` separates anything (two facts are two columns or two spans). */
 import { useState } from 'react'
 import REPO from '../data/repo-metrics.json'
-import { Table } from '@kolkrabbi/kol-component'
 import { DEPLOY_STATE_LABELS, PALETTE, formatB2Size, timeAgo } from '@kolkrabbi/kol-dashboards'
-import { Heatmap, CalendarHeatmap, CalendarScale, Card, RankedList, StatTiles } from '@kolkrabbi/kol-dashboards'
+import { Heatmap, CalendarHeatmap, CalendarScale, Card, RankedList, StatTiles, ColorKey as Key, RecordsTable as Records, SegmentBar } from '@kolkrabbi/kol-dashboards'
 import { Sized } from './Sections.jsx'
 import { getJson, umami, useAsync, filterParams, fmtNum } from './data.js'
 
@@ -15,15 +14,6 @@ const GRID = { gap: 'var(--kol-gap-wall-grid)' }
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 const HOURS = Array.from({ length: 24 }, (_, i) => `${i}h`)
 
-/* a colour key, as the foot's left draws it */
-export const Key = ({ color, label, value }) => (
-  <span className="flex items-center gap-1.5 whitespace-nowrap"><span className="w-2 h-2 rounded-full shrink-0" style={{ background: color }} />{label}{value != null && <span className="text-fg-80">{value}</span>}</span>
-)
-
-/* records: the DS table, simple variant, real columns (15.3) */
-const Records = ({ columns, rows, empty = 'No data yet' }) => (rows.length
-  ? <div className="pt-4 min-w-0 overflow-x-auto"><Table variant="simple" width="column" compact columns={columns} rows={rows} /></div>
-  : <div className="kol-helper-12 text-fg-48 py-10 text-center">{empty}</div>)
 const right = { style: { textAlign: 'right' } }
 const when = (t) => timeAgo(typeof t === 'number' ? t : new Date(t).getTime())
 
@@ -178,9 +168,7 @@ export function StorageSection11() {
           <Card className="h-full" tabs={stores.map((x) => ({ key: x.bucket, label: x.bucket }))} tab={cur.bucket} onTab={setTab}
             footLeft={cur.types.map((t, i) => <Key key={t.name} color={PALETTE[i % PALETTE.length]} label={t.name} value={formatB2Size(t.bytes)} />)}
             footRight={<><span>{cur.provider}</span><span className="text-fg-80">{formatB2Size(cur.bytes)}</span></>}>
-            <div className="flex h-2 rounded-full overflow-hidden bg-fg-08 mt-4">
-              {cur.types.map((t, i) => <div key={t.name} style={{ width: `${(t.bytes / cur.bytes) * 100}%`, background: PALETTE[i % PALETTE.length] }} />)}
-            </div>
+            <SegmentBar total={cur.bytes} segments={cur.types.map((t, i) => ({ key: t.name, value: t.bytes, color: PALETTE[i % PALETTE.length] }))} />
             <RankedList rows={cur.folders.slice(0, 12).map((f) => ({ key: f.name, label: f.name, value: f.bytes, display: formatB2Size(f.bytes), unit: 'bytes' }))} total={cur.bytes} column="Folder" valueLabel="Size" limit={12} />
           </Card>
         </Sized>

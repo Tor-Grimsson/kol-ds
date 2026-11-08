@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Dropdown, PageHeader, SegmentedToggle, Table, Tag, Tooltip } from '@kolkrabbi/kol-component'
+import { Dropdown, PageHeader, ButtonGroup, Table, Tag, Tooltip } from '@kolkrabbi/kol-component'
 import { PageShell } from '@kolkrabbi/kol-shell'
 import * as bucket from 'media-fixture/bucket'
 import { listNotes, listDecks } from 'media-fixture/library'
@@ -210,7 +210,7 @@ export default function App() {
         }
       />
       <div className="flex flex-col gap-10 pb-12">
-        <SegmentedToggle value={at.view} onChange={(v) => go(at.fixture, v)} options={Object.entries(fx.views).map(([value, [label]]) => ({ value, label }))} size="sm" ariaLabel="View" />
+        <ButtonGroup layout="joined" value={at.view} onChange={(v) => go(at.fixture, v)} options={Object.entries(fx.views).map(([value, [label]]) => ({ value, label }))} size="sm" ariaLabel="View" />
         <View />
       </div>
     </PageShell>

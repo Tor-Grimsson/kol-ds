@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Button from '../atoms/Button.jsx'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from './ButtonGroup.jsx'
 import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
 
 const cap = (v) => String(v).charAt(0).toUpperCase() + String(v).slice(1)
@@ -80,7 +80,7 @@ export default function VariantsControl({ axes = [], value = {}, onChange, child
           <span key={`${a.key}-l`} className="kol-mono-12 text-fg-64">{a.label}</span>,
           /* a row wider than the panel (a phone, a long axis) scrolls sideways in its cell — every option still one tap away */
           <div key={a.key} className="min-w-0 overflow-x-auto">
-            <SegmentedToggle size="sm" className="w-max min-w-full" ariaLabel={a.label} value={value[a.key]} onChange={(v) => onChange?.(a.key, v)}
+            <ButtonGroup layout="joined" size="sm" className="w-max min-w-full" ariaLabel={a.label} value={value[a.key]} onChange={(v) => onChange?.(a.key, v)}
               options={a.options ?? (a.values ?? []).map((v) => ({ value: v, label: cap(v) }))} />
           </div>,
         ])}

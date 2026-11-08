@@ -30,7 +30,7 @@ const APP = {
 }
 
 const PAGES = [
-  { icon: 'nav-rack', path: '/stage', label: 'Stage' },
+  { icon: 'rack-v', path: '/stage', label: 'Stage' },
   { icon: 'desktop', path: '/rack', label: 'Rack' },
 ]
 const pageOf = (path) => PAGES.find((p) => p.path === path) ?? PAGES[0]
@@ -162,7 +162,7 @@ function PageRail({ open, onClose, tier, title }) {
  * header should follow different rule on bottomrail"*), the content and the foot sit beside it at the rail's inset. The content is the kit: the Case rows as a `Table`, Parked as a hint. Resizable from its top edge, no
  * scrim. */
 const CASE_ROWS = [['Row 1', '1U', '104hp'], ['Row 2', '3U', '96hp'], ['Row 3', '3U', '98hp'], ['Row 4', '3U', '94hp'], ['Row 5', '1U', '88hp']]
-const VIEWS = [{ id: 'edit', label: 'Edit', icon: 'edit' }, { id: 'rack', label: 'Rack', icon: 'nav-rack' }, { id: 'library', label: 'Library', icon: 'nav-library' }]
+const VIEWS = [{ id: 'edit', label: 'Edit', icon: 'edit' }, { id: 'rack', label: 'Rack', icon: 'rack-v' }, { id: 'library', label: 'Library', icon: 'nav-library' }]
 function BottomRail({ open, onClose, tier }) {
   const [tab, setTab] = useState('edit')
   const [rows, setRows] = useState(CASE_ROWS)

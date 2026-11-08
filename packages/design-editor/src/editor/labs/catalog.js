@@ -66,10 +66,6 @@ export const SECTION_ICONS = {
   mode: 'mode-toggle-01',
 }
 
-/* Mode-door rows (mode.js MODES) — shipped drawings only: desktop is the
- * compositor chrome, globe the labs output, refresh the randomiser. */
-export const MODE_ICONS = { editor: 'desktop', labs: 'globe', randomiser: 'refresh' }
-
 /* Labs' EFFECTS > Pattern — the four GENERATOR pages (the 'optic' group:
  * Moiré · Mesh Gradient · Reaction · Halftone, labs' sidebar order). Leaves
  * are the group's categories; a click seeds that category's first preset as

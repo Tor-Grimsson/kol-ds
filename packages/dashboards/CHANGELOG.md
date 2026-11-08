@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.12.0 — 2026-11-04
+
+- **The metric page's parts** (plan-2026-11-04-float-figma-review W5.1). What apps/metric drew itself is exported, each with props for its data and no baked fixture: **`TopStats`** (`variant` plausible | colour, `items`, the chart as `children`) with **`MetricTiles`**, **`ChartHead`**, **`ChangeBadge`**, **`DeltaBadge`**; **`TrendChart`** (the fitted line chart, `multi` for combined series) with **`ChartWithLegend`**; **`Behaviours`** (owns the tab, its children are a function) with **`GoalsTable`**, **`FunnelChart`**, **`JourneyExplorer`**; **`WorldMap`** (shapes built in, `rows` + `onFilter`) and `REGION_NAMES`; **`ColorKey`**, **`RecordsTable`**, **`SegmentBar`**, **`CalendarIcon`**. The series formatters `formatCount` · `formatDuration` · `formatRange` · `formatBucket` · `formatTick` are exported too. Carried class for class; apps/metric renders pixel-identical. Not published.
+
 ## 0.11.0 — 2026-11-04
 
 - **The record dashboard's source and capture cards** (plan-2026-11-04-float-views W3.2, kol-float--style 13:5037). **`SourceCard`** takes `meta` (mono, at the title's right — "4 items") and `children` (its rows under the head, `TaskCard size="sm"`) — a healthy source that lists what it holds. **`CaptureCard`** draws the 5:3 frame only when `image` or `src` is given (a text capture from a list source has none), and takes `onPrev` (←) and `action` + `onAction` (a labelled float button — "Archive"); with either, the moves sit in their own row under the meta. Existing calls (an image + `onNext`) render as before. Not published.

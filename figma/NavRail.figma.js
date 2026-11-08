@@ -11,7 +11,7 @@ export default {
   example: variant === 'float' ? figma.code`<NavRail variant="float"${collapsed ? ' collapsed onCollapsedChange={setCollapsed} onHide={hide}' : ' title="Studio" onSwitch={switchWorkspace}'} items={items} currentPath={path} onNavigate={navigate} onSearch={openSearch} />`
     : variant === 'top'
     ? figma.code`<NavRail variant="top" logomark={logomark} items={items} currentPath={path} onNavigate={navigate} actions={actions} />`
-    : figma.code`<NavRail items={items} bottomItems={bottomItems} currentPath={path} onNavigate={navigate} />`,
+    : figma.code`<NavRail logomark={{ svgUrl, title: "${instance.getString('title')}" }} items={items} bottomItems={bottomItems} currentPath={path} onNavigate={navigate} />`,
   imports: ["import { NavRail } from \"@kolkrabbi/kol-component\""],
   id: 'NavRail',
 }

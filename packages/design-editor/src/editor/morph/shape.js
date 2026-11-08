@@ -1,4 +1,4 @@
-import { lerp } from '../../loops/lib/util.js'
+import { lerp } from '../lib/util.js'
 import { keysFor } from './buildMorph.js'
 
 /**

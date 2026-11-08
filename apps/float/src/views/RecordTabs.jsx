@@ -49,8 +49,10 @@ function Tasks() {
   return (
     <>
       <Head title="Tasks" body="A little structure. A clearer day." top={89}>
+        {/* the toggle as drawn (13:5037): a 278 capsule, its two tabs sharing it, the count at the tab's far end */}
         <TabsRow variant="float" surface="solid" size="sm" value={status} onChange={setStatus} ariaLabel="Task status"
-          tabs={[{ id: 'open', label: 'Open', count: 5 }, { id: 'completed', label: 'Completed' }]} />
+          tabs={[{ id: 'open', label: 'Open', count: 5 }, { id: 'completed', label: 'Completed' }]}
+          className="w-[278px] [&_.kol-tabs-scroll]:flex-1 [&_[role=tablist]]:w-full [&_[role=tab]]:flex-1 [&_[role=tab]]:justify-between" />
       </Head>
       <Group title="Briefs" count={1} hint="New daily items" />
       <div className={`${sheet} h-[144px]`}>
@@ -60,7 +62,7 @@ function Tasks() {
       <div className="mt-8"><Group title="Todos" count={3} hint="Small · Medium · Big" /></div>
       <div className="grid grid-cols-3 gap-4">
         {[['Small', 'Rename a card', 'S'], ['Medium', 'Wire the tab shell', 'M'], ['Big', 'Add gcalcli calendar tab', 'B']].map(([size, task, chip]) => (
-          <Card key={size} variant="float" title={size} count="1 open" addLabel={`Add ${size.toLowerCase()}`} onAdd={noop} className="h-[192px]">
+          <Card key={size} variant="float" title={size} value="1 open" addLabel={`Add ${size.toLowerCase()}`} onAdd={noop} className="h-[192px]">
             <TaskCard size="sm" title={task} chip={chip} onToggle={noop} />
           </Card>
         ))}

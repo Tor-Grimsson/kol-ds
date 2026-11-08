@@ -3,10 +3,9 @@
 // component=DocsToc
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "list": "list", "float": "float" })
-
+const variant = instance.getEnum('variant', { "list": "list", "rail": "rail", "float": "float" })
 export default {
-  example: variant === 'float' ? figma.code`<DocsToc variant="float" toc={toc} />` : figma.code`<DocsToc variant="rail" toc={toc} />`,
+  example: variant === 'list' ? figma.code`<DocsToc toc={toc} />` : figma.code`<DocsToc variant="${variant}" toc={toc} />`,
   imports: ["import { DocsToc } from \"@kolkrabbi/kol-component\""],
   id: 'DocsToc',
 }

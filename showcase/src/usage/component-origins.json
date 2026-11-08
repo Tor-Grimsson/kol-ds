@@ -99,6 +99,11 @@
     "source": "kol-component/src/organisms/ColumnBrowser.jsx (0.317.4) — Preview L389–440, the preview column ~L1100–1110; MediaLibraryPages.jsx rows/grid pane ~L1915–1951, L2214",
     "date": null
   },
+  "ColumnStripHoldsStill": {
+    "repo": "kol-component",
+    "source": "kol-component/src/organisms/MediaLibraryPages.jsx (0.341.0) — the columns effect ~L2148–2154",
+    "date": null
+  },
   "ComponentSideEffectsField": {
     "repo": "kol-monitor",
     "source": "kol-monitor (kol-shell 0.1.0 adoption, 2026-08-15)",
@@ -174,6 +179,16 @@
     "source": "kol-atlas/apps/lab/src/App.jsx#L46-L61 · kol-atlas/apps/workspace/src/workspace.css#L13-L15 · Figma proxy--atlas 05RUcW1vfOy4lNdWSgma3U page 43:28 (Lab / Home)",
     "date": null
   },
+  "DocumentLangMark": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/record/src/pages/Library.jsx#L17-L36 (consumer) · kol-styleguide/src/DocumentLibrary.jsx#L69-L96 (the parts)",
+    "date": null
+  },
+  "DragResizeBottomWake": {
+    "repo": "kol-component@0.336.0",
+    "source": "kol-component@0.336.0 src/hooks/useDragResize.js (useGrabEdge(grabRef) — no axis)",
+    "date": null
+  },
   "Dropdown · MenuDropdownItem · Popover (matchReferenceWidth)": {
     "repo": "kol-component",
     "source": "kol-component/src/molecules/Dropdown.jsx#L120-L150 · src/molecules/MenuItem.jsx#L48,L100 · src/utilities/Popover.jsx#L67-L95 — hit in kol-mirror/src/components/hall-of-mirrors/LoadUnit.jsx#L104",
@@ -229,9 +244,34 @@
     "source": "kol-ds-ui/packages/design-editor/src/editor/compose/useComposeFile.js + editor/library/LibraryProvider.jsx",
     "date": null
   },
+  "FloatActionMenuExport": {
+    "repo": "kol-shell@0.105.0",
+    "source": "kol-shell@0.105.0 src/HubHome.jsx#L370-L385 (`function HomeMenu`, not exported) — kol-website apps/record/src/App.jsx (record's top-right action)",
+    "date": null
+  },
+  "FloatActionStatesAndMotion": {
+    "repo": "kol-shell@0.107.0",
+    "source": "kol-shell@0.107.0 FloatActionMenu (+ the float family: NavRailFloat, RailTrigger card, RailFlyout, CommandOverlay surface) — kol-website apps/record (FloatLayout bar.menu)",
+    "date": null
+  },
   "TabsRow fold (stacked pill) · AppFloatNav · AppShell touch=\"floats\"": {
     "repo": "kol-fxr",
     "source": "kol-fxr — Labs on a phone; kol-component TabsRow.jsx (StackedTabs fold), kol-shell AppFloatNav.jsx#L260 + #L342",
+    "date": null
+  },
+  "FloatMenuPanelInk": {
+    "repo": "kol-component@0.339.0",
+    "source": "kol-component@0.339.0 molecules/Menu.jsx (`variant=\"float\"`, `.kol-menu-panel--float`) — kol-website apps/record/src/App.jsx (the bar's ··· menu)",
+    "date": null
+  },
+  "FloatRailOverlayShadowRestore": {
+    "repo": "kol-shell@0.104.0",
+    "source": "kol-shell@0.104.0 FloatLayout · RailTrigger · kol-component@0.338.1 NavRailFloat — kol-website apps/record/src/App.jsx (record on FloatLayout)",
+    "date": null
+  },
+  "FloatSearchAndPanels": {
+    "repo": "kol-shell@0.105.0",
+    "source": "kol-shell@0.105.0 FloatLayout (PanelsRestore) · kol-component@0.339.0 CommandOverlay — kol-website apps/record/src/App.jsx · components/RecordSearch.jsx",
     "date": null
   },
   "FloatingStyleAndSignInDemos": {
@@ -624,6 +664,11 @@
     "source": "kol-fxr src/editor/labs/RailSettings.jsx + src/editor/labs/LabsNav.jsx (the working reference, measured)",
     "date": null
   },
+  "RailShortcutsAllFrames": {
+    "repo": "kol-shell@0.104.0",
+    "source": "kol-shell@0.104.0 FloatLayout · AppShell (railToggleKey) · kol-framework SiteLayout — kol-website apps/record/src/App.jsx (record on FloatLayout)",
+    "date": null
+  },
   "NavRail · SideNav": {
     "repo": "kol-shell",
     "source": "kol-shell src/NavRail.jsx (the AppShell rail) · kol-framework src/SideNav.jsx (collapsed) — measured in kol-fxr 2026-08-27",
@@ -852,6 +897,11 @@
   "StepList": {
     "repo": "kol-fxr",
     "source": "kol-fxr/src/editor/morph/MorphTab.jsx#L184-L246",
+    "date": null
+  },
+  "StyleguideNoMiddots": {
+    "repo": "kol-styleguide@0.21.0",
+    "source": "kol-styleguide@0.21.0 src/{brandBook.js,StationeryMocks.jsx,comboLayouts.jsx,LayoutGuide.jsx,PrintStudio.jsx}",
     "date": null
   },
   "StyleguideSrcExports": {

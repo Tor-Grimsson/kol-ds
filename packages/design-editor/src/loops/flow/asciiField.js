@@ -1,5 +1,5 @@
 import { createNoise4D } from 'simplex-noise'
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 import { mulberry32 } from '../gl/rng.js'
 import { CHARSETS, rampChar } from '../../filters/fxAscii.js'
 

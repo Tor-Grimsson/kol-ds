@@ -66,7 +66,6 @@ function AppRail() {
       logomark={{ svgUrl: logomark, title: 'Shell' }}
       currentPath={path}
       onNavigate={navigate}
-      railToggleKey={'\\'}
       settingsPath="/settings"
       settingsKey=","
       navKeys

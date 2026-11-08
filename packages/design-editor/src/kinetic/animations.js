@@ -10,7 +10,7 @@
 // Ported from kol-labs-single src/pages/kinetic/engine/animations.js (Phase 10).
 // UI option lists (MOTION_OPTIONS, FIELD_OPTIONS, SWEEP_MODES) dropped.
 
-import { TAU, lerp } from '../loops/lib/util.js'
+import { TAU, lerp } from '../editor/lib/util.js'
 
 const IDENTITY = { dLen: 0, dNormal: 0, scale: 1, dRot: 0, opacity: 1, vf: null }
 

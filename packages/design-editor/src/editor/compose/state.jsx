@@ -17,6 +17,8 @@ import { transport } from '../params/transport'
 import { pack } from '../packs'
 import { MAX_FILTERS, makeStage, bareChain, normalizeLayersDeep } from './filterChain'
 import { hydrateVideoClips } from '../lib/clipStore'
+import { marksCount, marksToShapes } from '../../generate/geom.js'
+import { REPEAT_DEFAULTS, copyMatrices, decompose, apply as applyMatrix } from '../../generate/repeat.js'
 
 /* The seam (editor/packs.js): the loop, kinetic and filter catalogs are reached through their
  * packs. `loop`/`misc` and `kinetic` are only offered when their pack is registered, so the
@@ -427,10 +429,12 @@ const ALL_LAYER_TYPES = [
   { id: 'misc',       label: 'Misc' },
   /* Affinity's Add Layer — an empty container to drop layers into (plan 32 § 2b), on the group we have */
   { id: 'group',      label: 'Empty layer' },
+  /* Generate (plan 52) — a styleset form as live vector: params on the layer until Expand */
+  { id: 'generate',   label: 'Generate' },
 ]
 
 /* The pack each non-core type needs (editor/packs.js) — a type whose pack is absent is not offered. */
-const PACK_OF_TYPE = { loop: 'generators', misc: 'generators', kinetic: 'motion' }
+const PACK_OF_TYPE = { loop: 'generators', misc: 'generators', generate: 'generators', kinetic: 'motion' }
 export const layerTypes = () => ALL_LAYER_TYPES.filter((t) => !PACK_OF_TYPE[t.id] || pack(PACK_OF_TYPE[t.id]))
 
 const layerDefaults = (type, vh = CANVAS_H) => {
@@ -489,6 +493,10 @@ const layerDefaults = (type, vh = CANVAS_H) => {
     /* path geometry comes from the pen tool via `extras`; these are just
      * safe fallbacks so a bare addLayer('path') never yields undefined nodes. */
     case 'group':      return fullCanvas({ children: [], name: 'Layer' })
+    /* Generate — full frame like pattern; the menu passes the picked style + preset as extras */
+    case 'generate':   return fullCanvas(gen().generateParamsFor('lineScreen', 'eclipse'))
+    /* Repeat (plan 53 W3) — copies of a source layer; the menu passes sourceId + mode */
+    case 'repeat':     return fullCanvas({ ...REPEAT_DEFAULTS, name: 'Repeat' })
     case 'path':       return { nodes: [], closed: false, x: 0, y: 0, w: 1, h: 1, color: null, stroke: 'palette:dark', strokeWidth: 2 }
     default:           return {}
   }
@@ -1475,6 +1483,83 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     })
   }, [setLayersTracked, palette])
 
+  /* EXPAND a generate layer (plan 52 § 1.4): the live layer becomes a group of editable `path` layers, one
+   * per mark, over its ground as a rect. Past EXPAND_MAX marks a node-per-mark tree is too heavy for the
+   * Layers panel, so the marks go into ONE `shape{kind:'flatten'}` (nonzero, so merged dots stay merged).
+   * In place; undo restores the live layer with its params. */
+  const flattenGenerate = useCallback((layerId) => {
+    const EXPAND_MAX = 2000
+    setLayersTracked((prev) => {
+      const layer = findLayerDeep(prev, layerId)
+      if (!layer || layer.type !== 'generate') return prev
+      /* the engine is the generators pack's (the core / pack seam) */
+      const { generateMarks, generateBody } = gen()
+      const marks = generateMarks(layer)
+      const ink = resolveColor(layer.color, palette) ?? '#FFFFFF'
+      const bg = layer.bg == null ? null : resolveColor(layer.bg, palette)
+      const lx = layer.x ?? 0, ly = layer.y ?? 0, w = layer.w ?? CANVAS_W, h = layer.h ?? CANVAS_H
+      const base = { visible: true, opacity: 1, blend: 'normal' }
+      const children = []
+      if (bg) children.push({ ...base, id: newId('shape'), type: 'shape', kind: 'rect', x: lx, y: ly, w, h, color: bg, name: 'Ground' })
+      if (marksCount(marks) <= EXPAND_MAX) {
+        for (const sh of marksToShapes(marks)) {
+          /* a WHOLE-PIXEL origin: a positioned box snaps to the pixel grid, so a fractional x / y would
+             shift each mark up to a pixel off the live render — the fraction rides in the nodes instead.
+             A glyph's counters ride along as the path's `holes` (even-odd, like a boolean result). */
+          const norm = normalizePathRings(sh.nodes, sh.holes)
+          const ox = Math.floor(lx + norm.dx), oy = Math.floor(ly + norm.dy)
+          const fx = lx + norm.dx - ox, fy = ly + norm.dy - oy
+          const shift = (ring) => ring.map((n) => shiftNode(n, fx, fy))
+          children.push({ ...base, id: newId('path'), type: 'path', nodes: shift(norm.nodes), holes: norm.holes?.length ? norm.holes.map(shift) : undefined, closed: true,
+            x: ox, y: oy, w: Math.ceil(norm.w + fx), h: Math.ceil(norm.h + fy), color: ink, stroke: null, strokeWidth: 0 })
+        }
+      } else {
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${w} ${h}">${generateBody(layer, { ink, bg: null }, marks)}</svg>`
+        children.push({ ...base, id: newId('shape'), type: 'shape', kind: 'flatten', svg, fit: 'fill', x: lx, y: ly, w, h, name: 'Marks' })
+      }
+      const group = {
+        id: newId('group'), type: 'group', name: layer.genLabel ?? 'Generate',
+        x: lx, y: ly, w, h,
+        visible: layer.visible ?? true, opacity: layer.opacity ?? 1, blend: layer.blend ?? 'normal',
+        children,
+      }
+      return replaceLayerDeep(prev, layerId, group)
+    })
+  }, [setLayersTracked, palette])
+
+  /* EXPAND a repeat layer (plan 53 § 3.1): the copies become real layers — clones of the source with fresh
+   * ids, each copy's matrix baked into its box (centre moved, rotation added, size scaled, a mirror toggling
+   * flipY with the rotation reflected). Grouped with the source. Undo restores the live repeat. */
+  const flattenRepeat = useCallback((layerId) => {
+    setLayersTracked((prev) => {
+      const rep = findLayerDeep(prev, layerId)
+      if (!rep || rep.type !== 'repeat') return prev
+      const src = rep.sourceId ? findLayerDeep(prev, rep.sourceId) : null
+      if (!src || src.w == null) return prev
+      const box = { x: src.x ?? 0, y: src.y ?? 0, w: src.w, h: src.h }
+      const cx = box.x + box.w / 2, cy = box.y + box.h / 2
+      const fresh = (l) => ({ ...l, id: newId(l.type), ...(l.children ? { children: l.children.map(fresh) } : {}) })
+      const clones = copyMatrices(rep, box).map((m) => {
+        const { rotation, scale, mirror } = decompose(m)
+        const [nx, ny] = applyMatrix(m, cx, cy)
+        const w = box.w * scale, h = box.h * scale
+        const base = src.rotation ?? 0
+        const c = fresh(src)
+        let nodes = c.nodes
+        if (c.type === 'path' && nodes && scale !== 1) nodes = scalePathNodes(nodes, scale, scale)
+        return { ...c, ...(nodes ? { nodes } : {}), x: nx - w / 2, y: ny - h / 2, w, h,
+          rotation: mirror ? rotation - base : base + rotation, ...(mirror ? { flipY: !src.flipY } : {}) }
+      })
+      const group = {
+        id: newId('group'), type: 'group', name: rep.name ?? 'Repeat',
+        x: 0, y: 0, w: CANVAS_W, h: virtualHRef.current ?? CANVAS_H,
+        visible: rep.visible ?? true, opacity: rep.opacity ?? 1, blend: rep.blend ?? 'normal',
+        children: clones,
+      }
+      return replaceLayerDeep(prev, layerId, group)
+    })
+  }, [setLayersTracked])
+
   /* Flatten a text layer to a `group` of per-glyph `shape{kind:'flatten'}`
    * layers. Each glyph becomes its own shape — sized to the glyph's actual
    * path bounding box (trimmed to the visual shape, not the line height) so
@@ -1990,7 +2075,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     /* booleanSelected kept as an alias — existing call sites now wrap
      * non-destructively; switch them to booleanGroup at leisure. */
     flipLayer, flipSelected, booleanGroup, booleanSelected: booleanGroup, flattenSelected, convertShapeToPath,
-    groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,
+    groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenGenerate, flattenRepeat, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,
 
     /* history */
     canUndo,
@@ -2013,7 +2098,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     addLayer, removeLayer, updateLayer, toggleLayer, toggleLayerLock, moveLayer, duplicateLayer, clearLayers, deleteSelected,
     addFilter, removeFilter, toggleFilter, moveFilter, patchFilter, replaceFilter,
     flipLayer, flipSelected, booleanGroup, flattenSelected, convertShapeToPath,
-    groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,
+    groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenGenerate, flattenRepeat, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,
     canUndo, canRedo, undo, redo, clearHistory, beginTransaction, commitTransaction, past, future,
   ])
 

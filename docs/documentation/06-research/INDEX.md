@@ -3,7 +3,7 @@ title: Research
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-10-05
+updated: 2026-11-04
 description: How KOL compares to the systems around it
 tags:
   - domain/components
@@ -14,7 +14,7 @@ related:
 
 # Research
 
-Outside reading, kept separate from the laws so a comparison can never be mistaken for a rule. What is here is the shadcn/ui benchmark: the two systems side by side, what KOL is missing, and what it turned down. Beside it, one page on using a tool on a phone.
+Outside reading, kept separate from the laws so a comparison can never be mistaken for a rule. What is here is the shadcn/ui benchmark: the two systems side by side, what KOL is missing, and what it turned down. Beside it, one page on using a tool on a phone and one on setting up Figma libraries.
 
 | Page | What it holds |
 |---|---|
@@ -22,5 +22,6 @@ Outside reading, kept separate from the laws so a comparison can never be mistak
 | [[02-gaps\|Ranked gaps]] | What KOL lacks, ordered by cost |
 | [[03-rejected\|Rejected options]] | Considered and declined, with reasons |
 | [[04-tools-on-a-phone\|Tools on a phone]] | What Apple, Android, WCAG and NN/g say about a stage with panels on a small screen |
+| [[05-figma-file-setup\|Figma file setup]] | How Primer, Material, Ant and Geist set up Figma libraries, and how an agent checks its Figma work |
 
 **The workflows survey moved out** (2026-08-02). Ladle vs Storybook, Changesets, CI and distribution models are how a *repo* is run, not what a design system is — they live at [[../../operations/06-workflows/INDEX|workflows]] now. This chapter compares design systems; that one compares tooling.

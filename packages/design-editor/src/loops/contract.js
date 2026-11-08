@@ -33,12 +33,12 @@
 //
 // PrimitiveEngine already satisfies this for 3d; LoopPlayer2D satisfies it for 2d.
 
-import { VP_PARAMS, VP_DEFAULTS } from './lib/viewport.js'
+import { VP_PARAMS, VP_DEFAULTS } from '../editor/lib/viewport.js'
 import { SHAPE_LOOPS } from './shape/presets.js'
 import patternRules from './pattern/patternLoop.js'
 
 /* ── Viewport-camera fold ─────────────────────────────────────────────────
- * The universal 2d camera (lib/viewport.js) attaches at the CONTRACT layer:
+ * The universal 2d camera (editor/lib/viewport.js) attaches at the CONTRACT layer:
  * eligible defs get the vp* schema params appended once at module load, so
  * the inspector renders them and loopDefaults below folds their defaults into
  * new layers — no per-def edits. Eligible = the groups labs applied it to:

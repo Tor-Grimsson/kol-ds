@@ -1,4 +1,4 @@
-import { mixHex } from '../lib/util.js'
+import { mixHex } from '../../editor/lib/util.js'
 import { vortex, noiseFlow, instanceGlyphs, orbitAt } from './fieldCore.js'
 import { mulberry32 } from '../gl/rng.js'
 

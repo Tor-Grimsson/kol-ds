@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 import { FILL_PARAMS, SHAPE_FILL_PARAMS, paintFill, isGradient, fillRuleOf } from '../lib/fill.js'
 
 // Lissajous — a closed parametric curve x=sin(aθ+δ), y=sin(bθ). Integer a,b keep

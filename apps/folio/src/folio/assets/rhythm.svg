@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="204" height="168" viewBox="0 0 204 168" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="A rhythm of other worlds" clip-path="url(#clip0_0_35)">
+<rect width="204" height="168" fill="#A9C3D9"/>
+<rect id="Paper band" y="42" width="204" height="20" fill="#EEEADC"/>
+<rect id="Paper band_2" y="90" width="204" height="20" fill="#EEEADC"/>
+<rect id="Paper band_3" y="138" width="204" height="20" fill="#EEEADC"/>
+<g id="Diffused blue field" filter="url(#filter0_f_0_35)">
+<ellipse cx="113" cy="102" rx="45" ry="62" fill="#7BA8CF"/>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_35" x="50" y="22" width="126" height="160" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="9" result="effect1_foregroundBlur_0_35"/>
+</filter>
+<clipPath id="clip0_0_35">
+<rect width="204" height="168" fill="white"/>
+</clipPath>
+</defs>
+</svg>

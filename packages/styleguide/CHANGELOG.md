@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.24.0 — 2026-11-07
+
+- **`BlockSwatch` (the chip form) renders kol-component's `SwatchTile`** — the same geometry, now drawn in one place. Props and look unchanged; `variant="cell"` is unchanged. Needs kol-component ≥ 0.350.0.
+
+## 0.23.0 — 2026-11-07
+
+- **`MoodTile` renders kol-component's `Image`** for its photo, in place of a bare `<img>`. Props, crop, radius, overlay and caption unchanged; a missing `src` now holds the frame with the asset placeholder instead of a broken image.
+
 ## 0.22.1 — 2026-11-04
 
 - **No `·` in the shipped copy** (StyleguideNoMiddots, kol-website — the user's no-bullets law). A label's two parts take a comma: the brand book's section labels (`04 — logos, concept`), the stationery rows (`Letterhead, A4`), ComboLayouts' `PRIMARY, 50`, LayoutGuide's pair cells (`text, token`), PrintStudio's `N sheets, A4`, the letterhead foot's `entity, Kt.` and EmailSignature's default role line. Value lists drop the glyph for spans with a gap: the letterhead contact line and EmailSignature's email and web. New gate `pnpm validate:no-middots` (no `·` in `packages/styleguide/src` outside comments). Copy only; no API change.

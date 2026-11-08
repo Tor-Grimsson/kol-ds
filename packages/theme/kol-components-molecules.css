@@ -205,11 +205,12 @@
   color: var(--kol-fg-96);
   background-color: var(--kol-oq-16);
 }
-/* a rule runs edge to edge — through the panel's 4px inset */
+/* a rule runs edge to edge — through the panel's 4px inset. MenuDivider is the Divider atom (2026-11-07): the ink is
+ * its inner line's */
 .kol-menu-panel .kol-menu-rule {
-  border-color: var(--kol-oq-16);
   margin: var(--kol-spacing-1) calc(var(--kol-spacing-1) * -1);
 }
+.kol-menu-panel .kol-menu-rule > div { background-color: var(--kol-oq-16); }
 /* MenuLabel — a section's name */
 .kol-menu-panel .kol-menu-label {
   padding: var(--kol-spacing-2) var(--kol-spacing-3) var(--kol-spacing-1);
@@ -2683,7 +2684,8 @@ article[role="button"]:focus-visible {
 /* the destructive row (row 50): `MenuRow tone="danger"` — the error ink, the same lift */
 .kol-menu-panel .kol-menu-row.kol-menu-row--danger { color: var(--ui-error); }
 /* a rule runs through the panel's inset (row 51); the section label is the float label role (row 52) */
-.kol-menu-panel--float .kol-menu-rule { border-color: var(--kol-oq-08); margin: 4px -4px; }
+.kol-menu-panel--float .kol-menu-rule { margin: 4px -4px; }
+.kol-menu-panel--float .kol-menu-rule > div { background-color: var(--kol-oq-08); }
 .kol-menu-panel--float.kol-menu-panel--sheet .kol-menu-rule { margin: 4px calc(var(--kol-float-inset) * -1); }
 .kol-menu-panel--float .kol-menu-label { padding: 8px 12px 4px; font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 500; line-height: 1; letter-spacing: 0.02em; color: var(--kol-fg-64); }
 .kol-menu-panel--float .kol-menu-kbd { border-color: var(--kol-oq-16); color: var(--kol-oq-64); }

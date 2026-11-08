@@ -1,0 +1,5 @@
+{
+  "art-of-war": { "title": "The Art of War — Sun Tzu", "shelf": "studio", "code": "WAR" },
+  "meditations": { "title": "Meditations — Marcus Aurelius", "shelf": "self", "code": "MED" },
+  "walden": { "title": "Walden — Henry David Thoreau", "shelf": "work", "code": "WAL" }
+}

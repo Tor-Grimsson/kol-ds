@@ -1,5 +1,5 @@
 import { createNoise2D, createNoise4D } from 'simplex-noise'
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 /**
  * fieldCore — ONE vector field the flow loops share (plan 37 § 6.2, lobby

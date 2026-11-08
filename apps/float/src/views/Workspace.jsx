@@ -1,10 +1,13 @@
 import { useState } from 'react'
-import { Button, InlineAddRow, MenuMore, SearchInput, SectionText, SegmentedToggle, SizeChip, ValueField } from '@kolkrabbi/kol-component'
-import { PropertyRail } from '@kolkrabbi/kol-shell'
+import { Button, InlineAddRow, MenuMore, SearchInput, SectionText, SizeChip, TabsRow, ValueField } from '@kolkrabbi/kol-component'
+import { DocumentCapsule, PropertyRail } from '@kolkrabbi/kol-shell'
 import { Card, FoldedHead, KanbanColumn, SectionHead, TaskCard } from '@kolkrabbi/kol-dashboards'
+import { NAV } from './Rails.jsx'
 
-/* W3.5 — Float · Adaptive workspace (kol-float--style 9:15449, rules 9:15179): the Tasks content (Briefs · Todos ·
- * Other) and the shared inspector. Layout, not function — text and numbers as drawn; every box a shipped part. */
+/* W3.5 — Float · Adaptive workspace (kol-float--style 9:15449, rules 9:15179) — the dashboard on FloatLayout
+ * (float-figma-review W3.2): the studio's nav Rail at 72, the dashboard's tabs in the bar, the Tasks page on the float
+ * well, the shared inspector, the Task index folded to its pill in the bottom Rail. Layout, not function — text and
+ * numbers as drawn; every box a shipped part. */
 
 const MORE = [{ key: 'rename', label: 'Rename' }, { key: 'hide', label: 'Hide group' }]
 const more = (label) => <MenuMore variant="float" label={label} items={MORE} />
@@ -22,13 +25,17 @@ export default function Workspace() {
   const flip = (k) => () => setFold((f) => ({ ...f, [k]: !f[k] }))
 
   return (
-    <div className="relative flex min-h-full flex-col px-8">
-      <SectionText variant="float" eyebrow="DASHBOARD  /  TASKS" headline="Tasks, in focus." body="Tasks, projects, links — your living workspace." meta="5 OPEN / 3 GROUPS" />
+    /* the content is the dashboard's canvas: the float well under it, 128 to 952 as drawn */
+    <div className="relative flex min-h-full flex-col bg-[var(--kol-float-well)] px-8 max-md:px-4">
+      <SectionText variant="float" eyebrow="DASHBOARD  /  TASKS" headline="Tasks, in focus." body="Tasks, projects, links — your living workspace." />
+      <span className="kol-float-ruler absolute right-[58px] top-[11px] text-fg-64 max-md:hidden">5 OPEN  /  3 GROUPS</span>
 
-      <div className="mt-1.5 flex items-center justify-between gap-4">
-        <SegmentedToggle variant="float" size="sm" ariaLabel="Task status" className="w-[276px]" value={status} onChange={setStatus}
-          options={[{ value: 'open', label: 'Open', count: 5 }, { value: 'completed', label: 'Completed' }]} />
-        <SearchInput variant="float" size="md" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search tasks…" shortcutHint="⌘F" className="w-[280px]" />
+      <div className="mt-1.5 flex items-center justify-between gap-4 max-md:flex-col max-md:items-stretch">
+        {/* the dashboard's status toggle (13:5037), at this frame's 276 */}
+        <TabsRow variant="float" surface="solid" size="sm" value={status} onChange={setStatus} ariaLabel="Task status"
+          tabs={[{ id: 'open', label: 'Open', count: 5 }, { id: 'completed', label: 'Completed' }]}
+          className="w-[276px] [&_.kol-tabs-scroll]:flex-1 [&_[role=tablist]]:w-full [&_[role=tab]]:flex-1 [&_[role=tab]]:justify-between" />
+        <SearchInput variant="float" size="md" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search tasks…" shortcutHint="⌘F" className="w-[280px] max-md:w-full" />
       </div>
 
       <div className="mt-7 flex flex-col gap-[26px]">
@@ -37,7 +44,7 @@ export default function Workspace() {
         </Card>
 
         <Card variant="float" title="Todos" count={3} controls={more('Todo options')} folded={fold.todos} onFold={flip('todos')}>
-          <div className="mt-1.5 grid grid-cols-3 gap-4">
+          <div className="mt-1.5 grid grid-cols-3 gap-4 max-md:grid-cols-1">
             {TODOS.map((t) => (
               <KanbanColumn key={t.size} title={t.size} count={<SizeChip>{t.chip}</SizeChip>} className="min-h-[154px]">
                 <TaskCard size="sm" title={t.task} selected={t.selected} />
@@ -50,16 +57,11 @@ export default function Workspace() {
         <FoldedHead title="Other" count={1} className="mt-2.5 w-[196px]" />
       </div>
 
-      <span className="kol-float-ruler mt-[58px] pb-24 text-fg-64">5 open tasks</span>
-
-      {/* the folded task index — a bottom Rail folded to its pill, centred under the content */}
-      <Button variant="float" tone="grey" size="lg" iconLeft="table" iconRight="chevron-up"
-        className="absolute bottom-1 left-1/2 w-[256px] -translate-x-1/2">
-        Task index <span className="kol-float-timecode text-fg-64 ml-6">5</span>
-      </Button>
+      <span className="kol-float-ruler mt-[58px] pb-6 text-fg-64">5 open tasks</span>
     </div>
   )
 }
+
 
 /* the shared inspector in Properties mode, its fields following the selected todo */
 function WorkspaceInspector({ hide }) {
@@ -100,8 +102,8 @@ function WorkspaceInspector({ hide }) {
 
 export const inspector = ({ hide }) => <WorkspaceInspector hide={hide} />
 
-/* the frame's bar (9:15506): the Studio / Dashboard crumb, the six page tabs, search and New task — through `layout.bar`.
- * Layout, not function: the other pages are not this view, so Tasks stays lit */
+/* the frame's bar (9:15506): the Studio / Dashboard capsule with the dashboard's six tabs beside it (not centred), search
+ * at the right, then FloatLayout's Panels (while a Rail is hidden) and New task. Layout, not function: Tasks stays lit */
 const noop = () => {}
 const PAGES = [
   { value: 'tasks', label: 'Tasks', count: 5 },
@@ -112,8 +114,28 @@ const PAGES = [
   { value: 'links', label: 'Links' },
 ]
 
-/* the frame draws the nav Rail at 72 */
+/* the folded task index — a bottom Rail folded to its pill (y 1008), centred under the content, not the inspector */
+const TaskIndexPill = () => (
+  <div className="flex justify-center pb-1 pr-[364px] pt-8 max-md:p-0">
+    <Button variant="float" tone="grey" size="lg" iconLeft="table" iconRight="chevron-up" className="w-[256px]">
+      Task index <span className="kol-float-timecode text-fg-64 ml-6">5</span>
+    </Button>
+  </div>
+)
+
+/* the dashboard on FloatLayout: the studio's nav Rail at 72 (as drawn), its tabs in the bar */
 export const layout = {
+  nav: NAV, currentPath: '/dashboard/tasks', onNavigate: noop, onSearch: noop, title: 'Studio', defaultExpanded: ['/dashboard'],
   defaultRail: 'collapsed',
-  bar: { document: { name: 'Studio / Dashboard', onMenu: noop }, tabs: PAGES, tab: 'tasks', onTab: noop, onSearch: noop, action: { label: 'New task', onPress: noop } },
+  bottom: <TaskIndexPill />,
+  bar: {
+    start: (
+      <>
+        <DocumentCapsule name="Studio / Dashboard" onMenu={noop} className="w-[280px]" />
+        <TabsRow variant="float" surface="solid" tabs={PAGES} value="tasks" onChange={noop} ariaLabel="Dashboard" className="ml-2" />
+      </>
+    ),
+    center: <Button variant="float" tone="primary" size="lg" iconOnly="search" aria-label="Search" onClick={noop} className="ml-auto" />,
+    action: { label: 'New task', onPress: noop },
+  },
 }

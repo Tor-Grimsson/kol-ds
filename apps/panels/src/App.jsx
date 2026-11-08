@@ -14,7 +14,8 @@ import { useLabsLayer } from 'design-editor-src/editor/labs/useLabsLayer'
 import { sheetLabels } from 'design-editor-src/editor/labs/sheetLabels'
 import { PanelHeader, PanelPills } from 'design-editor-src/editor/components/PanelHeader'
 import EditorFooter from 'design-editor-src/editor/shell/panels/EditorFooter'
-import SelectionPalettePanel from 'design-editor-src/editor/shell/panels/SelectionPalettePanel'
+import PaneHeader from 'design-editor-src/editor/shell/panels/PaneHeader'
+import { composeTabs, useTabContext } from 'design-editor-src/editor/shell/panels/tabs'
 import { ControlSizeContext } from 'design-editor-src/editor/params/controlSize'
 import { isMobileDevice, wantsDesktop, useBelow, LABS_BELOW } from 'design-editor-src/editor/mobile/device'
 import { useRailExtras, RAIL_EXTRA_PREFIX } from 'design-editor-src/railExtras'
@@ -27,7 +28,7 @@ import { useRailExtras, RAIL_EXTRA_PREFIX } from 'design-editor-src/railExtras'
  *
  *   Labs rail          `LabsParams` over `EditorFooter`, in the rail's own markup — what fxr labs
  *                      and the randomiser's sheet are built from
- *   Editor inspector   `SelectionPalettePanel` — the compositor's right rail: Inspector ·
+ *   Editor inspector   `SelectionPane` — the compositor's right pane (its `selection` tabs): Inspector ·
  *                      Parameters · Effects
  *
  * On a phone the labs rail is its touch sheet — the `md` rung, along the bottom, half the display
@@ -67,7 +68,6 @@ export default function App() {
           document.querySelector('.kol-shell-drawer-scrim')?.click()
         }
       }}
-      railToggleKey={'\\'}
       touch="drawer"
       pageWash="var(--kol-fg-02)"
     >
@@ -143,10 +143,27 @@ function Panels() {
       <Column label="Editor inspector" width={320}>
         <aside className="kol-editor-right flex-1">
           <div className="kol-editor-rail-body">
-            <SelectionPalettePanel />
+            <SelectionPane />
           </div>
         </aside>
       </Column>
+    </div>
+  )
+}
+
+/* the compositor's right pane — the `selection` tabs from the editor's own tab registry (the panel
+ * that owned them retired 2026-10-13, plan 31); local tab state, since there is no workspace here */
+function SelectionPane() {
+  const ctx = useTabContext()
+  const tabs = useMemo(() => composeTabs().filter((t) => t.pane === 'selection'), [])
+  const visible = tabs.filter((t) => !t.when || t.when(ctx))
+  const [tab, setTab] = useState('Inspector')
+  const active = visible.find((t) => t.tab === tab) ?? visible[0]
+  const Body = active?.Component
+  return (
+    <div className="kol-compose-rail">
+      <PaneHeader tabs={visible.map((t) => ({ id: t.tab, label: t.label ?? t.tab }))} value={active?.tab} onChange={setTab} />
+      {Body && <div className="flex-1 min-h-0 overflow-y-auto flex flex-col"><Body /></div>}
     </div>
   )
 }

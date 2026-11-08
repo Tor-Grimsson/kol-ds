@@ -10,7 +10,7 @@
 // the built dist/design-editor.css is imported. The lib sheet scopes its
 // resets under .kol-design-editor (the root class stamped below).
 import './index.lib.css'
-import Editor, { EditorProviders } from './editor/Editor'
+import Editor, { EditorProviders, FloatEditor as FloatBody } from './editor/Editor'
 import OutputView, { OutputCanvas, OutputStage } from './editor/OutputView'
 import { useRailExtras, setRailExtras, RAIL_EXTRA_PREFIX } from './railExtras'
 import FilesDialog from './editor/library/FilesDialog'
@@ -68,6 +68,26 @@ export function DesignEditor({ mediaProxyBase, mediaClient, settingsStore } = {}
 }
 
 export default DesignEditor
+
+/**
+ * <FloatDesignEditor /> — the editor in the float chrome (plan-2026-11-05-float-editor W2.1): `DesignEditor` with
+ * FloatEditorShell in place of EditorShell — the same engine, state and props. It fills its box; give it a height.
+ */
+export function FloatDesignEditor({ mediaProxyBase, mediaClient, settingsStore, className = '' } = {}) {
+  if (mediaProxyBase != null) setMediaProxyBase(mediaProxyBase)
+  if (mediaClient) setMediaClient(mediaClient)
+  useEffect(() => {
+    if (!settingsStore) return
+    setSettingsStore(settingsStore)
+    return () => setSettingsStore(null)
+  }, [settingsStore])
+  useTheme()
+  return (
+    <div className={`kol-design-editor h-full ${className}`.trim()}>
+      <FloatBody />
+    </div>
+  )
+}
 
 /**
  * EditorProviders — the full context stack (error boundary + library > tool >

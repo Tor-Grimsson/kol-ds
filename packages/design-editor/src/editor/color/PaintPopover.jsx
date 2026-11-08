@@ -18,7 +18,9 @@ import { PAINT_TYPES, PAINT_DEFAULTS, PAINT_SCHEMAS, paintBackground } from '../
  * Image · Video. Solid is the Color pane's own body (`ColourBody` — square · hue · view · opacity ·
  * pipette) on the active paint; the others edit `layer.fill` through their schema rows. Stroke is Solid.
  */
-export default function PaintPopover({ layer, paint, label, hex, none, palette }) {
+/* `bare` (the float Appearance, 19:10192): the swatch alone, no label; the stroke swatch is drawn hollow — its paint the
+ * 2px ring, fg-64 when it has none — so fill and stroke read apart without words */
+export default function PaintPopover({ layer, paint, label, hex, none, palette, bare = false }) {
   const { setActivePaint } = useComposeState()
   const edit = useLayerEdit(layer.locked ? null : layer.id, { history: 'coalesce' })
   const [open, setOpen] = useState(false)
@@ -50,11 +52,13 @@ export default function PaintPopover({ layer, paint, label, hex, none, palette }
     <span className="inline-flex items-center gap-2">
       <button type="button" ref={popover.refs.setReference} {...popover.getReferenceProps()} aria-label={`${label} paint`} title={label}
         className="inline-flex shrink-0 rounded-[3px] overflow-hidden">
-        {swatchStyle
+        {bare && !isFill
+          ? <span className="block size-6 rounded-sm border-2 bg-surface-primary" style={{ borderColor: none ? 'var(--kol-fg-64)' : hex }} />
+          : swatchStyle
           ? <span className="block size-6 border border-oq-08 rounded-[3px] bg-center bg-cover" style={swatchStyle} />
           : <ColorSwatch hex={none ? undefined : (hex ?? '#FFFFFF')} size={24} showTransparent={none} hoverable={false} />}
       </button>
-      <span className="kol-helper-10 tracking-widest text-meta">{label.toUpperCase()}</span>
+      {!bare && <span className="kol-helper-10 tracking-widest text-meta">{label.toUpperCase()}</span>}
 
       <PopoverPanel popover={popover} panel={false} focus={false}
         className="kol-popover w-[288px] flex flex-col" data-editor-keep-selection>

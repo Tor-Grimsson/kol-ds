@@ -9,7 +9,7 @@
 // loops via inspector dropdowns, not routes).
 
 import { loopDefaults } from './contract.js'
-import { TIME_PARAMS, TIME_DEFAULTS, VP_PARAMS, VP_DEFAULTS } from './lib/viewport.js'
+import { TIME_PARAMS, TIME_DEFAULTS, VP_PARAMS, VP_DEFAULTS } from '../editor/lib/viewport.js'
 import { SHAPE_LOOPS, SHAPE_PRESETS } from './shape/presets.js'
 import { FIELD_LOOPS, FIELD_PRESETS } from './field/presets.js'
 import { PATTERN_LOOPS, PATTERN_PRESETS } from './pattern/presets.js'
@@ -57,7 +57,7 @@ const LOOPS = [
   ...MATH_LOOPS, ...PARATYPE_LOOPS, ...MODULATOR_LOOPS, ...DISTRESS_LOOPS, ...FLOW_LOOPS, ...GL_LOOPS, gameOfLife,
 ]
 /* THE TIME-SHAPE FOLD (plan 18 § 4): every def whose clock is `u` — 2d draws and the GL engines
- * alike — carries the three time params (lib/viewport.js `TIME_PARAMS`), so the Animation tab shows
+ * alike — carries the three time params (editor/lib/viewport.js `TIME_PARAMS`), so the Animation tab shows
  * them and the Motion Form scope rolls them. Not the Penrose sims. Idempotent under HMR. */
 for (const def of LOOPS) {
   if (def?.group === 'penrose' || !def?.params || def.params.some((p) => p.key === 'vpTime')) continue

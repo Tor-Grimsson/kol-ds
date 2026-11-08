@@ -1,4 +1,4 @@
-import { TAU, mixHex, hexToRgb } from '../lib/util.js'
+import { TAU, mixHex, hexToRgb } from '../../editor/lib/util.js'
 import { resolveShape, DEFAULT_SHAPE_ID, SHAPE_OPTIONS } from './shapes.js'
 import { glyphShape } from './glyphTile.js'
 import { composeCell, compileRules } from './rules.js'

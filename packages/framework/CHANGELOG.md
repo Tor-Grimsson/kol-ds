@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.70.0 — 2026-11-04
+
+- **SiteLayout `railKeys`** (RailShortcutsAllFrames, kol-website) — `\` expands ↔ collapses the site rail (its own `kol-sidenav` state), `⇧\` hides ↔ shows it (the track goes to 0; kept as `kol-sidenav-hidden`; the phone drawer ignores it). On by default, `false` off, `{ collapse, hide }` rebinds — kol-component's `useRailKeys`, the same prop as kol-shell's AppShell and FloatLayout. Peers on kol-component ≥0.339.0.
+
 ## 0.69.0 — 2026-11-01
 
 - **`loaderApp({ intro })`** (LoaderAppIntro, kol-fxr — the loader is the line): `true` (`/`) or a path / paths. On a matching `location.pathname` with motion allowed, a pre-paint script stamps `kol-intro` on <html> and one rule (`.kol-intro #kol-loader-app svg{display:none}`) leaves the loader its ground only. Without `intro` the HTML is byte-identical to 0.68.0.

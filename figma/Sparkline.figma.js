@@ -4,10 +4,8 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const fill = instance.getEnum('fill', { "true": "true", "false": "false" })
-
 export default {
-  example: figma.code`<Sparkline data={data} height={24}${fill === 'true' ? ' fill' : ''} />`,
+  example: figma.code`<Sparkline data={data} height={24} />`,
   imports: ["import { Sparkline } from \"@kolkrabbi/kol-dashboards\""],
   id: 'Sparkline',
 }

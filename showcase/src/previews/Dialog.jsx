@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Button, Dialog, Input, PasswordInput, LabeledControl, Dropdown, ToggleSwitch, ToggleCheckbox, SummaryLine } from '@kolkrabbi/kol-component'
+import { Button, Dialog, Input, PasswordInput, LabeledControl, Dropdown, ToggleSwitch, ToggleCheckbox, SummaryLine, SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsSegmented } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
-export const variants = ['default', 'float']
+export const variants = ['default', 'float', 'settings']
 
 const opt = (...l) => l.map((x) => ({ value: x, label: x }))
 
@@ -66,6 +66,7 @@ function SignInWindow() {
 
 export default function DialogPreview({ variant = 'default' }) {
   if (variant === 'float') return <div className="flex gap-3"><ExportWindow /><SignInWindow /></div>
+  if (variant === 'settings') return <SettingsWindow />
   return <DefaultDialog />
 }
 
@@ -79,6 +80,31 @@ function DefaultDialog() {
           <p className="kol-mono-12 text-emphasis">Any content, above the page, under its floats.</p>
           <Button size="sm" onClick={() => setOpen(false)}>Close</Button>
         </div>
+      </Dialog>
+    </>
+  )
+}
+
+/* settings (plan-2026-11-05-float-editor W7.1, his 12:2282): the generator settings window — sections left, the body, the preview column */
+function SettingsWindow() {
+  const [open, setOpen] = useState(false)
+  const [section, setSection] = useState('stripe')
+  const [dir, setDir] = useState('rows')
+  const [count, setCount] = useState(48)
+  const sections = [{ key: 'field', label: 'Field', state: 'Radial' }, { key: 'ramp', label: 'Ramp', state: 'Continuous' }, { key: 'stripe', label: 'Stripe Array', state: `${count} rows` }]
+  return (
+    <>
+      <Button size="sm" onClick={() => setOpen(true)}>Open settings</Button>
+      <Dialog variant="settings" open={open} onClose={() => setOpen(false)} title="Stripe Array" kind="Generate"
+        sections={sections} section={section} onSection={setSection}
+        aside={<p className="text-[10px] text-oq-64">Preview column</p>}
+        footer={<><span className="flex-1" /><Button size="sm" onClick={() => setOpen(false)}>Apply</Button></>}>
+        <SettingsGroup title="Layout" note="Placement and rhythm">
+          <SettingsGrid>
+            <SettingsCell label="Direction"><SettingsSegmented value={dir} onChange={setDir} options={[{ value: 'rows', label: 'Rows' }, { value: 'columns', label: 'Columns' }]} ariaLabel="Direction" /></SettingsCell>
+            <SettingsCell label="Count"><SettingsSlider value={count} onChange={setCount} min={1} max={120} step={1} aria-label="Count" /></SettingsCell>
+          </SettingsGrid>
+        </SettingsGroup>
       </Dialog>
     </>
   )

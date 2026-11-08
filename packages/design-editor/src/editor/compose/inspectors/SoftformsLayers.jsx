@@ -64,7 +64,7 @@ const CTRL_3D = [
 ]
 
 const TAU = Math.PI * 2
-import { clamp } from '../../../loops/lib/util'
+import { clamp } from '../../lib/util'
 import { useControlSize } from '../../params/controlSize'
 const round2 = (v) => Math.round(v * 100) / 100
 const rnd = (rng, a, b) => a + rng() * (b - a)

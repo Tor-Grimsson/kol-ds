@@ -20,6 +20,13 @@ const TRAFFIC = [
   { key: 'visitors', label: 'Unique visitors', value: '12,864', delta: '↗ 19.8%', note: 'from 10,740', spark },
   { key: 'pageviews', label: 'Pageviews', value: '1,036', note: 'Last 30 days', spark: spark.map((v, i) => v * (1 + Math.sin(i) * 0.3)) },
 ]
+/* the editor's card stack as data (plan-2026-11-05-float-editor W1.2): tabs, folded or not, a foot */
+const tabsOf = (...l) => l.map((x) => ({ key: x.toLowerCase(), label: x }))
+const EDITOR_CARDS = [
+  { key: 'type', tabs: tabsOf('Typography'), folded: false },
+  { key: 'colour', tabs: tabsOf('Colour', 'Swatches'), folded: true },
+  { key: 'layers', tabs: tabsOf('Layers', 'Assets', 'History'), folded: false, foot: <span className="kol-float-label text-fg-96">3 layers</span> },
+]
 const SMALL = [
   { key: 'repo', label: 'Repository views', value: '6,180', note: '15–28 Oct · 14 days' },
   { key: 'clones', label: 'Clones', value: '212', note: '15–28 Oct · 14 days' },
@@ -46,6 +53,15 @@ export default function Cards() {
               <Card variant="float" title="Briefs" count="1 open" controls={more} addLabel="New brief" onAdd={noop}>
                 <TaskCard size="sm" title="Design the Tasks tab (Briefs / Todos / Other)" date="2026-07-01" done={done} onToggle={setDone} />
               </Card>
+            </div>
+          </Part>
+          <Part name="Card float · tabs (the editor card)" slug="card">
+            <div className="w-80 flex flex-col gap-4">
+              {EDITOR_CARDS.map((c) => (
+                <Card key={c.key} variant="float" radius="window" tabs={c.tabs} defaultFolded={c.folded} foot={c.foot}>
+                  {(tab) => <span className="kol-float-label text-fg-64">{tab} rows</span>}
+                </Card>
+              ))}
             </div>
           </Part>
           <Part name="StatTiles float" slug="stat-tiles"><div className="w-[880px] max-w-full"><StatTiles variant="float" size="lg" items={TRAFFIC} /></div></Part>

@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { Button, Dropdown, IndexRow, LabeledControl, SectionText, SizeChip, TabsRow, Textarea, ValueField } from '@kolkrabbi/kol-component'
 import { Card, TaskCard } from '@kolkrabbi/kol-dashboards'
-import { PropertyRail, SelectionMeasure } from '@kolkrabbi/kol-shell'
+import { DocumentCapsule, PropertyRail, SelectionMeasure } from '@kolkrabbi/kol-shell'
+import { NAV } from './Rails.jsx'
 
 /* The record dashboard on the float frame — "Dashboard · Tasks — Visual editor alternative" (kol-float--style 9:14340),
  * plan-2026-11-04-float-views W3.3. Layout, not function: the tasks canvas in FloatLayout's content slot, the eyebrow
  * in its `eyebrow` line, the filter capsule and the task index in its `bottom` Rail, the task inspector in its inspector slot (so ⇥ hides it and Panels ▾ brings it back).
- * Every part shipped; text and numbers as drawn. The frame draws no nav Rail — it reads as the Rail hidden. */
+ * Every part shipped; text and numbers as drawn. The menu is the studio's nav Rail, hidden — RailTrigger opens it — and the
+ * bar carries the dashboard's tabs (float-figma-review W3.3). */
 
 const noop = () => {}
 const RULER = 'kol-float-ruler text-fg-64 whitespace-pre uppercase'
@@ -140,5 +142,31 @@ function TaskInspector({ hide }) {
 
 export const inspector = ({ hide }) => <TaskInspector hide={hide} />
 
-/* the frame draws no nav Rail; the eyebrow sits under the bar and the dock runs under the canvas and the inspector */
-export const layout = { defaultRail: 'hidden', eyebrow: <Eyebrow />, bottom: <Dock /> }
+/* the dashboard's six tabs, the dashboard's own TabsRow (13:5037), then the More circle (9:14346 + 9:14365). The frame
+ * draws them as a stacked mode pill; AppFloatNav's pill holds five slots at most (the phone's tab bar), so six stay a
+ * TabsRow, one tab look across the dashboard views */
+const PAGES = [
+  { id: 'tasks', label: 'Tasks', icon: 'checklist', count: 5 },
+  { id: 'capture', label: 'Capture', icon: 'inbox', count: 3 },
+  { id: 'projects', label: 'Projects', icon: 'folder' },
+  { id: 'calendar', label: 'Calendar', icon: 'calendar' },
+  { id: 'metrics', label: 'Metrics', icon: 'bar-chart' },
+  { id: 'links', label: 'Links', icon: 'link' },
+]
+
+/* the nav Rail hidden (its trigger in the corner), the eyebrow under the bar, the dock under the canvas and the inspector */
+export const layout = {
+  nav: NAV, currentPath: '/dashboard/tasks', onNavigate: noop, onSearch: noop, title: 'Studio', defaultExpanded: ['/dashboard'],
+  defaultRail: 'hidden',
+  eyebrow: <Eyebrow />, bottom: <Dock />,
+  bar: {
+    start: <DocumentCapsule name="Studio / Dashboard" onBack={noop} onMenu={noop} className="w-[280px]" />,
+    center: (
+      <>
+        <TabsRow variant="float" surface="solid" size="lg" tabs={PAGES} value="tasks" onChange={noop} ariaLabel="Dashboard" className="max-md:hidden" />
+        <Button variant="float" tone="primary" size="lg" iconOnly="more" aria-label="More" onClick={noop} className="max-md:hidden" />
+      </>
+    ),
+    action: { label: 'New task', onPress: noop },
+  },
+}

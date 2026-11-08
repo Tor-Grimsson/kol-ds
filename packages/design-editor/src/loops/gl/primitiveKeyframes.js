@@ -1,5 +1,5 @@
 import { EASE } from './primitiveEasing.js'
-import { lerp } from '../lib/util.js'
+import { lerp } from '../../editor/lib/util.js'
 
 // Keyframe animation track — a PURE sampler so the timeline stays scrubbable
 // (pose derived from the playhead, never accumulated). Keyframes:

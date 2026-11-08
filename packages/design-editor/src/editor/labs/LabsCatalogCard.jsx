@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
 import { useRailExtras } from '../../railExtras'
-import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
+import { useSheetChrome } from '../mobile/CategoryScreen'
+import { SPREAD } from '../mobile/device'
 
 /**
  * THE WAY IN (2026-10-05/06, decided on the recommendation for review; the user: "what is the

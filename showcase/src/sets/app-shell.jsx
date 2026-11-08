@@ -121,7 +121,6 @@ export default function AppShellSet() {
          * shell needs nothing else); `\` toggles, ⌥1–9 walks the rows (mark
          * first), and the settings row TOGGLES rather than strands. */
         touch={path === '/' ? 'shell' : 'drawer'}
-        railToggleKey="\\"
         navKeys
         settingsPath="/settings"
         settingsKey=","

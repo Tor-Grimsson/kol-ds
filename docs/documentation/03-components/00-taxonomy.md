@@ -3,7 +3,7 @@ title: Component taxonomy
 type: reference
 status: canonical
 created: 2026-07-15
-updated: 2026-11-03
+updated: 2026-11-08
 verified: 2026-07-04
 description: The tier axis and the function axis
 aliases:
@@ -57,7 +57,7 @@ Apps           a whole tool           studio-hub, metric
 - **Not the classic atomic ladder.** There is no templates/pages tier; Module is the one layer above organisms.
 - **Module is a layer, not an example set.** A showcase example that is only one organism in a frame is not a module: the organism is the thing.
 - **A component that holds a rail** is a Module if it is the page layout, and an Organism if it is one region of a page.
-- **ButtonGroup is a molecule.** It paints buttons, stacked or in a row, and replaces the 2026-08-09 utilities call below.
+- **ButtonGroup is a molecule.** It paints buttons, stacked, in a row or joined (`layout="joined"`, the segmented control, 2026-11-06), and replaces the 2026-08-09 utilities call below.
 - Figma's library uses this same tree (`.kol/llm-context/plan-2026-11-03-figma-mirrors-showcase.md`).
 
 ---
@@ -86,6 +86,10 @@ Placement moves the same day: `CloseButton` → atoms (a Button wearing an IconF
 
 The component audit scanned sixty atoms for what they render. Moved to molecules: `ChessBoard` (a board is pieces arranged; the piece is the atom) · `ColorSwatch` (a chip, its transparency mark and its tooltip) · `ActionButton` (a button, a tooltip and a confirm state) · `RailSection` (a toggle, a link, a count and a body) · `ClearspaceDiagram` (three drawings composed into one figure).
 
+### CloseButton and the two overlays become molecules (2026-11-07)
+
+`CloseButton` composes a `Button` and an `IconFrame`, so it is a molecule, the same call as `CopyButton` (an `ActionButton`). The import law then moved two more: `FullscreenOverlay` composes a `CloseButton` and `LoaderOverlay` wraps `FullscreenOverlay`, and a utility may not import a molecule, so both left utilities for molecules. The barrel names are unchanged and the old deep paths (`atoms/CloseButton`, `utilities/FullscreenOverlay`, `utilities/LoaderOverlay`) stay as `exports` aliases on the retirement ledger. `SwatchTile` joins the same day: a ColorSwatch with its name and value, a molecule. Its caption is `SwatchCaption` (0.351.0), a molecule of its own, as `ContentText` is for the card family.
+
 **Control + label + value is a molecule; the bare control is the atom.** `RotaryDial`, `Knob` and `Fader` each draw a label and a readout beside the control, so they are molecules as shipped — the same shape as `Slider`, which always was one. This supersedes Test 3's `RotaryDial` example below: elaborate behavior still never promotes, a label and a readout do. A bare dial or track without them is not yet split out as its own atom.
 
 ### KOL Tier IS real atomic — the import test is repealed (2026-08-09)
@@ -98,7 +102,7 @@ From 2026-07-04 to 2026-08-09 the tiers were derived from a **mechanical import 
 
 Deliberate boundary calls, so they aren't relitigated:
 
-1. **Single-value selection controls are atoms** — `SegmentedToggle`, `ViewToggle`, `ToggleBracket`. Their cells are options of ONE control (role=radiogroup), not Buttons.
+1. **Single-value selection controls are atoms** — `ViewToggle`, `ToggleBracket`. Their cells are options of ONE control (role=radiogroup), not Buttons. The segmented control left this rule 2026-11-06: it is `ButtonGroup layout="joined"` (a molecule — a group of buttons; `SegmentedToggle` is its alias).
 2. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`: an Input visibly composed with adjuncts.
 3. **One element with elaborate behavior is still an atom** — `RotaryDial`: a single control, however much it does. *(CurveOverlay left for utilities 2026-09-30 — it paints only over a target.)* *(Reworded 2026-08-09 night — the original examples all left atoms the same day: `TiltCard` and `AsciiCursor` to utilities on the paints-and-stands law — fixed-position whole-viewport chrome fails "stands alone", the ExitPreview precedent — and `InteractiveImage` retired to `_tmp/` on zero consumers. The call itself stands: elaborateness never promotes.)*
 4. **`Icon`/`Graphic` never affect tier** — loader infrastructure, invisible to the judgment.

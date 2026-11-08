@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Button, Dropdown, Tooltip } from '@kolkrabbi/kol-component'
 import { SettingsRow } from '@kolkrabbi/kol-component'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../state'
+import { editLayer } from '../../generate/store'
 import { findLayerDeep } from '../helpers'
 import { useLayerEdit } from '../useLayerEdit'
 import { useGeneratorLibrary } from '../../library/LibraryProvider'
@@ -54,7 +55,9 @@ const SUBTAB_OPTIONS = [
  * control) — leaves any future non-styling params. */
 const TEXT_PARAMS_SCHEMA = TEXT_SCHEMA.filter((p) => !TEXT_TAB_KEYS.has(p.key))
 
-export default function ParametersPanel() {
+/* `only` (the float inspector, plan-2026-11-05-float-editor W2b): the subtabs this mount shows — his Design tab takes
+ * Generate · Style, his Motion tab Animation alone (no strip when one is left). Omitted, all three, as the rails have it. */
+export default function ParametersPanel({ only }) {
   const { selectedId, layers } = useComposeState()
   const layer = selectedId && selectedId !== 'canvas' ? findLayerDeep(layers, selectedId) : null
 
@@ -63,22 +66,23 @@ export default function ParametersPanel() {
       {/* Header (title + delete) is shared in SelectionPalettePanel. */}
       <div className="kol-compose-inspector-body">
         {layer
-          ? <LayerParameters key={layer.id} layer={layer} />
+          ? <LayerParameters key={layer.id} layer={layer} only={only} />
           : <Hint always>Select a layer to edit its parameters.</Hint>}
       </div>
     </div>
   )
 }
 
-function LayerParameters({ layer }) {
-  const { updateLayer, convertShapeToPath, palette } = useComposeState()
+function LayerParameters({ layer, only }) {
+  const { updateLayer, convertShapeToPath, flattenGenerate, flattenRepeat, palette } = useComposeState()
   const edit = useLayerEdit(layer.id, { history: 'coalesce' })
   const setProp = edit.setProp
   const cs = useControlSize()
-  const [tab, setTab] = useState('style')
+  const [tab, setTab] = useState(() => (!only || only.includes('style') ? 'style' : only[0]))
+  const subtabs = only ? SUBTAB_OPTIONS.filter((o) => only.includes(o.value)) : SUBTAB_OPTIONS
   /* Deep-link a subtab (context menu's "Morph" lands on Style). */
   useEffect(() => {
-    const onSubtab = (e) => { if (e.detail?.tab) setTab(e.detail.tab) }
+    const onSubtab = (e) => { if (e.detail?.tab && (!only || only.includes(e.detail.tab))) setTab(e.detail.tab) }
     window.addEventListener('kol:params-subtab', onSubtab)
     return () => window.removeEventListener('kol:params-subtab', onSubtab)
   }, [])
@@ -88,7 +92,7 @@ function LayerParameters({ layer }) {
   const shared = { layer, setProp, patch: edit.patch, updateLayer, palette, renderAnimate, tab, inline: true }
   /* the mode strip on the rail's rung (spec R3.2, R6.3 — the user's 18: it was the DS
    * default md, 32px beside 26px fields) */
-  const tabStrip = <SegmentedToggle size={cs} className="w-full" value={tab} onChange={setTab} options={SUBTAB_OPTIONS} />
+  const tabStrip = subtabs.length > 1 ? <ButtonGroup layout="joined" size={cs} className="w-full" value={tab} onChange={setTab} options={subtabs} /> : null
 
   let body = null
   /* Loop places the strip itself — Category/Preset stay above it. */
@@ -114,6 +118,15 @@ function LayerParameters({ layer }) {
         )}
       </>
     )
+  } else if (layer.type === 'generate' || layer.type === 'repeat') {
+    /* plan 52 / 53 (fxr's, W7.6): the settings live in the tool's Rail and dialog; the inspector opens them and expands */
+    const tool = layer.type
+    body = tab === 'generate' ? (
+      <div className="flex flex-col gap-2">
+        <Button tone="primary" size={cs} className="w-full" onClick={() => editLayer(tool, layer)}>{tool === 'generate' ? 'Generate settings…' : 'Repeat settings…'}</Button>
+        <Button tone="secondary" size={cs} className="w-full" onClick={() => (tool === 'generate' ? flattenGenerate : flattenRepeat)(layer.id)}>Expand</Button>
+      </div>
+    ) : null
   } else if (layer.type === 'text') {
     body = <TextFields {...shared} />
   } else if (layer.type === 'pattern') {

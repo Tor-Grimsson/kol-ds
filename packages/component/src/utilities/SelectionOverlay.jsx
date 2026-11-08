@@ -51,6 +51,11 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {string}   accentColor  outline + handle + label color (default var(--kol-accent-primary))
  * @param {Function} labelFormatter (box) => string — dimension readout (default `${round(w)} × ${round(h)}`)
  * @param {string}   rotateTitle  tooltip on the rotate handle (default 'Rotate')
+ * @param {'float'}  variant      THE FLOAT LOOK (plan-2026-11-05-float-editor W2.6; his frame 19:6066 — "New text" ·
+ *                                "600 × 160"): a solid 1px oq-64 outline, 6 square handles filled at full ink, the
+ *                                rotate handle a 6 circle, `name` above the box's top-left (`kol-float-label`, oq-64) and
+ *                                the size cap under it (`kol-float-ruler` on oq-08, the float list round). Unset, as before
+ * @param {string}   name         the object's name, drawn above the box by the float look
  */
 const HANDLE_DIRS = [
   { dir: 'NW', cursor: 'nwse-resize', x: 0,    y: 0    },
@@ -76,6 +81,8 @@ export default function SelectionOverlay({
   accentColor = 'var(--kol-accent-primary)',
   labelFormatter = (b) => `${Math.round(b.w)} × ${Math.round(b.h)}`,
   rotateTitle = 'Rotate',
+  variant,
+  name,
 }) {
   /* Chrome renders in virtual px inside the zoomed transform — divide by zoom
    * so handles / outline / label stay screen-constant at any zoom. 1 outside a
@@ -83,6 +90,7 @@ export default function SelectionOverlay({
   const zoom = useContext(CanvasZoomContext)
 
   if (!box || box.x == null) return null  /* no positional box → no chrome */
+  if (variant === 'float') return <FloatSelection box={box} zoom={zoom} showHandles={showHandles} showRotate={showRotate} showLabel={showLabel} name={name} labelFormatter={labelFormatter} rotateTitle={rotateTitle} />
 
   const { x, y, w, h } = box
   const size = handleSize / zoom
@@ -192,6 +200,44 @@ export default function SelectionOverlay({
         >
           {labelText}
         </span>
+      )}
+    </>
+  )
+}
+
+/* the float look — the same handles and data-handle routing, drawn as his frame draws the selection; every screen-constant
+ * size divides by the zoom (6 handles, the 1px outline) and the two labels counter-scale, as the default look does */
+function FloatSelection({ box, zoom, showHandles = true, showRotate, showLabel = true, name, labelFormatter, rotateTitle }) {
+  const { x, y, w, h } = box
+  const size = 6 / zoom
+  const rotate = showRotate ?? showHandles
+  const rot = typeof box.rotation === 'number' ? box.rotation : 0
+  const ink = 'var(--kol-surface-on-primary)'
+  const counter = { transform: `scale(${1 / zoom})`, pointerEvents: 'none', whiteSpace: 'nowrap', zIndex: 100 }
+  return (
+    <>
+      <div style={{ position: 'absolute', left: x, top: y, width: w, height: h, transform: rot ? `rotate(${rot}deg)` : undefined, pointerEvents: 'none', zIndex: 100 }}>
+        <div style={{ position: 'absolute', inset: 0, boxShadow: `0 0 0 ${1 / zoom}px var(--kol-oq-64)` }} />
+        {rotate && (
+          <Tooltip label={rotateTitle} asChild>
+            <div data-handle="ROT" style={{ position: 'absolute', left: `calc(50% - ${size / 2}px)`, top: -(ROTATE_OFFSET / zoom), width: size, height: size, borderRadius: '50%', background: ink, cursor: 'grab', pointerEvents: 'auto' }} />
+          </Tooltip>
+        )}
+        {showHandles && HANDLE_DIRS.map(({ dir, cursor, x: hx, y: hy }) => (
+          <div key={dir} data-handle={dir} style={{ position: 'absolute', left: `calc(${hx * 100}% - ${size / 2}px)`, top: `calc(${hy * 100}% - ${size / 2}px)`, width: size, height: size, background: ink, cursor, pointerEvents: 'auto' }} />
+        ))}
+      </div>
+      {/* each label hangs off a zero-size anchor so the counter-scale keeps its edge on the anchor */}
+      {showLabel && name && (
+        <div style={{ position: 'absolute', left: x, top: y - 8 / zoom, width: 0, height: 0, zIndex: 100 }}>
+          <span className="kol-float-label text-oq-64" style={{ ...counter, position: 'absolute', left: 0, bottom: 0, transformOrigin: 'left bottom' }}>{name}</span>
+        </div>
+      )}
+      {showLabel && (
+        <div style={{ position: 'absolute', left: x + w / 2, top: y + h + 8 / zoom, width: 0, height: 0, zIndex: 100 }}>
+          <span className="kol-float-ruler text-emphasis bg-oq-08 rounded-[var(--kol-float-list-r)] px-2 py-1"
+            style={{ ...counter, position: 'absolute', left: 0, top: 0, transform: `translateX(-50%) scale(${1 / zoom})`, transformOrigin: 'top center' }}>{labelFormatter(box)}</span>
+        </div>
       )}
     </>
   )

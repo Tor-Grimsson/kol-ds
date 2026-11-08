@@ -3,10 +3,7 @@ import { Button } from '@kolkrabbi/kol-component'
 import { GENERATIVE_TREE } from '../../loops/taxonomy'
 import { GROUP_ICONS } from '../labs/catalog'
 import { transport } from '../params/transport'
-
-/* Full-width card row: label pinned left, glyph pinned right (Button centers
- * its content span by default — stretch it and spread). */
-export const SPREAD = 'w-full [&>span]:w-full [&>span]:justify-between'
+import { SPREAD } from './device'
 
 /**
  * Sheet chrome shared by every full-screen mobile picker: Esc closes, and

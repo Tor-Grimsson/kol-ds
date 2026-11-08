@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControl, LabeledControlSection, SegmentedToggle, SettingsRow, ToggleSwitch, Slider, Input, Tooltip, XYPad } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, LabeledControlSection, ButtonGroup, SettingsRow, ToggleSwitch, Slider, Input, Tooltip, XYPad } from '@kolkrabbi/kol-component'
 import { PickerRow, PickerDropdown } from './TreePicker'
 import { useComposeState } from '../state'
 import { findLayerDeep } from '../helpers'
@@ -184,14 +184,14 @@ function LayerEffects({ layer }) {
               )}
               {stage.def.orbit && (
                 <SettingsRow label="Camera drag" align="fill" labelWidth={RAIL_LABEL_W}>
-                  <SegmentedToggle size={cs} className="w-full"
+                  <ButtonGroup layout="joined" size={cs} className="w-full"
                     options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
                     value={layer.cameraDrag ? 'on' : 'off'}
                     onChange={(v) => setStageProp('cameraDrag', v === 'on')}
                   />
                 </SettingsRow>
               )}
-              <SegmentedToggle size={cs} className="w-full" value={tab} onChange={setTab} options={FX_TABS} />
+              <ButtonGroup layout="joined" size={cs} className="w-full" value={tab} onChange={setTab} options={FX_TABS} />
               {tab === 'effect' && (
                 <>
                   <AutoControls schema={effectParams} layer={paramsView} setProp={setStageProp} palette={palette} renderAnimate={renderAnimate} />

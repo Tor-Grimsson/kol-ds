@@ -92,6 +92,13 @@ export const TIERS = {
   LinkCard: 'molecules', CoverTile: 'molecules', ContinueCard: 'molecules', AssetRow: 'molecules',
   LiveCard: 'molecules', NoteCard: 'molecules', PositionBlock: 'molecules',
   Legend: 'atoms', WeeklyBars: 'atoms', ProportionBar: 'atoms',
+  /* the metric page's parts (W5.1, 2026-11-04): a badge, a dot key, an icon, a bar are atoms; a tile row, a head, a
+   * table of goals, a chart with its key are assemblies; a map, a trend, a funnel and the explorer are single
+   * drawings with their own state; the TopStats card and the behaviours card hold whole bodies */
+  ChangeBadge: 'atoms', DeltaBadge: 'atoms', ColorKey: 'atoms', CalendarIcon: 'atoms', SegmentBar: 'atoms',
+  MetricTiles: 'molecules', ChartHead: 'molecules', GoalsTable: 'molecules', RecordsTable: 'molecules', ChartWithLegend: 'molecules',
+  TrendChart: 'molecules', WorldMap: 'molecules', FunnelChart: 'molecules', JourneyExplorer: 'organisms',
+  TopStats: 'organisms', Behaviours: 'organisms',
   MetricsDashboard: 'organisms',
   /* kol-workshop */
   /* RailSection is a MOLECULE (user ruling 2026-10-01): a toggle, a link, a count and a body —
@@ -154,6 +161,8 @@ export const TIERS = {
   ToolRail: 'molecules', DocumentCapsule: 'molecules', GlobalActions: 'molecules', PanelsRestore: 'molecules', ReaderBar: 'molecules', ProgressDock: 'molecules',
   RailTrigger: 'molecules', RailFlyout: 'molecules', RailDisplayControls: 'molecules', AccountFooter: 'molecules', Breadcrumb: 'molecules', FooterStrip: 'molecules', PeriodNav: 'molecules', DataStatus: 'molecules',
   PropertyRail: 'organisms', TopControlsBar: 'organisms',
+  /* the app's menu bar (plan-2026-11-05-float-editor W1.1) */
+  MenuBar: 'organisms',
   SettingsScaffold: 'organisms', HubSettings: 'organisms', HubSettingsRail: 'organisms', HubDev: 'organisms', HubHome: 'organisms',
   CatalogPage: 'organisms', AppHub: 'modules', AppStudio: 'modules', StudioCreate: 'organisms', StudioDetail: 'organisms', StudioCreateAction: 'atoms', CatalogGrid: 'molecules',
   PageShell: 'modules', FloatLayout: 'modules',
@@ -212,15 +221,17 @@ export const FUNCTIONS_BY_NAME = {
   /* the float parts (float-everything W2 · W3 · W4, 2026-11-04) */
   Delta: 'display', LiveDot: 'display', SizeChip: 'display', ValueField: 'display', ThemeTile: 'input',
   FieldPair: 'input', PasswordInput: 'input', InlineAddRow: 'input', LinkAddRow: 'input', ColorField: 'input',
-  PanelsMenu: 'overlay', WorkspaceSwitcher: 'input', AccountMenu: 'overlay',
+  PanelsMenu: 'overlay', ModalHeader: 'overlay', WorkspaceSwitcher: 'input', AccountMenu: 'overlay',
   /* float-everything W6 · W8 (0.335.0) */
+  /* the generator settings window's new controls (plan-2026-11-05-float-editor W7.2) */
+  SettingsRamp: 'input', SettingsRange: 'input', SettingsPoint: 'input', SettingsLights: 'input', SettingsFieldMap: 'display',
   SummaryLine: 'display', QuickLookHeader: 'overlay', NoticeBanner: 'display', NavDrawer: 'navigation',
   TreeRow: 'navigation', FlyoutRow: 'navigation', TocRow: 'navigation', LayerRow: 'input', IndexRow: 'display', TaskRow: 'input',
   /* float-everything W11 — calendar + reader (0.336.0) */
   CalendarTimeline: 'display', CalendarMonth: 'display', CalendarWeek: 'display', CalendarDay: 'display',
   ReadingColumn: 'display', ReadingHighlight: 'display', ReadingActions: 'action', ReadingChapterNav: 'navigation',
   ReadingContents: 'navigation', ReadingPanel: 'overlay', ReadingNotes: 'input', ReadingSettings: 'input', ReadingOverview: 'display',
-  ColorSwatch: 'display', TransparentX: 'display', CodeBlock: 'display',
+  ColorSwatch: 'display', SwatchTile: 'display', SwatchCaption: 'display', TransparentX: 'display', CodeBlock: 'display',
   Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
@@ -293,6 +304,7 @@ export const FUNCTIONS_BY_NAME = {
   ReaderBar: 'navigation', ProgressDock: 'navigation', RailTrigger: 'navigation', RailFlyout: 'navigation', RailDisplayControls: 'action',
   AccountFooter: 'display', Breadcrumb: 'wayfinding', FooterStrip: 'display', PeriodNav: 'navigation', DataStatus: 'feedback',
   FloatLayout: 'structure',
+  MenuBar: 'navigation',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
    * never barrel exports; the real system parts are rostered instead) */
@@ -395,6 +407,10 @@ export const FUNCTIONS_BY_NAME = {
   LinkCard: 'navigation', CoverTile: 'media', ContinueCard: 'display', AssetRow: 'display',
   LiveCard: 'display', NoteCard: 'display', PositionBlock: 'display',
   Legend: 'display', WeeklyBars: 'display', ProportionBar: 'display',
+  ChangeBadge: 'display', DeltaBadge: 'display', ColorKey: 'display', CalendarIcon: 'display', SegmentBar: 'display',
+  MetricTiles: 'display', ChartHead: 'structure', GoalsTable: 'display', RecordsTable: 'display', ChartWithLegend: 'display',
+  TrendChart: 'display', WorldMap: 'display', FunnelChart: 'display', JourneyExplorer: 'display',
+  TopStats: 'display', Behaviours: 'display',
   MetricsDashboard: 'display',
   /* workshop */
   ShellLayout: 'structure', ShellNavColumn: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
@@ -469,6 +485,11 @@ export const EXEMPT = {
   PageBleed: 'member-of:PageShell',
   LabeledControlSection: 'member-of:SettingsPanel', SettingsRow: 'member-of:SettingsPanel', SettingsSwitch: 'member-of:SettingsPanel', SettingsChoice: 'member-of:SettingsPanel',
   SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
+  /* the generator settings window's rows (plan-2026-11-05-float-editor W7.2) — shown on Dialog's settings variant; the five
+     controls that are new shapes (ramp, range, point, lights, field map) have their own pages */
+  SettingsGroup: 'member-of:Dialog', SettingsGrid: 'member-of:Dialog', SettingsCell: 'member-of:Dialog', SettingsSlider: 'member-of:Dialog',
+  SettingsSelect: 'member-of:Dialog', SettingsSegmented: 'member-of:Dialog', SettingsToggle: 'member-of:Dialog', SettingsText: 'member-of:Dialog',
+  SettingsRampHead: 'member-of:SettingsRamp', SettingsDisclosure: 'member-of:Dialog',
   /* the rail kit (RailKit 2026-10-24): the parts of a Rail's content; RailSection · RailRow are aliases of the two above */
   RailHeader: 'member-of:Rail', RailTabs: 'member-of:Rail', RailHint: 'member-of:Rail', RailActions: 'member-of:Rail', RailFoot: 'member-of:Rail', RailNav: 'member-of:Rail', RailSection: 'member-of:Rail', RailRow: 'member-of:Rail',
   AudioTile: 'member-of:KindPreview', VideoTile: 'member-of:KindPreview', DocFrontmatter: 'member-of:DocPage',
@@ -500,6 +521,8 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'MenuPopover', 'QuantityStepper',
+  /* SegmentedToggle = ButtonGroup layout="joined" (2026-11-06, plan-2026-11-06-buttons-page 2.7) */
+  'SegmentedToggle',
   /* MenuDropdownItem · MenuDropdownDivider · MenuDropdownNest = MenuRow · MenuDivider · MenuFlyout (2026-10-31, the Menu* family) */
   'MenuDropdownItem', 'MenuDropdownDivider', 'MenuDropdownNest',
   /* the lab family's names (2026-10-29, BrandLabToolGaps): TypeScaleLab = TypeLab, LockupBuilder = LockupLab */
@@ -594,7 +617,7 @@ export const NO_PREVIEW = (() => {
     ...debt(['FontViewerComponent', 'FontViewerSection'],
       'foundry font-viewer parts; the deferred @kol/fontviewer engine is their real story'),
     ...Object.fromEntries(['NotesCatalog', 'NoteEditor', 'NoteThumb'].map((n) => [n, 'a part of the notes tool — it reads the '
-      + 'tool\'s client, so it is shown inside the Notes preview (the apps/notes entry on the fixture, 2026-10-01)'])),
+      + 'tool\'s client, so it is shown inside the Notes preview (the apps/note entry on the fixture, 2026-10-01)'])),
     ...Object.fromEntries(['BrandBook', 'BrandAssets'].map((n) => [n, 'one of the brand tool\'s two pages — it renders a '
       + 'whole brand manifest, so it is shown inside the Brand preview (the apps/brand-hub entry on Voyager, 2026-10-01)'])),
     LayoutGuide: 'BrandGuide renamed (LayoutGroup, 2026-10-31) — a whole brand guide over a manifest and a chapter list; '

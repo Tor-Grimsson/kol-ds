@@ -1,4 +1,4 @@
-import { TAU, clamp01 } from '../lib/util.js'
+import { TAU, clamp01 } from '../../editor/lib/util.js'
 
 // Halftone dot-matrix engine — a scalar field sampled on a grid of cells, each
 // drawn as a dot/square/ring sized + coloured by the field value. The signature

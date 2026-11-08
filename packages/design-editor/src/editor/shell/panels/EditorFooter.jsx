@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, SegmentedToggle, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControlSection, ButtonGroup, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
@@ -339,7 +339,7 @@ export default function EditorFooter() {
           * canvas (`TransportFab`, the motion pack's `canvas.overlay`), so the row is Output · File. */}
         {/* THE STRIP STAYS A SEGMENTEDTOGGLE on the desk too (the user, 2026-10-09 — plan 23's
           * underline TabsRow, spec R3.1, reverted). On touch a second tap on a cell closes its sheet. */}
-        <SegmentedToggle
+        <ButtonGroup layout="joined"
           value={tab}
           onChange={(v) => (touch ? setTab((t) => (t === v ? null : v)) : setTab(v))}
           options={tabs}

@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-11-04
+updated: 2026-11-05
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -45,9 +45,10 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/media` | `pnpm media` · `/apps/media` | the media tool alone |
 | `apps/metric` | `pnpm metric` · `/apps/metric` | kol-website metric's analytics dashboard (`/demo-11`) as the reference page, on static fixture data (`src/fixtures.json`, captured 2026-10-31; `fixtures.js` answers every `/api/*` call) — MetricDashboardUpstream |
 | `apps/float` | `pnpm float` (5216) · `/apps/float` | the float views on kol-shell's `FloatLayout` — Home lists them, one route each: `visual-editor` (full screen, its own chrome, no layout) · `record-tabs` · `record-float` · `rails` · `workspace` · `metrics`; layout, not function (plan-2026-11-04-float-views; Folio parked for `apps/folio`) |
+| `apps/folio` | `pnpm folio` (5217) · `/apps/folio` | **Folio** (2026-11-05, plan-2026-11-05-folio W1) — kol-website record's ebook library, reader and editor (`apps/record/src/folio` + the catalogue in `src/lib`), copied verbatim: `/` the shelf, `/:collection/*` the reader, `/new` and `/edit/…` the editor (Markdown, code, rich text), `/mockups/*` the static Figma mockups (record's `/demo-3`). Every read and write goes through one client (`src/folio/client.js`: list · read · save · create · convert · meta · upload · assetUrl); `src/fixture` implements it on a dozen public-domain texts in four books, saves kept in localStorage. Its look is its own until his evaluation ruling (W2) |
 | `apps/media-hub` | `pnpm media-hub` (5175) · `/apps/media-hub` | the same tool on kol-shell's `AppHub` — Browse at `/` and Settings, nothing else (2026-09-29: Library, Notes, Decks and Brand left — notes/decks/brand are their own apps). No Home; one settings place (the tool's gear hands over through `onOpenSettings`); the phone bar |
-| `apps/notes` | `pnpm notes` (5177) · `/apps/notes` | the notes tool alone — kol-notes over the fixture's fake D1 `notes` table, through media-fixture's `useNotesTool`. Opens on a blank note (`NEW_NOTE`); the list is `#list` |
-| `apps/notes-hub` | `pnpm notes-hub` (5187) · `/apps/notes-hub` | Shell + Hub + notes — Write (a blank note, `/`) and Notes (`/notes`) on one rail |
+| `apps/note` | `pnpm note` (5177) · `/apps/note` | the notes tool alone — kol-notes over the fixture's fake D1 `notes` table, through media-fixture's `useNotesTool`. Opens on a blank note (`NEW_NOTE`); the list is `#list` |
+| `apps/note-hub` | `pnpm note-hub` (5187) · `/apps/note-hub` | Shell + Hub + notes — Write (a blank note, `/`) and Notes (`/notes`) on one rail |
 | `apps/presentation` | `pnpm presentation` (5178) · `/apps/presentation` | the decks tool alone — kol-deck over the fake D1 `decks` table, through `useDecksTool`; exports PNG · PDF · PPTX · `.deck.json`. Opens on a blank deck (`NEW_DECK`); the shelf is `#list` |
 | `apps/presentation-hub` | `pnpm presentation-hub` (5188) · `/apps/presentation-hub` | Shell + Hub + decks — Edit (a blank deck, `/`) and Decks (`/decks`) on one rail |
 | `apps/brand` | `pnpm brand` (5179) · `/apps/brand` | **the brand home** (2026-10-27) — the front door over `apps/brand-sections` and `apps/brand-lab`: kol-framework's `SiteLayout`, a Home of two cards, and a rail row per app that hands over to it |

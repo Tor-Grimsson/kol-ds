@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { NavRail, useMediaQuery } from '@kolkrabbi/kol-component'
+import { NavRail, CommandOverlay, useMediaQuery, useRailKeys, floatMotion, useFloatPresence } from '@kolkrabbi/kol-component'
 import TopControlsBar from './TopControlsBar.jsx'
 import RailTrigger from './RailTrigger.jsx'
 import RailFlyout from './RailFlyout.jsx'
@@ -22,10 +22,16 @@ import RailDisplayControls from './RailDisplayControls.jsx'
  * @param {string}   currentPath · {Function} onNavigate  `(path) => void`
  * @param {string}   [title] · {string} [icon] · {Function} [onSwitch] · {Function} [onSearch]  the nav Rail's switcher and search
  * @param {'expanded'|'collapsed'|'hidden'} [rail]  the nav Rail's state (controlled); `defaultRail` uncontrolled (default `expanded`) · {Function} [onRailChange]
+ * @param {false|Object} [railKeys]  `\` expanded ↔ collapsed, `⇧\` hide ↔ show (back to its last width) — kol-component's
+ *                                `useRailKeys`, the same prop on AppShell and SiteLayout; `false` off, `{ collapse, hide }` rebinds
+ * @param {'push'|'overlay'} [railMode='push']  `push` lays the rail beside the content (it resizes the page); `overlay` floats it
+ *                                over the content at the frame's 24 inset, so expand, collapse and hide never move the page — the
+ *                                content keeps its full width, the top bar and Panels ⌄ stay where they are, and the hidden
+ *                                state's RailTrigger sits over the bar's start (FloatRailOverlayShadowRestore, 2026-11-04)
  * @param {Array}    [defaultExpanded]  paths of the nav's sections open at mount (NavRail's own; nothing auto-expands)
  * @param {ReactNode} [railFooter] the expanded Rail's foot (default RailDisplayControls: theme · Collapse · Hide)
  * @param {string|string[]} [breadcrumb]  the words beside RailTrigger while the nav is hidden
- * @param {Object}   [bar]         TopControlsBar's props (`document` · `tabs` · `tab` · `onTab` · `onSearch` · `action` · `start` · `center` · `end`); `panels` is the frame's
+ * @param {Object}   [bar]         TopControlsBar's props (`document` · `tabs` · `tab` · `onTab` · `onSearch` · `action` · `menu` · `start` · `center` · `end`); `menu` — `[{ label, icon?, onPress }]` — is FloatActionMenu in the top-right corner; `panels` is the frame's
  * @param {ReactNode} [eyebrow]  a line in the 40 under the bar (float-operational W4.2, 9:14340's WORKSPACE / TASKS): 25 under
  *                                the bar, taking no height, so the content still starts 40 down. Below `md` it sits in flow
  *                                under the bar
@@ -36,14 +42,22 @@ import RailDisplayControls from './RailDisplayControls.jsx'
  * @param {string}   [inspectorLabel]  its name in Panels ▾ (default "Inspector")
  * @param {boolean}  [inspectorHidden]  controlled; `defaultInspectorHidden` uncontrolled · {Function} [onInspectorHiddenChange]
  * @param {'solid'|'glass-dark'|'glass-light'} [surface]  what the floats are made of (default `solid`)
+ * @param {boolean}  [panels=true]  Panels ⌄ (PanelsRestore) in the bar while a Rail is hidden; `false` drops it — the way back is
+ *                                RailTrigger's "Show navigation" row and `⇧\` (FloatSearchAndPanels, 2026-11-04)
+ * @param {Object}   [search]     CommandOverlay's props (`open` · `onClose` · `results` · `query` · `onQueryChange` · `onSelect` …):
+ *                                the search modal, drawn on this frame's `surface`; the app keeps the data
+ * @param {boolean|Object} [motion=true]  the float family's motion, handed to every piece (FloatActionStatesAndMotion,
+ *                                2026-11-04): the nav Rail's expand ↔ collapse (width) and hide ↔ show (the width opens from and
+ *                                closes to 0, fading), RailFlyout and RailTrigger's card in and out, the search modal, and the
+ *                                + and its card. `true` the `--kol-float-*` tokens · `false` none · `{ duration, ease }` per app
  * @param {ReactNode} children     the content
  * @param {string}   [className]
  */
 export default function FloatLayout({
   nav = [], currentPath = '', onNavigate, title, icon, onSwitch, onSearch,
-  rail, defaultRail = 'expanded', onRailChange, defaultExpanded, railFooter, breadcrumb,
+  rail, defaultRail = 'expanded', onRailChange, railKeys, railMode = 'push', defaultExpanded, railFooter, breadcrumb,
   bar = {}, eyebrow, inspector, bottom, inspectorLabel = 'Inspector', inspectorHidden, defaultInspectorHidden = false, onInspectorHiddenChange,
-  surface = 'solid', children, className = '',
+  surface = 'solid', panels = true, search, motion = true, children, className = '',
 }) {
   const [ownRail, setOwnRail] = useState(defaultRail)
   const [ownHidden, setOwnHidden] = useState(defaultInspectorHidden)
@@ -56,9 +70,20 @@ export default function FloatLayout({
 
   const phone = useMediaQuery('(max-width: 767px)')
   const shown = phone ? 'hidden' : railNow
+  const overlay = railMode === 'overlay'
+  const fm = floatMotion(motion)
+  /* the rail is held while it hides, so its width closes to 0 instead of the page jumping (FloatActionStatesAndMotion) */
+  const railShown = shown !== 'hidden'
+  const railPresence = useFloatPresence(railShown, fm.rail)
+  const lastRail = useRef(shown)
+  if (railShown) lastRail.current = shown
+  const railState = railShown ? shown : lastRail.current
 
   // the hover flyout: a section's rows beside the 72 Rail, kept open while the pointer is on the slot or the card
   const [fly, setFly] = useState(null)
+  /* the last card is kept so RailFlyout can play its leave after `fly` clears */
+  const lastFly = useRef(null)
+  if (fly) lastFly.current = fly
   const timer = useRef(0)
   const hold = () => clearTimeout(timer.current)
   const drop = () => { hold(); timer.current = setTimeout(() => setFly(null), 160) }
@@ -68,6 +93,12 @@ export default function FloatLayout({
     setFly(item.sub?.length ? { item, el } : null)
   }
 
+  /* the rail keys (useRailKeys): `\` 280 ↔ 72, `⇧\` hide ↔ show at its last width (`lastShown`) */
+  useRailKeys(railKeys, {
+    onCollapse: () => { if (railNow !== 'hidden') { setFly(null); setRail(railNow === 'expanded' ? 'collapsed' : 'expanded') } },
+    onHide: () => setRail(railNow === 'hidden' ? lastShown.current : 'hidden'),
+  })
+
   const restore = [
     ...(railNow === 'hidden' && !phone ? [{ label: 'Navigation', icon: 'panel-left', onPress: () => setRail(lastShown.current) }] : []),
     ...(inspector && hidden ? [{ label: inspectorLabel, icon: 'panel-right', onPress: () => setHidden(false) }] : []),
@@ -75,18 +106,19 @@ export default function FloatLayout({
   const body = typeof inspector === 'function' ? inspector({ hide: () => setHidden(true) }) : inspector
 
   return (
-    <div className={`kol-float-layout flex h-dvh gap-6 overflow-hidden bg-surface-primary p-6 max-md:p-4 ${className}`.trim()}>
-      {shown !== 'hidden' && (
-        <NavRail variant="float" items={nav} currentPath={currentPath} onNavigate={onNavigate}
-          collapsed={shown === 'collapsed'} onCollapsedChange={(c) => { setFly(null); setRail(c ? 'collapsed' : 'expanded') }}
+    <div className={`kol-float-layout relative flex h-dvh gap-6 overflow-hidden bg-surface-primary p-6 max-md:p-4 ${className}`.trim()} style={fm.style}>
+      {railPresence.mounted && (
+        <NavRail variant="float" items={nav} currentPath={currentPath} onNavigate={onNavigate} motion={motion}
+          collapsed={railState === 'collapsed'} onCollapsedChange={(c) => { setFly(null); setRail(c ? 'collapsed' : 'expanded') }}
           title={title} icon={icon} onSwitch={onSwitch} onSearch={onSearch} onHide={() => setRail('hidden')}
           onItemHover={shown === 'collapsed' ? onItemHover : undefined} defaultExpanded={defaultExpanded}
-          footer={shown === 'expanded' ? (railFooter ?? <RailDisplayControls onCollapse={() => setRail('collapsed')} onHide={() => setRail('hidden')} />) : undefined}
-          className="shrink-0" />
+          footer={railState === 'expanded' ? (railFooter ?? <RailDisplayControls onCollapse={() => setRail('collapsed')} onHide={() => setRail('hidden')} />) : undefined}
+          className={`${overlay ? 'absolute inset-y-6 left-6 z-[var(--kol-z-sticky)] !h-auto' : 'shrink-0'}${railPresence.entering ? ' is-entering' : ''}${railPresence.exiting ? ' is-exiting' : ''}`} />
       )}
-      {shown === 'collapsed' && fly && (
+      {shown === 'collapsed' && lastFly.current && (
         <span className="contents" onMouseEnter={hold} onMouseLeave={drop}>
-          <RailFlyout icon={fly.item.icon} title={fly.item.label} items={fly.item.sub} active={currentPath} anchor={fly.el} surface={surface}
+          <RailFlyout icon={lastFly.current.item.icon} title={lastFly.current.item.label} items={lastFly.current.item.sub} active={currentPath}
+            anchor={lastFly.current.el} open={!!fly} surface={surface} motion={motion}
             onOpenChange={(o) => { if (!o) setFly(null) }}
             onPick={(i) => { setFly(null); if (i.path) onNavigate?.(i.path) }} />
         </span>
@@ -94,8 +126,10 @@ export default function FloatLayout({
       <div className="flex min-w-0 flex-1 flex-col gap-10 max-md:gap-6">
         <div className="relative min-w-0 shrink-0">
           <div className="flex min-w-0 items-center gap-4">
-            {shown === 'hidden' && <RailTrigger items={nav} currentPath={currentPath} onNavigate={onNavigate} title={title} breadcrumb={phone ? undefined : breadcrumb} surface={surface} className="shrink-0" />}
-            <TopControlsBar {...bar} panels={restore.length ? { items: restore } : undefined} surface={surface}
+            {shown === 'hidden' && <RailTrigger items={nav} currentPath={currentPath} onNavigate={onNavigate} title={title} breadcrumb={phone ? undefined : breadcrumb} surface={surface} motion={motion}
+              onRestore={phone ? undefined : () => setRail(lastShown.current)}
+              className={overlay && !phone ? 'absolute inset-y-0 left-0 z-[var(--kol-z-sticky)]' : 'shrink-0'} />}
+            <TopControlsBar motion={motion} {...bar} panels={panels && restore.length ? { items: restore } : undefined} surface={surface}
               className={`min-w-0 flex-1 max-md:overflow-x-auto max-md:[scrollbar-width:none] ${bar.className ?? ''}`.trim()} />
           </div>
           {eyebrow && <div className="kol-float-layout-eyebrow absolute inset-x-0 top-full pt-[25px] max-md:static max-md:pt-6">{eyebrow}</div>}
@@ -108,6 +142,7 @@ export default function FloatLayout({
           {bottom && <div className="kol-float-layout-bottom min-w-0 shrink-0">{bottom}</div>}
         </div>
       </div>
+      {search && <CommandOverlay {...search} surface={surface} motion={motion} />}
     </div>
   )
 }

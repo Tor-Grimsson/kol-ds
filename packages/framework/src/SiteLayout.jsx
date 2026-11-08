@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useRef, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 import SideNav from './SideNav.jsx'
-import { Button, ModalProvider } from '@kolkrabbi/kol-component'
+import { Button, ModalProvider, useRailKeys } from '@kolkrabbi/kol-component'
 
 /* Pages can register right-rail TOC content via this context.
  * Usage: const setTocContent = useContext(ShellTocContext)
@@ -68,10 +68,13 @@ export const ShellTocCollapsedContext = (globalThis[Symbol.for('@kolkrabbi/kol-f
  * @param {object}    sideNav            every SideNav prop this layout does not own, spread onto the rail
  * @param {string}    pageWash           the plane's wash, a CSS color (e.g. `'var(--kol-fg-02)'`)
  * @param {boolean}   bare               plane + outlet only (default false)
+ * @param {false|object} railKeys         `\` expands ↔ collapses the rail (its own `kol-sidenav` state), `⇧\` hides ↔ shows
+ *                                       it (kept under `kol-sidenav-hidden`; the phone drawer ignores it) — kol-component's
+ *                                       `useRailKeys`, the same prop on AppShell and FloatLayout; `false` off, `{ collapse, hide }` rebinds
  */
 const NARROW = '(max-width: 767px)'
 
-export default function SiteLayout({ navTree = [], header, footer, defaultTocContent, sideNav, pageWash, bare = false }) {
+export default function SiteLayout({ navTree = [], header, footer, defaultTocContent, sideNav, pageWash, bare = false, railKeys }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   /* DRAWER MODE below 768 — a width query, as AppShell's `drawerBelow`; JS owns the breakpoint and
    * stamps `data-rail-drawer` on the root, the CSS only paints */
@@ -83,6 +86,18 @@ export default function SiteLayout({ navTree = [], header, footer, defaultTocCon
     return () => mq.removeEventListener('change', on)
   }, [])
   useEffect(() => { if (!narrow) setDrawerOpen(false) }, [narrow])
+  /* THE RAIL KEYS (RailShortcutsAllFrames, 2026-11-04): `\` presses the rail's own collapse toggle (useDragResize, persisted
+   * as `kol-sidenav`), `⇧\` hides the rail — its track goes to 0 and it unmounts; showing remounts it in the state it kept */
+  const railToggle = useRef(null)
+  const [railHidden, setRailHidden] = useState(() => { try { return localStorage.getItem('kol-sidenav-hidden') === '1' } catch { return false } })
+  useRailKeys(bare ? false : railKeys, {
+    onCollapse: () => { if (!railHidden) railToggle.current?.() },
+    onHide: () => setRailHidden((h) => {
+      try { if (h) localStorage.removeItem('kol-sidenav-hidden'); else localStorage.setItem('kol-sidenav-hidden', '1') } catch { /* storage blocked */ }
+      return !h
+    }),
+  })
+  const hideRail = railHidden && !narrow
   const [tocContent, setTocContent] = useState(null)
   const [tocCollapsed, setTocCollapsed] = useState(false)
   const { pathname } = useLocation()
@@ -139,6 +154,7 @@ export default function SiteLayout({ navTree = [], header, footer, defaultTocCon
             className="kol-brand-layout bg-surface-primary min-h-dvh"
             data-rail-drawer={narrow ? (drawerOpen ? 'open' : 'closed') : undefined}
             data-toc={showToc ? 'true' : undefined}
+            style={hideRail ? { '--kol-sidenav-w': '0px', '--kol-sidenav-w-collapsed': '0px' } : undefined}
           >
             {/* THE TRIGGER SHIPS HERE, as the app rail's does in AppShell — hamburger closed, × open; 32px clears the
               * 24px touch floor; pinned top-right so it never meets the left-hand panel */}
@@ -162,7 +178,7 @@ export default function SiteLayout({ navTree = [], header, footer, defaultTocCon
               />
             )}
 
-            <SideNav navTree={navTree} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} {...sideNav} />
+            {hideRail ? <div aria-hidden="true" /> : <SideNav navTree={navTree} drawerOpen={drawerOpen} onCloseDrawer={() => setDrawerOpen(false)} toggleRef={railToggle} {...sideNav} />}
             <div className="min-w-0" style={plane}>
               {header}
               <Outlet />

@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 
 // Wave grid — a dot matrix whose dot size is a travelling 2-D wave. Integer time
 // cycles + integer spatial waves ⇒ frame(0)===frame(1).

@@ -8,7 +8,7 @@ const load = (p) => vite.ssrLoadModule(new URL(p, import.meta.url).pathname)
 const { PRESETS, loopById } = await load('../../loops/registry.js')
 const LOOPS = [...new Set(PRESETS.map((p) => loopById(p.loop)))]
 const { FILTERS } = await load('../../filters/index.js')
-const { VP_PARAMS, TIME_PARAMS } = await load('../../loops/lib/viewport.js')
+const { VP_PARAMS, TIME_PARAMS } = await load('../lib/viewport.js')
 const bad = []
 const seen = new WeakSet()
 const check = (owner, p) => {

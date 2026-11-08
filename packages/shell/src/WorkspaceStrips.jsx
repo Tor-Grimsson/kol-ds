@@ -40,24 +40,25 @@ export function StatusStrip({ label, className = '' }) {
 }
 
 /**
- * Breadcrumb — Where the page is (float-everything W9 row 136, 2026-11-04): the crumbs in `kol-float-timecode` (oq-64)
- * with a slash between; a crumb with `onPress` is a button, the last is the page. The exploration's `Breadcrumb and
- * disclosure` (kol-float--style 9:1579).
+ * Breadcrumb — Where the page is (float-everything W9 row 136, 2026-11-04): the crumbs in `kol-float-hint` with a
+ * slash between; a crumb with `onPress` is a button, the last is the page. The root crumb (the app) at the emphasis ink,
+ * every crumb after it and the slashes at oq-48 (plan-2026-11-05-float-editor W1.3, his frame 19:10911 "FXR / Editor /
+ * Still in motion"; was oq-64 throughout, in the timecode role). The exploration's `Breadcrumb and disclosure` (kol-float--style 9:1579).
  *
  * @param {Array} items  `[{ label, onPress? }]` or strings, root first
  * @param {string} className
  */
 export function Breadcrumb({ items = [], className = '' }) {
   return (
-    <nav aria-label="Breadcrumb" className={`kol-breadcrumb kol-float-timecode text-oq-64 flex items-center gap-2 ${className}`.trim()}>
+    <nav aria-label="Breadcrumb" className={`kol-breadcrumb kol-float-hint text-oq-48 flex items-center gap-2 ${className}`.trim()}>
       {items.map((raw, i) => {
         const it = typeof raw === 'string' ? { label: raw } : raw
         const last = i === items.length - 1
         return (
           <span key={i} className="inline-flex items-center gap-2">
             {it.onPress && !last
-              ? <button type="button" onClick={it.onPress} className="bg-transparent border-0 p-0 cursor-pointer text-oq-64 hover:text-oq-96 font-[inherit] text-[length:inherit]">{it.label}</button>
-              : <span aria-current={last ? 'page' : undefined}>{it.label}</span>}
+              ? <button type="button" onClick={it.onPress} className={`bg-transparent border-0 p-0 cursor-pointer ${i === 0 ? 'text-emphasis' : 'text-oq-48'} hover:text-oq-96 font-[inherit] text-[length:inherit]`}>{it.label}</button>
+              : <span aria-current={last ? 'page' : undefined} className={i === 0 ? 'text-emphasis' : undefined}>{it.label}</span>}
             {!last && <span className="text-oq-48">/</span>}
           </span>
         )

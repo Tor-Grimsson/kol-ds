@@ -8,9 +8,13 @@ const instance = figma.selectedInstance
 const headline = instance.getString('headline')
 const body = instance.getString('body')
 const foot = instance.getBoolean('showFoot') ? ' foot={foot} overlap={288}' : ''
+const route = instance.getEnum('route', { "text": "text", "panel": "panel" })
 
 export default {
-  example: figma.code`<SectionHero fullBleed height="h-[90vh]" justify="end" veil overlayOpacity={80} media={media} panel={<SectionText align="center" headline="${headline}" headlineSize="display-01" headlineCase="upper" body="${body}" />}${foot} />`,
+  /* route=panel: the composed route — a caller `panel` over `media` (StackHero, as FullBleedHero) */
+  example: route === 'panel'
+    ? figma.code`<SectionHero media={media} height={height} align="center" panel={panel} />`
+    : figma.code`<SectionHero fullBleed height="h-[90vh]" justify="end" veil overlayOpacity={80} media={media} panel={<SectionText align="center" headline="${headline}" headlineSize="display-01" headlineCase="upper" body="${body}" />}${foot} />`,
   imports: ["import { SectionHero, SectionText } from \"@kolkrabbi/kol-component\""],
   id: 'SectionHero',
 }

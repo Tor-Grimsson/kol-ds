@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { PageHeader, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { PageHeader, ButtonGroup } from '@kolkrabbi/kol-component'
 import { PageShell } from '@kolkrabbi/kol-shell'
 import Parametric from './pages/Parametric.jsx'
 import AppControls from './pages/AppControls.jsx'
@@ -35,7 +35,7 @@ export default function App() {
 
   return (
     <PageShell className="gap-10 [--kol-page-header-mb:0]">
-      <PageHeader title="CONTROLS" actions={<SegmentedToggle value={page} onChange={go} options={PAGES} size="sm" />} />
+      <PageHeader title="CONTROLS" actions={<ButtonGroup layout="joined" value={page} onChange={go} options={PAGES} size="sm" />} />
       <Page />
     </PageShell>
   )

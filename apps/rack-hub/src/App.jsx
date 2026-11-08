@@ -151,7 +151,7 @@ function Studio() {
           /* the case builder's own bottom bar owns the phone's bottom edge (the render gate caught the pill over it) */
           create={{ shell: false, bar: false, children: <RailFrame><CreatePage /></RailFrame> }}
           use={{
-            path: '/rack', label: 'Rack', icon: 'nav-rack',
+            path: '/rack', label: 'Rack', icon: 'rack-v',
             children: (
               <RailFrame>
                 <Routes>

@@ -2,17 +2,16 @@
 // source=packages/component/src/molecules/SearchInput.jsx
 // component=SearchInput
 import figma from 'figma'
-
+// variant default (square control) · float (the capsule); outline is a tone mode
 const instance = figma.selectedInstance
-// variant float (2026-11-04): the capsule on the float well, the ⌘K cap drawn from shortcutHint
+const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
 const size = instance.getEnum('size', { sm: 'sm', md: 'md', lg: 'lg' })
 const placeholder = instance.getString('placeholder')
-const kbd = instance.getBoolean('kbd')
+const hint = instance.getBoolean('kbd') ? ' shortcutHint="⌘K"' : ''
+const v = variant === 'float' ? ' variant="float"' : ''
 const sz = size !== 'md' ? ` size="${size}"` : ''
-const hint = kbd ? ' shortcutHint="⌘K"' : ''
-
 export default {
-  example: figma.code`<SearchInput variant="float" value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} placeholder="${placeholder}"${hint}${sz} />`,
+  example: figma.code`<SearchInput${v} value={query} onChange={(e) => setQuery(e.target.value)} onClear={() => setQuery('')} placeholder="${placeholder}"${hint}${sz} />`,
   imports: ["import { SearchInput } from \"@kolkrabbi/kol-component\""],
   id: 'SearchInput',
 }

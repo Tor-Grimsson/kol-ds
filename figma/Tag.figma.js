@@ -4,16 +4,14 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary", "inverse": "inverse", "float": "float" })
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary" })
+const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
+const active = instance.getEnum('active', { "true": "true", "false": "false" })
 const label = instance.getString('label').replace(/^#/, '')
-const data = instance.getEnum('data', { "true": "true", "false": "false" })
+const xa = active === 'true' ? ' active' : ''
 
-const count = variant === 'float' ? ' count={5}' : ''
 export default {
-  example: data === 'true'
-    ? figma.code`<Tag variant="${variant}" size="${size}" hash={false} className="kol-tag--data">${label}</Tag>`
-    : figma.code`<Tag variant="${variant}" size="${size}"${count}>${label}</Tag>`,
+  example: figma.code`<Tag variant="${variant}" size="${size}"${xa}>${label}</Tag>`,
   imports: ["import { Tag } from \"@kolkrabbi/kol-component\""],
   id: 'Tag',
 }

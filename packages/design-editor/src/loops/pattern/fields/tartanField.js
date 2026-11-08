@@ -1,4 +1,4 @@
-import { TAU } from '../../lib/util.js'
+import { TAU } from '../../../editor/lib/util.js'
 import { SETTS } from './setts.js'
 
 // Tartan — VECTOR bands, not per-pixel. The woven "mix" tone comes for free from

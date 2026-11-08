@@ -167,7 +167,8 @@ export default function useDragResize(ref, options = {}) {
    * `grabProps`, so a consumer already spreading those gets the wake, the
    * travel and the dwell with no change. */
   const grabRef = useRef(null)
-  useGrabEdge(grabRef)
+  /* a top/bottom Rail's handle is a horizontal edge: near on y, pill travels on x (DragResizeBottomWake, 2026-11-04) */
+  useGrabEdge(grabRef, { axis: vertical ? 'x' : 'y' })
   const drag = useRef(null) // { startX, startW, snapPx, maxPx, moved } during a drag
   const defaultPx = useRef(null)
   const collapsedPx = useRef(null)
@@ -331,7 +332,7 @@ export default function useDragResize(ref, options = {}) {
       className: line ? 'kol-rail-grab kol-rail-grab--line' : 'kol-rail-grab',
       ...(line ? { onDoubleClick: toggleCollapsed } : {}),
       role: 'separator',
-      'aria-orientation': 'vertical',
+      'aria-orientation': vertical ? 'horizontal' : 'vertical',
       'aria-label': 'Resize navigation',
       'aria-valuenow': Math.round(collapsed ? collapsedPx.current : (widthPx ?? defaultPx.current)) || undefined,
       'aria-valuemin': collapsedPx.current == null ? undefined : Math.round(collapsedPx.current),

@@ -637,6 +637,29 @@
   flex-shrink: 0;
 }
 
+/* ── Track — the one bar Slider and ProgressBar draw (2026-11-07) ──────────
+ * The slider's track look lives in four tokens: `--kol-track-h` · `-r` · `-bg` ·
+ * `-run`. The range inputs read them in their track pseudo-elements; ProgressBar
+ * draws them on a div (`.kol-track` + `.kol-track-run`). Same variant, same
+ * track. The default track keeps `--kol-slider-track` as an inherited fallback
+ * (declared here, resolved per element, so an ancestor still recolours it); the
+ * default run is the thumb's ink. Float: 3px capsule, oq-16 under fg-64, the run
+ * recoloured by `--kol-slider-float-run`. A tone sets `--kol-track-run` inline. */
+.kol-track, .slider-black {
+  --kol-track-h: 2px;
+  --kol-track-r: 0;
+  --kol-track-bg: var(--kol-slider-track, var(--kol-fg-64));
+  --kol-track-run: var(--kol-surface-on-primary);
+}
+.kol-track--float, .kol-slider-float {
+  --kol-track-h: 3px;
+  --kol-track-r: 999px;
+  --kol-track-bg: var(--kol-oq-16);
+  --kol-track-run: var(--kol-slider-float-run, var(--kol-fg-64));
+}
+.kol-track { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: var(--kol-track-bg); overflow: hidden; }
+.kol-track-run { height: 100%; border-radius: inherit; background: var(--kol-track-run); }
+
 .slider-black {
   /* A FALLBACK, NOT A DECLARATION (SliderTrackVariableNotForwarded, kol-mirror
    * 2026-08-30). This was `--kol-slider-track: var(--kol-fg-64)` set ON the
@@ -665,15 +688,15 @@
 }
 
 .slider-black::-webkit-slider-runnable-track {
-  background: var(--kol-slider-track, var(--kol-fg-64));
-  height: 2px;
-  border-radius: 0;
+  background: var(--kol-track-bg);
+  height: var(--kol-track-h);
+  border-radius: var(--kol-track-r);
 }
 
 .slider-black::-moz-range-track {
-  background: var(--kol-slider-track, var(--kol-fg-64));
-  height: 2px;
-  border-radius: 0;
+  background: var(--kol-track-bg);
+  height: var(--kol-track-h);
+  border-radius: var(--kol-track-r);
 }
 
 .slider-black::-webkit-slider-thumb {
@@ -1487,7 +1510,7 @@ a.kol-icon-frame {
  * ═══════════════════════════════════════════════════════════════ */
 .kol-btn.kol-btn-float {
   height: var(--kol-float-h-md);
-  padding: 0 calc(var(--kol-float-h-md) * 0.42);
+  padding: 0 var(--kol-float-px-md);
   font-family: var(--kol-font-family-float);
   font-size: var(--kol-float-t-md);
   font-weight: 500;
@@ -1501,11 +1524,37 @@ a.kol-icon-frame {
 .kol-control.kol-control--float:focus-within,
 .kol-seg--float .kol-seg-cell:focus-visible,
 .kol-tabs-float .kol-btn.kol-btn-float:focus-visible { outline: none; box-shadow: var(--kol-float-focus); }
+/* the search modal's field is always the focus — CommandOverlay's card draws it ringless (his float-more 30:914) */
+.kol-command .kol-control.kol-control--float:focus-within { box-shadow: none; }
+/* THE INVERTED FLOAT LADDER (FloatActionStatesAndMotion, kol-website 2026-11-04 — user: *"so default is dark - hover is grey -
+ * active is grey and modal is white? that makes no sense?"*). rest the solid ink · hover the SAME fill at
+ * `--kol-float-hover-opacity` · pressed the same fill at `--kol-float-press-scale` · open (pressed) the same fill. The
+ * inverted tone's grey rungs (oq-inverse-40 · -48, control-chrome's "label stays light, no ink swap") stay the square
+ * Button's; on a float the label still never swaps — only the fill stops greying. `.kol-float-action` is FloatActionMenu's
+ * round trigger, which keeps its 40 circle and, as `variant="float"` (`is-float`), adds the float shadow. */
+.kol-btn.kol-btn-float.kol-tone-inverted,
+.kol-btn.kol-float-action {
+  --kol-tone-hover-bg: var(--kol-surface-on-primary);
+  --kol-tone-active-bg: var(--kol-surface-on-primary);
+}
+/* every float button eases its states on the float's own duration and curve (a row too — kol-animation.css) */
+.kol-btn.kol-btn-float,
+.kol-btn.kol-float-action {
+  transition: background-color var(--kol-float-duration) var(--kol-float-ease), color var(--kol-float-duration) var(--kol-float-ease),
+              opacity var(--kol-float-duration) var(--kol-float-ease), scale var(--kol-float-duration) var(--kol-float-ease);
+}
+.kol-btn.kol-float-action.is-float { box-shadow: var(--kol-shadow-float); }
+@media (hover: hover) {
+  .kol-btn.kol-btn-float.kol-tone-inverted:not(:disabled):hover,
+  .kol-btn.kol-float-action:not(:disabled):hover { opacity: var(--kol-float-hover-opacity); }
+}
+.kol-btn.kol-btn-float.kol-tone-inverted:not(:disabled):active,
+.kol-btn.kol-float-action:not(:disabled):active { scale: var(--kol-float-press-scale); }
 .kol-btn.kol-btn-float:disabled,
 .kol-btn.kol-btn-float[aria-disabled="true"],
 .kol-control.kol-control--float:has(input:disabled) { opacity: 0.4; }
-.kol-btn.kol-btn-float.kol-btn-sm { height: var(--kol-float-h-sm); padding: 0 calc(var(--kol-float-h-sm) * 0.42); font-size: var(--kol-float-t-sm); }
-.kol-btn.kol-btn-float.kol-btn-lg { height: var(--kol-float-h-lg); padding: 0 calc(var(--kol-float-h-lg) * 0.42); font-size: var(--kol-float-t-lg); }
+.kol-btn.kol-btn-float.kol-btn-sm { height: var(--kol-float-h-sm); padding: 0 var(--kol-float-px-sm); font-size: var(--kol-float-t-sm); }
+.kol-btn.kol-btn-float.kol-btn-lg { height: var(--kol-float-h-lg); padding: 0 var(--kol-float-px-lg); font-size: var(--kol-float-t-lg); }
 .kol-btn.kol-btn-float.kol-btn-icon { width: var(--kol-float-h-md); padding: 0; }
 .kol-btn.kol-btn-float.kol-btn-icon.kol-btn-sm { width: var(--kol-float-h-sm); }
 .kol-btn.kol-btn-float.kol-btn-icon.kol-btn-lg { width: var(--kol-float-h-lg); }
@@ -1590,14 +1639,14 @@ a.kol-icon-frame {
 .toggle-checkbox--float.is-active .toggle-checkbox-indicator { background-color: transparent; }
 .toggle-checkbox--float:has(input:focus-visible) .toggle-checkbox-indicator { box-shadow: var(--kol-float-focus); }
 .toggle-checkbox--float:has(input:disabled) { opacity: 0.4; }
-/* the slider (row 23): a 3px capsule track, the run fg-64 up to the thumb (`--kol-slider-pct`, set by Slider), a 12 thumb */
+/* the slider (row 23): the float track (`.kol-track--float` tokens, above): a 3px capsule track, the run fg-64 up to the thumb (`--kol-slider-pct`, set by Slider), a 12 thumb; `--kol-slider-float-run` recolours the run (the generator Rails take the ink accent) */
 .kol-slider-float {
   -webkit-appearance: none; appearance: none;
   background: transparent; cursor: pointer; height: 24px; touch-action: pan-y;
 }
-.kol-slider-float::-webkit-slider-runnable-track { height: 3px; border-radius: 999px; background: linear-gradient(var(--kol-fg-64), var(--kol-fg-64)) 0 0 / var(--kol-slider-pct, 0%) 100% no-repeat, var(--kol-oq-16); }
-.kol-slider-float::-moz-range-track { height: 3px; border-radius: 999px; background: var(--kol-oq-16); }
-.kol-slider-float::-moz-range-progress { height: 3px; border-radius: 999px; background: var(--kol-fg-64); }
+.kol-slider-float::-webkit-slider-runnable-track { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: linear-gradient(var(--kol-track-run), var(--kol-track-run)) 0 0 / var(--kol-slider-pct, 0%) 100% no-repeat, var(--kol-track-bg); }
+.kol-slider-float::-moz-range-track { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: var(--kol-track-bg); }
+.kol-slider-float::-moz-range-progress { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: var(--kol-track-run); }
 .kol-slider-float::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 12px; height: 12px; border-radius: 50%; border: 0; margin-top: -4.5px; background: var(--kol-fg-emphasis); }
 .kol-slider-float::-moz-range-thumb { appearance: none; width: 12px; height: 12px; border-radius: 50%; border: 0; background: var(--kol-fg-emphasis); }
 .kol-slider-float:focus-visible { outline: none; }

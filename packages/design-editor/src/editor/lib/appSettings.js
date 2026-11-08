@@ -22,7 +22,7 @@ const VERSION = 1
 const DEFAULTS = {
   version: VERSION,
   defaultAspect: '4:5',   // shell/aspects id — seeds the canvas frame at boot
-  defaultTheme: 'kol',    // loops/lib/themes id — seeds new loop layers' themeId
+  defaultTheme: 'kol',    // editor/lib/themes id — seeds new loop layers' themeId
   autoplay: false,        // transport starts playing on load
   clipToFrame: true,      // new layers/exports crop to the aspect frame
   labsModDots: false,     // labs rail shows bind dots (M / Settings toggle)

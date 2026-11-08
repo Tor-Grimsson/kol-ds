@@ -4,15 +4,12 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-// variant (float-everything W2 row 31, 2026-11-04): float is the 4px capsule track
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
-const xv = variant === 'float' ? ' variant="float"' : ''
-const tone = instance.getEnum('tone', { "default": "default", "success": "success", "warning": "warning", "error": "error", "info": "info" })
+const tone = instance.getEnum('tone', { "default": "default", "success": "success" })
 
 export default {
   example: tone === 'default'
-    ? figma.code`<ProgressBar${xv} value={64} caption />`
-    : figma.code`<ProgressBar${xv} value={64} caption tone="${tone}" />`,
+    ? figma.code`<ProgressBar value={64} caption />`
+    : figma.code`<ProgressBar value={64} caption tone="success" />`,
   imports: ["import { ProgressBar } from \"@kolkrabbi/kol-component\""],
   id: 'ProgressBar',
 }

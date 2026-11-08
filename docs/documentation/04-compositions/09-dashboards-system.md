@@ -46,16 +46,41 @@ One card system for every dashboard, carried from metric's app code (DashboardCa
 | `StatTiles` | `items` (`{ key?, label, value, color?, note?, delta? }`) · `size` sm \| lg · `selected` + `onSelect` · `columns` | number tiles, static or selectable, any count — sm inside a card body (2 across under sm), lg as a section's head (2 · 3 · 6) |
 | `DetailsOverlay` | `open` · `onClose` · `title` · `columns` (`{ key, label, fmt? }`) · `rows` · `loading` | the expanded view: FullscreenOverlay, search, sortable columns |
 
+### The metric page's parts (0.12.0 — apps/metric's own drawing, W5.1)
+
+What apps/metric drew itself, now exported with props for its data and no baked fixture. `variant` only where the look differs.
+
+| Component | Main props | What it is |
+|-----------|-----------|-----------|
+| `TopStats` | `variant` plausible \| colour · `items` · `selected` + `onSelect` · `children` (the chart) | a section's head card: `MetricTiles` (plausible) or `StatTiles size="lg"` flush to the top (colour) over the selected metric's chart |
+| `MetricTiles` | `items` (`{ key, label, value, change?, range?, compare? { value, range }, exact? }`) · `selected` + `onSelect` | the selectable metric row, a hairline between tiles, the comparison under each, the exact count on hover; 2 · 3 · 6 across |
+| `ChartHead` | `title` · `view` + `views` + `onView` · `seriesOptions` (`{ key, label, color }`) + `picked` + `onPicked` | a TopStats chart's header: the title on the rule, a chip row for the views, a ⋮ picking the combined series |
+| `ChangeBadge` | `now` · `then` · `lowerIsBetter` | the change as a percent with an arrow, green the good way |
+| `DeltaBadge` | `kind` count \| duration \| rate · `now` · `then` · `variant="canvas"` | a tile's change: % for counts, seconds for a session, points for a rate |
+| `Behaviours` | `propertyOptions` · `funnels` · `children({ tab, property, funnel })` | the Goals / Properties / Funnels / Explore card; it owns the tab, the function returns the body |
+| `GoalsTable` | `goals` (`{ key, label, uniques, total }`) · `visitors` · `onPick(goal)` · `loading` | goals with a bar behind each label: Uniques, Total, CR |
+| `ColorKey` | `color` · `label` · `value` | a dot key for a card's foot |
+| `RecordsTable` | `columns` · `rows` · `empty` | KOL's simple Table for a card body, or the empty text |
+| `TrendChart` | `metric` (`{ key, label, fmt }`) · `series` (`[cur, prev]`) · `multi` · `unit` · `period` · `onPick` · `color` · `height` (number or `fill`) · `fit` · `loading` | a trend over time buckets: fitted y axis, faint comparison line, dotted unfinished period, tooltip (right click pins) |
+| `ChartWithLegend` | `items` (`{ key, label, color, value? }`) · `children` | a chart over its legend row; without `items` the row stays, empty, so the card never changes height |
+| `SegmentBar` | `segments` (`{ label, value, color }`) · `total` | one 8px bar split by share; `ProportionBar` is the ink-ladder one |
+| `FunnelChart` | `title` · `steps` (`{ label, visitors }`) · `loading` | steps as columns, the drop-off to the next on each chip, the conversion rate in the head |
+| `JourneyExplorer` | `journeys` (`{ items, count }`) · `loading` | where journeys go from a page or come from; three columns that open as a path is picked |
+| `WorldMap` | `rows` (`{ key: ISO code, label, value, filter }`) · `onFilter` · `loading` · `shapes` · `unit` | countries shaded by value, tooltip, click filters; Natural Earth 1:110m shapes built in |
+| `CalendarIcon` | `size` | the date pickers' calendar glyph until kol-icons ships one |
+
+Also exported: `formatCount` · `formatDuration` · `formatRange` · `formatBucket` · `formatTick` (the series formatters) and `REGION_NAMES` (ISO 3166-2 code to name).
+
 ### The float cards (0.10.0 — the float style, W7)
 
 The float look on the card set and the card kinds the exploration added (float-everything W7 rows 95–114, 2026-11-04; the gap map in kol-float--style). One recipe, worn inline from kol-theme ≥ 0.211.0: a 20 sheet (`--kol-float-menu-r`) on the secondary surface, no rim, Inter through the `kol-float-*` roles with JetBrains Mono for numbers, a sunken pill or field in `--kol-float-well`, selection at fg-16, hover fg-08, the 2px `--kol-float-focus` ring. Rows a group card holds are `TaskCard size="sm"`; the live dot in `LiveCard` is drawn inline until W2's `LiveDot` lands.
 
 | Component | Main props | What it is |
 |-----------|-----------|-----------|
-| `Card variant="float"` | `title` · `count` · `meta` · `description` · `value` · `controls` · `onFold` + `folded` · `addLabel` + `onAdd` | the float sheet: a `SectionHead`, the body, the add row (+ label ↵); `folded` keeps the head alone — the collapsed group |
+| `Card variant="float"` | `title` · `count` · `meta` · `description` · `value` · `controls` · `onFold` + `folded` · `addLabel` + `onAdd` · `tabs` + `tab` + `onTab` · `defaultFolded` · `foot` · `radius` | the float sheet: a `SectionHead`, the body, the add row (+ label ↵); `folded` keeps the head alone — the collapsed group. **The editor card** (0.13.0, plan-2026-11-05-float-editor W1.2): `tabs` draws the head as a tab row (the lit tab in the panel role on its 2px rule, the rest label role at fg-48, uppercase) with the chevron flush right at oq-64; `tab`/`onTab` or the card's own; `children` may be `(tab) => …`; `defaultFolded` makes the fold the card's own; `foot` the slot 16 under the rows; `radius="window"` the 28 round. A stack is data — map it |
 | `StatTiles variant="float"` | items add `spark` (numbers) · `size` lg \| sm · `selected` + `onSelect` | lg: label · value in mono 32 · `delta` + `note` with a `Sparkline` right; sm: label left, value in Inter 24 right, the window in mono under |
 | `RankedList variant="float"` | as the default | the rows in Inter, the share bar at the 8 list round, fg-16 on hover |
-| `SectionHead` | `title` · `count` · `meta` · `description` · `value` · `controls` · `folded` · `onFold` | a float card's head — Card float draws it; exported for a card with its own body |
+| `SectionHead` | `title` · `count` · `meta` · `description` · `value` · `controls` · `folded` · `onFold` · `tabs` + `tab` + `onTab` | a float card's head — Card float draws it; exported for a card with its own body; `tabs` is the editor card's tab row |
 | `FoldedHead` | `title` · `count` · `onClick` | a folded card's heading as a 40 pill with ⌄ |
 | `FloatCard` | `title` · `support` · `lines` | the glass sheet (`.kol-float-glass-dark`): title, support, a rule, mono lines |
 | `TaskCard` | `title` · `group` · `date` · `chip` · `done` + `onToggle` · `selected` · `onClick` · `size` lg \| sm | a task: checkbox, title, group, the date pill; sm is a group's row with a date or a size chip |

@@ -148,7 +148,6 @@ export default function App() {
         }
         go(p)
       }}
-      railToggleKey={'\\'}
       touch="drawer"
       pageWash="var(--kol-fg-02)"
     >

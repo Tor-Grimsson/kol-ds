@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import {
-  AccountMenu, ContentFilters, ContextMenu, Dropdown, Icon, Menu, MenuDivider, MenuFilter, MenuFlyout, MenuLabel, MenuMore,
+  AccountMenu, ContentFilters, ContextMenu, Dropdown, Icon, LabeledControl, Menu, MenuDivider, MenuFilter, MenuFlyout, MenuLabel, MenuMore,
   MenuPanel, MenuRow, MenuTrigger, PanelsMenu, WorkspaceSwitcher, floatSurfaceClass, useContextMenu,
 } from '@kolkrabbi/kol-component'
+import { MenuBar } from '@kolkrabbi/kol-shell'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
 /* float-set W1 — family 4, Menus (24-float-system.md § The parts, by family). Each part sits on the page's float
@@ -27,6 +28,17 @@ const ITEMS = [
   { label: 'Snap to grid', checked: true, onClick: noop },
   { label: 'Lock', disabled: true, tooltip: 'Nothing selected' },
   { label: 'Delete layer', icon: 'trash', tone: 'danger', onClick: noop },
+]
+/* MenuBar's menus are data (plan-2026-11-05-float-editor W1.1) — his File menu, verbatim */
+const BAR_MENUS = [
+  { label: 'File', items: [
+    { label: 'New', kbd: '⌘N', onClick: noop }, { label: 'Files…', kbd: '⌘O', onClick: noop },
+    { label: 'Starters', items: [{ label: 'Blank', onClick: noop }] }, { divider: true },
+    { label: 'Save…', kbd: '⌘S', onClick: noop }, { label: 'Save as…', kbd: '⌘⇧S', onClick: noop }, { divider: true },
+    { label: 'Export', items: ['Export SVG', 'Export PNG', 'Batch export…', 'Open output window'].map((label) => ({ label, onClick: noop })) },
+  ] },
+  { label: 'Edit', items: [{ label: 'Undo', kbd: '⌘Z', onClick: noop }, { label: 'Redo', kbd: '⌘⇧Z', onClick: noop }] },
+  { label: 'View', items: [{ label: 'Show / hide rulers', checked: true, onClick: noop }] },
 ]
 const FILTER_GROUPS = [
   { key: 'kind', label: 'Kind', icon: 'layers', more: true, fields: [{ key: 'video', label: 'Video' }, { key: 'still', label: 'Still' }] },
@@ -61,6 +73,12 @@ export default function Menus() {
     <FamilyPage title="Menus" body="Lists that float over a trigger — the list radius, 34 rows, flyouts 8 off their row.">
       {(surface) => (
         <>
+          <Part name="MenuBar" slug="menu-bar" className="w-full">
+            <div className="w-full overflow-hidden rounded-[var(--kol-float-list-r)]">
+              <MenuBar app="FXR" menus={BAR_MENUS} end={[{ label: 'Help', items: [{ label: 'Show / hide shortcuts', kbd: '?', onClick: noop }] }]} />
+            </div>
+          </Part>
+
           <Part name="the Menu family float" slug="menu">
             <Plate surface={surface}>
               <div className="flex flex-wrap items-center gap-3">
@@ -135,7 +153,7 @@ export default function Menus() {
           </Part>
 
           <Part name="WorkspaceSwitcher" slug="workspace-switcher">
-            <Plate surface={surface}><WorkspaceSwitcher variant="float" workspaces={WORKSPACES} value={ws} onChange={setWs} /></Plate>
+            <Plate surface={surface}><LabeledControl label="Workspace" variant="float" className="w-max"><WorkspaceSwitcher variant="float" workspaces={WORKSPACES} value={ws} onChange={setWs} /></LabeledControl></Plate>
           </Part>
 
           <Part name="AccountMenu" slug="account-menu">

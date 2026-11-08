@@ -1,4 +1,4 @@
-import { Button, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import { Button, usePopover, PopoverPanel, floatSurfaceClass, floatMotion } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — a float card of nav Buttons with counts */
@@ -18,12 +18,15 @@ import { Icon } from '@kolkrabbi/kol-icons'
  * @param {boolean}  open · {Function} onOpenChange
  * @param {number}   width    the card's width (default 302)
  * @param {'solid'|'glass-dark'|'glass-light'} surface  what the card is made of (default `solid`)
+ * @param {boolean|Object} [motion=true]  with `anchor`, the card's enter and leave (it is held while it leaves — keep it mounted
+ *                                and set `open` false) and its rows' hover: `true` the `--kol-float-*` tokens · `false` none ·
+ *                                `{ duration, ease }` per app (FloatActionStatesAndMotion, 2026-11-04)
  * @param {string}   className
  */
-export default function RailFlyout({ icon, title, items = [], active, onPick, anchor, open = true, onOpenChange, width = 302, surface = 'solid', className = '' }) {
+export default function RailFlyout({ icon, title, items = [], active, onPick, anchor, open = true, onOpenChange, width = 302, surface = 'solid', motion = true, className = '' }) {
   const popover = usePopover({ open: !!anchor && open, onOpenChange, placement: 'right-start', offset: 8, click: false, referenceElement: anchor ?? null, role: 'menu' })
   const card = (
-    <div role="menu" aria-label={title} className={`kol-rail-flyout kol-float-chrome flex flex-col gap-0.5 p-2 rounded-[var(--kol-float-menu-r)] ${floatSurfaceClass(surface, true)} ${anchor ? '' : className}`.trim()} style={{ width }}>
+    <div role="menu" aria-label={title} className={`kol-rail-flyout kol-float-chrome flex flex-col gap-0.5 p-2 rounded-[var(--kol-float-menu-r)] ${floatSurfaceClass(surface, true)} ${anchor ? '' : className}`.trim()} style={{ width, ...(anchor ? null : floatMotion(motion).style) }}>
       <div className="flex items-center gap-3 px-2 pt-2 pb-3">
         {icon && <Icon name={icon} size={18} className="text-oq-96" />}
         <span className="kol-float-body text-emphasis">{title}</span>
@@ -37,5 +40,5 @@ export default function RailFlyout({ icon, title, items = [], active, onPick, an
     </div>
   )
   if (!anchor) return card
-  return <PopoverPanel popover={popover} panel={false} focus={false} className={className}>{card}</PopoverPanel>
+  return <PopoverPanel popover={popover} panel={false} focus={false} motion={motion} className={className}>{card}</PopoverPanel>
 }

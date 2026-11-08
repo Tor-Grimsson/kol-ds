@@ -13,7 +13,7 @@ const GLYPHS = [
   'image', 'layers', 'layout', 'link', 'lock', 'maximize', 'minus', 'more', 'nav-create', ['overlap', 'transparency'], 'pause', 'pen',
   'play', 'plus', 'pointer', 'radial-star', ['record', 'ring'], 'repeat', 'rotate-right', 'search', 'skip-back', 'skip-end',
   'space-evenly-horizontal', 'square', 'type', 'undo', 'unlock', 'user', 'video', 'x',
-  ['add', 'plus'], ['add task', 'plus'], ['chev', 'chevron-right'], ['down', 'chevron-down'], ['hide', 'lines-three'],
+  ['add', 'plus'], ['add task', 'plus'], ['chev', 'chevron-right'], ['down', 'chevron-down'], ['hide', 'hamburger'],
   ['iconright', 'chevron-right'], ['layer', 'layers'], ['left', 'chevron-left'], ['links', 'link'], ['media', 'film-strip'],
   ['metrics', 'bars-baseline'], ['profile', 'user'], ['projects', 'folder'], ['right', 'chevron-right'], ['slides', 'presentation'],
   ['up', 'chevron-up'], ['about', 'info'], ['assets', 'bento-grid'], ['book', 'book-open'], ['briefs options', 'more'],

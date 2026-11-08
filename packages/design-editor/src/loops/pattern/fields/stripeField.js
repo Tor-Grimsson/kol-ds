@@ -1,4 +1,4 @@
-import { TAU } from '../../lib/util.js'
+import { TAU } from '../../../editor/lib/util.js'
 
 // Stripes — VECTOR bands (a handful of fillRects), NOT per-pixel. Transform into a
 // stripe-local frame (camera angle + zoom, then the stripe angle) and fill one rect

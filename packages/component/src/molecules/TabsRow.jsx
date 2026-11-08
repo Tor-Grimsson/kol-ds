@@ -1,6 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import useScrollFade from '../hooks/useScrollFade.js'
-import CloseButton from '../atoms/CloseButton.jsx'
+import CloseButton from './CloseButton.jsx'
 import Button from '../atoms/Button.jsx'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { RAIL_ROW } from '../hooks/railRow.js'

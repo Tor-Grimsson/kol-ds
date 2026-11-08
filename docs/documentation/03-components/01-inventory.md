@@ -3,7 +3,7 @@ title: Component inventory
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-11-04
+updated: 2026-11-08
 verified: 2026-07-04
 description: Every exported component by tier
 aliases:
@@ -48,7 +48,6 @@ One row per source file — a component's compositional sub-parts are members of
 | `Avatar` | A circular initial/identity chip in four sizes. |
 | `Badge` | A status pill — success, warning, critical, info, outline. |
 | `Button` | Trigger an action or event — primary, secondary, outline, ghost, or icon-only. |
-| `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A utility worn by `Rail` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `ColorSwatch` | A color chip with selectable, framed, and transparent states. |
 | `CopyButton` | A copy-to-clipboard icon button with a confirmation state. |
 | `VectorLoader` | Any SVG by URL (`src`), fetched, sanitized and inlined so it themes by `currentColor` — pair it with kol-icons' `identity/<id>/…?url` paths or a file of your own. `Logomark` until 2026-10-28 (the alias is on the ledger; `svgUrl` still works). Moved from kol-shell 2026-10-22 with `NavRail`. |
@@ -65,15 +64,14 @@ One row per source file — a component's compositional sub-parts are members of
 | `Label` | A form-field label. |
 | `OverlayGlassPanel` | A frosted-glass content card floating over hero or carousel media. |
 | `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change. |
-| `ProgressBar` | A thin track and its fill, `value / max`, a caption (`true` → `3/7`), the ink or a status tone (2026-10-29). |
+| `ProgressBar` | A thin track and its fill, `value / max`, a caption (`true` → `3/7`), the ink or a status tone (2026-10-29). The Slider's track (`.kol-track`, 0.347.0). |
 | `Pill` | A compact rounded label — outline, subtle, inverse. |
 | `Popover` | The floating-primitive module — usePopover, PopoverPanel, and Tooltip on Floating UI. `Tooltip variant="float"` (W16, 2026-10-31): an inverted pill, 24 (28 on touch), 11 (12) type. `floatSurfaceClass(surface, medium)` resolves a float's `surface` to kol-theme's classes. |
 | `PriceDisplay` | A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note. |
 | `ProsePreview` | A full rich-text specimen exercising the whole kol-prose stylesheet in one view. |
 | `Knob` | A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping — `variant` dial · panel. `RotaryDial` is its alias (2026-10-02). |
 | `SectionLabel` | A label with an icon affordance for collapsible sections. `variant="float"` + `onAdd` (W5 row 68, 0.335.0): the rail section header — the name in `kol-float-label` fg-64, a + at the far end. |
-| `SegmentedToggle` | A joined N-way segmented control. **Borderless by default** (the sunken tone, 2026-10-29); `variant="outlined"` draws the stroke and only where he has approved a border. A choice is a Dropdown or text tabs (`TabsRow variant="text"`) first; a toggle that stays is the borderless one. `variant="float"` (W16, 2026-10-31): a capsule track 6 in on its `surface` (`solid` · `glass-dark` · `glass-light`), pills at the float height, the selected one filled with the ink. |
-| `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. |
+| `SelectionOverlay` | Transform handles + bounding box in the canvas 1080-virtual space. `variant="float"` + `name` (0.342.0): the float editor's selection — solid oq-64 outline, 6 handles at full ink, the name above, the size cap under. |
 | `Tag` | A removable, optionally hashed keyword chip. |
 | `Textarea` | Multi-line text field with filled, ghost, and outline variants. |
 | `TiltCard` | A self-contained image card with a pointer-following spring 3D tilt; a grounded variant plants it at the bottom edge. |
@@ -106,32 +104,37 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 |---|---|
 | `Accordion` | A stack of independently collapsible panels. |
 | `AlignmentGrid` | An align-to-artboard control — DS Button cells firing an onAlign seam. |
-| `ButtonGroup` | A responsive layout wrapper for a group of Buttons — stacked on mobile, a row from `sm`, aligned left/center/right. |
+| `ButtonGroup` | The one component for a group of buttons (2026-11-06), `layout`: `row` (default) — a responsive wrapper for Buttons, stacked on mobile, a row from `sm`, aligned left/center/right · `stack` — stacked at every width · `joined` — the segmented control: joined cells from `options` (`value` / `onChange`, `null` = stateless action strip, radiogroup roving tabindex, tooltips, `count`, disabled cells). **Borderless by default** (the sunken tone, 2026-10-29); `variant="outlined"` draws the stroke and only where he has approved a border. A choice is a Dropdown or text tabs (`TabsRow variant="text"`) first; a toggle that stays is the borderless one. `variant="float"` (W16, 2026-10-31): a capsule track 6 in on its `surface` (`solid` · `glass-dark` · `glass-light`), pills at the float height, the selected one filled with the ink. |
+| `SegmentedToggle` | Deprecated alias of `ButtonGroup layout="joined"` (2026-11-06, on the retirement ledger) — same props, same DOM. |
 | `TiltBento` | A media hover-card for bento walls — auto-detected HLS/video/image behind a content stack, with a pointer 3D tilt. The Tilt family's composed tile (`TiltCard` is the bare frame, `useTilt` the hook); was `BentoCard` until 2026-08-27 — the old name is an alias on the retirement ledger. |
 | `ProfileCard` | The digital namecard — a square photo with a `plus`/`minus` disclosure on it and a content-sized inverse shelf (logo slot, name, mailto, a rack of socials) that opens under it or beside it; four size ramps, two orientations, a controlled `open` seam. |
 | `CardFeatureItem` | A fixed-height feature card — title + optional icon, a polymorphic visual, and a mono description; optionally a link. |
 | `Carousel` | A draggable, loopable slider built on Embla. |
+| `CloseButton` | The one X that dismisses a thing (0.171.0, 2026-09-03) — `variant="nav"` at `sm`, the same rung as the controls beside it; `size` is the only thing a call site varies, and it is a rung. `states={false}` renders `IconFrame` — same glyph, no hover / press / focus. A molecule since 2026-11-07 (it composes Button and IconFrame), worn by `Rail` · `TabsRow` · `FullscreenOverlay` · workshop's `ShellLayout`. |
 | `CodeBlock` | A syntax-highlighted code block with copy-to-clipboard. |
 | `ColorInputRow` | A swatch chip + # hex input row — the merged ColorField/SwatchRow with optional palette-ref popover, lock toggle, and token-name column. |
-| `ColorRamp` | One specimen row of color chips — label + note above captioned ColorSwatch chips, from live CSS vars or static colors. |
+| `ColorRamp` | One specimen row of color chips — label + note above captioned SwatchTile chips (size `grid`), from live CSS vars or static colors. |
+| `SwatchTile` | A color swatch with its name and value under it (0.350.0, 2026-11-07) — `hex` · `name` · `meta` (a third line, e.g. the token) · `value` (default the hex uppercased, null hides it) · `anchor` · `selected` / `onClick` / `title` to the ColorSwatch. `size`: `tile` (default; a full-width bar `height` tall over a name-left, value-right row: BlockSwatch, the Foundations grids) · `grid` (a square cell, name over value: ColorRamp) · a number (a fixed chip, the caption under it). |
+| `SwatchCaption` | The name, value and meta lines under a swatch (0.351.0, 2026-11-08) — the text block of the Swatch family, rendered by SwatchTile at every size. `name` · `value` · `meta`; `layout` `inline` (name and value on one baseline row, meta under) or `stacked` (default); `tone` `muted` (default; quiet name, strong value) or `strong` (emphasised truncating name, quiet value — the grid cell). `rowClass` · `nameClass` · `valueClass` · `metaClass` replace a slot's classes whole. |
 | `DocsToc` | An on-page table of contents that highlights the heading in view via useScrollSpy. `variant="float"` (W8 row 121, 0.335.0): the numbered list of `TocRow`s, the one in view `current`. |
 | `TocRow` | One numbered contents entry — `01 · First interlude`: 32 on the list radius, mono number, `current` lifted fg-16 (W8 row 121, 0.335.0). |
 | `Dropdown` | A single-select menu with size and minimal/subtle variants. An action menu is `Menu`. |
 | `DropdownTagFilter` | A multi-select tag filter (all selected by default). |
 | `ErrorBoundary` | Catches render errors in its subtree and shows a recovery fallback with retry and go-home. |
 | `FlipCard` | A face that turns over in place to show its back — controlled or `defaultFlipped`, faces as nodes or `({ flip }) => node`, `height` for a fixed tile whose faces scroll (from kol-hardware, 2026-10-29; `formatAge` beside it: `now` · `5h` · `3d`). |
-| `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. |
+| `FullscreenOverlay` | A fullscreen modal overlay dismissed on Esc or backdrop. (molecules since 2026-11-07, was utilities). |
 | `ImageBlock` | A prose image block on the Figure shell — aspect-locked frame, label, caption. |
 | `LabeledControl` | A label-and-hint wrapper around any control. `inline text` (also on `SettingsRow`): a text value — the same tracked meta label on a 16px line, on the baseline, as tall as its text. |
-| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's LoaderIntro). |
+| `LoaderOverlay` | A loading curtain mounted over everything — wraps FullscreenOverlay, renders children or an injected `loader` slot (e.g. foundry's LoaderIntro). (molecules since 2026-11-07, was utilities). |
 | `MenuItem` | A composable menu trigger with a dropdown panel. |
 | `Menu` | The action menu (the Menu* family, 2026-10-31): a `trigger` render prop + `items` as data — `heading` (MenuLabel), `divider`, rows with `icon` · `trailing` · `current` · `checked` · `kbd` · `disabled` + `tooltip` · `items` (a flyout); `search`, `align`, `minWidth`. Parts: `MenuTrigger` (the tab chip, pressed while open; `iconOnly` = ⋮), `MenuPanel` (`.kol-menu-panel`), `MenuRow`, `MenuDivider`, `MenuLabel`, `MenuFlyout`. |
 | `MenuFilter` | Ready-made filter menu: category `groups` (a one-field group is a plain row, 2+ fields a flyout, disabled rows with their reason), the active filters as an "Active" section inside the menu (click edits, × removes) and the trigger pressed while any is set. |
 | `MenuDatePicker` | Ready-made date-range menu: range `groups` with key shortcuts, the current one filled and checked, a custom range, an optional `compare` row; the trigger wears its chip at rest (the panel's oq-08 ground), the panel right-aligned 8px under it. |
 | `MenuMore` | Ready-made ⋮ menu: `MenuTrigger iconOnly` over `items`. |
 | `ParamBindDot` | The dot beside a param row: a hollow oq ring at rest, filled in the accent when `bound`, `mode` in its tooltip; a click opens a `Menu` of `items`. Hit box a field's height at the same `size`, for a `SettingsRow` trailing slot. |
-| `MenuPopover` | Deprecated alias of `MenuItem` (identical API; removed next major). |
-| `Modal` | The modal system — ModalProvider + useModal for imperative dialogs, and `Dialog` (the same shell holding any content). Both take `container` (an Element) to render inside a box instead of `<body>` (kol-component 0.338.0). |
+| `MenuList` | The rows of every menu (0.348.0, plan-2026-11-07-menu-system): `items` as data — `heading` (MenuLabel), `divider` (MenuDivider), rows with `Menu`'s keys, `items` (a flyout) — plus `search`, `children` above the rows, `variant` float · sheet. `Menu`, `Dropdown` and `ContextMenu` render it inside their PopoverPanel; the one place rows are mapped. |
+| `Modal` | The modal system — ModalProvider + useModal for imperative dialogs, and `Dialog` (the same shell holding any content). Both take `container` (an Element) to render inside a box instead of `<body>` (kol-component 0.338.0). `Dialog variant="settings"` (0.343.0, plan-2026-11-05-float-editor W7.1, his 12:2282) is the generator settings window: a 60 header (`title`, `kind`, `headerEnd` — the preset select — and ×), a 156 section list (`sections` `[{ key, label, state }]`, `section` / `onSection`, ↑ / ↓ walk it), the body, a 248 `aside` (the preview) and a 60 `footer`; 880 × 656 by default, oq-16 rules, a 16 round. |
+| `Settings*` controls | The settings window's rows (0.343.0, W7.2), each a shipped control in his dense look (28 fields on the primary surface behind oq-16, Inter 11, labels Inter 10 oq-64): `SettingsGroup` (title + note, ruled) · `SettingsGrid` (two-up) · `SettingsCell` (label over control) · `SettingsSlider` (the float slider boxed, mono readout) · `SettingsRange` (the dual Slider, From / To) · `SettingsSelect` (Dropdown) · `SettingsSegmented` (SegmentedToggle) · `SettingsToggle` (ToggleSwitch) · `SettingsText` (Input) · `SettingsPoint` (X / Y) · `SettingsRamp` + `SettingsRampHead` (value A · curve · value B; `partial` dims a half) · `SettingsLights` (X · Y · radius · intensity · delete, Add light) · `SettingsFieldMap` (the field strip and its captions) · `SettingsDisclosure` (› More geometry). `disabled` dims to 40% and leaves the tab order — a control whose engine param is not there yet. |
 | `PageHeader` | The page's masthead — eyebrow · title (`h1`) · sub-line · `actions` on the sub-line's first baseline — a **composition of `SectionText`** (0.175.0). From `kol-shell` since 0.174.0 (page-header-one-masthead, 2026-09-03): one import serves a site page and an app page. One header since 0.276.0 (Round 11): `level` page (display-01 · 22/28 lede — the hero) | app (display-01 at 46/60 · 19/26 lede — app pages, 0.279.0) | section (display-03 · 16/24 lede), classes in `PAGE_HEADER_ROLES`; `size` · `voice` · `register` · `masthead` retired and ignored. Bottom rhythm `--kol-page-header-mb` (40px). |
 | `PropertyInput` | A stacked label + number/text input for inspector panels. |
 | `QuantityInput` | A compact integer quantity picker — chevron pair or a − value + split pill. |
@@ -175,11 +178,12 @@ Support exports on the atoms tier: the `Popover` module ships `usePopover` / `Po
 | `LayerRow` | A layer: glyph · name · eye · lock — `TreeRow size="xs"` with the two toggles (W8 row 119, 0.335.0). |
 | `IndexRow` | A dense index line — check · title · columns, 28 on the list radius (W8 row 117, 0.335.0). |
 | `TaskRow` | A task — check · title · the date chip on the well (W8 row 118, 0.335.0). |
-| `PanelsMenu` | Which panels are shown and the button that changes it — a float sheet with a title and one row per panel: name over meta, the state word, the action as a float button (`primary` draws the inverted one) (W4 row 57, 0.334.0). |
-| `WorkspaceSwitcher` | Which workspace you are in — the tracked float label over a `Dropdown` of the workspaces; `variant="float"` is the float select (W4 row 58, 0.334.0). |
+| `PanelsMenu` | Which panels are shown and the button that changes it — a float sheet with a ModalHeader and one row per panel: name over meta, the state word, the action as a float button (`primary` draws the inverted one) (W4 row 57, 0.334.0). |
+| `ModalHeader` | The top row of a floating surface — an avatar or glyph, the title, trailing actions (a close); `variant` float · default, `onClick` makes it a press. MoreRows' account row and PanelsMenu's title draw it (menu-system W4.1, 0.349.0). |
+| `WorkspaceSwitcher` | Which workspace you are in — a `Dropdown` of the workspaces, a button with no label of its own (0.348.0): name it with `LabeledControl` (`label="Workspace"`); `variant="float"` is the float select. |
 | `AccountMenu` | The account's circle and its menu — the float `MenuTrigger` (the Avatar when there is an `initial` or `src`, the `user` glyph when neither) over `Menu`'s rows in the float look, right-aligned; a `Sign out` row takes `tone: 'danger'` (W4 row 60, 0.334.0). |
 
-Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `Menu` → `MenuTrigger` / `MenuPanel` / `MenuRow` / `MenuDivider` / `MenuLabel` / `MenuFlyout` (`MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest` are their deprecated aliases). Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
+Sub-parts (on their parent's page, not listed separately): `Accordion` → `AccordionPanel`; `Menu` → `MenuTrigger` / `MenuPanel` / `MenuList` / `MenuRow` / `MenuDivider` / `MenuLabel` / `MenuFlyout` (`MenuDropdownItem` / `MenuDropdownDivider` / `MenuDropdownNest` are their deprecated aliases). Support exports: `Modal` → `ModalProvider` / `useModal`; `SwatchControls` ships its own sub-part exports.
 
 ## Organisms
 
@@ -221,7 +225,7 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `CatalogPage` | The app tier's Home / Library page shipped once — PageHeader → ContentFilters → the catalog grid of `ContentCard` / `ContentRow catalog` → the action row; `toCard` is the contract. `preset="app"` (kol-shell 0.75.0): the `app` card and row — `toCard` returns `verbs` · `download` · `menuItems` · `date` ms · `size` bytes · `media` src — and the page's one menu. Keeps its place per history entry (kol-shell 0.80.0): Back restores chips, search, LIST / GRID, the page's own view and the fixed region's scroll; a fresh navigation starts clean. |
 | `SettingsShortcuts` / `SettingsLinks` / `SettingsColophon` | The keyboard-shortcuts block (six columns, column-first), the About / Repo link list, and the foot line — the settings furniture three apps hand-wrote. |
 | `TouchDeviceOverlay` | "Desktop recommended", once, on a touch-primary device — `AppShell touch="overlay"` mounts it; `useTouchPrimary` beside it. |
-| `ColumnBrowser` | Finder-style Miller columns over a flat key space — the listing surface's folder view, with a preview column, Finder's keyboard and Quick Look. |
+| `ColumnBrowser` | Finder-style Miller columns over a flat key space — the listing surface's folder view, with a preview column, Finder's keyboard and Quick Look. The strip holds still: a click never scrolls it; an arrow key that lands in an off-screen column brings that column in by the least amount, never to the end (2026-11-05). |
 | `SectionNewsletter` (alias `NewsletterBand`) | The newsletter card of the section family — `SectionText` over an email Input + submit Button with an aria-live status line, on the ladder and the cap. |
 | `SectionFaq` | `SectionText` header over `Accordion` `{ q, a }` items; `singleOpen` optional. New 2026-08-26. |
 | `FullBleedHero` | A full-bleed media hero — cover image or video, an optional scrim, and one centered content slot. |
@@ -241,12 +245,14 @@ Sub-parts (on their parent's page, not listed separately): `Accordion` → `Acco
 | `StickyNavCard` | The article's scroll-spy summary card — heading, index, body and bullets; the active one opens (kolkrabbi.io's, 2026-10-28) |
 | `ProductDetailLayout` | A PDP slot skeleton — media / price / specs / tabs / actions, no commerce coupling. |
 | `ScrollDriftGallery` | A gsap pinned horizontal scroll-scrub gallery (reduced-motion plain scroll). |
-| `CommandOverlay` (was `ShellSearchOverlay`) | The ⌘K overlay — search · go · add · shortcuts (`mode`); ↑↓ rows, → / Enter opens a category, ← back; disabled rows; the keymap at a glance in `shortcuts`. |
+| `CommandOverlay` (was `ShellSearchOverlay`) | The ⌘K overlay — search · go · add · shortcuts (`mode`); ↑↓ rows, → / Enter opens a category, ← back; disabled rows; the keymap at a glance in `shortcuts`; one search style (0.344.0, plan-2026-11-05-float-editor 7.7): always the float card — `surface` (`solid` default · `glass-dark` · `glass-light`) only picks the material; `tabs` (All · Actions · …, Tab steps them; a row's `tab`, `tabOnly`), `anchor` (a ref the card sits on — the dock's ⌘K — else centred), `shortcutHint`; the foot is ↑↓ Navigate · ↵ the verb · Esc Close · ⌘↵ under a full-width rule. |
 | `SpectrumControls` | The HSV color-picker family — HueStrip, SBSquare, WheelTriangle, AlphaStrip, and the composed square picker. |
 | `HubDev` (kol-shell) | A hub's development page — mono masthead, chip tabs, full-width content; `AppHub` / `AppStudio` `dev` renders it on a dev server at `/dev` behind a `code` row after the app's own rows. |
-| `PropertyRail` (kol-shell) | The float inspector (float-everything W5, kol-shell 0.101.0): a 272 sheet on `--kol-float-menu-r` — header with the collapse ⇥, chip tabs (TabsRow float), the selected object's line, sections with an optional + whose rows kol-component draws (`fields` two-up Input float · `select` Dropdown · `slider` Slider float · `switch` ToggleSwitch float · `render`); `surface`. |
+| `PropertyRail` (kol-shell) | The float inspector (float-everything W5, kol-shell 0.101.0): a 272 sheet on `--kol-float-menu-r` — header with the collapse ⇥, chip tabs (TabsRow float), the selected object's line, sections with an optional + whose rows kol-component draws (`fields` two-up Input float · `select` Dropdown · `slider` Slider float · `switch` ToggleSwitch float · `render`); `surface`. 0.112.0 (W7.6): the tool Rail's parts — `onExpand` (↗), `collapsible` sections (chevron, title, `meta`), `labeled` rows (a 110 label column) and `subhead` rows, a `footer`, `density="compact"` (8 between rows). |
 | `FloatLayout` (kol-shell) | The float workspace frame (float-views W1.1, 0.102.0): `NavRail variant="float"` expanded 280 · collapsed 72 (RailFlyout on hover) · hidden 0 (RailTrigger + `breadcrumb`), the 64 TopControlsBar (`bar`), the content (`children`) and one `inspector` slot (PropertyRail, `({ hide })`); PanelsRestore shows exactly while a Rail is hidden. |
-| `TopControlsBar` (kol-shell) | The one 64 bar over a workspace (float-everything W5): `document` (DocumentCapsule) · `tabs` (TabsRow float) · `onSearch` · `panels` (PanelsRestore) · `action` (the inverted float capsule), or `start` · `center` · `end`; every float on its `surface`. |
+| `FloatActionMenu` (kol-shell) | The masthead's round button and its sheet, lifted from HubHome's `HomeMenu` (0.107.0): the inverted round `more` or `plus` (× while open), MoreRows `actions` in a sheet to its left; `variant="float"` + `surface` dress the sheet. HubHome and FloatLayout's `bar.menu` draw it. |
+| `MenuBar` (kol-shell) | The app's menu bar inside the browser (0.109.0, plan-2026-11-05-float-editor W1.1): 40 on the secondary surface, the app's name bold, `menus` and `end` (Help, far right) as data — Menu's row keys (`label` · `onClick` · `kbd` · `items` a submenu · `divider` · `heading` · `checked`). Built on `Menu` + MenuRow · MenuFlyout · MenuDivider: 26 triggers, a 250 list of 24 rows in sans 13 medium, fg-08 lift. Once a menu is open, pointing at another opens it; ← / → walk the bar; Esc closes. `variant="capsule"` (0.111.0, his phone frame 06): the same menus on a float sheet (secondary surface, window round, 20 in), triggers in the float label role in caps at fg-48 with a 10 chevron, lit fg-96 while open. |
+| `TopControlsBar` (kol-shell) | The one 64 bar over a workspace (float-everything W5): `document` (DocumentCapsule) · `tabs` (TabsRow float) · `onSearch` · `panels` (PanelsRestore) · `action` (the inverted float capsule) · `menu` (FloatActionMenu at the end), or `start` · `center` · `end`; every float on its `surface`. |
 | `CompareGrid` | Two versions of many things side by side — A beside B on `IconPlate`s, each side named, the toolbar size · ground · guide · state filter, a state chip per item. |
 | `ColorPickerPopover` | A swatch that opens a colour picker — saturation square, hue and opacity strips, hex; ⌥-click resets to `defaultValue`. `footer` (a node, or `({ close }) => node`) sits under the hex row — palette swatches, quick states. |
 | `SpectrumGrid` | A matrix view of the ramp system — rows are ramps, columns are stops, each a live-resolved ColorSwatch tile. |
@@ -308,3 +314,13 @@ Loaders resolve names to assets — infrastructure, not visual UI ([[00-taxonomy
 | `useTheme` | behavior | Theme-state hook — live light/dark state synced across consumers; ships with `applyTheme`, `getInitialTheme`, `THEME_STORAGE_KEY`. ThemeToggle is its UI. |
 
 The framework tier splits three ways for browsing — chrome / structure / behavior ([[00-taxonomy|taxonomy]]).
+
+## Unused — retirement candidates
+
+Set aside 2026-11-07: no import anywhere in the estate scan, no Figma master. Drop the export on the user's word.
+
+| Component | Note |
+|---|---|
+| `Combobox` | molecule; no consumer, not in this inventory before. |
+| `TextFold` | molecule (row above in Molecules); no consumer. |
+| `MobileTabBar` | not a component of its own — the 2026-10-29 alias of `TabsRow` stacked; no consumer still calls the old name. |

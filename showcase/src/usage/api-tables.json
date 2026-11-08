@@ -1987,6 +1987,12 @@
       "desc": ""
     },
     {
+      "prop": "motion",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "style",
       "type": "—",
       "def": "—",
@@ -8447,6 +8453,12 @@
       "desc": ""
     },
     {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "open",
       "type": "—",
       "def": "—",
@@ -8520,6 +8532,12 @@
     },
     {
       "prop": "currentPath",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15485,6 +15503,12 @@
       "desc": ""
     },
     {
+      "prop": "defaultFolded",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "addLabel",
       "type": "—",
       "def": "—",
@@ -15492,6 +15516,18 @@
     },
     {
       "prop": "onAdd",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "foot",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "radius",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -15659,6 +15695,240 @@
       "desc": ""
     }
   ],
+  "TopStats": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'plausible'",
+      "desc": ""
+    },
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MetricTiles": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onSelect",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ChartHead": [
+    {
+      "prop": "seriesOptions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "picked",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "view",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "views",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onView",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPicked",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ChangeBadge": [
+    {
+      "prop": "now",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "then",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "lowerIsBetter",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "DeltaBadge": [
+    {
+      "prop": "kind",
+      "type": "—",
+      "def": "'count'",
+      "desc": ""
+    },
+    {
+      "prop": "now",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "then",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "Behaviours": [
+    {
+      "prop": "propertyOptions",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "funnels",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "'lg:col-span-2'",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "GoalsTable": [
+    {
+      "prop": "goals",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "visitors",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ColorKey": [
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "RecordsTable": [
+    {
+      "prop": "empty",
+      "type": "—",
+      "def": "'No data yet'",
+      "desc": ""
+    },
+    {
+      "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rows",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "SectionHead": [
     {
       "prop": "folded",
@@ -15710,6 +15980,24 @@
     },
     {
       "prop": "onFold",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "tab",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onTab",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -16655,6 +16943,130 @@
       "desc": ""
     }
   ],
+  "TrendChart": [
+    {
+      "prop": "color",
+      "type": "—",
+      "def": "'var(--kol-palette-blue)'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "300",
+      "desc": ""
+    },
+    {
+      "prop": "fit",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "metric",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "series",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "unit",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "period",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onPick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "multi",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ChartWithLegend": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SegmentBar": [
+    {
+      "prop": "segments",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "total",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FunnelChart": [
+    {
+      "prop": "steps",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "JourneyExplorer": [
+    {
+      "prop": "journeys",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "loading",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "Legend": [
     {
       "prop": "items",
@@ -16772,6 +17184,14 @@
       "prop": "children",
       "type": "—",
       "def": "—",
+      "desc": ""
+    }
+  ],
+  "CalendarIcon": [
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "14",
       "desc": ""
     }
   ],
@@ -18202,6 +18622,12 @@
     },
     {
       "prop": "pageWash",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "railKeys",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -20323,6 +20749,12 @@
       "desc": ""
     },
     {
+      "prop": "railKeys",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "railToggleKey",
       "type": "—",
       "def": "—",
@@ -20588,6 +21020,12 @@
     },
     {
       "prop": "onChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "more",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -20887,6 +21325,12 @@
       "desc": ""
     },
     {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -20930,6 +21374,12 @@
     },
     {
       "prop": "action",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "menu",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -21091,6 +21541,12 @@
       "desc": ""
     },
     {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -21110,6 +21566,82 @@
     },
     {
       "prop": "breadcrumb",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onRestore",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "FloatActionMenu": [
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "'more'",
+      "desc": ""
+    },
+    {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "iconMotion",
+      "type": "—",
+      "def": "'rotate'",
+      "desc": ""
+    },
+    {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "actions",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "MenuBar": [
+    {
+      "prop": "menus",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "app",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -21138,6 +21670,12 @@
       "prop": "surface",
       "type": "—",
       "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
       "desc": ""
     },
     {
@@ -21385,6 +21923,12 @@
       "desc": ""
     },
     {
+      "prop": "railMode",
+      "type": "—",
+      "def": "'push'",
+      "desc": ""
+    },
+    {
       "prop": "bar",
       "type": "—",
       "def": "{}",
@@ -21406,6 +21950,18 @@
       "prop": "surface",
       "type": "—",
       "def": "'solid'",
+      "desc": ""
+    },
+    {
+      "prop": "panels",
+      "type": "—",
+      "def": "true",
+      "desc": ""
+    },
+    {
+      "prop": "motion",
+      "type": "—",
+      "def": "true",
       "desc": ""
     },
     {
@@ -21457,6 +22013,12 @@
       "desc": ""
     },
     {
+      "prop": "railKeys",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "defaultExpanded",
       "type": "—",
       "def": "—",
@@ -21500,6 +22062,12 @@
     },
     {
       "prop": "onInspectorHiddenChange",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "search",
       "type": "—",
       "def": "—",
       "desc": ""

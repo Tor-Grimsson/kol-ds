@@ -1,4 +1,4 @@
-import { SHADOWED_GLOBALS } from '../lib/sandbox'
+import { SHADOWED_GLOBALS } from '../../editor/lib/sandbox'
 /**
  * mathfn — safe GEOMETRY expression compiler for the math loops (port of
  * kol-labs-single math/lib/mathfn.js compileVars + the identifier gate from
@@ -70,7 +70,7 @@ function isSafeExpr(expr, args) {
   return ids.every((id) => PRELUDE_IDENTS.has(id) || args.includes(id))
 }
 
-/* the shadowed-globals list lives in ONE place — loops/lib/sandbox.js (audit G3) */
+/* the shadowed-globals list lives in ONE place — editor/lib/sandbox.js (audit G3) */
 
 const cache = new Map() // `${args}|${expr}` -> fn | null
 const CACHE_MAX = 64

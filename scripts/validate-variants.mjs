@@ -34,7 +34,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..')
 
 /* component → its source; add a row to cover another component */
 const COMPONENTS = {
-  SegmentedToggle: 'packages/component/src/atoms/SegmentedToggle.jsx',
+  ButtonGroup: 'packages/component/src/molecules/ButtonGroup.jsx',
   Button: 'packages/component/src/atoms/Button.jsx',
 }
 

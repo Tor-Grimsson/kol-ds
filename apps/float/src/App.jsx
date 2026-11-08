@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { FloatLayout, PropertyRail } from '@kolkrabbi/kol-shell'
 import { ContentRow, EmptyState, SectionText } from '@kolkrabbi/kol-component'
 import VisualEditor from './views/VisualEditor.jsx'
+import FloatEditor from './views/FloatEditor.jsx'
+import FloatLabs from './views/FloatLabs.jsx'
 import * as RecordTabs from './views/RecordTabs.jsx'
 import * as RecordFloat from './views/RecordFloat.jsx'
 import * as Rails from './views/Rails.jsx'
@@ -14,6 +16,8 @@ import { PARTS } from './parts/index.js'
  * the default document capsule). Without `inspector` it gets the shared placeholder below. */
 /* the views (plan-2026-11-04-float-views W3). Folio is parked. */
 const VIEWS = [
+  { path: '/views/float-editor', label: 'Float editor', icon: 'desktop', note: 'Section 5 · 20:12208', Component: FloatEditor, bare: true },
+  { path: '/views/float-labs', label: 'Float labs', icon: 'globe', note: 'Labs on FloatLayout · 3.2', Component: FloatLabs, bare: true },
   { path: '/views/visual-editor', label: 'Visual editor', icon: 'pencil', note: 'Scene editing · 9:8594', Component: VisualEditor, bare: true },
   { path: '/views/record-tabs', label: 'Record dashboard · tabs', icon: 'checklist', note: '13:5037', Component: RecordTabs.default, mod: RecordTabs },
   { path: '/views/record-float', label: 'Record dashboard · float', icon: 'inbox', note: '9:14340', Component: RecordFloat.default, mod: RecordFloat },

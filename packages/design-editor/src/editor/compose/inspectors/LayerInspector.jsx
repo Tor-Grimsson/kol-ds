@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import Pane from '../../components/Pane'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
-import { Button, Dropdown, MenuDropdownItem, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { Button, ColorSwatch, Dropdown, MenuDropdownItem, Slider, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { LabeledControl, SettingsRow } from '@kolkrabbi/kol-component'
 import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import AlignmentPanel from '../AlignmentPanel'
-import { SegmentedToggle, OriginPicker } from '@kolkrabbi/kol-component'
+import { ButtonGroup, OriginPicker } from '@kolkrabbi/kol-component'
 import StrokePanel from '../../color/StrokePanel'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useComposeState, COVER_TYPES, resolveColor } from '../state'
@@ -19,6 +19,8 @@ import { firstFilterDef } from '../filterChain'
 import { pack } from '../../packs'
 import { NumberField } from './NumberField'
 import { TextSurface } from './TextPanel'
+import { useChrome } from '../../float/chrome'
+import { rowLabelForLayer, TYPE_LABELS } from '../labels'
 import MediaPickerDialog from '../../library/MediaPickerDialog'
 import PaintPopover from '../../color/PaintPopover'
 
@@ -33,6 +35,7 @@ import PaintPopover from '../../color/PaintPopover'
  * object's major interaction.
  */
 export default function LayerInspector({ layer }) {
+  const float = useChrome() === 'float'
   const cs = useControlSize()
   const { ungroupLayer, flipLayer, palette } = useComposeState()
   const gen = pack('generators')
@@ -57,6 +60,37 @@ export default function LayerInspector({ layer }) {
    * the type's own pane · Parameters. Named panes, full-width rules, no sub-labels — the
    * controls' glyphs and tooltips name them. Position + Layout were two sections with five
    * sub-labels; they are Affinity's one Transform panel. */
+  /* THE FLOAT DESIGN TAB (his 19:10408): the layer's line, then Transform, Appearance and Effects in his float fields —
+   * the same writers as the panes below; what his frame has no field for (align, origin, skew, flips, resizing,
+   * corners, the lock) keeps its controls in a Geometry pane under it, so nothing is lost. */
+  if (float) {
+    return (
+      <div className="flex flex-col">
+        <div className="flex flex-col gap-2 pb-2">
+          <p className="kol-float-label text-fg-emphasis">{rowLabelForLayer(layer)} · {TYPE_LABELS[layer.type] ?? 'Layer'} layer</p>
+          {positioned && <><p className="kol-float-label text-fg-emphasis">Transform</p><FloatTransformFields layer={layer} /></>}
+          <p className="kol-float-label text-fg-emphasis">Appearance</p>
+          <FloatAppearanceFields layer={layer} />
+          {pack('effects') && <><p className="kol-float-label text-fg-emphasis">Effects</p><FloatEffectChoices layer={layer} /></>}
+        </div>
+        {positioned && <FloatGeometry layer={layer} edit={edit} anchor={anchor} setAnchor={setAnchor} />}
+        {(layer.type === 'loop' || layer.type === 'misc') && gen && (
+          <Pane label="Preset">
+            <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
+          </Pane>
+        )}
+        {layer.type === 'photo' && <Pane label="Image"><ImageSource layer={layer} patch={edit.patch} /></Pane>}
+        {layer.type === 'path' && (
+          <Pane label="Path">
+            <ButtonGroup layout="joined" size={cs} className="w-full" options={[{ value: 'open', label: 'Open' }, { value: 'closed', label: 'Closed' }]}
+              value={layer.closed ? 'closed' : 'open'} onChange={(v) => setProp('closed', v === 'closed')} />
+          </Pane>
+        )}
+        {layer.type === 'group' && <Pane label="Group"><GroupFields layer={layer} ungroupLayer={ungroupLayer} /></Pane>}
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col">
       {positioned && (
@@ -81,11 +115,7 @@ export default function LayerInspector({ layer }) {
               <AxisField
                 label={<Icon name="angle" size={glyphSize(cs)} />} suffix="°" tooltip="Rotation"
                 value={typeof layer.rotation === 'number' ? Math.round(layer.rotation) : 0}
-                onCommit={(raw) => {
-                  const n = Number(raw)
-                  const next = Number.isFinite(n) ? ((Math.round(n) % 360) + 360) % 360 : 0
-                  edit.patch({ rotation: next, ...rotateAboutAnchor(layer, next, anchor) })
-                }}
+                onCommit={commitRotation(layer, edit, anchor)}
               />
               <BindDot
                 layer={layer}
@@ -98,7 +128,7 @@ export default function LayerInspector({ layer }) {
             {/* the cells SHARE the half-rail: a photo layer adds Crop, and four `sm` cells at their own
               * padding are 163px in a 140px track — Crop sat half outside the rail (found in
               * apps/panels, 2026-10-03). Three cells already filled the track, so they do not move. */}
-            <SegmentedToggle
+            <ButtonGroup layout="joined"
               size={cs} value={null}
               ariaLabel="Transform"
               className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1"
@@ -118,7 +148,7 @@ export default function LayerInspector({ layer }) {
           {layer.type === 'text' && (
             /* Real behavior, not chrome: fixed keeps the box; auto modes measure the rendered text
              * (TextLayer effect) and write it. Selected = the dark tile. */
-            <SegmentedToggle
+            <ButtonGroup layout="joined"
               size={cs}
               ariaLabel="Resizing"
               value={layer.resizing ?? 'fixed'}
@@ -142,7 +172,7 @@ export default function LayerInspector({ layer }) {
           <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
           {gen.loopBgToggleable(gen.loopById(layer.loopId)) && (
             <SettingsRow label="Background" align="fill" labelWidth={RAIL_LABEL_W}>
-              <SegmentedToggle
+              <ButtonGroup layout="joined"
                 size={cs} className="w-full"
                 options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
                 value={layer.bgOn === false ? 'off' : 'on'}
@@ -156,7 +186,8 @@ export default function LayerInspector({ layer }) {
       {/* Text's whole surface = the Typography pane, which TextSurface renders itself so its
         * type-settings trigger can ride the pane header (the 2026-08-12 inspector ruling; the
         * Text tab retired). */}
-      {layer.type === 'text' && <TextSurface key={layer.id} layer={layer} />}
+      {/* the float chrome gives the text surface its own Typography card (plan-2026-11-05-float-editor W2.3) */}
+      {layer.type === 'text' && !float && <TextSurface key={layer.id} layer={layer} />}
 
       {layer.type === 'photo' && (
         <Pane label="Image">
@@ -174,7 +205,7 @@ export default function LayerInspector({ layer }) {
         <Pane label="Path">
           {/* Open ↔ closed — renderer + export honor `closed` via pathD;
             * in node-edit, clicking the first anchor also closes. */}
-          <SegmentedToggle
+          <ButtonGroup layout="joined"
             size={cs} className="w-full"
             options={[{ value: 'open', label: 'Open' }, { value: 'closed', label: 'Closed' }]}
             value={layer.closed ? 'closed' : 'open'}
@@ -461,14 +492,17 @@ function ImageSource({ layer, patch }) {
  * unit sits against it (`0°`). Draft/commit via NumberField so a bare '-'
  * never reshapes the layer. String affordances get 4px extra air — the
  * shipped 6px reads glued against mono digits (the "balanced" ref). */
+/* Under the float chrome the same field takes his float look (19:9799–19:10243, the InputAffix): 32 high, radius 8,
+ * 12 in, the affordance 6 off the value — the shell's own gap, so no extra air. */
 function AxisField({ label, value, onCommit, suffix, tooltip }) {
   const cs = useControlSize()
+  const float = useChrome() === 'float'
   return (
     <Tooltip label={tooltip} triggerClassName="flex flex-1 min-w-0">
     <NumberField
-      variant="property" size={cs}
-      affordance={typeof label === 'string' ? <span className="pr-1">{label}</span> : label} unit={suffix}
-      className="w-full min-w-0"
+      variant="property" size={float ? 'sm' : cs} aria-label={tooltip}
+      affordance={typeof label === 'string' ? <span className={float ? undefined : 'pr-1'}>{label}</span> : label} unit={suffix}
+      className={float ? 'w-full min-w-0 h-8 rounded-lg px-3 bg-(--kol-float-well) [&_input+span]:pl-1.5 [&_input]:font-normal' : 'w-full min-w-0'}
       value={value}
       onCommit={onCommit}
     />
@@ -496,6 +530,25 @@ function PositionFields({ layer, setProp }) {
 /* Layout section — W/H + the aspect lock. */
 function LayoutFields({ layer, setProp, patch, anchor = [0, 0] }) {
   const cs = useControlSize()
+  const { onChangeW, onChangeH, aspectLocked, toggleLock } = useBoxSize(layer, setProp, patch, anchor)
+  /* three cells of the Transform grid (plan 34 § 3): W · H · the lock in the trailing column */
+  return (
+    <>
+      <AxisField label="W" tooltip="Width" value={Math.round(layer.w)} onCommit={onChangeW} />
+      <AxisField label="H" tooltip="Height" value={Math.round(layer.h)} onCommit={onChangeH} />
+      {/* Constrain proportions (editor review #6, 2026-09-27 — user: "just use a lock or something
+        * more common"): a KOL Button on the inputs' rung, a lock that closes when constrained. It was
+        * a raw <button> inking a corner glyph `fg` from its wrapper. */}
+      <Tooltip label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}>
+        <Button tone="ghost" size={cs} iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
+          aria-label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'} onClick={toggleLock} />
+      </Tooltip>
+    </>
+  )
+}
+
+/* the box's size writes — W, H and the float Transform card's Scale — with the aspect lock, the path's nodes and the anchor */
+function useBoxSize(layer, setProp, patch, anchor = [0, 0]) {
   /* Lock state lives on the layer (not local) so canvas drag handlers can
    * read it too. Encoded as a single number-or-null: a finite number is
    * the locked aspect ratio; null/undefined means unlocked. */
@@ -538,20 +591,13 @@ function LayoutFields({ layer, setProp, patch, anchor = [0, 0] }) {
     const h = Math.max(8, numOr0(raw))
     patch(anchored(withPathScale(aspectLocked ? { w: Math.max(8, Math.round(h * aspect)), h } : { h })))
   }
-  /* three cells of the Transform grid (plan 34 § 3): W · H · the lock in the trailing column */
-  return (
-    <>
-      <AxisField label="W" tooltip="Width" value={Math.round(layer.w)} onCommit={onChangeW} />
-      <AxisField label="H" tooltip="Height" value={Math.round(layer.h)} onCommit={onChangeH} />
-      {/* Constrain proportions (editor review #6, 2026-09-27 — user: "just use a lock or something
-        * more common"): a KOL Button on the inputs' rung, a lock that closes when constrained. It was
-        * a raw <button> inking a corner glyph `fg` from its wrapper. */}
-      <Tooltip label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}>
-        <Button tone="ghost" size={cs} iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
-          aria-label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'} onClick={toggleLock} />
-      </Tooltip>
-    </>
-  )
+  /* Scale (his Transform card): a one-shot factor — 150 grows the box by half about the anchor, the field reads 100 again */
+  const onScale = (raw) => {
+    const k = Number(raw) / 100
+    if (!Number.isFinite(k) || k <= 0 || k === 1) return
+    patch(anchored(withPathScale({ w: Math.max(8, Math.round(layer.w * k)), h: Math.max(8, Math.round(layer.h * k)) })))
+  }
+  return { onChangeW, onChangeH, onScale, aspectLocked, toggleLock }
 }
 
 const clampSkew = (raw) => {
@@ -581,6 +627,144 @@ function rotateAboutAnchor(layer, next, [ax, ay]) {
 
 /* The 9-point transform origin (G4 — Affinity's anchor selector): the pressed dot is the point
  * the typed W / H / rotation hold still. */
+
+const commitRotation = (layer, edit, anchor) => (raw) => {
+  const n = Number(raw)
+  const next = Number.isFinite(n) ? ((Math.round(n) % 360) + 360) % 360 : 0
+  edit.patch({ rotation: next, ...rotateAboutAnchor(layer, next, anchor) })
+}
+
+/* ── THE FLOAT FIELDS (plan-2026-11-05-float-editor W2b) — his Transform and Appearance cards (19:10125 · 19:10192) and
+ * the object inspector's Design tab (19:10408) render these: the inspector's own fields and writers in his float look
+ * (AxisField under the float chrome), not a second set. ── */
+
+/* Transform: X Y · W H · R Scale, two columns 8 apart, rows 8 apart */
+export function FloatTransformFields({ layer }) {
+  const edit = useLayerEdit(layer.locked ? null : layer.id, { history: 'coalesce' })
+  const anchor = anchorStore.value
+  const { onChangeW, onChangeH, onScale } = useBoxSize(layer, edit.setProp, edit.patch, anchor)
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      <PositionFields layer={layer} setProp={edit.setProp} />
+      <AxisField label="W" tooltip="Width" value={Math.round(layer.w)} onCommit={onChangeW} />
+      <AxisField label="H" tooltip="Height" value={Math.round(layer.h)} onCommit={onChangeH} />
+      <AxisField label="R" suffix="°" tooltip="Rotation" value={typeof layer.rotation === 'number' ? Math.round(layer.rotation) : 0}
+        onCommit={commitRotation(layer, edit, anchor)} />
+      <AxisField label="Scale" suffix="%" tooltip="Scale" value={100} onCommit={onScale} />
+    </div>
+  )
+}
+
+/* Appearance: the blend select (a float capsule, 36) · Opacity (the float slider) · fill, stroke and none swatches + the
+ * stroke weight */
+export function FloatAppearanceFields({ layer }) {
+  const edit = useLayerEdit(layer.locked ? null : layer.id, { history: 'coalesce' })
+  const { palette } = useComposeState()
+  const paints = 'color' in layer
+  return (
+    <div className="flex flex-col gap-2">
+      {/* his "Normal ⌄": the float label role, the 10 chevron right after the name (not at the far edge) */}
+      <Dropdown variant="float" size="md" ariaLabel="Blend mode"
+        className="w-full [&_.kol-dd-trigger]:w-full [&_.kol-dd-trigger]:justify-start [&_.kol-dd-trigger]:px-4 [&_.kol-dd-trigger]:gap-2 [&_.kol-dd-trigger]:text-[11px] [&_.kol-dd-trigger]:!font-normal [&_.kol-dd-caret]:!size-2.5"
+        options={BLEND_MODES} value={layer.blend ?? 'normal'} onChange={(v) => edit.setProp('blend', v)} />
+      <Slider variant="float" label="Opacity" min={0} max={100} step={1} className="w-full [&_.kol-slider-float]:h-4"
+        value={Math.round((layer.opacity ?? 1) * 100)} formatValue={(v) => `${v}%`}
+        onChange={(v) => edit.setProp('opacity', Math.min(1, Math.max(0, v / 100)))} />
+      {paints && (
+        <div className="flex items-center gap-2">
+          <PaintPopover bare layer={layer} palette={palette} paint="fill" label="Fill" hex={resolveColor(layer.color, palette)} none={!layer.color} />
+          <PaintPopover bare layer={layer} palette={palette} paint="stroke" label="Stroke" hex={resolveColor(layer.stroke, palette)} none={!layer.stroke || !layer.strokeWidth} />
+          <Tooltip label="No fill">
+            <button type="button" aria-label="No fill" onClick={() => edit.patch({ color: null })} className="inline-flex shrink-0 rounded-sm overflow-hidden">
+              <ColorSwatch size={24} showTransparent hoverable={false} />
+            </button>
+          </Tooltip>
+          <div className="flex-1 min-w-0">
+            <AxisField label="Stroke" suffix="px" tooltip="Stroke weight" value={Math.round(layer.strokeWidth ?? 0)}
+              onCommit={(raw) => { const n = Number(raw); edit.setProp('strokeWidth', Number.isFinite(n) && n > 0 ? Math.round(n) : 0) }} />
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+/* Effects (his Drop shadow · Layer blur): a row adds the effect to the layer and opens the Effects tab on it */
+const QUICK_EFFECTS = [{ id: 'filter-drop-shadow', label: 'Drop shadow' }, { id: 'fx-blur', label: 'Layer blur' }]
+export function FloatEffectChoices({ layer }) {
+  const { addFilter } = useComposeState()
+  return (
+    <div className="flex flex-col">
+      {QUICK_EFFECTS.map((fx) => (
+        <button key={fx.id} type="button" disabled={layer.locked}
+          onClick={() => { addFilter(layer.id, fx.id); window.dispatchEvent(new CustomEvent('kol:open-effects')) }}
+          className="h-[34px] px-3 rounded-md text-left kol-float-hint text-fg-88 hover:bg-(--kol-fg-16) hover:text-(--kol-fg-emphasis) focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] disabled:opacity-40">
+          {fx.label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+/* what his Design tab has no field for — the classic Transform pane's rest and the corners — under one pane */
+function FloatGeometry({ layer, edit, anchor, setAnchor }) {
+  const cs = useControlSize()
+  const { flipLayer } = useComposeState()
+  const { aspectLocked, toggleLock } = useBoxSize(layer, edit.setProp, edit.patch, anchor)
+  const hasRadius = (layer.type === 'shape' && layer.kind === 'rect') || layer.type === 'text'
+  return (
+    <Pane label="Geometry">
+      <AlignmentPanel />
+      <div className="grid grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] gap-2 items-center">
+        <AxisField label="SX" suffix="°" tooltip="Skew horizontal" value={Math.round(layer.skewX ?? 0)} onCommit={(raw) => edit.setProp('skewX', clampSkew(raw))} />
+        <AxisField label="SY" suffix="°" tooltip="Skew vertical" value={Math.round(layer.skewY ?? 0)} onCommit={(raw) => edit.setProp('skewY', clampSkew(raw))} />
+        <OriginPicker value={anchor} onChange={setAnchor} size={cs} ariaLabel="Transform origin" />
+        {hasRadius && !Array.isArray(layer.radii) ? (
+          <AxisField label={<Icon name="corner-radius" size={glyphSize(cs)} />} tooltip="Corner radius" value={Math.round(layer.radius ?? 0)}
+            onCommit={(raw) => { const n = Number(raw); edit.setProp('radius', Number.isFinite(n) && n > 0 ? Math.round(n) : 0) }} />
+        ) : <span />}
+        <ButtonGroup layout="joined" size={cs} value={null} ariaLabel="Transform" className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1"
+          options={[
+            { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={glyphSize(cs, true)} /> },
+            { value: 'fh', ariaLabel: 'Flip horizontal', label: <Icon name="flip-horizontal" size={glyphSize(cs, true)} /> },
+            { value: 'fv', ariaLabel: 'Flip vertical', label: <Icon name="flip-vertical" size={glyphSize(cs, true)} /> },
+          ]}
+          onChange={(op) => {
+            if (op === 'rot') edit.setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
+            else flipLayer(layer.id, op === 'fh' ? 'h' : 'v')
+          }} />
+        <Tooltip label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'}>
+          <Button tone="ghost" size={cs} iconOnly={aspectLocked ? 'lock' : 'unlock'} pressed={aspectLocked}
+            aria-label={aspectLocked ? 'Unconstrain proportions' : 'Constrain proportions'} onClick={toggleLock} />
+        </Tooltip>
+      </div>
+      {hasRadius && layer.type === 'shape' && (
+        <Button tone="ghost" quiet size={cs} iconLeft="maximize" pressed={Array.isArray(layer.radii)}
+          onClick={() => (Array.isArray(layer.radii)
+            ? edit.patch({ radius: layer.radii[0] ?? 0, radii: null })
+            : edit.patch({ radii: [0, 1, 2, 3].map(() => Math.round(layer.radius ?? 0)) }))}>
+          {Array.isArray(layer.radii) ? 'Link corners' : 'Edit corners separately'}
+        </Button>
+      )}
+      {hasRadius && Array.isArray(layer.radii) && (
+        <div className="grid grid-cols-2 gap-2">
+          {['TL', 'TR', 'BR', 'BL'].map((c, i) => (
+            <AxisField key={c} label={c} tooltip={`${['Top left', 'Top right', 'Bottom right', 'Bottom left'][i]} radius`} value={Math.round(layer.radii[i] ?? 0)}
+              onCommit={(raw) => { const n = Number(raw); edit.setProp('radii', layer.radii.map((r, j) => (j === i ? (Number.isFinite(n) && n > 0 ? Math.round(n) : 0) : r))) }} />
+          ))}
+        </div>
+      )}
+      {layer.type === 'text' && (
+        <ButtonGroup layout="joined" size={cs} ariaLabel="Resizing" value={layer.resizing ?? 'fixed'} onChange={(v) => edit.setProp('resizing', v)}
+          options={[
+            { value: 'fixed', ariaLabel: 'Fixed size', label: <Icon name="resize-fixed" size={glyphSize(cs, true)} /> },
+            { value: 'auto-w', ariaLabel: 'Auto width', label: <Icon name="resize-auto-w" size={glyphSize(cs, true)} /> },
+            { value: 'auto-h', ariaLabel: 'Auto height', label: <Icon name="resize-auto-h" size={glyphSize(cs, true)} /> },
+          ]} />
+      )}
+    </Pane>
+  )
+}
 
 /* ColorField extracted to ./ColorField; re-exported (imported at top) so
  * existing importers (CanvasInspector, TypeControls, pattern/ColorPicker)

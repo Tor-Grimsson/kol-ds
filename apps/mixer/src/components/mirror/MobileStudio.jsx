@@ -4,7 +4,7 @@ import { DISPLACEMENT_VARIANTS, MOVEMENT_VARIANTS, COPIES_VARIANTS, findVariant 
 import MirrorViewport from './MirrorViewport'
 import VariantControls from './VariantControls'
 import Icon from '../icons/Icon'
-import { ShellDrawer, SegmentedToggle, ContentRow, Button } from '@kolkrabbi/kol-component'
+import { ShellDrawer, ButtonGroup, ContentRow, Button } from '@kolkrabbi/kol-component'
 
 /**
  * MobileStudio — the studio below the fold (2026-09-01).
@@ -162,7 +162,7 @@ export default function MobileStudio({ state }) {
                 here either — `ShellDrawer` pads its own panel 16, and adding
                 ours on top took the content box to 322. */}
             <div className="pt-4">
-              <SegmentedToggle
+              <ButtonGroup layout="joined"
                 value={hall.id}
                 onChange={(id) => state.selectHall(id)}
                 options={HALLS.map((h) => ({ value: h.id, label: h.label }))}

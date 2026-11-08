@@ -1,5 +1,5 @@
 import Tag from '../atoms/Tag.jsx'
-import SegmentedToggle from '../atoms/SegmentedToggle.jsx'
+import ButtonGroup from './ButtonGroup.jsx'
 import TabsRow from './TabsRow.jsx'
 
 /* taxonomy-ok: molecule — composes Tag, SegmentedToggle (atoms) and TabsRow (a molecule of chips) into one strip */
@@ -44,7 +44,7 @@ export default function PageControls({ toggles, views = [], count, jump, legend,
             </div>
           )}
           {views.map((v) => (
-            <SegmentedToggle key={v.label} ariaLabel={v.label} size="sm" value={v.value} onChange={v.onChange} options={v.options} />
+            <ButtonGroup layout="joined" key={v.label} ariaLabel={v.label} size="sm" value={v.value} onChange={v.onChange} options={v.options} />
           ))}
           {count != null && <span className="kol-mono-12 text-fg-48 ml-auto">{count}</span>}
         </div>

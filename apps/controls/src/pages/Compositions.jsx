@@ -3,7 +3,7 @@ import {
   Toggle, LED, IconButton, LabeledJack, PanelLabel, ModuleFrame, ChannelStrip, FlipCard,
 } from '@kolkrabbi/kol-hardware'
 import {
-  Button, Knob, Slider, Dropdown, SegmentedToggle, ToggleSwitch, LabeledControl, LabeledControlSection,
+  Button, Knob, Slider, Dropdown, ButtonGroup, ToggleSwitch, LabeledControl, LabeledControlSection,
   LayerStack, TimelineDock, CurveEditor, defaultCurveFor,
 } from '@kolkrabbi/kol-component'
 import Specimen from '../Specimen.jsx'
@@ -94,7 +94,7 @@ function ParamsRail() {
   return (
     <div className="flex w-72 flex-col gap-6 rounded-[var(--kol-radius-sm)] bg-surface-primary p-4">
       <LabeledControlSection label="Generator">
-        <LabeledControl label="MODE"><SegmentedToggle value={mode} onChange={setMode} options={[{ value: 'loop', label: 'Loop' }, { value: 'once', label: 'Once' }]} size="xs" /></LabeledControl>
+        <LabeledControl label="MODE"><ButtonGroup layout="joined" value={mode} onChange={setMode} options={[{ value: 'loop', label: 'Loop' }, { value: 'once', label: 'Once' }]} size="xs" /></LabeledControl>
         <LabeledControl label={`SPEED · ${speed}`}><Slider min={0} max={100} value={speed} onChange={setSpeed} /></LabeledControl>
         <LabeledControl label={`SCALE · ${scale}`}><Slider min={0} max={100} value={scale} onChange={setScale} /></LabeledControl>
       </LabeledControlSection>

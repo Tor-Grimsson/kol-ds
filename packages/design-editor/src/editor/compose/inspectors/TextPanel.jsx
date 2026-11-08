@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Pane from '../../components/Pane'
-import { Button, Dropdown, LabeledControl, SettingsRow, MenuDropdownItem, PopoverPanel, SegmentedToggle, Slider, usePopover, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControl, SettingsRow, MenuDropdownItem, PopoverPanel, ButtonGroup, Slider, usePopover, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 import BindDot from '../../params/BindDot'
@@ -65,7 +65,7 @@ const metric = (key, label, format) => ({ ...TEXT_SCHEMA.find((p) => p.key === k
  * the target family: RG restores a real cut, JetBrains claims the 'mono'
  * width and its static weights, Google keeps width inert and snaps weight
  * to the family's nearest available stop. */
-function familyPatch(layer, familyId) {
+export function familyPatch(layer, familyId) {
   const patch = { family: familyId }
   const styles = stylesFor(familyId)
   if (familyId === FAMILY_RG) {
@@ -84,7 +84,8 @@ function familyPatch(layer, familyId) {
   return patch
 }
 
-export function TextSurface({ layer }) {
+/* `bare` drops the pane's title (the float Typography card already names it) and keeps its ⚙ */
+export function TextSurface({ layer, bare = false }) {
   const cs = useControlSize()
   const { palette } = useComposeState()
   const { saveType } = useGeneratorLibrary()
@@ -145,7 +146,7 @@ export function TextSurface({ layer }) {
     </Tooltip>
   )
   return (
-    <Pane label="Typography" actions={settingsTrigger}>
+    <Pane label={bare ? undefined : 'Typography'} actions={settingsTrigger}>
       {/* NO Content textarea and NO Family/Style/Size labels — Figma has
         * neither (user ruling 2026-08-12). Text edits happen on canvas
         * (double-click) or via the header's Edit object. */}
@@ -191,7 +192,7 @@ export function TextSurface({ layer }) {
         * alignment row above uses the align-object glyphs, and two rows both called "Alignment" with
         * the same icons read as one control twice. Affinity's paragraph row. */}
       <div className="flex items-center gap-2">
-        <SegmentedToggle
+        <ButtonGroup layout="joined"
           size={cs}
           ariaLabel="Text alignment"
           value={layer.textAlign ?? 'center'}
@@ -202,7 +203,7 @@ export function TextSurface({ layer }) {
           ]}
           onChange={(v) => setProp('textAlign', v)}
         />
-        <SegmentedToggle
+        <ButtonGroup layout="joined"
           size={cs}
           ariaLabel="Vertical alignment"
           value={layer.verticalAlign ?? 'middle'}
@@ -217,14 +218,14 @@ export function TextSurface({ layer }) {
 
       <PopoverPanel popover={settings} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg p-3 flex flex-col gap-3" style={{ minWidth: 240 }}>
         <LabeledControl label="Case">
-          <SegmentedToggle size={cs} className="w-full"
+          <ButtonGroup layout="joined" size={cs} className="w-full"
             options={CASE_OPTIONS}
             value={layer.case ?? 'original'}
             onChange={(v) => setProp('case', v)}
           />
         </LabeledControl>
         <LabeledControl label="Italic">
-          <SegmentedToggle size={cs} className="w-full"
+          <ButtonGroup layout="joined" size={cs} className="w-full"
             variant="single"
             options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
             value={layer.italic ? 'on' : 'off'}
@@ -269,7 +270,7 @@ function MetricInput({ param: p, layer, setProp, suffix, step, round = false, ic
 
 /* SizeCombo — Figma's size control: hugging input + chevron opening a
  * preset ladder. The bind dot rides beside (gated globally). */
-const SIZE_PRESETS = [12, 16, 24, 32, 48, 64, 96, 128, 160, 192, 256, 320]
+export const SIZE_PRESETS = [12, 16, 24, 32, 48, 64, 96, 128, 160, 192, 256, 320]
 
 function SizeCombo({ layer, setProp }) {
   const [open, setOpen] = useState(false)
@@ -345,7 +346,7 @@ export function VariableBlock({ layer, setProp }) {
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
         <span className="kol-eyebrow text-meta">Morph</span>
-        <SegmentedToggle size={cs}
+        <ButtonGroup layout="joined" size={cs}
           options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
           value={on ? 'on' : 'off'}
           onChange={(v) => setProp('axisOn', v === 'on')}
@@ -354,7 +355,7 @@ export function VariableBlock({ layer, setProp }) {
       {on && (
         <>
           <SettingsRow label="Mode" align="fill" labelWidth={RAIL_LABEL_W}>
-            <SegmentedToggle size={cs} className="w-full"
+            <ButtonGroup layout="joined" size={cs} className="w-full"
               options={[
                 { value: 'morph',  label: 'Morph' },
                 { value: 'fade',   label: 'Fade' },

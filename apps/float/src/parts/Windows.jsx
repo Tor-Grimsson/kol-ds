@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import {
   Button, Dialog, Dropdown, EmptyState, Input, LabeledControl, MediaLibrary, ModalProvider, NavDrawer, NoticeBanner,
   QuickLookFrame, QuickLookHeader, SummaryLine, TabsRow, ToggleSwitch, useModal,
+  SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle, SettingsText,
+  SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
 } from '@kolkrabbi/kol-component'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
@@ -73,6 +75,69 @@ function ConfirmBox() {
   )
 }
 
+/* the generator settings window (plan-2026-11-05-float-editor W7.1 · 7.2; his 12:2282) — Dialog variant="settings", in its
+ * box, and every Settings control on its rows */
+const CURVES = ['Linear', 'Ease', 'Hump', 'Wave'].map((l) => ({ value: l.toLowerCase(), label: l }))
+function SettingsWindowBox() {
+  const [box, setBox] = useState(null)
+  const [open, setOpen] = useState(true)
+  const [section, setSection] = useState('stripe')
+  const [v, setV] = useState({ dir: 'rows', count: 48, angle: 0, spacing: 'even', more: false, w: { a: 1, b: 6.8, curve: 'ease' }, g: { a: 2, b: 4, curve: 'linear' } })
+  const set = (k) => (x) => setV((o) => ({ ...o, [k]: x }))
+  const sections = [
+    { key: 'field', label: 'Field', state: 'Radial' }, { key: 'ramp', label: 'Ramp', state: 'Continuous' },
+    { key: 'stripe', label: 'Stripe Array', state: `${v.count} rows` }, { key: 'mask', label: 'Mask', state: 'None' },
+  ]
+  return (
+    <div ref={setBox} className="relative h-[700px] w-[912px] max-w-full">
+      <Button variant="float" tone="secondary" size="md" onClick={() => setOpen(true)}>Stripe Array settings</Button>
+      <Dialog container={box} variant="settings" blocking={false} open={open && !!box} onClose={() => setOpen(false)} title="Stripe Array" kind="Generate"
+        headerEnd={<div className="w-[158px]"><SettingsSelect value="custom" onChange={noop} options={[{ value: 'custom', label: 'Custom' }]} ariaLabel="Preset" /></div>}
+        sections={sections} section={section} onSection={setSection}
+        aside={<SettingsFieldMap background="linear-gradient(90deg, var(--kol-oq-16), var(--kol-fg-96) 50%, var(--kol-oq-16))" left="Radial" right="Centre 0.50 / 0.50" />}
+        footer={<><span className="flex-1" /><Button size="sm" onClick={() => setOpen(false)}>Apply</Button></>}>
+        <SettingsGroup title="Layout" note="Placement and rhythm">
+          <SettingsGrid>
+            <SettingsCell label="Direction"><SettingsSegmented value={v.dir} onChange={set('dir')} options={opt('rows', 'columns').map((o) => ({ ...o, label: o.label[0].toUpperCase() + o.label.slice(1) }))} ariaLabel="Direction" /></SettingsCell>
+            <SettingsCell label="Count"><SettingsSlider value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></SettingsCell>
+            <SettingsCell label="Angle"><SettingsSlider value={v.angle} onChange={set('angle')} min={-90} max={90} step={1} format={(n) => `${n}°`} aria-label="Angle" /></SettingsCell>
+            <SettingsCell label="Spacing"><SettingsSelect value={v.spacing} onChange={set('spacing')} options={[{ value: 'even', label: 'Even' }, { value: 'packed', label: 'Packed' }, { value: 'units', label: 'Units' }]} ariaLabel="Spacing" /></SettingsCell>
+          </SettingsGrid>
+        </SettingsGroup>
+        <SettingsGroup title="Shape ramps" note="Interpolate from A to B">
+          <div className="flex flex-col gap-1">
+            <SettingsRampHead />
+            <SettingsRamp label="Width" value={v.w} onChange={set('w')} curves={CURVES} />
+            <SettingsRamp label="Gap" value={v.g} onChange={set('g')} curves={CURVES} />
+          </div>
+        </SettingsGroup>
+        <SettingsDisclosure label="More geometry" note="Waves, dash & offsets" open={v.more} onToggle={set('more')}>
+          <SettingsGrid><SettingsCell label="Waves"><SettingsSlider value={0} onChange={noop} min={0} max={12} step={1} disabled aria-label="Waves" /></SettingsCell></SettingsGrid>
+        </SettingsDisclosure>
+      </Dialog>
+    </div>
+  )
+}
+
+function SettingsControlsBox() {
+  const [v, setV] = useState({ range: [0.2, 0.8], point: [0.5, 0.5], ramp: { a: 1, b: 6.8, curve: 'ease' }, lights: [{ x: 0.35, y: 0.4, radius: 0.3, intensity: 1 }], invert: false, letter: 'A', count: 48 })
+  const set = (k) => (x) => setV((o) => ({ ...o, [k]: x }))
+  return (
+    <div className="w-[408px] max-w-full flex flex-col gap-4 rounded-2xl bg-surface-secondary p-5" data-part-controls>
+      <SettingsGrid>
+        <SettingsCell label="Count"><SettingsSlider value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></SettingsCell>
+        <SettingsCell label="From / To"><SettingsRange value={v.range} onChange={set('range')} min={0} max={1} format={(n) => n.toFixed(2)} aria-label="From / To" /></SettingsCell>
+        <SettingsCell label="Centre"><SettingsPoint value={v.point} onChange={set('point')} min={-0.5} max={1.5} aria-label="Centre" /></SettingsCell>
+        <SettingsCell label="Letter"><SettingsText value={v.letter} onChange={set('letter')} aria-label="Letter" /></SettingsCell>
+        <SettingsCell><SettingsToggle label="Invert" checked={v.invert} onChange={set('invert')} /></SettingsCell>
+      </SettingsGrid>
+      <div className="flex flex-col gap-1"><SettingsRampHead /><SettingsRamp label="Width" value={v.ramp} onChange={set('ramp')} curves={CURVES} /></div>
+      <SettingsLights value={v.lights} onChange={set('lights')} />
+      <SettingsFieldMap background="linear-gradient(90deg, var(--kol-oq-16), var(--kol-fg-96) 50%, var(--kol-oq-16))" left="Radial" right="Centre 0.50 / 0.50" />
+    </div>
+  )
+}
+
 export default function Windows() {
   const [tab, setTab] = useState('canvas')
   const [safe, setSafe] = useState(false)
@@ -89,6 +154,8 @@ export default function Windows() {
           </Part>
           <Part name="Dialog float" slug="dialog"><ExportWindow blocking /><ExportWindow blocking={false} /></Part>
           <Part name="the useModal float confirm" slug="use-modal"><ConfirmBox /></Part>
+          <Part name="Dialog settings" slug="dialog"><SettingsWindowBox /></Part>
+          <Part name="Settings controls" slug="settings-ramp"><SettingsControlsBox /></Part>
           <Part name="QuickLookFrame float" slug="quick-look-frame">
             <QuickLookFrame variant="float" icon="align-vertical-center" title="Scene settings" onMinimise={noop} onClose={noop} status="Changes saved automatically" className="max-w-full">
               <TabsRow variant="float" size="xs" tabs={[{ id: 'canvas', label: 'Canvas' }, { id: 'playback', label: 'Playback' }]} value={tab} onChange={setTab} ariaLabel="Settings" />

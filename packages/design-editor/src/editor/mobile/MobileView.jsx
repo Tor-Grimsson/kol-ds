@@ -10,10 +10,9 @@ import { useTheme } from '@kolkrabbi/kol-framework'
 import { firstPresetPatch, loopById } from '../../loops/registry'
 import { useTool } from '../state/tools'
 import LabsSourcePicker from '../labs/LabsSourcePicker'
-import { isTabletSized, goDesktop, isMobileDevice, wantsDesktop, useNarrow } from './device'
-import { goLabs, modeById, navigateTo, setMountedView } from '../mode'
-import { MODE_ICONS } from '../labs/catalog'
-import CategoryScreen, { SPREAD } from './CategoryScreen'
+import { isTabletSized, goDesktop, isMobileDevice, wantsDesktop, useNarrow, SPREAD } from './device'
+import { goLabs, modeById, navigateTo, setMountedView, MODE_ICONS } from '../mode'
+import CategoryScreen from './CategoryScreen'
 import MobileOverlay from './MobileOverlay'
 
 /**

@@ -31,13 +31,20 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 98 entries
+## Queue — 106 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [ColumnStripHoldsStill](done/ColumnStripHoldsStill.md) | **kol-website** — MediaLibrary Columns view slides the strip to its far right on every click (`MediaLibraryPages` scrolls to `scrollWidth` on each `prefix`/`pickedFile` change); only mouse and arrows may move it | 2026-11-05 | 🔵 `filed` |
+| 🟢 | [FloatActionStatesAndMotion](done/FloatActionStatesAndMotion.md) | **kol-website** — the inverted + button: hover = slight opacity drop (not grey), press scale, + rotates into × · motion (ease, reduced-motion aware) across the float rail, cards, flyout and search | 2026-11-04 | 🔵 `filed` |
+| 🟢 | [FloatActionMenuExport](done/FloatActionMenuExport.md) | **kol-website** — export HubHome's private `HomeMenu` (fxr's inverted + / × with the float card to its left) as a shared part, and `FloatLayout bar.menu` to place it top right | 2026-11-04 | 🔵 `filed` |
+| 🟢 | [FloatMenuPanelInk](done/FloatMenuPanelInk.md) | **kol-website** — `Menu variant="float"`: the panel paints the opposite ground but the rows keep the theme's ink — invisible labels in dark and light | 2026-11-04 | 🔵 `filed` |
+| 🟢 | [FloatSearchAndPanels](done/FloatSearchAndPanels.md) | **kol-website** — FloatLayout `panels={false}` opt-out · CommandOverlay in the float look (`surface`, float rows/radius/shadow) for kol-search results | 2026-11-04 | 🔵 `filed` |
+| 🟢 | [FloatRailOverlayShadowRestore](done/FloatRailOverlayShadowRestore.md) | **kol-website** — FloatLayout: `railMode="overlay"` (the rail over the content, not pushing it) · the float shadow on NavRailFloat (expanded + collapsed) · a "Show navigation" row in RailTrigger's card | 2026-11-04 | 🔵 `filed` |
+| 🟢 | [RailShortcutsAllFrames](done/RailShortcutsAllFrames.md) | **kol-website** — one rail key rule in AppShell · SiteLayout · FloatLayout: `\` expanded↔collapsed, `⇧\` hide↔show (back to last state); ignored while typing; persisted; `railKeys` to opt out/rebind | 2026-11-04 | 🔵 `filed` |
 | 🟢 | [FloatFoldBothSidesGrey](done/FloatFoldBothSidesGrey.md) | **kol-fxr** — opt-in fold: `foldSide="swipe"` (either edge, by swipe direction), `foldTone="handle"` (grey edge handle); AppFloatNav forwards, AppShell `floats.fold` reaches the top float | 2026-11-03 | 🟢 `closed` — kol-component 0.333.0 · kol-shell 0.100.0 |
 | 🟢 | [FloatsOverlayNoBands](done/FloatsOverlayNoBands.md) | **kol-fxr** — `touch="floats"`: the floats overlay the content; no top band under the top float (stage `padding-top`), no padded foot under the transport (Rail `padding-bottom`). Reverses the PhoneTwoFloatLayout insets | 2026-11-03 | 🟢 `closed` — kol-shell 0.99.3 |
 | 🟢 | [HubHomeSignedOutPinned](done/HubHomeSignedOutPinned.md) | **kol-fxr** — HubHome signed out: pin the box to the screen (`fixed`, from the rail's edge), not `min-h-dvh`; iOS home-screen apps size `dvh` short, so Home scrolls with a band under the dock | 2026-11-03 | 🟢 `closed` — kol-shell 0.99.2 |
@@ -214,6 +221,7 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [DragResizeBottomWake](done/DragResizeBottomWake.md) | **kol-website** — a top/bottom Rail's grab pill wakes (`useGrabEdge` axis) | 2026-11-04 | 2026-11-04 | `closed` — **kol-component 0.338.1** live; receipt to kol-website |
 | 🟢 | [StyleguideNoMiddots](done/StyleguideNoMiddots.md) | **kol-website** — no `·` in kol-styleguide's shipped copy; `validate:no-middots` gate | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.1** live; receipt to kol-website |
 | 🟢 | [DocumentLangMark](done/DocumentLangMark.md) | **kol-website** — kol-styleguide `DocumentLibrary`/`DocumentView` `langMark` (code → node, preset `"flags"` on kol-icons `flag-*`) | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.0** live; receipt to kol-website |
 | 🟢 | [GrowthLineSeedOutline](done/GrowthLineSeedOutline.md) | **kol-atlas** — GrowthLineStage `seed="outline"`: the line starts on the shape's edge and fills inward; kol-growth `seed({ points })` takes a ring, `outline` / `pathRing` trace it | 2026-11-01 | 2026-11-01 | `closed` — **kol-growth 0.5.0 · kol-component 0.332.0** live; receipt to kol-atlas |
@@ -520,6 +528,8 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [GeneratorWindowsFromDS](outbox/GeneratorWindowsFromDS.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🔵 filed 2026-11-05 | **none** |
+| ⚫ | [TimelineRailFromDS](outbox/TimelineRailFromDS.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | ⚫ withdrawn 2026-11-04, the same day — the user: fxr owns its editor; the DS copy is its own, no longer refreshed from fxr | **none** |
 | 🔵 | [IconsBoldOnWebsite](outbox/IconsBoldOnWebsite.md) | **kol-website** — `/Users/kolkrabbi/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-11-04 | **none** |
 | 🟢 | [TransportFromHardware](outbox/TransportFromHardware.md) | **kol-fxr** — `/Users/kolkrabbi/dev/projects/kol-fxr/lobby/INDEX.md` | 🟢 closed 2026-10-29 — clock and strip adopted (kol-hardware 0.9.1) | **none** |
 | 🔵 | [FloatingFromHardware](outbox/FloatingFromHardware.md) | **kol-monitor** — `/Users/kolkrabbi/dev/projects/kol-monitor/lobby/INDEX.md` | 🔵 filed 2026-10-28 | **none** |
@@ -547,6 +557,11 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-05 | **`GeneratorWindowsFromDS` filed into kol-fxr** — the generator settings window and the `Settings*` controls (kol-component 0.343.0) for plan 53, with the engine params the KOL copy shows disabled |
+| 2026-11-05 | **`ColumnStripHoldsStill` filed from kol-website** — Columns view never slides sideways on a click; only mouse and arrows move the strip |
+| 2026-11-04 | **`DragResizeBottomWake` closed** — kol-component 0.338.1 live; receipt to kol-website |
+| 2026-11-04 | **`TimelineRailFromDS` withdrawn** the same day — the user: *"fxr owns its version and DS has a copy to make the float version"*; the design-editor copy stops being refreshed from fxr |
+| 2026-11-04 | **`TimelineRailFromDS` filed to kol-fxr** — carry `TimelineRail`, `timelineView` and `Timeline.jsx` from the design-editor mirror into fxr's source |
 | 2026-11-04 | **`StyleguideNoMiddots` closed** — kol-styleguide 0.22.1 live; receipt to kol-website |
 | 2026-11-04 | **`DocumentLangMark` closed** — kol-styleguide 0.22.0 live; receipt to kol-website |
 | 2026-11-04 | **`IconsBoldOnWebsite` filed to kol-website** — kol-icons 0.64.0 (`typography/bold`, node 237:21006) published; the site bumps |
@@ -1377,3 +1392,10 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-11-03 | ProseWrapsLongStrings closed — kol-theme 0.210.2 (`overflow-wrap: anywhere` on every prose class); receipt to kol-website |
 | 2026-11-03 | **`DashboardCardSet` filed from kol-website** — metric's cards into kol-dashboards for every dashboard |
 | 2026-11-03 | DashboardCardSet closed — kol-dashboards 0.9.0 (`Card` · `RankedList` · `StatTiles` · `DetailsOverlay`); apps/metric on them; receipt to kol-website |
+| 2026-11-04 | **`RailShortcutsAllFrames` closed** → **kol-component@0.339.0 · kol-shell@0.105.0 · kol-framework@0.70.0**. One keyboard rule for every nav rail: `\\` expands ↔ collapses, `⇧\\` hides ↔ shows (showing returns it as it was), ignored while typing and with ⌘/⌃/⌥. kol-component's useRailKeys, used by AppShell, FloatLayout and SiteLayout through one prop, railKeys (false off, { collapse, hide } rebinds); railToggleKey is the alias for hide. The Hub lists both keys in its keymap as Rail. Site hide persists as kol-sidenav-hidden. |
+| 2026-11-04 | **`FloatRailOverlayShadowRestore` closed** → **kol-shell@0.105.0 · kol-component@0.339.0**. FloatLayout railMode="push" | "overlay" (default push): overlay floats the rail over the content at the 24 inset, so expand, collapse and hide never move the page; the top bar and Panels ⌄ stay put. RailTrigger's card ends on a Show navigation row (onRestore) that brings the rail back at lastShown. NavRailFloat wears --kol-shadow-float at 280 and 72. |
+| 2026-11-04 | **`FloatSearchAndPanels` closed** → **kol-component@0.340.0 · kol-shell@0.106.0**. FloatLayout panels={false} drops Panels ⌄ (the way back is RailTrigger's Show navigation row and ⇧\; default true unchanged). CommandOverlay surface ('solid' | 'glass-dark' | 'glass-light') draws the search modal in the float look — RailTrigger's card on --kol-float-menu-r with the float surface and shadow, the float SearchInput, float rows (Inter, --kol-float-row, the cursor lit fg-16); unset it is drawn as before. FloatLayout search={{…CommandOverlay props}} draws it on the frame's own surface; the app keeps results. |
+| 2026-11-04 | **`FloatMenuPanelInk` closed** → **kol-component@0.340.1**. Menu variant="float" no longer copies the trigger's --kol-tone-panel-* onto its portalled panel: the panel is the theme's float surface (surface-secondary, the float shadow) under its theme-ink rows (fg-88, the fg-16 lift, icons oq-88), the pair RailTrigger's card, the search modal and the float Dropdown already use. Label contrast with an inverted float trigger, portalled to body: 12.3:1 light, 13.2:1 dark. The inverted float trigger is solid at rest; its mid-grey is the tone's hover (oq-inverse-40), unchanged. |
+| 2026-11-04 | **`FloatActionMenuExport` closed** → **kol-shell@0.107.0**. FloatActionMenu exported: HubHome's HomeMenu lifted as is ({ actions, icon = 'more', variant, surface, className }), the inverted round button, × while open, its sheet to the left with top edges level, 12 off; HubHome uses it. FloatLayout bar.menu (TopControlsBar menu) = [{ label, icon?, onPress }] draws it with plus and the float sheet on the frame's surface in the top-right corner. |
+| 2026-11-04 | **`FloatActionStatesAndMotion` closed** → **kol-shell@0.108.0**. kol-theme 0.212.0 · kol-component 0.341.0 · kol-shell 0.108.0. FloatActionMenu's + and every inverted float button keep their fill: hover --kol-float-hover-opacity 0.88, press --kol-float-press-scale 0.96, open the × on the same fill with the float shadow. iconMotion 'rotate' (default) turns the + 45° into the × and back. CSS-only motion on --kol-float-duration · -duration-rail · -ease · -enter-scale · -enter-shift: the + card, RailTrigger's card, RailFlyout, the float search modal, NavRail float expand/collapse and hide/show, float button and row hover; off under reduced motion. motion prop (true · false · { duration, ease }) on FloatLayout and every float piece. |
+| 2026-11-05 | **`ColumnStripHoldsStill` closed** → **kol-component@0.341.1**. The columns strip holds still. The real slide was ColumnBrowser's own effect (slide-to-end on every prefix/pick change); MediaLibraryPages' effect was a second, redundant one. Both are gone. A click never moves scrollLeft; an arrow key that lands in an off-screen column brings that column in with scrollIntoView({ inline: 'nearest' }), never to the end. Bucket/view switches reset naturally (the strip remounts or clamps). No opt-in prop: nothing depended on the old slide. Playwright: file click at scrollLeft 650 stays 650, folder click stays 650; arrows move by the minimum (786 to 780 to 520 to 526). |

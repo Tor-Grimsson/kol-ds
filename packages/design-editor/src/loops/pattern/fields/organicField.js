@@ -1,4 +1,4 @@
-import { TAU } from '../../lib/util.js'
+import { TAU } from '../../../editor/lib/util.js'
 
 const frac = (t) => { const f = t / TAU; return f - Math.floor(f) }
 

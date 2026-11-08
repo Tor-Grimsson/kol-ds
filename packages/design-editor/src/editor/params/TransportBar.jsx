@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Input, SegmentedToggle, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { Input, ButtonGroup, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { useTransport } from './transport'
 
@@ -76,7 +76,7 @@ export default function TransportBar({ size = 'sm' }) {
    * second strip. Glyph cells take their tooltips from `ariaLabel` (SegmentedToggle). */
   return (
     <div className="flex items-center gap-2">
-      <SegmentedToggle
+      <ButtonGroup layout="joined"
         size={size} ariaLabel="Playback" value={playing ? 'play' : 'pause'} className={SQUARE[size]}
         onChange={(v) => (v === 'play' ? play() : pause())}
         options={[
@@ -87,7 +87,7 @@ export default function TransportBar({ size = 'sm' }) {
       <div className="flex-1 min-w-0">
         <LoopField seconds={loopSeconds} onCommit={setLoopSeconds} size={size} />
       </div>
-      <SegmentedToggle
+      <ButtonGroup layout="joined"
         size={size} ariaLabel="Reset" value={null} className={SQUARE[size]}
         onChange={(v) => (v === 'stop' ? stop() : rewind())}
         options={[

@@ -124,6 +124,7 @@ import useScrollFade from '../hooks/useScrollFade.js'
  *                      ruling "pressing any icon would expand the sidebar"): a
  *                      collapsed rail stays collapsed, the press does its job
  *   `defaultCollapsed` boots collapsed when nothing is stored (useDragResize)
+ *   `toggleRef`        filled with the collapse toggle — SiteLayout's `\` key (useRailKeys) presses it
  * THE RAIL'S BEHAVIOURS ARE PROPS (SiteRailTitleNavigatesOnly, kol-branding 2026-10-27 — user: "clicking on title
  * shouldnt also expand, that is what the chevron is for", and: a small rail behaviour should never need a ticket here —
  * a sensible default plus a prop the consumer sets in its own repo):
@@ -244,6 +245,7 @@ export default function NavRailSite({
   iconSize: iconSizes,
   alignIcons = true,
   collapsedIcons = 'category',
+  toggleRef,
 }) {
   /* the row props' resolvers (NavRailRowProps) — '' at a level's own look, so the classes stay as they were */
   const caseCls = (node, level) => {
@@ -317,6 +319,8 @@ export default function NavRailSite({
    * drive it. */
   const asideRef = useRef(null)
   const { collapsed, toggleCollapsed, grabProps } = useDragResize(asideRef, { defaultCollapsed })
+  /* the frame's `\` key (useRailKeys) reaches the collapse through this — the same toggle the grab edge presses */
+  if (toggleRef) toggleRef.current = toggleCollapsed
 
   /* the panel's anchor: its row — the panel's bottom edge meets the row's top
    * edge, its width is the rail's; re-placed on resize and on collapse */

@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const pressed = instance.getEnum('pressed', { "true": "true", "false": "false" })
-const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
+const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
 
 export default {
   example: figma.code`<IconToggle pressed={${pressed}} size="${size}" icon="unlock" iconOn="lock" label="Lock" onChange={setLocked} />`,

@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { readLang } from '../lib/i18n.js'
 
 /** EN / IS, written to `?lang` — the one value every resume surface (source,
@@ -12,7 +12,7 @@ export default function LangToggle({ className = '' }) {
     setParams(p, { replace: true })
   }
   return (
-    <SegmentedToggle
+    <ButtonGroup layout="joined"
       value={readLang(params)}
       onChange={set}
       size="sm"

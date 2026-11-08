@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.338.0",
+  "version": "0.351.0",
   "description": "The core component library",
   "license": "MIT",
   "type": "module",
@@ -12,6 +12,9 @@
     "./molecules/Rail": "./src/organisms/Rail.jsx",
     "./molecules/ShellDrawer": "./src/organisms/ShellDrawer.jsx",
     "./utilities/ButtonGroup": "./src/molecules/ButtonGroup.jsx",
+    "./atoms/CloseButton": "./src/molecules/CloseButton.jsx",
+    "./utilities/FullscreenOverlay": "./src/molecules/FullscreenOverlay.jsx",
+    "./utilities/LoaderOverlay": "./src/molecules/LoaderOverlay.jsx",
     "./atoms/*": "./src/atoms/*.jsx",
     "./molecules/*": "./src/molecules/*.jsx",
     "./organisms/*": "./src/organisms/*.jsx",

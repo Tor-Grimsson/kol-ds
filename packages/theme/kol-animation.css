@@ -569,3 +569,72 @@
 @media (prefers-reduced-motion: reduce) {
   .kol-animated-word, .animatedWord { opacity: 1; transform: none; }
 }
+
+/* ═════════════════════════════════════════════════════════════════════
+ * THE FLOAT FAMILY'S MOTION (FloatActionStatesAndMotion, kol-website
+ * 2026-11-04 — user: *"everything is very.. quick, not smooth"*). CSS only,
+ * no gsap: every number is a `--kol-float-*` token (kol-design-tokens.css),
+ * and the `motion` prop on the float pieces and FloatLayout retunes or zeroes
+ * them per app (`floatMotion`, kol-component's utilities/motion.js).
+ *
+ *   .kol-float-motion   a float card (the + card, RailTrigger's card,
+ *                       RailFlyout, the float search modal): fades in from
+ *                       `--kol-float-enter-scale`, `--kol-float-enter-shift`
+ *                       off its trigger's side (`data-side`), and out the
+ *                       same way under `data-exit` before it unmounts
+ *   .kol-float-fade     opacity only (the search modal's scrim)
+ *   .kol-float-rail     NavRailFloat: expand and collapse ease the width,
+ *                       the new rows fade in; `is-entering` / `is-exiting`
+ *                       is FloatLayout's show and hide (the width opens from
+ *                       and closes to 0, so a pushed page eases with it)
+ *   .kol-float-turn     the + turning 45° into the × (`is-open`) and back
+ *
+ * `scale` and `translate` are the individual properties, so they compose
+ * with floating-ui's positioning `transform` instead of replacing it.
+ * ═════════════════════════════════════════════════════════════════════ */
+@keyframes kol-float-in {
+  from { opacity: 0; scale: var(--kol-float-enter-scale); translate: var(--kol-float-from, 0 var(--kol-float-enter-shift)); }
+}
+@keyframes kol-float-out {
+  to { opacity: 0; scale: var(--kol-float-enter-scale); translate: var(--kol-float-from, 0 var(--kol-float-enter-shift)); }
+}
+@keyframes kol-float-fade-in { from { opacity: 0; } }
+@keyframes kol-float-fade-out { to { opacity: 0; } }
+@keyframes kol-float-rail-in { from { width: 0; padding-inline: 0; margin-right: calc(-1 * var(--kol-spacing-6)); opacity: 0; } }
+@keyframes kol-float-rail-out { to { width: 0; padding-inline: 0; margin-right: calc(-1 * var(--kol-spacing-6)); opacity: 0; } }
+
+.kol-float-motion { animation: kol-float-in var(--kol-float-duration) var(--kol-float-ease) both; transform-origin: top center; }
+.kol-float-fade { animation: kol-float-fade-in var(--kol-float-duration) var(--kol-float-ease) both; }
+.kol-float-motion[data-exit] { animation-name: kol-float-out; pointer-events: none; }
+.kol-float-fade[data-exit] { animation-name: kol-float-fade-out; pointer-events: none; }
+/* from the trigger's side: a card left of its button grows out of the button's edge, and so on round */
+.kol-float-motion[data-side="left"] { --kol-float-from: var(--kol-float-enter-shift) 0; transform-origin: right top; }
+.kol-float-motion[data-side="right"] { --kol-float-from: calc(-1 * var(--kol-float-enter-shift)) 0; transform-origin: left top; }
+.kol-float-motion[data-side="bottom"] { --kol-float-from: 0 calc(-1 * var(--kol-float-enter-shift)); transform-origin: left top; }
+.kol-float-motion[data-side="top"] { --kol-float-from: 0 var(--kol-float-enter-shift); transform-origin: left bottom; }
+
+.kol-float-rail { transition: width var(--kol-float-duration-rail) var(--kol-float-ease); overflow: hidden; }
+.kol-float-rail > * { animation: kol-float-fade-in var(--kol-float-duration-rail) var(--kol-float-ease) both; }
+.kol-float-rail.is-entering { animation: kol-float-rail-in var(--kol-float-duration-rail) var(--kol-float-ease) backwards; } /* backwards, not both: a held width would mute the expand/collapse transition after */
+.kol-float-rail.is-exiting { animation: kol-float-rail-out var(--kol-float-duration-rail) var(--kol-float-ease) forwards; pointer-events: none; }
+
+.kol-float-turn > * { transition: rotate var(--kol-float-duration) var(--kol-float-ease); }
+.kol-float-turn.is-open > * { rotate: 45deg; } /* the glyph's wrapper, not the svg: Icon re-renders its svg */
+
+/* a float's rows and slots ease their hover on the same clock as its buttons */
+.kol-float-rail button,
+.kol-more-sheet-float button,
+.kol-rail-flyout button,
+.kol-menu-panel--float .kol-menu-row {
+  transition: background-color var(--kol-float-duration) var(--kol-float-ease), color var(--kol-float-duration) var(--kol-float-ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kol-float-motion, .kol-float-fade, .kol-float-rail, .kol-float-rail > *, .kol-float-turn > *,
+  .kol-btn.kol-btn-float, .kol-btn.kol-float-action,
+  .kol-float-rail button, .kol-more-sheet-float button, .kol-rail-flyout button, .kol-menu-panel--float .kol-menu-row {
+    animation: none;
+    transition: none;
+  }
+  .kol-btn.kol-btn-float.kol-tone-inverted:not(:disabled):active, .kol-btn.kol-float-action:not(:disabled):active { scale: none; }
+}

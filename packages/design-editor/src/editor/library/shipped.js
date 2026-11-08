@@ -1,9 +1,16 @@
-import { GROUPS, presetsInGroup, presetLayerPatch, isToolPreset, loopById } from '../../loops/registry'
-import { KINETIC_PRESETS, presetComp } from '../../kinetic/presets'
 import { CANVAS_W, CANVAS_H, TEXT_DEFAULTS } from '../compose/state'
 import { getAppSettings } from '../lib/appSettings'
-import { stepFromPreset } from '../morph/StepPicker'
 import { loadLibrary, saveLibrary } from './LibraryProvider'
+import { pack } from '../packs'
+
+/* the loop registry and the kinetic presets are PACK content — read through the seam (editor/packs.js), so a core
+ * with no generators pack ships only the editor's own files, and one with no motion pack no kinetic file */
+const gen = () => pack('generators')
+const presetsInGroup = (id) => gen().presetsInGroup(id)
+const presetLayerPatch = (p, gid) => gen().presetLayerPatch(p, gid)
+const isToolPreset = (p) => gen().isToolPreset(p)
+const loopById = (id) => gen().loopById(id)
+const stepFromPreset = (p) => gen().stepFromPreset(p)
 
 /**
  * shipped — WHAT FXR SHIPS, forty files, ten per chrome (plan home-library-detail-one-card § 2, user
@@ -36,7 +43,7 @@ const bg = (color = 'palette:primary') => layer('background', { color })
 function loopPool() {
   const seen = new Set()
   const out = []
-  for (const g of GROUPS) for (const p of presetsInGroup(g.id)) {
+  for (const g of gen()?.GROUPS ?? []) for (const p of presetsInGroup(g.id)) {
     if (seen.has(p.id)) continue
     seen.add(p.id)
     out.push({ p, gid: g.id, group: g.label })
@@ -70,9 +77,10 @@ const labsAndRandomiser = () => {
     return p && base(`ship:labs:${p.id}`, p.label, 'labs', section, category, [{ ...loopLayer(p, gid), type }])
   }).filter(Boolean)
   /* the tenth LABS file is the Composition section's kinetic type */
-  const kt = KINETIC_PRESETS[0]
-  labs.push(base(`ship:labs:type-${kt.id}`, kt.label, 'labs', 'Composition', 'Kinetic type',
-    [layer('kinetic', { ...full, presetId: kt.id, presetLabel: kt.label, comp: presetComp(kt) })]))
+  const motion = pack('motion')
+  const kt = motion?.KINETIC_PRESETS[0]
+  if (kt) labs.push(base(`ship:labs:type-${kt.id}`, kt.label, 'labs', 'Composition', 'Kinetic type',
+    [layer('kinetic', { ...full, presetId: kt.id, presetLabel: kt.label, comp: motion.presetComp(kt) })]))
   /* the randomiser's ten — a different preset from LABS' where the category has one, so the two views are not twins */
   const randomiser = RANDOMISER_PICKS.map((gid) => {
     const ps = visual(gid)
@@ -104,7 +112,7 @@ function morphs() {
 /* ten editor files from the editor's own layer kinds — a preset (background + a loop), type, a logo, a vector form */
 function editorFiles() {
   const find = (id) => loopPool().find((e) => e.p.id === id) ?? loopPool()[0]
-  const preset = (id, name, color) => { const e = find(id); return base(`ship:editor:${id}`, name, 'editor', 'Preset', e.group, [bg(color), loopLayer(e.p, e.gid)]) }
+  const preset = (id, name, color) => { const e = find(id); return e && base(`ship:editor:${id}`, name, 'editor', 'Preset', e.group, [bg(color), loopLayer(e.p, e.gid)]) }
   const text = (slug, name, copy, extra = {}) => base(`ship:editor:${slug}`, name, 'editor', 'Type', null, [bg('palette:light'),
     layer('text', { x: 90, y: 340, w: 900, h: 400, ...TEXT_DEFAULTS, text: copy, color: 'palette:dark', ...extra })])
   const logo = (slug, name, ground, ink) => base(`ship:editor:${slug}`, name, 'editor', 'Logo', null, [bg(ground),
@@ -127,7 +135,7 @@ function editorFiles() {
     logo('logo-dark', 'Logomark on dark', 'palette:dark', 'palette:light'),
     vector('vector-ribbon', 'Vector, ribbon', [n(0, 200, null, null, 160, 0), n(400, 200, 240, 400, 560, 0), n(800, 200, 640, 400, null, null)], false),
     vector('vector-leaf', 'Vector, leaf', [n(300, 0, 60, 120, 540, 120), n(300, 600, 540, 480, 60, 480)], true),
-  ]
+  ].filter(Boolean)
 }
 
 /* THE LIST IS BUILT, NOT STORED (2026-10-24). Written into localStorage it was ~1.1 MB, and on a browser whose
@@ -135,7 +143,7 @@ function editorFiles() {
  * (user: "why is library empty??"). The files are a pure function of the registry, so they are built once per tab;
  * only the user's changes to them persist, small: the ids removed and the names changed. */
 let built = null
-export const shippedFiles = () => (built ??= [...editorFiles(), ...labsAndRandomiser(), ...morphs()])
+export const shippedFiles = () => (built ??= [...editorFiles(), ...(gen() ? [...labsAndRandomiser(), ...morphs()] : [])])
 
 const OVERRIDES = 'kol.editor.library.shipped.v2'
 export const readShippedRaw = () => { try { return localStorage.getItem(OVERRIDES) } catch { return null } }

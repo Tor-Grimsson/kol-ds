@@ -2,6 +2,7 @@
  * small formatters. Plausible's dashboard is the spec for what each range, interval and comparison means. */
 import { useEffect, useState } from 'react'
 
+
 export const TZ = 'Atlantic/Reykjavik'
 const DAY = 86400000
 /* the Umami website was created 2026-03-05 — "All time" starts there */
@@ -156,42 +157,9 @@ export const filterParams = (filters) =>
   Object.fromEntries(filters.map((f) => [f.key, Array.isArray(f.value) ? f.value.map((v) => `${f.op}.${v}`) : `${f.op}.${f.value}`]))
 
 /* ── formatting ───────────────────────────────────────────────────────── */
-export const fmtNum = (n) => {
-  if (n == null || Number.isNaN(n)) return '0'
-  const a = Math.abs(n)
-  if (a >= 1e6) return `${+(n / 1e6).toFixed(1)}M`
-  if (a >= 1e5) return `${Math.round(n / 1e3)}k`
-  if (a >= 1e3) return `${+(n / 1e3).toFixed(1)}k`
-  return `${Math.round(n * 100) / 100}`
-}
-export const fmtDuration = (s) => {
-  s = Math.round(s || 0)
-  const h = Math.floor(s / 3600)
-  const m = Math.floor((s % 3600) / 60)
-  const sec = s % 60
-  return h ? `${h}h ${m}m` : m ? `${m}m ${String(sec).padStart(2, '0')}s` : `${sec}s`
-}
+export { formatCount as fmtNum, formatDuration as fmtDuration, formatRange as fmtRange, formatBucket as fmtBucket, formatTick as fmtTick } from '@kolkrabbi/kol-dashboards'
 const dayFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short' })
-const dayYearFmt = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 export const fmtDay = (t) => dayFmt.format(t)
-export const fmtRange = ({ start, end }) => {
-  const y = new Date(start).getFullYear() !== new Date(end).getFullYear()
-  const f = y ? dayYearFmt : dayFmt
-  return sod(start) === sod(end) ? f.format(start) : `${f.format(start)} - ${f.format(end)}`
-}
-export const fmtBucket = (t, unit) => {
-  const d = new Date(t)
-  if (unit === 'minute' || unit === 'hour') return `${dayFmt.format(d)}, ${d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}`
-  if (unit === 'month') return d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
-  if (unit === 'week') return `Week of ${dayFmt.format(d)}`
-  return d.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
-}
-export const fmtTick = (t, unit) => {
-  const d = new Date(t)
-  if (unit === 'minute' || unit === 'hour') return d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-  if (unit === 'month') return d.toLocaleDateString('en-GB', { month: 'short', year: '2-digit' })
-  return dayFmt.format(d)
-}
 
 const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
 export const countryName = (cc) => { try { return regionNames.of(cc) } catch { return cc } }

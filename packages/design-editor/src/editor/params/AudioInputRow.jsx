@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { enableAudio, disableAudio, audioSourceKind } from './audioBands'
 import { useControlSize } from './controlSize'
 
@@ -60,7 +60,7 @@ export default function AudioInputRow() {
     <div className="flex flex-col gap-1 mt-3">
       <div className="flex items-center gap-2">
         <span className="kol-helper-10 text-meta shrink-0">Audio</span>
-        <SegmentedToggle value={kind} onChange={onPick} options={OPTIONS} size={cs} className="flex-1" />
+        <ButtonGroup layout="joined" value={kind} onChange={onPick} options={OPTIONS} size={cs} className="flex-1" />
         <input ref={fileRef} type="file" accept="audio/*" onChange={onFile} className="hidden" />
       </div>
       {err && <span className="kol-mono-10 text-fg-64">{err}</span>}

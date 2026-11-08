@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   Avatar, Badge, BentoCard, Button, ColorRamp, ContentCard, Dropdown, Input, Kbd, LabeledControl, LabeledControlSection,
-  MenuDropdownDivider, MenuDropdownItem, MenuItem, OptionRow, Pill, ProfileCard, ProgressBar, SearchInput, SegmentedToggle,
+  MenuDropdownDivider, MenuDropdownItem, MenuItem, OptionRow, Pill, ProfileCard, ProgressBar, SearchInput, ButtonGroup,
   SettingsChoice, SettingsRow, SettingsSwitch, Slider, Tag, TabsRow, Textarea, ToggleCheckbox, ToggleSwitch, Tooltip,
 } from '@kolkrabbi/kol-component'
 import { AppFloatNav } from '@kolkrabbi/kol-shell'
@@ -282,10 +282,10 @@ function Bars() {
       <Group title="SegmentedToggle">
         {['default', 'filled', 'tonal'].map((v) => (
           <Sample key={v} name="SegmentedToggle" spec={`variant="${v}", size="md"`}>
-            <SegmentedToggle {...(v === 'default' ? {} : { variant: v })} value={s} onChange={setS} options={SEG} size="md" />
+            <ButtonGroup layout="joined" {...(v === 'default' ? {} : { variant: v })} value={s} onChange={setS} options={SEG} size="md" />
           </Sample>
         ))}
-        <Sample name="SegmentedToggle" spec={'tone="sunken", size="sm"'}><SegmentedToggle tone="sunken" value={s} onChange={setS} options={SEG} size="sm" /></Sample>
+        <Sample name="SegmentedToggle" spec={'tone="sunken", size="sm"'}><ButtonGroup layout="joined" tone="sunken" value={s} onChange={setS} options={SEG} size="sm" /></Sample>
       </Group>
       <Group title="AppFloatNav">
         {[

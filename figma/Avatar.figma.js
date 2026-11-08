@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg", "xl": "xl" })
+const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
 
 export default {
   example: figma.code`<Avatar initial="A" size="${size}" />`,

@@ -4,17 +4,16 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Button, Dropdown, Tooltip, Input, SettingsPanel, SettingsRow, SettingsChoice, ToggleCheckbox, SettingsMulti, ShortcutsOverlay, CommandOverlay, IconFrame, SettingsSections, MenuFilter, MenuDatePicker, MenuMore } from '@kolkrabbi/kol-component'
 import { Dialog } from '@kolkrabbi/kol-component'
-import CalendarIcon from './CalendarIcon.jsx'
-import TopStats, { Chart, seriesFor, METRICS } from './TopStats.jsx'
+import MetricStats, { seriesFor, METRICS } from './TopStats.jsx'
 import { SourcesCard, PagesCard, LocationsCard, DevicesCard } from './Cards.jsx'
 import BehavioursCard from './Behaviours.jsx'
 import { Nine, Ten, Eleven } from './nine.js'
 import { CodeSection11, DeploysSection11, StorageSection11, WeekdayGrid11 } from './Sections11.jsx'
 import { HubSettingsRail } from '@kolkrabbi/kol-shell'
 import { createIndex, search as searchIndex } from '@kolkrabbi/kol-search'
-import { DEPLOY_STATE_LABELS, timeAgo } from '@kolkrabbi/kol-dashboards'
+import { DEPLOY_STATE_LABELS, timeAgo, CalendarIcon, TrendChart, TopStats } from '@kolkrabbi/kol-dashboards'
 import { MILESTONES } from '../milestones.js'
-import { SECTIONS, useLive, DeployLine, LiveSection, WeekdayGrid, SiteExtras, Editing, Sized } from './Sections.jsx'
+import { useLive, Editing, Sized } from './Sections.jsx'
 import {
   umami, getJson, useAsync, RANGE_GROUPS, RANGES, periodOf, intervalsOf, comparisonOf, filterParams, OPS, FILTER_LABEL,
   fmtRange, fmtNum, isDevHost, countryName,
@@ -164,7 +163,6 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
         <h1>
           <a href="https://kolkrabbi.io" className={`kol-sans-display-03 text-auto no-underline hover:opacity-80 transition-opacity ${eleven ? 'block leading-none' : ''}`}>METRICS</a>
         </h1>
-        {nine && !ten && <Dropdown className="min-w-0 max-w-[45vw]" value={section} onChange={setSection} options={SECTIONS} ariaLabel="Dashboard section" />}
         {/* /demo-11 (16.4): the gear where media keeps it — the title row's right, KOL IconFrame as LibraryHeader's */}
         {eleven && (
           <div className="kol-tone-faint flex items-center gap-2 min-w-0">
@@ -175,9 +173,7 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
           </div>
         )}
       </div>
-      {nine && !ten && lv && <DeployLine live={lv} />}
-
-      {nine && !ten && section !== 'site' ? <LiveSection section={section} live={lv} /> : (<div className={eleven ? 'flex flex-col gap-3' : 'contents'}>
+      {(<div className={eleven ? 'flex flex-col gap-3' : 'contents'}>
       {/* /demo-11: media's page — the head, 24, then ONE column: the crumb row, 12 (gap-3), the content; elsewhere
         * these wrappers are `contents`, so /demo-7…10 lay out exactly as before */}
 
@@ -259,9 +255,9 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
       <div className={eleven ? 'flex flex-col' : 'contents'} style={eleven ? { gap: 'var(--kol-gap-wall-grid)' } : undefined}>
       {realtime
         ? <Realtime period={period} filters={allFilters} live={live.data} tick={tick} metric={metric === 'pageviews' ? 'pageviews' : 'visitors'} setMetric={setMetric} />
-        : S('stats', <TopStats variant={eight ? tiles : 'plausible'} period={period} comparison={comparison} unit={unit} filters={allFilters} metric={metric} setMetric={setMetric} onPickBucket={onPickBucket} weekStart={weekStart} traffic={lv?.siteData?.dailyVisits} />)}
+        : S('stats', <MetricStats variant={eight ? tiles : 'plausible'} period={period} comparison={comparison} unit={unit} filters={allFilters} metric={metric} setMetric={setMetric} onPickBucket={onPickBucket} weekStart={weekStart} traffic={lv?.siteData?.dailyVisits} />)}
 
-      {nine && S('weekday', eleven ? <WeekdayGrid11 period={period} filters={allFilters} timezone={timezone} /> : <WeekdayGrid period={period} filters={allFilters} />)}
+      {nine && S('weekday', <WeekdayGrid11 period={period} filters={allFilters} timezone={timezone} />)}
 
       <div className="grid grid-cols-1 lg:grid-cols-2" style={{ gap: 'var(--kol-gap-wall-grid)' }}>
         {S('sources', <SourcesCard {...cardProps} />)}
@@ -270,7 +266,6 @@ export default function DemoSeven({ eight = false, nine = false, ten = false, el
         {S('devices', <DevicesCard {...cardProps} />)}
         {S('behaviours', <BehavioursCard {...cardProps} />, 'lg:col-span-2')}
       </div>
-      {nine && !ten && lv && <SiteExtras live={lv} />}
       {/* /demo-10 (13.1): one page — /demo-6's Code · Deploys · Storage under Site, in this page's cards */}
       {ten && [['Code', <CodeSection11 key="c" sanity={lv?.sanityData} />], ['Deploys', <DeploysSection11 key="d" />], ['Storage', <StorageSection11 key="s" />]].map(([title, body]) => (
         <section key={title} id={`section-${title.toLowerCase()}`} className="flex flex-col gap-3 pt-6">
@@ -493,25 +488,9 @@ function Realtime({ period, filters, live, tick, metric, setMetric }) {
     { key: 'pageviews', label: 'Total pageviews (last 30 min)', value: stats.data?.pageviews ?? 0 },
   ]
   return (
-    <section className="bg-surface-secondary rounded" style={{ padding: 'var(--kol-pad-card-lg)' }}>
-      <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(200px, 100%), 1fr))' }}>
-        {tabs.map((t) => {
-          const sel = t.key === metric
-          const click = t.key !== 'live'
-          return (
-            <Button variant="bare" key={t.key} disabled={!click} onClick={() => click && setMetric(t.key)}
-              className={`text-left rounded px-3 py-3 ${sel ? 'bg-fg-08' : click ? 'hover:bg-fg-04' : 'cursor-default'}`}>
-              <div className={`kol-helper-12 uppercase tracking-wide ${sel ? 'text-fg-96' : 'text-fg-56'}`}>{t.label}</div>
-              <div className="flex items-center gap-3 mt-1">
-                <span className="kol-mono-20 text-fg-96">{fmtNum(t.value)}</span>
-                {t.dot && <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'var(--ui-success)' }} />}
-              </div>
-            </Button>
-          )
-        })}
-      </div>
-      <Chart metric={METRICS.find((m) => m.key === metric)} series={series.data} loading={series.loading} unit="minute" period={period} onPick={() => {}} />
-    </section>
+    <TopStats variant="realtime" items={tabs.map((t) => ({ key: t.key, label: t.label, value: fmtNum(t.value), dot: t.dot, disabled: t.key === 'live' }))} selected={metric} onSelect={setMetric}>
+      <TrendChart metric={METRICS.find((m) => m.key === metric)} series={series.data} loading={series.loading} unit="minute" period={period} onPick={() => {}} />
+    </TopStats>
   )
 }
 

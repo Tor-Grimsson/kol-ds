@@ -25,7 +25,7 @@ import { CanvasZoomContext } from '../shell/Canvas'
  * authored transform, not the live animated offset).
  */
 
-import { clamp, lerp } from '../../loops/lib/util'
+import { clamp, lerp } from '../lib/util'
 
 /* JS port of the engine's shader formDist — signed-ish distance (negative
  * inside) for a form-local point q. Mirrors SoftFormsEngine.formDist. */

@@ -7,7 +7,10 @@ import { useControlSize } from '../params/controlSize'
 import { useComposeState } from '../compose/state'
 import { findLayerDeep } from '../compose/helpers'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
-import { loopById } from '../../loops/registry'
+import { pack } from '../packs'
+
+/* the loop registry is the generators pack's — read through the seam (editor/packs.js) */
+const loopById = (id) => pack('generators')?.loopById(id) ?? null
 
 /**
  * PaletteBody — the body of the Color Modes window (`ColorModesWindow`, plan 39 § 4.1; it was the colour

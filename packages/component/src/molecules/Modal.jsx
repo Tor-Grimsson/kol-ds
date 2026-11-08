@@ -347,16 +347,85 @@ export function useModal() {
  * @param {Element}  [container]  the portal target instead of `<body>` (float-operational W2, 2026-11-04): the layer turns
  *   `absolute` and fills it — a specimen box (`position: relative`, a height) shows the window open in place. Unset, unchanged.
  */
-export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, container, children }) {
+/*
+ * `variant="settings"` (plan-2026-11-05-float-editor W7.1 — his "Stripe Array settings modal", Figma 7K5v68l4tblHPFuiLdokRu
+ * 12:2282, 880 × 656): the generator's settings window. A 60 header (the `title` in Inter 14 semibold, `kind` beside it in
+ * the hint ink, `headerEnd` — the preset select — and the ×), a 156 section list on the primary surface (`sections`
+ * `[{ key, label, state }]` — the name and a one-line state, the lit one on oq-12 with a 2px marker; `section` /
+ * `onSection`), the body (`children`, 24 in, scrolling), an `aside` column 248 wide (the preview), and a 60 `footer`. The
+ * secondary surface, a 16 round, oq-16 rules between the parts — his frame draws them. `height` (default 656) and
+ * `width` (default 880) are its size; both shrink to the viewport.
+ * @param {string} [kind] settings: the line beside the title ("Generate")
+ * @param {ReactNode} [headerEnd] settings: the header's right side, before the × (the preset select)
+ * @param {Array} [sections] settings: `[{ key, label, state }]`
+ * @param {string} [section] · @param {Function} [onSection]
+ * @param {ReactNode} [aside] · @param {ReactNode} [footer] · @param {number} [height=656]
+ */
+export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, container, kind, headerEnd, sections, section, onSection, aside, footer, height = 656, children }) {
   const look = modalVariant(variant, 'lift')
   const float = variant === 'float'
   useEffect(() => {
     if (!open) return undefined
-    const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.kol-popover-float')) onClose() }
+    const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.kol-popover-float, [data-state="open"].kol-dd-trigger')) onClose() }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [open, onClose])
   if (!open || typeof document === 'undefined') return null
+  if (variant === 'settings') {
+    const within = container ? '100%' : '100vw'
+    const withinH = container ? '100%' : '100dvh'
+    return createPortal(
+      <div onMouseDown={blocking ? onClose : undefined} className={blocking ? 'kol-overlay-scrim' : 'pointer-events-none'}
+        style={{ position: container ? 'absolute' : 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div role="dialog" aria-modal={blocking ? 'true' : undefined} aria-label={title} data-dialog onMouseDown={(e) => e.stopPropagation()}
+          className="kol-modal kol-settings-window pointer-events-auto flex flex-col overflow-hidden rounded-2xl border border-oq-16 bg-surface-secondary text-fg-96 font-(family-name:--kol-font-family-float) shadow-[var(--kol-shadow-float)]"
+          style={{ width: `min(${width}px, calc(${within} - 32px))`, height: `min(${height}px, calc(${withinH} - 32px))` }}>
+          <header className="flex items-center gap-4 h-[60px] shrink-0 pl-6 pr-[22px] border-b border-oq-16">
+            <h2 className="text-[14px] font-semibold leading-none">{title}</h2>
+            {kind && <span className="text-[11px] text-oq-64 leading-none mt-px">{kind}</span>}
+            <span className="flex-1" />
+            {headerEnd}
+            <button type="button" aria-label="Close" onClick={onClose}
+              className="ml-3 size-7 -mr-[7px] inline-flex items-center justify-center rounded-md text-[20px] leading-none text-oq-64 hover:text-(--kol-fg-96) hover:bg-(--kol-oq-08) focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">×</button>
+          </header>
+          <div className="flex flex-1 min-h-0">
+            {sections?.length > 0 && (
+              <nav aria-label="Settings" className="w-[156px] shrink-0 overflow-y-auto bg-surface-primary border-r border-oq-16 px-2 pt-[21px] pb-4">
+                <p className="pl-[10px] pb-[14px] text-[9px] font-medium leading-[11px] uppercase text-oq-64">Settings</p>
+                <div role="tablist" aria-orientation="vertical" className="flex flex-col gap-1.5"
+                  onKeyDown={(e) => {
+                    const dir = { ArrowDown: 1, ArrowUp: -1 }[e.key]
+                    if (!dir) return
+                    e.preventDefault()
+                    const at = sections.findIndex((s) => s.key === section)
+                    const next = sections[(at + dir + sections.length) % sections.length]
+                    onSection?.(next.key)
+                    e.currentTarget.querySelector(`[data-section="${next.key}"]`)?.focus()
+                  }}>
+                  {sections.map((s) => {
+                    const lit = s.key === section
+                    return (
+                      <button key={s.key} type="button" role="tab" aria-selected={lit} data-section={s.key} tabIndex={lit ? 0 : -1}
+                        onClick={() => onSection?.(s.key)}
+                        className={`relative h-[45px] shrink-0 flex flex-col items-start justify-center gap-[5px] px-3 rounded-md text-left focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${lit ? 'bg-oq-12' : 'hover:bg-(--kol-oq-08)'}`}>
+                        {lit && <span aria-hidden="true" className="absolute left-0 top-[13px] h-[18px] w-0.5 rounded-[1px] bg-fg-96" />}
+                        <span className={`text-[11px] leading-[13px] text-fg-96 ${lit ? 'font-medium' : ''}`}>{s.label}</span>
+                        {s.state != null && <span className="text-[10px] leading-[12px] text-oq-64">{s.state}</span>}
+                      </button>
+                    )
+                  })}
+                </div>
+              </nav>
+            )}
+            <div className="flex-1 min-w-0 overflow-y-auto pl-6 pr-5 pt-6 pb-6">{children}</div>
+            {aside && <aside className="w-[248px] shrink-0 mr-6 pt-6 pb-6 overflow-y-auto">{aside}</aside>}
+          </div>
+          {footer && <footer className="flex items-center gap-3 h-[60px] shrink-0 px-6 border-t border-oq-16">{footer}</footer>}
+        </div>
+      </div>,
+      container ?? document.body,
+    )
+  }
   return createPortal(
     <div
       onMouseDown={blocking ? onClose : undefined}

@@ -3,7 +3,7 @@ title: Motion
 type: reference
 status: active
 created: 2026-08-28
-updated: 2026-08-28
+updated: 2026-11-04
 description: One sheet for every keyframe and motion class
 sources:
   - packages/theme/kol-animation.css
@@ -33,6 +33,7 @@ beside the component it was building. Gate 23 is what makes it stick.
 | Keyframes | **all of them.** A keyframe name is global whichever file declares it, so there is no cost to one home and no way to keep six |
 | Named motion classes | a class whose whole job is to move something — `.kol-link-underline` · `.kol-media-zoom` · `.kol-media-fade` · `.kol-card.has-reveal` · `.kol-roll*` · `.kol-content-title-dim` · `.kol-collection-item` · the feature/split hover zooms · `.kol-rail-grab` |
 | Reduced motion | every `prefers-reduced-motion` block. They were the tell that this file was missing: five of them, four sheets, each written by whoever was in that file |
+| The float family | `.kol-float-motion` (a card in and out) · `.kol-float-fade` (the search modal's scrim) · `.kol-float-rail` (expand ↔ collapse, `is-entering` · `is-exiting` for show ↔ hide) · `.kol-float-turn` (the + into the ×) · the float rows' hover. Every number is a `--kol-float-*` token: `-duration` 200ms, `-duration-rail` 300ms, `-ease` the house curve, `-enter-scale` 0.96, `-enter-shift` 4px, `-hover-opacity` 0.88, `-press-scale` 0.96 (FloatActionStatesAndMotion, kol-theme 0.212.0). See [[../04-compositions/24-float-system|the float system § Motion]] |
 | Scroll entrance | the reveal family — `.kol-reveal` · `-group` · `-from-left` · `-from-right`, revealed by a consumer's `.is-visible`, staggered by `--kol-reveal-delay`. Promoted from kol-website 2026-08-28; the bare `.reveal*` names stay as aliases for its live call sites |
 
 ## Excluded
@@ -57,7 +58,7 @@ import { EASE, DURATION, SPRING, GRAB, s } from '@kolkrabbi/kol-component/utilit
 `EASE` (house · bounce · longFade, with the gsap-named equivalents), `DURATION`
 in ms with `s()` for the tween libraries, `SPRING` (the Tilt family's two sets),
 `GRAB` (the rail pill's pointer behaviour — hysteresis, marks, tweens, click
-slop). `useTilt` and `ActionButton` read it; a hand-typed
+slop), `FLOAT_MOTION` and `floatMotion(motion)` (the float pieces' `motion` prop → the `--kol-float-*` vars and how long a card is held while it leaves, with the `useFloatPresence` hook). `useTilt` and `ActionButton` read it; a hand-typed
 `duration: 0.5, ease: 'power3.out'` in a component is a finding.
 
 ## Naming

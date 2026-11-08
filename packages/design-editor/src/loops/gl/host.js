@@ -22,7 +22,7 @@ import { PALETTES as MESH_PALETTES, shiftHue } from './meshPalettes.js'
 import { mulberry32 } from './rng.js'
 import { DEFAULT_KEYFRAMES } from './primitiveKeyframes.js'
 import { layerCycles, layerPhase } from './phase.js'
-import { resolveTheme, DEFAULT_THEME } from '../lib/themes.js'
+import { resolveTheme, DEFAULT_THEME } from '../../editor/lib/themes.js'
 import { transport } from '../../editor/params/transport.js'
 
 /* Live engines by layer id — the panel-side action channel (hostAction).

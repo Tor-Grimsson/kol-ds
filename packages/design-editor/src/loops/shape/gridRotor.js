@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // Grid rotor — a grid of short line segments; each rotates a whole number of
 // turns per loop with a spatial phase offset, so a wave of rotation sweeps the

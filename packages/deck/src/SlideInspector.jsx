@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Button, ColorInputRow, ColorSwatch, Dropdown, Input, LabeledControl, LabeledControlSection, LayerStack, MediaLibrary, SegmentedToggle, ViewToggle } from '@kolkrabbi/kol-component'
+import { Button, ColorInputRow, ColorSwatch, Dropdown, Input, LabeledControl, LabeledControlSection, LayerStack, MediaLibrary, ButtonGroup, ViewToggle } from '@kolkrabbi/kol-component'
 import { image, rule, text, CHROME, GREYS, resolveColor } from './slideDoc.js'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { alignLayers, distributeLayers, reorderZ } from './layerOps.js'
@@ -267,7 +267,7 @@ export default function SlideInspector({ doc, selectedIds = [], onChange, onSele
                 </div>
                 <div className={TWO}>
                   <LabeledControl label="Case">
-                    <SegmentedToggle tone="sunken" size="sm" value={layer.case} onChange={set('case')} options={[{ value: 'none', label: 'Aa' }, { value: 'upper', label: 'AA' }]} />
+                    <ButtonGroup layout="joined" tone="sunken" size="sm" value={layer.case} onChange={set('case')} options={[{ value: 'none', label: 'Aa' }, { value: 'upper', label: 'AA' }]} />
                   </LabeledControl>
                   <LabeledControl label="Style">
                     <ViewToggle variant="icon" tone="sunken" viewMode={layer.italic ? 'italic' : 'roman'} onViewChange={(v) => set('italic')(v === 'italic')} options={STYLE_OPTS} />
@@ -312,7 +312,7 @@ export default function SlideInspector({ doc, selectedIds = [], onChange, onSele
                 onSelect={(url) => set('src')(url)}
               />}
               <LabeledControl label="Fit">
-                <SegmentedToggle tone="sunken" size="sm" value={layer.fit} onChange={set('fit')} options={[{ value: 'cover', label: 'Cover' }, { value: 'contain', label: 'Contain' }]} />
+                <ButtonGroup layout="joined" tone="sunken" size="sm" value={layer.fit} onChange={set('fit')} options={[{ value: 'cover', label: 'Cover' }, { value: 'contain', label: 'Contain' }]} />
               </LabeledControl>
             </LabeledControlSection>
           )}

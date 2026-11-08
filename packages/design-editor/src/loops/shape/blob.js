@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 import { FILL_PARAMS, paintFill, isGradient } from '../lib/fill.js'
 
 // Blob — an organic radial wobble r(θ)=R(1+Σ amp·sin(hθ±phase)); integer

@@ -1,5 +1,87 @@
 # @kolkrabbi/kol-component
 
+## 0.351.0 — 2026-11-08
+
+- **New: `SwatchCaption`** (molecule) — the name, value and meta lines under a swatch, the text block of the Swatch family: `name`, `value`, `meta`, `layout` `'inline'` (name and value on one baseline row, meta under) · `'stacked'` (default), `tone` `'muted'` (default: quiet name, strong value) · `'strong'` (emphasised truncating name, quiet value), and `rowClass` · `nameClass` · `valueClass` · `metaClass` to replace a slot's classes whole. It renders siblings, so the parent owns the gap.
+- **Changed: `SwatchTile` renders `SwatchCaption`** at every size — the rendered HTML is identical (48 prop combinations diffed before and after).
+
+## 0.350.0 — 2026-11-07
+
+- **New: `SwatchTile`** (molecule) — a ColorSwatch with its name and value under it: `hex`, `name`, `meta` (a third line, e.g. the token), `value` (default the hex uppercased; null hides it), `size` `'tile'` (default: the full-width specimen bar, `height` 96, over a name-left, value-right row) · `'grid'` (a square cell, name over value, truncating) · a number (a fixed chip, the caption under it), `anchor`, and `selected` · `onClick` · `title` passed to ColorSwatch, `chipClassName`. Each size is a form callers drew by hand, class for class.
+- **Changed: `ColorRamp` renders `SwatchTile size="grid"`** for its chips — same DOM, same look.
+- **Moved: `CloseButton` → `molecules/`** (it composes Button and IconFrame, like CopyButton), and with it **`FullscreenOverlay`** and **`LoaderOverlay`** → `molecules/` (a utility may not import a molecule). The barrel names are unchanged; the old deep paths `atoms/CloseButton`, `utilities/FullscreenOverlay` and `utilities/LoaderOverlay` stay in `exports` as aliases (on the retirement ledger). No API change.
+
+## 0.349.0 — 2026-11-07
+
+plan-2026-11-07-menu-system W4.1:
+- **New: `ModalHeader`** (molecule) — the top row of a floating surface: `title`, `avatar` (picture url, initials or a node), `icon` (kol-icons name), `actions` (trailing node, e.g. a close), `variant` float · default, `onClick` (the row becomes the pressable nav Button). Classes are MoreRows' account row, class-for-class.
+- **Changed: `PanelsMenu`'s title is a `ModalHeader`** (no avatar) — it takes the shared header look.
+
+## 0.348.0 — 2026-11-07
+
+plan-2026-11-07-menu-system W1 (needs kol-theme ≥ 0.216.1 for the in-panel rule ink):
+- **New: `MenuList`** — the rows of every menu: `items` (`heading` → MenuLabel, `divider` → MenuDivider, rows with Menu's keys, `items` → a MenuFlyout), `search`, `children` above the rows, `variant` float · sheet, `dividerClassName`, `headingClassName`. `Menu`, `Dropdown` and `ContextMenu` (through Menu) render it inside their PopoverPanel — rows are mapped in one place. No API change to Menu, Dropdown, ContextMenu or the presets. `MenuLabel` takes `className`.
+- **Changed: `MenuDivider` renders the Divider atom** (oq-08, my-1 — the same look); `Divider` gains `ink` ('fg' default · 'oq').
+- **Changed: `WorkspaceSwitcher` has no label of its own** — it is a Dropdown (a button); wrap it in `LabeledControl label="Workspace"`. `label` stays as its aria-label.
+- **BREAKING: `MenuPopover` dropped** (deprecated alias of `MenuItem` since 2026-07-02, no importer). Use `MenuItem` — same props.
+
+## 0.347.0 — 2026-11-07
+
+- **Changed: `ProgressBar` draws the Slider's track** (needs kol-theme ≥ 0.216.0) — `.kol-track` / `.kol-track-run`, so a ProgressBar and a Slider at the same variant are one track. API unchanged; a `tone` sets `--kol-track-run`. **Visible change:** default is now 2px square on `--kol-slider-track` (fg-64) with the run in the thumb's ink (was 4px, fg-08 under fg-64); float is 3px with an fg-64 run (was 4px, emphasis run).
+
+## 0.346.0 — 2026-11-07
+
+plan-2026-11-07-figma-library-tiers 2.8:
+- **New: `ProsePreview collection`** — `prose` (default, renders exactly as before) · `doc` (the documentation roles: `kol-doc-heading` · `-section-title` · `-lede` · `-body` · `-code` · `-caption`, the doc callout). A collection is a block → class map; the file writes no style of its own.
+
+## 0.345.0 — 2026-11-06
+
+plan-2026-11-06-buttons-page 2.7 (the user: *"button group CAN be segmented toggle … just by the fact it wraps multiple buttons"*):
+- **`ButtonGroup layout`** — `'row'` (default, unchanged) · `'stack'` (stacked at every width, the 8 gap) · `'joined'`, the segmented control: SegmentedToggle's whole API (`options` · `value` / stateless `null` · `onChange` · `variant` · `size` · `tone` · `surface` · `ariaLabel` · `className`), the same radiogroup roving tabindex, tooltips, `count` and disabled cells, and the same `.kol-seg*` DOM — it renders identically.
+- **Deprecated: `SegmentedToggle`** — now an alias of `<ButtonGroup layout="joined">` (same props), on the retirement ledger from 2026-11-06; a one-time dev warning names the replacement. Its source moved to `molecules/` (an atom may not import a molecule). Every call site in kol-ds-ui moved.
+
+## 0.343.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W7.1 · W7.2:
+- **New: `Dialog variant="settings"`** — the generator settings window (his frame 12:2282, 880 × 656): a 60 header (`title`, `kind`, `headerEnd`, ×), a 156 section list (`sections` `[{ key, label, state }]`, `section` / `onSection`, ↑ / ↓ walk it), the body, a 248 `aside` and a 60 `footer`; oq-16 rules, a 16 round. Other variants unchanged.
+- **New: the `Settings*` controls** (`molecules/SettingsControls.jsx`) — the window's rows, each a shipped control in his dense look: `SettingsGroup`, `SettingsGrid`, `SettingsCell`, `SettingsSlider`, `SettingsRange` (the dual Slider), `SettingsSelect`, `SettingsSegmented`, `SettingsToggle`, `SettingsText`, `SettingsPoint`, `SettingsRamp` + `SettingsRampHead`, `SettingsLights`, `SettingsFieldMap`, `SettingsDisclosure`. `disabled` dims to 40% and leaves the tab order.
+
+## 0.342.0 — 2026-11-05
+
+plan-2026-11-05-float-editor W2.6:
+- **New: `SelectionOverlay variant="float"` + `name`** — the float editor's selection (his frame 19:6066): a solid 1px oq-64 outline, 6 square handles at full ink, the rotate handle a 6 circle, `name` above the box's top-left (`kol-float-label`) and the size cap under it (`kol-float-ruler` on oq-08). Same `data-handle` routing and zoom compensation; unset, as before.
+
+## 0.341.0 — 2026-11-04
+
+FloatActionStatesAndMotion (kol-website) — needs kol-theme ≥0.212.0:
+- **`PopoverPanel motion`** — unset, nothing changes; `true` · `{ duration, ease }` fades the panel in and out from its trigger's side and holds it in the tree while it leaves; `false` the same with no motion.
+- **`NavRail variant="float"` `motion`** — expand ↔ collapse eases the width and fades the new rows in; the slots and rows ease their hover. Default `true`.
+- **`CommandOverlay` `motion`** — with `surface`, the card and scrim fade in and out. Default `true`; without `surface` nothing changes.
+- **`floatMotion(motion)` · `FLOAT_MOTION`** (utilities/motion.js) and **`useFloatPresence(open, ms)`** — the one resolver for every float piece's `motion` prop (`true` · `false` · `{ duration, ease }`) and the hook that keeps a float mounted while it leaves.
+
+## 0.340.1 — 2026-11-04
+
+- **`Menu variant="float"` reads one pair** (FloatMenuPanelInk, kol-website) — the panel no longer takes the trigger's `--kol-tone-panel-*`, so it paints the theme's float surface under its theme-ink rows, as RailTrigger's card, the search modal and the float Dropdown do. An inverted trigger painted it the opposite ground and the rows vanished (label contrast now 12.3:1 light, 13.2:1 dark). No API change.
+
+## 0.340.0 — 2026-11-04
+
+- **CommandOverlay `surface`** (FloatSearchAndPanels, kol-website) — `'solid' | 'glass-dark' | 'glass-light'`, RailTrigger's prop: the search modal in the float look — RailTrigger's card (`kol-more-sheet-float` on `--kol-float-menu-r`, the float surface and shadow), the float SearchInput, float rows (Inter, `--kol-float-row`, the cursor lit fg-16). Unset, it is drawn as before.
+
+## 0.339.1 — 2026-11-04
+
+- **The app rail's `toggleRef` carries `open` and `snap(open)`** — AppShell reads them to bring the rail back from a hide as it was (RailShortcutsAllFrames).
+- **A snap always reports its state** — a remounted app rail (StrictMode's second effect, a show) kept a stale `labelled`, so a collapse after it left the rail marked open. No API change.
+
+## 0.339.0 — 2026-11-04
+
+- **`useRailKeys`** (RailShortcutsAllFrames, kol-website) — one keyboard rule for every nav rail: `\` expands ↔ collapses, `⇧\` hides ↔ shows. Ignored while typing, on repeat and with ⌘ / ⌃ / ⌥. `useRailKeys(keys, { onCollapse, onHide })` — `keys` is `false`, or `{ collapse, hide }` over `RAIL_KEYS` (`'\\'` · `'shift+\\'`); the same key in both → `hide`. `railShortcuts(keys)` returns the pair as a shortcuts section (**Rail**). AppShell, FloatLayout (kol-shell) and SiteLayout (kol-framework) use it.
+- **NavRail app and site `toggleRef`** — the rail fills it with its own expand ↔ collapse toggle (the app rail's grab click; the site rail's `useDragResize` toggle, persisted as `kol-sidenav`). Unset, nothing changes.
+- **NavRail float wears the float shadow** (FloatRailOverlayShadowRestore) — `--kol-shadow-float`, the pill's and the card's, at 280 and 72. It was flat on `surface-secondary`.
+
+## 0.338.1 — 2026-11-04
+
+- **`useDragResize` wakes the grab pill on a top or bottom Rail** (DragResizeBottomWake) — it passed `useGrabEdge` no axis, so the near test always ran across a vertical line and a horizontal handle never got `is-near`. It now passes `axis: 'x'` for `side: 'top' | 'bottom'`, and `grabProps` carries `aria-orientation: horizontal` there. Side Rails are unchanged; no API change.
+
 ## 0.338.0 — 2026-11-04
 
 - **`Dialog` and `ModalProvider` `container`** — an Element to portal into instead of `<body>` (plan-2026-11-04-float-operational W2). The layer turns `absolute` and fills it, so a specimen box (`position: relative`, a height) shows the window or the useModal confirm open in place; the confirm skips its visual-viewport fit and opens without scrolling the page. Unset, nothing changes.

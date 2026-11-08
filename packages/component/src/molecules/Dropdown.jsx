@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { toneClass } from '../utilities/tone.js'
 import { Icon } from '@kolkrabbi/kol-icons'
-import { MenuRow, MenuDivider } from './MenuItem.jsx'
+import { MenuList } from './MenuList.jsx'
 import { Menu } from './Menu.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
@@ -274,6 +274,41 @@ const Dropdown = ({
       </button>
   )
 
+  /* the options as MenuList rows (plan-2026-11-07-menu-system W1.1 — rows are mapped in MenuList only) */
+  const headingCls = `${resolvedSize === 'xs' ? 'kol-mono-8' : 'kol-helper-12'} ${ROW_H[resolvedSize] ?? ROW_H.sm} ${ROW_PAD[resolvedSize] ?? ROW_PAD.sm} flex shrink-0 items-center text-meta`
+  const items = options.map((option, i) => {
+    if (option?.divider) return { divider: true, key: `divider-${i}` }
+    if (option?.heading) return { heading: option.heading, key: `heading-${i}` }
+    const isActive = multiple ? picked.has(option.value) : option.value === currentOption?.value
+    return {
+      key: option.value,
+      /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28) — the indicator marks the current value. */
+      hover: false,
+      size: resolvedSize,
+      /* a float row is the float list's (`.kol-menu-panel--float .kol-menu-row`), whatever the trigger's rung; the
+       * current one is lifted (row 54: "selected / checked") — still no hover */
+      rowClass: float ? `kol-menu-row${isActive ? ' kol-menu-row--current' : ''}` : (ROW[resolvedSize] ?? ROW.sm),
+      height: rowHeight,
+      onPointerEnter: onOptionHover ? () => reportHover(option.value) : undefined,
+      onPointerLeave: onOptionHover ? () => reportHover(null) : undefined,
+      onClick: () => handleSelect(option),
+      /* The current row's mark is the INDICATOR, always — • for the one pick, ✓ (the check icon) for each
+       * row on in a `multiple` (plan-2026-10-31-menu-engine W2). An option's own `shortcut` shows on the
+       * rows that are not current — the tool-palette idiom (editor-set-is-behind-its-source, 2026-09-03). */
+      indicator: isActive ? (multiple ? 'check' : 'dot') : undefined,
+      shortcut: isActive ? undefined : option.shortcut,
+      /* an option's leading glyph — the ADJACENT ladder, because it sits in a line box beside a label, never the solo rung */
+      label: option.icon ? (
+        <>
+          <span className="shrink-0 inline-flex items-center" style={{ marginRight: 'var(--kol-spacing-2)' }}>
+            <Icon name={option.icon} size={glyphSize(resolvedSize)} />
+          </span>
+          {option.label}
+        </>
+      ) : option.label,
+    }
+  })
+
   return (
     <Menu
       fused
@@ -298,40 +333,7 @@ const Dropdown = ({
         <div className="kol-dd-div" />
 
         <div ref={listRef} className="kol-dd-list" role="listbox" aria-multiselectable={multiple || undefined} style={scale !== 1 ? { zoom: scale } : undefined}>
-          {options.map((option, i) => {
-            if (option?.divider) return <MenuDivider key={`divider-${i}`} />
-            if (option?.heading) return <div key={`heading-${i}`} className={`${resolvedSize === 'xs' ? 'kol-mono-8' : 'kol-helper-12'} ${ROW_H[resolvedSize] ?? ROW_H.sm} ${ROW_PAD[resolvedSize] ?? ROW_PAD.sm} flex shrink-0 items-center text-meta`}>{option.heading}</div>
-            const isActive = multiple ? picked.has(option.value) : option.value === currentOption?.value
-            return (
-              <MenuRow
-                key={option.value}
-                /* NO HOVER STATE ANYWHERE ON A DROPDOWN (user 2026-08-28) — the indicator marks the current value. */
-                hover={false}
-                size={resolvedSize}
-                /* a float row is the float list's (`.kol-menu-panel--float .kol-menu-row`), whatever the trigger's rung; the
-                 * current one is lifted (row 54: "selected / checked") — still no hover */
-                rowClass={float ? `kol-menu-row${isActive ? ' kol-menu-row--current' : ''}` : (ROW[resolvedSize] ?? ROW.sm)}
-                height={rowHeight}
-                onPointerEnter={onOptionHover ? () => reportHover(option.value) : undefined}
-                onPointerLeave={onOptionHover ? () => reportHover(null) : undefined}
-                onClick={() => handleSelect(option)}
-                /* The current row's mark is the INDICATOR, always — • for the one pick, ✓ (the check icon) for each
-                 * row on in a `multiple` (plan-2026-10-31-menu-engine W2). An option's own `shortcut` shows on the
-                 * rows that are not current — the tool-palette idiom (editor-set-is-behind-its-source, 2026-09-03). */
-                indicator={isActive ? (multiple ? 'check' : 'dot') : undefined}
-                shortcut={isActive ? undefined : option.shortcut}
-              >
-                {/* an option's leading glyph — the ADJACENT ladder, because it
-                  * sits in a line box beside a label, never the solo rung */}
-                {option.icon && (
-                  <span className="shrink-0 inline-flex items-center" style={{ marginRight: 'var(--kol-spacing-2)' }}>
-                    <Icon name={option.icon} size={glyphSize(resolvedSize)} />
-                  </span>
-                )}
-                {option.label}
-              </MenuRow>
-            )
-          })}
+          <MenuList items={items} dividerClassName="my-1" headingClassName={headingCls} />
         </div>
     </Menu>
   )

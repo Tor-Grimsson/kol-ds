@@ -1,9 +1,9 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
-import SearchInput from './SearchInput.jsx'
-import { MenuRow, MenuDivider, MenuFlyout } from './MenuItem.jsx'
-import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
+import { MenuRow, MenuDivider } from './MenuItem.jsx'
+import { MenuList, MenuLabel, panelClass } from './MenuList.jsx'
+import { PopoverPanel, usePopover } from '../utilities/Popover.jsx'
 import { TONE_VARS } from '../utilities/tone.js'
 
 /**
@@ -12,6 +12,7 @@ import { TONE_VARS } from '../utilities/tone.js'
  *   MenuTrigger  the chip: `Button variant="tab" size="sm"`, `pressed` while open; `iconOnly` is the ⋮
  *   MenuPanel    the faint raised panel (kol-theme `.kol-menu-panel`)
  *   MenuRow · MenuDivider · MenuLabel · MenuFlyout — the parts (MenuRow / MenuFlyout / MenuDivider live in MenuItem.jsx)
+ *   MenuList     the rows from `items` — the one place rows are mapped (MenuList.jsx, 2026-11-07); Menu renders it in its panel
  *   Menu         the base: `trigger` (render prop `({ open, props })`) + `items` (rows as data)
  *   MenuFilter · MenuDatePicker · MenuMore — ready-made menus, data and callbacks only
  *
@@ -56,44 +57,11 @@ export function MenuTrigger({ open = false, iconOnly, icon, iconComponent, varia
   return <Button variant="tab" size="sm" pressed={open} iconLeft={icon} iconComponent={iconComponent} {...rest} className={`kol-menu-trigger kol-menu-trigger--quiet ${rest.className ?? ''}`.trim()}>{children}</Button>
 }
 
-/* `variant="float"` the list (8) · `sheet` the More sheet (20) on it */
-const panelClass = (variant, sheet) => (variant === 'float' ? `kol-menu-panel--float${sheet ? ' kol-menu-panel--sheet' : ''}` : '')
-
 export const MenuPanel = ({ variant, sheet = false, className = '', children, ...rest }) => (
   <div className={`kol-menu-panel ${panelClass(variant, sheet)} ${className}`.replace(/\s+/g, ' ').trim()} {...rest}>{children}</div>
 )
 
-export const MenuLabel = ({ children }) => <div className="kol-menu-label kol-helper-12">{children}</div>
-
-const glyph = (icon, size) => (typeof icon === 'string' ? <Icon name={icon} size={size} /> : icon)
-/* a row's trailing marks — real icons and Kbd only (W2): `indicator` 'dot' | 'check' | 'chevron', `checked` = 'check',
- * `kbd` a key cap, `trailing` an icon name for an action (download) */
-const indicatorOf = (it) => it.indicator ?? (it.checked ? 'check' : undefined)
-
-function Rows({ items, variant }) {
-  const float = variant === 'float'
-  return items.map((it, i) => {
-    if (it.divider) return <MenuDivider key={`d${i}`} className="kol-menu-rule" />
-    if (it.heading) return <MenuLabel key={`h${i}`}>{it.heading}</MenuLabel>
-    const icon = it.icon && <span className="text-oq-88 inline-flex">{glyph(it.icon, 16)}</span>
-    const cls = `kol-menu-row kol-helper-12${it.current ? ' kol-menu-row--current' : ''}${it.tone === 'danger' ? ' kol-menu-row--danger' : ''}`
-    const row = it.items?.length && !it.disabled ? (
-      /* a float flyout is the same list, 8 off the row (row 55) */
-      <MenuFlyout flyout iconLeft={icon} label={it.label} rowClass={cls} panelClassName={`kol-menu-panel ${panelClass(variant)} min-w-[200px]`.replace(/\s+/g, ' ')} panelStyle={{ marginLeft: float ? 8 : 4 }}>
-        <Rows items={it.items} variant={variant} />
-      </MenuFlyout>
-    ) : (
-      <MenuRow href={it.href} disabled={it.disabled} rowClass={cls} onClick={it.onClick} iconLeft={icon} indicator={indicatorOf(it)} kbd={it.kbd}
-        shortcut={it.trailing ? <span className="text-oq-88 inline-flex">{glyph(it.trailing, it.trailingSize ?? 14)}</span> : undefined}>
-        {it.label}
-      </MenuRow>
-    )
-    const key = it.key ?? `r${i}`
-    return it.tooltip
-      ? <Tooltip key={key} label={it.tooltip} placement="left" triggerClassName="block w-full">{row}</Tooltip>
-      : <div key={key}>{row}</div>
-  })
-}
+export { MenuLabel }
 
 /**
  * Menu — THE menu engine (plan-2026-10-31-menu-engine W1). Every list that floats over a trigger is this: the Menu*
@@ -119,7 +87,6 @@ export function Menu({
   const controlled = openProp !== undefined
   const open = controlled ? openProp : own
   const setOpen = (v) => { if (!controlled) setOwn(v); onOpenChange?.(v) }
-  const [q, setQ] = useState('')
   const popover = usePopover({
     open,
     onOpenChange: setOpen,
@@ -147,16 +114,16 @@ export function Menu({
     if (!open || !rootRef.current) return
     const cs = getComputedStyle(rootRef.current.firstElementChild ?? rootRef.current)
     const vars = {}
-    for (const v of TONE_VARS) { const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val }
+    /* A FLOAT PANEL IS A FLOAT SURFACE (FloatMenuPanelInk, kol-website 2026-11-04): the theme's, as RailTrigger's card,
+     * the search modal and the float Dropdown (which pins `--kol-tone-panel-bg` on its trigger) — never the trigger's
+     * ground. Its rows read theme ink (fg-88, the fg-16 lift), so an inverted trigger's panel-bg painted them out. */
+    for (const v of TONE_VARS) {
+      if (variant === 'float' && v.startsWith('--kol-tone-panel')) continue
+      const val = cs.getPropertyValue(v).trim(); if (val) vars[v] = val
+    }
     setAmbient(vars)
-  }, [open])
+  }, [open, variant])
 
-  let rows = items ?? []
-  if (search) {
-    const s = q.toLowerCase()
-    rows = rows.filter((it) => it.label == null || String(it.label).toLowerCase().includes(s))
-    if (!rows.some((it) => it.label != null)) rows = [...rows, { key: 'empty', label: search.empty || 'Nothing matches', disabled: true }]
-  }
   /* the wrapper takes the ref (a Button need not forward one); the trigger takes the handlers and the aria —
    * `aria-pressed` cleared, an open menu is `aria-expanded`, its fill is the trigger's `pressed` */
   return (
@@ -172,9 +139,9 @@ export function Menu({
           style={{ ...ambient, ...(minWidth ? { minWidth } : null), ...panelStyle }}>
           {/* a row's click closes the menu (it bubbles from `[data-menu-item]`); a flyout row only toggles */}
           <div role="none" className="flex flex-col min-h-0" onClick={(e) => { if (closeOnSelect && e.target.closest('[data-menu-item]')) setOpen(false) }}>
-            {search && <div className="pb-1"><SearchInput variant={variant === 'float' ? 'float' : 'outline'} size="sm" value={q} onChange={(e) => setQ(e.target?.value ?? e)} onClear={() => setQ('')} placeholder={search.placeholder || 'Search'} /></div>}
-            {typeof children === 'function' ? children({ close: () => setOpen(false) }) : children}
-            {rows.length > 0 && <Rows items={rows} variant={variant} />}
+            <MenuList items={items} search={search} variant={variant}>
+              {typeof children === 'function' ? children({ close: () => setOpen(false) }) : children}
+            </MenuList>
           </div>
         </PopoverPanel>
       )}

@@ -62,7 +62,7 @@ What a plain app passes, and nothing else:
 | `masthead` | `"display"` or `"mono"` | one voice for every title inside. No default: unset, each page keeps its own props |
 | `pageWash` | `'var(--kol-fg-02)'` or nothing | `PageShell` paints it over the shell's primary back; unset, the page is the back |
 | `navKeys` | `true` | ⌥1…9 walk the rail's rows in the order on screen, the mark first |
-| `railToggleKey` | `'\\'` | toggles the rail; the rail returns on every route change |
+| `railKeys` | nothing | on by default: `\` expands ↔ collapses the rail, `⇧\` hides ↔ shows it; the rail returns on every route change. `railToggleKey` is the old alias for `hide` |
 | `settingsPath` · `settingsKey` | `'/settings'` · `','` | the settings row and the key toggle — pressed on the page, they return you where you were |
 
 `railComponent` is a seam for proving a rail change, never for keeping a fork. `drawerBelow`, `drawerOpenOn`, `barItems`, `barActions` and `barHiddenOn` stay at their defaults unless the tool owns the phone's bottom edge — then `barHiddenOn` names its paths and the bar steps aside there.

@@ -11,7 +11,7 @@ import { pathD } from './path-math'
 import { computeBooleanCached } from './boolean-ops'
 import { hasBindings, resolveLayer } from '../params/resolve'
 import { shapeMorphDef, crossfadeMorphDef } from '../morph/shape'
-import { warpTime } from '../../loops/lib/viewport'
+import { warpTime } from '../lib/viewport'
 import { useTransportCtx, useTransportPlaying, useTransportEpoch, transport } from '../params/transport'
 import { pack } from '../packs'
 import { enabledCanvasStages, enabledEngineStage, pixiStages } from './filterChain'
@@ -26,6 +26,7 @@ import { usePreviewDpr } from '../lib/previewScale'
 import { hasLayerEffects, effectsFilter, effectsFilterId } from './layerEffects'
 import { hasPaintFill, paintBackground } from './paintFill'
 import { canvasOutline } from './masks'
+import RepeatLayer from '../generate/RepeatLayer'
 
 /* The seam (editor/packs.js) — loop/misc layers render through the generators pack, kinetic
  * through motion, filter chains through effects. A layer whose pack is absent renders nothing;
@@ -189,6 +190,16 @@ function renderLayerBody(layer, palette, layerStyle) {
       return <TextLayer layer={layer} palette={palette} layerStyle={layerStyle} />
     }
     case 'group':      return <GroupLayer      layer={layer} palette={palette} layerStyle={layerStyle} />
+    /* Repeat (plan 53 W3) — live copies of a source layer */
+    case 'repeat': return <RepeatLayer layer={layer} palette={palette} layerStyle={layerStyle} />
+    /* Generate (plan 52) — live vector; an effects chain rasterises it like any vector layer */
+    case 'generate': {
+      const stages = chainFor(layer)
+      const px = pixiFor(layer)
+      return (stages.length || px.length)
+        ? <EffectedLayer layer={layer} stages={stages} pxStages={px} palette={palette} layerStyle={layerStyle} />
+        : (() => { const GenerateLayer = gen()?.GenerateLayer; return GenerateLayer ? <GenerateLayer layer={layer} palette={palette} layerStyle={layerStyle} /> : null })()
+    }
     case 'misc':   /* misc rides the loop render vehicle */
     case 'loop': {
       if (!gen()) return null

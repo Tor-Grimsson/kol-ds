@@ -6,7 +6,7 @@ import Textarea from '../atoms/Textarea.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 import QuickLookFrame from '../molecules/QuickLookFrame.jsx'
 import KindPreview from '../molecules/KindPreview.jsx'
-import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
+import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
 import { splitFrontmatter, joinFrontmatter } from '@kolkrabbi/kol-markdown'
 import { readDraft, writeDraft, clearDraft } from '../utilities/localDrafts.js'
 

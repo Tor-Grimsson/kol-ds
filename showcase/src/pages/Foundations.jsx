@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { DocHeader, DocSection } from '@kolkrabbi/kol-workshop'
-import Swatch from '../lib/Swatch.jsx'
+import { SwatchTile } from '@kolkrabbi/kol-component'
 import HomeDoc from '../lib/HomeDoc.jsx'
 import { relatedDocs } from '../nav/vault.js'
 import { TOTAL } from '../nav/registry.js'
@@ -37,8 +37,13 @@ function useResolved(tokens) {
   return vals
 }
 
-/* Swatch is the ported brand styleguide swatch (lib/Swatch.jsx, E2) —
- * token name meta-left, resolved value strong-right. */
+/* Every token chip is kol-component's SwatchTile (lib/Swatch.jsx retired 2026-11-07) — token name
+ * meta-left, resolved value strong-right. Long values (color-mix strings) don't fit the meta row — the
+ * label carries the meaning there; hex values render uppercased. */
+const shown = (r) => (r && r.length <= 9 ? (r.startsWith('#') ? r.toUpperCase() : r) : '')
+const Tile = ({ t, resolved }) => (
+  <SwatchTile hex={`var(${t.token})`} name={t.label} value={shown(resolved)} chipClassName="border border-fg-08" />
+)
 
 /* the law behind what this page shows — the right rail's Related rows (2026-10-01) */
 const RELATED = relatedDocs(['01-foundations/01-tokens.md', '01-foundations/10-opacity.md', '01-foundations/09-sizes.md'])
@@ -58,17 +63,17 @@ export default function Foundations() {
         lede="KOL's signature: a 14-stop translucent-ink scale for layered editor UI — more expressive than flat fg/bg pairs."
       >
         <div className="kol-grid">
-          {OPACITY_SCALE.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
+          {OPACITY_SCALE.map((t) => <Tile key={t.token} t={t} resolved={val(t.token)} />)}
         </div>
         <p className="kol-helper-10 text-meta uppercase mt-6 mb-2">Semantic foreground</p>
         <div className="kol-grid">
-          {FG_SEMANTIC.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
+          {FG_SEMANTIC.map((t) => <Tile key={t.token} t={t} resolved={val(t.token)} />)}
         </div>
       </DocSection>
 
       <DocSection id="surfaces" title="Surface tiers">
         <div className="kol-grid">
-          {SURFACES.map((t) => <Swatch key={t.token} {...t} resolved={val(t.token)} />)}
+          {SURFACES.map((t) => <Tile key={t.token} t={t} resolved={val(t.token)} />)}
         </div>
       </DocSection>
 
@@ -81,7 +86,7 @@ export default function Foundations() {
                 <span className="kol-helper-10 text-meta uppercase">{ramp.note}</span>
               </div>
               <div className="kol-ramp-chips">
-                {ramp.stops.map((s) => <Swatch key={s.token} {...s} resolved={val(s.token)} />)}
+                {ramp.stops.map((s) => <Tile key={s.token} t={s} resolved={val(s.token)} />)}
               </div>
             </div>
           ))}
@@ -105,13 +110,14 @@ export default function Foundations() {
       <DocSection id="radius" title="Corner radius">
         <div className="kol-grid">
           {RADII.map((t) => (
-            <Swatch
-              key={t.token}
-              token="--kol-fg-08"
-              label={t.label}
-              resolved={val(t.token)}
-              style={{ borderRadius: `var(${t.token})` }}
-            />
+            /* a radius specimen, not a color — drawn inline like the shadow row below */
+            <div key={t.token} className="kol-swatch">
+              <div className="kol-swatch-chip relative border border-fg-08" style={{ background: 'var(--kol-fg-08)', borderRadius: `var(${t.token})` }} />
+              <div className="kol-swatch-meta kol-helper-10">
+                {t.label && <span className="text-meta">{t.label}</span>}
+                {shown(val(t.token)) && <span className="text-strong font-semibold">{shown(val(t.token))}</span>}
+              </div>
+            </div>
           ))}
         </div>
       </DocSection>

@@ -19,6 +19,8 @@ import SliderPanel from './SliderPanel.jsx'
  * routes were documented and neither was wired, so consumers were reaching into
  * `.slider-black` by specificity from their own stylesheets).
  * `--kol-slider-playhead` works the same way on the dual rail.
+ * The minimal and float tracks read the shared track tokens (`--kol-track-h` · `-r` · `-bg` · `-run`, kol-theme
+ * `.kol-track`, 2026-11-07) — ProgressBar draws the same track from them.
  *
  * DUAL + PLAYHEAD (SliderDualThumbAndPlayhead, kol-mirror 2026-08-30):
  * `variant="dual"` stacks two native ranges on one rail for an in/out pair,

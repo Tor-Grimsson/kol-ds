@@ -317,7 +317,7 @@ Three deliberately distinct dropdown-ish triggers — do not merge, pick by cont
 | `secondary` | **`surface-primary`** — the page's own color | `surface-on-primary` | `oq-08` · `oq-16` |
 | `primary` | `surface-secondary` | `surface-on-primary` | `oq-08` · `oq-16` |
 | `grey` | `oq-12` | `surface-on-primary` | `oq-16` · `oq-24` |
-| `inverted` | `surface-on-primary` — the text color as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48` |
+| `inverted` | `surface-on-primary` — the text color as fill | `surface-primary` (weight 500 on a Button) | `oq-inverse-40` · `oq-inverse-48`; on `variant="float"` the same fill at `--kol-float-hover-opacity`, pressed at `--kol-float-press-scale` |
 | `outline` | transparent, + 1px `oq-08` | `surface-on-primary` | `oq-02` (border to 25 % ink) · `oq-08` |
 | `ghost` | transparent | `oq-48` | `oq-04` · `oq-08` |
 

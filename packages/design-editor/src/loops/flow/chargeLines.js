@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 import { charge, streamline, strokeLine, arrowAt, orbitAt } from './fieldCore.js'
 
 // Charge lines (E5, after s_n_k_ *Connected Fields – Streamlines 01*) — ± point charges summed,

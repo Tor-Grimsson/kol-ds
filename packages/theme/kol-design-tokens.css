@@ -182,6 +182,11 @@
   --kol-float-t-md: 13px;
   --kol-float-t-lg: 14px;
   --kol-float-ic: 18px;
+  /* a float button's side padding steps with its height on the spacing scale (plan-2026-11-06-buttons-page 2.2 — was
+     height × 0.42: 11.76 · 15.12 · 18.48) */
+  --kol-float-px-sm: var(--kol-spacing-3);
+  --kol-float-px-md: var(--kol-spacing-4);
+  --kol-float-px-lg: var(--kol-spacing-5);
   --kol-float-row: 40px;
   --kol-float-gap-ic: 10px;
   --kol-float-menu-r: 20px;
@@ -196,6 +201,19 @@
   --kol-float-focus: 0 0 0 2px var(--kol-surface-on-primary);
   /* the field's well, on whatever float holds it — the light tier; dark below */
   --kol-float-well: rgb(0 0 0 / 0.06);
+  /* THE FLOAT STATE LADDER AND ITS MOTION (FloatActionStatesAndMotion, kol-website 2026-11-04 — user: *"normal state - hover -
+   * just a slight drop in opacity"* · *"everything is very.. quick, not smooth"*). hover-opacity and press-scale are the
+   * inverted float button's hover and press (the fill never changes); enter-scale and enter-shift are a float card's way in
+   * and out, from its trigger's side; duration is a card, a state or the + turning, duration-rail the rail's expand, collapse,
+   * hide and show. The durations are DURATION.base and .slow of motion.js, the curve the house's. A `motion` prop retunes them
+   * per app; reduced motion drops them (kol-animation.css). */
+  --kol-float-hover-opacity: 0.88;
+  --kol-float-press-scale: 0.96;
+  --kol-float-enter-scale: 0.96;
+  --kol-float-enter-shift: 4px;
+  --kol-float-duration: 200ms;
+  --kol-float-duration-rail: 300ms;
+  --kol-float-ease: var(--kol-ease-house);
 
   /* Transitions (consistent timing) */
   --kol-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -244,6 +262,9 @@
     --kol-float-t-md: 15px;
     --kol-float-t-lg: 16px;
     --kol-float-ic: 20px;
+    --kol-float-px-sm: var(--kol-spacing-4);
+    --kol-float-px-md: var(--kol-spacing-5);
+    --kol-float-px-lg: var(--kol-spacing-6);
     --kol-float-row: 48px;
     --kol-float-gap-ic: 12px;
     --kol-float-menu-r: 24px;

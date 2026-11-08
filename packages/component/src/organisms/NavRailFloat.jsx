@@ -3,6 +3,7 @@ import { Icon } from '@kolkrabbi/kol-icons'
 import Kbd from '../atoms/Kbd.jsx'
 import TreeRow from '../molecules/TreeRow.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
+import { floatMotion } from '../utilities/motion.js'
 
 /* taxonomy-ok: organism — nests TreeRow (molecule) + Kbd (atom) + Tooltip (utility) + kol-icons's Icon. */
 
@@ -19,7 +20,8 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *             section with the current page inside lights too; a heading becomes a 16 gap. Expand on top and search ·
  *             hide at the foot, on the well. Each slot names itself in the float Tooltip
  *
- * On `surface-secondary` at the sheet radius, 12 in, full height of its container. Nothing auto-expands: a section
+ * On `surface-secondary` lifted by the float shadow (`--kol-shadow-float`, the pill's and the card's — FloatRailOverlayShadowRestore,
+ * 2026-11-04) at the sheet radius, 12 in, full height of its container. Nothing auto-expands: a section
  * opens by its chevron, or by `defaultExpanded`.
  *
  * @param {Array}    items          `{ heading }` | `{ icon, label, path, count?, sub?: [{ icon, label, path, count? }] }`
@@ -33,10 +35,15 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {ReactNode} [footer]
  * @param {Function} [onItemHover]  collapsed only: `(item, element)` when the pointer enters a slot, `(null, null)` when it
  *                                  leaves — the seam a hover flyout hangs off (kol-shell's RailFlyout, FloatLayout 2026-11-04)
+ * @param {boolean|Object} [motion=true]  expand ↔ collapse eases the width and fades the new rows in, and the slots and rows ease
+ *                                  their hover (`.kol-float-rail`, FloatActionStatesAndMotion 2026-11-04): `true` the
+ *                                  `--kol-float-*` tokens · `false` none · `{ duration, ease }` per app. Hide and show are
+ *                                  FloatLayout's (it holds the rail while it leaves)
  */
 const isOn = (path, current) => !!path && path === current
 
-export default function NavRailFloat({ items = [], currentPath = '', onNavigate, collapsed = false, onCollapsedChange, title, icon = 'grid', onSwitch, switcher, onSearch, onHide, defaultExpanded = [], footer, onItemHover, className = '' }) {
+export default function NavRailFloat({ items = [], currentPath = '', onNavigate, collapsed = false, onCollapsedChange, title, icon = 'grid', onSwitch, switcher, onSearch, onHide, defaultExpanded = [], footer, onItemHover, motion = true, className = '' }) {
+  const motionStyle = floatMotion(motion).style
   const [open, setOpen] = useState(() => new Set(defaultExpanded))
   const toggle = (path) => setOpen((s) => { const n = new Set(s); n.has(path) ? n.delete(path) : n.add(path); return n })
   const go = (path) => () => onNavigate?.(path)
@@ -51,7 +58,7 @@ export default function NavRailFloat({ items = [], currentPath = '', onNavigate,
       </Tooltip>
     )
     return (
-      <nav aria-label="Navigation" className={`flex h-full w-[72px] flex-col items-center gap-1 rounded-[var(--kol-float-menu-r)] bg-surface-secondary py-3.5 ${className}`.trim()}>
+      <nav aria-label="Navigation" style={motionStyle} className={`kol-float-rail flex h-full w-[72px] flex-col items-center gap-1 rounded-[var(--kol-float-menu-r)] bg-surface-secondary shadow-[var(--kol-shadow-float)] py-3.5 ${className}`.trim()}>
         {onCollapsedChange && slot('expand', 'Expand', 'panel-left', { well: true, onClick: () => onCollapsedChange(false) })}
         <div className="flex min-h-0 w-full flex-1 flex-col items-center gap-1 overflow-y-auto py-3 [scrollbar-width:none]">
           {items.map((it, i) => {
@@ -73,7 +80,7 @@ export default function NavRailFloat({ items = [], currentPath = '', onNavigate,
   }
 
   return (
-    <nav aria-label="Navigation" className={`flex h-full w-[280px] flex-col gap-3 rounded-[var(--kol-float-menu-r)] bg-surface-secondary p-3 ${className}`.trim()}>
+    <nav aria-label="Navigation" style={motionStyle} className={`kol-float-rail flex h-full w-[280px] flex-col gap-3 rounded-[var(--kol-float-menu-r)] bg-surface-secondary shadow-[var(--kol-shadow-float)] p-3 ${className}`.trim()}>
       {switcher ?? (title && (
         <button type="button" onClick={onSwitch} className="flex h-10 w-full items-center gap-2.5 rounded-[var(--kol-float-list-r)] px-2.5 text-left cursor-pointer hover:bg-fg-08 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
           <Icon name={icon} size={18} className="shrink-0 text-oq-96" />

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import { NavRail } from '@kolkrabbi/kol-component'
+import { NavRail, useRailKeys } from '@kolkrabbi/kol-component'
 import { NavHiddenContext } from './navHidden.js'
 import { SettingsToggleContext } from './settingsToggle.js'
 import TouchDeviceOverlay, { useTouchPrimary } from './TouchDeviceOverlay.jsx'
@@ -50,8 +50,14 @@ import { TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, MastheadContext, RAIL_PRESE
  * @param {'expand'|'enter'} [props.railSections]  how a section row opens — the preset's unless passed: `expand` opens it in place (the
  *                                        accordion), `enter` replaces the list with its rows under a Back row
  *                                        (`NavRail sections`, 2026-10-06 — labs' catalog)
- * @param {string}  props.railToggleKey  a key that toggles the rail (e.g. '\\') — ignored while typing in a field;
- *                                        the rail comes back on every `currentPath` change (ShellHomeSystem, 2026-08-27)
+ * @param {false|Object} [props.railKeys]  THE RAIL KEYS (RailShortcutsAllFrames, 2026-11-04 — the same prop on SiteLayout and
+ *                                        FloatLayout, kol-component's `useRailKeys`): `\` expands ↔ collapses the rail, `⇧\`
+ *                                        hides ↔ shows it (showing returns it as it was). Ignored while typing and with ⌘ / ⌃ / ⌥
+ *                                        held. On by default; `false` turns both off, `{ collapse, hide }` rebinds either
+ *                                        (`'\\'`, `'shift+\\'`). The rail still comes back on every `currentPath` change
+ *                                        (ShellHomeSystem, 2026-08-27)
+ * @param {string}  props.railToggleKey  the old single key — an alias that maps onto `railKeys.hide` (`'\\'` keeps `\`
+ *                                        hiding, as before); `railKeys` wins when both are passed
  * @param {Object|boolean} [props.railTrigger]  THE HIDDEN RAIL'S TRIGGER (float-everything W9 row 129, 2026-11-04): while the rail is
  *                                        hidden, `RailTrigger` at the page's top-left corner (24 in) — the 44 float button and a
  *                                        breadcrumb, a press opens the whole nav as a float card. `true`, or RailTrigger's props
@@ -181,6 +187,7 @@ export default function AppShell({
   railFade = true,
   rail = 'app',
   railSections,
+  railKeys,
   railToggleKey,
   railHidden = false,
   railTrigger,
@@ -338,19 +345,18 @@ export default function AppShell({
     root.style.setProperty('--kol-shell-page-wash', pageWash)
     return () => root.style.removeProperty('--kol-shell-page-wash')
   }, [pageWash])
-  /* one key toggles the rail — never while typing in a field */
+  /* the rail keys — `\` expand ↔ collapse (the app rail's own grab toggle, through `railToggle`), `⇧\` hide ↔ show */
+  const railToggle = useRef(null)
+  /* the rail's state when it hid — showing returns it open or collapsed, as it was (FloatLayout's `lastShown`) */
+  const wasOpen = useRef(false)
+  useRailKeys(railKeys ?? (railToggleKey ? { hide: railToggleKey } : undefined), {
+    onCollapse: () => { if (!navHidden) railToggle.current?.() },
+    onHide: () => { if (!navHidden) wasOpen.current = !!railToggle.current?.open; setNavHidden(!navHidden) },
+  })
+  /* runs after the remounted rail's own effect (children first), so the snap lands on the live rail */
   useEffect(() => {
-    if (!railToggleKey) return undefined
-    const onKey = (e) => {
-      if (e.key !== railToggleKey || e.metaKey || e.ctrlKey || e.altKey) return
-      const t = e.target
-      if (t?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t?.tagName)) return
-      e.preventDefault()
-      setNavHidden((h) => !h)
-    }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [railToggleKey])
+    if (!navHidden && wasOpen.current) railToggle.current?.snap?.(true)
+  }, [navHidden])
 
   /* Option+digit → the rail ROW in that position (never while typing).
    *
@@ -452,6 +458,7 @@ export default function AppShell({
           fade={railFade}
           preset={rail}
           sections={railSections}
+          toggleRef={railToggle}
         />
       )}
       {/* THE BACK OF THE BACK — surface-primary, always, in every app; the

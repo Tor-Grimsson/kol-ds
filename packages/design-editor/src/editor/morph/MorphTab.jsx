@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, LabeledControlSection, SegmentedToggle, StepList, useModal } from '@kolkrabbi/kol-component'
+import { Button, LabeledControlSection, ButtonGroup, StepList, useModal } from '@kolkrabbi/kol-component'
 import { loopById } from '../../loops/registry'
 import { useComposeState } from '../compose/state'
 import { useComposeFile } from '../compose/useComposeFile'
@@ -180,7 +180,7 @@ export default function MorphTab({ layer, readOnly = false, editTabs = null }) {
   return (
     <div className="flex flex-col gap-5">
       {/* the mode is the rail's strip, where labs puts Generate · Style · Animation */}
-      <SegmentedToggle tone="sunken" value={mode} onChange={(v) => !readOnly && setMorph({ mode: v })} options={modeOptions} size={cs} className={stripClamp(cs)} />
+      <ButtonGroup layout="joined" tone="sunken" value={mode} onChange={(v) => !readOnly && setMorph({ mode: v })} options={modeOptions} size={cs} className={stripClamp(cs)} />
 
       {/* TYPE · CATEGORY · PRESET (plan 47 W2), the header every generator has — a pick loads that run; a morph
           built by hand shows its mode as the type and no preset */}
@@ -217,7 +217,7 @@ export default function MorphTab({ layer, readOnly = false, editTabs = null }) {
 
       {editing != null && !readOnly && layer && editTabs && (
         <LabeledControlSection label={`Step ${editing + 1}`} divided>
-          <SegmentedToggle tone="sunken" value={editTab} onChange={setEditTab} options={editTabs} size={cs} className={stripClamp(cs)} />
+          <ButtonGroup layout="joined" tone="sunken" value={editTab} onChange={setEditTab} options={editTabs} size={cs} className={stripClamp(cs)} />
           <LoopFields layer={layer} setProp={edit.setProp} patch={edit.patch} updateLayer={updateLayer} palette={palette} tab={editTab} tabStrip={null} inline picker={false} />
           <p className="kol-mono-12 text-emphasis">Editing step {editing + 1} — press Play to run the morph.</p>
         </LabeledControlSection>

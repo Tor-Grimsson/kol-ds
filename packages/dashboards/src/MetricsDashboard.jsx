@@ -11,7 +11,7 @@ import {
   Sparkline,
   Heatmap,
 } from './index.js'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import {
   RANGES,
   DEPLOY_STATE_COLORS,
@@ -164,7 +164,7 @@ const DeployBar = ({ deploys }) => {
 const TimelineBar = ({ range, onRangeChange, milestones }) => {
   return (
     <div className="flex flex-wrap md:flex-nowrap items-center gap-x-3 gap-y-1.5 py-1.5 border-b border-fg-08">
-      <SegmentedToggle
+      <ButtonGroup layout="joined"
         size="sm"
         ariaLabel="Time range"
         value={range}
@@ -217,7 +217,7 @@ const HostFilterPills = ({ host, setHost, allHosts }) => {
   return (
     <div className="flex items-center gap-1.5 pb-2 overflow-x-auto scrollbar-none">
       <span className="dash-caption text-fg-48 shrink-0">Host</span>
-      <SegmentedToggle
+      <ButtonGroup layout="joined"
         size="sm"
         ariaLabel="Host filter"
         value={host ?? '__all__'}
@@ -543,7 +543,7 @@ export default function MetricsDashboard({ data, milestones = [], mainHost }) {
           </span>
         </div>
         <div className="max-w-full overflow-x-auto scrollbar-none">
-          <SegmentedToggle
+          <ButtonGroup layout="joined"
             size="sm"
             ariaLabel="Dashboard section"
             value={tab}

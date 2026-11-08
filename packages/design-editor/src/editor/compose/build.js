@@ -19,6 +19,11 @@ import lockupHoriRaw  from '../../brand/logos/svg/kol-lockup-hori.svg?raw'
 import lockupVertRaw  from '../../brand/logos/svg/kol-lockup-vert.svg?raw'
 import { ASPECTS }    from '../shell/aspects'
 import { resolveColor, CANVAS_W } from './state'
+import { copyMatrices } from '../../generate/repeat.js'
+
+/* the document's layers for this build — a repeat layer exports its SOURCE's copies, so it needs the rest */
+let buildLayers = []
+const findDeep = (ls, id) => { for (const l of ls) { if (l.id === id) return l; const c = l.children && findDeep(l.children, id); if (c) return c } return null }
 import { hasLayerEffects, effectsFilter, effectsFilterId } from './layerEffects'
 import { hasPaintFill, patternSvg } from './paintFill'
 import { applyCase } from '../modes/type/cuts'
@@ -578,6 +583,23 @@ export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
     case 'loop':
     case 'misc':       body = loopLayerSvg(layer, snapScale); break
     case 'kinetic':    body = kineticLayerSvg(layer); break
+    /* Repeat (plan 53 § 3.1) — each copy is the source's own export inside the copy's matrix */
+    case 'repeat': {
+      const src = layer.sourceId ? findDeep(buildLayers, layer.sourceId) : null
+      if (!src || src.w == null) break
+      body = copyMatrices(layer, { x: src.x ?? 0, y: src.y ?? 0, w: src.w, h: src.h })
+        .map((m) => `<g transform="matrix(${m.map((v) => v.toFixed(4)).join(' ')})">${layerToSvg({ ...src, visible: true }, palette, w, h, idx, defs, snapScale)}</g>`).join('')
+      break
+    }
+    /* Generate (plan 52 § 1.1) — real vector: the ground rect and one path, never a snapshot */
+    case 'generate': {
+      const generateBody = pack('generators')?.generateBody
+      if (!generateBody) break
+      const ink = resolveColor(layer.color, palette) ?? '#FFFFFF'
+      const bg = layer.bg == null ? null : resolveColor(layer.bg, palette)
+      body = `<g transform="translate(${(layer.x ?? 0).toFixed(2)} ${(layer.y ?? 0).toFixed(2)})">${generateBody(layer, { ink, bg })}</g>`
+      break
+    }
     default: break
   }
   if (!body) return ''
@@ -585,6 +607,7 @@ export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
 }
 
 export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = null, canvasW = null, canvasH = null, rasterScale = 1 }) {
+  buildLayers = layers
   /* Virtual coordinate space (what layers are positioned in) stays at the
    * 1080-wide baseline; the SVG's width/height carry the real output pixels.
    * viewBox = virtual, so a 1920×1080 export just scales the same geometry —

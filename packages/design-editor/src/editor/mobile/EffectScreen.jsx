@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
 import { FILTERS } from '../../filters'
 import { effectHost, flatCategories } from '../compose/inspectors/effectCategories'
-import { SPREAD, useSheetChrome } from './CategoryScreen'
+import { useSheetChrome } from './CategoryScreen'
+import { SPREAD } from './device'
 
 /**
  * EffectScreen — the mobile "Add effect" picker, CategoryScreen's card.

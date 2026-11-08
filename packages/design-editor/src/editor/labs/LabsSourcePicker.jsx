@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
-import { Button, SegmentedToggle } from '@kolkrabbi/kol-component'
-import { SPREAD, useSheetChrome } from '../mobile/CategoryScreen'
+import { Button, ButtonGroup } from '@kolkrabbi/kol-component'
+import { useSheetChrome } from '../mobile/CategoryScreen'
+import { SPREAD } from '../mobile/device'
 import { proxied, isVideoType } from '../library/mediaLibrary'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { saveClip } from '../lib/clipStore'
@@ -108,7 +109,7 @@ export function SourceStrip({ layer }) {
   const src = useSourceInput(layer)
   return (
     <>
-      <SegmentedToggle tone="sunken"
+      <ButtonGroup layout="joined" tone="sunken"
         value={null}
         onChange={(v) => ({ library: src.openLibrary, upload: src.openUpload, camera: src.openCamera }[v]?.())}
         options={src.svgMode ? SVG_SOURCE_OPTIONS : SOURCE_OPTIONS}

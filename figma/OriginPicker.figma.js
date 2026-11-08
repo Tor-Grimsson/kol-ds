@@ -4,7 +4,6 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
 const value = instance.getEnum('value', {
   "left-top": "[0, 0]", "center-top": "[0.5, 0]", "right-top": "[1, 0]",
   "left-center": "[0, 0.5]", "center": "[0.5, 0.5]", "right-center": "[1, 0.5]",
@@ -12,7 +11,7 @@ const value = instance.getEnum('value', {
 })
 
 export default {
-  example: figma.code`<OriginPicker size="${size}" value={${value}} onChange={setValue} ariaLabel="Transform origin" />`,
+  example: figma.code`<OriginPicker size="sm" value={${value}} onChange={setValue} ariaLabel="Transform origin" />`,
   imports: ["import { OriginPicker } from \"@kolkrabbi/kol-component\""],
   id: 'OriginPicker',
 }

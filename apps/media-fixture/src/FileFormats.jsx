@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
-import FullscreenOverlay from '@kolkrabbi/kol-component/utilities/FullscreenOverlay'
+import FullscreenOverlay from '@kolkrabbi/kol-component/molecules/FullscreenOverlay'
 import KindPreview from '@kolkrabbi/kol-component/molecules/KindPreview'
 import { MediaInspector } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages'
 import { kindOf, isSegment } from '@kolkrabbi/kol-component/utilities/mediaKinds'

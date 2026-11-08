@@ -62,3 +62,8 @@
   what → App.jsx restored (my 10:29 edit had cut it to its imports) + views may export `layout`; RecordFloat rail hidden, Workspace rail collapsed; published kol-component 0.337.0 · kol-shell 0.102.0 → 0.102.1 · kol-dashboards 0.11.0 · design-editor 0.27.0
   verify → pnpm --filter float build ✓ · Playwright 1600 workspace · visual-editor · record-float through the app, 0 console errors (server PID 76945 killed)
   note → for review: Rails frame 9:14486 is one page, not every Rail state; FloatLayout has no bottom slot (record-float dock); kol-shell transport has no 48 desktop size; validate:variants flags float tone="inverted"; Metrics agent rm'd its own draft shot
+
+[22:12 GMT · 2026-11-04] · W11 11.1–11.4 · Apps page split
+  what → library pages under ➤ Collection after ↳ Apps: Editor family 844:51873 (fxr 7 · editor 13 · editor-hub 9 · labs 13 · randomiser 10 · morph 1 = 53) · Sites 844:51874 (website 8 · article 8) · Metric 844:51875 (metric 8) · Layouts + hubs 844:51876 (studio-hub 8 · brand-hub 6 · workshop 1 · site-hub 1). Sections moved by appendChild, x-row gap 400, canvas #1E1E1E. New section morph 844:51877 holds labs' "09 · morph" (809:50433, moved); labs 10–12 shifted back one slot
+  verify → audit.js on all 4 pages + ↳ Apps: 0 errors, 0 unlinked; warnings raw-fills 26 / 3 / 64 strokes on Apps (pre-existing). Shots: _tmp/2026-11-04-w11-apps-split/figma/*.png
+  note → website section's internal grid was already irregular (uneven columns); left as is. ↳ Apps keeps brand-lab, document, float + 28 placeholders with holes where sections left — 11.5 TALK

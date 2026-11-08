@@ -3,7 +3,7 @@ title: Tokens
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-10-31
+updated: 2026-11-04
 description: The token foundation under every KOL component
 aliases:
   - foundations
@@ -87,7 +87,7 @@ inner caps, width is never a page identity. Detail: [[04-layout-breakpoints|layo
 ## Radius & shadows
 
 - Radii: `--kol-radius-{none,sm,md,lg,xl,2xl,full}` — components reference these, never hardcoded corners.
-- Shadows: `--kol-shadow-{sm,md,lg,xl,inner}`; `--kol-shadow-float` lifts a float (the solid surface); `--kol-shadow-rail-up` lifts a Rail rising from the bottom edge (no top rule with it, kol-theme 0.207.0).
+- Shadows: `--kol-shadow-{sm,md,lg,xl,inner}`; `--kol-shadow-float` lifts a float (the solid surface; the float motion and state tokens `--kol-float-hover-opacity` · `-press-scale` · `-enter-scale` · `-enter-shift` · `-duration` · `-duration-rail` · `-ease` sit beside the float sizes, see [[08-motion|motion]]); `--kol-shadow-rail-up` lifts a Rail rising from the bottom edge (no top rule with it, kol-theme 0.207.0).
 - Glass (W16, round 3 — 2026-10-31): `--kol-glass-dark-*` · `--kol-glass-light-*` — `fill`, `blur-s` · `blur-m`, `rim`, `shadow-s` · `shadow-m`; worn through `.kol-float-glass-dark` · `.kol-float-glass-light` (`.kol-float-m` for a menu or a box), never inline. glass-dark: rgb 26 at 62%, blur 6 / 16 with saturate 1.8; glass-light: rgb 236 236 232 at 10%, blur 6 / 6. Reduced transparency → solid.
 - Float sizes: `--kol-float-h-{sm,md,lg}` 28 · 36 · 44 (touch 36 · 44 · 52), `--kol-float-t-{sm,md,lg}` 12 · 13 · 14 (13 · 15 · 16), `--kol-float-ic` 18 (20), `--kol-float-row` 40 (48), `--kol-float-inset` 6, `--kol-float-tip-h` · `-tip-t` 24 · 11 (28 · 12), `--kol-float-well` (the field's well, per theme). Touch = `pointer: coarse`.
 - Float radii (float-everything W0.1, 2026-11-04, the exploration's own scale): `--kol-float-list-r` 8 (10) a bare list · `--kol-float-menu-r` 20 (24) a sheet or panel — was 26 (30) in round 3 · `--kol-float-window-r` 28 (32) a window · a control is a pill. Float focus: `--kol-float-focus` = `0 0 0 2px` of the ink on every float control's `:focus-visible` (W0.2). Float selection is `--kol-fg-16`, never `--kol-oq-16`, so glass shows through (W0.3). Float type: `--kol-font-family-float` = Inter (self-hosted, `kol-typography.css`), the twelve `kol-float-*` roles in `kol-type-float-classes.css` — see [[03-typography|typography § Float roles]].

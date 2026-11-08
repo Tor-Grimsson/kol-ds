@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 
 // Radial bars — spokes radiating from the centre, length a travelling wave around
 // the ring. Integer time cycles + integer spatial waves ⇒ seamless.

@@ -3,7 +3,7 @@ title: Component placement
 type: reference
 status: active
 created: 2026-07-31
-updated: 2026-08-09
+updated: 2026-11-08
 description: The runbook for placing a new component
 aliases:
   - component-placement
@@ -36,7 +36,7 @@ Every component gets exactly one location, decided by **judgment on what it IS**
 
 1. **Imports are irrelevant to placement.** A hand-rolled trigger + panel + tag list is a molecule (`DropdownTagFilter`); a single dial importing nothing is an atom (`RotaryDial`) — and so is a single Image wrapper importing its fallback (`Image`).
 2. **Downward-only imports.** Atoms never import molecules or organisms; molecules never import organisms; sideways is legal at every rung. Enforced by `scripts/validate-taxonomy.mjs` — the one mechanical residue.
-3. **Single-value selection controls are atoms** — `SegmentedToggle`, `ViewToggle`, `ToggleBracket`. Cells are options of one control, not Buttons.
+3. **Single-value selection controls are atoms** — `ViewToggle`, `ToggleBracket`. Cells are options of one control, not Buttons. The segmented control is `ButtonGroup layout="joined"` (a molecule) since 2026-11-06; `SegmentedToggle` is its alias.
 4. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`.
 5. **One element with elaborate behavior is still an atom** — `AsciiCursor`, `InteractiveImage`, `TiltCard`.
 6. **kol-icons `Icon`/`Graphic` are infrastructure, not components** — they never affect tier.
@@ -73,10 +73,10 @@ The second half of the same day's re-rule ([[00-taxonomy|taxonomy]] § An atom P
 |---|---|---|
 | atoms | `AssetGrid` · `Popover` · `OverlayGlassPanel` · `TiltCard` | Paint nothing of their own: a grid wrapper, a positioning mechanism, a surface treatment, a transform wrapper |
 | atoms | `AssetPlaceholder` · `TransparentX` · `ExitPreview` · `ProsePreview` | Paint, but never stand alone: Image/Graphic's fallback state, a mark drawn onto a slot, fixed-position chrome (its CSS ships from kol-framework), a type specimen |
-| molecules | `ButtonGroup` · `FullscreenOverlay` · `LoaderOverlay` · `ErrorBoundary` | Pure layout (its own docblock's word) · the scrim+overlay mechanism five components wear · a slot pass-through · a guard that paints only on crash |
+| molecules | `ButtonGroup` · `FullscreenOverlay` · `LoaderOverlay` · `ErrorBoundary` | A group of Buttons — row · stack, or joined: the segmented control (2026-11-06) · the scrim+overlay mechanism five components wear · a slot pass-through · a guard that paints only on crash |
 | organisms | `EditorShell` | A slot frame — AssetGrid at region scale |
 
-Struck by the user: `MenuPopover` (renders a MenuItem — visual; dies on its own deprecation track) · the `Section`/`LabeledControl` merge flag (group header vs field label — different roles). `FullscreenOverlay` is the one row held on the placement test alone — it does paint, but is only ever worn.
+Struck by the user: `MenuPopover` (renders a MenuItem — visual; dies on its own deprecation track) · the `Section`/`LabeledControl` merge flag (group header vs field label — different roles). `FullscreenOverlay` is the one row held on the placement test alone — it does paint, but is only ever worn. *(2026-11-07: `FullscreenOverlay` and `LoaderOverlay` moved to molecules — FullscreenOverlay composes the CloseButton molecule, and a utility may not import a molecule; see [[00-taxonomy|taxonomy]].)*
 
 Post-sweep re-files (user rulings, same night): **`EmptyState` atoms → molecules** — eyebrow + title + body + footer is a small assembly working as one unit, not an irreducible element. **`PaletteHarmonyWheel` atoms → molecules** — the user's call, and the file's own `taxonomy-ok` comment had argued it belongs beside its color-picker siblings all along. **`AsciiCursor` atoms → utilities** — fixed-position whole-viewport chrome fails "stands alone" (the ExitPreview precedent; also why its index card was empty). **`InteractiveImage` RETIRED** to `_tmp/2026-08-09-interactive-image-retire/` (with its demo) — zero consumers in any app or package, ever; barrel export removed.
 

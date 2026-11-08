@@ -322,6 +322,11 @@
 .kol-float-chrome .kol-btn.kol-btn-float[aria-current="page"] { background: var(--kol-fg-16); color: var(--kol-fg-emphasis); }
 /* ToolRail: the slot is the float row (40, 48 on touch), not the 36 icon button */
 .kol-tool-rail .kol-btn.kol-btn-float.kol-btn-icon { width: var(--kol-float-row); height: var(--kol-float-row); }
+/* the dock's ▾ beside a slot (plan-2026-11-05-float-editor 7.7): a 20 strip at the slot's height, its glyph 14 */
+.kol-tool-rail .kol-btn.kol-btn-float.kol-btn-icon.kol-tool-chevron { width: 20px; }
+.kol-tool-rail .kol-tool-chevron svg { width: 14px; height: 14px; }
+/* the dock's ⌘K pill: the slot's height on the float well */
+.kol-tool-rail .kol-btn.kol-btn-float.kol-tool-search { height: var(--kol-float-row); }
 /* RailFlyout: 34 rows on the list round, 12 in, the glyph 12 off the label */
 .kol-rail-flyout .kol-btn.kol-btn-float { height: 34px; padding: 0 12px; gap: 12px; border-radius: var(--kol-float-list-r); font-size: var(--kol-float-t-sm); }
 /* the float Slider's track fills a dock's column */

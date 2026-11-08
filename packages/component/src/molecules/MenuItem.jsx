@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Menu } from './Menu.jsx'
 import Kbd from '../atoms/Kbd.jsx'
+import Divider from '../atoms/Divider.jsx'
 import { indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -164,11 +165,12 @@ export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disable
   )
 }
 
-/* `className` — the rule's colour and spacing, whole (MetricDashboardUpstream, kol-website 2026-10-31): on a filled
- * panel the default `border-oq-08` vanishes. */
-/* MenuDivider — a rule between a menu's groups. Was `MenuDropdownDivider` (alias kept, 2026-10-31). */
-export function MenuDivider({ className = 'border-oq-08 my-1' }) {
-  return <div className={`border-t ${className}`} />
+/* `className` — the rule's spacing, whole (MetricDashboardUpstream, kol-website 2026-10-31); `kol-menu-rule` is the
+ * panel's edge-to-edge rule, its ink set by the panel (oq-16, float oq-08). */
+/* MenuDivider — a rule between a menu's groups: the Divider atom on the oq ramp, oq-08 (plan-2026-11-07-menu-system
+ * W1.2 — was a bare `border-t`). Was `MenuDropdownDivider` (alias kept, 2026-10-31). */
+export function MenuDivider({ className = 'my-1' }) {
+  return <Divider ink="oq" opacity="08" className={className} />
 }
 
 /**

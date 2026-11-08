@@ -2,7 +2,7 @@ import { cloneElement, isValidElement, useEffect, useState } from 'react'
 import { Button, PopoverPanel, usePopover, useMediaQuery, usePrefersReducedMotion, VectorLoader, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import AppFloatNav from './AppFloatNav.jsx'
 import WalkthroughPanel from './WalkthroughPanel.jsx'
-import MoreRows from './MoreSheet.jsx'
+import FloatActionMenu from './FloatActionMenu.jsx'
 import CatalogPage from './CatalogPage.jsx'
 import AccountForm from './AccountForm.jsx'
 import { useTouchPrimary } from './TouchDeviceOverlay.jsx'
@@ -281,7 +281,7 @@ export default function HubHome({
   const menuActions = typeof menu === 'function' ? menu(menuDefaults) ?? [] : menuDefaults
   /* with the drawer the button stays on the phone, stepped left of the shell's drawer trigger (fixed top-right, 32 at 12;
    * the variants gate caught the overlap on editor-hub at 390) */
-  const headerMenu = menuActions.length ? <HomeMenu actions={menuActions} className={actionsInBar ? 'max-md:hidden' : 'max-md:mr-11'} /> : undefined
+  const headerMenu = menuActions.length ? <FloatActionMenu actions={menuActions} className={actionsInBar ? 'max-md:hidden' : 'max-md:mr-11'} /> : undefined
 
   /* the quick links — fxr's chromes, a phone's stack above the rows; a desk never sees them. The stack is fxr's EntryScreen
    * verbatim (kol-fxr src/editor/mobile/MobileView.jsx): `kol-eyebrow text-body`, `gap-2`, `tone="primary" size="lg"`, the icon
@@ -329,7 +329,7 @@ export default function HubHome({
         )}
         {/* the + on the phone too (Round 3: the phone had no way to sign in from Home) — top-right on the mark's line, 16 in
           * and 24 down; its menu is the floating style (`variant="float"`, the board's menus), as the dock's sheets are */}
-        {outActions.length > 0 && <HomeMenu actions={outActions} icon="plus" variant="float" surface={surface} className="absolute z-10 right-4 top-6 md:right-16 md:top-16" />}
+        {outActions.length > 0 && <FloatActionMenu actions={outActions} icon="plus" variant="float" surface={surface} className="absolute z-10 right-4 top-6 md:right-16 md:top-16" />}
         {/* over a stage the dock floats: the transport's shadow (HomeDockShadow, kol-fxr 2026-10-31) */}
         {chromes.length > 0 && <AppFloatNav variant="dock" shape="pill" shadow={stage != null} surface={surface} items={chromes.map((c) => ({ id: c.label, label: c.label, icon: c.icon, onPress: c.onPress, sub: c.sub }))} sheetItems={dockMore} />}
         {/* the walkthrough over the stage, where the catalog's would sit — on the mark's left line */}
@@ -363,25 +363,5 @@ export default function HubHome({
       walkthrough={steps.length ? { open: touring, steps, onClose: close, iconComponent } : undefined}
       lead={doors}
     />
-  )
-}
-
-/* the masthead's round button and its sheet — the catalog's VariantsButton shape, the phone More's rows */
-function HomeMenu({ actions, icon = 'more', variant, surface = 'solid', className = '' }) {
-  const [open, setOpen] = useState(false)
-  /* the sheet opens to the LEFT of the button, top edges on one line (user 2026-10-23) — as the phone's sits beside its × */
-  const popover = usePopover({ open, onOpenChange: setOpen, placement: 'left-start', offset: 12 })
-  return (
-    <div className={className}>
-      <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
-        {/* `icon` — `more` on Home, `plus` signed out (frame B2), the × while its sheet is open */}
-        {/* always the inverted round button — `surface` dresses its menu only (HomeDockRound4, kol-fxr 2026-10-31 — user: *"this
-          * also changed the action button, but it is not supposed to change"*) */}
-        <Button iconOnly={icon === 'more' ? 'more' : open ? 'x' : icon} size="lg" tone="inverted" radius="full" aria-label={open ? 'Close' : 'Actions'} pressed={open} />
-      </span>
-      <PopoverPanel popover={popover} panel={false} className={`kol-more-sheet${variant === 'float' ? ` kol-more-sheet-float ${floatSurfaceClass(surface, true)}` : ''}`} style={{ minWidth: 220 }}>
-        <MoreRows actions={actions} variant={variant} onPick={() => setOpen(false)} />
-      </PopoverPanel>
-    </div>
   )
 }

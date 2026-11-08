@@ -1,4 +1,4 @@
-import { resolveTheme } from './lib/themes.js'
+import { resolveTheme } from '../editor/lib/themes.js'
 import { themeAsPalette, resolvePalette } from '../editor/color/palette.js'
 
 // Recolour a loop's params object by each colour-param's tagged `role`. A loop's

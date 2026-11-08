@@ -3,11 +3,10 @@
 // component=PasswordInput
 import figma from 'figma'
 const instance = figma.selectedInstance
-const revealed = instance.getEnum('revealed', { "true": "true", "false": "false" })
+const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+const revealed = instance.getEnum('revealed', { "true": true, "false": false })
 export default {
-  example: revealed === 'true'
-    ? figma.code`<PasswordInput variant="float" value={value} onChange={setValue} revealed onRevealChange={setRevealed} width="100%" />`
-    : figma.code`<PasswordInput variant="float" value={value} onChange={setValue} width="100%" />`,
+  example: figma.code`<PasswordInput${variant === 'float' ? ' variant="float"' : ''} value={value} onChange={setValue}${revealed ? ' revealed onRevealChange={setRevealed}' : ''} width="100%" />`,
   imports: ["import { PasswordInput } from \"@kolkrabbi/kol-component\""],
   id: 'PasswordInput',
 }

@@ -1,4 +1,4 @@
-import { TAU, hexToRgb } from '../lib/util.js'
+import { TAU, hexToRgb } from '../../editor/lib/util.js'
 import { FILL_PARAMS, SHAPE_FILL_PARAMS, paintFill, isGradient, fillRuleOf } from '../lib/fill.js'
 
 // Spiral — an Archimedean spiral rotating a whole number of turns per loop ⇒

@@ -1,4 +1,4 @@
-import { TAU, lerp, mixHex } from '../lib/util.js'
+import { TAU, lerp, mixHex } from '../../editor/lib/util.js'
 import { FILL_PARAMS, paintFill, isGradient } from '../lib/fill.js'
 
 // Circle morph — a small half-disc swells into a large dark full disc, then

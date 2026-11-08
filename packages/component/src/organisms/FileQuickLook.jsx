@@ -1,5 +1,5 @@
 import Button from '../atoms/Button.jsx'
-import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
+import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
 import QuickLookFrame from '../molecules/QuickLookFrame.jsx'
 import KindPreview from '../molecules/KindPreview.jsx'
 import { kindOf, extOf, KIND_LABEL } from '../utilities/mediaKinds.js'

@@ -3,7 +3,7 @@
  * RNG used only by the page-level FX pipeline stayed behind). Pure,
  * framework-free. */
 
-import { lerp, TAU } from '../lib/util.js'
+import { lerp, TAU } from '../../editor/lib/util.js'
 export { lerp, TAU }
 
 /* Cardinal / Catmull-Rom spline through a list of 2D points. Returns an SVG

@@ -1,0 +1,78 @@
+@import "tailwindcss";
+/* the workspace form (apps/float's note): the packages sit at packages/*, so each @source points at this app's own
+   node_modules symlinks */
+@source "../node_modules/@kolkrabbi/kol-component/src";
+@source "../node_modules/@kolkrabbi/kol-framework/src";
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+@import "@kolkrabbi/kol-theme";
+@import "@kolkrabbi/kol-framework/kol-brand-color.css";
+/* layer(components) is required: unlayered rules outrank every layered one */
+@import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
+
+/* ── carried verbatim from kol-website apps/record/src/index.css (2026-11-05), the Folio block ── */
+/* Folio — the /demo-3 · /demo-4 Library look (Figma zzzb4WqmCsDTPlP95Weo2M 228:12990). Scoped by the folio- prefix;
+   nothing outside src/folio/ uses these. The face is the DS's Inter (kol-theme ≥ 0.211, --kol-font-family-float). */
+@theme {
+  --color-folio-paper: #faf9f5;
+  --color-folio-ink: #262922;
+  --color-folio-muted: #73766d;
+  --color-folio-rule: #d4d6cc;
+  --color-folio-surface: #f0f0e9;
+  --color-folio-mint: #e0eee2;
+  --color-folio-green: #365f49;
+  --font-folio: var(--kol-font-family-float), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* /demo-4's switches (plan W3 · W11.2 · W11.3): the frame carries data-folio-theme · -palette · -accent.
+   Accent first: each is a strong ink (action, progress) and its soft ground (selection), both ≥ 4.5:1 for their text. */
+[data-folio-accent] { --color-folio-green: var(--folio-accent); --color-folio-mint: var(--folio-accent-soft); }
+[data-folio-accent="green"]  { --folio-accent: #365f49; --folio-accent-soft: #e0eee2; }
+[data-folio-accent="teal"]   { --folio-accent: #2b6668; --folio-accent-soft: #d6eaea; }
+[data-folio-accent="blue"]   { --folio-accent: #3740d3; --folio-accent-soft: #e1e2fa; }
+[data-folio-accent="orange"] { --folio-accent: #9a5600; --folio-accent-soft: #f7e6c8; }
+[data-folio-accent="red"]    { --folio-accent: #ad3434; --folio-accent-soft: #f5dcdc; }
+[data-folio-accent="purple"] { --folio-accent: #7029cc; --folio-accent-soft: #ece0fd; }
+
+/* Folio's palette on the KOL neutrals (W11.2): he picks the off-white and the dark from the KOL neutral ramp (the frame
+   carries them as --folio-kol-light / --folio-kol-dark); the rest is mixed from those two. Light: off-white paper, dark ink;
+   dark: the reverse. */
+[data-folio-palette="kol"] {
+  --color-folio-paper: var(--folio-kol-light, #fafafa);
+  --color-folio-ink: var(--folio-kol-dark, #121215);
+}
+[data-folio-palette="kol"][data-folio-theme="dark"] {
+  --color-folio-paper: var(--folio-kol-dark, #121215);
+  --color-folio-ink: var(--folio-kol-light, #fafafa);
+}
+[data-folio-palette="kol"] {
+  --color-folio-muted: color-mix(in oklab, var(--color-folio-ink) 62%, var(--color-folio-paper));
+  --color-folio-rule: color-mix(in oklab, var(--color-folio-ink) 16%, var(--color-folio-paper));
+  --color-folio-surface: color-mix(in oklab, var(--color-folio-ink) 5%, var(--color-folio-paper));
+}
+/* an off-white that brings its own highlight (the cream's #F0F0E9) uses it on light paper */
+[data-folio-palette="kol"]:not([data-folio-theme="dark"]) { --color-folio-surface: var(--folio-kol-surface, color-mix(in oklab, var(--color-folio-ink) 5%, var(--color-folio-paper))); }
+
+/* dark (W3.1) — Folio's own night set; on the KOL palette the frame's data-theme flips the KOL tokens instead.
+   The accent's ink lifts toward white and its ground sinks into the paper, so both keep their contrast. */
+[data-folio-theme="dark"]:not([data-folio-palette="kol"]) {
+  --color-folio-paper: #1b1d19;
+  --color-folio-surface: #24271f;
+  --color-folio-ink: #ecebe3;
+  --color-folio-muted: #a4a79c;
+  --color-folio-rule: #3b3f35;
+}
+/* the editor's canvas set light inside a dark frame (View → Canvas): Folio's own day set again */
+[data-folio-theme="light"]:not([data-folio-palette="kol"]) {
+  --color-folio-paper: #faf9f5;
+  --color-folio-surface: #f0f0e9;
+  --color-folio-ink: #262922;
+  --color-folio-muted: #73766d;
+  --color-folio-rule: #d4d6cc;
+}
+/* a Text document's page: white on light, the paper on dark — the nearest theme attribute wins, so the canvas can flip it */
+[data-folio-theme] { --folio-page: #fff; --folio-page-ink: #262922; }
+[data-folio-theme="dark"] { --folio-page: var(--color-folio-paper); --folio-page-ink: var(--color-folio-ink); }
+[data-folio-theme="dark"] {
+  --color-folio-green: color-mix(in oklab, var(--folio-accent, #365f49) 45%, white);
+  --color-folio-mint: color-mix(in oklab, var(--folio-accent, #365f49) 32%, var(--color-folio-paper));
+}

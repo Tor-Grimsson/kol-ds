@@ -4,6 +4,16 @@
   "outputDirectory": "showcase/dist",
   "redirects": [
     {
+      "source": "/apps/notes-hub/:path*",
+      "destination": "/apps/note-hub/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/apps/notes/:path*",
+      "destination": "/apps/note/:path*",
+      "permanent": true
+    },
+    {
       "source": "/apps/media-shell/:path*",
       "destination": "/apps/media-hub/:path*",
       "permanent": true
@@ -48,8 +58,8 @@
       "destination": "/apps/brand-lab/index.html"
     },
     {
-      "source": "/apps/notes/(.*)",
-      "destination": "/apps/notes/index.html"
+      "source": "/apps/note/(.*)",
+      "destination": "/apps/note/index.html"
     },
     {
       "source": "/apps/presentation/(.*)",
@@ -84,8 +94,8 @@
       "destination": "/apps/shell/index.html"
     },
     {
-      "source": "/apps/notes-hub/(.*)",
-      "destination": "/apps/notes-hub/index.html"
+      "source": "/apps/note-hub/(.*)",
+      "destination": "/apps/note-hub/index.html"
     },
     {
       "source": "/apps/presentation-hub/(.*)",
@@ -150,6 +160,10 @@
     {
       "source": "/apps/float/(.*)",
       "destination": "/apps/float/index.html"
+    },
+    {
+      "source": "/apps/folio/(.*)",
+      "destination": "/apps/folio/index.html"
     },
     {
       "source": "/media/(.*)",

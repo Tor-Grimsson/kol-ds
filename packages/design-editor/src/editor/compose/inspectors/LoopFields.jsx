@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, Divider, Dropdown, Tooltip } from '@kolkrabbi/kol-component'
 import { LabeledControl, SettingsRow, LabeledControlSection } from '@kolkrabbi/kol-component'
-import { SegmentedToggle } from '@kolkrabbi/kol-component'
+import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { ViewToggle } from '@kolkrabbi/kol-component'
 import AutoControls from '../../params/AutoControls'
 import RollScopesDialog from '../../params/RollScopesDialog'
@@ -31,7 +31,7 @@ import { RELATIONS, rollPalette, resolvePalette } from '../../color/palette'
 import { LoopPicker } from './LoopPicker'
 import AboutLine from './AboutLine'
 import { themeParams } from '../../../loops/theme'
-import { THEME_OPTIONS, DEFAULT_THEME } from '../../../loops/lib/themes'
+import { THEME_OPTIONS, DEFAULT_THEME } from '../../lib/themes'
 import { useControlSize, RAIL_LABEL_W, stripClamp } from '../../params/controlSize'
 
 /* LoopFields — the loop layer's params surface, out of ParametersPanel (deconstruction T4,
@@ -74,7 +74,7 @@ function Row({ inline, label, align = 'fill', children }) {
 const ONOFF = [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]
 function OnOff({ inline, cs, on, onChange }) {
   return inline
-    ? <SegmentedToggle tone="sunken" size={cs} className={`w-full ${stripClamp(cs) ?? ''}`} options={ONOFF} value={on ? 'on' : 'off'} onChange={(v) => onChange(v === 'on')} />
+    ? <ButtonGroup layout="joined" tone="sunken" size={cs} className={`w-full ${stripClamp(cs) ?? ''}`} options={ONOFF} value={on ? 'on' : 'off'} onChange={(v) => onChange(v === 'on')} />
     : <ViewToggle size={cs} options={ONOFF} viewMode={on ? 'on' : 'off'} onViewChange={(v) => onChange(v === 'on')} />
 }
 

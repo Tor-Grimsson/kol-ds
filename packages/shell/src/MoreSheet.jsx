@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
-import { Avatar, Button, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
+import { Button, ModalHeader, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
 import { Icon } from '@kolkrabbi/kol-icons'
 
 /* the open level a row sits in (FloatMenu); null outside one, where a row's `sub` is ignored as before */
-const Level = createContext(null)
+const Level = (globalThis[Symbol.for('@kolkrabbi/kol-shell/FloatMenuLevel')] ??= createContext(null))
 const FLOAT_ROW = 'w-full justify-start kol-btn-float'
 
 /* taxonomy-ok: molecule — a column of nav Buttons */
@@ -38,13 +38,14 @@ export default function MoreRows({ actions = [], items = [], active, onPick, ite
       {actions.map((a) => {
         /* a row with `sub` inside a FloatMenu opens its level instead of picking — the chevron at the row's end */
         const nests = level && a.sub?.length > 0
+        /* the account row is the ModalHeader (menu-system W4.1) — avatar · title, pressable */
+        if (a.avatar && !nests) return <ModalHeader key={a.label} variant={float ? 'float' : 'default'} avatar={a.avatar} title={a.label} onClick={() => { onPick?.(a); a.onPress?.() }} />
         return (
           /* a nesting row draws its own glyph so the label can take the room between it and the chevron; 8 apart, as Button's */
-          <Button key={a.label} variant="nav" size="lg" iconLeft={a.checked === undefined && !a.avatar && !nests ? a.icon : undefined} iconSize={glyph}
+          <Button key={a.label} variant="nav" size="lg" iconLeft={a.checked === undefined && !nests ? a.icon : undefined} iconSize={glyph}
             className={rowCls} style={nests ? { gap: 8 } : undefined}
             aria-haspopup={nests ? 'menu' : undefined} aria-expanded={nests ? level.isOpen(a) : undefined}
             onClick={(e) => { if (nests) { level.open(a, e.currentTarget); return } onPick?.(a); a.onPress?.() }}>
-            {a.avatar && <Avatar src={a.avatar} alt="" size="xs" />}
             {a.checked !== undefined && (
               <span className="inline-flex items-center justify-center shrink-0" style={{ width: float ? 'var(--kol-float-ic)' : 22, height: float ? 'var(--kol-float-ic)' : 22 }}>{a.checked && <Icon name="check" size={22} />}</span>
             )}

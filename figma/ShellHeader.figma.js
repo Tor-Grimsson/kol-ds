@@ -1,4 +1,4 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=370-10338
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1475-13767
 // source=packages/framework/src/ShellHeader.jsx
 // component=ShellHeader
 import figma from 'figma'

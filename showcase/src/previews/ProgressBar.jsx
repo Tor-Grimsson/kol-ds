@@ -1,7 +1,7 @@
 import { ProgressBar } from '@kolkrabbi/kol-component'
 
 export const stage = 'sm'
-/* `float` (float-everything W2 row 31): the 4px capsule track */
+/* `float` (float-everything W2 row 31): the float slider's 3px capsule track (one track with Slider, 2026-11-07) */
 export const variants = ['default', 'float']
 
 /* how far along: the ink by default, a tone when it means something; the caption `value/max` or the caller's words */

@@ -13,7 +13,8 @@ const BASE = import.meta.env.BASE_URL.replace(/\/$/, '')
 
 /* ponytail: the collapsed sections carry one row each so their chevrons draw; the frame never opens them */
 const more = (path) => [{ icon: 'file-text', label: 'All', path: `${path}/all` }]
-const NAV = [
+/* the studio's nav — Workspace and Record float draw the same Rail (9:15449 at 72, 9:14340 hidden) */
+export const NAV = [
   { heading: 'WORKSPACE' },
   { icon: 'home-01', label: 'Home', path: '/home' },
   {
@@ -77,6 +78,28 @@ export default function Rails() {
         center: null,
         end: <Button variant="float" tone="inverted" size="md" iconLeft="plus">New task</Button>,
       }}
+      /* the bottom Rail at the frame's size (9:14486): the filter capsule 16 over the Task index, 44 off the page foot as drawn */
+      bottom={(
+        <div className="flex flex-col gap-4 pb-5">
+          {/* the floating filter capsule, centred over the index */}
+          <TabsRow variant="float" surface="solid" size="sm" tabs={FILTERS} value={filter} onChange={setFilter}
+            trailing={<Button variant="float" tone="ghost" size="sm">Open only</Button>} className="self-center [&_[role=tab]]:min-w-[132px] [&_[role=tab]]:justify-between" />
+
+          {/* the bottom Rail — the Task index */}
+          <Card variant="float" title="Task index" count="5 tasks" value="1 selected">
+            <div className="-mx-2 flex flex-col gap-[7px]">
+              <div className="flex h-7 items-center gap-3 pl-[44px] pr-2.5">
+                <span className="flex-1"><Label>TASK</Label></span>
+                {['GROUP', 'SIZE', 'STATUS'].map((h, i) => <span key={h} className="shrink-0" style={{ width: COLS[i] }}><Label>{h}</Label></span>)}
+              </div>
+              {INDEX.map(([title, group, size], i) => (
+                <IndexRow key={title} title={title} selected={i === picked} onClick={() => setPicked(i)} onCheck={() => {}}
+                  cells={[{ value: group, width: COLS[0] }, { value: size, mono: true, width: COLS[1] }, { value: 'Open', width: COLS[2] }]} />
+              ))}
+            </div>
+          </Card>
+        </div>
+      )}
     >
       <div className="flex flex-col">
         {/* the workspace — 664 tall, the canvas 54 in */}
@@ -104,23 +127,6 @@ export default function Rails() {
           </div>
         </section>
 
-        {/* the floating filter capsule, centred 8 under the workspace */}
-        <TabsRow variant="float" surface="solid" size="sm" tabs={FILTERS} value={filter} onChange={setFilter}
-          trailing={<Button variant="float" tone="ghost" size="sm">Open only</Button>} className="mt-9 self-center [&_[role=tab]]:min-w-[132px] [&_[role=tab]]:justify-between" />
-
-        {/* the bottom Rail — the Task index */}
-        <Card variant="float" title="Task index" count="5 tasks" value="1 selected" className="mt-4">
-          <div className="-mx-2 flex flex-col gap-[7px]">
-            <div className="flex h-7 items-center gap-3 pl-[44px] pr-2.5">
-              <span className="flex-1"><Label>TASK</Label></span>
-              {['GROUP', 'SIZE', 'STATUS'].map((h, i) => <span key={h} className="shrink-0" style={{ width: COLS[i] }}><Label>{h}</Label></span>)}
-            </div>
-            {INDEX.map(([title, group, size], i) => (
-              <IndexRow key={title} title={title} selected={i === picked} onClick={() => setPicked(i)} onCheck={() => {}}
-                cells={[{ value: group, width: COLS[0] }, { value: size, mono: true, width: COLS[1] }, { value: 'Open', width: COLS[2] }]} />
-            ))}
-          </div>
-        </Card>
       </div>
     </FloatLayout>
   )

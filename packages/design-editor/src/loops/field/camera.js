@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // The field-loop camera — the viewer's path THROUGH a 2D field over u. A field
 // loop is sampled per pixel/cell; the camera transforms the sample coordinates

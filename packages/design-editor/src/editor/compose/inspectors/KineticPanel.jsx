@@ -1,7 +1,7 @@
 import { Icon } from '@kolkrabbi/kol-icons'
 import { Fragment, useEffect, useState } from 'react'
 import { BezierPathEditor, Button,
-  Dropdown, LabeledControl, SettingsRow, Slider, Textarea, SegmentedToggle,
+  Dropdown, LabeledControl, SettingsRow, Slider, Textarea, ButtonGroup,
   ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
 import { ColorField } from './ColorField'
 import { TreePicker } from './TreePicker'
@@ -13,7 +13,7 @@ import { KINETIC_PRESETS, KINETIC_TREE, presetComp, mergeInstance } from '../../
 import { KINETIC_KNOBS, knobOptions, knobRange, randomiseComp, knobBridgeKey } from '../../../kinetic/knobs'
 import { OPENTYPE_FEATURES } from '../../../kinetic/features'
 import { DEFAULT_POINTS } from '../../../kinetic/paths'
-import { THEME_OPTIONS, DEFAULT_THEME, resolveTheme } from '../../../loops/lib/themes'
+import { THEME_OPTIONS, DEFAULT_THEME, resolveTheme } from '../../lib/themes'
 import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
 
 /**
@@ -280,7 +280,7 @@ export default function KineticPanel({ layer, setProp, updateLayer, palette, ren
               />
             </SettingsRow>
             <SettingsRow label="Invert" align="fill" labelWidth={RAIL_LABEL_W}>
-              <SegmentedToggle size={cs} className="w-full"
+              <ButtonGroup layout="joined" size={cs} className="w-full"
                 options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
                 value={layer.themeInvert ? 'on' : 'off'}
                 onChange={(v) => applyTheme(layer.themeId ?? DEFAULT_THEME, v === 'on')}
@@ -538,7 +538,7 @@ function MotionStack({ motions, mIdx, onSelect, onAdd, onRemove }) {
       <span className="kol-eyebrow text-fg-80">Motion layers</span>
       <div className="flex items-center gap-1">
         <div className="flex-1 min-w-0">
-          <SegmentedToggle size={cs} value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
+          <ButtonGroup layout="joined" size={cs} value={String(mIdx)} onChange={(v) => onSelect(Number(v))} options={options} />
         </div>
         <Tooltip label="Add motion layer"><Button
           tone="ghost" size={cs} quiet iconOnly="plus" iconSize={12}

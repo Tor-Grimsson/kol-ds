@@ -1,4 +1,4 @@
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 
 // Ring pulse — concentric rings march outward; each ring's radius is its index
 // plus an integer `drift` of full cycles over the loop, so frame(0)===frame(1).

@@ -1,5 +1,5 @@
 // url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=78-198
-// source=packages/component/src/atoms/CloseButton.jsx
+// source=packages/component/src/molecules/CloseButton.jsx
 // component=CloseButton
 import figma from 'figma'
 

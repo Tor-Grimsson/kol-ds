@@ -39,8 +39,8 @@ import {
  * (`library-reader-for-a-hub-home`): a provider above the shell went stale
  * beside the editor's own, and a provider inside a Hub page is the wrong layer.
  *
- * EVERYTHING SITS UNDER THE RAIL (user ruling 2026-08-27). `railToggleKey`
- * hides it (`\` — H is the editor's layer-visibility key) and the rail comes
+ * EVERYTHING SITS UNDER THE RAIL (user ruling 2026-08-27). The shell's rail keys
+ * hide it (`⇧\`, `\` expands ↔ collapses — H is the editor's layer-visibility key) and the rail comes
  * back on every route change; `touch="drawer"` (kol-shell 0.31.0) takes the
  * rail OFF-CANVAS under 768px — a hamburger top-right brings it in over a
  * scrim, and labs' catalog rows ride it exactly as they do the desktop rail.
@@ -405,7 +405,6 @@ export default function AppLayout() {
       dev={{ tabs: [] }}
       /* the rail is AppStudio's preset; these two keys stay the chromes' — see the docblock */
       shell={{
-        railToggleKey: '\\',
         navKeys: false,
         settingsKey: undefined,
       }}

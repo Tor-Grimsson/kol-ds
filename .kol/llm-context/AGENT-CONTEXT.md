@@ -16,7 +16,15 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Tone variable names in plain words** (2026-11-03, parked). `--kol-tone-bg` / `-fg` / `-border` (and hover/active/pressed/panel siblings) read as dev shorthand; he wants ground · ink · edge. Code and Figma (`tone` collection) must rename together to stay one-to-one. Its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-11-04 late — float operational: views, the Float set, every gap closed)
+## 🏁 Current state (2026-11-06 — Labs on FloatLayout; the Figma library split into family files)
+
+- Labs A/B ruled "neither is using float correctly"; `FloatLabsView` rebuilt on kol-shell FloatLayout (unpublished). Figma: library split into tier pages, every app's masters and screens moved to per-family files (folder kol-ds-ui [library files]); the setup lives in `docs/operations/10-figma/01-file-setup.md`. Open: cleanup pass, the held Studio/Catalog builds, W4/W5. Log: `session-log/2026-11-06-labs-floatlayout-figma-library-split.md`.
+
+## Current state (2026-11-04 night — his float Figma review built; apps/metric and fxr in Figma)
+
+- **Published** kol-shell 0.104.0 · kol-dashboards 0.12.0 (metric's parts) · kol-component 0.338.1. The float views match the exploration frames in code and Figma; ↳ Apps holds `metric` (full-height page + 6 states) and `fxr` (11 screens on 19 new editor masters). The kol-figma skill carries the review's rules. Open: W7 Float document after his library publish; 6.5 / 6.6 calls; the chess + core board plan (DRAFT). Log: `session-log/2026-11-04-float-figma-review-metric-fxr.md`.
+
+## Current state (2026-11-04 late — float operational: views, the Float set, every gap closed)
 
 - **Published** kol-shell 0.103.0 (FloatLayout + `bottom`/`eyebrow`, transport `inline`) · kol-component 0.338.0 (Dialog `container`) · design-editor 0.27.0 (TimelineRail) · kol-dashboards 0.11.0 · kol-styleguide 0.22.1 · kol-icons 0.64.0 (`bold`). apps/float = the float home (13 family pages, 6 views), mounted as the showcase's Float set; Figma has the ➤ Float chapter and the screens as FloatLayout instances. Figma work goes to kol-figma-agent, which loads the new `kol-figma` skill. Open: round 25 rulings (W6/W7), his library publish. Log: `session-log/2026-11-04-float-views-set-and-operational.md`.
 
@@ -27,14 +35,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-11-03 — the Figma library mirrors the showcase, Modules tier)
 
 - **Published** kol-component 0.333.0–0.333.1 (Rail/ShellDrawer → organisms, ButtonGroup → molecules, old deep paths aliased) · kol-shell 0.99.2–0.100.0 (four fxr tickets, closed). New `modules` tier in the showcase + taxonomy § The ladder. Figma library rebuilt in three rounds: his sidebar convention, master vs view pages, tier cards + placeholders, slotted modules, every Apps screen an instance. Library republished 2026-11-03. Open: TabsRow `--slot-ink` bug; undrawn parts (BrandBook/BrandAssets below the fold, /work list, CodeBlock, Avatar xs). Log: `session-log/2026-11-03-figma-library-mirrors-showcase-modules-tier.md`.
-
-## Current state (2026-11-01 — every icon in the Figma library, `<Icon variant>`)
-
-- **Published** kol-icons 0.60.0. `<Icon variant="solid">` renders the drawn `-solid` twin. 07-icons has all 1002 icons by code folder; the 72 outline/solid pairs are component sets (`variant`, outline as default). The new page 28-icon-groups shows them by group. Code Connect is published for every icon, and so is the library. Three tickets were then built and closed: LoaderAppIntro (kol-component 0.331, kol-framework 0.69, kol-shell 0.99), GrowthLineSeedOutline (kol-growth 0.5, kol-component 0.332) and MoreRowsNoPathLit (kol-shell 0.99.1). Log: `session-log/2026-11-01-icons-in-figma-and-icon-variant.md`.
-
-## Current state (2026-10-31 late — interface icons in 18 categories, the batch landed)
-
-- **Published** kol-icons 0.57.0–0.59.0: `social` → external; kol-icon-set-interface foldered by the user's 18 categories (plan-2026-10-31-icon-categories); the 559-icon batch (atlas · website · Claude list) in, every drawing kept, 814 icons. Solid is a variant (the Type chips), not a category. Closed ClaudeListIconSet and the five fxr tickets (kol-component 0.330.0). Open: culling duplicates with him. Log: `session-log/2026-10-31-interface-icon-categories-and-the-batch.md`.
 
 ## Repo standup (2026-06-15)
 

@@ -1,5 +1,5 @@
 import { Delaunay } from 'd3-delaunay'
-import { TAU, mixHex } from '../lib/util.js'
+import { TAU, mixHex } from '../../editor/lib/util.js'
 import { mulberry32 } from '../gl/rng.js'
 
 // Voronoi pulse (E1, after polyhop *Linked Pulse II*) — Voronoi cells from drifting seeds, cells

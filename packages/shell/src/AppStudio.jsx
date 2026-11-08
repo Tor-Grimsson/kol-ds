@@ -79,7 +79,7 @@ export default function AppStudio({
   const slot = (cfg, path, label, icon) => cfg && { ...cfg, path: cfg.path ?? path, label: cfg.label ?? label, icon: cfg.icon ?? icon }
   const lib = slot(library, '/library', 'Library', 'nav-library')
   const make = slot(create, '/create', 'Create', 'nav-create')
-  const tool = slot(use, '/use', 'Use', 'nav-rack')
+  const tool = slot(use, '/use', 'Use', 'rack-v')
   const rows = [lib, make, tool, ...pages].filter(Boolean)
   const at = (p) => currentPath === p || currentPath.startsWith(`${p}/`)
   /* THE BAR STEPS ASIDE on the tool and on any page that owns the phone's bottom edge (mirror's bottom sheet, the rack's

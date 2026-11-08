@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import { Button, usePopover, PopoverPanel, floatSurfaceClass, floatMotion } from '@kolkrabbi/kol-component'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
 
 /* taxonomy-ok: molecule — a float Button that opens the More sheet's rows */
@@ -18,20 +18,24 @@ import MoreRows, { FloatMenu } from './MoreSheet.jsx'
  * @param {string}   title        the card's head (the app's name)
  * @param {string|string[]} breadcrumb  the words beside the button, or crumbs joined by ` / `
  * @param {'solid'|'glass-dark'|'glass-light'} surface  what the button and the card are made of (default `solid`)
+ * @param {Function} [onRestore]  a "Show navigation" row at the card's foot brings the rail back as it was (FloatRailOverlayShadowRestore,
+ *                                2026-11-04 — FloatLayout passes its `lastShown`, the same path as Panels ⌄); unset, no row
+ * @param {boolean|Object} [motion=true]  the card's enter and leave and the button's states: `true` the `--kol-float-*` tokens ·
+ *                                `false` none · `{ duration, ease }` per app (FloatActionStatesAndMotion, 2026-11-04)
  * @param {string}   className
  */
-export default function RailTrigger({ items = [], currentPath = '/', onNavigate, title, breadcrumb, surface = 'solid', className = '' }) {
+export default function RailTrigger({ items = [], currentPath = '/', onNavigate, title, breadcrumb, surface = 'solid', onRestore, motion = true, className = '' }) {
   const [open, setOpen] = useState(false)
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-start', offset: 8, dismiss: { outsidePress: (e) => !e.target?.closest?.('.kol-float-level') } })
   const card = `kol-more-sheet kol-more-sheet-float ${floatSurfaceClass(surface, true)}`
-  const pick = (x) => { setOpen(false); if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }
+  const pick = (x) => { setOpen(false); if (x.restore) { onRestore?.(); return } if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }
   return (
-    <div className={`kol-rail-trigger kol-float-chrome inline-flex items-center gap-4 ${className}`.trim()}>
+    <div className={`kol-rail-trigger kol-float-chrome inline-flex items-center gap-4 ${className}`.trim()} style={floatMotion(motion).style}>
       <span ref={popover.refs.setReference} {...popover.getReferenceProps()} className="inline-flex">
         <Button variant="float" size="lg" iconOnly="hamburger" aria-label="Open navigation" aria-haspopup="menu" aria-expanded={open} className={floatSurfaceClass(surface)} />
       </span>
       {breadcrumb && <span className="kol-float-hint text-oq-64">{Array.isArray(breadcrumb) ? breadcrumb.join('  /  ') : breadcrumb}</span>}
-      <PopoverPanel popover={popover} panel={false} focus={false} className={`${card} w-[280px]`} style={{ maxWidth: 'calc(100vw - 24px)' }}>
+      <PopoverPanel popover={popover} panel={false} focus={false} motion={motion} className={`${card} w-[280px]`} style={{ maxWidth: 'calc(100vw - 24px)' }}>
         {title && (
           <div className="flex items-center justify-between pl-3 pr-1 pt-1 pb-2">
             <span className="kol-float-body text-emphasis">{title}</span>
@@ -39,7 +43,8 @@ export default function RailTrigger({ items = [], currentPath = '/', onNavigate,
           </div>
         )}
         <FloatMenu cardClass={card} onLeaf={pick}>
-          <MoreRows variant="float" items={items} active={currentPath} onPick={pick} />
+          <MoreRows variant="float" items={items.filter((i) => !i.heading)} active={currentPath} onPick={pick} itemsFirst
+            actions={onRestore ? [{ label: 'Show navigation', icon: 'panel-left', restore: true }] : undefined} />
         </FloatMenu>
       </PopoverPanel>
     </div>

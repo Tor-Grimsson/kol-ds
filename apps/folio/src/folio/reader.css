@@ -1,0 +1,56 @@
+/**
+ * kol-reader — the reader's type family (plan 2026-11-04-folio-library W11.1). Self-contained, like kol-prose: one family
+ * for the library and its reader, on the DS's Inter (--kol-font-family-float, kol-theme ≥ 0.211). Built here first; it goes
+ * to the DS as one ticket once it has settled, on his word. Roles from Figma 228:13142 ("03 / One family. A clear
+ * hierarchy.") and the four frames:
+ *
+ *   role        size / weight / line · tracking        use
+ *   wordmark     38 / 800 / normal · -2                 the masthead's "folio"
+ *   title        72 / 700 / 1 · -3.4                    a page title (My library, an article)
+ *   figure       56 / 700 / 1 · -2.5                    a big count
+ *   chapter      56 / 700 / 1.05 · -2.4                 a chapter's opening title
+ *   section      28 / 700 / 1.2 · -0.8                  a section heading
+ *   book         25 / 700 / 1.21 · -0.7                 a book's title in a card or the rail
+ *   shelf        16 / 700 / 1.2 · -0.3                  a title under a cover
+ *   row          14 / 600                               a book's title in the table
+ *   glyph        16 / 400                               ⌄ + → beside a control's label
+ *   nav          13 / 500                               masthead and rail links
+ *   body         13 / 400 / 1.5                         interface body text
+ *   control      12 / 600                               buttons and fields
+ *   meta         11 / 400                               supporting text
+ *   meta-sm      10 / 400                               table metadata
+ *   label        10 / 600 · +1.1, capitals              kickers and column heads
+ *   prose        --kol-reader-size (16 default) / 400 / 1.65   the reading text; em-scaled inside
+ */
+
+.kol-reader-wordmark { font-family: var(--font-folio); font-size: 38px; font-weight: 800; line-height: normal; letter-spacing: -2px; }
+.kol-reader-title    { font-family: var(--font-folio); font-size: 72px; font-weight: 700; line-height: 1; letter-spacing: -3.4px; }
+.kol-reader-figure   { font-family: var(--font-folio); font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -2.5px; }
+.kol-reader-chapter  { font-family: var(--font-folio); font-size: 56px; font-weight: 700; line-height: 1.05; letter-spacing: -2.4px; }
+.kol-reader-section  { font-family: var(--font-folio); font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.8px; }
+.kol-reader-book     { font-family: var(--font-folio); font-size: 25px; font-weight: 700; line-height: 1.21; letter-spacing: -0.7px; }
+.kol-reader-shelf    { font-family: var(--font-folio); font-size: 16px; font-weight: 700; line-height: 1.2; letter-spacing: -0.3px; }
+.kol-reader-row      { font-family: var(--font-folio); font-size: 14px; font-weight: 600; line-height: 1.21; }
+.kol-reader-glyph    { font-family: var(--font-folio); font-size: 16px; font-weight: 400; line-height: 1; }
+.kol-reader-nav      { font-family: var(--font-folio); font-size: 13px; font-weight: 500; line-height: 1.21; }
+.kol-reader-body     { font-family: var(--font-folio); font-size: 13px; font-weight: 400; line-height: 1.5; }
+.kol-reader-control  { font-family: var(--font-folio); font-size: 12px; font-weight: 600; line-height: 1.21; }
+.kol-reader-meta     { font-family: var(--font-folio); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-reader-meta-sm  { font-family: var(--font-folio); font-size: 10px; font-weight: 400; line-height: 1.21; }
+.kol-reader-label    { font-family: var(--font-folio); font-size: 10px; font-weight: 600; line-height: 1.21; letter-spacing: 1.1px; text-transform: uppercase; }
+
+/* the reading text — sized by the viewer (−/+), set in sans or mono */
+.kol-reader-prose {
+  font-family: var(--font-folio);
+  font-size: var(--kol-reader-size, 16px);
+  font-weight: 400;
+  line-height: 1.65;
+}
+.kol-reader-prose[data-family="mono"] { font-family: var(--kol-font-family-mono), ui-monospace, monospace; line-height: 1.6; }
+.kol-reader-prose h2 { font-family: var(--font-folio); font-size: 1.75em; font-weight: 700; line-height: 1.2; letter-spacing: -0.03em; }
+.kol-reader-prose h3 { font-family: var(--font-folio); font-size: 1.25em; font-weight: 700; line-height: 1.3; }
+.kol-reader-prose h4 { font-family: var(--font-folio); font-size: 0.625em; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; }
+.kol-reader-prose blockquote { font-size: 1.25em; font-weight: 500; line-height: 1.45; letter-spacing: -0.02em; }
+.kol-reader-prose table { font-size: 0.875em; line-height: 1.5; }
+.kol-reader-prose th { font-family: var(--font-folio); font-size: 10px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; }
+.kol-reader-prose pre { font-size: 0.9em; }

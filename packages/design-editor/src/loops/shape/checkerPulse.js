@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // Checker pulse — checkerboard cells scale 0↔1 in a diagonal travelling wave.
 // Integer cycles/waves ⇒ frame(0)===frame(1).

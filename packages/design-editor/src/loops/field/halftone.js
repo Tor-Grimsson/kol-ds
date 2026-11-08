@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 import { CAMERA_SCHEMA, makeCam, sample } from './camera.js'
 
 // Halftone — a dot grid whose per-dot radius samples a flowing concentric field

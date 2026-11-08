@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Input, Slider, Dropdown, ViewToggle, ToggleSwitch, SegmentedToggle, LabeledControl, SettingsRow, LabeledControlSection, Textarea, AccordionPanel } from '@kolkrabbi/kol-component'
+import { Input, Slider, Dropdown, ViewToggle, ToggleSwitch, ButtonGroup, LabeledControl, SettingsRow, LabeledControlSection, Textarea, AccordionPanel } from '@kolkrabbi/kol-component'
 import Hint from '../components/Hint'
 import { visibleParams, isAnimatable, paramTab, paramSection } from './schema'
 import { isBinding, resolveValue } from './resolve'
@@ -280,7 +280,7 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
      * bare tiles beside it were two answers to one question. The editor
      * keeps ViewToggle with the rest of its inspector. */
     control = inline ? (
-      <SegmentedToggle tone="sunken"
+      <ButtonGroup layout="joined" tone="sunken"
         size={cs} className={`w-full ${stripClamp(cs) ?? ''}`}
         options={p.options ?? []}
         value={value}
@@ -309,7 +309,7 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
       /* labelled pair in the labs skin: the same SegmentedToggle as
        * `segmented`, spanning the control column like a dropdown */
       control = (
-        <SegmentedToggle tone="sunken"
+        <ButtonGroup layout="joined" tone="sunken"
           size={cs} className={`w-full ${stripClamp(cs) ?? ''}`}
           options={[{ value: 'off', label: offLabel }, { value: 'on', label: onLabel }]}
           value={value ? 'on' : 'off'}

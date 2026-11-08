@@ -1,4 +1,4 @@
-import { Fragment, createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { Fragment, createContext, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { registerCredentialedOrigin } from '../utilities/credentials.js'
 import formatSize from '../utilities/formatSize.js'
 import { ROW_HEIGHT, ROW_FILL } from '../molecules/OptionRow.jsx'
@@ -9,7 +9,7 @@ import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'
 import Tag from '../atoms/Tag.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
-import CloseButton from '../atoms/CloseButton.jsx'
+import CloseButton from '../molecules/CloseButton.jsx'
 import ActionButton from '../molecules/ActionButton.jsx'
 import SizeOrDownload from '../atoms/SizeOrDownload.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
@@ -35,7 +35,7 @@ import MediaPlayer from '../molecules/MediaPlayer.jsx'
 import Slider from '../molecules/Slider.jsx'
 import QuickLookFrame from '../molecules/QuickLookFrame.jsx'
 import { formatLength } from '../molecules/PlayTile.jsx'
-import FullscreenOverlay from '../utilities/FullscreenOverlay.jsx'
+import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
 import { useModal } from '../molecules/Modal.jsx'
 import ContentFilters from './ContentFilters.jsx'
 import DocumentEditor from './DocumentEditor.jsx'
@@ -1978,11 +1978,10 @@ export function MediaLibraryBrowse({
     const at = files.findIndex((f) => f.key === selectCursorRef.current)
     setQuickLook({ files, index: at === -1 ? 0 : at })
   }, [rowSelection]) // eslint-disable-line react-hooks/exhaustive-deps
-  const columnsRef = useRef(null)
-  /* the view box (whichever view is mounted) and the page root — what `fill` measures */
+  /* the view box (whichever view is mounted) and the page root — what `fill` measures. THE STRIP
+   * HOLDS STILL (ColumnStripHoldsStill, 2026-11-05): no effect here slides the columns any more —
+   * ColumnBrowser owns its strip, and only the mouse or the arrows move it. */
   const [viewEl, viewRef] = useState(null)
-  /* stable, so the columns box is not re-attached (null, then itself) on every render */
-  const columnsBox = useCallback((el) => { columnsRef.current = el; viewRef(el) }, [])
   const pageRef = useRef(null)
   const fill = settings.columnHeight === 'fill'
   const fillH = useFillHeight(fill, viewEl, pageRef)
@@ -2146,14 +2145,6 @@ export function MediaLibraryBrowse({
     }
   }
 
-  useEffect(() => {
-    if (folderView !== 'columns') return undefined
-    const root = columnsRef.current?.querySelector('[tabindex="0"]')
-    if (!root) return undefined
-    const id = requestAnimationFrame(() => root.scrollTo({ left: root.scrollWidth, behavior: 'smooth' }))
-    return () => cancelAnimationFrame(id)
-  }, [folderView, prefix, atTitleRoot, pickedFile, bucketMeta.id])
-
   if (error) return <p className="kol-mono-12 text-ui-error">Error: {error}</p>
   /* NOT SELECTABLE (user 2026-09-23, superseding 2026-09-22's selectable crumbs: *"instead of this
    * highlight, could we make a hover click to copy path?"*). A drag across the line painted the
@@ -2224,7 +2215,7 @@ export function MediaLibraryBrowse({
     const treeObjects = keep ? sortedObjects.filter((o) => keep.has(o.key)) : sortedObjects
     return (
   folderView === 'columns' || phone ? (
-            <div ref={columnsBox} className="relative">
+            <div ref={viewRef} className="relative">
               <ColumnBrowser
                 autoFocus={autoFocus}
                 className={atTitleRoot ? 'is-root' : ''}

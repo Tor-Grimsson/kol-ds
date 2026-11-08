@@ -21,9 +21,9 @@ import opentype from 'opentype.js'
 const TAU = Math.PI * 2
 
 // generalized (lo, hi) clamp — deliberately not lib/util's fixed clamp01
-export { clamp } from '../../../loops/lib/util'
+export { clamp } from '../../lib/util'
 // endpoint-exact lerp form (hits b exactly at t = 1) — not lib/util's a + (b−a)·t
-import { clamp, lerp } from '../../../loops/lib/util'
+import { clamp, lerp } from '../../lib/util'
 
 // Deterministic 0..1 PRNG (mulberry32) — inlined so the kinetic module stays
 // self-contained (labs imports it from lib/rng.js; same function).

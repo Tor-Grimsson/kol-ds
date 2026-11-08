@@ -1,4 +1,4 @@
-import { TAU } from '../lib/util.js'
+import { TAU } from '../../editor/lib/util.js'
 
 // Modulator rings — the kol-modulator app's FrequencyModulator/DialRotation
 // ported onto the loop contract (plan 02-labs-mobile-and-vector step 2).

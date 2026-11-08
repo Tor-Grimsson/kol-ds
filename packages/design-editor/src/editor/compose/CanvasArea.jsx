@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { editLayer } from '../generate/store'
 import Canvas, { CANVAS_VIRTUAL_W } from '../shell/Canvas'
 import { useComposeState, resolveColor, COVER_TYPES, CANVAS_W } from './state'
 import LayerRenderer from './LayerRenderer'
@@ -21,6 +22,8 @@ import { resolveMasks, canMask } from './masks'
 import { CanvasZoomContext } from '../shell/Canvas'
 import { setZoom } from '../shell/zoomStore'
 import { stillToDataUrl } from '../lib/stillUpload'
+import { useChrome } from '../float/chrome'
+import { rowLabelForLayer } from './labels'
 
 /* Per-tool cursor on the canvas stage (spec R8.1–R8.2): every tool sets its own. Shape tools
  * `crosshair` (Photoshop/Figma), `cell` for pattern, the `text` I-beam, `zoom-in` (⌥ zoom-out);
@@ -135,6 +138,7 @@ function segmentHit(layer, vx, vy, tol) {
 const CONVERTIBLE_KINDS = new Set(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line'])
 
 export default function CanvasArea() {
+  const chrome = useChrome()
   const {
     aspect, view, layers, palette,
     canvasRatio, showGrid,
@@ -1209,6 +1213,10 @@ export default function CanvasArea() {
     } else if (layer?.type === 'photo' && !layer.locked) {
       e.preventDefault()
       enterCrop(layer)
+    } else if (layer?.type === 'repeat' || layer?.type === 'generate') {
+      /* a generate / repeat layer opens its tool on itself (fxr's plan 52 § 1.3, W7.6) */
+      e.preventDefault()
+      editLayer(layer.type, layer)
     }
   }, [tool, layers, directSelect, enterCrop])
 
@@ -1343,8 +1351,9 @@ export default function CanvasArea() {
        * mounted inside `<EditorShell data-editor-keep-selection>`. */
       /* …and so does a floating panel (menus, dropdowns): they portal to <body>, outside the shell,
        * and a press in one deselected before its row's click — every selection verb in the menu bar
-       * ran on nothing (plan 28). */
-      if (e.target.closest?.('[data-editor-keep-selection], .kol-popover-float')) return
+       * ran on nothing (plan 28). The menu engine's panel (`.kol-menu-panel` — the float chrome's MenuBar, its card
+       * and toolbar menus) is one too. */
+      if (e.target.closest?.('[data-editor-keep-selection], .kol-popover-float, .kol-menu-panel, .kol-more-sheet')) return
       select(null)
     }
     document.addEventListener('mousedown', onDocDown)
@@ -1704,6 +1713,9 @@ export default function CanvasArea() {
                 showHandles={!isMultiSel}
                 showRotate={!isMultiSel}
                 showLabel={!isMultiSel}
+                /* the float chrome draws its own selection: name above, size cap under (W2.6) */
+                variant={chrome === 'float' ? 'float' : undefined}
+                name={chrome === 'float' ? rowLabelForLayer(l) : undefined}
               />
             )
           ))}
