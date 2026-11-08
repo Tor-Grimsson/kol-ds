@@ -1,7 +1,7 @@
 /* Folio — local parts for the /demo-3 proposal (Figma zzzb4WqmCsDTPlP95Weo2M, section 228:12990).
    Built straight from the frames; no KOL components. Icons are the kol-icon-set glyphs the frames use. */
 import { Link } from 'react-router-dom'
-import { Icon as KolIcon } from '@kolkrabbi/kol-icons'
+import { IconLoader as KolIcon } from '@kolkrabbi/kol-icons'
 import markSrc from './assets/mark.svg'
 import fieldBlue from './assets/field-blue.svg'
 import fieldOchre from './assets/field-ochre.svg'

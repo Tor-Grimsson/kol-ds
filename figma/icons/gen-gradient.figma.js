@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<Icon name="gen-gradient" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="gen-gradient" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'gen-gradient',
 }

@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<Icon name="resize-grip" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="resize-grip" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'resize-grip',
 }

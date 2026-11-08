@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — one contents row as a card: label · title · meta · the arrow */
 
@@ -22,7 +22,7 @@ export default function IndexCard({ href, onClick, label, title, meta }) {
         <span className="kol-mono-14 text-emphasis">{title}</span>
         {meta && <span className="kol-mono-10 text-meta mt-1">{meta}</span>}
       </span>
-      <Icon name="arrow-right" size={16} className="shrink-0 text-oq-48 group-hover:text-emphasis transition-colors" />
+      <IconLoader name="arrow-right" size={16} className="shrink-0 text-oq-48 group-hover:text-emphasis transition-colors" />
     </a>
   )
 }

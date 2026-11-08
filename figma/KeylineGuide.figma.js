@@ -8,8 +8,8 @@ const light = instance.getEnum('light', { "true": "true", "false": "false" })
 
 export default {
   example: figma.code`<IconPlate size={96} ground="${light === 'true' ? 'light' : 'dark'}" guide>
-  <Icon name="search" size={96} />
+  <IconLoader name="search" size={96} />
 </IconPlate>`,
-  imports: ["import { IconPlate, Icon } from \"@kolkrabbi/kol-component\""],
+  imports: ["import { IconPlate, IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'KeylineGuide',
 }

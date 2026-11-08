@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import Button from '../atoms/Button.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import usePointerSort from '../hooks/usePointerSort.js'
 
 /**
@@ -80,7 +80,7 @@ export default function StepList({
                 onPointerDown={(e) => startDrag(e, i, rows())}
                 onClick={(e) => e.stopPropagation()}
               >
-                <Icon name="drag-handle" size={12} className="text-oq-48" />
+                <IconLoader name="drag-handle" size={12} className="text-oq-48" />
               </button>
             )}
             {arrows && (
@@ -125,7 +125,7 @@ export default function StepList({
             onClick={onAdd}
           >
             <span className="kol-helper-10 tabular-nums w-4 shrink-0">{items.length + 1}</span>
-            <Icon name="plus" size={12} className="text-oq-48" />
+            <IconLoader name="plus" size={12} className="text-oq-48" />
             <span className="kol-mono-12">{addLabel}</span>
           </button>
         </li>

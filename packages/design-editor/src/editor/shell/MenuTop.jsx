@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { openColorModes } from '../color/ColorModesWindow'
 import { useCallback, useEffect } from 'react'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, useModal } from '@kolkrabbi/kol-component'
@@ -81,7 +81,7 @@ const FX_PATTERN_CATEGORIES = [
 const key = (id) => { const s = shortcutById(id); return s ? comboLabel(s.combo) : undefined }
 const cmd = (id) => () => window.dispatchEvent(new CustomEvent('kol:command', { detail: { id } }))
 /* the trailing slot: ✓ when on (the menus' convention since day one), then the key */
-const trail = (on, k) => (on || k ? <span className="inline-flex items-center gap-2">{on && <Icon name="check" size={11} />}{k}</span> : undefined)
+const trail = (on, k) => (on || k ? <span className="inline-flex items-center gap-2">{on && <IconLoader name="check" size={11} />}{k}</span> : undefined)
 const openColorPane = (tab = 'Colour') => window.dispatchEvent(new CustomEvent('kol:open-color-pane', { detail: { tab } }))
 /* `kol-editor-menu` — the reference look (plan 30 § 4: darker panel, sans at full ink, 26px rows,
    hairline + shadow), scoped in kol-editor.css until it lands in the DS as a MenuItem tone */
@@ -394,12 +394,12 @@ export default function MenuTop() {
         <div className="py-1 w-[240px]">
           <MenuDropdownNest flyout label="Alignment" disabled={!textLayer}>
             {[['left', 'text-align-left', 'Align text left'], ['center', 'text-align-center', 'Center text'], ['right', 'text-align-right', 'Align text right']].map(([v, icon, label]) => (
-              <MenuDropdownItem key={v} iconLeft={<Icon name={icon} size={16} />} onClick={() => updateLayer(textLayer.id, { textAlign: v })} shortcut={trail((textLayer?.textAlign ?? 'center') === v)}>{label}</MenuDropdownItem>
+              <MenuDropdownItem key={v} iconLeft={<IconLoader name={icon} size={16} />} onClick={() => updateLayer(textLayer.id, { textAlign: v })} shortcut={trail((textLayer?.textAlign ?? 'center') === v)}>{label}</MenuDropdownItem>
             ))}
           </MenuDropdownNest>
           <MenuDropdownNest flyout label="Vertical alignment" disabled={!textLayer}>
             {[['top', 'text-valign-top', 'Align top'], ['middle', 'text-valign-middle', 'Align middle'], ['bottom', 'text-valign-bottom', 'Align bottom']].map(([v, icon, label]) => (
-              <MenuDropdownItem key={v} iconLeft={<Icon name={icon} size={16} />} onClick={() => updateLayer(textLayer.id, { verticalAlign: v })} shortcut={trail((textLayer?.verticalAlign ?? 'middle') === v)}>{label}</MenuDropdownItem>
+              <MenuDropdownItem key={v} iconLeft={<IconLoader name={icon} size={16} />} onClick={() => updateLayer(textLayer.id, { verticalAlign: v })} shortcut={trail((textLayer?.verticalAlign ?? 'middle') === v)}>{label}</MenuDropdownItem>
             ))}
           </MenuDropdownNest>
           <MenuDropdownDivider />

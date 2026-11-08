@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<ShellNavColumn mode="open">{(mode) => <ShellSidebar routes={routes} basePath="/" />}</ShellNavColumn>`,
-  imports: ["import { ShellNavColumn, ShellSidebar } from \"@kolkrabbi/kol-workshop\""],
+  example: figma.code`<ShellNavColumn mode="open">{(mode) => <ShellRail routes={routes} basePath="/" />}</ShellNavColumn>`,
+  imports: ["import { ShellNavColumn, ShellRail } from \"@kolkrabbi/kol-workshop\""],
   id: 'ShellNavColumn',
 }

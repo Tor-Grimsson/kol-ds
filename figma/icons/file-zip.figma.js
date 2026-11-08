@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<Icon name="file-zip" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="file-zip" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'file-zip',
 }

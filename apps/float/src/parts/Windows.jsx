@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import {
   Button, Dialog, Dropdown, EmptyState, Input, LabeledControl, MediaLibrary, ModalProvider, NavDrawer, NoticeBanner,
-  QuickLookFrame, QuickLookHeader, SummaryLine, TabsRow, ToggleSwitch, useModal,
+  QuickLookFrame, ModalHeader, SummaryLine, TabsRow, ToggleSwitch, useModal,
   SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle, SettingsText,
   SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
 } from '@kolkrabbi/kol-component'
@@ -146,10 +146,10 @@ export default function Windows() {
     <FamilyPage title="Windows" body="The float windows — blocking, utility and asset — and the lines and states that live in them.">
       {() => (
         <>
-          <Part name="QuickLookHeader float" slug="quick-look-header">
+          <Part name="ModalHeader float" slug="modal-header">
             <div className="flex w-[342px] max-w-full flex-col gap-6">
-              <QuickLookHeader variant="float" icon="user" title="Account" onMinimise={noop} onClose={noop} />
-              <QuickLookHeader variant="float" icon="alert-triangle" title="Delete layer" onClose={noop} />
+              <ModalHeader variant="float" icon="user" title="Account" onMinimise={noop} onClose={noop} />
+              <ModalHeader variant="float" icon="alert-triangle" title="Delete layer" onClose={noop} />
             </div>
           </Part>
           <Part name="Dialog float" slug="dialog"><ExportWindow blocking /><ExportWindow blocking={false} /></Part>

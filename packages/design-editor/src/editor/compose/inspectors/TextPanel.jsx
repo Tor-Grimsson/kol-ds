@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Pane from '../../components/Pane'
 import { Button, Dropdown, LabeledControl, SettingsRow, MenuDropdownItem, PopoverPanel, ButtonGroup, Slider, usePopover, glyphSize, Tooltip } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 import BindDot from '../../params/BindDot'
 import { isBinding } from '../../params/resolve'
@@ -197,9 +197,9 @@ export function TextSurface({ layer, bare = false }) {
           ariaLabel="Text alignment"
           value={layer.textAlign ?? 'center'}
           options={[
-            { value: 'left',   ariaLabel: 'Align text left',   label: <Icon name="text-align-left" size={glyphSize(cs, true)} /> },
-            { value: 'center', ariaLabel: 'Center text',       label: <Icon name="text-align-center" size={glyphSize(cs, true)} /> },
-            { value: 'right',  ariaLabel: 'Align text right',  label: <Icon name="text-align-right" size={glyphSize(cs, true)} /> },
+            { value: 'left',   ariaLabel: 'Align text left',   label: <IconLoader name="text-align-left" size={glyphSize(cs, true)} /> },
+            { value: 'center', ariaLabel: 'Center text',       label: <IconLoader name="text-align-center" size={glyphSize(cs, true)} /> },
+            { value: 'right',  ariaLabel: 'Align text right',  label: <IconLoader name="text-align-right" size={glyphSize(cs, true)} /> },
           ]}
           onChange={(v) => setProp('textAlign', v)}
         />
@@ -208,9 +208,9 @@ export function TextSurface({ layer, bare = false }) {
           ariaLabel="Vertical alignment"
           value={layer.verticalAlign ?? 'middle'}
           options={[
-            { value: 'top',    ariaLabel: 'Align top',    label: <Icon name="text-valign-top" size={glyphSize(cs, true)} /> },
-            { value: 'middle', ariaLabel: 'Align middle', label: <Icon name="text-valign-middle" size={glyphSize(cs, true)} /> },
-            { value: 'bottom', ariaLabel: 'Align bottom', label: <Icon name="text-valign-bottom" size={glyphSize(cs, true)} /> },
+            { value: 'top',    ariaLabel: 'Align top',    label: <IconLoader name="text-valign-top" size={glyphSize(cs, true)} /> },
+            { value: 'middle', ariaLabel: 'Align middle', label: <IconLoader name="text-valign-middle" size={glyphSize(cs, true)} /> },
+            { value: 'bottom', ariaLabel: 'Align bottom', label: <IconLoader name="text-valign-bottom" size={glyphSize(cs, true)} /> },
           ]}
           onChange={(v) => setProp('verticalAlign', v)}
         />
@@ -255,7 +255,7 @@ function MetricInput({ param: p, layer, setProp, suffix, step, round = false, ic
       className="w-full min-w-0"
       /* the glyph stands alone in the field's affordance slot — the SOLO rung for sm (16), off the
        * ladder (editor review #9: at a hand-picked 14 the line-height / tracking art read ~12) */
-      affordance={icon ? <Icon name={icon} size={glyphSize(cs, true)} className="text-oq-64" /> : undefined}
+      affordance={icon ? <IconLoader name={icon} size={glyphSize(cs, true)} className="text-oq-64" /> : undefined}
       slotRight={slotRight}
       value={display}
       onCommit={(v) => {

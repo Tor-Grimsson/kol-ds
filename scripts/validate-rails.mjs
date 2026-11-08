@@ -59,10 +59,10 @@ const errors = []
 
 /* Every file that paints a rail row or a rail section label. */
 const RAIL_FILES = [
-  'packages/workshop/src/shell/ShellSidebar.jsx',
+  'packages/workshop/src/shell/ShellRail.jsx',
   'packages/workshop/src/docs/DocumentationReader.jsx',
-  'packages/workshop/src/compositions/WorkshopSidebar.jsx',
-  'packages/workshop/src/compositions/WorkshopDefaultSidebar.jsx',
+  'packages/workshop/src/compositions/WorkshopRail.jsx',
+  'packages/workshop/src/compositions/WorkshopDefaultRail.jsx',
   'packages/component/src/molecules/DocsToc.jsx',
   'showcase/src/lib/ShellChrome.jsx',
 ]

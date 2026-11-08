@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import JackSocket from './JackSocket.jsx'
 
 /**
@@ -16,7 +16,7 @@ import JackSocket from './JackSocket.jsx'
  *                                     default the package's presentational `JackSocket`
  * @param {...*}     jackProps    everything else goes to the jack
  */
-export default function LabeledJack({ label, icon, iconSize = 8, labelPosition = 'bottom', dim = false, iconComponent: IconCmp = Icon, jackComponent: Jack = JackSocket, ...jackProps }) {
+export default function LabeledJack({ label, icon, iconSize = 8, labelPosition = 'bottom', dim = false, iconComponent: IconCmp = IconLoader, jackComponent: Jack = JackSocket, ...jackProps }) {
   const labelEl = icon
     ? <IconCmp name={icon} size={iconSize} style={{ opacity: 0.35 }} />
     : label && (

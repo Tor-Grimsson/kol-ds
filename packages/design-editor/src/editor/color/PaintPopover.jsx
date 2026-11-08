@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react'
 import { Button, ColorSwatch, PopoverPanel, Tooltip, usePopover } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useComposeState } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import AutoControls from '../params/AutoControls'
@@ -86,7 +86,7 @@ export default function PaintPopover({ layer, paint, label, hex, none, palette, 
                     style={type === 'image' && params.src ? { backgroundImage: `url("${params.src}")` } : undefined}>
                     {type === 'video' && params.src
                       ? <video src={params.src} muted autoPlay loop playsInline className="max-h-full max-w-full" />
-                      : !params.src && <Icon name={type === 'video' ? 'video' : 'image'} size={20} className="text-meta" />}
+                      : !params.src && <IconLoader name={type === 'video' ? 'video' : 'image'} size={20} className="text-meta" />}
                   </div>
                   <div className="flex gap-2">
                     <Button size="sm" className="flex-1" onClick={() => fileRef.current?.click()}>Choose {type}…</Button>

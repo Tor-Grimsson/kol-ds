@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
 import { MenuRow, MenuFlyout } from '../molecules/MenuItem.jsx'
@@ -272,7 +272,7 @@ export default function LayerStack({
   onGroup,
   labelFor = rowLabelForLayer,
   iconFor = defaultIconFor,
-  iconComponent: IconC = Icon,
+  iconComponent: IconC = IconLoader,
   containerTypes = ['group', 'bool'],
   className = '',
 }) {
@@ -457,7 +457,7 @@ export function AddLayerButton({
   nested,
   onAdd,
   iconFor = defaultIconFor,
-  iconComponent: IconC = Icon,
+  iconComponent: IconC = IconLoader,
   menuWidth = 180,
 }) {
   const [open, setOpen] = useState(false)

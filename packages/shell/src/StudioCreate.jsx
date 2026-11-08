@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { ActionButton, AppItemMenuProvider, ContentCard, ContentFilters, ContentRow, Divider, PageHeader, SECTION_TEXT_LEVELS, CanvasStudio, IconFrame, useMediaQuery } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import PageShell from './PageShell.jsx'
 import CatalogGrid from './CatalogGrid.jsx'
 import { warnJsx } from './warnJsx.js'
@@ -277,7 +277,7 @@ export function StudioCreateAction({ icon, label, onClick, pressed }) {
       aria-pressed={pressed}
       className={`${pressed ? 'text-oq-96' : 'text-oq-80'} hover:text-oq-96 transition-colors cursor-pointer bg-transparent border-none p-2 leading-none`}
     >
-      <Icon name={icon} size={20} />
+      <IconLoader name={icon} size={20} />
     </button>
   )
 }

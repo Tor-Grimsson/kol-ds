@@ -1,9 +1,9 @@
 import { CompareGrid } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* old vs new on four glyphs — two changed, one the same, one new in B only */
 export const stage = 'full'
-const icon = (name) => ({ size }) => <Icon name={name} size={size} />
+const icon = (name) => ({ size }) => <IconLoader name={name} size={size} />
 const ITEMS = [
   { id: 'a', label: 'chevron-down', a: icon('chevron-down'), b: icon('chevron-down'), state: 'same' },
   { id: 'b', label: 'arrow-right', a: icon('arrow-left'), b: icon('arrow-right'), state: 'changed' },

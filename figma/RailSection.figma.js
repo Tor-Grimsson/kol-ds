@@ -1,7 +1,6 @@
 // url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1258-4988
 // source=packages/workshop/src/shell/RailSection.jsx
-// component=ShellNavSection
-// Figma name; the workshop export is RailSection — kept apart from kol-component RailSection = LabeledControlSection
+// component=RailSection
 import figma from 'figma'
 // level 1 = .shell-sidebar-toggle (the category eyebrow), level 2 = .shell-nav-group-header (the chapter); children is the slot
 const instance = figma.selectedInstance
@@ -14,5 +13,5 @@ export default {
   ${children}
 </RailSection>`,
   imports: ["import { RailSection } from \"@kolkrabbi/kol-workshop\""],
-  id: 'ShellNavSection',
+  id: 'RailSection',
 }

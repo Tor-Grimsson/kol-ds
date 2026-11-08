@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-component'
+import { IconLoader } from '@kolkrabbi/kol-component'
 
 /**
  * RailSection — THE rail ladder. One component owns every rail header, at
@@ -58,7 +58,7 @@ import { Icon } from '@kolkrabbi/kol-component'
  * @param {Function} [onToggle]   required when `collapsed` is passed
  * @param {boolean}  [defaultCollapsed=false]  uncontrolled initial state
  * @param {Function} [onNavigate] click hook on the label link (close a drawer, etc.)
- * @param {Icon}     [icon]       the chevron renderer, injected — the shell package
+ * @param {IconLoader}     [icon]       the chevron renderer, injected — the shell package
  *                                must not reach into kol-component from here
  */
 export default function RailSection({
@@ -71,7 +71,7 @@ export default function RailSection({
   onToggle,
   defaultCollapsed = false,
   onNavigate,
-  icon: IconComponent = Icon,
+  icon: IconComponent = IconLoader,
   /* a leading glyph for the group, between the caret and the label (rail icons, 2026-10-01) */
   glyph,
   children,

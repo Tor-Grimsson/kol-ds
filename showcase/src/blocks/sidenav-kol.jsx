@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'KOL sidenav',
@@ -49,7 +49,7 @@ export default function SidebarNav() {
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           onClick={() => setCollapsed((v) => !v)}
         >
-          <Icon name={collapsed ? 'chevron-right' : 'chevron-left'} size={12} />
+          <IconLoader name={collapsed ? 'chevron-right' : 'chevron-left'} size={12} />
         </button>
 
         <div className="kol-sidenav-scroll flex-1 flex flex-col justify-between overflow-y-auto pt-4 pb-4 [scrollbar-width:thin]">
@@ -62,7 +62,7 @@ export default function SidebarNav() {
                   className={`kol-sidenav-hop kol-helper-12 relative flex w-full items-center gap-3 py-2 pr-10 pl-6 text-left${activeHop === hop.id ? ' is-active' : ''}`}
                 >
                   <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true">
-                    <Icon name={hop.icon} size={16} />
+                    <IconLoader name={hop.icon} size={16} />
                   </span>
                   <span className="kol-sidenav-hop-label flex-1 min-w-0">{hop.label}</span>
                 </button>
@@ -109,7 +109,7 @@ export default function SidebarNav() {
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-14 items-center gap-3 border-b border-fg-08 px-5">
           <span className="kol-helper-12 text-meta">Library</span>
-          <Icon name="chevron-right" size={12} className="text-oq-24" />
+          <IconLoader name="chevron-right" size={12} className="text-oq-24" />
           <span className="kol-helper-12 text-emphasis">{activeLeaf}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">

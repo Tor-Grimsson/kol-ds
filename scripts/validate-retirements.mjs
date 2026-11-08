@@ -80,6 +80,38 @@ for (const pkg of PKGS) {
   }
 }
 
+/* (e) a named re-export `Canonical as Alias` whose canonical name the same barrel also ships
+ * (`LabeledControlSection as RailSection`, 2026-11-08) — and (f) one source file's default exported on two
+ * barrel LINES of a SUB-barrel (`default as ShellRail` … `default as ShellSidebar`; the top barrel is (a)'s); the
+ * name matching the file is canonical */
+for (const pkg of PKGS) {
+  /* the barrel plus every sub-barrel it `export *`s (kol-workshop ships through shell/index.js etc.); `from`
+   * paths are made relative to src/ so the file match below stays per-package */
+  const top = readFileSync(join(ROOT, 'packages', pkg, 'src/index.js'), 'utf8')
+  const parts = [['.', top]]
+  for (const m of top.matchAll(/export\s*\*\s*from\s*['"](\.\/[^'"]+\/index\.js)['"]/g)) {
+    const p = join(ROOT, 'packages', pkg, 'src', m[1])
+    if (existsSync(p)) parts.push([dirname(m[1]), readFileSync(p, 'utf8')])
+  }
+  const shipped = new Set(), named = [], defaultsByFrom = new Map()
+  for (const [dir, barrel] of parts) for (const m0 of barrel.matchAll(/export\s*\{([^}]*)\}\s*from\s*['"]([^'"]+)['"]/g)) {
+    const m = [m0[0], m0[1], join(dir, m0[2])]
+    for (const spec of m[1].split(',').map((s) => s.trim()).filter(Boolean)) {
+      const [src, out = src] = spec.split(/\s+as\s+/).map((s) => s.trim())
+      shipped.add(out)
+      if (src === 'default' && dir !== '.') defaultsByFrom.set(m[2], [...(defaultsByFrom.get(m[2]) ?? []), out])
+      else if (src !== out) named.push([src, out, m[2]])
+    }
+  }
+  for (const [src, out, from] of named) if (shipped.has(src) && !aliases.has(out)) aliases.set(out, { pkg, canonical: src, file: from })
+  for (const [from, names] of defaultsByFrom) {
+    if (names.length < 2) continue
+    const base = basename(from).replace(/\.[jt]sx?$/, '')
+    const canonical = names.includes(base) ? base : names[0]
+    for (const n of names) if (n !== canonical && !aliases.has(n)) aliases.set(n, { pkg, canonical, file: from })
+  }
+}
+
 /* (d) a value DECLARED in the barrel itself under @deprecated — the icon set's V1 exports, renamed to
  * INTERFACE 2026-09-30 (W8): `/** @deprecated … *\/ export const OLD = NEW` */
 for (const pkg of PKGS) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import FullscreenOverlay from '@kolkrabbi/kol-component/molecules/FullscreenOverlay'
 import KindPreview from '@kolkrabbi/kol-component/molecules/KindPreview'
 import { MediaInspector } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages'
@@ -62,7 +62,7 @@ function CardPreview({ type, sample, client, folders }) {
   if (type.folder) {
     return (
       <span className="flex flex-col items-center gap-2 text-oq-48">
-        <Icon name="folder" size={72} />
+        <IconLoader name="folder" size={72} />
         {folders && <span className="kol-mono-12 text-meta">{folders.path}</span>}
       </span>
     )
@@ -70,7 +70,7 @@ function CardPreview({ type, sample, client, folders }) {
   if (type.bucket) {
     return (
       <span className="flex flex-col items-center gap-2 text-oq-48">
-        <Icon name="database" size={64} />
+        <IconLoader name="database" size={64} />
         <span className="kol-mono-12 text-meta">{folders?.buckets}</span>
       </span>
     )

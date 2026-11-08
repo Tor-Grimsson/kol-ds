@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Tooltip } from '@kolkrabbi/kol-component'
 
 const PULSE_MS = 100
@@ -18,7 +18,7 @@ const PULSE_MS = 100
  * @param {number}   iconSize     (default 10)
  * @param {ElementType} iconComponent  icon renderer seam (default kol-icons `Icon`)
  */
-export default function IconButton({ icon, active, onClick, title, momentary, disabled, iconSize = 10, iconComponent: IconCmp = Icon }) {
+export default function IconButton({ icon, active, onClick, title, momentary, disabled, iconSize = 10, iconComponent: IconCmp = IconLoader }) {
   const [pulse, setPulse] = useState(false)
   const timeoutRef = useRef(null)
   const isActive = active || pulse

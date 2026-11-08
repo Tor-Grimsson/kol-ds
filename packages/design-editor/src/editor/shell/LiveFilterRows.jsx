@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { findLayerDeep } from '../compose/helpers'
@@ -8,7 +8,7 @@ import { pack } from '../packs'
 const fx = () => pack('effects')
 const filterById = (id) => fx()?.filterById(id) ?? null
 const loopById = (id) => pack('generators')?.loopById(id) ?? null
-const check = (on) => (on ? <Icon name="check" size={11} /> : undefined)
+const check = (on) => (on ? <IconLoader name="check" size={11} /> : undefined)
 
 /**
  * The selected layer as an effect target (plan 28 § 4b, moved here by plan 32 so the Layer menu and

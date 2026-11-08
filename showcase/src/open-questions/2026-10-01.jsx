@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, RailRow, ResultRow, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button, Dropdown, MultiSelect, SegmentedToggle, TabChips, TabsRow } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 6 — the visual calls out of the 2026-10-01 review (plan-2026-10-01-showcase-review-round-2,
  * the phases marked TALK). Nothing here is built into the site: each question shows what is live
@@ -103,7 +103,7 @@ export default function OpenQuestionsRound6() {
             <span className={cap}>B — wash (the other variant)</span>
           </div>
           <div className={cell}>
-            <ResultRow variant="wash" to="/components/tag" title={<span className="inline-flex items-center gap-2"><Icon name="layers" size={14} />Tag</span>} meta="/components/tag" description="An interactive chip to filter or select." />
+            <ResultRow variant="wash" to="/components/tag" title={<span className="inline-flex items-center gap-2"><IconLoader name="layers" size={14} />Tag</span>} meta="/components/tag" description="An interactive chip to filter or select." />
             <span className={cap}>C — ANSWERED 2026-10-01: wash, an icon for the kind, the path as the second line</span>
           </div>
         </div>
@@ -135,7 +135,7 @@ export default function OpenQuestionsRound6() {
           </div>
           <div className={cell}>
             <nav className="shell-nav-items">
-              {[['Names', 'book-open'], ['Opacity', 'layers'], ['Sizes', 'grid'], ['Color', 'paint-drop']].map(([l, i]) => <RailRow key={l} icon={<Icon name={i} size={14} />} onClick={() => {}}>{l}</RailRow>)}
+              {[['Names', 'book-open'], ['Opacity', 'layers'], ['Sizes', 'grid'], ['Color', 'paint-drop']].map(([l, i]) => <RailRow key={l} icon={<IconLoader name={i} size={14} />} onClick={() => {}}>{l}</RailRow>)}
             </nav>
             <span className={cap}>B — ANSWERED 2026-10-01: a glyph per row</span>
           </div>

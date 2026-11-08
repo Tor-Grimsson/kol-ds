@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, ColorPickerPopover, Dropdown, Icon, IconFrame, PaletteHarmonyWheel, SettingsSections, Slider, Tooltip, hexToHsl, hslToHex } from '@kolkrabbi/kol-component'
+import { Button, ColorPickerPopover, Dropdown, IconLoader, IconFrame, PaletteHarmonyWheel, SettingsSections, Slider, Tooltip, hexToHsl, hslToHex } from '@kolkrabbi/kol-component'
 import { COLOR_RELATIONS, CVD_TYPES, DEFAULT_COLOR_LAB, colorLab, colorLabCss, contrastGrade, contrastRatio, hexToOklch, inkOn, midColor, oklchToHex, paletteFromPixels, rollColorLab, simulateCvd, tintLadder } from './colorLab.js'
 import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.jsx'
 
@@ -172,7 +172,7 @@ function PaletteDots({ colors }) {
 /* a pass or a fail, as a grade the Summary reads */
 const Verdict = ({ ok, na }) => (na
   ? <span className="kol-mono-12 text-meta">N/A</span>
-  : <span className={`inline-flex items-center gap-1 kol-mono-12 ${ok ? 'text-emphasis' : 'text-meta'}`}><Icon name={ok ? 'check' : 'x'} size={12} className={ok ? 'text-oq-96' : 'text-oq-48'} />{ok ? 'Pass' : 'Fail'}</span>)
+  : <span className={`inline-flex items-center gap-1 kol-mono-12 ${ok ? 'text-emphasis' : 'text-meta'}`}><IconLoader name={ok ? 'check' : 'x'} size={12} className={ok ? 'text-oq-96' : 'text-oq-48'} />{ok ? 'Pass' : 'Fail'}</span>)
 
 /* two simulated colours too close to tell apart: OKLab distance under the threshold (≈ a just-noticeable step, doubled) */
 const CONFLICT = 0.06
@@ -271,7 +271,7 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
             <button type="button" aria-label={harmonyLabel(id)} aria-pressed={c.relation === id}
               className={`flex aspect-square w-full cursor-pointer items-center justify-center ${c.relation === id ? 'text-oq-96' : 'text-oq-40 hover:text-oq-72'}`}
               onClick={() => { if (id !== 'custom') regenerate({ relation: id }) }}>
-              <Icon name={HARMONY_ICON[id]} size={28} />
+              <IconLoader name={HARMONY_ICON[id]} size={28} />
             </button>
           </Tooltip>
         ))}
@@ -316,7 +316,7 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
           <div className="flex flex-col gap-3">
             <div className="flex items-baseline justify-between gap-3">
               <span className="min-w-0 truncate kol-mono-12 text-emphasis">Try one of ours:</span>
-              {library && <a href={library.href} target="_blank" rel="noreferrer" className="group inline-flex shrink-0 items-center gap-1 kol-mono-12 text-meta hover:text-emphasis">{library.label}<Icon name="external-link" size={12} className="text-oq-48 group-hover:text-oq-96" /></a>}
+              {library && <a href={library.href} target="_blank" rel="noreferrer" className="group inline-flex shrink-0 items-center gap-1 kol-mono-12 text-meta hover:text-emphasis">{library.label}<IconLoader name="external-link" size={12} className="text-oq-48 group-hover:text-oq-96" /></a>}
             </div>
             <div className="grid grid-cols-4 gap-2">
               {samples.slice(0, 4).map((x) => <SampleTile key={x.src} src={x.src} label={x.label ?? x.src} onPick={() => takeImage(x.src)} />)}
@@ -480,7 +480,7 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
     <>
       <div className="flex items-center justify-between gap-3 rounded bg-oq-04 p-3">
         <span className="kol-eyebrow text-fg-80">Potential color blind conflicts</span>
-        <span className={`inline-flex shrink-0 items-center gap-1 rounded px-2 py-0.5 kol-mono-12 ${conflicts ? 'bg-oq-08 text-emphasis' : 'text-meta'}`}>{conflicts && <Icon name="alert-triangle" size={12} className="text-oq-96" />}{conflicts ? 'Conflicts found' : 'None'}</span>
+        <span className={`inline-flex shrink-0 items-center gap-1 rounded px-2 py-0.5 kol-mono-12 ${conflicts ? 'bg-oq-08 text-emphasis' : 'text-meta'}`}>{conflicts && <IconLoader name="alert-triangle" size={12} className="text-oq-96" />}{conflicts ? 'Conflicts found' : 'None'}</span>
       </div>
       <PaletteDots colors={c.colors} />
     </>
@@ -498,7 +498,7 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
           ...r.seen.map((hex, i) => (
             <span key={`${r.id}-${i}`} className="flex items-center justify-center" title={r.conflict[i] ? `${r.label}: too close to another colour` : hex}
               style={{ background: hex, color: inkOn(hex, inks).ink, ...(ri === rows.length - 1 && i === 0 ? { borderBottomLeftRadius: 4 } : null), ...(ri === rows.length - 1 && i === n - 1 ? { borderBottomRightRadius: 4 } : null) }}>
-              {r.conflict[i] && <Icon name="alert-triangle" size={16} />}
+              {r.conflict[i] && <IconLoader name="alert-triangle" size={16} />}
             </span>
           )),
         ])}

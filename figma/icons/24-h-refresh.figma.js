@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<Icon name="24-h-refresh" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="24-h-refresh" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: '24-h-refresh',
 }

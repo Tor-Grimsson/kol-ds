@@ -2,8 +2,9 @@
    (theme W3 · palette W11.2 · accent W11.3 · reading size and family W1.2–1.3), and language flags (W1.5). */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { ModalShell } from '@kolkrabbi/kol-component'
 import { createIndex, search, highlightRanges } from '@kolkrabbi/kol-search'
-import { Icon as KolIcon } from '@kolkrabbi/kol-icons'
+import { IconLoader as KolIcon } from '@kolkrabbi/kol-icons'
 import { FolioFrame, Mark, Icon } from './parts'
 import { DOCS, SHELVES, bodyOf } from './shelf'
 import { useSettings, setSettings, SIZES, ACCENTS, KOL_LIGHTS, KOL_DARKS, useSKey } from './settings'
@@ -117,7 +118,7 @@ export function SearchOverlay({ open, onClose }) {
   }
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[12vh]" onMouseDown={onClose}>
-      <div role="dialog" aria-label="Search the library" className="flex max-h-[70vh] w-full max-w-[720px] flex-col overflow-hidden rounded-[3px] border border-folio-rule bg-folio-paper text-folio-ink shadow-[0_24px_64px_rgb(0_0_0/0.18)]" onMouseDown={(e) => e.stopPropagation()}>
+      <ModalShell variant="bordered" role="dialog" aria-label="Search the library" className="max-h-[70vh] w-full max-w-[720px] overflow-hidden text-folio-ink shadow-[0_24px_64px_rgb(0_0_0/0.18)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'var(--color-folio-ink)' }} onMouseDown={(e) => e.stopPropagation()}>
         <label className="flex h-[56px] shrink-0 items-center gap-[12px] border-b border-folio-rule px-[18px]">
           <Icon name="search" size={18} />
           <input ref={input} value={q} onChange={(e) => { setQ(e.target.value); setActive(0) }} onKeyDown={onKey} placeholder="Search every document — titles, call numbers, the text itself" className="kol-reader-nav min-w-0 flex-1 bg-transparent font-normal outline-none placeholder:text-folio-muted" />
@@ -136,7 +137,7 @@ export function SearchOverlay({ open, onClose }) {
             </button>
           ))}
         </div>
-      </div>
+      </ModalShell>
     </div>
   )
 }
@@ -263,7 +264,7 @@ export function KeysPanel() {
   if (!open) return null
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-[rgb(38_41_34/0.32)] px-[16px]" onMouseDown={() => setOpen(false)}>
-      <div role="dialog" aria-label="Shortcuts" onMouseDown={(e) => e.stopPropagation()} className="flex w-full max-w-[460px] flex-col gap-[4px] rounded-[3px] border border-folio-rule bg-folio-paper p-[20px] shadow-[0_24px_64px_rgb(0_0_0/0.18)]">
+      <ModalShell variant="bordered" role="dialog" aria-label="Shortcuts" onMouseDown={(e) => e.stopPropagation()} className="w-full max-w-[460px] gap-[4px] p-[20px] shadow-[0_24px_64px_rgb(0_0_0/0.18)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
         <p className="kol-reader-label pb-[10px] text-folio-muted">Shortcuts</p>
         {KEYS.map(([what, key]) => (
           <div key={what} className="flex items-baseline justify-between gap-[16px] border-t border-folio-rule py-[9px]">
@@ -271,7 +272,7 @@ export function KeysPanel() {
             <kbd className="kol-reader-meta whitespace-nowrap font-[family-name:var(--kol-font-family-mono)] text-folio-green">{key}</kbd>
           </div>
         ))}
-      </div>
+      </ModalShell>
     </div>
   )
 }

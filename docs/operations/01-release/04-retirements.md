@@ -34,6 +34,13 @@ What counts as an alias is detected from source — a barrel line exporting one 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
 | `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
+| `ShellSidebar` | workshop | `ShellRail` — the same component, same props (a rail is a rail: "if it comes to view form the sides ITS RAIL") | 2026-11-08 |
+| `WorkshopSidebar` | workshop | `WorkshopRail` — the same composition, same props | 2026-11-08 |
+| `WorkshopDefaultSidebar` | workshop | `WorkshopDefaultRail` — the same composition, same props | 2026-11-08 |
+| `Icon` | icons | `IconLoader` — the same component, same props; kol-component re-exports both names | 2026-11-08 |
+| `RailSection` | component | `LabeledControlSection` — the same component, same props (it has nothing to do with a Rail; "I never approved the rename"). kol-workshop's own `RailSection` is a different, nav component and keeps its name | 2026-11-08 |
+| `RailRow` | component | `SettingsRow` — the same component, same props. kol-workshop's own `RailRow` is a different, nav component and keeps its name | 2026-11-08 |
+| `QuickLookHeader` | component | `ModalHeader` — the same component, same props; the window row (`meta` · `nav` · `onMinimise` · `onClose`) in both looks | 2026-11-08 |
 | `MenuDropdownItem` | component | `MenuRow` — same component, same props (the Menu* family, metric Round 4) | 2026-10-31 |
 | `MenuDropdownDivider` | component | `MenuDivider` — same component, same props | 2026-10-31 |
 | Dropdown `variant="raised"` | component | `tone="faint"` — the same oq-06 ground; the variant only ever differed by colour | 2026-10-31 |

@@ -1,6 +1,6 @@
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 import { Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import SlideThumb from './SlideThumb.jsx'
 
 /* taxonomy-ok: organism — composes kol-shell's CatalogPage (shelf preset) over deck rows with SlideThumb covers */
@@ -31,7 +31,7 @@ export default function DecksCatalog({ decks, onOpen, onNew, onFavourite, onDele
       filtersTitle="Decks"
       searchKeys={['name']}
       filterGroups={[{ label: 'Show', key: 'show', values: ['All', 'Favourites'] }]}
-      iconComponent={Icon}
+      iconComponent={IconLoader}
       toCard={(d) => ({
         key: d.slug,
         title: d.name,

@@ -16,7 +16,15 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Tone variable names in plain words** (2026-11-03, parked). `--kol-tone-bg` / `-fg` / `-border` (and hover/active/pressed/panel siblings) read as dev shorthand; he wants ground · ink · edge. Code and Figma (`tone` collection) must rename together to stay one-to-one. Its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-11-08 — markdown styles W5 in code + Figma; review fixes; foundry tickets)
+## 🏁 Current state (2026-11-08 night — lobby tickets, Studio/Catalog/Hubs, apps pages to the layout file)
+
+- Closed LibraryMastersFoundryWebsite (Figma masters for the foundry and website files) and KolPageShrinksInPageShell (kol-framework 0.74.1). New kol-figma law: no wrapper frames; the 14 Figma files with keys are in `docs/operations/10-figma/01-file-setup.md`. Plan `plan-2026-11-08-apps-pages-out.md`: W1–W2 and 3.1 done (he moved the screens to `layout--kol-ds-ui`); open: 3.2, retiring the emptied library Apps pages, then his publish. No agents until he says (credit). Log: `session-log/2026-11-08-apps-pages-moved-to-layout-file.md`.
+
+## Current state (2026-11-08 late — modal system in sync; IconLoader and Rail renames)
+
+- ModalShell is the one modal panel and ModalHeader the one header, in code (kol-component 0.356 to 0.361) and in Figma, checked against live renders. All 13 overlays are on the shell. Per the user's rulings, `Icon` is now `IconLoader` (kol-icons 0.68.0), ShellSidebar and the Workshop*Sidebar components are now Rail, and LabeledControl/LabeledControlSection replace the retired RailSection/RailRow aliases. Laws saved: no wrapper frames in Figma; explain structure with a diagram; stay in scope. The other kol-ds-ui session owns the lobby. Open: the Figma publish and a git push. Log: `session-log/2026-11-08-modal-system-and-renames.md`.
+
+## Current state (2026-11-08 — markdown styles W5 in code + Figma; review fixes; foundry tickets)
 
 - MarkdownPage has three styles (site, research and article), all from one map, `packages/framework/src/markdownVariants.js`; PortableTextRenderer reads the same map. The Figma document set uses the same parts in each style. His Figma review got fixes in Figma (ColumnBrowser/row on OptionRow, ContentCard cover slot, LinkPreview, SectionText) and in code (ContentText meta with no middot, Label `icon`, an Icon for the back chevron). Lesson saved to memory: a Figma master is built from the parts its code renders, and checking it means opening its layers. Published: framework 0.73.0, content 0.16.0, component 0.354.0, shell 0.117.0, icons 0.67.0. Open: git push, the Figma publish, 23 no-export masters to review. Log: `session-log/2026-11-08-markdown-styles-w5-figma-review-fixes.md`.
 
@@ -27,14 +35,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-11-04 night — his float Figma review built; apps/metric and fxr in Figma)
 
 - **Published** kol-shell 0.104.0 · kol-dashboards 0.12.0 (metric's parts) · kol-component 0.338.1. The float views match the exploration frames in code and Figma; ↳ Apps holds `metric` (full-height page + 6 states) and `fxr` (11 screens on 19 new editor masters). The kol-figma skill carries the review's rules. Open: W7 Float document after his library publish; 6.5 / 6.6 calls; the chess + core board plan (DRAFT). Log: `session-log/2026-11-04-float-figma-review-metric-fxr.md`.
-
-## Current state (2026-11-04 late — float operational: views, the Float set, every gap closed)
-
-- **Published** kol-shell 0.103.0 (FloatLayout + `bottom`/`eyebrow`, transport `inline`) · kol-component 0.338.0 (Dialog `container`) · design-editor 0.27.0 (TimelineRail) · kol-dashboards 0.11.0 · kol-styleguide 0.22.1 · kol-icons 0.64.0 (`bold`). apps/float = the float home (13 family pages, 6 views), mounted as the showcase's Float set; Figma has the ➤ Float chapter and the screens as FloatLayout instances. Figma work goes to kol-figma-agent, which loads the new `kol-figma` skill. Open: round 25 rulings (W6/W7), his library publish. Log: `session-log/2026-11-04-float-views-set-and-operational.md`.
-
-## Current state (2026-11-04 — Figma round 4, the Avatar initial in Inter)
-
-- **Published** kol-theme 0.210.3–0.210.4 (`font-inter` + Inter @font-face from /fonts/inter) · kol-component 0.333.3 (Avatar initial in Inter). Figma round 4 built (plan-2026-11-03-figma-round-4.md, all ✅): brand pages to the end, CodeBlock, /work list view, light images, small gaps. Open: he republishes the library. Log: `session-log/2026-11-04-figma-round-4-and-avatar-inter.md`.
 
 ## Repo standup (2026-06-15)
 

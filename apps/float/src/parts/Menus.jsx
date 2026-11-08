@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  AccountMenu, ContentFilters, ContextMenu, Dropdown, Icon, LabeledControl, Menu, MenuDivider, MenuFilter, MenuFlyout, MenuLabel, MenuMore,
+  AccountMenu, ContentFilters, ContextMenu, Dropdown, IconLoader, LabeledControl, Menu, MenuDivider, MenuFilter, MenuFlyout, MenuLabel, MenuMore,
   MenuPanel, MenuRow, MenuTrigger, PanelsMenu, WorkspaceSwitcher, floatSurfaceClass, useContextMenu,
 } from '@kolkrabbi/kol-component'
 import { MenuBar } from '@kolkrabbi/kol-shell'
@@ -17,7 +17,7 @@ const Plate = ({ surface, className = '', children }) => (
 const noop = () => {}
 /* the float row class, as Menu's own rows and the ContextMenu preview set it */
 const ROW = 'kol-menu-row kol-helper-12'
-const glyph = (name) => <Icon name={name} size={16} />
+const glyph = (name) => <IconLoader name={name} size={16} />
 
 const ITEMS = [
   { heading: 'Layer' },

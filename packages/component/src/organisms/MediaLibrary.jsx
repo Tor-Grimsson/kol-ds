@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ActionButton from '../molecules/ActionButton.jsx'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
@@ -8,6 +8,7 @@ import Input from '../atoms/Input.jsx'
 import ViewToggle from '../atoms/ViewToggle.jsx'
 import SearchInput from '../molecules/SearchInput.jsx'
 import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
+import ModalShell from '../molecules/ModalShell.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import MediaTile from '../molecules/MediaTile.jsx'
 import ContentRow from '../molecules/ContentRow.jsx'
@@ -498,7 +499,7 @@ function Thumb({ row, mediaUrl }) {
     return (
       <div className="kol-media-thumb">
         <span className="kol-media-thumb-fallback" data-painted={false}>
-          <Icon name={KIND_ICON[row.kind] ?? 'file'} size={20} />
+          <IconLoader name={KIND_ICON[row.kind] ?? 'file'} size={20} />
           <span className="kol-mono-12">{fileName(row.key)}</span>
         </span>
       </div>
@@ -508,7 +509,7 @@ function Thumb({ row, mediaUrl }) {
   return (
     <div className="kol-media-thumb">
       <span className="kol-media-thumb-fallback" data-painted={painted || !!row.poster}>
-        <Icon name="play" size={20} />
+        <IconLoader name="play" size={20} />
         <span className="kol-mono-12">{fileName(row.key)}</span>
       </span>
       <video
@@ -530,10 +531,10 @@ function FolderRow({ folder, struck = false, onEnter }) {
   return (
     <li className="kol-media-folder" onClick={onEnter}>
       <span className="flex h-8 w-8 shrink-0 items-center justify-center text-oq-48">
-        <Icon name="folder" size={18} />
+        <IconLoader name="folder" size={18} />
       </span>
       <span className={`kol-mono-12 flex-1 ${struck ? 'line-through text-meta' : 'text-body'}`}>{folder.label}</span>
-      <Icon name="chevron-right" size={14} className="text-oq-24" />
+      <IconLoader name="chevron-right" size={14} className="text-oq-24" />
     </li>
   )
 }
@@ -605,7 +606,7 @@ function SortControls() {
             className={`kol-mono-12 flex items-center gap-1 transition-colors ${active ? 'text-emphasis' : 'text-meta hover:text-body'}`}
           >
             {opt.label}
-            {active && <Icon name={sort.dir === 'asc' ? 'arrow-down' : 'arrow-up'} size={10} />}
+            {active && <IconLoader name={sort.dir === 'asc' ? 'arrow-down' : 'arrow-up'} size={10} />}
           </button>
         )
       })}
@@ -873,7 +874,7 @@ function PathBar() {
   const { stats } = useMediaLibrary()
   return (
     <div className="kol-media-pathbar">
-      <Icon name="folder" size={12} />
+      <IconLoader name="folder" size={12} />
       <Breadcrumb />
       {stats.systemCount > 0 && (
         <span className="kol-helper-12 text-meta ms-auto">
@@ -946,7 +947,7 @@ function LibraryChrome({ onOpen, onPick }) {
           <>
             <div className="hidden md:flex items-center gap-6"><ViewToggle viewMode={viewMode} onViewChange={setViewMode} variant="icon" options={VIEW_OPTIONS} /></div>
             <div className="md:hidden">
-              <MenuItem label={<Icon name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
+              <MenuItem label={<IconLoader name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
                 {({ close }) => (
                   <div className="py-1 w-[200px]">
                     {VIEW_OPTIONS.map((opt) => (
@@ -954,7 +955,7 @@ function LibraryChrome({ onOpen, onPick }) {
                     ))}
                     <MenuDivider />
                     {SORT_OPTIONS.map((opt) => (
-                      <MenuRow key={opt.value} onClick={() => { sortBy(opt.value); close() }} shortcut={sort.by === opt.value ? <Icon name={sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
+                      <MenuRow key={opt.value} onClick={() => { sortBy(opt.value); close() }} shortcut={sort.by === opt.value ? <IconLoader name={sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
                     ))}
                   </div>
                 )}
@@ -992,9 +993,9 @@ function PickerShell({ onClose, onPick }) {
       {/* `scrim` — a modal OVER the page it was opened from, not an opaque surface in its place
         * (user, 2026-10-07, on labs: "its not overlay, its complete full screen") */}
       <FullscreenOverlay open scrim onClose={viewerIndex === null ? onClose : () => {}}>
-        <div className="kol-media-picker">
+        <ModalShell className="kol-media-picker max-md:rounded-none">
           <LibraryChrome onOpen={setViewerIndex} onPick={pick} />
-        </div>
+        </ModalShell>
       </FullscreenOverlay>
 
       {viewerIndex !== null && viewable[viewerIndex] && (
@@ -1115,7 +1116,14 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
      * The X moved three times (overlay corner → title row, 2026-10-10 → beside the gear → corner again)
      * and was wrong each time; without it the card's block-start lane goes too (`pt-5`). */
     <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
-      <div className="kol-media-picker gap-4 pt-5">
+      <ModalShell className="kol-media-picker max-md:rounded-none gap-4 pt-5"
+        footer={!phone && (
+          <div className="mt-auto flex items-center justify-end gap-4">
+            <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
+            <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
+            <Button size="md" disabled={!ok} onClick={() => use()}>Use</Button>
+          </div>
+        )}>
         {/* THE PICKER READS AS THE MEDIA APP (user 2026-10-23, beside kol-r2b2 on a phone): the title in the display voice —
           * a modal card, not a page of the app, so the shell's masthead does not reach it — and the listing opening at
           * the title root, the buckets as rows (the database glyph), each with its count. The browse surface's own
@@ -1137,14 +1145,7 @@ function PickerBrowse({ client, accept, onClose, onSelect, title = 'MEDIA', ...b
           canInsert={fits}
         />
         </MastheadContext.Provider>
-        {!phone && (
-          <div className="mt-auto flex items-center justify-end gap-4">
-            <span className="kol-mono-12 text-fg-48 truncate mr-auto">{file ? file.key : 'Select a file'}</span>
-            <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
-            <Button size="md" disabled={!ok} onClick={() => use()}>Use</Button>
-          </div>
-        )}
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }
@@ -1161,7 +1162,7 @@ function FloatPicker({ onClose, onPick, onImport, importLabel = 'Import', title 
         <span className="kol-float-window min-w-0 flex-1 truncate text-fg-emphasis">{title}</span>
         {onClose && (
           <button type="button" aria-label="Close" onClick={onClose} className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-oq-64 hover:bg-fg-08 hover:text-oq-96 cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
-            <Icon name="x" size={16} />
+            <IconLoader name="x" size={16} />
           </button>
         )}
       </div>
@@ -1179,7 +1180,7 @@ function FloatPicker({ onClose, onPick, onImport, importLabel = 'Import', title 
                 <span className="kol-float-hint truncate text-fg-emphasis" style={{ fontSize: 13 }}>{o.displayKey}</span>
                 <span className="kol-float-ruler truncate uppercase text-fg-64">{[o.key.split('.').pop(), formatSize(o.size)].filter(Boolean).join(' · ')}</span>
               </span>
-              {picked === o.key && <Icon name="check" size={14} className="mr-2 shrink-0 text-oq-96" />}
+              {picked === o.key && <IconLoader name="check" size={14} className="mr-2 shrink-0 text-oq-96" />}
             </button>
           </li>
         ))}

@@ -50,7 +50,7 @@ Generated from `packages/icons/src/kol-icon-set-interface/` — **regenerate aft
 
 ## Signal set
 
-`kol-icon-set-signal` (kol-icons ≥0.25.0) — **109 glyphs** (the header read 101 against 109 on disk; caught 2026-10-31), the signal-flow vocabulary for instrument surfaces: waveforms, filters, logic gates, dither patterns, shapers, ramps, transport, cables, color harmony. A set beside the interface set rather than inside it, so an app that renders no rack carries none of it. `<Icon>` resolves the interface set first, then this — call sites are unchanged.
+`kol-icon-set-signal` (kol-icons ≥0.25.0) — **109 glyphs** (the header read 101 against 109 on disk; caught 2026-10-31), the signal-flow vocabulary for instrument surfaces: waveforms, filters, logic gates, dither patterns, shapers, ramps, transport, cables, color harmony. A set beside the interface set rather than inside it, so an app that renders no rack carries none of it. `<IconLoader>` resolves the interface set first, then this — call sites are unchanged.
 
 | Group | n | Glyphs |
 |---|---|---|
@@ -80,11 +80,11 @@ Twelve rack drawings are **not** here: `chevron-down/left/right/up`, `nav-create
 
 `kol-icon-set-identity` (kol-icons ≥0.49.0, 2026-10-28 — user: *"identity should be separate from signal and interface"*) — **10 icons**, the marks: the brand's own and each app's, every one filled `currentColor` on the identity keyline (`translate(3 3) scale(0.75)`). Interface's `identity` group until 0.48.0; its own set because a mark is not app chrome. `KOL_ICON_SET_IDENTITY` is the keys-only export; `/icons/kol-icon-set-identity` the page.
 
-**One folder per identity (≥0.50.0, 2026-10-28).** `kol-icon-set-identity/<id>/`. The file named like its folder is the **icon** — the keyline glyph, the one name `<Icon>` resolves. Every other file in the folder is an **asset by role**, read by path through `@kolkrabbi/kol-icons/identity/<id>/<file>` (`?raw` · `?url`), never through `<Icon>`:
+**One folder per identity (≥0.50.0, 2026-10-28).** `kol-icon-set-identity/<id>/`. The file named like its folder is the **icon** — the keyline glyph, the one name `<IconLoader>` resolves. Every other file in the folder is an **asset by role**, read by path through `@kolkrabbi/kol-icons/identity/<id>/<file>` (`?raw` · `?url`), never through `<IconLoader>`:
 
 | Suffix | What it is | Read by |
 |---|---|---|
-| *(none)* `<id>.svg` | the icon on the 24 keyline | `<Icon name="<id>">` |
+| *(none)* `<id>.svg` | the icon on the 24 keyline | `<IconLoader name="<id>">` |
 | `-logomark` | the raw mark in its own box | `VectorLoader` (kol-component), the boot loader, lockups |
 | `-wordmark` | the name set as type | the share card, the boot loader |
 | `-lockup-h` · `-lockup-v` | mark + wordmark, wide and stacked | brand pages |

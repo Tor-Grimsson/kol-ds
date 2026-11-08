@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/design-editor",
-  "version": "0.32.0",
+  "version": "0.35.0",
   "private": false,
   "description": "The design editor as one component",
   "license": "MIT",
@@ -36,10 +36,10 @@
     "check:float": "node scripts/check-float-commands.mjs"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.343.0 <1",
+    "@kolkrabbi/kol-component": ">=0.356.0 <1",
     "@kolkrabbi/kol-framework": ">=0.44.0 <1",
     "@kolkrabbi/kol-hardware": ">=0.10.0 <1",
-    "@kolkrabbi/kol-icons": ">=0.29.0 <1",
+    "@kolkrabbi/kol-icons": ">=0.68.0 <1",
     "@kolkrabbi/kol-media-client": ">=0.4.0 <1",
     "@kolkrabbi/kol-shell": ">=0.114.0 <1",
     "react": "^19.0.0",

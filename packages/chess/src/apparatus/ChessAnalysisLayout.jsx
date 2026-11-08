@@ -1,6 +1,6 @@
 // Pass a `chessData` adapter (see chess/index.js) — forwarded to the table + board.
 import { useEffect, useState } from 'react'
-import { Button, FullscreenOverlay } from '@kolkrabbi/kol-component'
+import { Button, FullscreenOverlay, ModalShell } from '@kolkrabbi/kol-component'
 import GameArchiveTable from './GameArchiveTable.jsx'
 import ChessBoardWithControls from './ChessBoardWithControls.jsx'
 
@@ -43,7 +43,7 @@ const ChessAnalysisLayout = ({ chessData, overlayActions = null, panel = null, e
       </div>
 
       <FullscreenOverlay open={archiveOpen} onClose={() => setArchiveOpen(false)} closeButton={false}>
-        <div className="max-h-[88dvh] w-[min(1100px,calc(100vw-48px))] overflow-y-auto rounded bg-surface-primary p-4 md:p-6">
+        <ModalShell variant="bordered" className="max-h-[88dvh] w-[min(1100px,calc(100vw-48px))] overflow-y-auto p-4 md:p-6">
           {/* close mirrors the opener's anatomy exactly — icon + label, ghost/sm;
             * overlayActions is the consumer slot (e.g. a ThemeToggle) beside it */}
           <div className="-mr-2 -mt-1 mb-2 flex items-center justify-end gap-2">
@@ -53,7 +53,7 @@ const ChessAnalysisLayout = ({ chessData, overlayActions = null, panel = null, e
             </Button>
           </div>
           <GameArchiveTable chessData={chessData} onGameLoad={handleGameLoad} />
-        </div>
+        </ModalShell>
       </FullscreenOverlay>
     </div>
   )

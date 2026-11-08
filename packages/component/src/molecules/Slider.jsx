@@ -189,7 +189,8 @@ const Slider = ({
   if (variant === 'dual') {
     const v1 = value ?? min
     const v2 = value2 ?? max
-    const showLabels = label1 != null || label2 != null
+    /* an empty label is no label: `label1="" label2=""` (SettingsRange, GeneratorRail) drew an empty 16px row that pushed the rail low */
+    const showLabels = !!(label1 || label2)
     const ratio = max > min ? (playhead - min) / (max - min) : 0
     return (
       <div className={`control-slider gap-3 shadow-none ${className}`} style={style}>

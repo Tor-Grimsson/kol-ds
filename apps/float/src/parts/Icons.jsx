@@ -1,5 +1,5 @@
 import { Button, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
 /* Icons (24-float-system.md § The parts, by family, row 13): the 104 glyphs the float exploration draws, walked in W13
@@ -31,7 +31,7 @@ const PROMOTED = [['inbox', 'inbox'], ['highlighter', 'highlighter'], ['diamond-
 
 const Tile = ({ name, glyph, surface, size = 24 }) => (
   <div data-glyph={name} className={`flex flex-col items-center gap-2 rounded-[var(--kol-float-list-r)] p-3 text-center ${floatSurfaceClass(surface)}`}>
-    <Icon name={glyph} size={size} className="text-oq-96" />
+    <IconLoader name={glyph} size={size} className="text-oq-96" />
     <span className="kol-float-label text-fg-88">{name}</span>
     {glyph !== name && <span className="kol-float-ruler text-fg-64">{glyph}</span>}
   </div>

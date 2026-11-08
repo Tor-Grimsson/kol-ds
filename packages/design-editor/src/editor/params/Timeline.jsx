@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { Button, Dropdown, Input, Tooltip, useGrabEdge, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useComposeState } from '../compose/state'
 import { rowLabelForLayer as labelForLayer } from '../compose/labels'   /* the LayerStack's row name — a named layer by its name */
 import { keysFor } from '../morph/buildMorph'
@@ -103,7 +103,7 @@ function IconButton({ name, label, on = true, toggle = false, size = 14, onClick
         onClick={onClick}
         className={`flex items-center justify-center shrink-0 rounded cursor-pointer outline-none focus-visible:shadow-[var(--kol-float-focus)] disabled:opacity-40 disabled:cursor-default ${on ? 'text-oq-96' : 'text-oq-48'} ${className}`.trim()}
       >
-        <Icon name={name} size={size} />
+        <IconLoader name={name} size={size} />
       </button>
     </Tooltip>
   )
@@ -174,7 +174,7 @@ function KeyLane({ track, view, selected, setSelected, writeKeys, lit }) {
               /* a key on the loop's edge keeps its whole glyph on the lane */
               style={{ left: `clamp(6px, ${X(kt) * 100}%, 100% - 6px)` }}
             >
-              <Icon name="diamond" size={12} />
+              <IconLoader name="diamond" size={12} />
             </span>
           </Tooltip>
         )
@@ -241,7 +241,7 @@ function LayerLabel({ layer, name, sub, lit, select, toggleLayer, toggleLayerLoc
       style={{ width: GUTTER, height: ROW, paddingLeft: sub ? 8 + 14 + 10 : undefined }}
       onClick={layer ? () => select(layer.id) : undefined}
     >
-      {!sub && <span className="flex shrink-0 text-oq-64" aria-hidden="true"><Icon name={layer ? layer.icon ?? iconFor(layer.type) : 'layers'} size={14} /></span>}
+      {!sub && <span className="flex shrink-0 text-oq-64" aria-hidden="true"><IconLoader name={layer ? layer.icon ?? iconFor(layer.type) : 'layers'} size={14} /></span>}
       <span className={`kol-float-label truncate flex-1 min-w-0 ${sub ? 'text-fg-64' : 'text-emphasis'}`}>{name}</span>
       {fold && (
         <IconButton name="chevron-down" size={12} label={fold.folded ? 'Show the morph’s tracks' : 'Hide the morph’s tracks'} onClick={(e) => { e.stopPropagation(); fold.toggle() }} className={fold.folded ? '-rotate-90' : ''} />
@@ -639,7 +639,7 @@ export function TimelineRail({ surface = 'solid', title, count = 0, onAdd, mode 
       {/* the toolbar: the scene, its count, a key; the view, loop, fit, zoom, the dock's height */}
       <div className="flex items-center justify-between h-6 shrink-0">
         <div className="flex items-center gap-3.5">
-          <span className="flex text-oq-96" aria-hidden="true"><Icon name="layers" size={14} /></span>
+          <span className="flex text-oq-96" aria-hidden="true"><IconLoader name="layers" size={14} /></span>
           <span className="kol-float-panel text-emphasis whitespace-nowrap">{title}</span>
           <span className="kol-float-label text-meta whitespace-nowrap">{count} {count === 1 ? 'layer' : 'layers'}</span>
           <IconButton name="plus" label="Add a key at the head" disabled={!onAdd} onClick={onAdd} />

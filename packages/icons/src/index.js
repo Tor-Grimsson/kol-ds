@@ -1,8 +1,8 @@
 /**
  * Icons Index
  *
- * Export Icon component and icon registry.
- * Usage: <Icon name="arrow-up" size={16} />
+ * Export IconLoader component and icon registry.
+ * Usage: <IconLoader name="arrow-up" size={16} />
  *
  * TWO SETS (2026-08-28). `kol-icon-set-interface` (named `kol-icon-set-v1` until 2026-09-30 — user:
  * "icons v1 is a terrible icon set name") is the general set — app chrome,
@@ -21,8 +21,9 @@
  * consumers register their own SVGs via registerIcons() or promote a glyph.
  */
 
-export { default as Icon, registerIcons, RENAMED_ICONS } from './Icon.jsx';
-import { RENAMED_ICONS } from './Icon.jsx';
+/* IconLoader (2026-11-08, user: "rename icon to iconloader that is the fucking name"). `Icon` is its deprecated alias on the retirement ledger. */
+export { default as IconLoader, default as Icon, registerIcons, RENAMED_ICONS } from './IconLoader.jsx';
+import { RENAMED_ICONS } from './IconLoader.jsx';
 import CUTS from './cuts.json';
 import TAGS from './tags.json';
 
@@ -71,7 +72,7 @@ export const KOL_ICON_SET_SIGNAL_NAMES = Object.values(KOL_ICON_SET_SIGNAL).flat
  * ICON, on the keyline, the one name the set ships; every other file in the folder is an asset by role suffix —
  * `<id>-logomark.svg` (the raw mark in its own box) · `-wordmark` · `-lockup-h` · `-lockup-v` · `-favicon` (the tab
  * icon) · `-app-icon` (Apple's word: the home-screen icon on its ground; `-tile` until 0.51.0) · the rendered PNGs — read by path through the `./identity/*` export,
- * never through <Icon>. The gallery's two groups (`kolkrabbi` for the brand's own, `apps` for the rest) are the
+ * never through <IconLoader>. The gallery's two groups (`kolkrabbi` for the brand's own, `apps` for the rest) are the
  * set's own call, not the folder: the folder is the identity. */
 const IDENTITY_GROUP = { kolkrabbi: 'kolkrabbi', 'kol-ds': 'kolkrabbi' }
 export const KOL_ICON_SET_IDENTITY = (() => {
@@ -127,7 +128,7 @@ export const getSet = (name) => KOL_ICON_META[name]?.set ?? null
 /* Canonical grouped registry — alias of the interface index (legacy inventories
  * ICON_ENTRIES / SOLID_ICON_ENTRIES / ICON_INDEX died with the legacy sets). */
 export const ICONS = KOL_ICON_SET_INTERFACE;
-// Flat array of all icon names — BOTH sets, since <Icon> resolves either.
+// Flat array of all icon names — BOTH sets, since <IconLoader> resolves either.
 export const ALL_ICONS = [...new Set([...KOL_ICON_SET_INTERFACE_NAMES, ...KOL_ICON_SET_SIGNAL_NAMES])].sort();
 
 /** @deprecated 2026-09-30 → KOL_ICON_SET_INTERFACE — the set was renamed; the icon names did not change */

@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * FileIcon — A file drawn as a page. the file as a page: folded corner, the kind's glyph, the extension under it.
@@ -22,7 +22,7 @@ export default function FileIcon({ ext, glyph, className = '' }) {
       <path className="kol-file-icon-fold" d="M66 2v26a6 6 0 0 0 6 6h26z" />
       {glyph && (
         <foreignObject x="30" y={label ? 42 : 52} width="40" height="40">
-          <Icon name={glyph} size={40} className="kol-file-icon-glyph" />
+          <IconLoader name={glyph} size={40} className="kol-file-icon-glyph" />
         </foreignObject>
       )}
       {label && <text className="kol-file-icon-ext" x="50" y="108" textAnchor="middle" {...fit}>{label}</text>}

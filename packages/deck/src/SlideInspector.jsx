@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import { Button, ColorInputRow, ColorSwatch, Dropdown, Input, LabeledControl, LabeledControlSection, LayerStack, MediaLibrary, ButtonGroup, ViewToggle } from '@kolkrabbi/kol-component'
 import { image, rule, text, CHROME, GREYS, resolveColor } from './slideDoc.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { alignLayers, distributeLayers, reorderZ } from './layerOps.js'
 import { FONT_OPTIONS } from './webFonts.js'
 
@@ -138,7 +138,7 @@ export default function SlideInspector({ doc, selectedIds = [], onChange, onSele
             onClick={() => setLayersOpen((v) => !v)}
             aria-expanded={layersOpen}
           >
-            <Icon name={layersOpen ? 'chevron-down' : 'chevron-right'} size={12} />
+            <IconLoader name={layersOpen ? 'chevron-down' : 'chevron-right'} size={12} />
             Layers
           </button>
           <span className="flex-1" />

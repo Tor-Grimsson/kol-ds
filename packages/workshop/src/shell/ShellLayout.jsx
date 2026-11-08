@@ -1,7 +1,7 @@
 import { createContext, useContext, useMemo, useRef, useState, useEffect, Suspense } from 'react'
 import { Outlet, Link, useLocation, useNavigate, useNavigationType } from 'react-router-dom'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
-import ShellSidebar, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellSidebar.jsx'
+import ShellRail, { RAIL_FOLD_EVENT, ShellRailModeContext } from './ShellRail.jsx'
 import { FullscreenOverlay, IconFrame, Rail, CommandOverlay, Tooltip, useDragResize, useScrollFade } from '@kolkrabbi/kol-component'
 import { HubSettingsRail } from '@kolkrabbi/kol-shell'
 import { createIndex, search } from '@kolkrabbi/kol-search'
@@ -110,7 +110,7 @@ const useRailGrab = (token, side, hide) => {
  * 2026-10-02) — `open`, `icons` and hidden, which is simply not mounting it.
  *
  * In `icons` the column is a narrow strip (the track is the framework's collapsed-rail width,
- * `--kol-sidenav-w-collapsed`) and every `ShellSidebar` inside draws one glyph per group. Hover
+ * `--kol-sidenav-w-collapsed`) and every `ShellRail` inside draws one glyph per group. Hover
  * opens the whole rail OVER the page at its full width — the track does not move, so the page
  * never reflows — and leaving folds it back. A touch has no hover: there the glyphs are the nav.
  *
@@ -238,7 +238,7 @@ const toSearchItem = (item, i) => ({
  *                               in the `S` sheet and bound by the same handler (2026-09-30)
  * @param {Function} [renderSidebar]  `({ activeRoute, onNavigate, mode }) => node` — the space's
  *                               rail. `mode` is `open` or `icons` (the left rail's third state,
- *                               2026-10-02): every `ShellSidebar` reads it by itself, so `mode`
+ *                               2026-10-02): every `ShellRail` reads it by itself, so `mode`
  *                               is only for what else the consumer puts in the rail
  */
 const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoSrc, brandLogoAlt = '', renderSidebar, searchItems, searchPath, settings = [], app, brandLabel, defaultTocContent, isActive: isActiveProp, actions, shortcuts = [] }) => {
@@ -647,7 +647,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
               <div className={`shell-content-grid grid ${gridCols}`} data-layout={layoutType} style={{ paddingInline: 'var(--kol-pad-chrome-x)' }}>
                   {showNav && (
                     <ShellNavColumn mode={navIcons ? 'icons' : 'open'} railRef={navGrab.ref} grip={navGrab.grab}>
-                      {(mode) => (renderSidebar ? renderSidebar({ activeRoute, mode }) : <ShellSidebar routes={routes} basePath={basePath} />)}
+                      {(mode) => (renderSidebar ? renderSidebar({ activeRoute, mode }) : <ShellRail routes={routes} basePath={basePath} />)}
                     </ShellNavColumn>
                   )}
 
@@ -679,7 +679,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
           >
             {renderSidebar
               ? renderSidebar({ activeRoute, onNavigate: () => setIsNavDrawerOpen(false) })
-              : <ShellSidebar routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />
+              : <ShellRail routes={routes} basePath={basePath} onNavigate={() => setIsNavDrawerOpen(false)} />
             }
           </Rail>
 
@@ -746,7 +746,7 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
                   <ShellRailModeContext.Provider value="full">
                     {renderSidebar
                       ? renderSidebar({ activeRoute: route, onNavigate: () => setIsTreeOpen(false), mode: 'full' })
-                      : <ShellSidebar routes={route.children ?? []} basePath={basePath} label={null} onNavigate={() => setIsTreeOpen(false)} />}
+                      : <ShellRail routes={route.children ?? []} basePath={basePath} label={null} onNavigate={() => setIsTreeOpen(false)} />}
                   </ShellRailModeContext.Provider>
                 </section>
               ))}

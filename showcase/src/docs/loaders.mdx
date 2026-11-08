@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Graphic } from '@kolkrabbi/kol-component'
 import PreviewCard from '../lib/PreviewCard.jsx'
 
@@ -7,7 +7,7 @@ export const meta = {
   slug: 'loaders',
   eyebrow: 'KOL · Docs',
   title: 'Loaders',
-  lede: 'Icon and Graphic resolve a name to an SVG asset. They are functional infrastructure — the pipe, not the water — so they\'re documented here rather than listed as components.',
+  lede: 'IconLoader and Graphic resolve a name to an SVG asset. They are functional infrastructure — the pipe, not the water — so they\'re documented here rather than listed as components.',
 }
 
 ## Why loaders are not components
@@ -16,16 +16,16 @@ A component is a visual UI element with its own anatomy. A loader is a registry 
 
 Browse the set on [Icons](/icons).
 
-## Icon
+## IconLoader
 
 From @kolkrabbi/kol-icons. Resolves a name from consumer-registered SVGs first, then kol-icon-set-interface and kol-icon-set-signal — the whole chain since 0.8.0 (legacy sets removed); a miss renders nothing.
 
 <PreviewCard>
   <div className="flex items-center gap-4">
-    <Icon name="search" size={16} />
-    <Icon name="chevron-down" size={16} />
-    <Icon name="mode-toggle-01" size={18} />
-    <Icon name="social-github" size={18} />
+    <IconLoader name="search" size={16} />
+    <IconLoader name="chevron-down" size={16} />
+    <IconLoader name="mode-toggle-01" size={18} />
+    <IconLoader name="social-github" size={18} />
   </div>
 </PreviewCard>
 

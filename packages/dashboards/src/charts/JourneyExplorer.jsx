@@ -1,7 +1,7 @@
 /* Where journeys go from a page (or come from, by end point): `journeys` `{ items: [path, ...], count }`, three
  * columns that open one after another as a path is picked. */
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Button, SearchInput, Dropdown } from '@kolkrabbi/kol-component'
 import { formatCount } from '../shared/formatSeries.js'
 
@@ -65,7 +65,7 @@ export default function JourneyExplorer({ journeys: raw = [], loading }) {
                 </div>
               ) : (
                 <div className="flex-1 flex flex-col items-center justify-center gap-3 kol-helper-12 text-fg-48">
-                  <Icon name="pointer" size={18} />
+                  <IconLoader name="pointer" size={18} />
                   {n === 1 ? `Select ${mode === 'start' ? 'a starting point' : 'an end point'} to continue` : 'Select an event to continue'}
                 </div>
               )}

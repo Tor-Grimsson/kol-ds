@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-content
 
+## 0.17.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.16.0 — 2026-11-08
 
 - **`PortableTextRenderer variant`** — `article` (default) · `research` · `site`, read from kol-framework's `markdownVariants.js`, the same block → class map `MarkdownPage` reads, so both renderers draw the same blocks the same way per style. With no `variant` the output is byte-identical to 0.15.0 (`.kol-prose`). New peer: kol-framework ≥0.72.0.

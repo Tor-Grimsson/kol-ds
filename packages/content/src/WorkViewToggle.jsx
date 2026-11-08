@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { SearchInput } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: molecule — nests the DS SearchInput (expanding mode, extracted
@@ -76,7 +76,7 @@ export default function WorkViewToggle({
       className="inline-flex overflow-hidden flex-shrink-0"
       style={{ width: on ? 20 : 0, marginRight: on ? 8 : 0, opacity: on ? 1 : 0, transition: collapse }}
     >
-      <Icon name={name} size={20} />
+      <IconLoader name={name} size={20} />
     </span>
   )
 
@@ -94,7 +94,7 @@ export default function WorkViewToggle({
           onClick={closeSearch}
           aria-label="Close search"
         >
-          <Icon name="x" size={20} />
+          <IconLoader name="x" size={20} />
         </button>
       </span>
 

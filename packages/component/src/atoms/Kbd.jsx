@@ -14,7 +14,7 @@
  *                          It follows the cap: 10 in `sm`, 12 in `md` (2026-10-02 —
  *                          it was 12 in both, so in the small ⌘K cap the ⌘ outgrew the K)
  */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const SIZE = {
   sm: 'h-4 min-w-4 px-1 kol-helper-10',
@@ -29,7 +29,7 @@ export default function Kbd({ size = 'md', icon, className = '', children, ...re
       className={`inline-flex items-center justify-center gap-0.5 shrink-0 rounded-[var(--kol-radius-xs)] bg-oq-08 text-oq-64 ${SIZE[size] ?? SIZE.md} ${className}`.trim()}
       {...rest}
     >
-      {icon && <Icon name={icon} size={GLYPH[size] ?? GLYPH.md} />}
+      {icon && <IconLoader name={icon} size={GLYPH[size] ?? GLYPH.md} />}
       {children}
     </kbd>
   )

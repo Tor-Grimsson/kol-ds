@@ -24,7 +24,7 @@ for (const [p, url] of Object.entries(urls)) {
 
 /* the roles (02-icons/01-inventory § Identity set): the file named like the folder is the icon; the rest by suffix */
 const ROLES = [
-  ['icon', (id, f) => f === `${id}.svg`, 'the icon on the 24 keyline', '<Icon name="<id>">'],
+  ['icon', (id, f) => f === `${id}.svg`, 'the icon on the 24 keyline', '<IconLoader name="<id>">'],
   ['logomark', (id, f) => f === `${id}-logomark.svg`, 'the raw mark in its own box', 'VectorLoader · the boot loader · lockups'],
   ['wordmark', (id, f) => f === `${id}-wordmark.svg`, 'the name set as type', 'the share card · the boot loader'],
   ['lockup-h', (id, f) => f === `${id}-lockup-h.svg`, 'mark + wordmark, wide', 'brand pages · the share card'],

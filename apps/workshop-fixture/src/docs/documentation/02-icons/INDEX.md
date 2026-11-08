@@ -15,7 +15,7 @@ tags:
 One set, drawn on a 24px grid, loaded by name.
 
 ```jsx
-<Icon name="search" size={16} />
+<IconLoader name="search" size={16} />
 ```
 
 A dead name renders nothing — the loader never guesses.

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { IconPlate } from '@kolkrabbi/kol-component'
 import { SegGroup } from '../lib/icon-controls.jsx'
 
@@ -72,10 +72,10 @@ function Tile({ name, size, light, guide }) {
         {[['old', old], ['new', null]].map(([k, m]) => (
           <span key={k} className="inline-flex flex-col items-center gap-1">
             <Plate size={size} light={light} guide={guide}>
-              {k === 'old' ? (m ? <Raw markup={m} size={size} /> : <span className="kol-mono-12 opacity-50">new</span>) : <Icon name={now} size={size} />}
+              {k === 'old' ? (m ? <Raw markup={m} size={size} /> : <span className="kol-mono-12 opacity-50">new</span>) : <IconLoader name={now} size={size} />}
             </Plate>
             <span className="flex items-center gap-2">
-              {k === 'old' ? (m ? <Raw markup={m} size={16} /> : null) : <Icon name={now} size={16} />}
+              {k === 'old' ? (m ? <Raw markup={m} size={16} /> : null) : <IconLoader name={now} size={16} />}
               <span className="kol-mono-12 text-subtle">{k}</span>
             </span>
           </span>

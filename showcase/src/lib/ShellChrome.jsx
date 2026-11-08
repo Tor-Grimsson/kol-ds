@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ShellLayout, ShellSidebar, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
+import { ShellLayout, ShellRail, RightRail, useTagMode, usePageMetaValue, TagPath, SHELL_SCROLL_ROOT } from '@kolkrabbi/kol-workshop'
 import { buildTagCounts, cleanTitle } from '@kolkrabbi/kol-markdown'
 import { IconFrame, SegmentedToggle, SettingsChoice, Tooltip, useScrollSpy } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useGrouping, GROUP_OPTIONS } from './grouping.jsx'
 import { useFrontmatterToggle } from './frontmatter.jsx'
 import { useDevSpace } from './devSpace.js'
@@ -114,10 +114,10 @@ function SpaceToc({ space }) {
   const label = SHELL_ROUTES.find((r) => r.id === space)?.label
 
   const actions = [
-    { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
-    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <Icon name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
-    { id: 'copy', label: 'Copy path', icon: <Icon name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(window.location.href) },
-    { id: 'graph', label: 'Tag graph', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+    { id: 'back', label: 'Back', icon: <IconLoader name="arrow-left" size={14} />, onClick: () => navigate(-1) },
+    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <IconLoader name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
+    { id: 'copy', label: 'Copy path', icon: <IconLoader name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(window.location.href) },
+    { id: 'graph', label: 'Tag graph', icon: <IconLoader name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
   ]
 
   return (
@@ -131,7 +131,7 @@ function SpaceToc({ space }) {
       renderTag={(tag) => <TagPath tag={tag} />}
       onTagClick={(tag) => navigate(searchHref(`#${tag}`))}
       tagsHref="/search/tags"
-      icon={Icon}
+      icon={IconLoader}
     />
   )
 }
@@ -203,7 +203,7 @@ function SpaceRail({ space, onNavigate, railMode }) {
   /* the category label opens the space's home (2026-09-30) */
   const one = (label, routes, labelTo) => (
     <div className="shell-rail-stack">
-      <ShellSidebar routes={routes} basePath="/" label={label} labelTo={labelTo} onNavigate={onNavigate} />
+      <ShellRail routes={routes} basePath="/" label={label} labelTo={labelTo} onNavigate={onNavigate} />
     </div>
   )
 
@@ -284,12 +284,12 @@ function SpaceRail({ space, onNavigate, railMode }) {
         )}
         {/* LOOKUP leads the rail (2026-10-01): the names and values you check while building — one
           * section of three groups since 2026-10-02 (Start · Foundations · Taxonomy) */}
-        <ShellSidebar routes={withIcons(LOOKUP_GROUPS.map((g) => ({ id: g.id, label: g.label, path: g.path, children: rowsOf(g.items) })), { pages: true })} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
+        <ShellRail routes={withIcons(LOOKUP_GROUPS.map((g) => ({ id: g.id, label: g.label, path: g.path, children: rowsOf(g.items) })), { pages: true })} basePath="/" label="Lookup" labelTo={LOOKUP_ROOT} onNavigate={onNavigate} />
         {/* NO "LIBRARY" LEVEL (2026-10-01 — user: "why does library as a home have to list it self
           * as the parent? … it should just show group-by, composition and Collection as top level
           * (uppercase)"). The space is the header tab; its two chapters are the rail's eyebrows. */}
-        {composition.length > 0 && <ShellSidebar routes={withIcons(composition)} basePath="/" label="Composition" labelTo="/composition" onNavigate={onNavigate} />}
-        <ShellSidebar routes={withIcons(collection)} basePath="/" label="Collection" labelTo="/collection" onNavigate={onNavigate} />
+        {composition.length > 0 && <ShellRail routes={withIcons(composition)} basePath="/" label="Composition" labelTo="/composition" onNavigate={onNavigate} />}
+        <ShellRail routes={withIcons(collection)} basePath="/" label="Collection" labelTo="/collection" onNavigate={onNavigate} />
       </div>
     )
   }
@@ -306,8 +306,8 @@ function SpaceRail({ space, onNavigate, railMode }) {
     return (
       <div className="shell-rail-stack">
         {/* each category opens its own INDEX.md (W3, 2026-09-30 — the eyebrows linked nowhere) */}
-        <ShellSidebar routes={withIcons(vault.filter((g) => g.category === 'documentation'), { pages: true })} basePath="/" label="Documentation" labelTo={categoryHref('documentation')} onNavigate={onNavigate} />
-        <ShellSidebar routes={withIcons(vault.filter((g) => g.category === 'operations'), { pages: true })} basePath="/" label="Operations" labelTo={categoryHref('operations')} onNavigate={onNavigate} />
+        <ShellRail routes={withIcons(vault.filter((g) => g.category === 'documentation'), { pages: true })} basePath="/" label="Documentation" labelTo={categoryHref('documentation')} onNavigate={onNavigate} />
+        <ShellRail routes={withIcons(vault.filter((g) => g.category === 'operations'), { pages: true })} basePath="/" label="Operations" labelTo={categoryHref('operations')} onNavigate={onNavigate} />
       </div>
     )
   }
@@ -318,16 +318,16 @@ function SpaceRail({ space, onNavigate, railMode }) {
      * Guides are the rail's top layer; a page with no children lists its sections. */
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_SPECIMENS.filter((x) => !x.parent))).map((r) => {
+        <ShellRail routes={withIcons(withSections(rowsOf(DOCS_SPECIMENS.filter((x) => !x.parent))).map((r) => {
           /* a page filed under another (`parent`) rides after that page's sections */
           const kids = rowsOf(DOCS_SPECIMENS.filter((x) => x.parent === r.id))
           return kids.length ? { ...r, children: [...(r.children ?? []), ...kids] } : r
         }), { pages: true })} basePath="/" label="Foundations" labelTo="/foundations" onNavigate={onNavigate} />
         {/* each set folds into its categories, each a page over its groups, each a page (W3, 2026-09-30; Round 15, 2026-10-20) */}
-        <ShellSidebar routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconCategories(k).map((c) => (c.slug
+        <ShellRail routes={withIcons(Object.keys(ICON_SETS).map((k) => ({ id: `icons-${k}`, label: labelFromSlug(k.replace('kol-icon-set-', '')), path: `/icons/${k}`, children: iconCategories(k).map((c) => (c.slug
           ? { id: `icons-${k}-c-${c.slug}`, label: c.name, path: `/icons/${k}/${c.slug}`, children: c.groups.map((g) => ({ id: `icons-${k}-${g.folder}`, label: g.label, path: `/icons/${k}/${g.folder}` })) }
           : { id: `icons-${k}-${c.folder}`, label: c.label, path: `/icons/${k}/${c.folder}` })) })), { pages: true, leaf: 'grid' })} basePath="/" label="Icons" labelTo="/icons" onNavigate={onNavigate} />
-        <ShellSidebar routes={withIcons(withSections(rowsOf(DOCS_GUIDES)), { pages: true })} basePath="/" label="Guides" labelTo="/styles/guides" onNavigate={onNavigate} />
+        <ShellRail routes={withIcons(withSections(rowsOf(DOCS_GUIDES)), { pages: true })} basePath="/" label="Guides" labelTo="/styles/guides" onNavigate={onNavigate} />
       </div>
     )
   }
@@ -336,10 +336,10 @@ function SpaceRail({ space, onNavigate, railMode }) {
     const tools = withIcons(withSections(rowsOf(DEV_TOOLS)).map((r) => (r.id === 'dev-references' ? { ...r, children: REFERENCE_TREE } : r)))
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={tools} basePath="/" label="Tools" labelTo="/development/tools" onNavigate={onNavigate} />
-        <ShellSidebar routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" labelTo="/development/records" onNavigate={onNavigate} />
+        <ShellRail routes={tools} basePath="/" label="Tools" labelTo="/development/tools" onNavigate={onNavigate} />
+        <ShellRail routes={[PHASE_LOG_ROUTE, { id: 'dev-open-questions', label: 'Open questions', path: '/development/open-questions', children: ROUNDS.map((r) => ({ id: `oq-${r.slug}`, label: `Round ${r.meta.round}`, path: roundHref(r.slug) })) }]} basePath="/" label="Records" labelTo="/development/records" onNavigate={onNavigate} />
         {/* the lobby — dev only, read like a record: the ledger on the label, Inbox · Done · Archive */}
-        {import.meta.env.DEV && <ShellSidebar routes={LOBBY_CHAPTERS} basePath="/" label="Lobby" labelTo={LOBBY_INDEX} onNavigate={onNavigate} />}
+        {import.meta.env.DEV && <ShellRail routes={LOBBY_CHAPTERS} basePath="/" label="Lobby" labelTo={LOBBY_INDEX} onNavigate={onNavigate} />}
       </div>
     )
   }

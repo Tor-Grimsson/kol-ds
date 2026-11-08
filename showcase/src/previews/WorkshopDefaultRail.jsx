@@ -1,4 +1,4 @@
-import { WorkshopDefaultSidebar } from '@kolkrabbi/kol-workshop'
+import { WorkshopDefaultRail } from '@kolkrabbi/kol-workshop'
 
 export const stage = 'sm'
 
@@ -11,6 +11,6 @@ const ROUTES = [
   ] },
 ]
 
-export default function WorkshopDefaultSidebarPreview() {
-  return <WorkshopDefaultSidebar routes={ROUTES} basePath="/components" />
+export default function WorkshopDefaultRailPreview() {
+  return <WorkshopDefaultRail routes={ROUTES} basePath="/components" />
 }

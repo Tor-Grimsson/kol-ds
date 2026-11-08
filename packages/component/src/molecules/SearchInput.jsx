@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { toneClass } from '../utilities/tone.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import Kbd from '../atoms/Kbd.jsx'
 
@@ -186,7 +186,7 @@ export default function SearchInput({
             {/* SOLO ladder, and NO ink class — it inherits from its chrome
                 exactly as IconFrame's glyph does, so it cannot drift from the
                 icon beside it. */}
-            <Icon name="search" size={iconSize ?? glyphSize(size, true)} />
+            <IconLoader name="search" size={iconSize ?? glyphSize(size, true)} />
           </button>
         )}
         {isOpen && (
@@ -244,7 +244,7 @@ export default function SearchInput({
           onClick={onBack}
           className={`flex items-center shrink-0 cursor-pointer transition-colors ${bare ? 'text-oq-48 hover:text-oq-96' : 'text-auto opacity-50 hover:opacity-100'}`}
         >
-          <Icon name="arrow-left" size={iconSize ?? glyphSize(size)} />
+          <IconLoader name="arrow-left" size={iconSize ?? glyphSize(size)} />
         </button>
       ) : (
         <span
@@ -252,7 +252,7 @@ export default function SearchInput({
           className={`flex items-center shrink-0 ${bare ? 'text-oq-48' : 'text-auto opacity-50'}`}
         >
           {/* ADJACENT — this glyph sits in the field's line box beside the query; a float glyph is the float's 18 */}
-          <Icon name="search" size={iconSize ?? (variant === 'float' ? 'var(--kol-float-ic)' : glyphSize(size))} />
+          <IconLoader name="search" size={iconSize ?? (variant === 'float' ? 'var(--kol-float-ic)' : glyphSize(size))} />
         </span>
       )}
       <input
@@ -275,7 +275,7 @@ export default function SearchInput({
           onClick={onClear}
           className="inline-flex items-center justify-center shrink-0 cursor-pointer text-oq-48 hover:text-oq-96 transition-colors"
         >
-          <Icon name="x" size={12} />
+          <IconLoader name="x" size={12} />
         </button>
       ) : shortcutHint ? (
         /* aria-hidden — affordance, not a label (same stance as Input's prefix/suffix) */

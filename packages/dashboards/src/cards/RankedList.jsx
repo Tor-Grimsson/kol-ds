@@ -11,7 +11,7 @@
  * `variant="float"` (float-everything W7, 2026-11-04): the rows in Inter — labels body 14, the head in label, values in
  * mono timecode — the share bar at the 8 list round, lifted to fg-16 on hover (W0.7). The anatomy is the same. */
 import { Button, useMediaQuery } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* the compact count: 1.2k · 120k · 1.2M */
 const fmtNum = (n) => {
@@ -83,5 +83,5 @@ const Trend = ({ now, then }) => {
   if (!then && !now) return null
   const up = now >= (then || 0)
   if (now === then) return <span className="w-3" />
-  return <Icon name={up ? 'arrow-upright' : 'arrow-downright'} size={12} style={{ color: up ? 'var(--ui-success)' : 'var(--ui-error)' }} />
+  return <IconLoader name={up ? 'arrow-upright' : 'arrow-downright'} size={12} style={{ color: up ? 'var(--ui-success)' : 'var(--ui-error)' }} />
 }

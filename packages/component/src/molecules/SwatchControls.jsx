@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ColorSwatch from './ColorSwatch.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -116,7 +116,7 @@ export function EyedropPick({ sampleColor, onPick, disabled = false }) {
           aria-label="Eyedropper"
           className="inline-flex cursor-pointer text-fg hover:opacity-80 disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          <Icon name="eyedrop" size={24} />
+          <IconLoader name="eyedrop" size={24} />
         </button>
         </Tooltip>
       )}
@@ -153,7 +153,7 @@ function SwapButton({ onSwap }) {
       aria-label="Swap colors"
       className="absolute left-[28px] top-0 inline-flex cursor-pointer text-fg hover:opacity-80"
     >
-      <Icon name="swap" size={16} />
+      <IconLoader name="swap" size={16} />
     </button>
   )
 }

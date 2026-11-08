@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Menu, MenuRow, MenuDivider, MenuFlyout, MenuLabel } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: organism — a row of kol-component `Menu`s with MenuRow · MenuFlyout · MenuDivider rows */
 
@@ -41,7 +41,7 @@ function Rows({ items, width }) {
     const key = it.key ?? `${it.label ?? 'r'}-${i}`
     if (it.divider) return <MenuDivider key={key} className="border-oq-08 mt-1 mb-[3px]" />
     if (it.heading) return <MenuLabel key={key}>{it.heading}</MenuLabel>
-    const icon = it.icon && (typeof it.icon === 'string' ? <Icon name={it.icon} size={16} className="text-oq-88" /> : it.icon)
+    const icon = it.icon && (typeof it.icon === 'string' ? <IconLoader name={it.icon} size={16} className="text-oq-88" /> : it.icon)
     if (it.items?.length) {
       return (
         /* the submenu butts the list it came from: its rim on the parent's right pad (his frame — 306 beside 316) */
@@ -102,7 +102,7 @@ export default function MenuBar({ app, menus = [], end = [], variant = 'bar', cl
             onPointerEnter={() => { if (open != null && open !== i) setOpen(i) }}
             className={capsule ? CAPSULE_TRIGGER : `${TRIGGER} ${m.app ? 'font-bold' : 'font-medium'}`}>
             {m.label}
-            {capsule && <Icon name="chevron-down" size={10} className="text-oq-48" />}
+            {capsule && <IconLoader name="chevron-down" size={10} className="text-oq-48" />}
           </button>
         )}
       >

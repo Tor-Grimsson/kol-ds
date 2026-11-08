@@ -1,7 +1,7 @@
 import { Button, Divider, MenuItem, MenuDropdownItem, MenuDropdownNest, Tooltip } from '@kolkrabbi/kol-component'
 /* the layer stack is the editor's own since plan 37 § 8.6 (`./LayerStackView`, taken in from kol-component) */
 import BaseLayerStack, { BLEND_MODES } from './LayerStackView'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { canMask } from './masks'
 import { AdjustmentRows, LiveFilterRows } from '../shell/LiveFilterRows'
 import { useComposeState, layerTypes } from './state'
@@ -52,11 +52,11 @@ const SHAPE_KINDS = [
 export function AddLayerButton() {
   const cs = useControlSize()
   const { addLayer } = useComposeState()
-  const glyph = (name) => <Icon name={name} size={12} />
+  const glyph = (name) => <IconLoader name={name} size={12} />
   return (
     <Tooltip label="Add layer">
       <span aria-label="Add layer">
-        <MenuItem label={<Icon name="plus" size={16} />} size={cs} caret={false} buttonClassName="!px-1.5" panelClassName={BAR_MENU}>
+        <MenuItem label={<IconLoader name="plus" size={16} />} size={cs} caret={false} buttonClassName="!px-1.5" panelClassName={BAR_MENU}>
           <div className="py-1 w-[180px]">
             {layerTypes().map((t) => (t.id === 'shape' ? (
               <MenuDropdownNest key={t.id} flyout iconLeft={glyph(iconFor(t.id))} label={t.label}>
@@ -140,7 +140,7 @@ export function LayerActions() {
   const menu = (label, icon, children, disabled) => (
     <Tooltip key={label} label={label}>
       <span className={disabled ? 'pointer-events-none opacity-40' : undefined} aria-label={label}>
-        <MenuItem label={<Icon name={icon} size={16} />} size={cs} caret={false} buttonClassName="!px-1.5" panelClassName={BAR_MENU}>
+        <MenuItem label={<IconLoader name={icon} size={16} />} size={cs} caret={false} buttonClassName="!px-1.5" panelClassName={BAR_MENU}>
           <div className="py-1 w-[220px]">{children}</div>
         </MenuItem>
       </span>

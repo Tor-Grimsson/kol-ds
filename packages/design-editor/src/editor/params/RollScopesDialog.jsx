@@ -1,4 +1,4 @@
-import { Button, FullscreenOverlay, LabeledControlSection, SettingsRow, ToggleSwitch } from '@kolkrabbi/kol-component'
+import { Button, FullscreenOverlay, LabeledControlSection, ModalShell, SettingsRow, ToggleSwitch } from '@kolkrabbi/kol-component'
 import { useAppSettings, setAppSetting } from '../lib/appSettings'
 import { deriveScopes, rollScopeOn, setRollScope, rollEffectsOn } from './rolls'
 
@@ -20,7 +20,7 @@ export default function RollScopesDialog({ open, onClose, schema, layer, size = 
   const scopes = deriveScopes(schema ?? [], layer)
   return (
     <FullscreenOverlay open scrim onClose={onClose}>
-      <div className="kol-roll-scopes flex flex-col gap-4 p-5 rounded bg-surface-primary border border-oq-08" style={{ width: 'min(420px, calc(100vw - 32px))' }}>
+      <ModalShell variant="bordered" className="kol-roll-scopes gap-4 p-5" style={{ width: 'min(420px, calc(100vw - 32px))' }}>
         <p className="kol-eyebrow text-fg-96">Randomize all rolls</p>
         <LabeledControlSection divided>
           {scopes.map((s) => (
@@ -34,7 +34,7 @@ export default function RollScopesDialog({ open, onClose, schema, layer, size = 
         </LabeledControlSection>
         <p className="kol-mono-12 text-meta">A scope switched off still rolls from its own button.</p>
         <Button tone="primary" size={size} className="w-full" onClick={onClose}>Done</Button>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

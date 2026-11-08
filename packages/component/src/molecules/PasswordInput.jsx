@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input.jsx'
 
 /**
@@ -30,7 +30,7 @@ export default function PasswordInput({ revealed, onRevealChange, revealLabel, .
           onClick={toggle}
           className="inline-flex items-center justify-center shrink-0 cursor-pointer text-oq-64 hover:text-oq-96 transition-colors outline-none focus-visible:[box-shadow:var(--kol-float-focus)] rounded-full"
         >
-          <Icon name={shown ? 'eye-off' : 'eye-on'} size={16} />
+          <IconLoader name={shown ? 'eye-off' : 'eye-on'} size={16} />
         </button>
       }
     />

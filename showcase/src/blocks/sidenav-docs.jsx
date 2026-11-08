@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Input } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Documentation sidenav',
@@ -38,13 +38,13 @@ export default function SidebarDocs() {
       <aside className="flex w-64 shrink-0 flex-col border-r border-fg-08">
         <div className="flex items-center gap-3 px-4 py-4">
           <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-fg-08 text-emphasis">
-            <Icon name="book-open" size={16} />
+            <IconLoader name="book-open" size={16} />
           </span>
           <div className="min-w-0 flex-1">
             <p className="kol-sans-body-02 truncate text-emphasis">Documentation</p>
             <p className="kol-helper-10 text-meta">v1.0.1</p>
           </div>
-          <Icon name="chevron-up" size={14} className="text-oq-48" />
+          <IconLoader name="chevron-up" size={14} className="text-oq-48" />
         </div>
         <div className="px-3 pb-2">
           <Input variant="filled" size="sm" iconLeft="search" placeholder="Search the docs…" />
@@ -71,9 +71,9 @@ export default function SidebarDocs() {
       {/* ── Content ─────────────────────────────────────────── */}
       <div className="flex min-w-0 flex-1 flex-col">
         <div className="flex h-14 items-center gap-3 border-b border-fg-08 px-5">
-          <Icon name="panel-left" size={16} className="text-oq-48" />
+          <IconLoader name="panel-left" size={16} className="text-oq-48" />
           <span className="kol-helper-12 text-meta">Build Your Application</span>
-          <Icon name="chevron-right" size={12} className="text-oq-24" />
+          <IconLoader name="chevron-right" size={12} className="text-oq-24" />
           <span className="kol-helper-12 text-emphasis">{active}</span>
         </div>
         <div className="flex flex-1 flex-col gap-4 overflow-hidden p-5">

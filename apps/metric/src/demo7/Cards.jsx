@@ -2,7 +2,7 @@
  * Pages (Top · Entry · Exit, ⋮ Break down by), Locations (Map · Countries · Regions · Cities), Devices (Browsers ·
  * Operating systems · Devices). Rows are Umami's; a row Umami can filter on filters the page when clicked. */
 import { useState } from 'react'
-import { Icon, KOL_ICON_SET_EXTERNAL_NAMES } from '@kolkrabbi/kol-icons'
+import { IconLoader, KOL_ICON_SET_EXTERNAL_NAMES } from '@kolkrabbi/kol-icons'
 import { MenuMore } from '@kolkrabbi/kol-component'
 import { Card, RankedList, DetailsOverlay, WorldMap, REGION_NAMES as REGIONS } from '@kolkrabbi/kol-dashboards'
 import { umami, report, useAsync, filterParams, countryName, isDevHost, fmtNum, fmtDuration } from './data.js'
@@ -37,7 +37,7 @@ const FAVICONS = Object.fromEntries(Object.entries(import.meta.glob('./favicons/
   .map(([p, url]) => [p.split('/').pop().replace(/\.(png|svg)$/, ''), url]))
 
 const Mark = ({ name, fallback = 'globe' }) => (
-  <span className="w-4 h-4 shrink-0 inline-flex items-center justify-center"><Icon name={name || fallback} size={16} className={name ? '' : 'text-fg-48'} /></span>
+  <span className="w-4 h-4 shrink-0 inline-flex items-center justify-center"><IconLoader name={name || fallback} size={16} className={name ? '' : 'text-fg-48'} /></span>
 )
 const Brand = ({ name }) => <Mark name={name} />
 export const Favicon = ({ host }) => {

@@ -110,12 +110,12 @@ export const TIERS = {
   /* The two sidebars compose RailSection and RailRow — the RightRail precedent below (W18). */
   /* the left rail's column: a slot frame that paints only its seam — EditorShell's shelf (2026-10-02) */
   ShellNavColumn: 'utilities',
-  ShellSidebar: 'molecules', WorkshopDefaultSidebar: 'molecules', RailSection: 'molecules', RailRow: 'atoms',
+  ShellRail: 'molecules', WorkshopDefaultRail: 'molecules', RailSection: 'molecules', RailRow: 'atoms',
   /* RightRail is a MOLECULE: it composes RailSection and RailRow, which is the
    * nesting test. THE right rail for every route — it replaced two components
    * that disagreed about which sections exist (2026-08-01). */
   RightRail: 'molecules',
-  TagModeGate: 'molecules', WorkshopSidebar: 'molecules',
+  TagModeGate: 'molecules', WorkshopRail: 'molecules',
   ShellLayout: 'modules', DocumentationReader: 'organisms', SearchPage: 'organisms', ResultRow: 'molecules',
   /* Exhibit sections — the scaffold a workshop section is declared against, so
    * the next one is content only. ExhibitCard and ExhibitLinkCard are ATOMS by
@@ -225,14 +225,14 @@ export const FUNCTIONS_BY_NAME = {
   /* float-everything W6 · W8 (0.335.0) */
   /* the generator settings window's new controls (plan-2026-11-05-float-editor W7.2) */
   SettingsRamp: 'input', SettingsRange: 'input', SettingsPoint: 'input', SettingsLights: 'input', SettingsFieldMap: 'display',
-  SummaryLine: 'display', QuickLookHeader: 'overlay', NoticeBanner: 'display', NavDrawer: 'navigation',
+  SummaryLine: 'display', NoticeBanner: 'display', NavDrawer: 'navigation',
   TreeRow: 'navigation', FlyoutRow: 'navigation', TocRow: 'navigation', LayerRow: 'input', IndexRow: 'display', TaskRow: 'input',
   /* float-everything W11 — calendar + reader (0.336.0) */
   CalendarTimeline: 'display', CalendarMonth: 'display', CalendarWeek: 'display', CalendarDay: 'display',
   ReadingColumn: 'display', ReadingHighlight: 'display', ReadingActions: 'action', ReadingChapterNav: 'navigation',
   ReadingContents: 'navigation', ReadingPanel: 'overlay', ReadingNotes: 'input', ReadingSettings: 'input', ReadingOverview: 'display',
   ColorSwatch: 'display', SwatchTile: 'display', SwatchCaption: 'display', TypeTester: 'input', TransparentX: 'display', CodeBlock: 'display',
-  Table: 'display', SectionLabel: 'display', Icon: 'display', IconFrame: 'display',
+  Table: 'display', SectionLabel: 'display', IconLoader: 'display', IconFrame: 'display',
   RecordManager: 'display', FieldRow: 'input', OptionRow: 'input', StatusChip: 'input',
   SideNav: 'navigation', ExitPreview: 'navigation',
   Tooltip: 'overlay', MenuItem: 'overlay', MenuList: 'overlay',
@@ -263,7 +263,7 @@ export const FUNCTIONS_BY_NAME = {
   TypeSpecCard: 'display', SpecList: 'display',
   ShapeDropdown: 'action', SplitToolButton: 'action', ToolPalette: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
-  Combobox: 'input', Dialog: 'overlay', ResizeHandle: 'action', CalendarHeatmap: 'display', CalendarScale: 'display',
+  Combobox: 'input', Dialog: 'overlay', ModalShell: 'overlay', ResizeHandle: 'action', CalendarHeatmap: 'display', CalendarScale: 'display',
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
   SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
@@ -413,10 +413,10 @@ export const FUNCTIONS_BY_NAME = {
   TopStats: 'display', Behaviours: 'display',
   MetricsDashboard: 'display',
   /* workshop */
-  ShellLayout: 'structure', ShellNavColumn: 'structure', ShellSidebar: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
+  ShellLayout: 'structure', ShellNavColumn: 'structure', ShellRail: 'navigation', DocumentationReader: 'display', SearchPage: 'navigation', ResultRow: 'navigation',
   RailSection: 'navigation', RailRow: 'navigation', RightRail: 'navigation',
   DocHeader: 'structure', DocSection: 'structure', DocTable: 'display', DocFigure: 'structure',
-  TagModeGate: 'overlay', WorkshopSidebar: 'navigation', WorkshopDefaultSidebar: 'navigation',
+  TagModeGate: 'overlay', WorkshopRail: 'navigation', WorkshopDefaultRail: 'navigation',
   ExhibitCard: 'display', ExhibitLinkCard: 'navigation', ExhibitSidebar: 'navigation',
   ExhibitOverview: 'structure', ExhibitPage: 'structure',
   /* foundry additions */
@@ -512,7 +512,7 @@ export const EXEMPT = {
  * Providers/contexts render nothing themselves — a card would always be a
  * ghost; their story lives on the pages of the components they power. */
 export const DOCS_ONLY = [
-  'Layout', 'PageLayout', 'AppShell', 'ScrollToTop', 'Icon', 'Graphic',
+  'Layout', 'PageLayout', 'AppShell', 'ScrollToTop', 'IconLoader', 'Graphic',
   /* the website frame and what it provides (2026-10-28): a frame, like SiteLayout; providers and the no-op RouteLoader render nothing */
   'CursorProvider', 'WorkViewProvider', 'RouteLoader',
   'ChessControlsProvider', 'ModalProvider', 'ShellTocContext', 'ShellTocCollapsedContext', 'ShellNavCollapsedContext', 'ShellContentWidthContext', 'ShellSearchScopeContext',
@@ -521,6 +521,14 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'QuantityStepper',
+  /* ShellSidebar = ShellRail, WorkshopSidebar = WorkshopRail, WorkshopDefaultSidebar = WorkshopDefaultRail (2026-11-08, user: "if it comes to view form the sides ITS RAIL") */
+  'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
+  /* Icon = IconLoader (2026-11-08, user: "rename icon to iconloader that is the fucking name") */
+  'Icon',
+  /* kol-component's RailSection = LabeledControlSection, RailRow = SettingsRow (2026-11-08, user: "I never approved the rename"); kol-workshop's own RailSection/RailRow are different components and stay */
+  'RailSection', 'RailRow',
+  /* QuickLookHeader = ModalHeader (2026-11-08, user: "are you both accounting for default and float?"): one modal header */
+  'QuickLookHeader',
   /* SegmentedToggle = ButtonGroup layout="joined" (2026-11-06, plan-2026-11-06-buttons-page 2.7) */
   'SegmentedToggle',
   /* MenuDropdownItem · MenuDropdownDivider · MenuDropdownNest = MenuRow · MenuDivider · MenuFlyout (2026-10-31, the Menu* family) */

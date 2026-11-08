@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { ChessPiece } from '../index.js'
 import { Button, Dropdown } from '@kolkrabbi/kol-component'
 
@@ -106,7 +106,7 @@ const ChessSidebar = ({
       </div>
 
       <div className="board-playback__footer">
-        <Icon name="settings-01" size={16} />
+        <IconLoader name="settings-01" size={16} />
         <span>♜</span>
         <span>♘</span>
         <span>♞</span>

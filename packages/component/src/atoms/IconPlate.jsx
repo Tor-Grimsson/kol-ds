@@ -8,7 +8,7 @@
  * so a glyph is judged on the same paper in either theme. The guide is the 24-unit keyline grid
  * (Material-style: dashed diagonals, the three keyline rectangles, the centre circle).
  *
- * The plate draws no glyph of its own — pass one as children, sized to the plate (`<Icon size={size} />`,
+ * The plate draws no glyph of its own — pass one as children, sized to the plate (`<IconLoader size={size} />`,
  * raw SVG markup, anything). `size="fill"` takes the parent's width and stays square.
  *
  * @param {number|'fill'} [size=24]       the plate's edge in px, or 'fill'

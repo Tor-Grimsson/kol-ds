@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -73,7 +73,7 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * inverts with kol-btn-pressed (currentColor). */
 const FoldIndicator = () => (
   <span aria-hidden="true" className="pointer-events-none absolute right-0.5 bottom-0.5 opacity-70 inline-flex">
-    <Icon name="fold-indicator" size={4} />
+    <IconLoader name="fold-indicator" size={4} />
   </span>
 )
 
@@ -87,7 +87,7 @@ const SplitToolButton = ({
   blurOnClick = false,
   onTrigger,
   disabled = false,
-  iconComponent: IconC = Icon,
+  iconComponent: IconC = IconLoader,
   placement = 'bottom-start',
   className = '',
   'aria-label': ariaLabel,
@@ -166,7 +166,7 @@ const SplitToolButton = ({
               <span className="flex-1 truncate">{variant.label}</span>
               {/* the current pick wears the dot, a real icon (plan-2026-10-31-menu-engine W2) — never a typed ✓ */}
               <span className="kol-helper-10 text-oq-88 shrink-0 inline-flex items-center">
-                {isActive ? <Icon name="ascii-dot" size={24} style={{ margin: -5 }} /> : variant.shortcut}
+                {isActive ? <IconLoader name="ascii-dot" size={24} style={{ margin: -5 }} /> : variant.shortcut}
               </span>
             </button>
           )

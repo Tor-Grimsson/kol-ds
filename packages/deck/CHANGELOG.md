@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-deck
 
+## 0.4.0 — 2026-11-08
+
+- **Changed: `DeckFile` and `DeckSettings` are modals on kol-component's `ModalShell`** (plan-2026-11-08-outstanding W2.2) — over the scrim on the lift panel, where each was a bare column on an opaque page. The title is the shell's header, the actions its footer; content and copy unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.
+
+## 0.3.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.2.3 — 2026-11-04
 
 - Align icons moved to the `-solid` names (kol-icons 0.63.0 gave the bare `align-*` names to new outlines), so the alignment buttons keep their filled look.

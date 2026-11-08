@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { IconPlate, IconToggle, SegmentedToggle } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* GALLERY — a wall of specimens with the controls that change how they are seen (the icons page): size,
  * guide; the plate is the size and the column follows it */
@@ -22,7 +22,7 @@ export default function GalleryTemplate() {
       <div className="grid gap-6" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${Math.max(size * 2, 103)}px, 1fr))` }}>
         {NAMES.map((n) => (
           <div key={n} className="flex flex-col items-start gap-3">
-            <IconPlate size={size} guide={guide}><Icon name={n} size={size} /></IconPlate>
+            <IconPlate size={size} guide={guide}><IconLoader name={n} size={size} /></IconPlate>
             <span className="kol-mono-14 text-emphasis">{n}</span>
           </div>
         ))}

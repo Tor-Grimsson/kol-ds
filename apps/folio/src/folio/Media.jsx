@@ -4,7 +4,7 @@
    caption. In dev the private files come through record's dev server (shelf.js urlOf). */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { client } from './client'
-import { MediaPlayer } from '@kolkrabbi/kol-component'
+import { MediaPlayer, ModalShell } from '@kolkrabbi/kol-component'
 
 const IMAGE = /\.(png|jpe?g|webp|gif|svg)$/i
 const BUCKET = client().read('bucket')
@@ -69,7 +69,7 @@ export function ImagePicker({ urlOf, onPick, onClose }) {
   const src = (f) => f.url ?? urlOf(f)
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[10vh]" onMouseDown={onClose}>
-      <div role="dialog" aria-label="Insert an image" onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="flex max-h-[75vh] w-full max-w-[820px] flex-col overflow-hidden rounded-[3px] border border-folio-rule bg-folio-paper shadow-[0_24px_64px_rgb(0_0_0/0.18)]">
+      <ModalShell variant="bordered" role="dialog" aria-label="Insert an image" onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="max-h-[75vh] w-full max-w-[820px] overflow-hidden shadow-[0_24px_64px_rgb(0_0_0/0.18)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
         <div role="tablist" aria-label="Bucket" className="flex shrink-0 gap-[4px] border-b border-folio-rule px-[12px] pt-[10px]">
           {BUCKETS.map((b) => (
             <button key={b.id} type="button" role="tab" aria-selected={bucket === b.id} onClick={() => setBucket(b.id)} className={`-mb-px flex flex-col items-start gap-[2px] px-[12px] pb-[10px] pt-[4px] text-left ${bucket === b.id ? 'shadow-[inset_0_-2px_0_var(--color-folio-ink)]' : 'text-folio-muted hover:text-folio-ink'}`}>
@@ -93,7 +93,7 @@ export function ImagePicker({ urlOf, onPick, onClose }) {
           ))}
           {!state && !list.length && <p className="kol-reader-body col-span-4 py-[24px] text-folio-muted">No image matches “{q}” in {here.label}.</p>}
         </div>
-      </div>
+      </ModalShell>
     </div>
   )
 }

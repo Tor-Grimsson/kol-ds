@@ -1,5 +1,5 @@
 import { useId, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import IconFrame from '../atoms/IconFrame.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import useSectionTheme from '../hooks/useSectionTheme.js'
@@ -177,7 +177,7 @@ export default function ProfileCard({
             aria-label={label}
             className={`${ramp.iconBox} flex items-center justify-center ${ink} transition-transform hover:scale-125`}
           >
-            <Icon name={icon} size={ramp.iconSize} />
+            <IconLoader name={icon} size={ramp.iconSize} />
           </a>
         </Tooltip>
       ))}

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Icon } from '@kolkrabbi/kol-component'
+import { IconLoader } from '@kolkrabbi/kol-component'
 
 /**
  * ExhibitLinkCard — A card linking to an exhibit page. the card an exhibit's landing page uses for each child
@@ -44,7 +44,7 @@ export default function ExhibitLinkCard({
           <h3 className="kol-card-kicker">{label}</h3>
           {subtitle && <p className="kol-mono-10 mt-1 italic text-fg-64">{subtitle}</p>}
         </div>
-        <Icon name={icon} size={16} />
+        <IconLoader name={icon} size={16} />
       </div>
 
       <div className="flex flex-1 items-center justify-center overflow-hidden rounded border border-fg-08">
@@ -55,7 +55,7 @@ export default function ExhibitLinkCard({
             className="h-full w-full scale-100 object-cover object-center transition-transform duration-300 group-hover:scale-105"
           />
         ) : (
-          <Icon
+          <IconLoader
             name={icon}
             size={64}
             className="text-auto transition-transform duration-300 group-hover:scale-105"

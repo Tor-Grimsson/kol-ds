@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Tooltip, MenuPanel, MenuRow, PopoverPanel, usePopover, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — a column of float Buttons, each named by the float Tooltip */
 
@@ -64,7 +64,7 @@ function ToolSearchPill({ onPress, kbd = '⌘K', label = 'Search', pressed }) {
     <Tooltip variant="float" placement="top" offset={12} label={label} shortcut={kbd}>
       <Button variant="float" tone="ghost" aria-label={label} pressed={pressed} onClick={onPress}
         className={`kol-tool-search gap-2 ${kbd ? 'px-4' : 'px-2.5'} bg-[var(--kol-float-well)] [--kol-tone-fg:var(--kol-oq-96)]`}>
-        <Icon name="search" size="var(--kol-float-ic)" />
+        <IconLoader name="search" size="var(--kol-float-ic)" />
         {kbd && <span className="kol-float-panel">{kbd}</span>}
       </Button>
     </Tooltip>
@@ -88,7 +88,7 @@ function ToolMore({ items, surface, chevron = false, label = 'More tools', onPic
             {items.map((it) => (
               <MenuRow key={it.label} rowClass="kol-menu-row kol-helper-12" kbd={it.kbd} disabled={it.disabled}
                 indicator={chevron && it.id != null && it.id === active ? 'dot' : undefined}
-                iconLeft={it.icon && <Icon name={it.icon} size={16} className="text-oq-88" />}
+                iconLeft={it.icon && <IconLoader name={it.icon} size={16} className="text-oq-88" />}
                 onClick={() => { setOpen(false); onPick ? onPick(it) : it.onClick?.() }}>{it.label}</MenuRow>
             ))}
           </MenuPanel>

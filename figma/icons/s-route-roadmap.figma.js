@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<Icon name="s-route-roadmap" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="s-route-roadmap" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 's-route-roadmap',
 }

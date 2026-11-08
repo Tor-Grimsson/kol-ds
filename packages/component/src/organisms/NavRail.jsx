@@ -13,7 +13,7 @@ import { GRAB } from '../utilities/motion.js'
  * 2026-08-30: two rails on one screen felt different because each package had
  * built the gesture itself). It lived here until then. */
 import useGrabEdge from '../hooks/useGrabEdge.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import VectorLoader from '../atoms/VectorLoader.jsx'
 import { useRailSlot } from '../hooks/railSlot.jsx'
 import { RAIL_ROW } from '../hooks/railRow.js'
@@ -75,7 +75,7 @@ import NavRailFloat from './NavRailFloat.jsx'
  * THE PRESETS (user 2026-10-24: *"the rail, do you make a preset for this? like catalog has preset?"*) — three rails, one
  * name each, in `RAIL_PRESETS` below: `app` is the studio rail (this file's AppRail: the 48px rail that grabs open,
  * sections ENTER and EXPAND, the pill on the phone, Media · Sign in · Settings at the foot); `site` is the brand rail
- * (NavRailSite — brand.kolkrabbi.io); `workshop` is the workshop rail (kol-workshop's ShellSidebar, registered through
+ * (NavRailSite — brand.kolkrabbi.io); `workshop` is the workshop rail (kol-workshop's ShellRail, registered through
  * `registerRailPreset` since kol-component cannot import kol-workshop). AppShell passes the preset and reads its phone
  * shape; an app passes nothing else about the rail.
  *

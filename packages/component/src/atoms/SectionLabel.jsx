@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * SectionLabel — A section's name with its arrow.
@@ -28,7 +28,7 @@ export default function SectionLabel({
         <span className="kol-float-label truncate text-fg-64">{text}</span>
         {onAdd && (
           <button type="button" aria-label={addLabel} onClick={onAdd} className="inline-flex size-5 shrink-0 items-center justify-center rounded-full text-oq-64 hover:text-oq-96 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] cursor-pointer">
-            <Icon name="plus" size={14} />
+            <IconLoader name="plus" size={14} />
           </button>
         )}
       </div>
@@ -74,13 +74,13 @@ export default function SectionLabel({
           overflow: 'hidden'
         }}
       >
-        <Icon
+        <IconLoader
           name="arrow-downright"
           size={config.iconSize}
           className="icon-default"
           style={{ position: 'absolute' }}
         />
-        <Icon
+        <IconLoader
           name="arrow-downright"
           size={config.iconSize}
           className="icon-hover"

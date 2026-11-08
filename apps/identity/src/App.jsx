@@ -197,7 +197,7 @@ function Identity({ id }) {
           <Sub>The icon on the keyline is what Icon renders; the logomark is the raw mark the app icon and the loader are cut from.</Sub>
           <div className="flex flex-wrap items-start gap-8">
             {x.icon && (
-              <Cell tag={`${fileTag(x.icon)} · <Icon name="${x.id}">`}>
+              <Cell tag={`${fileTag(x.icon)} · <IconLoader name="${x.id}">`}>
                 <span className="relative inline-block" style={{ width: 120, height: 120 }}><Svg svg={x.icon.raw} w={120} />{guides && <span className="absolute inset-0"><KeylineGuide light={!dark} /></span>}</span>
               </Cell>
             )}

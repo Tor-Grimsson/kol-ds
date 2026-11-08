@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { PageShell, ShortcutsOverlay } from '@kolkrabbi/kol-shell'
 import { ActionButton, Button, FullscreenOverlay, ViewToggle } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import SlideThumb from './SlideThumb.jsx'
 import SlideStage from './SlideStage.jsx'
 import SlideInspector from './SlideInspector.jsx'
@@ -48,7 +48,7 @@ const clearDraft = (slug) => { try { localStorage.removeItem(DRAFT(slug)) } catc
 
 /* the grip glyph turned — kol-icons ships one, vertical */
 function Grabber({ orientation = 'vertical', size = 16 }) {
-  return <Icon name="drag-handle" size={size} className={orientation === 'horizontal' ? 'rotate-90' : undefined} />
+  return <IconLoader name="drag-handle" size={size} className={orientation === 'horizontal' ? 'rotate-90' : undefined} />
 }
 
 /* the inspector's home: a card fixed to the viewport, dragged by its grip; listeners go on at mousedown */

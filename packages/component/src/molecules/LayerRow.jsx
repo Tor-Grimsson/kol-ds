@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import TreeRow from './TreeRow.jsx'
 
 /* taxonomy-ok: molecule — TreeRow (molecule) + kol-icons's Icon. */
@@ -30,7 +30,7 @@ export default function LayerRow({ icon = 'layers', name, selected = false, visi
       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopPropagation(); fn?.() } }}
       className="inline-flex size-5 shrink-0 items-center justify-center rounded-full text-oq-64 hover:text-oq-96 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]"
     >
-      <Icon name={glyph} size={12} />
+      <IconLoader name={glyph} size={12} />
     </span>
   )
   return (

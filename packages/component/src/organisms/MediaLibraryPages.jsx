@@ -3,7 +3,7 @@ import { registerCredentialedOrigin } from '../utilities/credentials.js'
 import formatSize from '../utilities/formatSize.js'
 import { ROW_HEIGHT, ROW_FILL } from '../molecules/OptionRow.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Input from '../atoms/Input.jsx'
@@ -389,13 +389,13 @@ function FolderRow({ name, icon = 'folder', onClick, onDoubleClick, depth = 0, e
           onClick={(e) => { e.stopPropagation(); onToggle() }}
           className="w-4 h-4 shrink-0 flex items-center justify-center text-oq-32 hover:text-fg-default transition-transform"
           style={{ transform: expanded ? 'rotate(90deg)' : 'none' }}>
-          <Icon name="chevron-right" size={12} />
+          <IconLoader name="chevron-right" size={12} />
         </button>
       ) : <span className="w-4 shrink-0" />}
       {/* THE FOLDER GLYPH IS THE ONE ICON LEFT, so it fills its box (user 2026-09-23: *"only folder
           should use icon, and it should be bigger"*). Every other kind now renders its own bytes. */}
       <span data-hit {...hitDrag} className="kol-row-hit flex items-center gap-3 min-w-0">
-        <span className={`shrink-0 flex items-center justify-center${selected ? '' : ' text-oq-48'}`}><Icon name={icon} size={glyphSize(size)} /></span>
+        <span className={`shrink-0 flex items-center justify-center${selected ? '' : ' text-oq-48'}`}><IconLoader name={icon} size={glyphSize(size)} /></span>
         {/* NO TRAILING SLASH (user 2026-09-22). `partition` hands folders back as `audio/` because a
             slash is what marks one in a flat key space; that is storage's spelling, not a label, and
             `ColumnBrowser` has always stripped it. The glyph says "folder". */}
@@ -478,7 +478,7 @@ function FileRow({ o, onClick, onDoubleClick, depth = 0, formatDate, thumb, cols
       <span data-hit {...dragProps} className="kol-row-hit flex items-center gap-3 min-w-0">
         <span className={`shrink-0 flex items-center justify-center overflow-hidden rounded${selected ? '' : ' text-oq-48'}`} style={{ width: glyphSize(size), height: glyphSize(size) }}>
           {/* a file with no thumbnail draws its glyph at the FOLDER's size — one icon column (user 2026-09-25) */}
-          {thumb ?? <Icon name={kindOf(o) === 'image' ? 'image' : 'file'} size={glyphSize(size)} />}
+          {thumb ?? <IconLoader name={kindOf(o) === 'image' ? 'image' : 'file'} size={glyphSize(size)} />}
         </span>
         <span className={`kol-item-name min-w-0 truncate${selected ? '' : ' text-fg-default'}`}>{o.displayKey ?? o.displayName ?? o.key.split('/').pop()}</span>
       </span>
@@ -519,7 +519,7 @@ function ContainerPreview({ name, icon, facts, width, details }) {
       {/* the folder fills its box with the tile's inset (user 2026-09-24: a 64px glyph floated in
           a 300px square while the grid's folder tile fills its own) */}
       <div className="w-full aspect-square bg-oq-04 rounded flex items-center justify-center p-[5%]">
-        <Icon name={icon} size="100%" className="text-oq-48" />
+        <IconLoader name={icon} size="100%" className="text-oq-48" />
       </div>
       <p className="kol-mono-12 text-fg-default break-all">{name}</p>
       <dl className="flex flex-col gap-1">
@@ -660,7 +660,7 @@ function RowHeader({ sortBy = 'name', sortDir = 'asc', onSort, width, cols, onRe
         aria-sort={active ? (sortDir === 'desc' ? 'descending' : 'ascending') : 'none'}
         className={`kol-helper-12 cursor-pointer inline-flex items-center gap-1 w-full transition-colors ${active ? 'text-fg-default' : 'text-fg-48 hover:text-fg-default'}`}>
         {text}
-        {active && <Icon name={sortDir === 'desc' ? 'arrow-up' : 'arrow-down'} size={9} />}
+        {active && <IconLoader name={sortDir === 'desc' ? 'arrow-up' : 'arrow-down'} size={9} />}
       </button>
     )
   }
@@ -1023,7 +1023,7 @@ function TrashPanel({ trash, onClose, run, confirm }) {
             <li key={t.id} className={`kol-column-browser-row flex items-center gap-3 py-2 px-3 cursor-pointer transition-colors${sel.has(t.id) ? ' is-selected' : ''}`}
               onClick={(e) => pick(e, t.id)}
               onContextMenu={(e) => { if (!sel.has(t.id)) { anchor.current = t.id; setSel(new Set([t.id])) } menu.openAt(e, { ids: targetsFor(t.id) }) }}>
-              <span className="w-5 shrink-0 flex items-center justify-center text-oq-48"><Icon name={icon} size={icon === 'folder' ? 18 : 14} /></span>
+              <span className="w-5 shrink-0 flex items-center justify-center text-oq-48"><IconLoader name={icon} size={icon === 'folder' ? 18 : 14} /></span>
               <span className="kol-mono-12 min-w-0 truncate">{name}</span>
             </li>
           )
@@ -1035,8 +1035,8 @@ function TrashPanel({ trash, onClose, run, confirm }) {
           const n = target.ids.length
           return (
             <>
-              {trash.restore && <MenuRow iconLeft={<Icon name="refresh" size={14} />} onClick={() => restore(target.ids)}>{n > 1 ? `Restore ${n}` : 'Restore'}</MenuRow>}
-              {trash.purge && <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => purge(target.ids)}>{n > 1 ? `Delete ${n} forever` : 'Delete forever'}</MenuRow>}
+              {trash.restore && <MenuRow iconLeft={<IconLoader name="refresh" size={14} />} onClick={() => restore(target.ids)}>{n > 1 ? `Restore ${n}` : 'Restore'}</MenuRow>}
+              {trash.purge && <MenuRow iconLeft={<IconLoader name="trash" size={14} />} onClick={() => purge(target.ids)}>{n > 1 ? `Delete ${n} forever` : 'Delete forever'}</MenuRow>}
             </>
           )
         }}
@@ -2451,7 +2451,7 @@ export function MediaLibraryBrowse({
     {titleLevel && !hits ? (
       <div className="grid gap-x-3 gap-y-5" style={{ gridTemplateColumns: `repeat(auto-fill, minmax(${tileSize}px, 1fr))` }}>
         {rootItems.map((it) => (
-          <MediaTile key={it.key} preview={<Icon name={it.icon} size="100%" className="text-oq-48" />} name={it.name}
+          <MediaTile key={it.key} preview={<IconLoader name={it.icon} size="100%" className="text-oq-48" />} name={it.name}
             selected={pickedBucket === it.key}
             onClick={(e) => { e.stopPropagation(); setPickedBucket(it.key) }} onDoubleClick={it.open} />
         ))}
@@ -2665,7 +2665,7 @@ export function MediaLibraryBrowse({
               item 7 left with nowhere to go. `caret={false}`: an icon trigger is
               already complete, and neither reference draws a chevron on it. */}
           <MenuItem
-            label={<Icon name="more" size={16} />}
+            label={<IconLoader name="more" size={16} />}
             caret={false}
             align="end"
             size="sm"
@@ -2698,7 +2698,7 @@ export function MediaLibraryBrowse({
                       close()
                     }}
                     shortcut={(settings.sortBy ?? 'name') === opt.value
-                      ? <Icon name={settings.sortDir === 'desc' ? 'arrow-up' : 'arrow-down'} size={11} />
+                      ? <IconLoader name={settings.sortDir === 'desc' ? 'arrow-up' : 'arrow-down'} size={11} />
                       : undefined}
                   >
                     {opt.label}
@@ -2857,7 +2857,7 @@ export function MediaLibraryBrowse({
                 <>
                   <MenuDivider />
                   {custom.map((it) => (
-                    <MenuRow key={it.label} iconLeft={it.icon ? <Icon name={it.icon} size={14} /> : undefined} onClick={() => runAction(() => it.run(target))}>{it.label}</MenuRow>
+                    <MenuRow key={it.label} iconLeft={it.icon ? <IconLoader name={it.icon} size={14} /> : undefined} onClick={() => runAction(() => it.run(target))}>{it.label}</MenuRow>
                   ))}
                 </>
               )
@@ -2867,17 +2867,17 @@ export function MediaLibraryBrowse({
                     <MenuRow disabled>{many.length} selected</MenuRow>
                     <MenuDivider />
                     {fa.move && (
-                      <MenuRow iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuRow>
+                      <MenuRow iconLeft={<IconLoader name="arrow-right" size={14} />} onClick={() => doBatch(many, 'move', 'Move')}>Move {many.length} to…</MenuRow>
                     )}
                     {hasUrl && many.every((p) => !p.endsWith('/')) && (
                       <>
-                        <MenuRow iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuRow>
-                        <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuRow>
-                        {canTag && <MenuRow iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuRow>}
+                        <MenuRow iconLeft={<IconLoader name="copy" size={14} />} onClick={() => doCopyUrl(many)}>Copy {many.length} URLs</MenuRow>
+                        <MenuRow iconLeft={<IconLoader name="download" size={14} />} onClick={() => doDownload(many)}>Download {many.length}</MenuRow>
+                        {canTag && <MenuRow iconLeft={<IconLoader name="hash-01" size={14} />} onClick={() => doTags(many)}>Add tags to {many.length}…</MenuRow>}
                       </>
                     )}
                     {fa.remove && (
-                      <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => doBatch(many, 'remove', 'Delete')}>Delete {many.length}</MenuRow>
+                      <MenuRow iconLeft={<IconLoader name="trash" size={14} />} onClick={() => doBatch(many, 'remove', 'Delete')}>Delete {many.length}</MenuRow>
                     )}
                     {customItems}
                   </>
@@ -2889,7 +2889,7 @@ export function MediaLibraryBrowse({
                 <>
                   {insFile && (!canInsert || canInsert(insFile)) && (
                     <>
-                      <MenuRow iconLeft={<Icon name="plus" size={14} />} onClick={() => { onInsert(insFile); close() }}>Insert</MenuRow>
+                      <MenuRow iconLeft={<IconLoader name="plus" size={14} />} onClick={() => { onInsert(insFile); close() }}>Insert</MenuRow>
                       <MenuDivider />
                     </>
                   )}
@@ -2897,63 +2897,63 @@ export function MediaLibraryBrowse({
                     * phone — the menu (kol-fxr 2026-10-08). Only with `onPickFile`; others are unchanged. */}
                   {qlFile && (
                     <>
-                      <MenuRow iconLeft={<Icon name="eye-on" size={14} />} onClick={() => openQuickLook({ files: [qlFile], index: 0 })}>Quick Look</MenuRow>
+                      <MenuRow iconLeft={<IconLoader name="eye-on" size={14} />} onClick={() => openQuickLook({ files: [qlFile], index: 0 })}>Quick Look</MenuRow>
                       <MenuDivider />
                     </>
                   )}
                   {fa.createFolder && (
-                    <MenuRow iconLeft={<Icon name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<IconLoader name="folder" size={14} />} onClick={() => doCreateFolder(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New folder{isFolder ? ` in ${target.path.replace(/\/$/, '').split('/').pop()}` : ''}
                     </MenuRow>
                   )}
                   {/* NEW DOCUMENT is the writing page (a name, a type, fields for markdown); New file stays for
                       a client that cannot write text — it makes the empty file and nothing else */}
                   {canNewDoc ? (
-                    <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<IconLoader name="file" size={14} />} onClick={() => newDocument(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New document…
                     </MenuRow>
                   ) : fa.createFile && (
-                    <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
+                    <MenuRow iconLeft={<IconLoader name="file" size={14} />} onClick={() => doCreateFile(isFolder ? target.path : (isLevel ? target.path : prefix))}>
                       New file
                     </MenuRow>
                   )}
                   {dropFilesTo && !(target.type === 'file') && (
-                    <MenuRow iconLeft={<Icon name="upload" size={14} />} onClick={() => doUpload(target.path)}>
+                    <MenuRow iconLeft={<IconLoader name="upload" size={14} />} onClick={() => doUpload(target.path)}>
                       {isFolder ? `Upload into ${target.path.replace(/\/$/, '').split('/').pop()}…` : 'Upload here…'}
                     </MenuRow>
                   )}
                   {!isLevel && <MenuDivider />}
                   {!isLevel && fa.rename && (
-                    <MenuRow iconLeft={<Icon name="edit" size={14} />} onClick={() => doRename(target.path, isFolder)}>Rename</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="edit" size={14} />} onClick={() => doRename(target.path, isFolder)}>Rename</MenuRow>
                   )}
                   {!isLevel && fa.move && (
-                    <MenuRow iconLeft={<Icon name="arrow-right" size={14} />} onClick={() => doMove(target.path)}>Move to…</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="arrow-right" size={14} />} onClick={() => doMove(target.path)}>Move to…</MenuRow>
                   )}
                   {/* A FOLDER GETS COPY URL TOO (user 2026-09-23) — through the SAME `mediaUrl`
                       seam a file goes through, so what a folder URL means is the consumer's call
                       (a CDN prefix, a listing, a signed path) and never this page's guess. No
                       Download: a folder is not an object to fetch. */}
                   {hasUrl && !isLevel && (
-                    <MenuRow iconLeft={<Icon name="copy" size={14} />} onClick={() => doCopyUrl([target.path])}>Copy URL</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="copy" size={14} />} onClick={() => doCopyUrl([target.path])}>Copy URL</MenuRow>
                   )}
                   {hasUrl && target.type === 'file' && (
-                    <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="download" size={14} />} onClick={() => doDownload([target.path])}>Download</MenuRow>
                   )}
                   {!isLevel && canTag && (
-                    <MenuRow iconLeft={<Icon name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="hash-01" size={14} />} onClick={() => doTags([target.path])}>Tags…</MenuRow>
                   )}
                   {!isLevel && canFavourite && (
-                    <MenuRow iconLeft={<Icon name={isFavourite(target.path) ? 'star-solid' : 'star'} size={14} />} onClick={() => toggleFavourite(target.path)}>
+                    <MenuRow iconLeft={<IconLoader name={isFavourite(target.path) ? 'star-solid' : 'star'} size={14} />} onClick={() => toggleFavourite(target.path)}>
                       {isFavourite(target.path) ? 'Remove from favourites' : 'Add to favourites'}
                     </MenuRow>
                   )}
                   {target.type === 'file' && canEdit && editKindOf(target.o ?? { key: target.path }) && (
-                    <MenuRow iconLeft={<Icon name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuRow>
+                    <MenuRow iconLeft={<IconLoader name="edit" size={14} />} onClick={() => openEditor(objects.find((o) => o.key === target.path) ?? { key: target.path })}>Edit</MenuRow>
                   )}
                   {!isLevel && fa.remove && (
                     <>
                       <MenuDivider />
-                      <MenuRow iconLeft={<Icon name="trash" size={14} />} onClick={() => doDelete(target.path, isFolder)}>Delete</MenuRow>
+                      <MenuRow iconLeft={<IconLoader name="trash" size={14} />} onClick={() => doDelete(target.path, isFolder)}>Delete</MenuRow>
                     </>
                   )}
                   {customItems}
@@ -3119,7 +3119,7 @@ export function WallBody({
           onClick={(e) => { if (!e.target.closest('[data-marquee-key]')) onBackgroundClick?.() }}>
           {marquee?.rect && <div className="kol-marquee" style={marquee.rect} />}
           {folders.map((path) => (
-            <MediaTile key={path} markKey={path} preview={<Icon name="folder" size="100%" className="text-oq-48" />}
+            <MediaTile key={path} markKey={path} preview={<IconLoader name="folder" size="100%" className="text-oq-48" />}
               name={path.replace(/\/$/, '').split('/').pop()} selected={isSelected(path)}
               onContextMenu={onFolderContextMenu ? (e) => onFolderContextMenu(e, path) : undefined}
               onDoubleClick={() => onOpenFolder?.(path)}
@@ -3385,7 +3385,7 @@ export function MediaLibraryLibrary({
           <>
             <div className="hidden md:flex items-center gap-6"><ViewToggle viewMode={layout} onViewChange={setLayout} variant="icon" options={LAYOUT_OPTIONS} /></div>
             <div className="md:hidden">
-              <MenuItem label={<Icon name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
+              <MenuItem label={<IconLoader name="more" size={16} />} caret={false} align="end" size="sm" buttonClassName="shrink-0 px-2">
                 {({ close }) => (
                   <div className="py-1 w-[200px]">
                     {LAYOUT_OPTIONS.map((opt) => (
@@ -3393,7 +3393,7 @@ export function MediaLibraryLibrary({
                     ))}
                     <MenuDivider />
                     {SORT_OPTIONS.map((opt) => (
-                      <MenuRow key={opt.value} onClick={() => { handleSort(opt.value); close() }} shortcut={sortBy === opt.value ? <Icon name={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
+                      <MenuRow key={opt.value} onClick={() => { handleSort(opt.value); close() }} shortcut={sortBy === opt.value ? <IconLoader name={sortDir === 'desc' ? 'arrow-down' : 'arrow-up'} size={11} /> : undefined}>{opt.label}</MenuRow>
                     ))}
                   </div>
                 )}

@@ -1,5 +1,5 @@
 /**
- * Icon Component
+ * IconLoader Component (named Icon until 0.68.0 — `Icon` stays exported as a deprecated alias)
  *
  * Dynamically loads and renders SVG icons from kol-icon-set-interface,
  * kol-icon-set-signal, kol-icon-set-identity and kol-icon-set-external (or consumer-registered sets)
@@ -17,7 +17,7 @@ import { setOf } from './iconNames.js'
 
 /* THREE SETS, THREE CHUNKS (1.5, plan-2026-10-28-identity — user: "I cant believe you have to take every icon we
  * ship if you only need one? is kol-icon just one tier?"). Until 0.50.0 every set's SVG text sat in ONE async
- * module, so the first <Icon> on a website pulled every rack waveform and every app mark too — the "a website pays
+ * module, so the first <IconLoader> on a website pulled every rack waveform and every app mark too — the "a website pays
  * nothing for the rest" claim was never true in the bundle. Now each set is its own module under ./sets/, and a
  * name's set is known from the keys-only index (iconNames.js, no SVG text) BEFORE anything is fetched: the first
  * interface name fetches the interface chunk and nothing else; signal and identity load the first time one of their
@@ -67,14 +67,14 @@ const useIconsReady = (name) => {
 }
 
 /* Consumer-registered icons — a repo brings its OWN svg folder and registers it,
- * so <Icon name> resolves app-specific icons that never ship in the package. They
+ * so <IconLoader name> resolves app-specific icons that never ship in the package. They
  * fill the names the packaged set has none for and NEVER override a shipped name
  * (2026-10-24; they used to win). Resolves synchronously, so custom icons render
  * without waiting on the packaged chunk. */
 const CUSTOM = Object.create(null)
 
 /**
- * Register a consumer's own SVGs with <Icon>. Call once at app boot with a Vite
+ * Register a consumer's own SVGs with <IconLoader>. Call once at app boot with a Vite
  * glob of your icon folder — `import.meta.glob` is a compile-time, path-relative
  * macro, so it must run in YOUR source, not in this package:
  *
@@ -159,7 +159,7 @@ const applySizeToMarkup = (markup, sizeValue) => {
 }
 
 /* VARIANT (2026-11-01, user: "ONE cloud storm component with said variants"): a solid twin is the outline's
- * `variant="solid"` — `<Icon name="cloud-storm" variant="solid" />` renders `cloud-storm-solid`. A name with no
+ * `variant="solid"` — `<IconLoader name="cloud-storm" variant="solid" />` renders `cloud-storm-solid`. A name with no
  * solid twin renders its outline, so a variant never blanks an icon. The `-solid` names keep resolving. */
 const withVariant = (name, variant) => {
   if (variant !== 'solid' || !name || name.endsWith('-solid')) return name
@@ -167,7 +167,7 @@ const withVariant = (name, variant) => {
   return setOf(solid) || CUSTOM[solid] ? solid : name
 }
 
-const Icon = ({
+const IconLoader = ({
   name: baseName,
   variant = 'outline',
   size = 16,
@@ -216,7 +216,7 @@ const Icon = ({
         />
       )
     }
-    console.warn(`Icon "${name}" not found in icon set`)
+    console.warn(`IconLoader "${name}" not found in icon set`)
     return null
   }
 
@@ -246,4 +246,4 @@ const Icon = ({
   )
 }
 
-export default Icon
+export default IconLoader

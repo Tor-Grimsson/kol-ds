@@ -8,15 +8,17 @@
  */
 export { default as ShellLayout } from './ShellLayout.jsx'
 export { ShellTocContext, ShellFullHeightContext, ShellTocCollapsedContext, ShellNavCollapsedContext, ShellContentWidthContext, ShellSearchScopeContext, SHELL_SCROLL_ROOT, usePageMeta, usePageMetaValue } from './ShellLayout.jsx'
-export { default as ShellSidebar } from './ShellSidebar.jsx'
-/* the workshop rail IS a NavRail preset (2026-10-24): `NavRail preset="workshop"` renders ShellSidebar once this
+export { default as ShellRail } from './ShellRail.jsx'
+/** @deprecated ShellSidebar = ShellRail (2026-11-08, "if it comes to view form the sides ITS RAIL") — alias for the 30-day ledger */
+export { default as ShellSidebar } from './ShellRail.jsx'
+/* the workshop rail IS a NavRail preset (2026-10-24): `NavRail preset="workshop"` renders ShellRail once this
  * package is imported — kol-component cannot import kol-workshop, so the name is registered from here */
 import { registerRailPreset } from '@kolkrabbi/kol-component'
-import ShellSidebarForRail from './ShellSidebar.jsx'
-registerRailPreset('workshop', ShellSidebarForRail)
+import ShellRailForPreset from './ShellRail.jsx'
+registerRailPreset('workshop', ShellRailForPreset)
 /* the left rail's column and its three states — open · icons · hidden (2026-10-02) */
 export { ShellNavColumn } from './ShellLayout.jsx'
-export { ShellRailModeContext } from './ShellSidebar.jsx'
+export { ShellRailModeContext } from './ShellRail.jsx'
 /* RailSection — THE rail ladder. Every rail header at every rung comes from
  * here, in both rails; see the file header for why a class alone was not
  * enough. `pnpm validate:rails` R4 asserts it. */

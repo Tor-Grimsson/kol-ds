@@ -3,7 +3,7 @@
  *
  * An `<a>` when `href` is given (opens in a new tab), a button with `onClick` otherwise. Sits in the well with an 8
  * round (`--kol-float-list-r`); `title` in Inter panel, `meta` in mono ("Studio site", the url). */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { PRESS, WELL } from './_shared/float.js'
 
 export default function LinkCard({ title, meta, href, onClick, className = '' }) {
@@ -15,7 +15,7 @@ export default function LinkCard({ title, meta, href, onClick, className = '' })
         <span className="kol-float-panel text-fg-96 truncate">{title}</span>
         {meta && <span className="kol-float-timecode text-fg-64 truncate">{meta}</span>}
       </span>
-      <Icon name="arrow-upright" size={16} className="text-oq-64 shrink-0" />
+      <IconLoader name="arrow-upright" size={16} className="text-oq-64 shrink-0" />
     </Tag>
   )
 }

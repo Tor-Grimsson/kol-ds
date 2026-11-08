@@ -8,7 +8,7 @@
  * oq-16 — `3 effects`. The status tones keep today's look.
  */
 
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Tone names mirror StatusChip's --ui-* ladder (error/warning/info/success —
  * siblings, one language). `destructive` and `critical` are legacy aliases
@@ -51,7 +51,7 @@ const Badge = ({
       className={`kol-badge ${variantClass} ${sizeClass} ${className}`.trim()}
       {...props}
     >
-      {icon && <Icon name={icon} size={ICON_SIZES[size] ?? ICON_SIZES.md} />}
+      {icon && <IconLoader name={icon} size={ICON_SIZES[size] ?? ICON_SIZES.md} />}
       {children}
     </div>
   )

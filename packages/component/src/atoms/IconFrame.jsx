@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { SOLO } from '../hooks/glyphLadders.js'
 import { toneClass } from '../utilities/tone.js'
 
@@ -94,7 +94,7 @@ export default function IconFrame({
   /* `tone="sunken"` (ControlToneSunken, 2026-08-28) — the control set's dark well + fg-96 ink, no states, as ever */
   /* no variant → no class: the frame inherits a wrapper's tone, else secondary (2026-09-03) */
   const cls = `kol-icon-frame${variant ? ` kol-icon-frame-${variant}` : ''} kol-icon-frame-${size}${radiusCls} ${toneClass(tone)} ${className}`.replace(/\s+/g, ' ').trim()
-  const glyph = <Icon name={name} size={resolvedIconSize} />
+  const glyph = <IconLoader name={name} size={resolvedIconSize} />
 
   /* The element follows the affordance, and the CLASS is identical in all three
    * branches — that is the whole contract. A frame that can be clicked must be

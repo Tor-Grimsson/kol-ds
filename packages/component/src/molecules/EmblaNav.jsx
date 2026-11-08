@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * EmblaNav — THE prev/next pair for an embla carousel.
@@ -41,10 +41,10 @@ export default function EmblaNav({
       className={`kol-embla-controls ${placement === 'inline' ? 'is-inline' : ''} ${className}`.trim()}
     >
       <button type="button" className={btn} aria-label={prevLabel} onClick={onPrev} disabled={!canPrev}>
-        <Icon name="chevron-left" size={size} />
+        <IconLoader name="chevron-left" size={size} />
       </button>
       <button type="button" className={btn} aria-label={nextLabel} onClick={onNext} disabled={!canNext}>
-        <Icon name="chevron-right" size={size} />
+        <IconLoader name="chevron-right" size={size} />
       </button>
     </div>
   )

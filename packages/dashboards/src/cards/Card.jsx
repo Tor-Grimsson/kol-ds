@@ -27,7 +27,7 @@
  * inside the scroller (pb-px / -mb-px), so a tab row never scrolls up and down and catches a phone's vertical swipe. */
 import { useState } from 'react'
 import { Button, Menu } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import SectionHead from './SectionHead.jsx'
 import { SHEET, WELL, PRESS } from './_shared/float.js'
 
@@ -66,7 +66,7 @@ export default function Card({ variant, title, count, meta, description, value, 
                 trigger={({ open, props }) => (
                   <TabButton active={active} open={open} {...props}>
                     {(t.search ? t : t.options.find((o) => o.key === current) || t).label}
-                    <Icon name="chevron-down" size={10} className="ml-2" style={{ transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 200ms' }} />
+                    <IconLoader name="chevron-down" size={10} className="ml-2" style={{ transform: open ? 'rotate(180deg)' : undefined, transition: 'transform 200ms' }} />
                   </TabButton>
                 )}
                 items={t.options.map((o) => ({ key: o.key, label: o.label, current: o.key === current, checked: o.key === current, onClick: () => pick(o.key) }))} />
@@ -109,7 +109,7 @@ function FloatSheet({ title, count, meta, description, value, controls, tabs, ta
       {!isFolded && addLabel && (
         <button type="button" onClick={onAdd} style={WELL}
           className={`flex items-center gap-2.5 w-full h-[var(--kol-float-h-md)] px-3.5 mt-4 rounded-full text-left ${PRESS}`}>
-          <Icon name="plus" size={16} className="text-oq-64 shrink-0" />
+          <IconLoader name="plus" size={16} className="text-oq-64 shrink-0" />
           <span className="kol-float-hint text-fg-64 truncate">{addLabel}</span>
           <span className="ml-auto kol-float-window text-fg-64" aria-hidden="true">↵</span>
         </button>

@@ -23,7 +23,7 @@ Tailwind skips `node_modules` when scanning, so point it at this package's sourc
 
 ```jsx
 import { Button, Tag, Badge, Slider, Dropdown, Table } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 <Button variant="primary" iconLeft="plus">New</Button>
 <Badge variant="success">Active</Badge>

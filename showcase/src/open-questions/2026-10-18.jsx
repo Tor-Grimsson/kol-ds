@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { IconPlate } from '@kolkrabbi/kol-component'
 import { SegGroup } from '../lib/icon-controls.jsx'
 
@@ -108,7 +108,7 @@ function Tile({ name, size, light, guide, compare }) {
   const plates = [
     ...(compare ? [['monitor', (s) => <Raw markup={MONITOR[name]} size={s} />, true]] : []),
     [name, (s) => <Raw markup={PROPOSED[name]} size={s} />],
-    ...(ALT.has(name) ? [[`${name}-02`, (s) => <Icon name={`${name}-02`} size={s} />]] : []),
+    ...(ALT.has(name) ? [[`${name}-02`, (s) => <IconLoader name={`${name}-02`} size={s} />]] : []),
   ]
   return (
     <div className="flex items-start gap-3">

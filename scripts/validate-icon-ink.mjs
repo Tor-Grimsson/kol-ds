@@ -37,7 +37,7 @@ const FG_CLASS = /\btext-(fg-\d+|meta|subtle|body|default|strong|lede|shout|scre
 const FG_VAR = /(?<!background-)color:\s*var\(--kol-fg-(\d+|meta|subtle|body|default|strong|lede|shout|scream)\)/
 const ICON_SEL = /icon|svg|glyph|chevron|caret/i
 const FG_STYLE = /(?<![-\w])color:[^,}]*var\(--kol-fg-\d+\)/
-const ICON_TAG = '(?:Icon|IconFrame|FileIcon|EditorIcon)'
+const ICON_TAG = '(?:IconLoader|Icon|IconFrame|FileIcon|EditorIcon)'
 
 function walk(dir, ext, out = []) {
   for (const e of readdirSync(dir)) {
@@ -59,7 +59,7 @@ const jsx = [
 let tags = 0
 for (const f of jsx) {
   const src = readFileSync(f, 'utf8')
-  for (const m of src.matchAll(/<(Icon|IconFrame|FileIcon|EditorIcon)\b[^>]*?\/>/gs)) {
+  for (const m of src.matchAll(/<(IconLoader|Icon|IconFrame|FileIcon|EditorIcon)\b[^>]*?\/>/gs)) {
     tags++
     const hit = m[0].match(FG_CLASS)
     if (hit) {

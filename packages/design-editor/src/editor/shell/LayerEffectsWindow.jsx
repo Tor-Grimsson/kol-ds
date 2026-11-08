@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, CloseButton, FullscreenOverlay, Stepper, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, CloseButton, FullscreenOverlay, ModalShell, Stepper, ToggleCheckbox, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { findLayerDeep } from '../compose/helpers'
 import { useLayerEdit } from '../compose/useLayerEdit'
@@ -89,7 +89,7 @@ function Window({ layer, palette, onClose }) {
     <FullscreenOverlay open onClose={onClose} closeButton={false} scrim>
       {/* keep-selection: the overlay portals to <body>, outside the shell, and the canvas's click-away
           would otherwise deselect the very layer this window edits */}
-      <div aria-label="Layer Effects" data-editor-keep-selection className="kol-design-editor kol-popover w-[820px] max-w-full flex flex-col">
+      <ModalShell variant="bordered" aria-label="Layer Effects" data-editor-keep-selection className="kol-design-editor w-[820px] max-w-full shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4),0_2px_6px_-2px_rgba(0,0,0,0.3)]">
         <div className="relative flex h-10 items-center justify-center border-b border-oq-08 px-4">
           <span className="font-sans text-[13px] text-emphasis">Layer Effects</span>
           <CloseButton onClick={onClose} size="sm" className="!absolute right-3" />
@@ -142,7 +142,7 @@ function Window({ layer, palette, onClose }) {
           <Stepper size="sm" min={0} max={100} value={fill} onChange={(v) => edit.patch({ effectsFillOpacity: Math.max(0, Math.min(100, v)) / 100 })} className="w-[72px]" aria-label="Fill opacity" />
           <Button size="sm" onClick={onClose}>Close</Button>
         </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

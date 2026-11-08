@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Divider from '../atoms/Divider.jsx'
 import SplitToolButton from '../molecules/SplitToolButton.jsx'
@@ -42,7 +42,7 @@ const ToolPalette = ({
   onAction,
   orientation = 'horizontal',
   size = 'md',
-  iconComponent = Icon,
+  iconComponent = IconLoader,
   className = '',
 }) => {
   const vertical = orientation === 'vertical'

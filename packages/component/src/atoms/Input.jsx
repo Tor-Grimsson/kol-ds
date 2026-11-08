@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { toneClass } from '../utilities/tone.js'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -167,10 +167,10 @@ export default function Input({
   const propertyLen = Math.max(String(value ?? placeholder ?? '').length, 1)
 
   /* the error: a mark inside, a message under (row 36) */
-  const errorMark = error ? <span aria-hidden="true" className="kol-control-error flex items-center shrink-0 pl-2 text-[var(--ui-error)]"><Icon name="alert-triangle" size={14} /></span> : null
+  const errorMark = error ? <span aria-hidden="true" className="kol-control-error flex items-center shrink-0 pl-2 text-[var(--ui-error)]"><IconLoader name="alert-triangle" size={14} /></span> : null
   const errorText = typeof error === 'string' && error ? (
     <span role="alert" className={`flex items-center gap-1.5 ${resolvedVariant === 'float' ? 'kol-float-label' : 'kol-mono-10'} text-fg-64`}>
-      <Icon name="info" size={12} />{error}
+      <IconLoader name="info" size={12} />{error}
     </span>
   ) : null
 
@@ -211,7 +211,7 @@ export default function Input({
       )}
       {iconLeft && (
         <span aria-hidden="true" className="flex items-center text-auto opacity-50 shrink-0 pr-2">
-          <Icon name={iconLeft} size={resolvedIconSize} />
+          <IconLoader name={iconLeft} size={resolvedIconSize} />
         </span>
       )}
       {prefix !== undefined && (

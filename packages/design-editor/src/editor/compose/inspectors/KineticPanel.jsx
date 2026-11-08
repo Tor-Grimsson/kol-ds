@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Fragment, useEffect, useState } from 'react'
 import { BezierPathEditor, Button,
   Dropdown, LabeledControl, SettingsRow, Slider, Textarea, ButtonGroup,
@@ -588,7 +588,7 @@ function OpenTypeMenu({ value = {}, onToggle }) {
             <MenuDropdownItem
               key={f.tag}
               onClick={() => onToggle(f.tag, !value[f.tag])}
-              shortcut={value[f.tag] ? <Icon name="check" size={11} /> : undefined}
+              shortcut={value[f.tag] ? <IconLoader name="check" size={11} /> : undefined}
             >
               {f.label}
             </MenuDropdownItem>

@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const DashStackedBarCard = ({
   title,
@@ -19,13 +19,13 @@ const DashStackedBarCard = ({
         <>
           <div className="flex justify-between items-center">
             <span className="dash-detail text-fg-88">{title}</span>
-            <Icon name={icon} size={24} className="text-oq-88" />
+            <IconLoader name={icon} size={24} className="text-oq-88" />
           </div>
           <div className="flex items-end gap-3">
             <span className="dash-subtitle">{value}</span>
             {label && <span className="dash-detail text-fg-64 mb-1">{label}</span>}
             {trend && (
-              <Icon
+              <IconLoader
                 name={trend === 'up' ? 'trending-up' : 'trending-down'}
                 size={16}
                 className="text-oq-64 mb-1"

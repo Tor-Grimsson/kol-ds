@@ -1,5 +1,5 @@
 import { Button, Slider, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — float Buttons and a Slider float on the float surface */
 

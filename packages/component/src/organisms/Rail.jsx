@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { pushLayer, popLayer, isTopLayer } from '../utilities/layerStack.js'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import CloseButton from '../molecules/CloseButton.jsx'
 import Divider from '../atoms/Divider.jsx'
 import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion.js'

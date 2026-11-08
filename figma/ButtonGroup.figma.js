@@ -16,7 +16,7 @@ const v = variant !== 'default' ? ` variant="${variant}"` : ''
 const sz = size !== 'md' ? ` size="${size}"` : ''
 const sf = variant === 'float' && surface !== 'solid' ? ` surface="${surface}"` : ''
 const opts = iconOnly
-  ? `options={[{ value: 'play', ariaLabel: 'Play', label: <Icon name="play" size={16} /> }, { value: 'pause', ariaLabel: 'Pause', label: <Icon name="pause" size={16} /> }]}`
+  ? `options={[{ value: 'play', ariaLabel: 'Play', label: <IconLoader name="play" size={16} /> }, { value: 'pause', ariaLabel: 'Pause', label: <IconLoader name="pause" size={16} /> }]}`
   : count
     ? `options={[{ value: 'open', label: 'Open', count: 5 }, { value: 'done', label: 'Completed' }]}`
     : 'options={options}'

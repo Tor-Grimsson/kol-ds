@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button, Kbd, ShellSearchOverlay } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 5 — the ⌘K search modal aimed at shadcn's (2026-09-30): an inset field, suggestions on an
  * empty query, group headings, tile rows, a footer that always says what Enter does, a body
@@ -23,7 +23,7 @@ function GlyphPair({ name }) {
   return (
     <div className="flex flex-col items-center gap-2 rounded border border-fg-08 p-3">
       <div className="flex items-end gap-6">
-        <span className="inline-flex flex-col items-center gap-1"><Icon name={name} size={32} /><span className="kol-mono-12 text-subtle">kol</span></span>
+        <span className="inline-flex flex-col items-center gap-1"><IconLoader name={name} size={32} /><span className="kol-mono-12 text-subtle">kol</span></span>
         <span className="inline-flex flex-col items-center gap-1"><span className="inline-flex h-8 w-8 [&>svg]:h-8 [&>svg]:w-8" dangerouslySetInnerHTML={{ __html: LUCIDE[name] }} /><span className="kol-mono-12 text-subtle">lucide</span></span>
       </div>
       <span className="kol-mono-12 text-subtle">{name}</span>

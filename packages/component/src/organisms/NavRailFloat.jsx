@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Kbd from '../atoms/Kbd.jsx'
 import TreeRow from '../molecules/TreeRow.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
@@ -53,7 +53,7 @@ export default function NavRailFloat({ items = [], currentPath = '', onNavigate,
       <Tooltip key={key} label={label} placement="right" variant="float" asChild>
         <button type="button" aria-label={label} aria-current={on ? 'page' : undefined} onClick={onClick}
           className={`relative inline-flex size-11 shrink-0 items-center justify-center rounded-full cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${on ? 'bg-fg-16 text-oq-96' : well ? 'bg-[var(--kol-float-well)] text-oq-64 hover:text-oq-96' : 'text-oq-64 hover:bg-fg-08 hover:text-oq-96'}`}>
-          <Icon name={glyph} size={well ? 18 : 20} />
+          <IconLoader name={glyph} size={well ? 18 : 20} />
         </button>
       </Tooltip>
     )
@@ -83,14 +83,14 @@ export default function NavRailFloat({ items = [], currentPath = '', onNavigate,
     <nav aria-label="Navigation" style={motionStyle} className={`kol-float-rail flex h-full w-[280px] flex-col gap-3 rounded-[var(--kol-float-menu-r)] bg-surface-secondary shadow-[var(--kol-shadow-float)] p-3 ${className}`.trim()}>
       {switcher ?? (title && (
         <button type="button" onClick={onSwitch} className="flex h-10 w-full items-center gap-2.5 rounded-[var(--kol-float-list-r)] px-2.5 text-left cursor-pointer hover:bg-fg-08 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
-          <Icon name={icon} size={18} className="shrink-0 text-oq-96" />
+          <IconLoader name={icon} size={18} className="shrink-0 text-oq-96" />
           <span className="kol-float-body-lg min-w-0 flex-1 truncate text-fg-emphasis">{title}</span>
-          {onSwitch && <Icon name="chevron-down" size={14} className="shrink-0 text-oq-64" />}
+          {onSwitch && <IconLoader name="chevron-down" size={14} className="shrink-0 text-oq-64" />}
         </button>
       ))}
       {onSearch && (
         <button type="button" onClick={onSearch} className="flex h-[var(--kol-float-h-md)] w-full items-center gap-2.5 rounded-full bg-[var(--kol-float-well)] pl-3 pr-2 text-left cursor-pointer hover:bg-fg-08 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
-          <Icon name="search" size={16} className="shrink-0 text-oq-64" />
+          <IconLoader name="search" size={16} className="shrink-0 text-oq-64" />
           <span className="kol-float-hint min-w-0 flex-1 truncate text-fg-64">Search pages</span>
           <Kbd size="sm" icon="command">K</Kbd>
         </button>

@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const ICON_SIZES = { xs: 8, sm: 10, md: 12, lg: 14 }
 const PALETTE = new Set(['blue', 'teal', 'green', 'yellow', 'red', 'orange', 'purple'])
@@ -115,7 +115,7 @@ export default function Tag({
       style={hue ? { ...style, '--kol-tag-hue': hue } : style}
       onClick={onClick}
     >
-      {icon && <Icon name={icon} size={iconSize} />}
+      {icon && <IconLoader name={icon} size={iconSize} />}
       <span>{hash && !float ? '#' : ''}{content}</span>
       {count != null && <span className="kol-tag-count">{count}</span>}
       {onRemove && (
@@ -125,7 +125,7 @@ export default function Tag({
           className="kol-tag-dismiss"
           onClick={handleRemove}
         >
-          <Icon name="x" size={iconSize} />
+          <IconLoader name="x" size={iconSize} />
         </span>
       )}
     </Element>

@@ -1127,6 +1127,12 @@
       "type": "—",
       "def": "16",
       "desc": ""
+    },
+    {
+      "prop": "ink",
+      "type": "—",
+      "def": "'fg'",
+      "desc": ""
     }
   ],
   "DocsToc": [
@@ -1421,7 +1427,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -1741,6 +1747,12 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "icon",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "LabeledControl": [
@@ -2034,6 +2046,12 @@
     }
   ],
   "ProsePreview": [
+    {
+      "prop": "collection",
+      "type": "—",
+      "def": "'prose'",
+      "desc": ""
+    },
     {
       "prop": "quote",
       "type": "—",
@@ -2569,62 +2587,6 @@
       "desc": ""
     }
   ],
-  "SegmentedToggle": [
-    {
-      "prop": "options",
-      "type": "—",
-      "def": "[]",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "'default'",
-      "desc": ""
-    },
-    {
-      "prop": "size",
-      "type": "—",
-      "def": "'md'",
-      "desc": ""
-    },
-    {
-      "prop": "tone",
-      "type": "—",
-      "def": "'default'",
-      "desc": ""
-    },
-    {
-      "prop": "surface",
-      "type": "—",
-      "def": "'solid'",
-      "desc": ""
-    },
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "value",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onChange",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "ariaLabel",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    }
-  ],
   "VariantsControl": [
     {
       "prop": "axes",
@@ -3074,62 +3036,6 @@
     },
     {
       "prop": "value",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    }
-  ],
-  "QuickLookHeader": [
-    {
-      "prop": "className",
-      "type": "—",
-      "def": "''",
-      "desc": ""
-    },
-    {
-      "prop": "variant",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "icon",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "title",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "meta",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "actions",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "nav",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onMinimise",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    },
-    {
-      "prop": "onClose",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -5289,7 +5195,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -5369,7 +5275,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -5685,6 +5591,12 @@
   ],
   "ButtonGroup": [
     {
+      "prop": "layout",
+      "type": "—",
+      "def": "'row'",
+      "desc": ""
+    },
+    {
       "prop": "align",
       "type": "—",
       "def": "'center'",
@@ -5818,6 +5730,18 @@
     },
     {
       "prop": "showRotate",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -6308,6 +6232,136 @@
     },
     {
       "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SwatchTile": [
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "hex?.toUpperCase()",
+      "desc": ""
+    },
+    {
+      "prop": "size",
+      "type": "—",
+      "def": "'tile'",
+      "desc": ""
+    },
+    {
+      "prop": "height",
+      "type": "—",
+      "def": "96",
+      "desc": ""
+    },
+    {
+      "prop": "anchor",
+      "type": "—",
+      "def": "false",
+      "desc": ""
+    },
+    {
+      "prop": "chipClassName",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "hex",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "SwatchCaption": [
+    {
+      "prop": "layout",
+      "type": "—",
+      "def": "'stacked'",
+      "desc": ""
+    },
+    {
+      "prop": "tone",
+      "type": "—",
+      "def": "'muted'",
+      "desc": ""
+    },
+    {
+      "prop": "metaClass",
+      "type": "—",
+      "def": "'kol-helper-10 text-meta'",
+      "desc": ""
+    },
+    {
+      "prop": "name",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "value",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "rowClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "nameClass",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "valueClass",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -7467,7 +7521,7 @@
     {
       "prop": "className",
       "type": "—",
-      "def": "'border-oq-08 my-1'",
+      "def": "'my-1'",
       "desc": ""
     }
   ],
@@ -7710,14 +7764,6 @@
       "def": "—",
       "desc": ""
     },
-    {
-      "prop": "children",
-      "type": "—",
-      "def": "—",
-      "desc": ""
-    }
-  ],
-  "MenuLabel": [
     {
       "prop": "children",
       "type": "—",
@@ -8021,6 +8067,44 @@
       "desc": ""
     }
   ],
+  "MenuList": [
+    {
+      "prop": "items",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "dividerClassName",
+      "type": "—",
+      "def": "'kol-menu-rule'",
+      "desc": ""
+    },
+    {
+      "prop": "search",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "headingClassName",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
   "ModalProvider": [
     {
       "prop": "variant",
@@ -8062,6 +8146,44 @@
     },
     {
       "prop": "contained",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "ModalShell": [
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'lift'",
+      "desc": ""
+    },
+    {
+      "prop": "className",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "header",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "style",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "children",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -8453,6 +8575,12 @@
       "desc": ""
     },
     {
+      "prop": "surface",
+      "type": "—",
+      "def": "'solid'",
+      "desc": ""
+    },
+    {
       "prop": "motion",
       "type": "—",
       "def": "true",
@@ -8537,7 +8665,19 @@
       "desc": ""
     },
     {
-      "prop": "surface",
+      "prop": "tabs",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "anchor",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "shortcutHint",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -8734,6 +8874,56 @@
     },
     {
       "prop": "aria-label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "TypeTester": [
+    {
+      "prop": "fontStyle",
+      "type": "—",
+      "def": "'normal'",
+      "desc": ""
+    },
+    {
+      "prop": "text",
+      "type": "—",
+      "def": "''",
+      "desc": ""
+    },
+    {
+      "prop": "styles",
+      "type": "—",
+      "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "initialStyle",
+      "type": "—",
+      "def": "'Regular'",
+      "desc": ""
+    },
+    {
+      "prop": "initialSize",
+      "type": "—",
+      "def": "64",
+      "desc": ""
+    },
+    {
+      "prop": "initialLeading",
+      "type": "—",
+      "def": "10",
+      "desc": ""
+    },
+    {
+      "prop": "lineClamp",
+      "type": "—",
+      "def": "null",
+      "desc": ""
+    },
+    {
+      "prop": "fontFamily",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -9047,7 +9237,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -9115,7 +9305,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -14649,6 +14839,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'article'",
+      "desc": ""
+    },
+    {
       "prop": "prose",
       "type": "—",
       "def": "true",
@@ -19071,6 +19267,12 @@
   ],
   "MarkdownPage": [
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'research'",
+      "desc": ""
+    },
+    {
       "prop": "source",
       "type": "—",
       "def": "''",
@@ -19172,6 +19374,38 @@
     },
     {
       "prop": "columns",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    }
+  ],
+  "IndexCard": [
+    {
+      "prop": "href",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "onClick",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "label",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "title",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "meta",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -19599,7 +19833,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -19773,7 +20007,7 @@
     {
       "prop": "iconComponent",
       "type": "—",
-      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`Icon \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
+      "def": "({\n  name: baseName,\n  variant = 'outline',\n  size = 16,\n  className = '',\n  style = {},\n  children\n}) => {\n  const name = withVariant(baseName, variant)\n  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)\n\n  // If children are provided, render directly (for custom icons)\n  if (children) {\n    return (\n      <svg\n        width={size}\n        height={size}\n        viewBox=\"0 0 24 24\"\n        fill=\"currentColor\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n        className={`inline-block ${className}`}\n        style={{\n          verticalAlign: 'middle',\n          ...style\n        }}\n      >\n        {children}\n      </svg>\n    )\n  }\n\n  const dimension = normalizeSize(size)\n\n  // Consumer-registered icons resolve synchronously; the packaged set needs its\n  // chunk. resolveIcon checks CUSTOM first, so custom icons paint on first render.\n  const svgMarkup = resolveIcon(name)\n\n  if (!svgMarkup) {\n    // Not resolved yet. If the packaged chunk is still streaming, hold the layout\n    // box so the icon pops in without shifting. (Custom icons never reach here.)\n    if (!ready) {\n      return (\n        <span\n          aria-hidden=\"true\"\n          className={`inline-flex items-center justify-center ${className}`}\n          style={{ width: dimension, height: dimension, lineHeight: 0, ...style }}\n        />\n      )\n    }\n    console.warn(`IconLoader \"${name}\" not found in icon set`)\n    return null\n  }\n\n  /* A CSS SIZE IS NOT AN SVG ATTRIBUTE (float-everything W6, 2026-11-04): `size=\"var(--kol-float-ic)\"` (every float\n   * Button glyph) wrote `width=\"var(--kol-float-ic)\"` onto the <svg>, which no browser reads — the glyph drew blank in\n   * a box of the right size. The span carries the CSS size; the svg fills it. A plain length still goes on the svg. */\n  const sizedMarkup = applySizeToMarkup(svgMarkup, /^\\d+(\\.\\d+)?(px)?$/.test(dimension) ? dimension : '100%')\n\n  /* AN ICON IS NEVER THE CLICK TARGET (editor review #7, 2026-09-27: the design editor's settings\n   * drawer would not close on its X). The markup is injected as HTML, so when the icon's subtree\n   * re-renders between press and release the <path> the press landed on is replaced, and the\n   * browser drops the click — it needs the SAME node under both. With pointer events off, the press\n   * lands on the button around the glyph, which survives. Esc and the scrim always worked, which is\n   * how it hid. */\n  return (\n    <span\n      className={`inline-flex items-center justify-center ${className}`}\n      style={{\n        width: dimension,\n        height: dimension,\n        lineHeight: 0,\n        pointerEvents: 'none',\n        ...style\n      }}\n      dangerouslySetInnerHTML={{ __html: sizedMarkup }}\n    />\n  )\n}",
       "desc": ""
     },
     {
@@ -20283,7 +20517,7 @@
       "desc": ""
     }
   ],
-  "Icon": [
+  "IconLoader": [
     {
       "prop": "variant",
       "type": "—",
@@ -21007,6 +21241,12 @@
       "desc": ""
     },
     {
+      "prop": "orientation",
+      "type": "—",
+      "def": "'vertical'",
+      "desc": ""
+    },
+    {
       "prop": "className",
       "type": "—",
       "def": "''",
@@ -21029,9 +21269,27 @@
       "type": "—",
       "def": "—",
       "desc": ""
+    },
+    {
+      "prop": "end",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "search",
+      "type": "—",
+      "def": "—",
+      "desc": ""
     }
   ],
   "PropertyRail": [
+    {
+      "prop": "density",
+      "type": "—",
+      "def": "'regular'",
+      "desc": ""
+    },
     {
       "prop": "sections",
       "type": "—",
@@ -21069,6 +21327,12 @@
       "desc": ""
     },
     {
+      "prop": "onExpand",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
       "prop": "tabs",
       "type": "—",
       "def": "—",
@@ -21088,6 +21352,12 @@
     },
     {
       "prop": "selected",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "footer",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -21114,6 +21384,12 @@
     },
     {
       "prop": "status",
+      "type": "—",
+      "def": "—",
+      "desc": ""
+    },
+    {
+      "prop": "statusIcon",
       "type": "—",
       "def": "—",
       "desc": ""
@@ -21632,6 +21908,12 @@
       "prop": "end",
       "type": "—",
       "def": "[]",
+      "desc": ""
+    },
+    {
+      "prop": "variant",
+      "type": "—",
+      "def": "'bar'",
       "desc": ""
     },
     {

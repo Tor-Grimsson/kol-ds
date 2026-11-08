@@ -25,7 +25,7 @@
  * stroke icons in the kol curated set. For a plain number input without
  * bump affordance, use `<Input type="number" />`.
  */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const SIZE_TYPE    = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
 const CHEVRON_SIZE = { xs: 6,            sm: 8,             md: 10,            lg: 12 }
@@ -80,11 +80,11 @@ export default function Stepper({
     return (
       <div className={`inline-flex items-center justify-center gap-0.5 select-none ${SIZE_TYPE[size]} ${className}`.trim()} style={style}>
         <button type="button" onClick={handleDecrement} className="inline-flex items-center justify-center px-0.5 text-oq-40 hover:text-emphasis transition-colors" aria-label="Previous">
-          <Icon name="chevron-left" size={chev} />
+          <IconLoader name="chevron-left" size={chev} />
         </button>
         <span className="min-w-[3ch] text-center text-fg-64" {...props}>{value ?? ''}</span>
         <button type="button" onClick={handleIncrement} className="inline-flex items-center justify-center px-0.5 text-oq-40 hover:text-emphasis transition-colors" aria-label="Next">
-          <Icon name="chevron-right" size={chev} />
+          <IconLoader name="chevron-right" size={chev} />
         </button>
       </div>
     )
@@ -128,7 +128,7 @@ export default function Stepper({
           className="flex items-center justify-center text-oq-48 hover:text-emphasis transition-colors"
           aria-label="Increment"
         >
-          <Icon name="chevron-up" size={chevronWidth} />
+          <IconLoader name="chevron-up" size={chevronWidth} />
         </button>
         <button
           type="button"
@@ -136,7 +136,7 @@ export default function Stepper({
           className="flex items-center justify-center text-oq-48 hover:text-emphasis transition-colors"
           aria-label="Decrement"
         >
-          <Icon name="chevron-down" size={chevronWidth} />
+          <IconLoader name="chevron-down" size={chevronWidth} />
         </button>
       </div>
     </div>

@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-theme
 
+## 0.217.0 — 2026-11-08
+
+plan-2026-11-08-outstanding W2 (one modal panel):
+- **Changed: `.kol-quicklook` and `.kol-media-picker` no longer paint a panel** — their ground, hairline, radius (and the quicklook's flex/position) come from kol-component's `ModalShell` (`.kol-overlay-panel`, `--kol-radius-sm`). The quicklook's 2px border allowance in `--kol-ql-media-h` goes with the hairline. Pair with kol-component ≥0.356.0: an older QuickLookFrame on this theme draws no surface.
+
 ## 0.216.1 — 2026-11-07
 
 plan-2026-11-07-menu-system 1.2:

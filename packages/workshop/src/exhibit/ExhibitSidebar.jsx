@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { DocsToc, Icon } from '@kolkrabbi/kol-component'
+import { DocsToc, IconLoader } from '@kolkrabbi/kol-component'
 import RailSection from '../shell/RailSection.jsx'
 import RailRow from '../shell/RailRow.jsx'
 
@@ -18,7 +18,7 @@ import RailRow from '../shell/RailRow.jsx'
  * rungs come from RailSection now, so this block cannot drift from either rail.
  * `pnpm validate:rails` R3 + R4 assert both halves.
  *
- * Router-agnostic in the same way as WorkshopSidebar: hrefs are built from
+ * Router-agnostic in the same way as WorkshopRail: hrefs are built from
  * `basePath`/`docHref`, never from an app singleton.
  *
  * @param {Array}  [sections] on-this-page entries for DocsToc: [{ id, title, level }]
@@ -39,13 +39,13 @@ export default function ExhibitSidebar({
   return (
     <div className="shell-rail-stack-inner">
       {sections.length > 0 && (
-        <RailSection level={1} label="On this page" icon={Icon}>
+        <RailSection level={1} label="On this page" icon={IconLoader}>
           <DocsToc toc={sections} />
         </RailSection>
       )}
 
       {links.length > 0 && (
-        <RailSection level={1} label="Documentation" icon={Icon}>
+        <RailSection level={1} label="Documentation" icon={IconLoader}>
           <nav className="shell-nav-items">
             {links.map(({ id, label }) => (
               <RailRow key={id} to={docHref(id)}>
@@ -57,22 +57,22 @@ export default function ExhibitSidebar({
       )}
 
       {actions && (
-        <RailSection level={1} label="Quick actions" icon={Icon}>
+        <RailSection level={1} label="Quick actions" icon={IconLoader}>
           <div className="space-y-1">
             <button
               type="button"
               className="shell-sidebar-action kol-mono-14 text-body"
               onClick={() => navigate(-1)}
             >
-              <Icon name="arrow-left" size={14} />
+              <IconLoader name="arrow-left" size={14} />
               Back
             </button>
             <Link to={docHref()} className="shell-sidebar-action kol-mono-14 text-body">
-              <Icon name="book-open" size={14} className="text-oq-64" />
+              <IconLoader name="book-open" size={14} className="text-oq-64" />
               All documentation
             </Link>
             <Link to={basePath} className="shell-sidebar-action kol-mono-14 text-body">
-              <Icon name="layout" size={14} className="text-oq-64" />
+              <IconLoader name="layout" size={14} className="text-oq-64" />
               Workshop home
             </Link>
             <button
@@ -80,7 +80,7 @@ export default function ExhibitSidebar({
               className="shell-sidebar-action kol-mono-14 text-body"
               onClick={() => navigator.clipboard?.writeText(window.location.pathname)}
             >
-              <Icon name="copy" size={14} />
+              <IconLoader name="copy" size={14} />
               Copy path
             </button>
           </div>

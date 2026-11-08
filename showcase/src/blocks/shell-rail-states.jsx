@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { ShellHeader } from '@kolkrabbi/kol-framework'
-import { ShellNavColumn, ShellSidebar, RightRail } from '@kolkrabbi/kol-workshop'
+import { ShellNavColumn, ShellRail, RightRail } from '@kolkrabbi/kol-workshop'
 import { SegmentedToggle } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Shell rail states',
@@ -16,7 +16,7 @@ export const meta = {
 export const stage = 'full'
 
 /* THE REAL CHROME, nothing else (user ruling 2026-10-02): kol-framework's ShellHeader, the workshop
- * shell's left rail in its own column (ShellNavColumn + ShellSidebar) and its right rail
+ * shell's left rail in its own column (ShellNavColumn + ShellRail) and its right rail
  * (RightRail), over placeholder content. The left rail has three states — open, icons only (a strip
  * that opens on hover) and hidden; the switch above the frame picks one. Every link is a `#` on
  * this page, so nothing routes away. */
@@ -80,7 +80,7 @@ export default function ShellRailStates() {
           <div className={`shell-content-grid grid px-6 ${COLS[state]}`}>
             {state !== 'hidden' && (
               <ShellNavColumn mode={state}>
-                <ShellSidebar routes={ROUTES} basePath="/" label="Documentation" />
+                <ShellRail routes={ROUTES} basePath="/" label="Documentation" />
               </ShellNavColumn>
             )}
             <main className="shell-main min-w-0 px-8 py-8">
@@ -93,7 +93,7 @@ export default function ShellRailStates() {
               </div>
             </main>
             <aside aria-label="Table of contents" className="shell-rail shell-rail--toc shell-sidebar-sticky pt-8 pb-14">
-              <RightRail toc={TOC} activeId="rs-overview" icon={Icon} />
+              <RightRail toc={TOC} activeId="rs-overview" icon={IconLoader} />
             </aside>
           </div>
         </div>

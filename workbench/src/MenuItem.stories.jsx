@@ -1,18 +1,18 @@
-import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, Icon } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, IconLoader } from '@kolkrabbi/kol-component'
 
 export const FileMenu = () => (
   <MenuItem label="File">
     <div className="py-1 w-[220px]">
       <MenuDropdownItem onClick={() => {}} shortcut="⌘S">Save</MenuDropdownItem>
       <MenuDropdownItem onClick={() => {}} shortcut="⇧⌘S">Save as…</MenuDropdownItem>
-      <MenuDropdownItem onClick={() => {}} shortcut={<Icon name="check" size={11} />}>Autosave</MenuDropdownItem>
+      <MenuDropdownItem onClick={() => {}} shortcut={<IconLoader name="check" size={11} />}>Autosave</MenuDropdownItem>
       <MenuDropdownDivider />
-      <MenuDropdownNest iconLeft={<Icon name="arrow-right" size={14} />} label="Export">
+      <MenuDropdownNest iconLeft={<IconLoader name="arrow-right" size={14} />} label="Export">
         <MenuDropdownItem onClick={() => {}}>Export SVG</MenuDropdownItem>
         <MenuDropdownItem onClick={() => {}}>Export PNG</MenuDropdownItem>
       </MenuDropdownNest>
       <MenuDropdownDivider />
-      <MenuDropdownItem onClick={() => {}} iconLeft={<Icon name="trash" size={14} />} disabled>Delete</MenuDropdownItem>
+      <MenuDropdownItem onClick={() => {}} iconLeft={<IconLoader name="trash" size={14} />} disabled>Delete</MenuDropdownItem>
     </div>
   </MenuItem>
 )

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { IconPlate } from '@kolkrabbi/kol-component'
 import { SegGroup } from '../lib/icon-controls.jsx'
 
@@ -55,7 +55,7 @@ export default function OpenQuestionsRound13() {
       <DocSection id="pair" title="The pair" lede="video as shipped, video-off proposed">
         <div className="flex flex-wrap gap-x-8 gap-y-6">
           {compare && <Plate dim label="monitor" size={size} light={light} guide={guide} draw={(s) => <Raw markup={MONITOR} size={s} />} />}
-          <Plate label="video" size={size} light={light} guide={guide} draw={(s) => <Icon name="video" size={s} />} />
+          <Plate label="video" size={size} light={light} guide={guide} draw={(s) => <IconLoader name="video" size={s} />} />
           <Plate label="video-off" size={size} light={light} guide={guide} draw={(s) => <Raw markup={PROPOSED} size={s} />} />
         </div>
       </DocSection>

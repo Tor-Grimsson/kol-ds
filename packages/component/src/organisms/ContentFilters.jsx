@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from 'react'
 import Tag from '../atoms/Tag.jsx'
 import Divider from '../atoms/Divider.jsx'
 import Button from '../atoms/Button.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import SearchInput from '../molecules/SearchInput.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
@@ -167,7 +167,7 @@ const ContentFilters = ({
 }) => {
   /* Icon seam — consumers on a local icon shelf pass their own component
    * rather than being forced onto the DS set. Needs `filter` + `search`. */
-  const IconSeam = iconComponent || Icon
+  const IconSeam = iconComponent || IconLoader
   /* SEEDED, not controlled (FilesDialog, kol-fxr 2026-09-04). A consumer that
    * opens onto one chip — the files dialog opens on `preset` — had no way to
    * say so: the set started empty and the first paint showed everything. An

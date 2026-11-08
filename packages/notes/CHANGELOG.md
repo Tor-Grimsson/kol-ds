@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-notes
 
+## 0.3.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.2.0 — 2026-09-29
 
 - **New is a blank page.** `open={NEW_NOTE}` is a note not saved yet — the editor, empty, no name asked; the first Save names it (frontmatter `title`, else the first heading, else "Untitled note"), creates the row and opens it by its slug. New note in the list opens the same. `NEW_NOTE` and `blankBody` exported.

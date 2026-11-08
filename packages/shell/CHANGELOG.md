@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-shell
 
+## 0.118.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.117.0 — 2026-11-08
 
 needs kol-icons ≥0.61.1:

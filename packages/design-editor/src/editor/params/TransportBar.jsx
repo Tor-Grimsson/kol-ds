@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Input, ButtonGroup, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useTransport } from './transport'
 
 /**
@@ -56,7 +56,7 @@ function LoopField({ seconds, onCommit, size }) {
   )
 }
 
-const glyph = (name, size) => <Icon name={name} size={glyphSize(size, true)} />
+const glyph = (name, size) => <IconLoader name={name} size={glyphSize(size, true)} />
 
 /* THE GLYPH CELLS ARE SQUARE ON THE LADDER (26 / 32 / 40 — the DS icon-only geometry; ruled
  * 2026-09-02 so ▶❚❚ · Loop / N s · ■◀◀ is one line at every rail width). The 2026-09-27 rebuild

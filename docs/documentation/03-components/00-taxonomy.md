@@ -73,7 +73,7 @@ Which `packages/component/src/<folder>/` (or package) a component lives in. Deci
 | **Organism** | A **self-contained interface region** — a full bar, table, gallery, band, overlay surface, or manager. | `packages/component/src/organisms/` |
 | **Utility** | **Purpose without a face** — a layout wrapper, a mechanism other components wear, a guard, a fallback state. Real exports with real consumers, but not interface elements. | `packages/component/src/utilities/` |
 | ~~Framework~~ | *Retired as a tier 2026-09-30:* kol-framework's components sit on the ladder like every package's (SideNav, PortalFooter, heroes → organisms; ThemeToggle → atom). | `packages/framework/src/` |
-| **Loader** | Name→asset resolvers (`Icon`, `Graphic`). **Not visual UI** — never listed as components; documented on `/docs/loaders`, galleries live on the Icons pages. | `kol-icons`, `graphics/` |
+| **Loader** | Name→asset resolvers (`IconLoader`, `Graphic`). **Not visual UI** — never listed as components; documented on `/docs/loaders`, galleries live on the Icons pages. | `kol-icons`, `graphics/` |
 | **Hook** | Reusable behavior, no markup of its own (`usePrefersReducedMotion`, `useScrollSpy`). | `packages/component/src/hooks/` |
 
 ### Every package on one ladder (2026-09-30)
@@ -105,7 +105,7 @@ Deliberate boundary calls, so they aren't relitigated:
 1. **Single-value selection controls are atoms** — `ViewToggle`, `ToggleBracket`. Their cells are options of ONE control (role=radiogroup), not Buttons. The segmented control left this rule 2026-11-06: it is `ButtonGroup layout="joined"` (a molecule — a group of buttons; `SegmentedToggle` is its alias).
 2. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`: an Input visibly composed with adjuncts.
 3. **One element with elaborate behavior is still an atom** — `RotaryDial`: a single control, however much it does. *(CurveOverlay left for utilities 2026-09-30 — it paints only over a target.)* *(Reworded 2026-08-09 night — the original examples all left atoms the same day: `TiltCard` and `AsciiCursor` to utilities on the paints-and-stands law — fixed-position whole-viewport chrome fails "stands alone", the ExitPreview precedent — and `InteractiveImage` retired to `_tmp/` on zero consumers. The call itself stands: elaborateness never promotes.)*
-4. **`Icon`/`Graphic` never affect tier** — loader infrastructure, invisible to the judgment.
+4. **`IconLoader`/`Graphic` never affect tier** — loader infrastructure, invisible to the judgment.
 5. **Imports still go downward only** — atoms never import molecules/organisms; molecules never import organisms; sideways is legal at every rung. This is the part that stays lint-enforced (`scripts/validate-taxonomy.mjs`); placement itself is authored, and the authored map lives in [[02-placement|component placement]].
 
 ### An atom PAINTS, and it stands alone (2026-08-09 ruling)
@@ -128,7 +128,7 @@ The "Atomic" sidebar grouping is the full Tier set, in this order:
 `atoms · molecules · organisms · utilities · framework·chrome · framework·structure · framework·behavior · hooks · misc`
 
 - **Framework is split three ways** for browsing — `chrome` (shell pieces: SiteLayout, SideNav, PortalFooter, ShellHeader, ThemeToggle, Layout), `structure` (the page kit: PageHero, PageSection), `behavior` (render-null utilities: ScrollToTop). *(Open question, tracked in the audit: do the heroes belong in atomic `organisms` instead of the framework tier?)*
-- **Loaders are not a sidebar group.** `Icon`/`Graphic` are documented on `/docs/loaders`; their galleries stay on `/icons`.
+- **Loaders are not a sidebar group.** `IconLoader`/`Graphic` are documented on `/docs/loaders`; their galleries stay on `/icons`.
 - **`misc`** is a fallback bucket. It should stay empty — anything landing there is an unclassified component and a bug to fix, not a home.
 
 ---

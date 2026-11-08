@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-icons
 
+## 0.68.0 — 2026-11-08
+
+- **Renamed: `Icon` is `IconLoader`** (user: "rename icon to iconloader that is the fucking name"). Same component, same props; the file is `src/IconLoader.jsx`. `Icon` stays exported as a deprecated alias of the same component, on the retirement ledger, so no consumer breaks. Import `IconLoader`.
+- The `kol-icons` scanner reads `<IconLoader name>` as well as `<Icon name>`.
+
 ## 0.67.0 — 2026-11-08
 
 - **New identity `foundry`**: the Foundry app mark (the drafting compass at the keyline, `currentColor`), as `identity/foundry`.

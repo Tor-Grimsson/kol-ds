@@ -1,6 +1,6 @@
 import { Fragment, useContext, useEffect, useMemo, useState } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { CodeBlock, Divider, Icon, Table, useScrollSpy } from '@kolkrabbi/kol-component'
+import { CodeBlock, Divider, IconLoader, Table, useScrollSpy } from '@kolkrabbi/kol-component'
 import { ShellTocContext, RightRail, SHELL_SCROLL_ROOT } from '../shell/index.js'
 import { useTagMode } from '../tags/index.js'
 import TagPath from '../tags/TagPath.jsx'
@@ -28,11 +28,11 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
   const activeId = useScrollSpy((toc ?? []).map((h) => h.id), { root: SHELL_SCROLL_ROOT })
 
   const actions = [
-    { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
-    { id: 'docs', label: 'All documentation', icon: <Icon name="book-open" size={14} />, to: docsIndexHref },
-    { id: 'components', label: 'View components', icon: <Icon name="grid" size={14} />, to: componentsHref },
-    { id: 'copy', label: 'Copy path', icon: <Icon name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(docFilePath(docId)) },
-    { id: 'graph', label: 'Graph view', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+    { id: 'back', label: 'Back', icon: <IconLoader name="arrow-left" size={14} />, onClick: () => navigate(-1) },
+    { id: 'docs', label: 'All documentation', icon: <IconLoader name="book-open" size={14} />, to: docsIndexHref },
+    { id: 'components', label: 'View components', icon: <IconLoader name="grid" size={14} />, to: componentsHref },
+    { id: 'copy', label: 'Copy path', icon: <IconLoader name="copy" size={14} />, onClick: () => navigator.clipboard.writeText(docFilePath(docId)) },
+    { id: 'graph', label: 'Graph view', icon: <IconLoader name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
   ]
 
   return (
@@ -45,7 +45,7 @@ const DocReaderSidebar = ({ toc, allTags, related, docId, docsIndexHref, compone
       tags={allTags}
       renderTag={(tag) => <TagPath tag={tag} />}
       onTagClick={(tag) => openTagMode(tag)}
-      icon={Icon}
+      icon={IconLoader}
     />
   )
 }

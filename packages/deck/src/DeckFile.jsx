@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react'
-import { Button, FullscreenOverlay, LabeledControlSection } from '@kolkrabbi/kol-component'
+import { Button, FullscreenOverlay, LabeledControlSection, ModalShell } from '@kolkrabbi/kol-component'
 import { slideToPngBlob, deckToPdfBlob, deckToPptxBlob, saveBlob } from './slideExport.js'
 
-/* taxonomy-ok: organism — FullscreenOverlay + LabeledControlSection as the deck's save / export / import sheet */
+/* taxonomy-ok: organism — FullscreenOverlay + ModalShell + LabeledControlSection as the deck's save / export / import sheet */
 
 /**
  * DeckFile — Save and export a deck. save, export and import behind one sheet (kol-olina's brand decks; user 2026-09-03:
@@ -74,9 +74,16 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
   const label = (key, idle, working) => (busy === key ? (progress ? `${working} ${progress}` : `${working}…`) : idle)
 
   return (
-    <FullscreenOverlay open={open} onClose={onClose}>
-      <div className="w-[520px] max-w-[92vw] flex flex-col gap-5 p-6">
-        <p className="kol-eyebrow text-fg-80">Deck file</p>
+    /* a modal over the editor on ModalShell (W2.2, 2026-11-08): the scrim and the lift panel, where it was a bare
+     * column on an opaque page */
+    <FullscreenOverlay open={open} scrim onClose={onClose}>
+      <ModalShell className="w-[520px] max-w-[92vw] gap-5 p-6"
+        header={<p className="kol-eyebrow text-fg-80">Deck file</p>}
+        footer={(
+          <div className="flex justify-end">
+            <Button size="sm" tone="ghost" onClick={onClose}>Close</Button>
+          </div>
+        )}>
 
         {onSave && (
           <LabeledControlSection label="Save">
@@ -108,11 +115,7 @@ export default function DeckFile({ open, onClose, slug = 'deck', name, slides = 
         </LabeledControlSection>
 
         {error && <p className="kol-mono-12 text-fg-64">{error}</p>}
-
-        <div className="flex justify-end">
-          <Button size="sm" tone="ghost" onClick={onClose}>Close</Button>
-        </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

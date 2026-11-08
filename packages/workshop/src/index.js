@@ -2,7 +2,7 @@
  * @kolkrabbi/kol-workshop — the KOL workshop / docs system.
  *
  * Aggregates everything the package now owns: the shell composition
- * (ShellLayout + ShellSidebar + their contexts), the docs viewer, the tag
+ * (ShellLayout + ShellRail + their contexts), the docs viewer, the tag
  * system, the exhibit-section scaffold, the example compositions, and the pure
  * React-free engine. Duplicated chrome (ShellHeader, ShellDrawer, SearchInput,
  * ShellSearchOverlay, DocsToc) ships from @kolkrabbi/kol-framework +

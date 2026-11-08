@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { SOLO } from '../hooks/glyphLadders.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -38,7 +38,7 @@ export default function IconToggle({
   tone = 'default',
   size = 'sm',
   disabled = false,
-  iconComponent: IconCmp = Icon,
+  iconComponent: IconCmp = IconLoader,
   className = '',
   ...rest
 }) {

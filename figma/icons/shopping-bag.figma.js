@@ -7,7 +7,7 @@ const instance = figma.selectedInstance
 const variant = instance.getEnum('variant', { "outline": "outline", "solid": "solid" })
 
 export default {
-  example: figma.code`<Icon name="shopping-bag" variant="${variant}" />`,
-  imports: ["import { Icon } from \"@kolkrabbi/kol-component\""],
+  example: figma.code`<IconLoader name="shopping-bag" variant="${variant}" />`,
+  imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'shopping-bag',
 }

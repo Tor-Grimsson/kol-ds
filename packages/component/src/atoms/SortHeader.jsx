@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * SortHeader — one sortable field: label + direction arrow. Strip chrome, verbatim
@@ -24,7 +24,7 @@ export default function SortHeader({ label, active = false, dir = 'asc', onClick
       {...props}
     >
       {typeof label === 'string' ? label.toUpperCase() : label}
-      {active && <Icon name={dir === 'asc' ? 'arrow-down' : 'arrow-up'} size={10} />}
+      {active && <IconLoader name={dir === 'asc' ? 'arrow-down' : 'arrow-up'} size={10} />}
     </button>
   )
 }

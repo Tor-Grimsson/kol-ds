@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
-import QuickLookHeader from './QuickLookHeader.jsx'
+import { IconLoader } from '@kolkrabbi/kol-icons'
+import ModalHeader from './ModalHeader.jsx'
+import ModalShell from './ModalShell.jsx'
 
-/* taxonomy-ok: molecule — nests QuickLookHeader (molecule) + kol-icons's Icon. */
+/* taxonomy-ok: molecule — ModalHeader (molecule) on ModalShell (molecule) + kol-icons's IconLoader. */
 
 /**
  * QuickLookFrame — The preview window. the Finder Quick Look window (user 2026-09-23: *"put them in a container LIKE
@@ -33,7 +34,7 @@ import QuickLookHeader from './QuickLookHeader.jsx'
  *
  * THE UTILITY WINDOW (`variant="float"`, float-everything W6 rows 86 · 88, 2026-11-04 — kol-float--style 46:2840): a
  * non-modal float window — no scrim, the scene stays live under it. `kol-float-solid` on `--kol-float-window-r`, 20 in,
- * 18 between its parts; the header is `QuickLookHeader variant="float"` (`icon` · title · `onMinimise` · `onClose`); the
+ * 18 between its parts; the header is `ModalHeader variant="float"` (`icon` · title · `onMinimise` · `onClose`); the
  * body is the caller's (chip tabs, float fields); `status` is the footer line (`Changes saved automatically`, the
  * `kol-float-label` role on fg-64) with the resize corner as its glyph at the right — the same drag as the default grip.
  * @param {'float'}  [variant]
@@ -68,26 +69,31 @@ export default function QuickLookFrame({ variant, icon, onMinimise, status, titl
   const grip = { role: 'separator', 'aria-label': 'Resize', onPointerDown, onPointerMove, onPointerUp, onPointerCancel: onPointerUp }
   if (variant === 'float') {
     return (
-      <div ref={ref} style={size ? { width: size.w, height: size.h } : undefined}
-        className={`kol-float-solid flex w-full max-w-[562px] flex-col gap-[18px] rounded-[var(--kol-float-window-r)] p-5 text-fg-emphasis ${className}`.trim()}>
-        {header && <QuickLookHeader variant="float" icon={icon} title={title} actions={actions} onMinimise={onMinimise} onClose={onClose} />}
+      <ModalShell ref={ref} variant="float" style={size ? { width: size.w, height: size.h } : undefined}
+        className={`w-full max-w-[562px] gap-[18px] p-5 ${className}`.trim()}
+        header={header && <ModalHeader variant="float" icon={icon} title={title} actions={actions} onMinimise={onMinimise} onClose={onClose} />}
+        footer={(
+          <>
+            {footer}
+            <div className="flex items-center gap-3">
+              <span className="kol-float-label min-w-0 flex-1 truncate text-fg-64">{status}</span>
+              <span {...grip} className="inline-flex size-4 cursor-nwse-resize touch-none items-center justify-center text-oq-64 hover:text-oq-96"><IconLoader name="expand" size={13} /></span>
+            </div>
+          </>
+        )}>
         <div className="flex min-h-0 flex-1 flex-col gap-[18px]">{children}</div>
-        {footer}
-        <div className="flex items-center gap-3">
-          <span className="kol-float-label min-w-0 flex-1 truncate text-fg-64">{status}</span>
-          <span {...grip} className="inline-flex size-4 cursor-nwse-resize touch-none items-center justify-center text-oq-64 hover:text-oq-96"><Icon name="expand" size={13} /></span>
-        </div>
-      </div>
+      </ModalShell>
     )
   }
-  const style = size ? { width: size.w, height: size.h, '--kol-ql-frame-h': `${size.h}px`, '--kol-ql-max-w': `${size.w - 2}px` } : undefined
+  /* THE PANEL IS ModalShell's (W2.2, 2026-11-08): the lift surface and the one modal radius; the oq-12 hairline the
+   * window wore went with its own panel style — the scrim is the edge, as on every other KOL overlay */
+  const style = size ? { width: size.w, height: size.h, '--kol-ql-frame-h': `${size.h}px`, '--kol-ql-max-w': `${size.w}px` } : undefined
   return (
-    <div ref={ref} style={style}
-      className={`kol-quicklook${footer ? ' kol-quicklook--footer' : ''}${size ? ' kol-quicklook--sized' : ''} ${className}`.trim()}>
-      {header && <QuickLookHeader title={title} meta={meta} actions={actions} nav={nav} onClose={onClose} />}
+    <ModalShell ref={ref} style={style}
+      className={`kol-quicklook${footer ? ' kol-quicklook--footer' : ''}${size ? ' kol-quicklook--sized' : ''} ${className}`.trim()}
+      header={header && <ModalHeader title={title} meta={meta} actions={actions} nav={nav} onClose={onClose} />}
+      footer={<>{footer && <div className="kol-quicklook-footer">{footer}</div>}<span className="kol-quicklook-grip" {...grip} /></>}>
       <div className="kol-quicklook-body">{children}</div>
-      {footer && <div className="kol-quicklook-footer">{footer}</div>}
-      <span className="kol-quicklook-grip" {...grip} />
-    </div>
+    </ModalShell>
   )
 }

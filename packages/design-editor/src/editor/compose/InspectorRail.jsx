@@ -1,5 +1,5 @@
 import { Button, Dropdown, Tooltip, glyphSize, InspectorRail as DsInspectorRail } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { NumberField } from './inspectors/NumberField'
 import { BLEND_MODES } from './LayerStack'
 import Pane from '../components/Pane'
@@ -60,7 +60,7 @@ function MultiInspector({ ids }) {
           <Tooltip label="Opacity" triggerClassName="flex min-w-0">
             <NumberField
               variant="property" size={cs} unit="%" className="w-full min-w-0"
-              affordance={<Icon name="opacity" size={glyphSize(cs)} />}
+              affordance={<IconLoader name="opacity" size={glyphSize(cs)} />}
               value={opacity ?? ''} placeholder="Mixed"
               onCommit={(raw) => {
                 const n = Number(raw)

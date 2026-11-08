@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button, IconFrame, SegmentedToggle, SettingsSections, SettingsSwitch, ToggleSwitch, Tooltip } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 3 — the visual calls the showcase build (2026-09-30) could not make without the user:
  * the header's right-hand cluster, the settings drawer, the rails' states, and the editor items
@@ -71,7 +71,7 @@ function RailState({ variant }) {
       {variant === 'visible' && <div className={`${col} w-24`}>Category<br />Chapter (4)<br />Page</div>}
       {variant === 'strip' && (
         <div className={`${col} flex w-10 flex-col items-center gap-3 px-1`}>
-          <Icon name="component-01" size={16} /><Icon name="layout" size={16} /><Icon name="book-open" size={16} />
+          <IconLoader name="component-01" size={16} /><IconLoader name="layout" size={16} /><IconLoader name="book-open" size={16} />
         </div>
       )}
       <div className={`${col} flex-1`}>page</div>
@@ -140,8 +140,8 @@ export default function OpenQuestionsRound3() {
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div className={card}>
             <span className={name}>#14 · the align, rotate, flip glyphs at 16px</span>
-            <div className="flex flex-wrap gap-3">{GLYPHS.map((g) => <Tooltip key={g} label={g}><span className="inline-flex"><Icon name={g} size={16} /></span></Tooltip>)}</div>
-            <div className="flex flex-wrap gap-3">{GLYPHS.map((g) => <Icon key={g} name={g} size={32} />)}</div>
+            <div className="flex flex-wrap gap-3">{GLYPHS.map((g) => <Tooltip key={g} label={g}><span className="inline-flex"><IconLoader name={g} size={16} /></span></Tooltip>)}</div>
+            <div className="flex flex-wrap gap-3">{GLYPHS.map((g) => <IconLoader key={g} name={g} size={32} />)}</div>
             <span className={note}>redrawing them is design work — send drawings, or say which read weakest</span>
           </div>
           <div className={card}>

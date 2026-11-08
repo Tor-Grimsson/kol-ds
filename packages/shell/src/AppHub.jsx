@@ -7,7 +7,7 @@ import HubSettings from './HubSettings.jsx'
 import HubSettingsRail, { hubThemeToggle } from './HubSettingsRail.jsx'
 import HubDev from './HubDev.jsx'
 import { warnJsx } from './warnJsx.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Avatar, CommandOverlay, MediaLibrary, ModalProvider, RAIL_PRESETS, ShortcutsOverlay, railShortcuts, shortcutInScope, useModal } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — nests AppShell / HubHome / HubSettings / HubSettingsRail / HubDev (relative) + kol-component's CommandOverlay */
@@ -365,7 +365,7 @@ function HubFrame({
   const user = signIn?.signedIn ? signIn.user : null
   const railIcon = useMemo(() => {
     if (!user) return iconComponent
-    const Base = iconComponent ?? Icon
+    const Base = iconComponent ?? IconLoader
     return function HubRailIcon({ name, ...rest }) {
       if (name !== ACCOUNT_GLYPH) return <Base name={name} {...rest} />
       return user.avatar ? <Avatar src={user.avatar} alt="" size="xs" /> : <Base name="user" {...rest} />

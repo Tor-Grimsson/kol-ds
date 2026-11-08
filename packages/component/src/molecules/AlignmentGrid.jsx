@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ButtonGroup from './ButtonGroup.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
@@ -54,7 +54,7 @@ export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = '
              * ladder, never a number typed here */
             options={cells.map((b) => ({
               value: `${b.axis}-${b.mode}`,
-              label: <Icon name={b.icon} size={glyphSize(size)} />,
+              label: <IconLoader name={b.icon} size={glyphSize(size)} />,
               ariaLabel: b.title,
             }))}
             onChange={(v) => {

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input.jsx'
 import Button from '../atoms/Button.jsx'
 
@@ -42,7 +42,7 @@ export default function LinkAddRow({ onAdd, title, href, namePlaceholder = 'Link
         <span className="kol-float-body text-fg-emphasis">{title}</span>
         {href && (
           <a href={href} target="_blank" rel="noreferrer" aria-label={`Open ${title}`} className="inline-flex text-oq-64 hover:text-oq-96 transition-colors">
-            <Icon name="arrow-upright" size={18} />
+            <IconLoader name="arrow-upright" size={18} />
           </a>
         )}
       </div>

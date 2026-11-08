@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { Button, ModalHeader, usePopover, PopoverPanel } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* the open level a row sits in (FloatMenu); null outside one, where a row's `sub` is ignored as before */
 const Level = (globalThis[Symbol.for('@kolkrabbi/kol-shell/FloatMenuLevel')] ??= createContext(null))
@@ -47,9 +47,9 @@ export default function MoreRows({ actions = [], items = [], active, onPick, ite
             aria-haspopup={nests ? 'menu' : undefined} aria-expanded={nests ? level.isOpen(a) : undefined}
             onClick={(e) => { if (nests) { level.open(a, e.currentTarget); return } onPick?.(a); a.onPress?.() }}>
             {a.checked !== undefined && (
-              <span className="inline-flex items-center justify-center shrink-0" style={{ width: float ? 'var(--kol-float-ic)' : 22, height: float ? 'var(--kol-float-ic)' : 22 }}>{a.checked && <Icon name="check" size={22} />}</span>
+              <span className="inline-flex items-center justify-center shrink-0" style={{ width: float ? 'var(--kol-float-ic)' : 22, height: float ? 'var(--kol-float-ic)' : 22 }}>{a.checked && <IconLoader name="check" size={22} />}</span>
             )}
-            {nests ? <>{a.icon && <Icon name={a.icon} size={glyph} />}<span className="flex-1 text-left">{a.label}</span><Icon name="chevron-right" size={glyph} className="shrink-0 text-oq-48" /></> : a.label}
+            {nests ? <>{a.icon && <IconLoader name={a.icon} size={glyph} />}<span className="flex-1 text-left">{a.label}</span><IconLoader name="chevron-right" size={glyph} className="shrink-0 text-oq-48" /></> : a.label}
           </Button>
         )
       })}

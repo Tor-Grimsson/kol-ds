@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Promoted verbatim from showcase/src/sets/content-card-comparison.jsx
  * (ContentFiltersCollection, kol-r2b2 2026-08-27) — the card's `size` slot:
@@ -69,7 +69,7 @@ export default function SizeOrDownload({
       >
         <span className="inline-flex w-0 overflow-hidden transition-[width] duration-500 ease-[var(--kol-ease-house)] group-hover/size:w-[20px] group-hover/size:delay-200">
           <span className="inline-flex h-4 w-4 -translate-x-2 items-center justify-center text-oq-80 transition-transform duration-500 ease-[var(--kol-ease-house)] group-hover/size:translate-x-0 group-hover/size:delay-200">
-            <Icon name={done ? confirmIcon : icon} size={16} />
+            <IconLoader name={done ? confirmIcon : icon} size={16} />
           </span>
         </span>
         <span className="kol-mono-12 text-oq-80">{label}</span>

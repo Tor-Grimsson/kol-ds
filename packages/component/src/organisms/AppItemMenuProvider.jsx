@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MenuCtx, useAsk, glyph } from '../molecules/AppItem.jsx'
 import ContextMenu, { useContextMenu } from '../molecules/ContextMenu.jsx'
 import { MenuRow } from '../molecules/MenuItem.jsx'
@@ -125,7 +125,7 @@ function FileImages({ images, cover, back, editing, onImages, onCover, onBack })
           <figure className="flex min-w-0 flex-col gap-1.5">
             <button type="button" onClick={add} aria-label="Upload image"
               className="flex aspect-square w-full items-center justify-center rounded-[var(--kol-radius-sm)] border border-dashed border-[var(--kol-fg-24)] bg-[var(--kol-fg-02)] text-fg-48">
-              <Icon name="plus" size={20} />
+              <IconLoader name="plus" size={20} />
             </button>
             <figcaption className="kol-mono-12 text-meta">Upload image</figcaption>
           </figure>

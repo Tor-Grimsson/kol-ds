@@ -3,7 +3,7 @@ import ColorSwatch from '../molecules/ColorSwatch.jsx'
 import Input from '../atoms/Input.jsx'
 import Slider from '../molecules/Slider.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
 import { HueStrip, SBSquare, AlphaStrip } from './SpectrumControls.jsx'
 import { hexToHsva, hsvaToHex } from '../hooks/colorMath.js'
@@ -66,7 +66,7 @@ function ChannelStrip({ ch, hex, hsva, onHsva }) {
   const pct = ((value - ch.min) / (ch.max - ch.min)) * 100
   return (
     <div className="flex items-center gap-2">
-      <span className="flex w-4 shrink-0 items-center kol-mono-12 text-meta">{ch.icon ? <Icon name={ch.icon} size={16} className="text-oq-64" /> : ch.key}</span>
+      <span className="flex w-4 shrink-0 items-center kol-mono-12 text-meta">{ch.icon ? <IconLoader name={ch.icon} size={16} className="text-oq-64" /> : ch.key}</span>
       <div ref={ref} role="slider" aria-label={ch.label ?? ch.key} aria-valuemin={ch.min} aria-valuemax={ch.max} aria-valuenow={Math.round(value)} tabIndex={0}
         className="relative h-4 flex-1 cursor-pointer rounded-full touch-none" style={{ background: `linear-gradient(to right, ${stops.join(', ')})` }}
         onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); fromPointer(e) }}

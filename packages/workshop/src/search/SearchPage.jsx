@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { EmptyState, Input, Tag } from '@kolkrabbi/kol-component'
 import ResultRow from './ResultRow.jsx'
 import { ShellSearchScopeContext } from '../shell/ShellLayout.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { createIndex, search, parseQuery } from '@kolkrabbi/kol-search'
 
 /**
@@ -170,7 +170,7 @@ export default function SearchPage({ items = [], spaces: allSpaces = [], facets 
                     variant={rowVariant}
                     title={<Highlight text={r.item.title} ranges={r.highlights.title} />}
                     /* Round 6 (2026-10-01): `kindIcons` puts a glyph for the kind on the row, `rowMeta="path"` prints the route as the second line */
-                    icon={kindIcons?.[r.item.kind] && <Icon name={kindIcons[r.item.kind]} size={14} />}
+                    icon={kindIcons?.[r.item.kind] && <IconLoader name={kindIcons[r.item.kind]} size={14} />}
                     meta={rowMeta === 'path' ? r.item.href : [r.item.kind, r.item.category, r.item.space, r.item.date].filter(Boolean).join(' · ')}
                     description={r.item.description}
                   />

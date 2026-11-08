@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-framework
 
+## 0.74.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.73.0 — 2026-11-08
 
 - **Changed: `LinkPreview` is built from kol-component's `ContentMedia` (the image) and `ContentText` (title, text, site)** — same card, same look; no API change.

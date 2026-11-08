@@ -5,7 +5,7 @@ import {
   SettingsChoice, SettingsRow, SettingsSwitch, Slider, Tag, TabsRow, Textarea, ToggleCheckbox, ToggleSwitch, Tooltip,
 } from '@kolkrabbi/kol-component'
 import { AppFloatNav } from '@kolkrabbi/kol-shell'
-import { Icon, KOL_ICON_SET_INTERFACE } from '@kolkrabbi/kol-icons'
+import { IconLoader, KOL_ICON_SET_INTERFACE } from '@kolkrabbi/kol-icons'
 import { BRAND_INFO, COLLABORATIONS, MARKS, MOOD, SOCIAL, TIMELINE } from 'voyager-fixture'
 
 /* THE UI STYLE GUIDE SHEET (2026-10-30). The well-known pattern — one wide page, the sections side by side, every
@@ -182,7 +182,7 @@ function Iconography() {
             <span className="kol-eyebrow text-meta">{group}</span>
             {names.map((n) => (
               <div key={n} className="flex min-w-0 items-center gap-3">
-                <Icon name={n} size={24} className="shrink-0" />
+                <IconLoader name={n} size={24} className="shrink-0" />
                 <span className="kol-helper-10 truncate text-meta">{n}</span>
               </div>
             ))}
@@ -386,10 +386,10 @@ function Lists() {
           <div className="flex flex-col gap-2">
             <MenuItem label="File">{null}</MenuItem>
             <div className="min-w-[200px] py-1">
-              <MenuDropdownItem iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>New file</MenuDropdownItem>
-              <MenuDropdownItem iconLeft={<Icon name="save" size={14} />} shortcut="⌘S" onClick={() => {}}>Save</MenuDropdownItem>
+              <MenuDropdownItem iconLeft={<IconLoader name="file" size={14} />} onClick={() => {}}>New file</MenuDropdownItem>
+              <MenuDropdownItem iconLeft={<IconLoader name="save" size={14} />} shortcut="⌘S" onClick={() => {}}>Save</MenuDropdownItem>
               <MenuDropdownDivider />
-              <MenuDropdownItem iconLeft={<Icon name="trash" size={14} />} disabled onClick={() => {}}>Delete</MenuDropdownItem>
+              <MenuDropdownItem iconLeft={<IconLoader name="trash" size={14} />} disabled onClick={() => {}}>Delete</MenuDropdownItem>
             </div>
           </div>
         </Sample>

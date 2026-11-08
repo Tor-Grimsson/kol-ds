@@ -18,7 +18,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { MenuItem, MenuRow, MenuDivider, MenuFlyout } from '@kolkrabbi/kol-component/molecules/MenuItem'
 import Slider from '@kolkrabbi/kol-component/molecules/Slider'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useModuleRegistry } from '../../../rack/src/hooks/useModuleRegistry.jsx'
 import { scalar } from '../../../rack/src/hooks/signals'
 import { MODULE_DEFS } from '../../../rack/src/modules/registry'

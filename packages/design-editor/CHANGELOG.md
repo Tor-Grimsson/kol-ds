@@ -1,5 +1,17 @@
 # @kolkrabbi/design-editor
 
+## 0.35.0 — 2026-11-08
+
+- **Every editor modal draws its panel through `ModalShell`** (`bordered`, plan-2026-11-08-modal-system 1.1): `NewFileDialog`, `RollScopesDialog`, the bake progress panel, `LayerEffectsWindow` and `ColorModesWindow` (the last two no longer borrow `kol-popover`). Content, copy and behaviour unchanged.
+
+## 0.34.0 — 2026-11-08
+
+- **Changed: `MediaPickerDialog` and `FilesDialog` draw their card on kol-component's `ModalShell`** (plan-2026-11-08-outstanding W2.2) — kol-theme 0.217.0 took the media picker's own panel paint away. Content unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.
+
+## 0.33.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.32.0 — 2026-11-06
 
 needs kol-shell ≥0.114.0:

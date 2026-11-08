@@ -1449,17 +1449,12 @@
      2026-09-23: 32px gutters left a 326px reading column at 390 — now 342). The old 32 from md
      up. Min-width only — breakpoints law #3 */
   --kol-ql-max-w: calc(100vw - 3rem);
-  --kol-ql-media-h: calc(var(--kol-ql-frame-h) - var(--kol-ql-header-h) - var(--kol-ql-footer-h) - 2px);
-  position: relative;
-  display: flex;
-  flex-direction: column;
+  --kol-ql-media-h: calc(var(--kol-ql-frame-h) - var(--kol-ql-header-h) - var(--kol-ql-footer-h));
+  /* THE PANEL IS ModalShell's (W2.2, 2026-11-08): surface, radius and clip come from `.kol-overlay-panel` — the
+   * oq-04 ground, oq-12 hairline and radius-md this rule painted were a second panel style */
   width: fit-content;
   min-width: min(360px, var(--kol-ql-max-w));
   max-width: var(--kol-ql-max-w);
-  background: var(--kol-oq-04);
-  border: 1px solid var(--kol-oq-12);
-  border-radius: var(--kol-radius-md);
-  overflow: hidden;
 }
 @media (min-width: 768px) { .kol-quicklook { --kol-ql-max-w: calc(100vw - 4rem); } }
 /* a sized window (the corner was dragged): the body takes all of it, media centred inside */

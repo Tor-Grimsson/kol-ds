@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: atom — readout lines on the canvas: a glyph and a float type role, no box */
 
@@ -17,11 +17,11 @@ export function ZoomReadout({ value, onMenu, onFit, className = '' }) {
     <div className={`kol-zoom-readout inline-flex items-center gap-3 ${className}`.trim()}>
       <button type="button" onClick={onMenu} aria-haspopup={onMenu ? 'menu' : undefined} className="kol-float-timecode text-oq-64 hover:text-oq-96 inline-flex items-center gap-3 bg-transparent border-0 p-0 cursor-pointer">
         {value}
-        {onMenu && <Icon name="chevron-down" size={16} className="text-oq-64" />}
+        {onMenu && <IconLoader name="chevron-down" size={16} className="text-oq-64" />}
       </button>
       {onFit && (
         <button type="button" onClick={onFit} aria-label="Fit" className="inline-flex text-oq-64 hover:text-oq-96 bg-transparent border-0 p-0 cursor-pointer">
-          <Icon name="maximize" size={16} />
+          <IconLoader name="maximize" size={16} />
         </button>
       )}
     </div>
@@ -41,7 +41,7 @@ export function ZoomReadout({ value, onMenu, onFit, className = '' }) {
 export function SceneBreadcrumb({ icon = 'video', name, meta, className = '' }) {
   return (
     <div className={`kol-scene-breadcrumb inline-flex items-center gap-3 ${className}`.trim()}>
-      <Icon name={icon} size={16} className="text-oq-64" />
+      <IconLoader name={icon} size={16} className="text-oq-64" />
       <span className="kol-float-label text-oq-64">{name}</span>
       {meta && <span className="kol-float-label text-oq-48">/</span>}
       {meta && <span className="kol-float-ruler text-oq-48">{meta}</span>}
@@ -60,7 +60,7 @@ export function SceneBreadcrumb({ icon = 'video', name, meta, className = '' }) 
 export function CanvasHint({ icon = 'pointer', hint, className = '' }) {
   return (
     <div className={`kol-canvas-hint inline-flex items-center gap-3 ${className}`.trim()}>
-      <Icon name={icon} size={14} className="text-oq-48" />
+      <IconLoader name={icon} size={14} className="text-oq-48" />
       <span className="kol-float-ruler text-oq-48">{Array.isArray(hint) ? hint.join(' · ') : hint}</span>
     </div>
   )

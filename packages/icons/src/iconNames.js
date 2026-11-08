@@ -1,4 +1,4 @@
-/* The names each set ships — keys only, no SVG text, so this costs nothing to import. Icon.jsx reads it to learn
+/* The names each set ships — keys only, no SVG text, so this costs nothing to import. IconLoader.jsx reads it to learn
  * WHICH set a name belongs to before fetching that set's chunk (1.5, plan-2026-10-28-identity); index.js builds the
  * grouped indexes from the same globs. A keys-only `import.meta.glob` (no `eager`) is a map of lazy importers that
  * nobody calls — only `Object.keys` is read. */

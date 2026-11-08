@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, ViewToggle } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import BlockViewer from './BlockViewer.jsx'
 import PreviewStage from './PreviewStage.jsx'
 import DocTabs from './DocTabs.jsx'
@@ -76,7 +76,7 @@ function GalleryCard({ item, labels, basePath, previewBase }) {
           title="Open standalone view"
           aria-label="Open standalone view"
         >
-          <Icon name="maximize" size={15} />
+          <IconLoader name="maximize" size={15} />
         </Link>
       </div>
     </div>
@@ -98,7 +98,7 @@ function StageList({ items, labels, basePath, previewBase, srcDir }) {
               className="group inline-flex items-center gap-2 kol-sans-heading-03 text-emphasis underline decoration-fg-24 underline-offset-4 hover:decoration-current"
             >
               {b.title}
-              <Icon name="arrow-upright" size={16} className="text-oq-48 transition-colors group-hover:text-emphasis" />
+              <IconLoader name="arrow-upright" size={16} className="text-oq-48 transition-colors group-hover:text-emphasis" />
             </Link>
             </h2>
             <span className="kol-doc-eyebrow">

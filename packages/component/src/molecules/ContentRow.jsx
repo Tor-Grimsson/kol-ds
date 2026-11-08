@@ -2,7 +2,7 @@ import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
 import { useAppItem } from './AppItem.jsx'
 import { toneClass } from '../utilities/tone.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * ContentRow — The row form of a content card. the row form of the content-card system: leading thumb (where
@@ -176,7 +176,7 @@ function ContentRowFloat({ title, url, href = url, external, onClick, className 
         <span className="kol-float-hint truncate text-fg-emphasis" style={{ fontSize: 13 }}>{title}</span>
         {url && <span className="kol-float-timecode truncate text-fg-64" style={{ fontSize: 11 }}>{url}</span>}
       </span>
-      <Icon name="arrow-upright" size={16} className="shrink-0 text-oq-64 group-hover:text-oq-96" />
+      <IconLoader name="arrow-upright" size={16} className="shrink-0 text-oq-64 group-hover:text-oq-96" />
     </a>
   )
 }

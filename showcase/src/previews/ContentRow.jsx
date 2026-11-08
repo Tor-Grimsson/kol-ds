@@ -1,5 +1,5 @@
 import { ActionButton, ContentRow } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const stage = 'lg'
 
@@ -19,7 +19,7 @@ export const variants = ['default', 'catalog', 'article', 'work', 'typeface', 'f
 export const states = ['specimen', 'tone', 'long title']
 
 /* catalog's thumb shows only when it is given media (kol-component 0.247.0) */
-const glyph = <div className="flex h-full w-full items-center justify-center bg-white text-black"><Icon name="layout" size={20} /></div>
+const glyph = <div className="flex h-full w-full items-center justify-center bg-white text-black"><IconLoader name="layout" size={20} /></div>
 
 export default function ContentRowPreview({ variant = 'default', state = 'specimen' }) {
   /* float (W8 row 124): the link row — title · url · ↗ */

@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-theme",
-  "version": "0.216.1",
+  "version": "0.217.0",
   "description": "Tokens and base CSS",
   "license": "MIT",
   "type": "module",

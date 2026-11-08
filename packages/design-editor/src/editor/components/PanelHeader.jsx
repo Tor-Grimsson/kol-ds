@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Button, useGrabEdge } from '@kolkrabbi/kol-component'
 
 /**
@@ -25,7 +25,7 @@ export function PanelHeader({ title, onCollapse, action, className = 'px-3' }) {
         <span>{title}</span>
         {/* Real icon, opaque ink (the icons law — the header's text-meta alpha stays on the TEXT
             only). */}
-        <Icon name="chevron-down" size={16} className="text-oq-48" />
+        <IconLoader name="chevron-down" size={16} className="text-oq-48" />
       </button>
       {action}
     </div>
@@ -46,7 +46,7 @@ export function PanelPills({ label, onOpen, size = 'lg', tone = 'primary', child
       <Button tone={tone} size={size} onClick={onOpen} className="min-w-0 shrink">
         <span className="flex items-center gap-2 min-w-0">
           <span className="truncate">{label}</span>
-          <Icon name="chevron-down" size={16} className="rotate-180 shrink-0" />
+          <IconLoader name="chevron-down" size={16} className="rotate-180 shrink-0" />
         </span>
       </Button>
       {children}

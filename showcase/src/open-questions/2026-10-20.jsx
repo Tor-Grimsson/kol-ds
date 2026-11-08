@@ -1,5 +1,5 @@
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL } from '@kolkrabbi/kol-icons'
+import { IconLoader, KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL } from '@kolkrabbi/kol-icons'
 
 /* Round 15 — a category level above the icon groups (user 2026-10-20: "should we not make sub categories? like
  * arrows … these are all arrows. or tools?"). The groups stay as they are; each category gathers several of them,
@@ -63,7 +63,7 @@ function Category({ set, cat }) {
         ))}
       </ul>
       <div className="flex flex-wrap gap-2 text-oq-80">
-        {names.slice(0, 24).map((n) => <Icon key={n} name={n} size={16} title={n} />)}
+        {names.slice(0, 24).map((n) => <IconLoader key={n} name={n} size={16} title={n} />)}
       </div>
     </div>
   )

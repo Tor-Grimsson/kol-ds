@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { toneClass } from '../utilities/tone.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MenuList } from './MenuList.jsx'
 import { Menu } from './Menu.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
@@ -247,7 +247,7 @@ const Dropdown = ({
           /* the glyph comes from the SOLO ladder — an icon alone in a pinned
            * square — never from a call-site number */
           typeof iconOnly === 'string'
-            ? <Icon name={iconOnly} size={glyphSize(resolvedSize, true)} />
+            ? <IconLoader name={iconOnly} size={glyphSize(resolvedSize, true)} />
             : iconOnly
         ) : (
           <>
@@ -265,7 +265,7 @@ const Dropdown = ({
             </span>
             {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
               * keyed off the trigger's data-state, no inline styles */}
-            <Icon name="chevron-down" size={float ? 'var(--kol-float-ic)' : indicatorSize(resolvedSize)} className="kol-dd-caret" />
+            <IconLoader name="chevron-down" size={float ? 'var(--kol-float-ic)' : indicatorSize(resolvedSize)} className="kol-dd-caret" />
           </>
         )}
         {/* a consumer's own trigger mark — the tool-palette corner fold rides
@@ -301,7 +301,7 @@ const Dropdown = ({
       label: option.icon ? (
         <>
           <span className="shrink-0 inline-flex items-center" style={{ marginRight: 'var(--kol-spacing-2)' }}>
-            <Icon name={option.icon} size={glyphSize(resolvedSize)} />
+            <IconLoader name={option.icon} size={glyphSize(resolvedSize)} />
           </span>
           {option.label}
         </>

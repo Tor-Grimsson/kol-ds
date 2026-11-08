@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
 
 /**
@@ -105,7 +105,7 @@ function ViewerStage({ media, index, onIndexChange }) {
             aria-label="Previous"
             onClick={(e) => { e.stopPropagation(); emblaApi?.scrollPrev() }}
           >
-            <Icon name="chevron-left" size={20} />
+            <IconLoader name="chevron-left" size={20} />
           </button>
           <button
             type="button"
@@ -113,7 +113,7 @@ function ViewerStage({ media, index, onIndexChange }) {
             aria-label="Next"
             onClick={(e) => { e.stopPropagation(); emblaApi?.scrollNext() }}
           >
-            <Icon name="chevron-right" size={20} />
+            <IconLoader name="chevron-right" size={20} />
           </button>
         </>
       )}

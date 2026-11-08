@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Icon, Tooltip, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import { Button, IconLoader, Tooltip, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
 /* float-set W1 — family 1, Foundations: one Part per row of 24-float-system.md § Foundations. Every value is the
@@ -69,7 +69,7 @@ export default function Foundations() {
           <Part name="Glyph">
             <Plate surface={surface}>
               <Spec label={<Val token="--kol-float-ic" />}>
-                <span className="inline-flex gap-3 text-oq-88">{['search', 'download', 'plus'].map((n) => <Icon key={n} name={n} size="var(--kol-float-ic)" />)}</span>
+                <span className="inline-flex gap-3 text-oq-88">{['search', 'download', 'plus'].map((n) => <IconLoader key={n} name={n} size="var(--kol-float-ic)" />)}</span>
               </Spec>
             </Plate>
           </Part>

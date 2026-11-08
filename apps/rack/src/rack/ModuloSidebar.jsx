@@ -8,7 +8,7 @@ import { patches } from '../data/patches'
 import { savePatchFile, loadPatchFile } from '../hooks/usePatchFile.js'
 import { useModuleRegistry } from '../hooks/useModuleRegistry.jsx'
 import Icon from '../icons/Icon'
-import { Icon as DsIcon } from '@kolkrabbi/kol-icons' // nav-* glyphs, promoted 2026-08-27
+import { IconLoader as DsIcon } from '@kolkrabbi/kol-icons' // nav-* glyphs, promoted 2026-08-27
 import { Logomark, useNavHidden } from '@kolkrabbi/kol-shell'
 
 const NAV_ITEMS = [

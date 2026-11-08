@@ -2,7 +2,7 @@
    in — the editor lives here and its organisms are edited here, no DS round trip (plan 06). The theme's
    `.kol-layer-stack-*` chrome still comes from kol-theme. */
 import { useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Button, Input, MenuDropdownItem, MenuDropdownNest, usePopover, PopoverPanel, Tooltip, rowLabelForLayer, findLayerDeep } from '@kolkrabbi/kol-component'
 
 /* DS icon names for the engine's types — every one a shipped v1 glyph. A
@@ -274,7 +274,7 @@ export default function LayerStack({
   onGroup,
   labelFor = rowLabelForLayer,
   iconFor = defaultIconFor,
-  iconComponent: IconC = Icon,
+  iconComponent: IconC = IconLoader,
   containerTypes = ['group', 'bool'],
   className = '',
 }) {
@@ -475,7 +475,7 @@ export function AddLayerButton({
   nested,
   onAdd,
   iconFor = defaultIconFor,
-  iconComponent: IconC = Icon,
+  iconComponent: IconC = IconLoader,
   menuWidth = 180,
 }) {
   const [open, setOpen] = useState(false)

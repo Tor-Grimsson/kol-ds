@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Divider } from '@kolkrabbi/kol-component'
 import ThemeToggle from '../ThemeToggle.jsx'
 
@@ -111,7 +111,7 @@ export default function TakeoverMenu({ open, onClose, logomark, name, navItems =
               rel="noopener noreferrer"
               className="kol-mono-14 inline-flex items-center gap-3"
             >
-              {social.icon && <Icon name={social.icon} size={16} />}
+              {social.icon && <IconLoader name={social.icon} size={16} />}
               <span className="kol-link-underline [--kol-link-underline-size:1px] pb-0.5">{social.label}</span>
             </a>}
             {/* flush · label (docs/visual-reference pick) — labeled,

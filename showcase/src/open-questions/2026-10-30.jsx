@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { IconPlate } from '@kolkrabbi/kol-component'
 import { SegGroup } from '../lib/icon-controls.jsx'
 
@@ -81,8 +81,8 @@ export default function OpenQuestionsRound24() {
       </DocSection>
       <DocSection id="approved" title="Approved" lede="kol-icon-set-interface/eye-lock, as the set ships it now">
         <div className="flex flex-wrap gap-x-8 gap-y-6">
-          <Plate label="lock" size={size} light={light} guide={guide} draw={(s) => <Icon name="lock" size={s} />} />
-          <Plate label="unlock" size={size} light={light} guide={guide} draw={(s) => <Icon name="unlock" size={s} />} />
+          <Plate label="lock" size={size} light={light} guide={guide} draw={(s) => <IconLoader name="lock" size={s} />} />
+          <Plate label="unlock" size={size} light={light} guide={guide} draw={(s) => <IconLoader name="unlock" size={s} />} />
         </div>
       </DocSection>
     </div>

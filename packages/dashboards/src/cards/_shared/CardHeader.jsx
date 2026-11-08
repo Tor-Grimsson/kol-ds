@@ -1,10 +1,10 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const CardHeader = ({ icon, title, subtitle }) => {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
-        {icon && <Icon name={icon} size={24} className="text-oq-88" />}
+        {icon && <IconLoader name={icon} size={24} className="text-oq-88" />}
         <span className="dash-title">{title}</span>
       </div>
       {/* dash-lede, not dash-detail: the subtitle is a sentence that WRAPS, and

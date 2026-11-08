@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import TreeRow from '../molecules/TreeRow.jsx'
 
 /* taxonomy-ok: organism — nests TreeRow (molecule) + kol-icons's Icon. */
@@ -40,7 +40,7 @@ export default function NavDrawer({ open, onClose, title, items = [], currentPat
         <span className="kol-float-body min-w-0 flex-1 truncate text-fg-emphasis">{title}</span>
         {onClose && (
           <button type="button" aria-label="Close" onClick={onClose} className="inline-flex size-6 shrink-0 items-center justify-center rounded-full text-oq-64 hover:bg-fg-08 hover:text-oq-96 cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
-            <Icon name="x" size={16} />
+            <IconLoader name="x" size={16} />
           </button>
         )}
       </div>

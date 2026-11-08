@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { NavRail, Menu, MenuTrigger } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
-/* importing kol-workshop registers the `workshop` preset (ShellSidebar) under NavRail */
+import { IconLoader } from '@kolkrabbi/kol-icons'
+/* importing kol-workshop registers the `workshop` preset (ShellRail) under NavRail */
 import '@kolkrabbi/kol-workshop'
 
 export const frame = 520
@@ -98,7 +98,7 @@ export default function NavRailPreview({ variant = 'app' }) {
   if (variant === 'top') return <TopPreview />
   if (variant === 'float') return <FloatPreview />
   if (variant === 'workshop') {
-    /* the workshop rail — kol-workshop's ShellSidebar, registered as the preset; its routes, its own chrome */
+    /* the workshop rail — kol-workshop's ShellRail, registered as the preset; its routes, its own chrome */
     return (
       <div className="relative h-80 w-60 overflow-hidden rounded-[var(--kol-radius-sm)] border border-fg-12">
         <NavRail preset="workshop" routes={WORKSHOP_ROUTES} basePath="/workshop" label="Workshop" onNavigate={() => {}} />
@@ -115,7 +115,7 @@ export default function NavRailPreview({ variant = 'app' }) {
   }
   return (
     <>
-      <NavRail preset="app" items={ITEMS} bottomItems={[{ icon: 'image', path: '#media', label: 'Media' }, { icon: 'user', path: '#sign-in', label: 'Sign in' }, { icon: 'settings-01', path: '/settings', label: 'Settings' }]} logomark={{ svgUrl: '/favicon/favicon-kol-ds.svg', title: 'Studio' }} currentPath={path} onNavigate={setPath} iconComponent={Icon} />
+      <NavRail preset="app" items={ITEMS} bottomItems={[{ icon: 'image', path: '#media', label: 'Media' }, { icon: 'user', path: '#sign-in', label: 'Sign in' }, { icon: 'settings-01', path: '/settings', label: 'Settings' }]} logomark={{ svgUrl: '/favicon/favicon-kol-ds.svg', title: 'Studio' }} currentPath={path} onNavigate={setPath} iconComponent={IconLoader} />
       <p className="kol-mono-14 text-meta" style={{ padding: '24px 24px 24px 88px' }}>{path}</p>
     </>
   )

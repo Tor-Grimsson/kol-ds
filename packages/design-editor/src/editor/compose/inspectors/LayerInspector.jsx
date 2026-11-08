@@ -8,7 +8,7 @@ import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import AlignmentPanel from '../AlignmentPanel'
 import { ButtonGroup, OriginPicker } from '@kolkrabbi/kol-component'
 import StrokePanel from '../../color/StrokePanel'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useComposeState, COVER_TYPES, resolveColor } from '../state'
 import { scalePathNodes } from '../path-math'
 import { useLayerEdit } from '../useLayerEdit'
@@ -113,7 +113,7 @@ export default function LayerInspector({ layer }) {
             <span />
             <div className="flex items-center gap-1 min-w-0">
               <AxisField
-                label={<Icon name="angle" size={glyphSize(cs)} />} suffix="°" tooltip="Rotation"
+                label={<IconLoader name="angle" size={glyphSize(cs)} />} suffix="°" tooltip="Rotation"
                 value={typeof layer.rotation === 'number' ? Math.round(layer.rotation) : 0}
                 onCommit={commitRotation(layer, edit, anchor)}
               />
@@ -133,9 +133,9 @@ export default function LayerInspector({ layer }) {
               ariaLabel="Transform"
               className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1"
               options={[
-                { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={glyphSize(cs, true)} /> },
-                { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-horizontal" size={glyphSize(cs, true)} /></span> },
-                { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><Icon name="flip-vertical" size={glyphSize(cs, true)} /></span> },
+                { value: 'rot', ariaLabel: 'Rotate 90° left', label: <IconLoader name="rotate-left" size={glyphSize(cs, true)} /> },
+                { value: 'fh', ariaLabel: 'Flip horizontal', label: <span style={{ color: layer.flipX ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><IconLoader name="flip-horizontal" size={glyphSize(cs, true)} /></span> },
+                { value: 'fv', ariaLabel: 'Flip vertical', label: <span style={{ color: layer.flipY ? 'var(--kol-accent-primary)' : undefined, display: 'inline-flex' }}><IconLoader name="flip-vertical" size={glyphSize(cs, true)} /></span> },
               ]}
               onChange={(op) => {
                 if (op === 'rot') setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
@@ -154,9 +154,9 @@ export default function LayerInspector({ layer }) {
               value={layer.resizing ?? 'fixed'}
               onChange={(v) => setProp('resizing', v)}
               options={[
-                { value: 'fixed',  ariaLabel: 'Fixed size',  label: <Icon name="resize-fixed" size={glyphSize(cs, true)} /> },
-                { value: 'auto-w', ariaLabel: 'Auto width',  label: <Icon name="resize-auto-w" size={glyphSize(cs, true)} /> },
-                { value: 'auto-h', ariaLabel: 'Auto height', label: <Icon name="resize-auto-h" size={glyphSize(cs, true)} /> },
+                { value: 'fixed',  ariaLabel: 'Fixed size',  label: <IconLoader name="resize-fixed" size={glyphSize(cs, true)} /> },
+                { value: 'auto-w', ariaLabel: 'Auto width',  label: <IconLoader name="resize-auto-w" size={glyphSize(cs, true)} /> },
+                { value: 'auto-h', ariaLabel: 'Auto height', label: <IconLoader name="resize-auto-h" size={glyphSize(cs, true)} /> },
               ]}
             />
           )}
@@ -267,7 +267,7 @@ function AppearanceSection({ layer, setProp, edit, first }) {
           />
           <PopoverPanel popover={blendPop} panel={false} focus={false} className="z-50 bg-surface-secondary border border-oq-08 rounded shadow-lg py-1" style={{ width: 160 }}>
             {BLEND_MODES.map((b) => (
-              <MenuDropdownItem key={b.value} onClick={() => { setProp('blend', b.value); setBlendOpen(false) }} shortcut={blend === b.value ? <Icon name="check" size={11} /> : undefined}>
+              <MenuDropdownItem key={b.value} onClick={() => { setProp('blend', b.value); setBlendOpen(false) }} shortcut={blend === b.value ? <IconLoader name="check" size={11} /> : undefined}>
                 {b.label}
               </MenuDropdownItem>
             ))}
@@ -281,7 +281,7 @@ function AppearanceSection({ layer, setProp, edit, first }) {
         <Tooltip label="Opacity" triggerClassName="flex min-w-0">
           <NumberField
             variant="property" size={cs} unit="%" className="w-full min-w-0"
-            affordance={<Icon name="opacity" size={glyphSize(cs)} />}
+            affordance={<IconLoader name="opacity" size={glyphSize(cs)} />}
             value={Math.round((layer.opacity ?? 1) * 100)}
             onCommit={(raw) => setProp('opacity', clamp01(raw, layer.opacity ?? 1))}
           />
@@ -292,7 +292,7 @@ function AppearanceSection({ layer, setProp, edit, first }) {
               <Tooltip label="Corner radius" triggerClassName="flex flex-1 min-w-0">
                 <NumberField
                   variant="property" size={cs} className="w-full min-w-0"
-                  affordance={<Icon name="corner-radius" size={glyphSize(cs)} />}
+                  affordance={<IconLoader name="corner-radius" size={glyphSize(cs)} />}
                   value={Math.round(layer.radius ?? 0)}
                   onCommit={(raw) => {
                     const n = Number(raw)
@@ -720,14 +720,14 @@ function FloatGeometry({ layer, edit, anchor, setAnchor }) {
         <AxisField label="SY" suffix="°" tooltip="Skew vertical" value={Math.round(layer.skewY ?? 0)} onCommit={(raw) => edit.setProp('skewY', clampSkew(raw))} />
         <OriginPicker value={anchor} onChange={setAnchor} size={cs} ariaLabel="Transform origin" />
         {hasRadius && !Array.isArray(layer.radii) ? (
-          <AxisField label={<Icon name="corner-radius" size={glyphSize(cs)} />} tooltip="Corner radius" value={Math.round(layer.radius ?? 0)}
+          <AxisField label={<IconLoader name="corner-radius" size={glyphSize(cs)} />} tooltip="Corner radius" value={Math.round(layer.radius ?? 0)}
             onCommit={(raw) => { const n = Number(raw); edit.setProp('radius', Number.isFinite(n) && n > 0 ? Math.round(n) : 0) }} />
         ) : <span />}
         <ButtonGroup layout="joined" size={cs} value={null} ariaLabel="Transform" className="[&_.kol-seg-cell]:min-w-0 [&_.kol-seg-cell]:px-1"
           options={[
-            { value: 'rot', ariaLabel: 'Rotate 90° left', label: <Icon name="rotate-left" size={glyphSize(cs, true)} /> },
-            { value: 'fh', ariaLabel: 'Flip horizontal', label: <Icon name="flip-horizontal" size={glyphSize(cs, true)} /> },
-            { value: 'fv', ariaLabel: 'Flip vertical', label: <Icon name="flip-vertical" size={glyphSize(cs, true)} /> },
+            { value: 'rot', ariaLabel: 'Rotate 90° left', label: <IconLoader name="rotate-left" size={glyphSize(cs, true)} /> },
+            { value: 'fh', ariaLabel: 'Flip horizontal', label: <IconLoader name="flip-horizontal" size={glyphSize(cs, true)} /> },
+            { value: 'fv', ariaLabel: 'Flip vertical', label: <IconLoader name="flip-vertical" size={glyphSize(cs, true)} /> },
           ]}
           onChange={(op) => {
             if (op === 'rot') edit.setProp('rotation', (((Math.round(layer.rotation ?? 0) - 90) % 360) + 360) % 360)
@@ -757,9 +757,9 @@ function FloatGeometry({ layer, edit, anchor, setAnchor }) {
       {layer.type === 'text' && (
         <ButtonGroup layout="joined" size={cs} ariaLabel="Resizing" value={layer.resizing ?? 'fixed'} onChange={(v) => edit.setProp('resizing', v)}
           options={[
-            { value: 'fixed', ariaLabel: 'Fixed size', label: <Icon name="resize-fixed" size={glyphSize(cs, true)} /> },
-            { value: 'auto-w', ariaLabel: 'Auto width', label: <Icon name="resize-auto-w" size={glyphSize(cs, true)} /> },
-            { value: 'auto-h', ariaLabel: 'Auto height', label: <Icon name="resize-auto-h" size={glyphSize(cs, true)} /> },
+            { value: 'fixed', ariaLabel: 'Fixed size', label: <IconLoader name="resize-fixed" size={glyphSize(cs, true)} /> },
+            { value: 'auto-w', ariaLabel: 'Auto width', label: <IconLoader name="resize-auto-w" size={glyphSize(cs, true)} /> },
+            { value: 'auto-h', ariaLabel: 'Auto height', label: <IconLoader name="resize-auto-h" size={glyphSize(cs, true)} /> },
           ]} />
       )}
     </Pane>

@@ -1,5 +1,5 @@
 import { Button, usePopover, PopoverPanel, floatSurfaceClass, floatMotion } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — a float card of nav Buttons with counts */
 
@@ -28,7 +28,7 @@ export default function RailFlyout({ icon, title, items = [], active, onPick, an
   const card = (
     <div role="menu" aria-label={title} className={`kol-rail-flyout kol-float-chrome flex flex-col gap-0.5 p-2 rounded-[var(--kol-float-menu-r)] ${floatSurfaceClass(surface, true)} ${anchor ? '' : className}`.trim()} style={{ width, ...(anchor ? null : floatMotion(motion).style) }}>
       <div className="flex items-center gap-3 px-2 pt-2 pb-3">
-        {icon && <Icon name={icon} size={18} className="text-oq-96" />}
+        {icon && <IconLoader name={icon} size={18} className="text-oq-96" />}
         <span className="kol-float-body text-emphasis">{title}</span>
       </div>
       {items.map((i) => (

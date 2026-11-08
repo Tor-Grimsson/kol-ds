@@ -1,5 +1,5 @@
 
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * Textarea — Multi-line text input. multi-line text atom built on the .kol-control shell with the
@@ -118,7 +118,7 @@ export default function Textarea({
           window.addEventListener('pointerup', up)
         }}
       >
-        <Icon name="resize-grip" size={12} />
+        <IconLoader name="resize-grip" size={12} />
       </span>
     </label>
   )

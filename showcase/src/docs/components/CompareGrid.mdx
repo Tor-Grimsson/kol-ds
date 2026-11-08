@@ -30,7 +30,7 @@ import { CompareGrid } from '@kolkrabbi/kol-component'
 
 <CompareGrid
   labels={{ a: 'monitor', b: 'kol-icons' }}
-  items={names.map((n) => ({ id: n, label: n, a: local[n] && (({ size }) => <LocalIcon name={n} size={size} />), b: ({ size }) => <Icon name={n} size={size} />, state: stateOf(n) }))}
+  items={names.map((n) => ({ id: n, label: n, a: local[n] && (({ size }) => <LocalIcon name={n} size={size} />), b: ({ size }) => <IconLoader name={n} size={size} />, state: stateOf(n) }))}
 />
 ```
 

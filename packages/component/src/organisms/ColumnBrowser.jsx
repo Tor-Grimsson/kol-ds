@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import KindPreview, { KIND_GLYPH } from '../molecules/KindPreview.jsx'
 import FileIcon from '../atoms/FileIcon.jsx'
 import RowMenuButton from '../molecules/RowMenuButton.jsx'
@@ -337,7 +337,7 @@ function Row({
           className="kol-column-browser-disclose shrink-0 inline-flex items-center justify-center"
           style={{ width: 14, alignSelf: 'stretch', color: 'var(--kol-accent-primary)' }}
         >
-          <Icon name={disclosed ? 'chevron-down' : 'chevron-right'} size={12} />
+          <IconLoader name={disclosed ? 'chevron-down' : 'chevron-right'} size={12} />
         </button>
       ) : (
         <span aria-hidden="true" className="shrink-0" style={{ width: 14 }} />
@@ -359,13 +359,13 @@ function Row({
           className="kol-column-browser-thumb shrink-0 inline-flex items-center justify-center overflow-hidden"
           style={{ width: ZONE_BOX, height: ZONE_BOX, borderRadius: 5, background: thumb ? 'var(--kol-oq-04)' : 'transparent' }}
         >
-          {thumb ?? <Icon name={icon} size={ZONE_BOX} className="text-oq-48" />}
+          {thumb ?? <IconLoader name={icon} size={ZONE_BOX} className="text-oq-48" />}
         </span>
       ) : (
         <span className="w-5 shrink-0 flex items-center justify-center text-oq-48">
           {/* one glyph size for every row — a folder and a file side by side draw at the same size
               (user 2026-09-25; the file glyph was 14 against the folder's 18) */}
-          <Icon name={icon} size={18} />
+          <IconLoader name={icon} size={18} />
         </span>
       )}
 
@@ -897,7 +897,7 @@ export default function ColumnBrowser({
             className="kol-column-browser-back flex items-center gap-2 px-4 py-3 border-b text-fg-default"
             style={{ borderColor: 'var(--kol-oq-08)' }}
           >
-            <Icon name="chevron-left" size={14} className="text-oq-48" />
+            <IconLoader name="chevron-left" size={14} className="text-oq-48" />
             {/* NAMES THE PARENT (item 2) — the folder it returns to, not '‹' */}
             <span className="kol-mono-12 truncate">
               {parent === '' ? 'All files' : parent.replace(/\/$/, '').split('/').pop()}
@@ -930,8 +930,8 @@ export default function ColumnBrowser({
                 >
                   <span className="kol-column-browser-tile-box">
                     {isFolder
-                      ? <Icon name="folder" size={28} className="text-oq-48" />
-                      : (thumbnailFor?.(o) ?? <Icon name={COL_ICON[kindOf(o)] || 'file'} size={28} className="text-oq-48" />)}
+                      ? <IconLoader name="folder" size={28} className="text-oq-48" />
+                      : (thumbnailFor?.(o) ?? <IconLoader name={COL_ICON[kindOf(o)] || 'file'} size={28} className="text-oq-48" />)}
                   </span>
                   <span className="kol-mono-12 truncate">{isFolder ? r.name.replace(/\/$/, '') : (o.displayKey ?? o.key)}</span>
                   {/* counts for a folder, size for a file — never dates (§2) */}
@@ -1073,7 +1073,7 @@ export default function ColumnBrowser({
                  * it is its own contents with nothing chosen, and no file is showing */
                 trail={f === activeFolder && !isPicked(level + f) && (!!shown || k < levels.length - 2)}
                 cursor={cursorActive && cursor.col === k && cursor.idx === i}
-                trailing={<Icon name="chevron-right" size={12} className={f === activeFolder && !shown && k === levels.length - 2 ? '' : 'text-oq-32'} />}
+                trailing={<IconLoader name="chevron-right" size={12} className={f === activeFolder && !shown && k === levels.length - 2 ? '' : 'text-oq-32'} />}
                 onContextMenu={onRowContextMenu && ((e) => onRowContextMenu(e, { type: 'folder', path: level + f }))}
                 drop={dragFor?.(level + f)}
                 dropFiles={onDropFiles ? (list) => onDropFiles(list, level + f) : undefined}

@@ -25,7 +25,7 @@ import { useEffect, useState } from 'react'
  * @param {string}   ariaLabel FLOAT: what the value is; the − + read `Decrease <it>` / `Increase <it>` (default quantity)
  * @param {string}   className extra classes on the root
  */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 const FLOAT_H = { sm: 'h-[var(--kol-float-h-sm)]', md: 'h-[var(--kol-float-h-md)]', lg: 'h-[var(--kol-float-h-lg)]' }
 
 const SIZE_MAP = {
@@ -83,9 +83,9 @@ const QuantityInput = ({
     const btn = 'inline-flex h-full w-8 shrink-0 items-center justify-center rounded-full text-oq-64 hover:text-oq-96 disabled:opacity-40 disabled:hover:text-oq-64 cursor-pointer disabled:cursor-not-allowed outline-none focus-visible:[box-shadow:var(--kol-float-focus)] transition-colors'
     return (
       <div className={`inline-flex items-center rounded-full bg-[var(--kol-float-well)] px-1 kol-float-panel text-fg-emphasis ${FLOAT_H[size] ?? FLOAT_H.md} ${className}`.trim()}>
-        <button type="button" onClick={decrement} disabled={value <= min} className={btn} aria-label={`Decrease ${ariaLabel}`}><Icon name="minus" size={14} /></button>
+        <button type="button" onClick={decrement} disabled={value <= min} className={btn} aria-label={`Decrease ${ariaLabel}`}><IconLoader name="minus" size={14} /></button>
         <span className="min-w-6 flex-1 text-center tabular-nums">{value}{unit ? ` ${unit}` : ''}</span>
-        <button type="button" onClick={increment} disabled={value >= max} className={btn} aria-label={`Increase ${ariaLabel}`}><Icon name="plus" size={14} /></button>
+        <button type="button" onClick={increment} disabled={value >= max} className={btn} aria-label={`Increase ${ariaLabel}`}><IconLoader name="plus" size={14} /></button>
       </div>
     )
   }

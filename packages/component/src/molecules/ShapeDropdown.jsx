@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import { PopoverPanel, usePopover, Tooltip } from '../utilities/Popover.jsx'
 import { MenuRow } from './MenuItem.jsx'
@@ -83,7 +83,7 @@ const ShapeDropdown = ({ options = [], value, onChange, onAction, className = ''
           <MenuRow
             key={option.id}
             onClick={() => handleSelect(option)}
-            iconLeft={option.icon ? <Icon name={option.icon} size={14} /> : undefined}
+            iconLeft={option.icon ? <IconLoader name={option.icon} size={14} /> : undefined}
             indicator={option.id === current?.id ? 'dot' : undefined}
           >
             {option.label}

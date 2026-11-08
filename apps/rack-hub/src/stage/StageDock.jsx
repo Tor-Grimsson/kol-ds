@@ -5,7 +5,7 @@
 // out rather than unmounting it — unmounting would stop the patch and resize
 // every canvas inside.
 
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { ModuleInitContext } from '../../../rack/src/hooks/useModuleEnabled'
 import { MODULE_DEFS } from '../../../rack/src/modules/registry'
 import { hpToPx, ROW_HEIGHT } from '../../../rack/src/modules/utility/eurorack'
@@ -24,7 +24,7 @@ export default function StageDock({ rows, open, onGrab }) {
         className="absolute z-10 flex items-center justify-center cursor-grab rounded bg-oq-16 text-oq-48 hover:text-oq-96"
         style={{ top: 14, left: 'calc(52% + 120px)', transform: 'translateX(-50%)', width: 34, height: 14 }}
       >
-        <Icon name="drag-handle" size={12} />
+        <IconLoader name="drag-handle" size={12} />
       </div>
 
       <div className="relative flex gap-0.5 w-max">

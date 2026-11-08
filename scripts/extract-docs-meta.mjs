@@ -52,7 +52,8 @@ function mineFile(absPath) {
     }
     else if (m[2] && /^[A-Z]/.test(m[2])) composes.add(m[2])
   }
-  if (/@kolkrabbi\/kol-icons/.test(txt) && /<Icon\b/.test(txt)) composes.add('Icon')
+  if (/@kolkrabbi\/kol-icons/.test(txt) && /<IconLoader\b/.test(txt)) composes.add('IconLoader')
+  else if (/@kolkrabbi\/kol-icons/.test(txt) && /<Icon\b/.test(txt)) composes.add('Icon')
   const freestyle = [...new Set(txt.match(FREESTYLE_RE) || [])].sort()
   return { typeClasses, composes: [...composes], freestyle }
 }

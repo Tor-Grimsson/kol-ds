@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Tooltip } from '@kolkrabbi/kol-component'
 import { useTheme } from './theme.js'
 
@@ -141,7 +141,7 @@ export default function ThemeToggle({
             className="kol-roll-slot"
             style={{ transform: `rotate(${slot * -180}deg)` }}
           >
-            <Icon name="mode-toggle-01" size={px} />
+            <IconLoader name="mode-toggle-01" size={px} />
           </span>
         ))}
       </span>

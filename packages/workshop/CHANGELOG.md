@@ -1,5 +1,17 @@
 # @kolkrabbi/kol-workshop
 
+## 0.48.0 — 2026-11-08
+
+- **`WorkshopDefaultRail`** is the right-rail example composition's name (same law: *"ITS RAIL"*). Same component, same props; `WorkshopDefaultSidebar` stays as a deprecated alias on the 30-day ledger.
+
+## 0.47.0 — 2026-11-08
+
+- **`ShellRail`** is the left rail's name (user: *"if it comes to view form the sides ITS RAIL"*), and **`WorkshopRail`** the example composition's. Same components, same props, same `.shell-sidebar-*` classes. `ShellSidebar` and `WorkshopSidebar` stay as deprecated aliases on the 30-day ledger. `NavRail preset="workshop"` renders ShellRail.
+
+## 0.46.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peers `@kolkrabbi/kol-icons` >=0.68.0, `@kolkrabbi/kol-component` >=0.355.0.
+
 ## 0.44.0 — 2026-10-29
 
 - **Settings › Search › Scope** (WorkshopSearchScope, kol-hq): the This space only switch is now a `type: 'choice'` row, **All · This · Pick**; Pick lists one switch per space. One pref, `scope: 'all' | 'this' | string[]`, replaces `limitToSpace` (an old `true` reads as This). Quick search, `SearchPage` (through the new `ShellSearchScopeContext`) and the tab bar cover only the scoped spaces; the active space's tab always stays. A Pick with nothing ticked reads as This.

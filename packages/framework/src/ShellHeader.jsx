@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { IconFrame, SearchInput, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import ThemeToggle from './ThemeToggle.jsx'
 
@@ -190,7 +190,7 @@ export default function ShellHeader({
                         * out, so the tab could not follow the rule it was
                         * meant to. The tab's own type is 14/18, which is that
                         * rung. */}
-                      {item.icon && <Icon name={item.icon} size={glyphSize('sm')} />}
+                      {item.icon && <IconLoader name={item.icon} size={glyphSize('sm')} />}
                       {item.label}
                     </a>
                   )

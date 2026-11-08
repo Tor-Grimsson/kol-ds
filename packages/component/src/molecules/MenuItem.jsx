@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Menu } from './Menu.jsx'
 import Kbd from '../atoms/Kbd.jsx'
 import Divider from '../atoms/Divider.jsx'
@@ -67,7 +67,7 @@ export function MenuItem({
         >
           <span>{label}</span>
           {caret && (
-            <Icon
+            <IconLoader
               name="chevron-down"
               size={10}
               style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 200ms' }}
@@ -152,8 +152,8 @@ export function MenuRow({ href, onClick, onPointerEnter, onPointerLeave, disable
           {/* the dot is kol-icons `ascii-dot` drawn at twice the slot and pulled back into it: at the slot's own size its
             * 2.25/24 circle is a 2.6px speck; at 24 it is the rail's • (≈4.5px) and still takes the check's 14px column */}
           {indicator === 'dot'
-            ? <Icon name="ascii-dot" size={size === 'xs' ? 16 : 24} style={{ margin: size === 'xs' ? -4 : -5 }} />
-            : indicator && <Icon name={INDICATOR[indicator] ?? indicator} size={size === 'xs' ? indicatorSize('xs') : 14} />}
+            ? <IconLoader name="ascii-dot" size={size === 'xs' ? 16 : 24} style={{ margin: size === 'xs' ? -4 : -5 }} />
+            : indicator && <IconLoader name={INDICATOR[indicator] ?? indicator} size={size === 'xs' ? indicatorSize('xs') : 14} />}
           {/* ⌘ is drawn, never typed — the Kbd's `command` glyph (as SearchInput's and Button's caps; W2 row 27, 2026-11-04) */}
           {kbd != null && (typeof kbd === 'string' && kbd.startsWith('⌘')
             ? <Kbd size="md" icon="command" className="kol-menu-kbd">{kbd.slice(1)}</Kbd>
@@ -231,7 +231,7 @@ function MenuAccordionNest({ prefix, iconLeft, label, disabled, children }) {
         className={`${NEST_ROW} text-body hover:text-emphasis`}
       >
         <NestRowBody prefix={prefix} iconLeft={iconLeft} label={label} />
-        <Icon
+        <IconLoader
           name="chevron-down"
           size={10}
           className="text-emphasis shrink-0"
@@ -288,7 +288,7 @@ function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, rowClass, p
         className={rowClass ? `kol-menu-btn w-full shrink-0 flex items-center gap-2 text-left disabled:opacity-40 disabled:cursor-not-allowed ${rowClass}` : `${NEST_ROW} ${open ? 'text-emphasis' : 'text-body hover:text-emphasis'}`}
       >
         <NestRowBody prefix={prefix} iconLeft={iconLeft} label={label} />
-        <Icon name="chevron-right" size={10} className="text-emphasis shrink-0" />
+        <IconLoader name="chevron-right" size={10} className="text-emphasis shrink-0" />
       </button>
       {open && (
         /* top -5 = the panel's 1px border + 4px pad, so its first row sits on the trigger row */

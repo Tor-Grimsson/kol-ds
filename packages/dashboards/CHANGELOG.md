@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.15.0 — 2026-11-08
+
+- **`DetailsOverlay` draws its panel through `ModalShell`** (plan-2026-11-08-modal-system 1.1): the lift surface and the one modal radius (4px), where it drew `kol-overlay-panel` itself. Content and copy unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.
+
+## 0.14.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.12.0 — 2026-11-04
 
 - **The metric page's parts** (plan-2026-11-04-float-figma-review W5.1). What apps/metric drew itself is exported, each with props for its data and no baked fixture: **`TopStats`** (`variant` plausible | colour, `items`, the chart as `children`) with **`MetricTiles`**, **`ChartHead`**, **`ChangeBadge`**, **`DeltaBadge`**; **`TrendChart`** (the fitted line chart, `multi` for combined series) with **`ChartWithLegend`**; **`Behaviours`** (owns the tab, its children are a function) with **`GoalsTable`**, **`FunnelChart`**, **`JourneyExplorer`**; **`WorldMap`** (shapes built in, `rows` + `onFilter`) and `REGION_NAMES`; **`ColorKey`**, **`RecordsTable`**, **`SegmentBar`**, **`CalendarIcon`**. The series formatters `formatCount` · `formatDuration` · `formatRange` · `formatBucket` · `formatTick` are exported too. Carried class for class; apps/metric renders pixel-identical. Not published.

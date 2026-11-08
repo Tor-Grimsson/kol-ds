@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, FullscreenOverlay, Input, useModal } from '@kolkrabbi/kol-component'
+import { Button, FullscreenOverlay, Input, ModalShell, useModal } from '@kolkrabbi/kol-component'
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
 import { SETTINGS_BASE } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages'
 import { useGeneratorLibrary } from './LibraryProvider'
@@ -121,7 +121,7 @@ export default function FilesDialog({
   if (!open) return null
   return (
     <FullscreenOverlay open scrim onClose={onClose} initialFocus={focusName ? saveRef : undefined}>
-      <div className="kol-media-picker kol-files-dialog gap-4">
+      <ModalShell className="kol-media-picker kol-files-dialog max-md:rounded-none gap-4">
         <MediaLibrary
           variant="browse"
           client={client}
@@ -156,7 +156,7 @@ export default function FilesDialog({
           <span className="kol-mono-12 text-fg-48 truncate ms-auto">{pickedItem ? labelOf(pickedItem) : 'Select a file'}</span>
           <Button size="sm" disabled={!pickedItem} onClick={openPicked}>Open</Button>
         </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

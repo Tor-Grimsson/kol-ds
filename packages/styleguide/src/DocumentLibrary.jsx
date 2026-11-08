@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, FileQuickLook, SOLO, Table, Tag } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MarkdownPage, PageSection, libraryLinks } from '@kolkrabbi/kol-framework'
 import DocumentIndex from '@kolkrabbi/kol-framework/src/DocumentIndex.jsx'
 
@@ -59,7 +59,7 @@ const LANG_FLAGS = { is: 'flag-is', en: 'flag-gb', de: 'flag-de' }
 const flagMark = (code) => {
   const name = LANG_FLAGS[String(code).toLowerCase()]
   return name
-    ? <span role="img" aria-label={code} className="inline-flex overflow-hidden rounded-[2px] shadow-[0_0_0_1px_var(--kol-border-default)]"><Icon name={name} size={12} /></span>
+    ? <span role="img" aria-label={code} className="inline-flex overflow-hidden rounded-[2px] shadow-[0_0_0_1px_var(--kol-border-default)]"><IconLoader name={name} size={12} /></span>
     : code
 }
 const markOf = (langMark) => (langMark === 'flags' ? flagMark : typeof langMark === 'function' ? langMark : null)
@@ -92,7 +92,7 @@ export function DocumentFiles({ row, onOpen, assetsView = 'label', fileIcon = ki
         const open = () => onOpen(row.files, i)
         if (assetsView === 'label') return <Button key={f.key} variant="nav" size="sm" onClick={open} title={name}>{fileLabel(row.files, f)}</Button>
         const icon = fileIcon(f)
-        const glyph = typeof icon === 'string' ? <Icon name={icon} size={SOLO.sm} /> : icon
+        const glyph = typeof icon === 'string' ? <IconLoader name={icon} size={SOLO.sm} /> : icon
         if (assetsView === 'icon-label') return <Button key={f.key} variant="nav" size="sm" onClick={open} title={name} iconLeft={typeof icon === 'string' ? icon : 'file'} iconComponent={typeof icon === 'string' ? undefined : icon}>{fileLabel(row.files, f)}</Button>
         const twin = fileLabel(row.files, f) !== ext(f)
         return (
@@ -112,7 +112,7 @@ function DocumentLangs({ lang, langView = 'text', langMark }) {
   const label = `Language: ${codes.join(', ')}`
   if (langView === 'chips') return <span className="inline-flex flex-wrap gap-1">{codes.map((c) => <Tag key={c} variant="tertiary" size="xs" hash={false}>{mark ? mark(c) : c}</Tag>)}</span>
   if (langView === 'text') return <span className="inline-flex flex-wrap items-center gap-1" aria-label={label}>{marks(codes, mark)}</span>
-  return <span className="inline-flex items-center gap-1" aria-label={label}><Icon name="globe" size={14} />{mark ? marks(codes, mark) : codes.join(' ')}</span>
+  return <span className="inline-flex items-center gap-1" aria-label={label}><IconLoader name="globe" size={14} />{mark ? marks(codes, mark) : codes.join(' ')}</span>
 }
 
 export const DocumentMarkdown = ({ row }) => (

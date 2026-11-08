@@ -1,6 +1,6 @@
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 import { Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import NoteThumb from './NoteThumb.jsx'
 import { previewOf } from './notes.js'
 
@@ -42,7 +42,7 @@ export default function NotesCatalog({ notes, onOpen, onNew, onFavourite, onDele
       filterGroups={[
         { label: 'Show', key: 'bucket', values: ['All', 'Favourites'] },
       ]}
-      iconComponent={Icon}
+      iconComponent={IconLoader}
       toCard={(n) => ({
         key: n.slug,
         title: n.title || 'Untitled',

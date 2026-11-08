@@ -1,5 +1,5 @@
 import { Fragment } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { toneClass } from '../utilities/tone.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -68,7 +68,7 @@ const ViewToggle = ({
               aria-pressed={option.onClick && option.pressed == null ? undefined : active}
               className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full transition-colors cursor-pointer kol-float-label font-medium ${active ? 'bg-fg-16 text-fg-emphasis' : 'text-fg-64 hover:bg-fg-08 hover:text-fg-emphasis'}`}
             >
-              {option.icon ? <Icon name={option.icon} size={16} variant={iconVariant} /> : option.label}
+              {option.icon ? <IconLoader name={option.icon} size={16} variant={iconVariant} /> : option.label}
             </button>
           )
           return option.icon ? <Tooltip key={option.value} label={option.label}>{button}</Tooltip> : button
@@ -142,7 +142,7 @@ const ViewToggle = ({
             aria-pressed={option.onClick && option.pressed == null ? undefined : active}
           >
             {isIconVariant && option.icon ? (
-              <Icon name={option.icon} size={14} variant={iconVariant} />
+              <IconLoader name={option.icon} size={14} variant={iconVariant} />
             ) : (
               option.label
             )}

@@ -1,6 +1,6 @@
 import { isValidElement } from 'react'
 import { toneClass, VARIANT_TONE } from '../utilities/tone.js'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import Kbd from './Kbd.jsx'
 
@@ -151,7 +151,7 @@ const Button = ({
     // Icon injection seam — a component type resolves names against a custom
     // registry (EditorIcon etc.); a pre-rendered node drops in verbatim.
     if (isValidElement(iconComponent)) return iconComponent
-    const IconCmp = iconComponent || Icon
+    const IconCmp = iconComponent || IconLoader
 
     // If no hover icon, render single icon
     if (!iconHoverName) {

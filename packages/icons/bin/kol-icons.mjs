@@ -2,7 +2,7 @@
 /**
  * kol-icons CLI — `npx kol-icons audit`
  *
- * Scans the current repo's `<Icon name>` / `iconLeft` / `icon:` usage and classifies
+ * Scans the current repo's `<IconLoader name>` / `iconLeft` / `icon:` usage and classifies
  * each name against the shipped sets: in kol-icon-set-interface (curated ✓), legacy-only
  * (breaks when legacy is dropped — migrate or registerIcons), or not-in-package
  * (a locally-registered icon, or a typo). Dependency-free.
@@ -39,7 +39,7 @@ const legacy = new Set([...svgNames('stroke'), ...svgNames('solid'), ...svgNames
 const SKIP = new Set(['node_modules', 'dist', 'build', 'out', 'coverage', '.git', '.next'])
 const CODE = new Set(['.js', '.jsx', '.ts', '.tsx', '.mjs'])
 const PATTERNS = [
-  /<Icon\b[^>]*\bname=["']([^"']+)["']/g,
+  /<Icon(?:Loader)?\b[^>]*\bname=["']([^"']+)["']/g,
   /\bicon(?:Left|Right)?=["']([^"']+)["']/g,
   /\bicon:\s*["']([^"']+)["']/g,
 ]

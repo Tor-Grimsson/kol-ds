@@ -2,7 +2,7 @@ import { useContext, useEffect, useLayoutEffect, useMemo, useState } from 'react
 import { Link, Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom'
 import {
   ShellLayout,
-  ShellSidebar,
+  ShellRail,
   RightRail,
   TagModeProvider,
   TagPath,
@@ -20,7 +20,7 @@ import {
 } from '@kolkrabbi/kol-workshop'
 import { buildTagCounts } from '@kolkrabbi/kol-markdown'
 import { ButtonGroup, SettingsChoice, Table, Tag, useScrollSpy } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { CORPUS, DOC_MODULES, SPACES, DEV_PAGES, COMPONENTS, BLOCKS, SETS, componentHref, docSpace } from 'workshop-fixture'
 
 /* apps/workshop — kol-workshop's shell over workshop-fixture, built to the space table
@@ -92,9 +92,9 @@ function SpaceToc({ space }) {
   }, [space])
   const label = SPACES.find((s) => s.id === space)?.label
   const actions = [
-    { id: 'back', label: 'Back', icon: <Icon name="arrow-left" size={14} />, onClick: () => navigate(-1) },
-    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <Icon name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
-    { id: 'graph', label: 'Tag graph', icon: <Icon name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
+    { id: 'back', label: 'Back', icon: <IconLoader name="arrow-left" size={14} />, onClick: () => navigate(-1) },
+    ...(space ? [{ id: 'search', label: `Search ${label}`, icon: <IconLoader name="search" size={14} />, to: searchHref(`in:${space} `) }] : []),
+    { id: 'graph', label: 'Tag graph', icon: <IconLoader name="polygon" size={14} />, onClick: () => openTagMode(null, { view: 'graph' }) },
   ]
   return (
     <RightRail
@@ -106,7 +106,7 @@ function SpaceToc({ space }) {
       tags={meta?.tags ?? []}
       renderTag={(tag) => <TagPath tag={tag} />}
       onTagClick={(tag) => navigate(searchHref(`#${tag}`))}
-      icon={Icon}
+      icon={IconLoader}
     />
   )
 }
@@ -122,27 +122,27 @@ function SpaceRail({ space, mode, setMode, onNavigate }) {
           <p className="shell-sidebar-label kol-doc-eyebrow">Group by</p>
           <ButtonGroup layout="joined" options={[{ value: 'atomic', label: 'Atomic' }, { value: 'function', label: 'Function' }]} value={mode} onChange={setMode} size="sm" />
         </div>
-        <ShellSidebar routes={mode === 'atomic' ? componentTree : functionTree} basePath="/" label="Components" onNavigate={onNavigate} />
+        <ShellRail routes={mode === 'atomic' ? componentTree : functionTree} basePath="/" label="Components" onNavigate={onNavigate} />
       </div>
     )
   }
-  const one = (label, routes) => <div className="shell-rail-stack"><ShellSidebar routes={routes} basePath="/" label={label} onNavigate={onNavigate} /></div>
+  const one = (label, routes) => <div className="shell-rail-stack"><ShellRail routes={routes} basePath="/" label={label} onNavigate={onNavigate} /></div>
   if (space === 'blocks') return one('Blocks', flat(BLOCKS.map((b) => ({ id: `b-${b.key}`, label: b.title, path: `/blocks/${b.key}` }))))
   if (space === 'sets') return one('Sets', flat(SETS.map((s) => ({ id: `s-${s.key}`, label: s.title, path: `/sets/${s.key}` }))))
   if (space === 'apps') return one('Apps', APPS.map((a) => ({ id: `a-${a.key}`, label: a.key, path: `/apps#${a.key}` })))
   if (space === 'docs') {
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={tree.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" onNavigate={onNavigate} />
-        <ShellSidebar routes={tree.filter((g) => g.category === 'operations')} basePath="/" label="Operations" onNavigate={onNavigate} />
+        <ShellRail routes={tree.filter((g) => g.category === 'documentation')} basePath="/" label="Documentation" onNavigate={onNavigate} />
+        <ShellRail routes={tree.filter((g) => g.category === 'operations')} basePath="/" label="Operations" onNavigate={onNavigate} />
       </div>
     )
   }
   if (space === 'development') {
     return (
       <div className="shell-rail-stack">
-        <ShellSidebar routes={DEV_PAGES.map((p) => ({ id: p.id, label: p.title, path: p.href }))} basePath="/" label="Tools" onNavigate={onNavigate} />
-        <ShellSidebar routes={tree.filter((g) => g.category === 'development')} basePath="/" label="Records" onNavigate={onNavigate} />
+        <ShellRail routes={DEV_PAGES.map((p) => ({ id: p.id, label: p.title, path: p.href }))} basePath="/" label="Tools" onNavigate={onNavigate} />
+        <ShellRail routes={tree.filter((g) => g.category === 'development')} basePath="/" label="Records" onNavigate={onNavigate} />
       </div>
     )
   }

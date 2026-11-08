@@ -3,7 +3,7 @@ title: Figma file setup
 type: reference
 status: active
 created: 2026-11-06
-updated: 2026-11-06
+updated: 2026-11-08
 description: Which Figma file holds what — the KOL library, the family files, the move between them
 aliases:
   - figma files
@@ -28,21 +28,25 @@ A master stays in the KOL library **only if it belongs to a published KOL packag
 
 ## The files
 
-| File | Type | Holds | Published |
-|---|---|---|---|
-| `library--kol-ds-ui` (❖) | library | foundations, icon masters, shared atoms, molecules and organisms, layout modules, the identity system | yes |
-| `float--kol-ds-ui` (◇) | instances | the float system's development file — apps/float's own views | no |
-| `editor--kol-ds-ui` | family | editor, labs, randomiser, Morph, float editor, editor-hub | yes |
-| `metric--kol-ds-ui` | family | metric | yes |
-| [`brand--kol-ds-ui`](https://www.figma.com/design/WsyWxelBX6QLNgRBQ1aK4W/brand--kol-ds-ui) (WsyWxelBX6QLNgRBQ1aK4W) | family | brand, brand-hub, brand-lab, brand-sections, site-hub (a client's brand site) | yes |
-| `modular--kol-ds-ui` | family | rack, rack-hub, mixer, mixer-hub | yes |
-| `media--kol-ds-ui` | family | media, media-hub — screens only | no |
-| `presentation--kol-ds-ui` | family | presentation, presentation-hub — screens only | no |
-| `website--kol-ds-ui` | family | what kolkrabbi.io uses — website and article screens | no |
-| `document--kol-ds-ui` | family | the document screens | no |
-| `layout--kol-ds-ui` | instances | layout reference screens — shell, hub, the workshop layout | no |
-| `iconset--kol-ds-ui` | instances | icon review work — Icons WIP, review sheets, keyline boards | no |
-| `print--kol-ds-ui` | family | empty — Print kit is shared, so it stays in the library | no |
+Fourteen files, in the folder's order (checked against the folder 2026-11-08; `covers` in the folder is a stray file, not part of the set). **Every Figma agent reads this table before its first call** — a file missing here is a file the agent doesn't know exists.
+
+| File | Key | Type | Holds | Published |
+|---|---|---|---|---|
+| `❖ library--kol-ds-ui` | n48kE2bJtrFjl7wxst30xH | library | foundations, icon masters, shared atoms, molecules and organisms, layout modules, the identity system | yes |
+| `◇ foundry--kol-ds-ui` | uKJdSFNoAJkYqqpiSXETFR | instances | the foundry page template and its screens — built by the kol-website agent (kol-website owns the foundry code) | no |
+| `◇ website--kol-ds-ui` | 7YxebZmHy7slweU5E1gt7p | family | what kolkrabbi.io uses — website and article screens | yes |
+| `media--kol-ds-ui` | GqMIvP0T7WKfH8QjFCl98c | family | media, media-hub — screens only | no |
+| [`brand--kol-ds-ui`](https://www.figma.com/design/WsyWxelBX6QLNgRBQ1aK4W/brand--kol-ds-ui) | WsyWxelBX6QLNgRBQ1aK4W | family | brand, brand-hub, brand-lab, brand-sections, site-hub (a client's brand site) | yes |
+| `document--kol-ds-ui` | iYvYkjaQ1JGxGGhh1HO4hk | family | the document screens | no |
+| `layout--kol-ds-ui` | EMdyp9gS3UiMT9tYMZHF5T | instances | layout reference screens — shell, hub, the workshop layout | no |
+| `iconset--kol-ds-ui` | Lud0oSRKPTyHvT9MDVIczN | instances | icon review work — Icons WIP, review sheets, keyline boards | no |
+| `◇ float--kol-ds-ui` | 879P1yBsBPqpdGI5a5v2Y5 | instances | the float system's development file — apps/float's own views | no |
+| `print--kol-ds-ui` | jQABZz0smdlw5UqbfMd6I4 | family | empty — Print kit is shared, so it stays in the library | no |
+| `modular--kol-ds-ui` | fqkq6IOFPPMFDRYWNwEDBR | family | rack, rack-hub, mixer, mixer-hub | yes |
+| `presentation--kol-ds-ui` | 265LaCcBZ2rPxdtWr2fEn2 | family | presentation, presentation-hub — screens only | no |
+| `metric--kol-ds-ui` | 5zfJNoF3I9vOXjwUqryBKY | family | metric | yes |
+| `editor--kol-ds-ui` | MjcVTXxsOUjCeZ419Bk5J5 | family | editor, labs, randomiser, Morph, float editor, editor-hub | yes |
+
 
 No showcase file: the showcase is the code rendering the library.
 

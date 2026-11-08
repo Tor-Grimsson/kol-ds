@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useLayoutEffect } from 'react'
 import { DURATION } from '../utilities/motion.js'
 import gsap from 'gsap'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -168,11 +168,11 @@ export default function ActionButton({
   const glyph = (
     <span className="kol-action-glyph relative inline-grid place-items-center" style={{ width: glyphPx, height: glyphPx }}>
       <span ref={restRef} className="inline-flex" style={{ gridArea: '1 / 1' }}>
-        <Icon name={icon} size={glyphPx} />
+        <IconLoader name={icon} size={glyphPx} />
       </span>
       {confirmIcon && (
         <span ref={onRef} className="inline-flex" style={{ gridArea: '1 / 1', opacity: 0 }}>
-          <Icon name={confirmIcon} size={glyphPx} />
+          <IconLoader name={confirmIcon} size={glyphPx} />
         </span>
       )}
     </span>

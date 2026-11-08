@@ -3,7 +3,7 @@ title: Workshop system
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-10-28
+updated: 2026-11-08
 description: The handrolled docs subsystem in kol-workshop
 aliases:
   - workshop system
@@ -37,8 +37,8 @@ This doc is the map: what it is, what the package owns vs. reuses, the engine AP
 | **Engine** | Handrolled markdown parser, frontmatter parser, doc inventory, search-match predicate, tag co-occurrence, doc helpers. **No `remark`/`gray-matter`/`fuse.js`** — all bespoke. | `kol-workshop/src/engine/` (React-free, zero-dep) |
 | **Docs viewer** | Renders a parsed doc — `DocumentationReader` + `DocsArticle`/`DocsHeader`/`DocsFrontmatter` + `render-tokens` (the JSX render layer for the parser). **Speaks the doc voice, not prose** (0.3.4 retype): every element typed through the `kol-doc-*` roles — the same dialect as the showcase MDX map — sections via `DocSection`, markdown tables via the kol-component `Table` (`variant="simple"` + `.kol-doc-table`), code/tables panel-capped. `.kol-prose` is the blog/CMS voice and never wraps a docs surface. | `kol-workshop/src/docs/` |
 | **Tag system** | `TagMode` context/overlay/gate + `TagGraph` (force-directed, **the only heavy dep — `d3`**). Frontmatter `tags:` + inline `#hashtags` merged. | `kol-workshop/src/tags/` |
-| **Shell composition** | `ShellLayout` (grid + 3 contexts) + `ShellSidebar`. Composes the DS shell primitives; owns the docs-specific `FullHeight` context. Grid gutter is theme-owned (0.3.1): `.shell-content-grid` gap 32px / 48px ≥1600 — no `gap-*` utility on the element (§5: a utility outranks the layered rule and killed the wide step). | `kol-workshop/src/shell/` |
-| **Compositions** | `WorkshopSidebar` (primary + docs nav) + `WorkshopDefaultSidebar` (right rail) — example consumers copy. | `kol-workshop/src/compositions/` |
+| **Shell composition** | `ShellLayout` (grid + 3 contexts) + `ShellRail`. Composes the DS shell primitives; owns the docs-specific `FullHeight` context. Grid gutter is theme-owned (0.3.1): `.shell-content-grid` gap 32px / 48px ≥1600 — no `gap-*` utility on the element (§5: a utility outranks the layered rule and killed the wide step). | `kol-workshop/src/shell/` |
+| **Compositions** | `WorkshopRail` (primary + docs nav) + `WorkshopDefaultRail` (right rail) — example consumers copy. | `kol-workshop/src/compositions/` |
 
 ## Pages
 
@@ -62,7 +62,7 @@ The package is **not** self-contained. Much of the shell chrome **already existe
 | Reused FROM the DS (do NOT duplicate) | Package |
 |---|---|
 | `PageLayout`, `SideNav`, `ShellHeader`, `ThemeToggle` | `@kolkrabbi/kol-framework` |
-| `ShellDrawer`, `ShellSearchOverlay`, `SearchInput`, `DocsToc`, `Icon`/`Button`/`Input`/`Tag`/`CodeBlock`/`Divider` | `@kolkrabbi/kol-component` |
+| `ShellDrawer`, `ShellSearchOverlay`, `SearchInput`, `DocsToc`, `IconLoader`/`Button`/`Input`/`Tag`/`CodeBlock`/`Divider` | `@kolkrabbi/kol-component` |
 | chrome CSS (`.shell-*`, `.docs-*`) | `@kolkrabbi/kol-theme` → `kol-components-workshop.css` |
 
 `kol-workshop` **owns only** the engine, docs viewer, tag system, the shell *composition*, and the example compositions. Tier: it sits **above** the other four UI packages (see [[../00-overview/INDEX|overview]] / `ARCHITECTURE.md §3`, amended to five UI packages).

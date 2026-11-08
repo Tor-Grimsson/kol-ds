@@ -3,7 +3,7 @@ title: Float system
 type: reference
 status: active
 created: 2026-11-04
-updated: 2026-11-05
+updated: 2026-11-08
 description: The float style — detached controls, sheets and windows over a scene — its foundations, every part, and where each lives
 aliases:
   - float
@@ -75,7 +75,7 @@ One row per family of the plan. **Where** names the package that owns it; **stat
 | 3 | Fields | Input states, LabeledControl, Textarea, SearchInput; FieldPair, PasswordInput, InlineAddRow, LinkAddRow, ColorField, ValueField | kol-component 0.334.0 | shipped 2026-11-04 |
 | 4 | Menus | MenuBar (the app bar, kol-shell 0.109.0), the Menu family float, a destructive row, Dropdown fused, ContextMenu + MenuFlyout, ContentFilters; PanelsMenu, WorkspaceSwitcher, AccountMenu | kol-component 0.334.0 · kol-shell 0.109.0 | shipped 2026-11-04 · MenuBar 2026-11-05 |
 | 5 | Chrome | ToolRail (+ `more`, the ⋮ — 0.109.0; the dock — horizontal, a tool's ▾ `more`, `end`, the ⌘K `search` pill — 0.113.0), PropertyRail (xs tabs, the `tab` lit — 0.103.0), transport with Timecode (`inline` the desktop 48 capsule — 0.103.0), DocumentCapsule, GlobalActions, ZoomReadout, SceneBreadcrumb, CanvasHint, SelectionMeasure, TopControlsBar, TabsRow with counts, PanelsRestore, ReaderBar, ProgressDock | kol-shell 0.101.1 · kol-component 0.335.0 (TabsRow counts + `trailing`, inspector tabs, SectionLabel +) | shipped 2026-11-04 |
-| 6 | Windows | QuickLookHeader float, Dialog float (+ `blocking`; `container` opens it inside a box), the useModal float confirm (ModalProvider `container`), QuickLookFrame float (the utility window), MediaLibrary float (the asset window); SummaryLine, EmptyState float, NoticeBanner, NavDrawer | kol-component 0.335.0 | shipped 2026-11-04 |
+| 6 | Windows | ModalHeader float (was QuickLookHeader, 0.357.0), Dialog float (+ `blocking`; `container` opens it inside a box), the useModal float confirm (ModalProvider `container`), QuickLookFrame float (the utility window), MediaLibrary float (the asset window); SummaryLine, EmptyState float, NoticeBanner, NavDrawer | kol-component 0.335.0 | shipped 2026-11-04 |
 | 7 | Cards + tiles | Card float (+ the editor card: `tabs`, `foot`, `defaultFolded`, `radius="window"` — kol-dashboards 0.13.0), StatTiles float (sparkline + delta), the small metric tile; the card kinds (FloatCard, SectionHead, GroupCard, FoldedHead, SourceCard, CaptureCard, KanbanColumn, ProjectCard, LinkCard, CollapsedGroup, CoverTile, ContinueCard, AssetRow, LiveCard, TaskCard, NoteCard, PositionBlock) | kol-dashboards 0.10.0 | shipped 2026-11-04 |
 | 8 | Lists + tables | Table float, DocsToc float + TocRow, ContentRow float (the link row), SpecList float; IndexRow, TaskRow, LayerRow, TreeRow, FlyoutRow (RankedList float is kol-dashboards 0.10.0) | kol-component 0.335.0 | shipped 2026-11-04 |
 | 9 | Navigation + layout | NavRail float (expanded · rail · hidden · flyout), PageHeader float, text tabs, filter row, SectionText meta; AccountFooter, StatusStrip, Breadcrumb, FooterStrip, PeriodNav, DataStatus; footprints 280 · 72 · 0 | kol-component (NavRail expanded · rail, PageHeader, text tabs, filter row, SectionText) · kol-shell 0.101.0 (RailTrigger, RailFlyout, RailDisplayControls, the strips, the footprint tokens in kol-theme 0.211.1) | shipped 2026-11-04 (kol-component 0.335.0: NavRail float, SectionText float + meta, TabsRow mono tabs; the filter row composed) |

@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Button, ColorSwatch, FullscreenOverlay, Input, LabeledControl, LabeledControlSection } from '@kolkrabbi/kol-component'
+import { Button, ColorSwatch, FullscreenOverlay, Input, LabeledControl, LabeledControlSection, ModalShell } from '@kolkrabbi/kol-component'
 import { ROLE } from './slideDoc.js'
 
-/* taxonomy-ok: organism — FullscreenOverlay + Input, ColorSwatch and LabeledControlSection as the deck-wide settings form */
+/* taxonomy-ok: organism — FullscreenOverlay + ModalShell + Input, ColorSwatch and LabeledControlSection as the deck-wide settings form */
 
 /**
  * DeckSettings — the per-presentation pass, before anyone opens a slide.
@@ -46,8 +46,14 @@ function SettingsForm({ onClose, slides, greys, absoluteBlack, onApply }) {
   const grounds = [['var(--kol-color-absolute-black)', absoluteBlack], ...Object.entries(greys)]
 
   return (
-    <div className="w-[520px] max-w-[92vw] flex flex-col gap-5 p-6">
-      <p className="kol-eyebrow text-fg-80">Deck settings</p>
+    <ModalShell className="w-[520px] max-w-[92vw] gap-5 p-6"
+      header={<p className="kol-eyebrow text-fg-80">Deck settings</p>}
+      footer={(
+        <div className="flex justify-end gap-2">
+          <Button size="sm" tone="ghost" onClick={onClose}>Cancel</Button>
+          <Button size="sm" onClick={() => onApply?.({ name, date, background })}>Apply to deck</Button>
+        </div>
+      )}>
 
       <LabeledControlSection label="Identity">
           <LabeledControl label="Deck name">
@@ -75,18 +81,15 @@ function SettingsForm({ onClose, slides, greys, absoluteBlack, onApply }) {
             ))}
           </div>
       </LabeledControlSection>
-
-      <div className="flex justify-end gap-2">
-        <Button size="sm" tone="ghost" onClick={onClose}>Cancel</Button>
-        <Button size="sm" onClick={() => onApply?.({ name, date, background })}>Apply to deck</Button>
-      </div>
-    </div>
+    </ModalShell>
   )
 }
 
 export default function DeckSettings({ open, onClose, slides = [], greys = {}, absoluteBlack = '#000000', onApply }) {
   return (
-    <FullscreenOverlay open={open} onClose={onClose}>
+    /* a modal over the editor on ModalShell (W2.2, 2026-11-08): the scrim and the lift panel, where it was a bare
+     * column on an opaque page */
+    <FullscreenOverlay open={open} scrim onClose={onClose}>
       {open && <SettingsForm onClose={onClose} slides={slides} greys={greys} absoluteBlack={absoluteBlack} onApply={onApply} />}
     </FullscreenOverlay>
   )

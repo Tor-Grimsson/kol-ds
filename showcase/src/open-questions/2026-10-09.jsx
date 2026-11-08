@@ -1,5 +1,5 @@
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Button } from '@kolkrabbi/kol-component'
 
 /* Round 9 — kol-fxr's two held editor-chrome-review items (#14 the transform glyphs, #15 the
@@ -71,7 +71,7 @@ function Row({ name, current, a, b }) {
       <span className="kol-mono-12 text-subtle truncate">{name}</span>
       {[['now', current], ['A', a], ['B', b]].map(([k, m]) => (
         <span key={k} className="flex items-center gap-3">
-          {typeof m === 'string' ? <><Raw markup={m} size={16} /><Raw markup={m} size={24} /></> : <><Icon name={name} size={16} className="text-oq-64" /><Icon name={name} size={24} className="text-oq-64" /></>}
+          {typeof m === 'string' ? <><Raw markup={m} size={16} /><Raw markup={m} size={24} /></> : <><IconLoader name={name} size={16} className="text-oq-64" /><IconLoader name={name} size={24} className="text-oq-64" /></>}
         </span>
       ))}
     </div>

@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 import useScrollFade from '../hooks/useScrollFade.js'
 import CloseButton from './CloseButton.jsx'
 import Button from '../atoms/Button.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { RAIL_ROW } from '../hooks/railRow.js'
 import { Tooltip } from '../utilities/Popover.jsx'
 import { floatSurfaceClass } from '../utilities/tone.js'
@@ -271,7 +271,7 @@ function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar'
           ...(handle ? { background: 'var(--kol-oq-24)' } : glass ? {} : { background: 'var(--kol-surface-secondary)' }), color: handle ? RAIL_ROW.active : RAIL_ROW.rest,
         }}
       >
-        <Icon name={foldSide === 'left' ? 'chevron-right' : 'chevron-left'} size={18} />
+        <IconLoader name={foldSide === 'left' ? 'chevron-right' : 'chevron-left'} size={18} />
       </button>
     )
   }
@@ -298,7 +298,7 @@ function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar'
           className={`flex flex-col items-center justify-center rounded-full cursor-pointer flex-none bg-[var(--slot-bg)] text-[var(--slot-ink)]${dock && !active ? ' hover:bg-[var(--kol-oq-04)] hover:text-[var(--kol-surface-on-primary)]' : ''}${labels ? ' gap-0.5' : ''}`}
           style={{ width: slotW, height: slotH, padding: 0, border: 'none', '--slot-bg': active ? 'var(--kol-oq-16)' : 'transparent', '--slot-ink': ink(active) }}
         >
-          {t.icon && <Icon name={t.icon} size={labels ? 24 : 28} />}
+          {t.icon && <IconLoader name={t.icon} size={labels ? 24 : 28} />}
           {labels && <span className="truncate max-w-full px-1.5" style={{ fontFamily: 'var(--kol-font-family-mono)', fontSize: 11, lineHeight: 1.2, fontWeight: 600 }}>{t.label}</span>}
         </button>
       ))
@@ -317,7 +317,7 @@ function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar'
          * an inline stacked row keeps MobileTabBar's own */
         style={{ background: 'transparent', border: 'none', color: ink(active) }}
       >
-        {t.icon && <Icon name={t.icon} size={phone ? 24 : 18} />}
+        {t.icon && <IconLoader name={t.icon} size={phone ? 24 : 18} />}
         {/* helper is single-line chrome, which a tab label always is */}
         {!phone && <span className="kol-helper-10 truncate max-w-full px-1">{t.label}</span>}
       </button>
@@ -339,7 +339,7 @@ function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar'
         opacity: isCollapsed ? 1 : 0, pointerEvents: isCollapsed ? 'auto' : 'none', transition: `opacity ${COLLAPSE_MS}ms ease`,
       }}
     >
-      <Icon name="x" size={pill ? 28 : 24} />
+      <IconLoader name="x" size={pill ? 28 : 24} />
     </button>
   )
   const row = (
@@ -414,7 +414,7 @@ function StackedTabs({ trailing, tabs, value, onChange, placement, shape = 'bar'
           className={`flex items-center justify-center rounded-full cursor-pointer flex-none ${material}`.trim()}
           style={{ width: TABBAR_PILL_H, height: TABBAR_PILL_H, padding: 0, border: edgeLine, ...solidLook, color: ink(isCollapsed || (last.selected ?? last.id === value)) }}
         >
-          <Icon name={isCollapsed ? 'x' : last.icon} size={labels ? 24 : 28} />
+          <IconLoader name={isCollapsed ? 'x' : last.icon} size={labels ? 24 : 28} />
         </button>
       ))}
     </nav>
@@ -466,7 +466,7 @@ function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise, wrap, type 
             >
               {/* a tab may carry its glyph before the label (2026-10-29, Adobe's Base color · Image · Color wheel) */}
               {/* the glyph in OPAQUE ink (icons take oq, never fg) — full when active, meta otherwise, full under the pointer */}
-              {t.icon && <Icon name={t.icon} size={md ? 20 : 16} className={isActive ? 'text-oq-96' : 'text-oq-48 group-hover:text-oq-80'} />}
+              {t.icon && <IconLoader name={t.icon} size={md ? 20 : 16} className={isActive ? 'text-oq-96' : 'text-oq-48 group-hover:text-oq-80'} />}
               {t.label}
             </button>
           )
@@ -481,7 +481,7 @@ function UnderlineTabs({ tabs, value, onChange, onClose, onMinimise, wrap, type 
           className="ml-auto text-oq-48 hover:text-emphasis self-center"
           style={{ lineHeight: 0 }}
         >
-          <Icon name="chevron-down" size={12} />
+          <IconLoader name="chevron-down" size={12} />
         </button>
       )}
     </div>

@@ -3,7 +3,7 @@ title: Foundry system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-08-27
+updated: 2026-11-08
 verified: 2026-07-09
 description: The type-specimen apparatus in kol-foundry
 aliases:
@@ -93,7 +93,7 @@ The bucket-B engine upgrades — the specimen tools gain a self-measuring row an
 ## Consumer notes
 
 - **Data is injected** — typeface metrics / font files are consumer-supplied flat props (or the bundled `typefaceConfig` fixture).
-- **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation`, `usePrefersReducedMotion` (+ `Icon` from `kol-icons`). This package depends on them.
+- **Shared primitives stay in `kol-component`** — `Button`, `Divider`, `Dropdown`, `Pill`, `Slider`, `Tag`, `ContentFilters`, `useAxisAnimation`, `usePrefersReducedMotion` (+ `IconLoader` from `kol-icons`). This package depends on them.
 - **No router / app-shell dependency** — the pieces that navigate (`TypefaceLibraryGridWithVariables`, `TypefaceSpecimenPage`) take `onNavigate(href, event)` — every item is a real `<a href>`, the callback is the SPA seam (`linkComponent` retired 2026-08-27, FoundryComponentsReconcile; the library grid is on the content set: `ContentFilters` → `ContentCollection` → `ContentCard` / `ContentRow typeface`, with `TypefaceAlphabet` in the row's footer)
 - **`opentype.js` is an optional peer** — install it for parsed glyph metrics; without it, `GlyphMetricsGrid` falls back. **`framer-motion` is a peer** — `IntroLoader`'s curtain motion (2026-07-09).
 - **CSS lives in `kol-theme`** — `kol-components-foundry.css` (recreated 2026-07-09 for the moved kit: type-sample/spec rules + the TextPressure stroke ghost); everything else styles with `@kolkrabbi/kol-theme` utility classes. Vite + Tailwind v4 consumer (`@source "…/node_modules/@kolkrabbi/kol-foundry/src"` — Tailwind skips `node_modules`, or the utilities never generate).

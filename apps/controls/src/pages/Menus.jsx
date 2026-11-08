@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   Dropdown, SettingsMulti, MultiSelect, MenuFilter, MenuDatePicker, MenuMore, MenuItem, MenuRow, MenuDivider,
-  ContextMenu, useContextMenu, Icon,
+  ContextMenu, useContextMenu, IconLoader,
 } from '@kolkrabbi/kol-component'
 import Specimen from '../Specimen.jsx'
 
@@ -91,10 +91,10 @@ export default function Menus() {
       <Specimen bare title="Menubar" ships="kol-component · MenuItem"
         does={['A named menu in a bar. Rows run actions; a key shows only when the row passes one.']}>
         <MenuItem key={align} label="File" size={size} align={align}>
-          <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>New file</MenuRow>
-          <MenuRow iconLeft={<Icon name="save" size={14} />} kbd="⌘S" onClick={() => {}}>Save</MenuRow>
+          <MenuRow iconLeft={<IconLoader name="file" size={14} />} onClick={() => {}}>New file</MenuRow>
+          <MenuRow iconLeft={<IconLoader name="save" size={14} />} kbd="⌘S" onClick={() => {}}>Save</MenuRow>
           <MenuDivider />
-          <MenuRow iconLeft={<Icon name="trash" size={14} />} disabled onClick={() => {}}>Delete</MenuRow>
+          <MenuRow iconLeft={<IconLoader name="trash" size={14} />} disabled onClick={() => {}}>Delete</MenuRow>
         </MenuItem>
       </Specimen>
 

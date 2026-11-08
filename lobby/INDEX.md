@@ -38,6 +38,7 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🟢 | [LibraryMastersFoundryWebsite](done/LibraryMastersFoundryWebsite.md) | **kol-website** — Figma only: 14 library masters missing or off for the foundry and website files (TypeTester, SectionFaq + Accordion, ContentRow/ContentCard `typeface`, SectionCardItem text-only, SectionHero `split`, ContentCard `showcase`, SectionCta `centered`, ExhibitLinkCard, SourcesReferences; SectionText/SectionHero/ContentCard heights, ShellHeader tabs slot, Slider `value`; Mirror + Pin icons) | 2026-11-08 | 🟢 `closed` 2026-11-08 — library masters built, ids in the resolution; publish is the user's |
 | 🟢 | [IdentityFoundry](done/IdentityFoundry.md) | **kol-foundry** — kol-icons `identity/foundry`: the Foundry app's mark, the drafting compass (app-icon pick `compass-big-up`), file attached | 2026-11-08 | 🔵 `filed` |
 | 🟢 | [SiteRailPageIcons](done/SiteRailPageIcons.md) | **kol-foundry** — site rail page rows take an icon the app-rail way: glyph in the gutter column, the label where a plain page row's sits (today +20px shift with `alignIcons`) | 2026-11-08 | 🔵 `filed` |
 | 🟢 | [TypeTester](done/TypeTester.md) | **kol-foundry** — kol-website's `FontPreviewItem` (style dropdown + Size / Leading / Spacing sliders over an editable sample) as a DS molecule; kol-website foundry pages and kol-kerner's Tester page consume it | 2026-11-08 | 🔵 `filed` |
@@ -224,6 +225,7 @@ accrues entries and never closes.
 
 | | Entry | About | Staged | Closed | State |
 |---|---|---|---|---|---|
+| 🟢 | [KolPageShrinksInPageShell](done/KolPageShrinksInPageShell.md) | **kol-foundry** — `.kol-page` fills a flex parent (PageShell) instead of shrinking to its content | 2026-11-08 | 2026-11-08 | `closed` — **kol-framework 0.74.1** live; receipt to kol-foundry |
 | 🟢 | [DragResizeBottomWake](done/DragResizeBottomWake.md) | **kol-website** — a top/bottom Rail's grab pill wakes (`useGrabEdge` axis) | 2026-11-04 | 2026-11-04 | `closed` — **kol-component 0.338.1** live; receipt to kol-website |
 | 🟢 | [StyleguideNoMiddots](done/StyleguideNoMiddots.md) | **kol-website** — no `·` in kol-styleguide's shipped copy; `validate:no-middots` gate | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.1** live; receipt to kol-website |
 | 🟢 | [DocumentLangMark](done/DocumentLangMark.md) | **kol-website** — kol-styleguide `DocumentLibrary`/`DocumentView` `langMark` (code → node, preset `"flags"` on kol-icons `flag-*`) | 2026-11-04 | 2026-11-04 | `closed` — **kol-styleguide 0.22.0** live; receipt to kol-website |
@@ -561,6 +563,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-08 | 🟢 LibraryMastersFoundryWebsite closed — 14 library masters built / corrected in ❖ library--kol-ds-ui (unpublished), receipt to kol-website |
+| 2026-11-08 | 🔵 KolPageShrinksInPageShell filed from kol-foundry (kol-kerner overview pages) |
+| 2026-11-08 | 🔵 LibraryMastersFoundryWebsite filed from kol-website (foundry + website Figma files, plan 2.2b) |
 | 2026-11-08 | 🔵 IdentityFoundry filed from kol-foundry (app-icon round) |
 | 2026-11-08 | 🔵 SiteRailPageIcons filed from kol-foundry (kol-kerner rail) |
 | 2026-11-08 | 🔵 TypeTester filed from kol-foundry (kol-kerner plan 03 W6.1) |
@@ -1409,3 +1414,4 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-11-08 | **`TypeTester` closed** → **kol-component@0.352.0**. TypeTester is a kol-component molecule: a style Dropdown and Size / Leading / Spacing Sliders over an editable sample in the font under test, ported class-for-class from FontPreviewSection (side bearings and line clamp kept). Props: fontFamily, fontStyle, text, styles [{label, value}] (value is the font-weight), initialStyle, initialSize, initialLeading, lineClamp. The weight map, the Icelandic sample, the section header and the size ladder stay with the caller, per the ticket. |
 | 2026-11-08 | **`SiteRailPageIcons` closed** → **kol-component@0.353.0**. NavRailSite pageIcons: 'gutter' hangs a page row's glyph in the gutter under the category glyph, so an iconed page row's label sits exactly where a plain one's does (measured: label x 55 for both, both 18px tall). 'inline' stays the default. Through SiteLayout: sideNav={{ pageIcons: 'gutter' }}. |
 | 2026-11-08 | **`IdentityFoundry` closed** → **kol-icons@0.67.0**. identity/foundry added (Foundry app mark, currentColor, keyline) |
+| 2026-11-08 | **`KolPageShrinksInPageShell` closed** → **kol-framework@0.74.1**. `.kol-page` takes `width: 100%` + border-box; fills to `--kol-container-max` inside PageShell. Receipt to kol-foundry, remainder there: kol-kerner drops its two wrappers and bumps. |

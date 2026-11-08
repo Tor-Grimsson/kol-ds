@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import SearchInput from '../molecules/SearchInput.jsx'
 import Tag from '../atoms/Tag.jsx'
 import TabsRow from '../molecules/TabsRow.jsx'
@@ -469,7 +469,7 @@ export default function CommandOverlay({
                   >
                     {/* the glyph drawn here, not as `iconLeft` — Button would wrap it and the label in a span that does not take the row */}
                     <span className="flex min-w-0 flex-1 items-center" style={{ gap: 'var(--kol-float-gap-ic)' }}>
-                      {item.indent ? <span className="inline-block w-4 shrink-0" /> : item.icon && (typeof item.icon === 'string' ? <Icon name={item.icon} size="var(--kol-float-ic)" className="shrink-0 text-oq-88" /> : item.icon)}
+                      {item.indent ? <span className="inline-block w-4 shrink-0" /> : item.icon && (typeof item.icon === 'string' ? <IconLoader name={item.icon} size="var(--kol-float-ic)" className="shrink-0 text-oq-88" /> : item.icon)}
                       <span className="truncate text-left"><HighlightMatch label={item.label} query={query} ranges={item.highlights} /></span>
                       {((item.disabled && item.disabledHint) || item.hint) && <span className="kol-float-hint ml-auto truncate pl-3 text-oq-64">{(item.disabled && item.disabledHint) || item.hint}</span>}
                     </span>

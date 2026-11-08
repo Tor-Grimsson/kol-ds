@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.25.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peers `@kolkrabbi/kol-icons` >=0.68.0, `@kolkrabbi/kol-component` >=0.355.0.
+
 ## 0.24.0 — 2026-11-07
 
 - **`BlockSwatch` (the chip form) renders kol-component's `SwatchTile`** — the same geometry, now drawn in one place. Props and look unchanged; `variant="cell"` is unchanged. Needs kol-component ≥ 0.350.0.

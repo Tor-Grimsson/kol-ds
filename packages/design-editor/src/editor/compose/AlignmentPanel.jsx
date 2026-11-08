@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { ButtonGroup } from '@kolkrabbi/kol-component'
 import { useComposeState } from './state'
 import { useControlSize } from '../params/controlSize'
@@ -8,16 +8,16 @@ import { useControlSize } from '../params/controlSize'
  * value={null}. A single selected layer aligns to the CANVAS, ≥2 to their
  * common bbox (state.alignSelected). */
 export const H_OPTS = [
-  { value: 'start',  label: <Icon name="align-horizontal-left" size={16} />, ariaLabel: 'Align left' },
-  { value: 'center', label: <Icon name="align-horizontal-center" size={16} />, ariaLabel: 'Align horizontal center' },
-  { value: 'end',    label: <Icon name="align-horizontal-right" size={16} />, ariaLabel: 'Align right' },
-  { value: 'distribute', label: <Icon name="space-evenly-horizontal" size={16} />, ariaLabel: 'Distribute horizontally' },
+  { value: 'start',  label: <IconLoader name="align-horizontal-left" size={16} />, ariaLabel: 'Align left' },
+  { value: 'center', label: <IconLoader name="align-horizontal-center" size={16} />, ariaLabel: 'Align horizontal center' },
+  { value: 'end',    label: <IconLoader name="align-horizontal-right" size={16} />, ariaLabel: 'Align right' },
+  { value: 'distribute', label: <IconLoader name="space-evenly-horizontal" size={16} />, ariaLabel: 'Distribute horizontally' },
 ]
 export const V_OPTS = [
-  { value: 'start',  label: <Icon name="align-vertical-top" size={16} />, ariaLabel: 'Align top' },
-  { value: 'center', label: <Icon name="align-vertical-center" size={16} />, ariaLabel: 'Align vertical center' },
-  { value: 'end',    label: <Icon name="align-vertical-bottom" size={16} />, ariaLabel: 'Align bottom' },
-  { value: 'distribute', label: <Icon name="space-evenly-vertical" size={16} />, ariaLabel: 'Distribute vertically' },
+  { value: 'start',  label: <IconLoader name="align-vertical-top" size={16} />, ariaLabel: 'Align top' },
+  { value: 'center', label: <IconLoader name="align-vertical-center" size={16} />, ariaLabel: 'Align vertical center' },
+  { value: 'end',    label: <IconLoader name="align-vertical-bottom" size={16} />, ariaLabel: 'Align bottom' },
+  { value: 'distribute', label: <IconLoader name="space-evenly-vertical" size={16} />, ariaLabel: 'Distribute vertically' },
 ]
 
 const ALIGN_H = H_OPTS.filter((o) => o.value !== 'distribute')

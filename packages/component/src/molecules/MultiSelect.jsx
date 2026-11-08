@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MenuRow } from './MenuItem.jsx'
 import { Menu } from './Menu.jsx'
 import { indicatorSize } from '../hooks/glyphLadders.js'
@@ -50,7 +50,7 @@ export default function MultiSelect({ groups = [], value = {}, onChange, label, 
           data-state={open ? 'open' : 'closed'}
         >
           <span className="kol-dd-label"><span>{label ?? groups.map(labelOf).filter(Boolean).join(' · ')}</span></span>
-          <Icon name="chevron-down" size={indicatorSize(size)} className="kol-dd-caret" />
+          <IconLoader name="chevron-down" size={indicatorSize(size)} className="kol-dd-caret" />
         </button>
       )}
     >

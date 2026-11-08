@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Divider, SectionText, useMediaQuery } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import PageShell from './PageShell.jsx'
 
 /* taxonomy-ok: organism — nests PageShell (relative) + kol-component's SectionText, Divider, Button */
@@ -69,7 +69,7 @@ export default function StudioDetail({ back, title, subtitle, description, secti
         level="app"
         /* Back — a text link in the eyebrow, history back; from Create it returns there, from Library to Library.
          * The chevron is an Icon at the text's size, never a glyph character */
-        eyebrow={<span onClick={goBack} className="kol-helper-12 text-fg-48 hover:text-fg-96 cursor-pointer select-none inline-flex items-center gap-1"><Icon name="chevron-left" size="1em" />{back?.label ?? 'Back'}</span>}
+        eyebrow={<span onClick={goBack} className="kol-helper-12 text-fg-48 hover:text-fg-96 cursor-pointer select-none inline-flex items-center gap-1"><IconLoader name="chevron-left" size="1em" />{back?.label ?? 'Back'}</span>}
         headline={title}
         body={subtitle}
       />

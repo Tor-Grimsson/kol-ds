@@ -1,4 +1,4 @@
-import { WorkshopSidebar } from '@kolkrabbi/kol-workshop'
+import { WorkshopRail } from '@kolkrabbi/kol-workshop'
 
 export const stage = 'sm'
 
@@ -8,6 +8,6 @@ const ROUTES = [
 ]
 
 /* The example left rail of a workshop: its routes, then its docs. */
-export default function WorkshopSidebarPreview() {
-  return <WorkshopSidebar routes={ROUTES} inventory={[{ id: 'setup', title: 'Setup' }, { id: 'data', title: 'Data' }]} basePath="/components" />
+export default function WorkshopRailPreview() {
+  return <WorkshopRail routes={ROUTES} inventory={[{ id: 'setup', title: 'Setup' }, { id: 'data', title: 'Data' }]} basePath="/components" />
 }

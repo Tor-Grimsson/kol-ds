@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ColorSwatch from './ColorSwatch.jsx'
 import Input from '../atoms/Input.jsx'
 import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
@@ -164,7 +164,7 @@ export default function ColorInputRow({
           locked ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}
       >
-        <Icon name={locked ? 'lock' : 'unlock'} size={12} />
+        <IconLoader name={locked ? 'lock' : 'unlock'} size={12} />
       </span>
     </button>
     </Tooltip>

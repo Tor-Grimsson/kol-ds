@@ -449,6 +449,8 @@ body {
 /* ───── Page scaffold ───── */
 
 .kol-page {
+  width: 100%;
+  box-sizing: border-box;
   max-width: var(--kol-container-max);
   margin: 0 auto;
   padding: 64px var(--kol-pad-section-x);

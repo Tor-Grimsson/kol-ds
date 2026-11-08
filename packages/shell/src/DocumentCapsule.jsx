@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, MenuTrigger, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
 
 /* taxonomy-ok: molecule — a float Button, a float MenuTrigger (the name), the More sheet's rows */
@@ -45,7 +45,7 @@ export default function DocumentCapsule({ name, status, statusIcon, onBack, menu
       )}
       {status && (
         <span className="kol-float-label text-oq-64 inline-flex items-center gap-1">
-          {statusIcon && <Icon name={statusIcon} size={16} />}
+          {statusIcon && <IconLoader name={statusIcon} size={16} />}
           {status}
         </span>
       )}

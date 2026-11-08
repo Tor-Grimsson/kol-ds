@@ -1,6 +1,6 @@
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 20 — one row geometry for both nav rails (user 2026-10-27, on the app and site presets side by side: *"Im just
  * wondering why the div structure and padding is so wildly different in setup?"*). `NavRail preset="site"` is kol-framework's
@@ -55,7 +55,7 @@ function AppCurrent() {
 /* the site rail's tree, in NavRailSite's classes */
 function SiteCurrent() {
   const glyph = (name) => (
-    <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true"><Icon name={name} size={16} /></span>
+    <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true"><IconLoader name={name} size={16} /></span>
   )
   const leaf = 'kol-sidenav-link kol-helper-10 block relative py-[4px] pl-[calc(var(--kol-pad-chrome-x)+2rem)] pr-6 no-underline text-strong'
   return (
@@ -65,11 +65,11 @@ function SiteCurrent() {
           <li className="relative"><a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline">{glyph('nav-home')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Home</span></a></li>
           <li className="relative">
             <a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline">{glyph('book-open')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Research</span></a>
-            <span className="kol-sidenav-hop-caret text-emphasis -rotate-90"><Icon name="chevron-down" size={12} /></span>
+            <span className="kol-sidenav-hop-caret text-emphasis -rotate-90"><IconLoader name="chevron-down" size={12} /></span>
           </li>
           <li className="relative">
             <a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline is-active">{glyph('drop')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Kolkrabbi</span></a>
-            <span className="kol-sidenav-hop-caret text-emphasis"><Icon name="chevron-down" size={12} /></span>
+            <span className="kol-sidenav-hop-caret text-emphasis"><IconLoader name="chevron-down" size={12} /></span>
             <ul className="kol-sidenav-list">
               <li>
                 <div className="kol-sidenav-group kol-helper-10 uppercase text-subtle">Identity</div>

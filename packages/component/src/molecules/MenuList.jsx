@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import SearchInput from './SearchInput.jsx'
 import { MenuRow, MenuDivider, MenuFlyout } from './MenuItem.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
@@ -31,7 +31,7 @@ export const panelClass = (variant, sheet) => (variant === 'float' ? `kol-menu-p
 
 export const MenuLabel = ({ className = 'kol-menu-label kol-helper-12', children }) => <div className={className}>{children}</div>
 
-const glyph = (icon, size) => (typeof icon === 'string' ? <Icon name={icon} size={size} /> : icon)
+const glyph = (icon, size) => (typeof icon === 'string' ? <IconLoader name={icon} size={size} /> : icon)
 /* a row's trailing marks — real icons and Kbd only (W2): `indicator` 'dot' | 'check' | 'chevron', `checked` = 'check',
  * `kbd` a key cap, `trailing` an icon name for an action (download) */
 const indicatorOf = (it) => it.indicator ?? (it.checked ? 'check' : undefined)

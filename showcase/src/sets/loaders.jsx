@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, LoaderOverlay, Table } from '@kolkrabbi/kol-component'
 import { LoaderIntro } from '@kolkrabbi/kol-foundry'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* THE LOADERS SET (AppLoader, kol-monitor 2026-10-17 — user: "even if we remove them, its just nice to see what we
  * have"): every loader the estate runs, one convention — Loader<Job>. The KOL's three run here; the others live
@@ -24,7 +24,7 @@ function LoaderAppSpecimen() {
   return (
     <div className="flex items-center justify-center rounded" style={{ height: 220, background: '#121215', color: '#FFFFFF' }}>
       <style>{PULSE}</style>
-      <span className="kol-loaders-pulse inline-flex" style={{ animation: 'kol-loaders-pulse 1.6s ease-in-out infinite' }}><Icon name="kol-ds" size={64} /></span>
+      <span className="kol-loaders-pulse inline-flex" style={{ animation: 'kol-loaders-pulse 1.6s ease-in-out infinite' }}><IconLoader name="kol-ds" size={64} /></span>
     </div>
   )
 }

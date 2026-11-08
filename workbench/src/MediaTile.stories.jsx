@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { MediaTile, FileIcon } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 const FILES = [['notes.md', 'md'], ['data.json', 'json', 'code'], ['voice.wav', 'wav', 'music-note'], ['a-very-long-file-name-that-wraps.txt', 'txt']]
 
@@ -23,6 +23,6 @@ export const Grid = () => {
 
 export const Folder = () => (
   <div style={{ width: 140 }}>
-    <MediaTile name="projects" preview={<Icon name="folder" size="100%" className="text-oq-48" />} />
+    <MediaTile name="projects" preview={<IconLoader name="folder" size="100%" className="text-oq-48" />} />
   </div>
 )

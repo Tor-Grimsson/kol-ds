@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * Delta — A change against a previous value. `↗ 19.8% from 10,740` (float-everything W2 row 29, 2026-11-04 — the
@@ -18,7 +18,7 @@ export default function Delta({ value, direction = 'up', from, fromLabel = 'from
   return (
     <span className={`inline-flex items-center gap-2 ${className}`.trim()}>
       <span className="inline-flex items-center gap-1 kol-float-timecode text-fg-emphasis">
-        {ARROW[direction] && <Icon name={ARROW[direction]} size={12} className="text-oq-96" />}
+        {ARROW[direction] && <IconLoader name={ARROW[direction]} size={12} className="text-oq-96" />}
         {value}
       </span>
       {from != null && <span className="kol-float-hint text-fg-64">{fromLabel} {from}</span>}

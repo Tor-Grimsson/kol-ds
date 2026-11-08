@@ -1,6 +1,6 @@
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
 import { Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 21 — the site rail's chevron inset (user 2026-10-27, after Round 20 was rejected: *"my original point was just that
  * there was a bit padding right missing"*). `.kol-sidenav-hop-caret` in kol-framework.css moved from `right: 0.75rem` (12) to
@@ -31,7 +31,7 @@ const AFTER = {
 
 function SiteRail({ geo }) {
   const glyph = (name) => (
-    <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true"><Icon name={name} size={16} /></span>
+    <span className="kol-sidenav-hop-icon inline-flex items-center justify-center w-5 h-5 shrink-0" aria-hidden="true"><IconLoader name={name} size={16} /></span>
   )
   const leaf = 'kol-sidenav-link kol-helper-10 block relative py-[4px] pr-6 no-underline text-strong'
   return (
@@ -41,14 +41,14 @@ function SiteRail({ geo }) {
           <li className="relative"><a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline">{glyph('nav-home')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Home</span></a></li>
           <li className="relative">
             <a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline">{glyph('book-open')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Research</span></a>
-            <span className="kol-sidenav-hop-caret text-emphasis" style={geo.caret}><Icon name="chevron-down" size={12} /></span>
+            <span className="kol-sidenav-hop-caret text-emphasis" style={geo.caret}><IconLoader name="chevron-down" size={12} /></span>
             <ul className="kol-sidenav-list">
               {['Compare', 'Sheet', 'Boards'].map((l) => <li key={l}><a className={leaf} style={geo.page}>{l}</a></li>)}
             </ul>
           </li>
           <li className="relative">
             <a className="kol-sidenav-hop kol-helper-12 text-emphasis no-underline is-active">{glyph('drop')}<span className="kol-sidenav-hop-label flex-1 min-w-0">Kolkrabbi</span></a>
-            <span className="kol-sidenav-hop-caret text-emphasis" style={geo.caret}><Icon name="chevron-down" size={12} /></span>
+            <span className="kol-sidenav-hop-caret text-emphasis" style={geo.caret}><IconLoader name="chevron-down" size={12} /></span>
             <ul className="kol-sidenav-list">
               <li>
                 <div className="kol-sidenav-group kol-helper-10 uppercase text-subtle">Identity</div>

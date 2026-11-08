@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { CloseButton, FullscreenOverlay } from '@kolkrabbi/kol-component'
+import { CloseButton, FullscreenOverlay, ModalShell } from '@kolkrabbi/kol-component'
 import { PaletteBody } from './PaletteBody'
 
 /**
@@ -30,13 +30,13 @@ export default function ColorModesWindow() {
     <FullscreenOverlay open onClose={close} closeButton={false} scrim>
       {/* keep-selection: the overlay portals outside the shell, and the canvas's click-away would
           otherwise deselect the generator this window applies to */}
-      <div aria-label="Color Modes" data-editor-keep-selection className="kol-design-editor kol-popover w-[360px] max-w-full flex flex-col">
+      <ModalShell variant="bordered" aria-label="Color Modes" data-editor-keep-selection className="kol-design-editor w-[360px] max-w-full shadow-[0_8px_24px_-8px_rgba(0,0,0,0.4),0_2px_6px_-2px_rgba(0,0,0,0.3)]">
         <div className="relative flex h-10 items-center justify-center border-b border-oq-08 px-4">
           <span className="font-sans text-[13px] text-emphasis">Color Modes</span>
           <CloseButton onClick={close} size="sm" className="!absolute right-3" />
         </div>
         <PaletteBody />
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

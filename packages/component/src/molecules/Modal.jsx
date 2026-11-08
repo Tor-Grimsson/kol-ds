@@ -3,7 +3,8 @@ import { createPortal } from 'react-dom'
 import Button from '../atoms/Button.jsx'
 import Input from '../atoms/Input.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
-import QuickLookHeader from './QuickLookHeader.jsx'
+import ModalHeader from './ModalHeader.jsx'
+import ModalShell from './ModalShell.jsx'
 
 /**
  * Modal — promise-based prompt + confirm + alert dialogs.
@@ -61,7 +62,7 @@ import QuickLookHeader from './QuickLookHeader.jsx'
  *
  * THE FLOAT (`variant: 'float'` on any call or on the provider, float-everything W6 rows 84 · 85 · 89 · 90, 2026-11-04 —
  * kol-float--style 46:2795): the window on `kol-float-solid` at `--kol-float-window-r`, 24 in, 18 between its parts.
- * A `header` (with its `icon`) draws `QuickLookHeader variant="float"` over the title; the title is the heading
+ * A `header` (with its `icon`) draws `ModalHeader variant="float"` over the title; the title is the heading
  * (`kol-float-section`… at 20: Inter 500), `body` a line under it in the hint ink; fields are float Inputs, toggles float
  * ToggleCheckboxes; the actions sit apart — the quiet cancel at the left (`tone="ghost"`), the next step at the right
  * (`inverted`, or `danger` when `tone: 'danger'` — the destructive confirm). Still a blocking task, so the scrim
@@ -85,16 +86,11 @@ import QuickLookHeader from './QuickLookHeader.jsx'
 
 const ModalCtx = (globalThis[Symbol.for('@kolkrabbi/kol-component/ModalCtx')] ??= createContext(null))
 
-/* THE MODAL VARIANTS (user 2026-10-31: *"do we not use variants for different styles?"*). `lift` — the overlay panel
- * every KOL overlay wears (oq-04, no border, the scrim is the edge); `bordered` — the page surface behind an fg-08
- * hairline. Each modal keeps its own default (prompts bordered, Dialog lift) until he picks one. */
-const MODAL_VARIANTS = {
-  lift: { className: 'kol-overlay-panel', style: {} },
-  /* float (W6, 2026-11-04): the float window — solid ground + the float shadow, the window radius, no edge */
-  float: { className: 'kol-float-solid !rounded-[var(--kol-float-window-r)] text-fg-emphasis', style: {} },
-  bordered: { className: 'border border-fg-08', style: { background: 'var(--kol-surface-primary)', color: 'var(--kol-surface-on-primary)' } },
-}
-const modalVariant = (v, fallback) => MODAL_VARIANTS[v] ?? MODAL_VARIANTS[fallback]
+/* THE MODAL VARIANTS (user 2026-10-31: *"do we not use variants for different styles?"*) live on ModalShell (W2.1,
+ * 2026-11-08) — the one panel: `lift`, `bordered`, `float`. Each modal keeps its own default (prompts bordered, Dialog
+ * lift) until he picks one; an unknown name falls back to that default. */
+const KNOWN = new Set(['lift', 'bordered', 'float'])
+const modalVariant = (v, fallback) => (KNOWN.has(v) ? v : fallback)
 
 export function ModalProvider({ children, variant = 'bordered', container }) {
   const [state, setState] = useState(null)
@@ -135,7 +131,7 @@ export function ModalProvider({ children, variant = 'bordered', container }) {
 
 function ModalView({ state, closeWith, variant, contained }) {
   const look = modalVariant(variant, 'bordered')
-  const float = variant === 'float'
+  const float = look === 'float'
   const [val, setVal] = useState(state.defaultValue ?? '')
   const [values, setValues] = useState(() => Object.fromEntries((state.options ?? []).map((o) => [o.id, !!o.defaultValue])))
   const [fieldVals, setFieldVals] = useState(() => Object.fromEntries((state.fields ?? []).map((f) => [f.id, f.defaultValue ?? ''])))
@@ -214,21 +210,35 @@ function ModalView({ state, closeWith, variant, contained }) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
-      <div
+      <ModalShell
         ref={dialogRef}
+        variant={look}
         role={typing ? 'dialog' : 'alertdialog'}
         aria-modal="true"
         aria-labelledby="kol-modal-title"
         onMouseDown={(e) => e.stopPropagation()}
-        className={float ? `kol-modal flex flex-col gap-[18px] p-6 ${look.className}` : `kol-modal flex flex-col gap-4 p-5 rounded ${look.className}`}
+        className={float ? 'gap-[18px] p-6' : 'gap-4 p-5'}
         style={{
-          ...look.style,
           minWidth: 320,
           maxWidth: contained ? '90%' : '90vw',
           ...(float ? { width: 562 } : {}),
         }}
+        header={float && state.header && <ModalHeader variant="float" icon={state.icon} title={state.header} onClose={cancel} />}
+        footer={float ? (
+          /* the float's actions sit apart: recovery quiet at the left, the next step at the right */
+          <div className="flex items-center justify-between gap-3">
+            {state.kind !== 'alert' ? <Button variant="float" tone="ghost" size="md" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button> : <span />}
+            <Button variant="float" tone={state.tone === 'danger' ? 'danger' : 'inverted'} size="md" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
+          </div>
+        ) : (
+          <div className="flex gap-2 justify-end">
+            {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
+            {/* inverted, not primary: since tone-is-the-ground-axis (2026-09-03) primary is the
+              * dark ground, so OK drew the same as Cancel and nothing showed what Enter does */}
+            <Button tone="inverted"  size="sm" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
+          </div>
+        )}
       >
-        {float && state.header && <QuickLookHeader variant="float" icon={state.icon} title={state.header} onClose={cancel} />}
         {/* kol-mono-12, not helper: dialog copy WRAPS, and helper's
           * line-height 1 is single-line chrome only (type protocol). */}
         {/* pre-line: an alert can carry a failure list, one per line */}
@@ -276,21 +286,7 @@ function ModalView({ state, closeWith, variant, contained }) {
             ))}
           </div>
         )}
-        {float ? (
-          /* the float's actions sit apart: recovery quiet at the left, the next step at the right */
-          <div className="flex items-center justify-between gap-3">
-            {state.kind !== 'alert' ? <Button variant="float" tone="ghost" size="md" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button> : <span />}
-            <Button variant="float" tone={state.tone === 'danger' ? 'danger' : 'inverted'} size="md" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
-          </div>
-        ) : (
-        <div className="flex gap-2 justify-end">
-          {state.kind !== 'alert' && <Button size="sm" onClick={cancel}>{state.cancelLabel ?? 'Cancel'}</Button>}
-          {/* inverted, not primary: since tone-is-the-ground-axis (2026-09-03) primary is the
-            * dark ground, so OK drew the same as Cancel and nothing showed what Enter does */}
-          <Button tone="inverted"  size="sm" onClick={submit} data-modal-ok>{state.okLabel ?? 'OK'}</Button>
-        </div>
-        )}
-      </div>
+      </ModalShell>
     </div>
   )
 }
@@ -329,14 +325,14 @@ export function useModal() {
 /**
  * Dialog — Modal's shell holding any content (MetricDashboardUpstream, kol-website 2026-10-31 — metric's filter and
  * segment dialogs). The same `.kol-overlay-scrim` + `.kol-modal` surface as the prompts above, with `children` in place
- * of a prompt. **z 150, not Modal's 1000**, so KOL's portalled floats (z 210+) open ABOVE it — a Dropdown or Combobox
+ * of a prompt — both draw their panel through `ModalShell` (W2.1, 2026-11-08). **z 150, not Modal's 1000**, so KOL's portalled floats (z 210+) open ABOVE it — a Dropdown or Combobox
  * inside a dialog has to show its list (a native `<dialog>` cannot: `showModal()` puts it in the top layer, over every
  * portal). Esc and a press on the scrim close it; Esc is left to an open float inside first.
  *
  *   <Dialog open={open} onClose={() => setOpen(false)} title="Filter by page" width={560}>…</Dialog>
  *
  * `variant="float"` (float-everything W6 rows 83 · 84 · 89, 2026-11-04 — kol-float--style 46:2655): the float window —
- * `kol-float-solid` on `--kol-float-window-r`, 24 in, 18 between its parts, the title drawn as `QuickLookHeader
+ * `kol-float-solid` on `--kol-float-window-r`, 24 in, 18 between its parts, the title drawn as `ModalHeader
  * variant="float"` (`icon` · title · − when `onMinimise` · ×) over the children. `blocking` (default true) keeps the
  * scrim: a blocking task dims the scene, a utility window does not (row 89) — `blocking={false}` drops the scrim and the
  * press-outside close and leaves the scene live (QuickLookFrame float is the utility window proper).
@@ -362,8 +358,8 @@ export function useModal() {
  * @param {ReactNode} [aside] · @param {ReactNode} [footer] · @param {number} [height=656]
  */
 export function Dialog({ open, onClose, title, width = 560, variant = 'lift', icon, onMinimise, blocking = true, container, kind, headerEnd, sections, section, onSection, aside, footer, height = 656, children }) {
-  const look = modalVariant(variant, 'lift')
-  const float = variant === 'float'
+  const look = variant === 'settings' ? 'settings' : modalVariant(variant, 'lift')
+  const float = look === 'float'
   useEffect(() => {
     if (!open) return undefined
     const onKey = (e) => { if (e.key === 'Escape' && !document.querySelector('.kol-popover-float, [data-state="open"].kol-dd-trigger')) onClose() }
@@ -377,17 +373,20 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
     return createPortal(
       <div onMouseDown={blocking ? onClose : undefined} className={blocking ? 'kol-overlay-scrim' : 'pointer-events-none'}
         style={{ position: container ? 'absolute' : 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div role="dialog" aria-modal={blocking ? 'true' : undefined} aria-label={title} data-dialog onMouseDown={(e) => e.stopPropagation()}
-          className="kol-modal kol-settings-window pointer-events-auto flex flex-col overflow-hidden rounded-2xl border border-oq-16 bg-surface-secondary text-fg-96 font-(family-name:--kol-font-family-float) shadow-[var(--kol-shadow-float)]"
-          style={{ width: `min(${width}px, calc(${within} - 32px))`, height: `min(${height}px, calc(${withinH} - 32px))` }}>
-          <header className="flex items-center gap-4 h-[60px] shrink-0 pl-6 pr-[22px] border-b border-oq-16">
-            <h2 className="text-[14px] font-semibold leading-none">{title}</h2>
-            {kind && <span className="text-[11px] text-oq-64 leading-none mt-px">{kind}</span>}
-            <span className="flex-1" />
-            {headerEnd}
-            <button type="button" aria-label="Close" onClick={onClose}
-              className="ml-3 size-7 -mr-[7px] inline-flex items-center justify-center rounded-md text-[20px] leading-none text-oq-64 hover:text-(--kol-fg-96) hover:bg-(--kol-oq-08) focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">×</button>
-          </header>
+        <ModalShell variant="settings" role="dialog" aria-modal={blocking ? 'true' : undefined} aria-label={title} data-dialog onMouseDown={(e) => e.stopPropagation()}
+          className="kol-settings-window pointer-events-auto overflow-hidden"
+          style={{ width: `min(${width}px, calc(${within} - 32px))`, height: `min(${height}px, calc(${withinH} - 32px))` }}
+          header={(
+            <header className="flex items-center gap-4 h-[60px] shrink-0 pl-6 pr-[22px] border-b border-oq-16">
+              <h2 className="text-[14px] font-semibold leading-none">{title}</h2>
+              {kind && <span className="text-[11px] text-oq-64 leading-none mt-px">{kind}</span>}
+              <span className="flex-1" />
+              {headerEnd}
+              <button type="button" aria-label="Close" onClick={onClose}
+                className="ml-3 size-7 -mr-[7px] inline-flex items-center justify-center rounded-md text-[20px] leading-none text-oq-64 hover:text-(--kol-fg-96) hover:bg-(--kol-oq-08) focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">×</button>
+            </header>
+          )}
+          footer={footer && <footer className="flex items-center gap-3 h-[60px] shrink-0 px-6 border-t border-oq-16">{footer}</footer>}>
           <div className="flex flex-1 min-h-0">
             {sections?.length > 0 && (
               <nav aria-label="Settings" className="w-[156px] shrink-0 overflow-y-auto bg-surface-primary border-r border-oq-16 px-2 pt-[21px] pb-4">
@@ -420,8 +419,7 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
             <div className="flex-1 min-w-0 overflow-y-auto pl-6 pr-5 pt-6 pb-6">{children}</div>
             {aside && <aside className="w-[248px] shrink-0 mr-6 pt-6 pb-6 overflow-y-auto">{aside}</aside>}
           </div>
-          {footer && <footer className="flex items-center gap-3 h-[60px] shrink-0 px-6 border-t border-oq-16">{footer}</footer>}
-        </div>
+        </ModalShell>
       </div>,
       container ?? document.body,
     )
@@ -432,7 +430,8 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
       className={blocking ? 'kol-overlay-scrim' : 'pointer-events-none'}
       style={{ position: container ? 'absolute' : 'fixed', inset: 0, zIndex: 150, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
-      <div
+      <ModalShell
+        variant={look}
         role="dialog"
         aria-modal={blocking ? 'true' : undefined}
         aria-label={title}
@@ -441,12 +440,12 @@ export function Dialog({ open, onClose, title, width = 560, variant = 'lift', ic
         /* THE OVERLAY PANEL (MetricRebuild, 2026-10-31 — user: the filter dialog read as "a borderless box floating
          * mid-page"): it painted the page's own surface behind an fg-08 hairline, so on a dark page it was the page.
          * `.kol-overlay-panel` is the lift every KOL overlay wears (oq-04, no border — the scrim is the edge). */
-        className={float ? `kol-modal pointer-events-auto flex flex-col gap-[18px] p-6 ${container ? 'max-h-[85%]' : 'max-h-[85vh]'} overflow-auto ${look.className}` : `kol-modal flex flex-col rounded ${container ? 'max-h-[85%]' : 'max-h-[85vh]'} ${look.className}${blocking ? '' : ' pointer-events-auto'}`}
-        style={{ ...look.style, width: `min(${width}px, calc(${container ? '100%' : '100vw'} - 32px))` }}
+        className={float ? `pointer-events-auto gap-[18px] p-6 ${container ? 'max-h-[85%]' : 'max-h-[85vh]'} overflow-auto` : `${container ? 'max-h-[85%]' : 'max-h-[85vh]'}${blocking ? '' : ' pointer-events-auto'}`}
+        style={{ width: `min(${width}px, calc(${container ? '100%' : '100vw'} - 32px))` }}
+        header={float && title && <ModalHeader variant="float" icon={icon} title={title} onMinimise={onMinimise} onClose={onClose} />}
       >
-        {float && title && <QuickLookHeader variant="float" icon={icon} title={title} onMinimise={onMinimise} onClose={onClose} />}
         {children}
-      </div>
+      </ModalShell>
     </div>,
     container ?? document.body,
   )

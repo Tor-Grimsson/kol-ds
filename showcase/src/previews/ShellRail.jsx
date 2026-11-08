@@ -1,4 +1,4 @@
-import { ShellSidebar } from '@kolkrabbi/kol-workshop'
+import { ShellRail } from '@kolkrabbi/kol-workshop'
 
 export const stage = 'sm'
 
@@ -13,6 +13,6 @@ const ROUTES = [
 ]
 
 /* The left rail's tree: a category, its chapters, their pages. A label opens its page, a chevron folds. */
-export default function ShellSidebarPreview() {
-  return <ShellSidebar routes={ROUTES} basePath="/" label="Components" labelTo="/components" />
+export default function ShellRailPreview() {
+  return <ShellRail routes={ROUTES} basePath="/" label="Components" labelTo="/components" />
 }

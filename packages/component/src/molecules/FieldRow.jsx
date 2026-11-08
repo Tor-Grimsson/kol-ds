@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Input from '../atoms/Input.jsx'
 import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
 import Dropdown from './Dropdown.jsx'
@@ -92,7 +92,7 @@ export function StatusChip({ value, options = [], onChange, variant = 'neutral',
           className={`inline-flex shrink-0 transition-transform duration-150${open ? ' rotate-180' : ''}`}
           aria-hidden="true"
         >
-          <Icon name="chevron-down" size={10} />
+          <IconLoader name="chevron-down" size={10} />
         </span>
       )}
     </button>
@@ -124,7 +124,7 @@ export function StatusChip({ value, options = [], onChange, variant = 'neutral',
                   }}
                   /* check column always reserved — labels align whether or
                    * not a row carries the mark (reference grammar) */
-                  leading={<span className="inline-flex w-4 justify-center">{val === value && <Icon name="check" size={12} />}</span>}
+                  leading={<span className="inline-flex w-4 justify-center">{val === value && <IconLoader name="check" size={12} />}</span>}
                   label={label}
                 />
               </li>
@@ -167,7 +167,7 @@ export default function FieldRow({
        * + centred (frame 2026-08-09) */
       className="flex h-18 w-34 items-center justify-center rounded border-0 bg-fg-04 text-oq-64 transition-colors duration-150 enabled:cursor-pointer enabled:hover:text-emphasis disabled:opacity-60"
     >
-      <Icon name="plus" size={16} />
+      <IconLoader name="plus" size={16} />
     </button>
   )
   const fileEmpty = (
@@ -217,7 +217,7 @@ export default function FieldRow({
             onClick={() => onChange(null)}
             className="absolute top-1 right-1 inline-flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-0 kol-overlay-scrim text-white"
           >
-            <Icon name="x" size={10} />
+            <IconLoader name="x" size={10} />
           </button>
         )}
       </span>
@@ -236,7 +236,7 @@ export default function FieldRow({
             onClick={() => onChange(null)}
             className="inline-flex shrink-0 cursor-pointer border-0 bg-transparent p-0 text-oq-64 hover:text-emphasis"
           >
-            <Icon name="x" size={12} />
+            <IconLoader name="x" size={12} />
           </button>
         )}
       </span>

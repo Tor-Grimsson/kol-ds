@@ -1,6 +1,6 @@
 /* A funnel: `steps` `{ label, visitors }` as columns, each a bar of its share of the first step, the drop-off to the
  * next on its chip, the conversion rate in the head. */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { formatCount } from '../shared/formatSeries.js'
 
 export default function FunnelChart({ title, steps = [], loading }) {
@@ -35,9 +35,9 @@ export default function FunnelChart({ title, steps = [], loading }) {
                 <div className="absolute inset-x-0 bottom-0 rounded" style={{ height: `${share * 100}%`, background: 'var(--kol-palette-blue)', opacity: 0.7 }} />
                 <span className="absolute left-2 bottom-2 inline-flex items-center gap-1.5 rounded bg-surface-primary px-2 py-1 kol-helper-12 text-fg-88">
                   {next != null ? (
-                    <><Icon name="arrow-right" size={12} />{p(v ? (next / v) * 100 : 0)}</>
+                    <><IconLoader name="arrow-right" size={12} />{p(v ? (next / v) * 100 : 0)}</>
                   ) : (
-                    <><Icon name="check" size={12} />{p(conv)}<Icon name="arrow-down" size={12} className="ml-1" />{p(100 - conv)}</>
+                    <><IconLoader name="check" size={12} />{p(conv)}<IconLoader name="arrow-down" size={12} className="ml-1" />{p(100 - conv)}</>
                   )}
                 </span>
               </div>

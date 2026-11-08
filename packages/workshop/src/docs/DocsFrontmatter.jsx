@@ -1,5 +1,5 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { Badge, Icon, Tag } from '@kolkrabbi/kol-component'
+import { Badge, IconLoader, Tag } from '@kolkrabbi/kol-component'
 import { getTagColor } from '@kolkrabbi/kol-markdown'
 import { useTagMode } from '../tags/index.js'
 import TagPath from '../tags/TagPath.jsx'
@@ -219,7 +219,7 @@ const DocsFrontmatter = ({ metadata, docId, fields: config = {} }) => {
         return (
           <div key={key} className="docs-frontmatter-row">
             <span className="docs-frontmatter-key kol-helper-12 text-meta">
-              {icon && <Icon name={icon} size={14} className="text-oq-48" />}
+              {icon && <IconLoader name={icon} size={14} className="text-oq-48" />}
               {cfg.label ?? FIELD_LABELS[key] ?? humanise(key)}
             </span>
             <span className="docs-frontmatter-value kol-mono-12 text-strong">
@@ -290,7 +290,7 @@ const DocsFrontmatter = ({ metadata, docId, fields: config = {} }) => {
           className="docs-frontmatter-toggle kol-helper-12 text-meta"
           onClick={() => setExpanded((v) => !v)}
         >
-          <Icon name={expanded ? 'chevron-up' : 'chevron-down'} size={14} />
+          <IconLoader name={expanded ? 'chevron-up' : 'chevron-down'} size={14} />
           {expanded ? 'Collapse' : 'Expand'}
         </button>
       )}

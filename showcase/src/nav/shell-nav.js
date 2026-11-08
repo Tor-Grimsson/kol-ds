@@ -41,7 +41,7 @@ import { ICON_SETS } from './icon-sets.js'
  * part of it. The children's URLs (`/components`, `/blocks`, `/apps`, `/sets`, `/cards`,
  * `/packages`) did not move — only the space that owns them (SPACE_PREFIXES).
  *
- * `id` is required: ShellSidebar keys collapse state by it. */
+ * `id` is required: ShellRail keys collapse state by it. */
 export const ALL_ROUTES = [
   /* STYLES (2026-09-30, the names audit): what everything is painted with — the live specimen
    * pages that read their values off the installed packages, the icon sets, and the guides. */
@@ -275,7 +275,7 @@ export const buildShellSearchItems = () => {
 }
 
 /* The component tree in the shell's `{ id, label, path }` child shape, one
- * group per grouping-mode bucket — feeds a ShellSidebar under the real nav.
+ * group per grouping-mode bucket — feeds a ShellRail under the real nav.
  *
  * Filtered at the LIST, not at the groups: in `function` mode the buckets are
  * functions, not tiers, so a group-level filter would let a held organism in

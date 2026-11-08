@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import { MenuRow, MenuDivider } from './MenuItem.jsx'
 import { MenuList, MenuLabel, panelClass } from './MenuList.jsx'
@@ -40,7 +40,7 @@ import { TONE_VARS } from '../utilities/tone.js'
  */
 
 /* the ⋮ — kol-icons `more-vertical` (user 2026-10-31: *"just make a vertical version"* — was `more` turned 90°) */
-const MORE = <Icon name="more-vertical" size={16} />
+const MORE = <IconLoader name="more-vertical" size={16} />
 
 export function MenuTrigger({ open = false, iconOnly, icon, iconComponent, variant, mono = false, size, children, ...rest }) {
   /* the float trigger: a capsule on the float well, lit fg-16 while its menu is open; `mono` for a value (the date chip) */

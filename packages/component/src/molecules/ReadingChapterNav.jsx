@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /**
  * ReadingChapterNav — The chapters either side, as two capsules. `‹ Previous interlude · Second interlude` /
@@ -18,12 +18,12 @@ function Side({ dir, item }) {
   return (
     <El {...(item.href ? { href: item.href } : { type: 'button' })} onClick={item.onClick}
       className={`flex h-14 min-w-0 items-center gap-3 rounded-full bg-surface-secondary text-left no-underline cursor-pointer hover:shadow-[inset_0_0_0_999px_var(--kol-fg-08)] focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${next ? 'pl-5 pr-4' : 'pl-4 pr-5'}`}>
-      {!next && <Icon name="chevron-left" size="var(--kol-float-ic)" className="shrink-0 text-oq-64" />}
+      {!next && <IconLoader name="chevron-left" size="var(--kol-float-ic)" className="shrink-0 text-oq-64" />}
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="kol-float-ruler truncate uppercase text-fg-64">{item.label ?? (next ? 'Next' : 'Previous')}</span>
         <span className="kol-float-hint truncate text-fg-emphasis">{item.title}</span>
       </span>
-      {next && <Icon name="chevron-right" size="var(--kol-float-ic)" className="shrink-0 text-oq-64" />}
+      {next && <IconLoader name="chevron-right" size="var(--kol-float-ic)" className="shrink-0 text-oq-64" />}
     </El>
   )
 }

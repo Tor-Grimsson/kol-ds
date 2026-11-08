@@ -3,6 +3,7 @@
    renders these same parts; only the writing surface and its toolbar change. */
 import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { ModalShell } from '@kolkrabbi/kol-component'
 import { Icon } from './parts'
 import { SHELVES, DOCS } from './shelf'
 import { CODE_LANGS } from './Fence'
@@ -102,7 +103,7 @@ export function NewOverlay({ onPick, onClose }) {
   const card = 'flex flex-col items-start gap-[8px] rounded-[4px] border border-folio-rule p-[20px] text-left hover:border-folio-green hover:bg-folio-mint'
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[14vh]" onMouseDown={onClose}>
-      <div role="dialog" aria-label="New document" onMouseDown={(e) => e.stopPropagation()} className="w-[720px] max-w-full rounded-[4px] border border-folio-rule bg-folio-paper shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)]">
+      <ModalShell variant="bordered" role="dialog" aria-label="New document" onMouseDown={(e) => e.stopPropagation()} className="w-[720px] max-w-full shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
         <div className="flex h-[64px] items-center justify-between border-b border-folio-rule pl-[24px] pr-[16px]">
           <p className="text-[18px] font-semibold leading-[22px]">New document</p>
           <button type="button" aria-label="Close" onClick={onClose} className="flex size-[32px] items-center justify-center rounded-[3px] text-folio-muted hover:bg-folio-surface"><Icon name="x" size={14} /></button>
@@ -126,7 +127,7 @@ export function NewOverlay({ onPick, onClose }) {
             </span>
           </div>
         </div>
-      </div>
+      </ModalShell>
     </div>
   )
 }
@@ -178,7 +179,7 @@ export function CommandPalette({ menus, onClose }) {
   const go = (c) => { onClose(); c?.run() }
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center px-[16px] pt-[12vh]" onMouseDown={onClose}>
-      <div role="dialog" aria-label="Commands" onMouseDown={(e) => e.stopPropagation()} className="flex max-h-[60vh] w-[640px] max-w-full flex-col overflow-hidden rounded-[4px] border border-folio-rule bg-folio-paper text-folio-ink shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)]">
+      <ModalShell variant="bordered" role="dialog" aria-label="Commands" onMouseDown={(e) => e.stopPropagation()} className="max-h-[60vh] w-[640px] max-w-full overflow-hidden text-folio-ink shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'var(--color-folio-ink)' }}>
         <input autoFocus aria-label="Command" placeholder="Type a command" value={q} onChange={(e) => { setQ(e.target.value); setAt(0) }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') onClose()
@@ -195,7 +196,7 @@ export function CommandPalette({ menus, onClose }) {
           ))}
           {!list.length && <p className="kol-reader-meta px-[16px] py-[8px] text-folio-muted">No command matches.</p>}
         </div>
-      </div>
+      </ModalShell>
     </div>
   )
 }

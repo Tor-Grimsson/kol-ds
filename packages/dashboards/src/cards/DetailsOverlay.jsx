@@ -1,13 +1,14 @@
 /* DetailsOverlay — a card's expanded view (DashboardCardSet, 2026-11-03; metric's Report Details, carried verbatim).
  *
- * KOL's own overlay: FullscreenOverlay's scrim (dims and locks the page, traps focus) and its `kol-overlay-panel` sheet.
+ * KOL's own overlay: FullscreenOverlay's scrim (dims and locks the page, traps focus) and ModalShell's lift panel
+ * (plan-2026-11-08-modal-system 1.1 — the one modal panel and its 4px radius, where it drew `kol-overlay-panel` itself).
  * The title, a search beside it, the × alone at the right, a Divider; then every row as a table — the first column the
  * row's `icon` + `label`, the rest `columns[i].key` read off the row (`fmt` formats one), each sortable from its head.
  * `columns` is `[{ key, label, fmt? }]`, the first one the label column; it opens sorted by the second, descending.
  * `rows` are `{ key?, label, icon?, ...values }`; `loading` with no rows says so. Renders nothing while `open` is false. */
 import { useEffect, useMemo, useState } from 'react'
-import { Button, SearchInput, FullscreenOverlay, CloseButton, Divider } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { Button, SearchInput, FullscreenOverlay, CloseButton, Divider, ModalShell } from '@kolkrabbi/kol-component'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export default function DetailsOverlay({ open, onClose, title, columns, rows, loading }) {
   const [q, setQ] = useState('')
@@ -20,7 +21,7 @@ export default function DetailsOverlay({ open, onClose, title, columns, rows, lo
   if (!open) return null
   return (
     <FullscreenOverlay open={open} scrim closeButton={false} onClose={onClose}>
-      <div className="kol-overlay-panel flex flex-col p-[var(--kol-pad-overlay)]" style={{ width: 'min(960px, calc(100vw - 32px))', maxHeight: '85vh' }}>
+      <ModalShell className="p-[var(--kol-pad-overlay)]" style={{ width: 'min(960px, calc(100vw - 32px))', maxHeight: '85vh' }}>
         <div className="flex flex-col max-h-[85vh] min-h-0">
           <div className="flex items-center gap-4 pb-4">
             <h2 className="kol-helper-14 uppercase tracking-wide text-fg-96">{title}</h2>
@@ -38,7 +39,7 @@ export default function DetailsOverlay({ open, onClose, title, columns, rows, lo
                       {i ? (
                         <Button variant="bare" className="hover:text-fg-88 inline-flex items-center gap-1" onClick={() => setSort({ key: c.key, dir: sort.key === c.key ? -sort.dir : -1 })}>
                           {c.label}
-                          {sort.key === c.key && <Icon name={sort.dir < 0 ? 'chevron-down' : 'chevron-up'} size={10} />}
+                          {sort.key === c.key && <IconLoader name={sort.dir < 0 ? 'chevron-down' : 'chevron-up'} size={10} />}
                         </Button>
                       ) : c.label}
                     </th>
@@ -61,7 +62,7 @@ export default function DetailsOverlay({ open, onClose, title, columns, rows, lo
             {rows && !shown.length && <div className="py-10 text-center text-fg-48">No data yet</div>}
           </div>
         </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

@@ -4,6 +4,14 @@
 > lives in the repo's session logs). From here every publish adds an entry, and
 > breaking or global-surface changes are flagged **BREAKING**.
 
+## 0.12.0 — 2026-11-08
+
+- **The game-archive overlay draws its panel through kol-component's `ModalShell`** (`bordered`, plan-2026-11-08-modal-system 1.1), where it drew its own rounded surface. Content and behaviour unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.
+
+## 0.11.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.10.2 — 2026-10-29
 
 - **Contexts are made once** (WebsiteFrameContextStillSplit, kol-website): every `createContext` is created on a global key, `globalThis[Symbol.for('@kolkrabbi/<pkg>/<Name>')] ??= createContext(…)`. On Vite 5 a barrel's re-exports carry `?v=` and the package's inner imports do not, so a context module loaded twice and a provider and its hook held two contexts (kolkrabbi.io's `/work`). A second copy now hands back the first one's context. `validate-relative-imports` refuses a bare `createContext(`. No behaviour change.

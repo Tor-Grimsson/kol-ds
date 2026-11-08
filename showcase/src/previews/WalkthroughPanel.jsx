@@ -1,6 +1,6 @@
 import { WalkthroughPanel } from '@kolkrabbi/kol-shell'
 import { Button } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const frame = 520
 
@@ -14,7 +14,7 @@ const STEPS = [
 export default function WalkthroughPanelPreview() {
   return (
     <div className="relative min-h-dvh">
-      <WalkthroughPanel steps={STEPS} iconComponent={Icon} />
+      <WalkthroughPanel steps={STEPS} iconComponent={IconLoader} />
     </div>
   )
 }

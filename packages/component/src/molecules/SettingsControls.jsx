@@ -38,9 +38,15 @@ const LABEL = 'text-[10px] leading-[12px] text-oq-64 font-(family-name:--kol-fon
 const MONO = 'font-(family-name:--kol-font-family-mono) text-[10px] leading-[12px] text-fg-96'
 
 /* a disabled control: a fieldset disables every input and button inside it natively */
-const Dim = ({ disabled, className = '', children, ...rest }) => (
+/* `row`: a fixed-height field whose content is one centred row. A fieldset does not centre its flex children vertically
+ * (the slider and readout rode the top 16px of the 28px box — modal-system review 2026-11-08), so the row is an inner
+ * div the box's inner height. `h-full` does not resolve inside a fieldset (its content box is auto-height), so the row
+ * states it: 26 inside the bordered 28 field, 28 where the box has no border. */
+const Dim = ({ disabled, className = '', row, children, ...rest }) => (
   <fieldset disabled={disabled || undefined} aria-disabled={disabled || undefined} {...rest}
-    className={`min-w-0 m-0 p-0 ${className.includes('border-oq-16') ? '' : 'border-0'} ${disabled ? 'opacity-40' : ''} ${className}`.trim()}>{children}</fieldset>
+    className={`min-w-0 m-0 p-0 ${className.includes('border-oq-16') ? '' : 'border-0'} ${disabled ? 'opacity-40' : ''} ${className}`.trim()}>
+    {row ? <div className={`flex items-center ${className.includes('border-oq-16') ? 'h-[26px]' : 'h-7'} min-w-0 ${row}`}>{children}</div> : children}
+  </fieldset>
 )
 
 export function SettingsGroup({ title, note, ruled = true, className = '', children }) {
@@ -70,7 +76,7 @@ export function SettingsCell({ label, span = 1, disabled, className = '', childr
 
 export function SettingsSlider({ value, onChange, min = 0, max = 1, step = 0.01, format = (v) => String(v), disabled, 'aria-label': ariaLabel }) {
   return (
-    <Dim disabled={disabled} className={`${FIELD} flex items-center gap-3 pl-[9px] pr-2`}>
+    <Dim disabled={disabled} className={FIELD} row="gap-3 pl-[9px] pr-2">
       <Slider variant="float" readout="none" value={value} onChange={onChange} min={min} max={max} step={step} disabled={disabled}
         aria-label={ariaLabel} className="flex-1 min-w-0 [&_.kol-slider-float]:h-4" />
       <span className={`${MONO} w-[52px] shrink-0 tabular-nums`}>{format(value)}</span>
@@ -81,7 +87,7 @@ export function SettingsSlider({ value, onChange, min = 0, max = 1, step = 0.01,
 export function SettingsRange({ value = [0, 1], onChange, min = 0, max = 1, step = 0.01, format = (v) => String(v), disabled, 'aria-label': ariaLabel }) {
   const [a, b] = value
   return (
-    <Dim disabled={disabled} className={`${FIELD} flex items-center gap-2 px-2`}>
+    <Dim disabled={disabled} className={FIELD} row="gap-2 px-2">
       <span className={`${MONO} shrink-0 tabular-nums`}>{format(a)}</span>
       <Slider variant="dual" value={a} value2={b} min={min} max={max} step={step} aria-label={ariaLabel}
         onChange={(v) => onChange?.([Math.min(v, b), b])} onChange2={(v) => onChange?.([a, Math.max(v, a)])}
@@ -111,7 +117,7 @@ export function SettingsSegmented({ value, onChange, options = [], disabled, ari
 
 export function SettingsToggle({ label, checked, onChange, disabled }) {
   return (
-    <Dim disabled={disabled} className="flex items-center gap-2 h-7">
+    <Dim disabled={disabled} className="h-7" row="gap-2">
       <ToggleSwitch checked={!!checked} onChange={onChange} aria-label={label} disabled={disabled} />
       {label && <span className={INK}>{label}</span>}
     </Dim>

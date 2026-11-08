@@ -1,5 +1,5 @@
 import { Menu } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { familyPatch, SIZE_PRESETS } from '../compose/inspectors/TextPanel'
 import { FAMILY_OPTIONS, layerFamily, stylesFor, styleValueFor, ensureFamilyLoaded } from '../modes/type/families'
@@ -21,7 +21,7 @@ function Pick({ label, items, ariaLabel, search }) {
       trigger={({ open, props }) => (
         <button {...props} type="button" aria-label={ariaLabel} aria-expanded={open} className={TRIGGER}>
           {label}
-          <Icon name="chevron-down" size={16} className="text-oq-64" />
+          <IconLoader name="chevron-down" size={16} className="text-oq-64" />
         </button>
       )} />
   )

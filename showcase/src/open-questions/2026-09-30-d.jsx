@@ -1,5 +1,5 @@
 import { DocHeader, DocSection, usePageMeta } from '@kolkrabbi/kol-workshop'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 4 — the ten align / rotate / flip glyphs, redrawn (editor-chrome-review #14, 2026-09-30).
  * The agent redrew them while the user slept; the OLD drawings are inlined below so the two read
@@ -33,11 +33,11 @@ function Pair({ name }) {
     <div className={cell}>
       <div className="flex items-end gap-4">
         <span className="inline-flex flex-col items-center gap-1"><span className="inline-flex h-4 w-4 [&>svg]:h-4 [&>svg]:w-4" dangerouslySetInnerHTML={{ __html: OLD[name] }} /><span className="kol-mono-12 text-subtle">old</span></span>
-        <span className="inline-flex flex-col items-center gap-1"><Icon name={name} size={16} /><span className="kol-mono-12 text-subtle">new</span></span>
+        <span className="inline-flex flex-col items-center gap-1"><IconLoader name={name} size={16} /><span className="kol-mono-12 text-subtle">new</span></span>
       </div>
       <div className="flex items-end gap-4">
         <span className="inline-flex h-8 w-8 [&>svg]:h-8 [&>svg]:w-8" dangerouslySetInnerHTML={{ __html: OLD[name] }} />
-        <Icon name={name} size={32} />
+        <IconLoader name={name} size={32} />
       </div>
       <span className="kol-mono-12 text-subtle">{name}</span>
     </div>

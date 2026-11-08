@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AppStudio, CatalogPage, StudioCreate, StudioCreateAction, StudioDetail } from '@kolkrabbi/kol-shell'
 import { Button, CanvasStudio, GrowthLineStage, downloadBlob, useMediaQuery } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 import { createFixtureClient } from 'media-fixture'
 import { cover, title } from './covers.js'
@@ -165,7 +165,7 @@ const labsMenu = (go) => [
 function Placeholder({ name, text }) {
   return (
     <div className="flex h-full min-h-[60vh] flex-col items-center justify-center gap-4 text-oq-24">
-      <Icon name={name} size={64} />
+      <IconLoader name={name} size={64} />
       <span className="kol-mono-12 text-meta">{text}</span>
     </div>
   )

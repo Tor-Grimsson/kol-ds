@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — nests kol-icons's Icon. */
 
@@ -49,7 +49,7 @@ export default function TreeRow({ size = 'sm', icon, label, count, active = fals
       onClick={onToggle ? (e) => { e.preventDefault(); e.stopPropagation(); onToggle() } : undefined}
       className="inline-flex shrink-0 text-oq-64"
     >
-      <Icon name={expanded ? 'chevron-down' : 'chevron-right'} size={12} />
+      <IconLoader name={expanded ? 'chevron-down' : 'chevron-right'} size={12} />
     </span>
   )
   return (
@@ -62,7 +62,7 @@ export default function TreeRow({ size = 'sm', icon, label, count, active = fals
       style={{ paddingLeft: 10 + depth * 16 }}
       {...rest}
     >
-      {icon && <Icon name={icon} size={S.ic} className={`shrink-0 ${bright ? 'text-oq-96' : 'text-oq-64 group-hover:text-oq-96'}`} />}
+      {icon && <IconLoader name={icon} size={S.ic} className={`shrink-0 ${bright ? 'text-oq-96' : 'text-oq-64 group-hover:text-oq-96'}`} />}
       <span className={`${S.type} min-w-0 flex-1 truncate ${bright ? 'text-fg-emphasis' : 'text-fg-64 group-hover:text-fg-emphasis'}`}>{label}</span>
       {count != null && <span className="kol-float-ruler shrink-0 tabular-nums text-fg-64">{count}</span>}
       {trailing}

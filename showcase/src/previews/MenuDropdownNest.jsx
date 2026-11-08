@@ -1,4 +1,4 @@
-import { MenuItem, MenuDropdownItem, MenuDropdownNest, Icon } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuDropdownItem, MenuDropdownNest, IconLoader } from '@kolkrabbi/kol-component'
 
 /* accordion = the rows open inline; flyout = beside the row, a desktop menu bar's submenu */
 export const variants = ['accordion', 'flyout']
@@ -17,12 +17,12 @@ export default function MenuDropdownNestPreview({ variant = 'accordion' }) {
     <MenuItem key={variant} label="Insert" defaultOpen>
       <div className="min-w-[200px] py-1">
         <MenuDropdownItem onClick={() => {}}>Text block</MenuDropdownItem>
-        <MenuDropdownNest flyout={flyout} iconLeft={<Icon name="image" size={14} />} label="Media">
+        <MenuDropdownNest flyout={flyout} iconLeft={<IconLoader name="image" size={14} />} label="Media">
           <MenuDropdownItem onClick={() => {}}>Image</MenuDropdownItem>
           <MenuDropdownItem onClick={() => {}}>Video</MenuDropdownItem>
           <MenuDropdownItem onClick={() => {}}>Embed</MenuDropdownItem>
         </MenuDropdownNest>
-        <MenuDropdownNest flyout={flyout} iconLeft={<Icon name="folder" size={14} />} label="Layout">
+        <MenuDropdownNest flyout={flyout} iconLeft={<IconLoader name="folder" size={14} />} label="Layout">
           <MenuDropdownItem onClick={() => {}}>Columns</MenuDropdownItem>
           <MenuDropdownItem onClick={() => {}}>Divider</MenuDropdownItem>
           {flyout && (

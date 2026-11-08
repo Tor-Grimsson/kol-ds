@@ -30,7 +30,7 @@
  * `ROW_HEIGHT` / `ROW_TYPE` / `ROW_FILL` are exported for a row that cannot take this anatomy (the
  * media rows view's table row: twisty, drag hit, columns) — it still sits on the same ramp and fills.
  */
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /* the box: min-height on the ramp, and a pad that lands one line of the step's type exactly on it —
@@ -75,7 +75,7 @@ export default function OptionRow({
   const state = disabled ? 'text-fg-80 opacity-[var(--kol-opacity-disabled)]'
     : selected ? ROW_FILL.selected : active ? ROW_FILL.active : trail ? ROW_FILL.trail
     : `${muted ? 'text-fg-48' : 'text-fg-80'}${hover ? ` hover:${TONE}` : ''}`
-  const lead = leading ?? (icon && <Icon name={icon} size={glyphSize(size)} />)
+  const lead = leading ?? (icon && <IconLoader name={icon} size={glyphSize(size)} />)
   return (
     <Tag
       className={`flex items-center gap-2 px-4 border border-transparent ${ROW_HEIGHT[size] ?? ROW_HEIGHT.md} rounded-[var(--kol-radius-sm)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} text-left ${type ?? ROW_TYPE[size] ?? ROW_TYPE.md} transition-colors ${state} ${className}`.trim()}

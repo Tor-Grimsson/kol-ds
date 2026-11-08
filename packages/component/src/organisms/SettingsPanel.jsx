@@ -7,6 +7,7 @@ import LabeledControl from '../molecules/LabeledControl.jsx'
 import ToggleSwitch from '../atoms/ToggleSwitch.jsx'
 import Rail from './Rail.jsx'
 import FullscreenOverlay from '../molecules/FullscreenOverlay.jsx'
+import ModalShell from '../molecules/ModalShell.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import { RailHeader } from './RailKit.jsx'
 
@@ -97,16 +98,19 @@ export default function SettingsPanel({
     const width = widthProp ?? 'min(32rem, calc(100vw - 32px))'
     return (
       <FullscreenOverlay open scrim closeButton={false} onClose={onClose}>
-        <div
-          className={`kol-overlay-panel flex flex-col p-[var(--kol-pad-overlay)] ${className}`}
+        {/* the panel is ModalShell's (W2.2, 2026-11-08) — the lift and the one modal radius; ShortcutsOverlay draws here */}
+        <ModalShell
+          className={`p-[var(--kol-pad-overlay)] ${className}`}
           style={{ width: typeof width === 'number' ? `${width}px` : width, maxWidth: '100%', maxHeight: '85vh', overflowY: 'auto' }}
+          header={(
+            <div className="mb-6 flex items-center gap-4">
+              <div className="min-w-0 flex-1">{header}</div>
+              <CloseButton onClick={onClose} hover={false} className="shrink-0" />
+            </div>
+          )}
         >
-          <div className="mb-6 flex items-center gap-4">
-            <div className="min-w-0 flex-1">{header}</div>
-            <CloseButton onClick={onClose} hover={false} className="shrink-0" />
-          </div>
           <div className="flex flex-col gap-4"><Divider />{body}{footer && <div className="mt-2">{footer}</div>}</div>
-        </div>
+        </ModalShell>
       </FullscreenOverlay>
     )
   }

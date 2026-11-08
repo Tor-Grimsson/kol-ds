@@ -544,9 +544,8 @@
    * on the SHEET corner, so at even padding it landed on top of the view
    * toggle. The card reserves the lane instead of the close moving. */
   padding: var(--kol-spacing-12) var(--kol-spacing-5) var(--kol-spacing-5);
-  /* no border (user 2026-10-20: "the border? is so ugly") — the scrim is the separation */
-  border-radius: var(--kol-radius-sm);
-  background: var(--kol-surface-primary);
+  /* no border (user 2026-10-20: "the border? is so ugly") — the scrim is the separation. The surface and the radius
+   * are ModalShell's (W2.2, 2026-11-08): the card wears it, so this rule no longer paints a panel of its own */
 }
 
 /* ON A PHONE THE PICKER IS A FULL-HEIGHT SHEET (2026-10-07). The card had no phone layout:
@@ -562,7 +561,7 @@
     --kol-media-picker-h: 100dvh;
     width: 100%;
     border: 0;
-    border-radius: 0;
+    /* the radius goes on the phone: `max-md:rounded-none` at the call site (a utility out-ranks this layer) */
     /* no bottom pad on the phone (user 2026-10-23): the body scrolls to the edge, a pad read as a clipped last row */
     padding: var(--kol-spacing-12) var(--kol-spacing-4) 0;
   }

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { INDICATOR } from '../hooks/glyphLadders.js'
 
 /**
@@ -93,7 +93,7 @@ const Table = ({ caption, columns, rows, variant = 'default', className = '', wi
                   onClick={() => cycle(column.accessor)}
                 >
                   {column.header}
-                  <Icon
+                  <IconLoader
                     name={sort.key === column.accessor && sort.dir === 'desc' ? 'chevron-down' : 'chevron-up'}
                     size={INDICATOR.sm}
                     className={sort.key === column.accessor ? 'opacity-100' : 'opacity-0 group-hover:opacity-40'}
@@ -138,7 +138,7 @@ function FloatTable({ caption, columns, rows, sort, cycle, framed, rowClassName,
                 {c.sortable ? (
                   <button type="button" onClick={() => cycle(c.accessor)} className="inline-flex items-center gap-1 uppercase cursor-pointer">
                     {c.header}
-                    <Icon name={sort.key === c.accessor && sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={10} className={sort.key === c.accessor ? 'text-oq-96' : 'opacity-0'} />
+                    <IconLoader name={sort.key === c.accessor && sort.dir === 'desc' ? 'arrow-down' : 'arrow-up'} size={10} className={sort.key === c.accessor ? 'text-oq-96' : 'opacity-0'} />
                   </button>
                 ) : c.header}
               </th>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Avatar, Button, Input, RailHint, SettingsSections } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useAccount, updateAccount, mintInvite, listInviteRequests, inviteFromRequest } from '../index.jsx'
 
 /* THE ACCOUNT TAB (SettingsAccountTab, kol-shell 0.88.0 — user 2026-10-29: "why isnt account just in settings in account
@@ -52,10 +52,10 @@ export default function AccountPanel() {
             ? (
               <button type="button" aria-label="Remove picture" className="group relative rounded-full cursor-pointer" onClick={() => run(() => updateAccount({ avatar: null }))}>
                 <Avatar size="sm" initial="" src={account.avatar} alt={account.name} />
-                <span className="absolute inset-0 rounded-full flex items-center justify-center bg-black/60 text-fg-96 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"><Icon name="x" size={16} /></span>
+                <span className="absolute inset-0 rounded-full flex items-center justify-center bg-black/60 text-fg-96 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100"><IconLoader name="x" size={16} /></span>
               </button>
             )
-            : <Icon name="user" size={24} />}
+            : <IconLoader name="user" size={24} />}
           <Button size="sm" onClick={() => fileRef.current?.click()}>Upload</Button>
           <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={pickAvatar} />
         </div>

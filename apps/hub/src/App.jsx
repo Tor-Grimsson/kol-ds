@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AppHub, PageShell } from '@kolkrabbi/kol-shell'
 import { Button, Dropdown, PageHeader, SettingsChoice, SettingsSwitch, downloadBlob } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import logomark from '@kolkrabbi/kol-icons/identity/kolkrabbi/kolkrabbi-logomark.svg?url'
 
 /* THE HUB'S REFERENCE APP (the app anatomy, 2026-09-26). Shell + Hub + a placeholder tool,
@@ -141,5 +141,5 @@ export default function App() {
 }
 
 function Art({ name, size = 160 }) {
-  return <div className="w-full h-full flex items-center justify-center text-oq-24"><Icon name={name} size={size} /></div>
+  return <div className="w-full h-full flex items-center justify-center text-oq-24"><IconLoader name={name} size={size} /></div>
 }

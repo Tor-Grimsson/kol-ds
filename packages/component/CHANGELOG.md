@@ -1,5 +1,40 @@
 # @kolkrabbi/kol-component
 
+## 0.361.0 — 2026-11-08
+
+- **Fixed: `Slider variant="dual"` draws its label row only when `label1` or `label2` has text.** Empty strings (SettingsRange, the generator Rail) drew an empty 16px row that pushed the rail below the field's centre; SettingsRange now sits centred in its 28px field. Callers that pass no labels or real labels are unchanged.
+
+## 0.360.0 — 2026-11-08
+
+- **Fixed: SettingsSlider/Range/Toggle: content centred in the field.** A fieldset does not centre its flex children, so the slider and its readout rode the top 16px of the 28px box; `Dim` takes `row` — an inner flex row at the box's inner height (26 inside the bordered field, 28 without), centred (modal-system review 2026-11-08).
+
+## 0.359.0 — 2026-11-08
+
+- **Deprecated: `RailSection` and `RailRow`** — aliases of `LabeledControlSection` and `SettingsRow`, same components, same props (user: *"I always called it labeledControl and LabeledControlSection… I never approved the rename"*). Still exported for 30 days; on the retirement ledger. kol-workshop's own `RailSection` / `RailRow` are different components and keep their names.
+
+## 0.358.0 — 2026-11-08
+
+- `NavRail preset="workshop"` docs name kol-workshop's `ShellRail` (was ShellSidebar, now its deprecated alias). No behaviour change.
+
+## 0.357.0 — 2026-11-08
+
+One modal header (user: *"are you both accounting for default and float?"*):
+- **Changed: `ModalHeader` is the one header of every float sheet and modal, in both looks (`variant` default · float).** It keeps the menu row (`avatar` · `icon` · `title` · `actions` · `onClick`) and takes the window row that was QuickLookHeader, class for class: `meta`, `nav`, `onMinimise`, `onClose` (passing any of them draws the window row; `avatar` or `onClick` keeps the menu row).
+- **Changed: `Dialog variant="float"`, the useModal float prompts and `QuickLookFrame` (default and float) render `ModalHeader`** — the same DOM and pixels (diffed before and after in light and dark).
+- **Deprecated: `QuickLookHeader`** — an alias of `ModalHeader`, same props; on the retirement ledger.
+
+## 0.356.0 — 2026-11-08
+
+plan-2026-11-08-outstanding W2 (his Figma issue 52 — modals not built on one modal):
+- **New: `ModalShell`** (molecule) — the one modal panel: the surface, the radius, a `header` slot, the body (`children`) and a `footer` slot; `variant` `'lift'` (default, `.kol-overlay-panel`) · `'bordered'` · `'float'` · `'settings'`; `className` / `style` and any other prop (role, aria-*, handlers) land on the panel, the ref is the panel. Scrim, portal and keys stay the caller's.
+- **One modal radius: `--kol-radius-sm` (4px)**, the one Modal's prompts and Dialog already wore. The float style's windows keep their own (`float` 28, the generator `settings` window 16).
+- **Changed: `useModal`'s dialogs and `Dialog` (every variant) render `ModalShell`** — same look, same DOM order.
+- **Changed: `QuickLookFrame`, `MediaLibrary variant="modal"` / `"picker"` and `SettingsPanel variant="overlay"` (so `ShortcutsOverlay`) render `ModalShell`.** QuickLook's own panel (oq-04 ground, an oq-12 hairline, radius-md) and the media picker's (the page surface) give way to the lift panel: no hairline, the scrim is the edge. Needs kol-theme ≥0.217.0.
+
+## 0.355.0 — 2026-11-08
+
+- Renders kol-icons' `IconLoader` (was `Icon`, now its deprecated alias) everywhere it drew a glyph, and re-exports `IconLoader` beside `Icon`. Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.354.0 — 2026-11-08
 
 - **`Label icon`** — a kol-icons name drawn before the text at the label's own size (`1em`), gap 4px. Without it the label renders unchanged.

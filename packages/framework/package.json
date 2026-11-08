@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-framework",
-  "version": "0.73.0",
+  "version": "0.74.1",
   "description": "Site shell and page layout",
   "license": "MIT",
   "type": "module",
@@ -15,7 +15,7 @@
   },
   "peerDependencies": {
     "@kolkrabbi/kol-component": ">=0.339.0",
-    "@kolkrabbi/kol-icons": ">=0.18.0",
+    "@kolkrabbi/kol-icons": ">=0.68.0",
     "@kolkrabbi/kol-markdown": ">=0.2.0",
     "@kolkrabbi/kol-theme": ">=0.186.0",
     "react": "^18.3.0 || ^19.0.0",

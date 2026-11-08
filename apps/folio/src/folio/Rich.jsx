@@ -4,7 +4,7 @@
    history. Fonts come from Google Fonts (google-fonts.json, scripts/google-fonts.mjs); the families a document uses are
    saved with it as one <link>, so the reader loads them too. */
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-component'
+import { IconLoader, ModalShell } from '@kolkrabbi/kol-component'
 import { Choice } from './Chrome'
 import { useSettings } from './settings'
 import GOOGLE from './google-fonts.json'
@@ -76,14 +76,14 @@ const Align = ({ kind, on, onClick }) => {
 }
 const Dialog = ({ title, onClose, children, footer }) => (
   <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[12vh]" onMouseDown={onClose}>
-    <div role="dialog" aria-label={title} onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="w-[480px] max-w-full overflow-hidden rounded-[4px] border border-folio-rule bg-folio-paper shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)]">
+    <ModalShell variant="bordered" role="dialog" aria-label={title} onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="w-[480px] max-w-full overflow-hidden shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
       <div className="flex h-[64px] items-center justify-between border-b border-folio-rule pl-[24px] pr-[22px]">
         <p className="text-[18px] font-semibold leading-[22px]">{title}</p>
         <Nav aria-label="Close" onClick={onClose} className="w-[42px] px-0">×</Nav>
       </div>
       {children}
       {footer}
-    </div>
+    </ModalShell>
   </div>
 )
 const Stepper = ({ label, sub, unit, value, onChange, step = 1 }) => (
@@ -92,8 +92,8 @@ const Stepper = ({ label, sub, unit, value, onChange, step = 1 }) => (
     <span className="kol-reader-body w-[106px] text-[14px] leading-[22px] text-folio-muted">{sub}</span>
     <input aria-label={`${label || ''} ${sub || ''}`.trim()} inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value)} className="kol-reader-meta h-[32px] w-[68px] rounded-[4px] border border-folio-rule bg-folio-paper px-[12px] outline-none focus:border-folio-green" />
     <span className="ml-[10px] flex w-[12px] flex-col">
-      <button type="button" aria-label={`More ${label || sub}`} onClick={() => onChange(String(+(+value + step).toFixed(2)))} className="h-[14px] text-folio-ink"><Icon name="chevron-up" size={12} /></button>
-      <button type="button" aria-label={`Less ${label || sub}`} onClick={() => onChange(String(Math.max(0, +(+value - step).toFixed(2))))} className="h-[14px] text-folio-ink"><Icon name="chevron-down" size={12} /></button>
+      <button type="button" aria-label={`More ${label || sub}`} onClick={() => onChange(String(+(+value + step).toFixed(2)))} className="h-[14px] text-folio-ink"><IconLoader name="chevron-up" size={12} /></button>
+      <button type="button" aria-label={`Less ${label || sub}`} onClick={() => onChange(String(Math.max(0, +(+value - step).toFixed(2))))} className="h-[14px] text-folio-ink"><IconLoader name="chevron-down" size={12} /></button>
     </span>
     <span className="kol-reader-meta ml-[16px] text-folio-muted">{unit}</span>
   </div>

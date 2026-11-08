@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Button, Icon, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, IconLoader, Tooltip } from '@kolkrabbi/kol-component'
 import RailSection from './RailSection.jsx'
 import RailRow from './RailRow.jsx'
 
@@ -29,12 +29,12 @@ export const RAIL_FOLD_EVENT = 'kol-rail-fold'
 /* THE RAIL'S THIRD STATE (user ruling 2026-10-02: *"I wanted that icon state on the rails. even if
  * we dont use it, I want to see it"*). Beside visible and hidden: `icons` — the rail is a narrow
  * strip, one glyph per group, and opens on hover. The column that holds the rail (`ShellNavColumn`)
- * provides the state; every ShellSidebar inside it reads it, so a consumer's rail takes the state
+ * provides the state; every ShellRail inside it reads it, so a consumer's rail takes the state
  * without passing a prop. Outside a provider a rail is `open`, as it always was. A third value,
  * `full`, is the whole-tree sheet's: an open rail with every fold open. */
 export const ShellRailModeContext = (globalThis[Symbol.for('@kolkrabbi/kol-workshop/ShellRailModeContext')] ??= createContext('open'))
 
-const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
+const ShellRail = ({ routes = [], basePath = '/', onNavigate, label = 'Navigation', labelTo, collapsed, onToggle, defaultCollapsed = false }) => {
   const location = useLocation()
   const navigate = useNavigate()
   const mode = useContext(ShellRailModeContext)
@@ -125,7 +125,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
    * so its caret sits on its siblings' text edge. A leaf is a RailRow wherever it lands. */
   /* A ROUTE MAY CARRY A GLYPH (rail icons, open-questions Round 6, ruled 2026-10-01): `icon` is an
    * icon name, drawn on the row or beside the group's label. The consumer decides which routes. */
-  const glyphOf = (route) => (route.icon ? <Icon name={route.icon} size={14} className="shrink-0" /> : undefined)
+  const glyphOf = (route) => (route.icon ? <IconLoader name={route.icon} size={14} className="shrink-0" /> : undefined)
   const renderGroup = (route) => (
     <RailSection
       level={2}
@@ -137,7 +137,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
       collapsed={isFolded(route)}
       onToggle={() => handleSectionClick(route)}
       onNavigate={onNavigate}
-      icon={Icon}
+      icon={IconLoader}
       glyph={glyphOf(route)}
     >
       {/* a group that wears a glyph steps its children in by the glyph (14 + the 8 gap), so they
@@ -218,7 +218,7 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
           collapsed={mode === 'full' ? false : navCollapsed}
           onToggle={handleToggle}
           onNavigate={onNavigate}
-          icon={Icon}
+          icon={IconLoader}
         >
           {body}
         </RailSection>
@@ -227,4 +227,4 @@ const ShellSidebar = ({ routes = [], basePath = '/', onNavigate, label = 'Naviga
   )
 }
 
-export default ShellSidebar
+export default ShellRail

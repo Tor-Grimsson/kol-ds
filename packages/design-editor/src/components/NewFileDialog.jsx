@@ -1,6 +1,6 @@
 import { useSyncExternalStore } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ContentRow, FullscreenOverlay } from '@kolkrabbi/kol-component'
+import { ContentRow, FullscreenOverlay, ModalShell } from '@kolkrabbi/kol-component'
 
 /**
  * NewFileDialog — New File's four doors (plan 09): Editor · Labs · Randomiser · Morph. Opened
@@ -30,14 +30,14 @@ export default function NewFileDialog() {
     <FullscreenOverlay open scrim onClose={close}>
       {/* a SURFACE under the rows (audit A1 — they drew straight over the cards behind the scrim),
           and the mono voice on the titles (A2 — the row ramp is the sans heading) */}
-      <div className="kol-new-file flex flex-col gap-4 bg-surface-primary border border-oq-08 rounded shadow-lg p-6" style={{ minWidth: 'min(520px, 90vw)' }}>
+      <ModalShell variant="bordered" className="kol-new-file gap-4 shadow-lg p-6" style={{ minWidth: 'min(520px, 90vw)' }}>
         <span className="kol-eyebrow text-meta">New file</span>
         <div className="flex flex-col">
           {DOORS.map((d) => (
             <ContentRow key={d.id} variant="default" media={false} title={d.label} titleClass="kol-mono-12 text-emphasis" detail={d.detail} onClick={() => { close(); navigate(d.to) }} />
           ))}
         </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

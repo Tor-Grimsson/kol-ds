@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Button, ColorPickerPopover, Dropdown, Stepper } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { ROLES, RELATIONS, generatePalette, assignRoles, contrast, oklchToHex, resolvePalette, allPalettes } from './palette'
 import { mulberry32, randomSeed } from '../lib/rng'
 import { useControlSize } from '../params/controlSize'
@@ -110,7 +110,7 @@ export function PaletteBody() {
         ))}
       </div>
       {contrast(roles.bg, roles.fg) < 4.5 && (
-        <span className="kol-helper-10 text-meta inline-flex items-center gap-1"><Icon name="info" size={12} />Ink on background is under 4.5:1</span>
+        <span className="kol-helper-10 text-meta inline-flex items-center gap-1"><IconLoader name="info" size={12} />Ink on background is under 4.5:1</span>
       )}
 
       <Dropdown size={cs} aria-label="Load palette" value=""

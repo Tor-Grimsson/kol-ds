@@ -1,5 +1,5 @@
 import { Button, Input, Dropdown, Slider, ToggleSwitch, TabsRow, floatSurfaceClass } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: organism — a float sheet of kol-component fields (Input · Dropdown · Slider · ToggleSwitch · TabsRow) */
 
@@ -49,7 +49,7 @@ export default function PropertyRail({ title, onCollapse, onExpand, density = 'r
       {tabs?.length > 0 && <TabsRow variant="float" size="xs" tabs={tabs} value={tab} onChange={onTab} ariaLabel={`${title} tabs`} />}
       {selected && (
         <div className="flex items-center gap-2">
-          {selected.icon && <Icon name={selected.icon} size={18} className="text-oq-64" />}
+          {selected.icon && <IconLoader name={selected.icon} size={18} className="text-oq-64" />}
           <span className="kol-float-panel text-emphasis flex-1 min-w-0 truncate">{selected.name}</span>
           {selected.onVisible && (
             <Button variant="float" tone="ghost" size="sm" iconOnly={selected.visible === false ? 'eye-off' : 'eye-on'} aria-label={selected.visible === false ? 'Show' : 'Hide'} aria-pressed={selected.visible !== false} onClick={() => selected.onVisible(selected.visible === false)} />
@@ -61,7 +61,7 @@ export default function PropertyRail({ title, onCollapse, onExpand, density = 'r
           {s.collapsible ? (
             <button type="button" aria-expanded={!!s.open} onClick={() => s.onToggle?.(!s.open)}
               className="flex items-center gap-1.5 text-left focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] rounded-sm">
-              <Icon name="chevron-down" size={12} className={`text-oq-64 transition-transform ${s.open ? '' : '-rotate-90'}`} />
+              <IconLoader name="chevron-down" size={12} className={`text-oq-64 transition-transform ${s.open ? '' : '-rotate-90'}`} />
               <span className="kol-float-panel text-emphasis flex-1 min-w-0">{s.label}</span>
               {s.meta && <span className="kol-float-timecode text-oq-64">{s.meta}</span>}
             </button>
@@ -122,7 +122,7 @@ function Row({ row: r, compact }) {
     return (
       <div className="flex items-center justify-between gap-2">
         <span className="kol-float-panel text-emphasis inline-flex items-center gap-1.5">
-          {r.icon && <Icon name={r.icon} size={16} className="text-oq-96" />}
+          {r.icon && <IconLoader name={r.icon} size={16} className="text-oq-96" />}
           {r.label}
         </span>
         <ToggleSwitch variant="float" checked={!!r.on} onChange={r.onChange} aria-label={r.label} />

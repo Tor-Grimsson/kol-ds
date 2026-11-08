@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { ShellSidebar, RailSection, RailRow } from '../shell/index.js'
-import { Icon } from '@kolkrabbi/kol-component'
+import { ShellRail, RailSection, RailRow } from '../shell/index.js'
+import { IconLoader } from '@kolkrabbi/kol-component'
 import {
   extractDocNumber,
   cleanTitle,
@@ -10,7 +10,7 @@ import {
 } from '../engine/index.js'
 
 /**
- * WorkshopSidebar — EXAMPLE composition. This is the app-specific glue that
+ * WorkshopRail — EXAMPLE composition. This is the app-specific glue that
  * wires the KOL shell + docs engine into a product's primary navigation.
  * Consumers copy this file and adapt it; it is intentionally decoupled from
  * any app singleton via props:
@@ -85,7 +85,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
                   count={docs.length}
                   collapsed={!!isCollapsed}
                   onToggle={() => toggleGroup(major)}
-                  icon={Icon}
+                  icon={IconLoader}
                 >
                   <nav className="shell-nav-items">
                     {docs.map((d) => (
@@ -110,7 +110,7 @@ const DocsSidebar = ({ inventory = [], docHref, basePath, onNavigate, collapsed,
   )
 }
 
-const WorkshopSidebar = ({
+const WorkshopRail = ({
   routes = [],
   inventory = [],
   basePath = '/workshop',
@@ -135,7 +135,7 @@ const WorkshopSidebar = ({
 
   return (
     <div className="shell-rail-stack">
-      <ShellSidebar
+      <ShellRail
         routes={workshopRoutes}
         basePath={basePath}
         onNavigate={onNavigate}
@@ -156,4 +156,4 @@ const WorkshopSidebar = ({
   )
 }
 
-export default WorkshopSidebar
+export default WorkshopRail

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Table } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Resolve a CSS custom property off the document root. The download seam is
  * handed a COLOR, not a token — a consumer swapping `currentColor` in raw SVG
@@ -203,7 +203,7 @@ function DownloadControl({ row, token, onToggleInk }) {
       aria-label={label}
       title="Download"
     >
-      <Icon name="download" size={16} />
+      <IconLoader name="download" size={16} />
     </button>
   ) : row.href ? (
     <a
@@ -213,7 +213,7 @@ function DownloadControl({ row, token, onToggleInk }) {
       aria-label={label}
       title="Download"
     >
-      <Icon name="download" size={16} />
+      <IconLoader name="download" size={16} />
     </a>
   ) : null
 

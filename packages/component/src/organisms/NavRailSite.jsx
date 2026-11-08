@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Tooltip } from '../utilities/Popover.jsx'
 import useDragResize from '../hooks/useDragResize.js'
 import useScrollFade from '../hooks/useScrollFade.js'
@@ -260,14 +260,14 @@ export default function NavRailSite({
   const tailOf = (node) => (node.trailing != null || node.external) && (
     <>
       {node.trailing != null && <span className="shrink-0 text-subtle">{node.trailing}</span>}
-      {node.external && <span className="shrink-0 inline-flex text-subtle" aria-hidden="true"><Icon name="external-link" size={10} /></span>}
+      {node.external && <span className="shrink-0 inline-flex text-subtle" aria-hidden="true"><IconLoader name="external-link" size={10} /></span>}
     </>
   )
   /* the tree fades where it clips — the head once scrolled, the foot while more lies below (kol-theme `.kol-scroll-fade`;
    * TimeSetAndSiteRailFade, 2026-10-29) */
   const scrollRef = useRef(null)
   useScrollFade(scrollRef, fade)
-  const Glyph = iconComponent ?? Icon
+  const Glyph = iconComponent ?? IconLoader
   const isPageActive = (to) => (isActive ? isActive(to) : pathname === to)
   /* a leaf is lit by its route, or — an action leaf — by its own `active` */
   const isLeafActive = (leaf) => (leaf.onSelect ? !!leaf.active : isPageActive(leaf.to))
@@ -537,7 +537,7 @@ export default function NavRailSite({
                     aria-label={isOpen ? `Collapse ${cat.label}` : `Expand ${cat.label}`}
                     onClick={() => (collapsed ? (expandOnSelect && toggleCollapsed(), discloseCat(cat.id)) : toggleCat(cat.id))}
                   >
-                    <span className={`kol-sidenav-hop-chevron${isOpen ? '' : ' -rotate-90'}`}><Icon name="chevron-down" size={12} /></span>
+                    <span className={`kol-sidenav-hop-chevron${isOpen ? '' : ' -rotate-90'}`}><IconLoader name="chevron-down" size={12} /></span>
                   </button>
                   <RouteLeaf {...leafProps(cat.to)} title={cat.title} onPress={discloseOnTitle ? () => discloseCat(cat.id) : undefined} className={(active) => `${rowCls} kol-sidenav-hop--split${(active || isActiveCat(cat)) ? ' is-active' : ''}`}>
                     {glyph}
@@ -603,7 +603,7 @@ export default function NavRailSite({
                     className={`kol-sidenav-hop-caret${isOpen ? '' : ' -rotate-90'}`}
                     aria-hidden="true"
                   >
-                    <Icon name="chevron-down" size={12} />
+                    <IconLoader name="chevron-down" size={12} />
                   </span>
                 </button>
               )

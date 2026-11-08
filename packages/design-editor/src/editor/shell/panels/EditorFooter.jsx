@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, ButtonGroup, FullscreenOverlay, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, LabeledControlSection, ButtonGroup, FullscreenOverlay, ModalShell, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
@@ -16,7 +16,7 @@ import BatchExportModal from './BatchExportModal'
 import { useOpenTab } from '../openTab'
 import { currentView } from '../../mode'
 import { useControlSize, stripClamp } from '../../params/controlSize'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import MediaPickerDialog from '../../library/MediaPickerDialog'
 import { stillToDataUrl } from '../../lib/stillUpload'
 
@@ -281,7 +281,7 @@ export default function EditorFooter() {
            2026-08-27; it was a hand-rolled scrim at z-[1000] that dismissed
            on nothing, which at least was honest about being modal). */
         <FullscreenOverlay open closeButton={false}>
-          <div className="bg-surface-primary border border-oq-08 rounded shadow-xl flex flex-col gap-3" style={{ width: 320, padding: 20 }}>
+          <ModalShell variant="bordered" className="shadow-xl gap-3" style={{ width: 320, padding: 20 }}>
             <div className="flex items-center justify-between">
               <span className="kol-helper-12 text-emphasis">Baking loop…</span>
               <span className="kol-helper-10 text-meta">{webmProgress.done} / {webmProgress.total}</span>
@@ -289,7 +289,7 @@ export default function EditorFooter() {
             <div className="rounded overflow-hidden" style={{ height: 6, background: 'var(--kol-oq-08)' }}>
               <div style={{ height: '100%', width: `${Math.round((webmProgress.done / Math.max(1, webmProgress.total)) * 100)}%`, background: 'var(--kol-accent-primary)', transition: 'width 80ms linear' }} />
             </div>
-          </div>
+          </ModalShell>
         </FullscreenOverlay>
       )}
       <BatchExportModal

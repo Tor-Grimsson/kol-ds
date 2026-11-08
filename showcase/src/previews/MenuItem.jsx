@@ -1,4 +1,4 @@
-import { MenuItem, MenuRow, MenuDivider, Icon } from '@kolkrabbi/kol-component'
+import { MenuItem, MenuRow, MenuDivider, IconLoader } from '@kolkrabbi/kol-component'
 import { CONTROL_TONES, ALIGNS, toneWrap } from '../lib/controls.js'
 
 /* Index card: the CLOSED trigger only. The full preview below opens by default
@@ -23,17 +23,17 @@ export default function MenuItemPreview({ size = 'md', tone, align = 'start' }) 
     <div className={`flex min-h-[220px] w-full items-start justify-center ${toneWrap(tone)}`}>
     <MenuItem key={align} label="File" size={size} align={align} defaultOpen>
       <div className="min-w-[180px] py-1">
-        <MenuRow iconLeft={<Icon name="file" size={14} />} onClick={() => {}}>
+        <MenuRow iconLeft={<IconLoader name="file" size={14} />} onClick={() => {}}>
           New file
         </MenuRow>
-        <MenuRow iconLeft={<Icon name="save" size={14} />} kbd="⌘S" onClick={() => {}}>
+        <MenuRow iconLeft={<IconLoader name="save" size={14} />} kbd="⌘S" onClick={() => {}}>
           Save
         </MenuRow>
-        <MenuRow iconLeft={<Icon name="download" size={14} />} onClick={() => {}}>
+        <MenuRow iconLeft={<IconLoader name="download" size={14} />} onClick={() => {}}>
           Export…
         </MenuRow>
         <MenuDivider />
-        <MenuRow iconLeft={<Icon name="trash" size={14} />} disabled onClick={() => {}}>
+        <MenuRow iconLeft={<IconLoader name="trash" size={14} />} disabled onClick={() => {}}>
           Delete
         </MenuRow>
       </div>

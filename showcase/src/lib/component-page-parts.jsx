@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CodeBlock } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import PreviewCard from './PreviewCard.jsx'
 import { setsOf, usedIn } from './set-membership.js'
 import { getComponentBySlug, COMPONENTS_AZ, slugify } from '../nav/registry.js'
@@ -58,7 +58,7 @@ async function readParts(file, seen = new Set(), depth = 0) {
   seen.add(file)
   const src = await RAW[rawKey(file)]()
   for (const m of src.matchAll(/\b(kol-(?:sans|mono|helper|doc|prose|display|serif)-[a-z0-9-]+)/g)) out.type.add(m[1])
-  for (const m of src.matchAll(/<Icon\b[^>]*?\bname="([a-z0-9-]+)"|\bicon[=:]\s*["']([a-z0-9-]+)["']/g)) out.icons.add(m[1] ?? m[2])
+  for (const m of src.matchAll(/<Icon(?:Loader)?\b[^>]*?\bname="([a-z0-9-]+)"|\bicon[=:]\s*["']([a-z0-9-]+)["']/g)) out.icons.add(m[1] ?? m[2])
   /* imported names that the file renders as an element */
   const imports = []
   for (const m of src.matchAll(/import\s+([^'"]+?)\s+from\s+['"]([^'"]+)['"]/g)) {
@@ -73,7 +73,7 @@ async function readParts(file, seen = new Set(), depth = 0) {
   const rendered = (n) => new RegExp(`<${n}[\\s/>]`).test(src)
   const walk = []
   for (const { local, name, spec } of imports) {
-    if (!rendered(local) || local === 'Icon') continue
+    if (!rendered(local) || local === 'Icon' || local === 'IconLoader') continue
     const page = getComponentBySlug(slugify(name))
     const at = target(file, spec) ?? SOURCES[name]
     /* an alias on the retirement ledger (its file opens `@deprecated`, as PageHeader → SectionText) lists what it renders */
@@ -291,13 +291,13 @@ export function Pager({ slug }) {
       {/* mono, not sans — nav chrome is mono-dominated (user ruling 2026-07-30) */}
       {prev ? (
         <Link to={`/components/${prev.slug}`} className="group flex flex-col gap-0.5 text-left">
-          <span className="kol-mono-12 text-meta inline-flex items-center gap-1.5"><Icon name="arrow-left" size={12} />Prev</span>
+          <span className="kol-mono-12 text-meta inline-flex items-center gap-1.5"><IconLoader name="arrow-left" size={12} />Prev</span>
           <span className="kol-mono-14 text-body group-hover:text-emphasis">{prev.displayName}</span>
         </Link>
       ) : <span />}
       {next ? (
         <Link to={`/components/${next.slug}`} className="group flex flex-col gap-0.5 text-right">
-          <span className="kol-mono-12 text-meta inline-flex items-center justify-end gap-1.5">Next<Icon name="arrow-right" size={12} /></span>
+          <span className="kol-mono-12 text-meta inline-flex items-center justify-end gap-1.5">Next<IconLoader name="arrow-right" size={12} /></span>
           <span className="kol-mono-14 text-body group-hover:text-emphasis">{next.displayName}</span>
         </Link>
       ) : <span />}

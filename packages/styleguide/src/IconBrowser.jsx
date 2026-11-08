@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ContentFilters, ContentCollection, ContentRow, ViewToggle, Dropdown, Divider, IconPlate, IconToggle, TabsRow, Tooltip, Slider, ToggleCheckbox, Menu, MenuRow, MenuDivider } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: organism — an icon set's browser: the filter row with its size · ground · guide · LIST / GRID controls over the collection */
 
@@ -64,7 +64,7 @@ const nameType = (size) => (size !== 'fit' && size <= 20 ? ['kol-mono-10', 74] :
 
 /* the glyph: a kol-icons name, or raw SVG sized to the plate (kol-atlas's icons are SVG strings); `svg: null` is a gap */
 function Glyph({ item, size }) {
-  if (!('svg' in item)) return <Icon name={item.name} size={size} />
+  if (!('svg' in item)) return <IconLoader name={item.name} size={size} />
   const box = size === '100%' ? '100%' : size
   return item.svg
     ? <span className="flex [&>svg]:size-full" style={{ width: box, height: box }} dangerouslySetInnerHTML={{ __html: item.svg }} />
@@ -160,7 +160,7 @@ function FacetMenu({ group: g, off, onOff }) {
       trigger={({ open, props }) => (
         <button type="button" {...props} aria-label={`${g.label}, ${text}`} data-state={open ? 'open' : 'closed'} className={`kol-btn kol-btn-sm kol-mono-12 kol-dd-trigger kol-tone-primary w-full ${open ? 'kol-dd-trigger--open' : ''}`}>
           <span className="kol-dd-label"><span>{text}</span></span>
-          <Icon name="chevron-down" size={12} className="kol-dd-caret" />
+          <IconLoader name="chevron-down" size={12} className="kol-dd-caret" />
         </button>
       )}
     >

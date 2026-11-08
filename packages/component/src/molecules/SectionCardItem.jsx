@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import useCoarsePointer from '../hooks/useCoarsePointer.js'
 import useInViewAttention from '../hooks/useInViewAttention.js'
 
@@ -96,7 +96,7 @@ export default function SectionCardItem({
     <>
       <div className="w-full flex items-start justify-between gap-2">
         <h3 className="kol-helper-16">{title}</h3>
-        {icon && <Icon name={icon} size={16} className="shrink-0" />}
+        {icon && <IconLoader name={icon} size={16} className="shrink-0" />}
       </div>
       <p className="kol-mono-12 text-fg-48">{description}</p>
     </>
@@ -104,7 +104,7 @@ export default function SectionCardItem({
     <>
       <div className="w-full flex items-center justify-between gap-2">
         <h3 className="kol-helper-16">{title}</h3>
-        {icon && <Icon name={icon} size={16} className="shrink-0" />}
+        {icon && <IconLoader name={icon} size={16} className="shrink-0" />}
       </div>
 
       {/* kol-card-feature-visual: zooms on card hover (chrome in kol-theme —
@@ -141,7 +141,7 @@ export default function SectionCardItem({
             visual
           )
         ) : (
-          <Icon name={icon} size={96} />
+          <IconLoader name={icon} size={96} />
         )}
       </div>
 

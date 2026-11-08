@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-foundry
 
+## 0.16.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.15.0 — 2026-10-30
 
 - **`TextPressure` `variant="intro"`** (TextPressureIntroVariant, kol-website): the retired kolkrabbi.io behaviour — window-wide `mousemove` · `touchmove` with no hover gate, the follower starts at the container centre so the glyphs are bent from the first frame, `wdth` 5–200, falloff is the title width / 2, and the loop runs mount → unmount. `default` is unchanged; reduced motion stays static in both. `WebsiteIntroLoader` passes `variant="intro"`.

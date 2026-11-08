@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import SearchInput from '../molecules/SearchInput.jsx'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
@@ -30,7 +30,7 @@ const ToolbarIcon = ({ name, label, onClick, active = false, triggerClassName })
        * frames 2026-08-09): the reference icons nearly fill their box. */
       className={`inline-flex cursor-pointer rounded-sm border-0 p-0.5 transition-colors duration-150 ${active ? 'bg-fg-08 text-emphasis' : 'bg-transparent text-oq-64 hover:text-emphasis'}`}
     >
-      <Icon name={name} size={20} />
+      <IconLoader name={name} size={20} />
     </button>
   </Tooltip>
 )
@@ -231,7 +231,7 @@ export default function RecordManager({
                 className="inline-flex w-4 cursor-grab touch-none justify-center border-0 bg-transparent p-0 text-oq-48 hover:text-emphasis"
                 onPointerDown={(e) => startDrag(e, i)}
               >
-                <Icon name="drag-handle" size={16} />
+                <IconLoader name="drag-handle" size={16} />
               </button>
             )}
             <ToggleCheckbox

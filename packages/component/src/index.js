@@ -84,10 +84,10 @@ export { default as InlineAddRow } from './molecules/InlineAddRow.jsx'
 export { default as LinkAddRow } from './molecules/LinkAddRow.jsx'
 export { default as ColorField } from './molecules/ColorField.jsx'
 export { default as PanelsMenu } from './molecules/PanelsMenu.jsx'
-export { default as ModalHeader } from './molecules/ModalHeader.jsx'
+/* ModalHeader is the one modal header (2026-11-08); `QuickLookHeader` is its deprecated alias on the retirement ledger */
+export { default as ModalHeader, default as QuickLookHeader } from './molecules/ModalHeader.jsx'
 /* float-everything W6 · W8 (0.335.0) */
 export { default as SummaryLine } from './molecules/SummaryLine.jsx'
-export { default as QuickLookHeader } from './molecules/QuickLookHeader.jsx'
 export { default as NoticeBanner } from './molecules/NoticeBanner.jsx'
 export { default as TreeRow, TREE_ROW } from './molecules/TreeRow.jsx'
 export { default as FlyoutRow } from './molecules/FlyoutRow.jsx'
@@ -179,6 +179,7 @@ export { MenuItem, MenuRow, MenuDivider, MenuFlyout, MenuDropdownItem, MenuDropd
 export { Menu, MenuTrigger, MenuPanel, MenuLabel, MenuFilter, MenuDatePicker, MenuMore } from './molecules/Menu.jsx'
 export { MenuList } from './molecules/MenuList.jsx'
 export { ModalProvider, useModal, Dialog } from './molecules/Modal.jsx'
+export { default as ModalShell } from './molecules/ModalShell.jsx'
 /* the generator settings window's controls (plan-2026-11-05-float-editor W7.2) — `Dialog variant="settings"`'s rows */
 export {
   SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle,
@@ -278,8 +279,9 @@ export { default as SettingsPanel, LabeledControlSection, SettingsRow, SettingsS
 /* the settings BODY as data — one call for the page, the drawer and a sheet
  * (user 2026-09-03: "lets normalise a component they can grab") */
 export { default as SettingsSections } from './organisms/SettingsSections.jsx'
-/* the rail kit (RailKit, kol-monitor 2026-10-24): the parts a Rail's content is built from; RailSection and RailRow
- * are the settings rail's LabeledControlSection and SettingsRow under the kit's names — the same components */
+/* the rail kit (RailKit, kol-monitor 2026-10-24): the parts a Rail's content is built from. Its sections and rows are
+ * LabeledControlSection and SettingsRow. @deprecated 2026-11-08: the RailSection / RailRow aliases below are retired by
+ * the user's ruling ("I always called it labeledControl and LabeledControlSection… I never approved the rename") */
 export { RailHeader, RailTabs, RailHint, RailActions, RailFoot, RailNav } from './organisms/RailKit.jsx'
 export { LabeledControlSection as RailSection, SettingsRow as RailRow } from './organisms/SettingsPanel.jsx'
 export { default as SectionNewsletter } from './organisms/SectionNewsletter.jsx'
@@ -318,7 +320,7 @@ export { default as SpectrumGrid } from './organisms/SpectrumGrid.jsx'
 export { default as Table } from './organisms/Table.jsx'
 
 // loaders (re-export — infrastructure, documented on /docs/loaders)
-export { Icon } from '@kolkrabbi/kol-icons'
+export { IconLoader, Icon } from '@kolkrabbi/kol-icons' // Icon = IconLoader's deprecated alias (2026-11-08)
 
 // graphics (SVG illustration loader — globs its own ./graphics/svg/**)
 export { default as Graphic, GRAPHICS } from './graphics/Graphic.jsx'

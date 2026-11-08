@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Button } from '@kolkrabbi/kol-component'
 import PreviewCard, { ToolbarDivider } from './PreviewCard.jsx'
 

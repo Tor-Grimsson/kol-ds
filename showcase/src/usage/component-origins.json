@@ -874,6 +874,11 @@
     "source": "kol-fxr/src/components/HomeStage.jsx#L1-L100 · kol-fxr/src/loops/growth/engine.js#L1-L230",
     "date": null
   },
+  "NavRailSite": {
+    "repo": "kol-foundry",
+    "source": "kol-foundry/tools/kol-kerner/src/content/nav.js",
+    "date": null
+  },
   "SiteRailTitleNavigatesOnly": {
     "repo": "kol-ds-ui",
     "source": "kol-ds-ui/packages/component/src/organisms/NavRailSite.jsx#L346-L363",
@@ -957,6 +962,11 @@
   "TransportPill": {
     "repo": "kol-fxr",
     "source": "kol-fxr proposal frame E — https://claude.ai/artifact/KRTF3jBpfpHUsEpyroDqRD (ProtoE.dc.html); today's bar is kol-fxr/src/editor/params/TransportBar.jsx",
+    "date": null
+  },
+  "TypeTester": {
+    "repo": "kol-website",
+    "source": "kol-website/apps/web/src/components/foundry/FontPreviewSection.jsx#L32-L123",
     "date": null
   },
   "TypefaceCardAndRow": {

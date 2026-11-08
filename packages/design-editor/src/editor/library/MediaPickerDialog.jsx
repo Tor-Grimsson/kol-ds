@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, CloseButton, FullscreenOverlay, MediaLibrary } from '@kolkrabbi/kol-component'
+import { Button, CloseButton, FullscreenOverlay, MediaLibrary, ModalShell } from '@kolkrabbi/kol-component'
 import { SETTINGS_BASE } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages'
 import { getMediaClient } from './mediaLibrary'
 
@@ -53,7 +53,7 @@ export default function MediaPickerDialog({ open, accept = ['image', 'video'], o
     /* the close rides the header row, after the gear (kol-component 0.251.0, MediaPickerCloseOnTheHeaderRow) —
        the overlay's own X floated above it and lined up with nothing */
     <FullscreenOverlay open scrim onClose={onClose} closeButton={false}>
-      <div className="kol-media-picker gap-4">
+      <ModalShell className="kol-media-picker max-md:rounded-none gap-4">
         <MediaLibrary
           variant="browse"
           client={client}
@@ -70,7 +70,7 @@ export default function MediaPickerDialog({ open, accept = ['image', 'video'], o
           <Button tone="grey" size="md" onClick={onClose}>Cancel</Button>
           <Button size="md" disabled={!ok} onClick={use}>Use</Button>
         </div>
-      </div>
+      </ModalShell>
     </FullscreenOverlay>
   )
 }

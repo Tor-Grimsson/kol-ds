@@ -4,7 +4,7 @@ import { Button, Delta, IndexRow, InlineAddRow, LinkAddRow, TabsRow } from '@kol
 import { Card, StatTiles } from '@kolkrabbi/kol-dashboards'
 import { Breadcrumb } from '@kolkrabbi/kol-shell'
 import { DocumentLibrary } from '@kolkrabbi/kol-styleguide'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* Round 25 — float operational, W6 and W7 (plan-2026-11-04-float-operational). Every row is the shipped part, rendered
  * with the props apps/float uses, beside a plain box at the exploration frame's size. Nothing decided; his call per row. */
@@ -38,7 +38,7 @@ const LIBRARY = {
 }
 const roundFlag = (code) => {
   const name = { is: 'flag-is', en: 'flag-gb', de: 'flag-de' }[code]
-  return <span role="img" aria-label={code} className="inline-flex overflow-hidden rounded-full shadow-[0_0_0_1px_var(--kol-border-default)]"><Icon name={name} size={12} /></span>
+  return <span role="img" aria-label={code} className="inline-flex overflow-hidden rounded-full shadow-[0_0_0_1px_var(--kol-border-default)]"><IconLoader name={name} size={12} /></span>
 }
 
 /* the shipped part beside the frame's box, both numbers under them, the question last */

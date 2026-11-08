@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ActionButton from './ActionButton.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 import { useModal } from './Modal.jsx'
@@ -43,7 +43,7 @@ export const useAsk = () => {
   }
 }
 
-export const glyph = (name) => <Icon name={name} size={14} />
+export const glyph = (name) => <IconLoader name={name} size={14} />
 
 /* the plate's two actions, stacked over its padded height; a plate press never opens the card */
 function AppPlate({ name, verbs, onSettings }) {
@@ -58,7 +58,7 @@ function AppPlate({ name, verbs, onSettings }) {
 
 const placeholder = (
   <div className="size-full flex items-center justify-center bg-oq-04 text-oq-24" aria-label="No preview yet">
-    <Icon name="image" size={24} />
+    <IconLoader name="image" size={24} />
   </div>
 )
 
@@ -101,7 +101,7 @@ export function useAppItem(variant, { title, verbs, download, menuItems, date, s
     controlStart: mark?.icon ? (
       <Tooltip label={mark.label}>
         <span className="kol-media-control" role="img" aria-label={mark.label} style={{ cursor: 'default' }}>
-          <span className="kol-action-glyph inline-grid place-items-center" style={{ width: 20, height: 20 }}><Icon name={mark.icon} size={20} /></span>
+          <span className="kol-action-glyph inline-grid place-items-center" style={{ width: 20, height: 20 }}><IconLoader name={mark.icon} size={20} /></span>
         </span>
       </Tooltip>
     /* INSERT ON A CARD (StudioCreate's parts, 2026-10-24 — every card the same fields and icons, so a part keeps its plate):

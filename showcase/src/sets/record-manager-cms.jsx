@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { RecordManager, SearchInput } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 export const meta = {
   title: 'Record manager CMS',
@@ -94,7 +94,7 @@ export default function RecordManagerCmsSet() {
                   className={`kol-helper-12 flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded-sm border-0 px-3 py-2 text-left ${c.id === collection ? 'bg-fg-08 text-emphasis' : 'bg-transparent text-body hover:text-emphasis'}`}
                   onClick={() => setCollection(c.id)}
                 >
-                  <Icon name="library" size={14} />
+                  <IconLoader name="library" size={14} />
                   <span className="min-w-0 flex-1 truncate">{c.label}</span>
                   <span className="kol-helper-10 text-meta">{c.count}</span>
                 </button>
@@ -102,7 +102,7 @@ export default function RecordManagerCmsSet() {
             ))}
             <li className="shrink-0 md:shrink">
               <button type="button" className="kol-helper-12 flex w-full cursor-pointer items-center gap-2 whitespace-nowrap rounded-sm border-0 bg-transparent px-3 py-2 text-left text-meta hover:text-emphasis">
-                <Icon name="plus" size={14} />
+                <IconLoader name="plus" size={14} />
                 Add collection
               </button>
             </li>

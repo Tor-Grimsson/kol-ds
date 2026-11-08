@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-component",
-  "version": "0.354.0",
+  "version": "0.361.0",
   "description": "The core component library",
   "license": "MIT",
   "type": "module",
@@ -37,7 +37,7 @@
     "react-syntax-highlighter": "^16.1.1"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-icons": ">=0.61.1",
+    "@kolkrabbi/kol-icons": ">=0.68.0",
     "framer-motion": "^12.0.0",
     "gsap": "^3.13.0",
     "hls.js": "^1.6.0",

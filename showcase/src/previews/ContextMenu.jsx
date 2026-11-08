@@ -1,4 +1,4 @@
-import { ContextMenu, MenuRow, MenuFlyout, Icon, useContextMenu } from '@kolkrabbi/kol-component'
+import { ContextMenu, MenuRow, MenuFlyout, IconLoader, useContextMenu } from '@kolkrabbi/kol-component'
 import { CONTROL_TONES, ALIGNS, toneWrap } from '../lib/controls.js'
 
 export const stage = 'sm'
@@ -66,6 +66,6 @@ function FloatRows({ items }) {
   return items.map((it) => (
     it.items
       ? <MenuFlyout key={it.label} flyout label={it.label} rowClass="kol-menu-row kol-helper-12" panelClassName="kol-menu-panel kol-menu-panel--float min-w-[160px]" panelStyle={{ marginLeft: 8 }}><FloatRows items={it.items} /></MenuFlyout>
-      : <MenuRow key={it.label} rowClass="kol-menu-row kol-helper-12" tone={it.tone} iconLeft={it.icon ? <Icon name={it.icon} size={16} /> : undefined} onClick={it.onClick}>{it.label}</MenuRow>
+      : <MenuRow key={it.label} rowClass="kol-menu-row kol-helper-12" tone={it.tone} iconLeft={it.icon ? <IconLoader name={it.icon} size={16} /> : undefined} onClick={it.onClick}>{it.label}</MenuRow>
   ))
 }

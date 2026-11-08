@@ -129,7 +129,7 @@ export const VAULT_TREE = (() => {
     .sort(([a], [b]) => a.localeCompare(b))
     .map(([key, docs]) => {
       /* `//` marks a LOOSE file at the category root — it has no chapter, so it
-       * renders as a childless route, which ShellSidebar draws as a plain row.
+       * renders as a childless route, which ShellRail draws as a plain row.
        * `chapter` stays null for it: a gate that matched it would be gating a
        * file against a chapter rule it was never part of. */
       const loose = key.includes('//')
@@ -160,7 +160,7 @@ export const VAULT_TREE = (() => {
         label: loose ? fileLabel(segs[1]) : label(chapter),
         ...(indexDoc ? { path: vaultDocHref(indexDoc.id) } : {}),
         /* A loose file IS its own row — `path` and no children, which is the
-         * shape ShellSidebar draws as a link rather than a collapsible group. */
+         * shape ShellRail draws as a link rather than a collapsible group. */
         ...(loose ? { path: vaultDocHref(docs[0].id), children: [] } : {}),
         children: loose ? [] : [
           /* The index leads the list — it is the chapter's opening page, not

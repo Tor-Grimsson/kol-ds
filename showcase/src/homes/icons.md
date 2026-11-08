@@ -24,9 +24,9 @@ KOL ships two icon sets in one package, `@kolkrabbi/kol-icons`. Every icon is a 
 Ask for an icon by name and give it a size. One name always means one drawing, across both sets.
 
 ```jsx
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
-<Icon name="arrow-up" size={16} />
+<IconLoader name="arrow-up" size={16} />
 ```
 
 ## Size

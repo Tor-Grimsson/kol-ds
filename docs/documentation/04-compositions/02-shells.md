@@ -3,7 +3,7 @@ title: Reference shells
 type: reference
 status: active
 created: 2026-08-01
-updated: 2026-10-02
+updated: 2026-11-08
 description: The documented app shells, and their uses
 aliases:
   - reference-shells
@@ -82,7 +82,7 @@ kol-website did **not** consume the package — `apps/web/vite.config.js:37` ali
 
 | Taken from the website | Where it landed |
 |---|---|
-| Tooltips on every icon-only control | `packages/framework/src/ShellHeader.jsx`, `packages/workshop/src/shell/{ShellLayout,ShellSidebar}.jsx`, `compositions/WorkshopSidebar.jsx`, `tags/TagModeOverlay.jsx` |
+| Tooltips on every icon-only control | `packages/framework/src/ShellHeader.jsx`, `packages/workshop/src/shell/{ShellLayout,ShellRail}.jsx`, `compositions/WorkshopRail.jsx`, `tags/TagModeOverlay.jsx` |
 | `<header>` landmark · `kol-mono-14` tabs · lg-rung ThemeToggle | `ShellHeader.jsx` — the website's 158-line `WorkshopHeader` fork existed ONLY for these, so it is retired, not imported |
 | `aria-label` on nav/TOC asides · `id="main"` | `shell/ShellLayout.jsx` |
 | Brand link split — KOLKRABBI → site home, WORKSHOP → shell root | `shell/ShellLayout.jsx` |

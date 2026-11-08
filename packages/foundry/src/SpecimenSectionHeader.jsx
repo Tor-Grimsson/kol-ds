@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { Dropdown } from '@kolkrabbi/kol-component'
 import { Divider } from '@kolkrabbi/kol-component'
 import { IconFrame } from '@kolkrabbi/kol-component'

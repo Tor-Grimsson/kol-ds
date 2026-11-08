@@ -13,7 +13,7 @@ All published under `@kolkrabbi/*`. The UI tier is a four-layer stack — `theme
 | Package | Tier | What it is |
 | --- | --- | --- |
 | `kol-theme` | UI | Brand-neutral tokens + base CSS. The cascade everything builds on. |
-| `kol-icons` | UI | `<Icon/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
+| `kol-icons` | UI | `<IconLoader/>` + the 341-icon registry. Vite-only (`import.meta.glob`). |
 | `kol-component` | UI | Atoms → organisms, emitting canonical `kol-*` classes. |
 | `kol-framework` | UI | App shell — sidenav, layout, theme toggle, heroes, brand color layer. |
 | `kol-workshop` | Domain | Docs system — hand-rolled markdown engine, docs viewer, tag graph, shell. |
@@ -64,7 +64,7 @@ Only `kol-theme` (CSS-only) and the non-UI packages (`kol-media-client`, `kol-br
 
 ```jsx
 import { Button, Tag } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 <Button variant="primary" iconLeft="plus">New</Button>
 ```

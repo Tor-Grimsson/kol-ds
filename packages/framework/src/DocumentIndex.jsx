@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FileQuickLook, SectionText, KIND_LABEL, Table } from '@kolkrabbi/kol-component'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import IndexCard from './IndexCard.jsx'
 
 /* taxonomy-ok: organism — a folder's index page: its header, the contents (cards or a table) and the Quick Look over its files */
@@ -102,7 +102,7 @@ function ContentsTable({ index, onNavigate, columns, accent, caption }) {
   }
   const cols = [
     ...extra.filter((c) => c.accessor === 'no'),
-    { accessor: 'title', header: 'Title', render: (r) => <span className="inline-flex items-center gap-2">{r.icon && <Icon name={r.icon} size={16} className="text-oq-48" />}{link(r)}</span> },
+    { accessor: 'title', header: 'Title', render: (r) => <span className="inline-flex items-center gap-2">{r.icon && <IconLoader name={r.icon} size={16} className="text-oq-48" />}{link(r)}</span> },
     ...extra.filter((c) => c.accessor !== 'no'),
   ].map((c) => ({ ...c, headerClassName: head, className: body }))
   return (

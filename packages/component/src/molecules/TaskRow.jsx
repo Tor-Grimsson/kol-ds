@@ -1,4 +1,4 @@
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import ToggleCheckbox from '../atoms/ToggleCheckbox.jsx'
 
 /* taxonomy-ok: molecule — nests ToggleCheckbox (atom) + kol-icons's Icon. */
@@ -34,7 +34,7 @@ export default function TaskRow({ title, date, done = false, onDone, onDate, onC
           {...(onDate ? { type: 'button', onClick: onDate } : {})}
           className={`inline-flex h-[var(--kol-float-h-md)] shrink-0 items-center gap-2 rounded-full bg-[var(--kol-float-well)] px-4 ${onDate ? 'cursor-pointer hover:bg-fg-08 focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]' : ''}`.trim()}
         >
-          <Icon name="calendar" size={14} className="text-oq-64" />
+          <IconLoader name="calendar" size={14} className="text-oq-64" />
           <span className="kol-float-timecode tabular-nums text-fg-64">{date}</span>
         </Chip>
       )}

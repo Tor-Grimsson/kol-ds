@@ -27,7 +27,7 @@
   "Badge": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Button": {
@@ -47,7 +47,7 @@
     "composes": [
       "Button",
       "IconFrame",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ActionButton": {
@@ -55,13 +55,13 @@
     "composes": [
       "DURATION",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "FileIcon": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "SizeOrDownload": {
@@ -69,7 +69,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "SortHeader": {
@@ -77,7 +77,7 @@
       "kol-helper-12"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "SortControls": {
@@ -129,7 +129,7 @@
     "typeClasses": [],
     "composes": [
       "SOLO",
-      "Icon"
+      "IconLoader"
     ]
   },
   "IconPlate": {
@@ -181,14 +181,16 @@
       "kol-mono-8"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Label": {
     "typeClasses": [
       "kol-helper-"
     ],
-    "composes": []
+    "composes": [
+      "IconLoader"
+    ]
   },
   "LabeledControl": {
     "typeClasses": [
@@ -252,7 +254,7 @@
       "Tooltip",
       "SettingsSections",
       "MediaInspector",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ProsePreview": {
@@ -268,7 +270,7 @@
   "QuantityInput": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Knob": {
@@ -297,7 +299,7 @@
     ],
     "composes": [
       "Kbd",
-      "Icon"
+      "IconLoader"
     ]
   },
   "InspectorSection": {
@@ -357,18 +359,13 @@
       "kol-sans-heading-03"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "SegmentedToggle": {
-    "typeClasses": [
-      "kol-mono-12",
-      "kol-mono-14",
-      "kol-mono-16",
-      "kol-mono-8"
-    ],
+    "typeClasses": [],
     "composes": [
-      "Tooltip"
+      "ButtonGroup"
     ]
   },
   "VariantsControl": {
@@ -377,7 +374,7 @@
     ],
     "composes": [
       "Button",
-      "SegmentedToggle",
+      "ButtonGroup",
       "PopoverPanel"
     ]
   },
@@ -389,7 +386,7 @@
       "kol-mono-8"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Kbd": {
@@ -398,13 +395,13 @@
       "kol-helper-12"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Delta": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "LiveDot": {
@@ -418,7 +415,7 @@
   "ValueField": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "FieldPair": {
@@ -431,7 +428,7 @@
     "typeClasses": [],
     "composes": [
       "Input",
-      "Icon"
+      "IconLoader"
     ]
   },
   "InlineAddRow": {
@@ -446,7 +443,7 @@
     "composes": [
       "Input",
       "Button",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ColorField": {
@@ -458,22 +455,37 @@
   "PanelsMenu": {
     "typeClasses": [],
     "composes": [
-      "Button"
+      "Button",
+      "ModalHeader"
+    ]
+  },
+  "ModalHeader": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "Button",
+      "Avatar",
+      "CloseButton",
+      "IconLoader"
+    ]
+  },
+  "QuickLookHeader": {
+    "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-16"
+    ],
+    "composes": [
+      "Button",
+      "Avatar",
+      "CloseButton",
+      "IconLoader"
     ]
   },
   "SummaryLine": {
     "typeClasses": [],
     "composes": []
-  },
-  "QuickLookHeader": {
-    "typeClasses": [
-      "kol-mono-12"
-    ],
-    "composes": [
-      "Button",
-      "CloseButton",
-      "Icon"
-    ]
   },
   "NoticeBanner": {
     "typeClasses": [],
@@ -484,13 +496,13 @@
   "TreeRow": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "TREE_ROW": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "FlyoutRow": {
@@ -503,7 +515,7 @@
     "typeClasses": [],
     "composes": [
       "TreeRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "IndexRow": {
@@ -516,7 +528,7 @@
     "typeClasses": [],
     "composes": [
       "ToggleCheckbox",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TocRow": {
@@ -527,7 +539,7 @@
     "typeClasses": [],
     "composes": [
       "TreeRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "CalendarTimeline": {
@@ -569,7 +581,7 @@
   "ReadingChapterNav": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "ReadingContents": {
@@ -631,7 +643,7 @@
       "kol-mono-14"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Tag": {
@@ -639,7 +651,7 @@
       "kol-helper"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "Textarea": {
@@ -650,7 +662,7 @@
       "kol-mono-8"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "ToggleBracket": {
@@ -692,7 +704,7 @@
     ],
     "composes": [
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "XYPad": {
@@ -784,7 +796,7 @@
     ],
     "composes": [
       "Button",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TYPE_LABELS": {
@@ -899,15 +911,21 @@
   },
   "ButtonGroup": {
     "typeClasses": [
+      "kol-mono-12",
+      "kol-mono-14",
+      "kol-mono-16",
+      "kol-mono-8",
       "kol-sans-heading-05"
     ],
-    "composes": []
+    "composes": [
+      "Tooltip"
+    ]
   },
   "AlignmentGrid": {
     "typeClasses": [],
     "composes": [
-      "SegmentedToggle",
-      "Icon"
+      "ButtonGroup",
+      "IconLoader"
     ]
   },
   "ImageBlock": {
@@ -936,7 +954,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "CardFeatureItem": {
@@ -945,7 +963,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "CodeBlock": {
@@ -965,17 +983,16 @@
       "Input",
       "PopoverPanel",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ColorRamp": {
     "typeClasses": [
-      "kol-helper-10",
       "kol-helper-12",
       "kol-mono-12"
     ],
     "composes": [
-      "ColorSwatch"
+      "SwatchTile"
     ]
   },
   "TextFold": {
@@ -990,7 +1007,7 @@
     ],
     "composes": [
       "Tag",
-      "SegmentedToggle",
+      "ButtonGroup",
       "TabsRow"
     ]
   },
@@ -1001,6 +1018,19 @@
       "Tooltip"
     ]
   },
+  "SwatchTile": {
+    "typeClasses": [],
+    "composes": [
+      "ColorSwatch",
+      "SwatchCaption"
+    ]
+  },
+  "SwatchCaption": {
+    "typeClasses": [
+      "kol-helper-10"
+    ],
+    "composes": []
+  },
   "Dropdown": {
     "typeClasses": [
       "kol-helper-12",
@@ -1010,10 +1040,9 @@
       "kol-mono-8"
     ],
     "composes": [
-      "MenuRow",
-      "MenuDivider",
+      "MenuList",
       "Menu",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MultiSelect": {
@@ -1026,7 +1055,7 @@
     "composes": [
       "MenuRow",
       "Menu",
-      "Icon"
+      "IconLoader"
     ]
   },
   "FieldRow": {
@@ -1039,7 +1068,7 @@
       "PopoverPanel",
       "Dropdown",
       "OptionRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "StatusChip": {
@@ -1052,7 +1081,7 @@
       "PopoverPanel",
       "Dropdown",
       "OptionRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "FramedMediaBand": {
@@ -1109,7 +1138,7 @@
     "composes": [
       "ContentMedia",
       "ContentText",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ContentItem": {
@@ -1131,7 +1160,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuRow": {
@@ -1142,7 +1172,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuDivider": {
@@ -1153,7 +1184,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuFlyout": {
@@ -1164,7 +1196,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuDropdownItem": {
@@ -1175,7 +1208,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuDropdownDivider": {
@@ -1186,7 +1220,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "MenuDropdownNest": {
@@ -1197,7 +1232,8 @@
     "composes": [
       "Menu",
       "Kbd",
-      "Icon"
+      "Divider",
+      "IconLoader"
     ]
   },
   "Menu": {
@@ -1206,14 +1242,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuTrigger": {
@@ -1222,14 +1257,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuPanel": {
@@ -1238,14 +1272,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuLabel": {
@@ -1254,14 +1287,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuFilter": {
@@ -1270,14 +1302,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuDatePicker": {
@@ -1286,14 +1317,13 @@
     ],
     "composes": [
       "Button",
-      "SearchInput",
       "MenuRow",
       "MenuDivider",
-      "MenuFlyout",
+      "MenuList",
+      "MenuLabel",
       "PopoverPanel",
-      "Tooltip",
       "TONE_VARS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MenuMore": {
@@ -1302,20 +1332,26 @@
     ],
     "composes": [
       "Button",
+      "MenuRow",
+      "MenuDivider",
+      "MenuList",
+      "MenuLabel",
+      "PopoverPanel",
+      "TONE_VARS",
+      "IconLoader"
+    ]
+  },
+  "MenuList": {
+    "typeClasses": [
+      "kol-helper-12"
+    ],
+    "composes": [
       "SearchInput",
       "MenuRow",
       "MenuDivider",
       "MenuFlyout",
-      "PopoverPanel",
       "Tooltip",
-      "TONE_VARS",
-      "Icon"
-    ]
-  },
-  "MenuPopover": {
-    "typeClasses": [],
-    "composes": [
-      "MenuItem"
+      "IconLoader"
     ]
   },
   "ModalProvider": {
@@ -1326,7 +1362,8 @@
       "Button",
       "Input",
       "ToggleCheckbox",
-      "QuickLookHeader"
+      "ModalHeader",
+      "ModalShell"
     ]
   },
   "Dialog": {
@@ -1337,8 +1374,13 @@
       "Button",
       "Input",
       "ToggleCheckbox",
-      "QuickLookHeader"
+      "ModalHeader",
+      "ModalShell"
     ]
+  },
+  "ModalShell": {
+    "typeClasses": [],
+    "composes": []
   },
   "Combobox": {
     "typeClasses": [
@@ -1373,7 +1415,7 @@
       "PopoverPanel",
       "Tooltip",
       "MenuRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "Rail": {
@@ -1397,17 +1439,13 @@
     ]
   },
   "CommandOverlay": {
-    "typeClasses": [
-      "kol-helper-10",
-      "kol-helper-12"
-    ],
+    "typeClasses": [],
     "composes": [
       "SearchInput",
       "Tag",
-      "Kbd",
-      "OptionRow",
+      "TabsRow",
       "Button",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ShellSearchOverlay": {
@@ -1429,6 +1467,13 @@
     "composes": [
       "Input",
       "SliderPanel"
+    ]
+  },
+  "TypeTester": {
+    "typeClasses": [],
+    "composes": [
+      "Dropdown",
+      "Slider"
     ]
   },
   "SpecList": {
@@ -1474,7 +1519,7 @@
       "HueStrip",
       "SBSquare",
       "AlphaStrip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "CompareGrid": {
@@ -1486,7 +1531,7 @@
       "IconPlate",
       "IconToggle",
       "Pill",
-      "SegmentedToggle",
+      "ButtonGroup",
       "ViewToggle"
     ]
   },
@@ -1498,7 +1543,7 @@
     "composes": [
       "PopoverPanel",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ToolPalette": {
@@ -1529,7 +1574,7 @@
     "composes": [
       "ColorSwatch",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "SwatchStack": {
@@ -1537,7 +1582,7 @@
     "composes": [
       "ColorSwatch",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "EyedropPick": {
@@ -1545,7 +1590,7 @@
     "composes": [
       "ColorSwatch",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TabsRow": {
@@ -1560,7 +1605,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_H": {
@@ -1575,7 +1620,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_H": {
@@ -1590,7 +1635,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_INSET": {
@@ -1605,7 +1650,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_TAB": {
@@ -1620,7 +1665,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_GAP": {
@@ -1635,7 +1680,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_LABEL_TAB": {
@@ -1650,7 +1695,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TABBAR_PILL_SPLIT_GAP": {
@@ -1665,7 +1710,7 @@
       "Button",
       "RAIL_ROW",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "TabChips": {
@@ -1854,7 +1899,7 @@
   "EmblaNav": {
     "typeClasses": [],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "MobileTabBar": {
@@ -2100,6 +2145,7 @@
       "ViewToggle",
       "SearchInput",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "MediaTile",
       "ContentRow",
@@ -2114,7 +2160,7 @@
       "MediaLibraryExplorer",
       "MastheadContext",
       "SettingsChipRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MediaLibraryProvider": {
@@ -2131,6 +2177,7 @@
       "ViewToggle",
       "SearchInput",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "MediaTile",
       "ContentRow",
@@ -2145,7 +2192,7 @@
       "MediaLibraryExplorer",
       "MastheadContext",
       "SettingsChipRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MediaPicker": {
@@ -2162,6 +2209,7 @@
       "ViewToggle",
       "SearchInput",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "MediaTile",
       "ContentRow",
@@ -2176,7 +2224,7 @@
       "MediaLibraryExplorer",
       "MastheadContext",
       "SettingsChipRow",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MediaInspector": {
@@ -2223,7 +2271,7 @@
       "KIND_LABEL",
       "KINDS",
       "DEFAULT_KINDS",
-      "Icon"
+      "IconLoader"
     ]
   },
   "MediaLibraryExplorer": {
@@ -2245,7 +2293,7 @@
       "kol-helper-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "GalleryCarousel",
       "MediaTileGallery",
       "MediaViewer"
@@ -2257,7 +2305,7 @@
     ],
     "composes": [
       "FullscreenOverlay",
-      "Icon"
+      "IconLoader"
     ]
   },
   "SettingsPanel": {
@@ -2275,6 +2323,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2294,6 +2343,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2313,6 +2363,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2332,6 +2383,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2351,6 +2403,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2370,6 +2423,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2389,6 +2443,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2408,6 +2463,7 @@
       "ToggleSwitch",
       "Rail",
       "FullscreenOverlay",
+      "ModalShell",
       "Tooltip",
       "RailHeader"
     ]
@@ -2431,7 +2487,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2444,7 +2500,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2457,7 +2513,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2470,7 +2526,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2483,7 +2539,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2496,7 +2552,7 @@
       "kol-mono-12"
     ],
     "composes": [
-      "SegmentedToggle",
+      "ButtonGroup",
       "Button",
       "Tooltip",
       "RAIL_ROW"
@@ -2528,9 +2584,10 @@
       "FileIcon",
       "RowMenuButton",
       "OptionRow",
+      "ContentText",
       "KIND_LABEL",
       "GRAB_COLUMN",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ResizeHandle": {
@@ -2542,9 +2599,10 @@
       "FileIcon",
       "RowMenuButton",
       "OptionRow",
+      "ContentText",
       "KIND_LABEL",
       "GRAB_COLUMN",
-      "Icon"
+      "IconLoader"
     ]
   },
   "KindPreview": {
@@ -2639,8 +2697,9 @@
   "QuickLookFrame": {
     "typeClasses": [],
     "composes": [
-      "QuickLookHeader",
-      "Icon"
+      "ModalHeader",
+      "ModalShell",
+      "IconLoader"
     ]
   },
   "FileQuickLook": {
@@ -2704,7 +2763,7 @@
     ],
     "composes": [
       "Tag",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ProfileCard": {
@@ -2717,7 +2776,7 @@
     "composes": [
       "IconFrame",
       "Tooltip",
-      "Icon"
+      "IconLoader"
     ]
   },
   "DRAFTS_EVENT": {
@@ -2753,7 +2812,7 @@
       "Tooltip",
       "Table",
       "MediaLibrary",
-      "Icon"
+      "IconLoader"
     ]
   },
   "SpectrumGrid": {
@@ -2770,7 +2829,7 @@
     "typeClasses": [],
     "composes": [
       "INDICATOR",
-      "Icon"
+      "IconLoader"
     ]
   },
   "Graphic": {
@@ -2849,14 +2908,14 @@
     "typeClasses": [],
     "composes": [
       "ThemeToggle",
-      "Icon"
+      "IconLoader"
     ]
   },
   "HEADER_ICON": {
     "typeClasses": [],
     "composes": [
       "ThemeToggle",
-      "Icon"
+      "IconLoader"
     ]
   },
   "ThemeToggle": {
@@ -2867,7 +2926,7 @@
       "kol-mono-16"
     ],
     "composes": [
-      "Icon"
+      "IconLoader"
     ]
   },
   "THEME_STORAGE_KEY": {
@@ -2953,9 +3012,15 @@
     ]
   },
   "MarkdownPage": {
-    "typeClasses": [],
+    "typeClasses": [
+      "kol-prose"
+    ],
     "composes": [
-      "ShellTocContext"
+      "ShellTocContext",
+      "PageHero",
+      "PageSection",
+      "Contents",
+      "VARIANTS"
     ]
   },
   "LinkPreview": {
@@ -2967,13 +3032,21 @@
   },
   "DocumentIndex": {
     "typeClasses": [
-      "kol-mono-10",
-      "kol-mono-12",
-      "kol-mono-14",
       "kol-prose-label"
     ],
     "composes": [
-      "Icon"
+      "IndexCard",
+      "IconLoader"
+    ]
+  },
+  "IndexCard": {
+    "typeClasses": [
+      "kol-mono-10",
+      "kol-mono-12",
+      "kol-mono-14"
+    ],
+    "composes": [
+      "IconLoader"
     ]
   },
   "DocumentHeader": {
@@ -3007,7 +3080,7 @@
     ],
     "composes": [
       "ThemeToggle",
-      "Icon"
+      "IconLoader"
     ]
   },
   "WebsiteFooter": {

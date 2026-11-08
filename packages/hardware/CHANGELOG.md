@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.11.0 — 2026-11-08
+
+- Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.
+
 ## 0.10.0 — 2026-10-29
 
 - `FlipCard` is kol-component's now (DocumentLibraryAndBoardParts); this path re-exports it, same props plus `height`, `defaultFlipped` and faces as functions. Needs kol-component ≥0.315.0.

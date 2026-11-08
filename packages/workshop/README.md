@@ -26,9 +26,9 @@ Two entry points:
 | Import | What |
 | --- | --- |
 | `DocumentationReader` | the docs viewer — renders one doc from the inventory (article + header + frontmatter + token render) |
-| `ShellLayout`, `ShellSidebar` | the docs shell composition (adapts the DS `ShellHeader`/`ShellDrawer`/`ShellSearchOverlay`) |
+| `ShellLayout`, `ShellRail` | the docs shell composition (adapts the DS `ShellHeader`/`ShellDrawer`/`ShellSearchOverlay`) |
 | `TagModeProvider`, `TagModeGate`, `TagModeOverlay`, `TagGraph` | the tag system, incl. the d3 tag graph |
-| `WorkshopSidebar`, `WorkshopDefaultSidebar` | example sidebar compositions to copy |
+| `WorkshopRail`, `WorkshopDefaultRail` | example sidebar compositions to copy |
 
 The React layer imports its chrome (`Icon`/`Tag`/`CodeBlock`/`Divider`/`DocsToc` from `kol-component`, `ShellHeader` from `kol-framework`) from the DS packages — it keeps **no** local copies. Chrome CSS ships in `@kolkrabbi/kol-theme` (`kol-components-workshop.css`, already in the theme aggregate).
 

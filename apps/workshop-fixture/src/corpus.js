@@ -61,7 +61,7 @@ export function buildCorpus(modules) {
       })
   })()
 
-  /* The component tree, grouped by tier — ShellSidebar's `routes` shape */
+  /* The component tree, grouped by tier — ShellRail's `routes` shape */
   const tiers = ['Atoms', 'Molecules', 'Organisms', 'Utilities']
   const componentTree = tiers.map((tier) => ({
     id: `tier-${tier.toLowerCase()}`,

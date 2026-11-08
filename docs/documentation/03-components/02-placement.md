@@ -39,7 +39,7 @@ Every component gets exactly one location, decided by **judgment on what it IS**
 3. **Single-value selection controls are atoms** — `ViewToggle`, `ToggleBracket`. Cells are options of one control, not Buttons. The segmented control is `ButtonGroup layout="joined"` (a molecule) since 2026-11-06; `SegmentedToggle` is its alias.
 4. **A real input beside real buttons is a molecule** — `Stepper`, `QuantityInput`, `SearchInput`.
 5. **One element with elaborate behavior is still an atom** — `AsciiCursor`, `InteractiveImage`, `TiltCard`.
-6. **kol-icons `Icon`/`Graphic` are infrastructure, not components** — they never affect tier.
+6. **kol-icons `IconLoader`/`Graphic` are infrastructure, not components** — they never affect tier.
 7. **If you're debating molecule vs organism**, ask "is this a self-contained section of an interface?" — a card is a molecule; the gallery of cards is an organism.
 
 ## Decision checklist

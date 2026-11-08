@@ -1,6 +1,6 @@
 import Button from '../atoms/Button.jsx'
 import IconFrame from '../atoms/IconFrame.jsx'
-import { Icon } from '@kolkrabbi/kol-icons'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -65,7 +65,7 @@ export default function CloseButton({ onClick, size = 'sm', label = 'Close', hov
   if (!frame) {
     return (
       <button type="button" onClick={onClick} aria-label={label} className={`inline-flex shrink-0 items-center justify-center bg-transparent border-none p-0 cursor-pointer text-oq-96 ${className}`.trim()} {...rest}>
-        <Icon name="x" size={glyphSize(size, true)} />
+        <IconLoader name="x" size={glyphSize(size, true)} />
       </button>
     )
   }
