@@ -31,14 +31,16 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 107 entries
+## Queue — 109 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
-| 🔵 | [TypeTester](inbox/TypeTester.md) | **kol-foundry** — kol-website's `FontPreviewItem` (style dropdown + Size / Leading / Spacing sliders over an editable sample) as a DS molecule; kol-website foundry pages and kol-kerner's Tester page consume it | 2026-11-08 | 🔵 `filed` |
+| 🟢 | [IdentityFoundry](done/IdentityFoundry.md) | **kol-foundry** — kol-icons `identity/foundry`: the Foundry app's mark, the drafting compass (app-icon pick `compass-big-up`), file attached | 2026-11-08 | 🔵 `filed` |
+| 🟢 | [SiteRailPageIcons](done/SiteRailPageIcons.md) | **kol-foundry** — site rail page rows take an icon the app-rail way: glyph in the gutter column, the label where a plain page row's sits (today +20px shift with `alignIcons`) | 2026-11-08 | 🔵 `filed` |
+| 🟢 | [TypeTester](done/TypeTester.md) | **kol-foundry** — kol-website's `FontPreviewItem` (style dropdown + Size / Leading / Spacing sliders over an editable sample) as a DS molecule; kol-website foundry pages and kol-kerner's Tester page consume it | 2026-11-08 | 🔵 `filed` |
 | 🟢 | [ColumnStripHoldsStill](done/ColumnStripHoldsStill.md) | **kol-website** — MediaLibrary Columns view slides the strip to its far right on every click (`MediaLibraryPages` scrolls to `scrollWidth` on each `prefix`/`pickedFile` change); only mouse and arrows may move it | 2026-11-05 | 🔵 `filed` |
 | 🟢 | [FloatActionStatesAndMotion](done/FloatActionStatesAndMotion.md) | **kol-website** — the inverted + button: hover = slight opacity drop (not grey), press scale, + rotates into × · motion (ease, reduced-motion aware) across the float rail, cards, flyout and search | 2026-11-04 | 🔵 `filed` |
 | 🟢 | [FloatActionMenuExport](done/FloatActionMenuExport.md) | **kol-website** — export HubHome's private `HomeMenu` (fxr's inverted + / × with the float card to its left) as a shared part, and `FloatLayout bar.menu` to place it top right | 2026-11-04 | 🔵 `filed` |
@@ -529,6 +531,7 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | | Receipt | Destination | Last known | Remainder here |
 |---|---|---|---|---|
+| 🔵 | [MarkdownPageSiteVariant](outbox/MarkdownPageSiteVariant.md) | **kol-website** — `~/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-11-08 | **none** |
 | 🔵 | [GeneratorWindowsFromDS](outbox/GeneratorWindowsFromDS.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | 🔵 filed 2026-11-05 | **none** |
 | ⚫ | [TimelineRailFromDS](outbox/TimelineRailFromDS.md) | **kol-fxr** — `~/dev/projects/kol-fxr/lobby/INDEX.md` | ⚫ withdrawn 2026-11-04, the same day — the user: fxr owns its editor; the DS copy is its own, no longer refreshed from fxr | **none** |
 | 🔵 | [IconsBoldOnWebsite](outbox/IconsBoldOnWebsite.md) | **kol-website** — `/Users/kolkrabbi/dev/projects/kol-website/lobby/INDEX.md` | 🔵 filed 2026-11-04 | **none** |
@@ -558,6 +561,8 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-08 | 🔵 IdentityFoundry filed from kol-foundry (app-icon round) |
+| 2026-11-08 | 🔵 SiteRailPageIcons filed from kol-foundry (kol-kerner rail) |
 | 2026-11-08 | 🔵 TypeTester filed from kol-foundry (kol-kerner plan 03 W6.1) |
 | 2026-11-05 | **`GeneratorWindowsFromDS` filed into kol-fxr** — the generator settings window and the `Settings*` controls (kol-component 0.343.0) for plan 53, with the engine params the KOL copy shows disabled |
 | 2026-11-05 | **`ColumnStripHoldsStill` filed from kol-website** — Columns view never slides sideways on a click; only mouse and arrows move the strip |
@@ -1401,3 +1406,6 @@ Verified from the published tarball, not the version doc: npm was serving 200 on
 | 2026-11-04 | **`FloatActionMenuExport` closed** → **kol-shell@0.107.0**. FloatActionMenu exported: HubHome's HomeMenu lifted as is ({ actions, icon = 'more', variant, surface, className }), the inverted round button, × while open, its sheet to the left with top edges level, 12 off; HubHome uses it. FloatLayout bar.menu (TopControlsBar menu) = [{ label, icon?, onPress }] draws it with plus and the float sheet on the frame's surface in the top-right corner. |
 | 2026-11-04 | **`FloatActionStatesAndMotion` closed** → **kol-shell@0.108.0**. kol-theme 0.212.0 · kol-component 0.341.0 · kol-shell 0.108.0. FloatActionMenu's + and every inverted float button keep their fill: hover --kol-float-hover-opacity 0.88, press --kol-float-press-scale 0.96, open the × on the same fill with the float shadow. iconMotion 'rotate' (default) turns the + 45° into the × and back. CSS-only motion on --kol-float-duration · -duration-rail · -ease · -enter-scale · -enter-shift: the + card, RailTrigger's card, RailFlyout, the float search modal, NavRail float expand/collapse and hide/show, float button and row hover; off under reduced motion. motion prop (true · false · { duration, ease }) on FloatLayout and every float piece. |
 | 2026-11-05 | **`ColumnStripHoldsStill` closed** → **kol-component@0.341.1**. The columns strip holds still. The real slide was ColumnBrowser's own effect (slide-to-end on every prefix/pick change); MediaLibraryPages' effect was a second, redundant one. Both are gone. A click never moves scrollLeft; an arrow key that lands in an off-screen column brings that column in with scrollIntoView({ inline: 'nearest' }), never to the end. Bucket/view switches reset naturally (the strip remounts or clamps). No opt-in prop: nothing depended on the old slide. Playwright: file click at scrollLeft 650 stays 650, folder click stays 650; arrows move by the minimum (786 to 780 to 520 to 526). |
+| 2026-11-08 | **`TypeTester` closed** → **kol-component@0.352.0**. TypeTester is a kol-component molecule: a style Dropdown and Size / Leading / Spacing Sliders over an editable sample in the font under test, ported class-for-class from FontPreviewSection (side bearings and line clamp kept). Props: fontFamily, fontStyle, text, styles [{label, value}] (value is the font-weight), initialStyle, initialSize, initialLeading, lineClamp. The weight map, the Icelandic sample, the section header and the size ladder stay with the caller, per the ticket. |
+| 2026-11-08 | **`SiteRailPageIcons` closed** → **kol-component@0.353.0**. NavRailSite pageIcons: 'gutter' hangs a page row's glyph in the gutter under the category glyph, so an iconed page row's label sits exactly where a plain one's does (measured: label x 55 for both, both 18px tall). 'inline' stays the default. Through SiteLayout: sideNav={{ pageIcons: 'gutter' }}. |
+| 2026-11-08 | **`IdentityFoundry` closed** → **kol-icons@0.67.0**. identity/foundry added (Foundry app mark, currentColor, keyline) |

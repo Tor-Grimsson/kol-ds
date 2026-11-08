@@ -4,6 +4,7 @@ import KindPreview, { KIND_GLYPH } from '../molecules/KindPreview.jsx'
 import FileIcon from '../atoms/FileIcon.jsx'
 import RowMenuButton from '../molecules/RowMenuButton.jsx'
 import OptionRow from '../molecules/OptionRow.jsx'
+import ContentText from '../molecules/ContentText.jsx'
 import { formatLength } from '../molecules/PlayTile.jsx'
 import { kindOf as dsKindOf, KIND_LABEL as DS_KIND_LABEL } from '../utilities/mediaKinds.js'
 import useGrabEdge from '../hooks/useGrabEdge.js'
@@ -368,15 +369,18 @@ function Row({
         </span>
       )}
 
-      {/* ZONE 3 — name over meta */}
-      {meta ? (
-        <span className="flex-1 min-w-0 flex flex-col gap-0.5">
-          <span className="kol-mono-12 truncate">{label}</span>
-          <span className="kol-helper-10 text-fg-48 truncate">{meta}</span>
-        </span>
-      ) : (
-        <span className="kol-mono-12 flex-1 truncate">{label}</span>
-      )}
+      {/* ZONE 3 — name over meta, drawn by ContentText's row (no middot join: date and size are two
+          slots, date first as the Figma master). A folder's meta is the consumer's one string. */}
+      <ContentText
+        form="row"
+        title={label}
+        {...(typeof meta === 'object' && meta ? meta : { date: meta || null })}
+        gap={2}
+        titleClass="kol-mono-12 truncate"
+        dateClass="kol-helper-10 text-fg-48 truncate"
+        sizeClass="kol-helper-10 text-fg-48 truncate"
+        className="flex-1"
+      />
 
       {/* ZONE 4 */}
       {zones ? <span className="shrink-0 inline-flex justify-end" style={{ width: 20 }}>{trailing}</span> : trailing}
@@ -870,7 +874,7 @@ export default function ColumnBrowser({
      * it. */
     const rows = stackRows(objects, base, stackView === 'grid' ? () => false : (path) => expanded.has(path), partition)
 
-    const metaOf = (o) => [o.size != null && formatSize(o.size), formatDate(o.uploaded)].filter(Boolean).join(' · ')
+    const metaOf = (o) => ({ date: formatDate(o.uploaded) || null, size: o.size != null ? formatSize(o.size) : null })
 
     return (
       <div

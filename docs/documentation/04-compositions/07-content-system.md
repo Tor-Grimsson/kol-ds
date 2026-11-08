@@ -44,7 +44,7 @@ import { StackHero, ArticleHeader, PortableTextRenderer, portableTextComponents,
 | `ArticleHeader` | masthead — tags, title, `AuthorLine`, meta, excerpt, hero image |
 | `AuthorLine` | author cluster (Avatar + name + role), standalone |
 | `ArticleCard` | blog card family — `size` `hero` / `default` / `mini` |
-| `PortableTextRenderer` (+ `slugify`) | portable-text body → 10 block types + inline `link` / `segmentTitle` marks |
+| `PortableTextRenderer` (+ `slugify`) | portable-text body → 10 block types + inline `link` / `segmentTitle` marks; `variant` `article` (default, `.kol-prose`) · `research` · `site`, MarkdownPage's map (kol-framework `markdownVariants.js`) |
 | `portableTextComponents` · `createPortableTextComponents({ imageUrl })` · `StickyNavCard` | kolkrabbi.io's /stack article renderer, carried verbatim (kol-content 0.15.0): the map for `@portabletext/react` over Sanity's real blocks, the image source a prop so no Sanity client lives in the package, and the scroll-spy card |
 | `ShareButtons` | share bar — copy-link + X / LinkedIn / email |
 | `SourcesReferences` | end-of-article sources / references block |

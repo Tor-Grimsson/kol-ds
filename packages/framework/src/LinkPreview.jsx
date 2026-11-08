@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { ContentMedia, ContentText } from '@kolkrabbi/kol-component'
 
 /* LINK PREVIEW — kol-atlas's hover card (apps/workspace/src/components/LinkPreview.jsx + previews.js), carried for the
  * document space: hover a link in the sheet and, after a short pause, a card opens under it — an image on top, a short
@@ -76,15 +77,22 @@ export default function LinkPreview({ root, cardFor }) {
     >
       {card.image && (
         /* the image keeps its own aspect between 1:1 and 2:1; a graphic is shown whole in a 16:9 frame on the soft ground */
-        <div className={`w-full overflow-hidden ${card.graphic ? 'aspect-video bg-fg-04' : 'max-h-80'}`}>
-          <img src={card.image} alt="" className={`block w-full ${card.graphic ? 'h-full object-contain p-[6%]' : 'h-auto min-h-40 max-h-80 object-cover'}`} />
-        </div>
+        <ContentMedia ratio={card.graphic ? '16 / 9' : null} radius={false} className={card.graphic ? 'bg-fg-04' : 'max-h-80'}>
+          <img src={card.image} alt="" className={`block w-full ${card.graphic ? 'h-full !object-contain p-[6%]' : 'h-auto min-h-40 max-h-80 object-cover'}`} />
+        </ContentMedia>
       )}
-      <div className="flex flex-col gap-1 p-3">
-        <span className="kol-mono-12 text-emphasis">{card.title}</span>
-        {card.text && <span className="kol-mono-12 text-body line-clamp-3">{card.text}</span>}
-        {card.site && <span className="kol-helper-10 text-meta uppercase tracking-wider mt-1">{card.site}</span>}
-      </div>
+      {/* title, text and site on ContentText's stack — the site rides the date slot, 8px under the text */}
+      <ContentText
+        variant="article"
+        title={card.title}
+        body={card.text || null}
+        date={card.site || null}
+        gap={8}
+        titleClass="kol-mono-12 text-emphasis"
+        bodyClass="kol-mono-12 text-body line-clamp-3"
+        dateClass="kol-helper-10 text-meta uppercase tracking-wider"
+        className="p-3"
+      />
     </a>
   )
 }

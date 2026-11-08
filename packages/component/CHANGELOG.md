@@ -1,5 +1,14 @@
 # @kolkrabbi/kol-component
 
+## 0.354.0 — 2026-11-08
+
+- **`Label icon`** — a kol-icons name drawn before the text at the label's own size (`1em`), gap 4px. Without it the label renders unchanged.
+- **Changed: ColumnBrowser's phone row (`zones`) draws its name and meta with `ContentText form="row"`** — date, then size, as two slots (no ` · ` join); same look (name mono-12, meta helper-10 fg-48, 2px gap). A folder's `folderMeta` string sits in the date slot.
+
+## 0.353.0 — 2026-11-08
+
+- **NavRailSite `pageIcons`** (lobby SiteRailPageIcons, kol-kerner) — `'inline'` (default, unchanged) puts a page's glyph before its label; `'gutter'` hangs it in the gutter under the category glyph, so an iconed page row's label sits exactly where a plain one's does (same x, same height; rows without an icon stay aligned). Through SiteLayout: `sideNav={{ pageIcons: 'gutter' }}`.
+
 ## 0.352.0 — 2026-11-08
 
 - **New: `TypeTester`** (molecule, lobby TypeTester) — one live type-testing block: a style `Dropdown` and Size / Leading / Spacing `Slider`s over an editable sample, ported class-for-class from kol-website's foundry `FontPreviewItem`. `fontFamily`, `fontStyle`, `text`, `styles` (`{label, value}[]`, the value is the font-weight), `initialStyle` (by label or value, default `'Regular'`), `initialSize` (64), `initialLeading` (10; 0–50 → 90–140%), `lineClamp`. The website's weight map, sample passage and size ladder stay with the caller.

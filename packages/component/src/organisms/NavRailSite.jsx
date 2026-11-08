@@ -146,6 +146,8 @@ import useScrollFade from '../hooks/useScrollFade.js'
  *   `icon`             on any node at any depth (page, group label, action row, nested child), through `iconComponent`
  *   `iconSize`         `{ category, group, page }` (defaults 16, 12, 12); a node's own `iconSize` wins
  *   `alignIcons`       `true` (default): a level where any row has an icon reserves the icon column for all its rows
+ *   `pageIcons`        `'inline'` (default) — a page's glyph sits before its label (the column above) · `'gutter'` — it hangs
+ *                      in the gutter under the category glyph and the label stays where a plain page label sits
  *   `collapsedIcons`   `'category'` (default) — the collapsed rail shows category glyphs only; `'all'` also shows the
  *                      icon-bearing pages of an open category under it
  *   per node           `trailing` (a count, badge or node, right-aligned), `className`, `title` (the tooltip when the
@@ -244,6 +246,7 @@ export default function NavRailSite({
   casePage,
   iconSize: iconSizes,
   alignIcons = true,
+  pageIcons = 'inline',
   collapsedIcons = 'category',
   toggleRef,
 }) {
@@ -352,12 +355,27 @@ export default function NavRailSite({
     /* THE ICON COLUMN (NavRailRowProps): with `alignIcons`, a level where any row has an icon reserves the column for all
      * its rows, as wide as its widest glyph; a level with no icon draws exactly as before */
     const levelOf = (r) => (r.children ? 'group' : 'page')
-    const iconW = rows.reduce((w, r) => (r.icon ? Math.max(w, sizeOf(r, levelOf(r))) : w), 0)
+    /* `pageIcons="gutter"`: a page row's glyph hangs in the gutter under the category's glyph, so its label stays where a
+     * plain page label sits — no column, no shift (kol-kerner via kol-hq 2026-11-08: "app rail has it") */
+    const hangs = (r) => pageIcons === 'gutter' && !r.children
+    const iconW = rows.reduce((w, r) => (r.icon && !hangs(r) ? Math.max(w, sizeOf(r, levelOf(r))) : w), 0)
     const aligned = alignIcons && iconW > 0
     /* a row with an icon, a reserved column or a tail lays out as glyph · label · tail; its case rides the label span
      * (a flex item, so `::first-letter` applies). A plain row keeps its text bare and the case rides the row. */
     const body = (row, cc) => {
       const tail = tailOf(row)
+      if (hangs(row) && row.icon) {
+        const size = sizeOf(row, 'page')
+        const glyph = (
+          /* centred under the category glyph's 16px column, left of the active dot */
+          <span className="kol-sidenav-hop-icon absolute top-1/2 -translate-y-1/2 inline-flex items-center justify-center" style={{ left: `calc(var(--kol-sidenav-pad-x) + ${depth} * var(--kol-spacing-3))`, width: 16 }} aria-hidden="true">
+            <Glyph name={row.icon} size={size} />
+          </span>
+        )
+        return tail
+          ? { rowCase: '', content: <>{glyph}<span className="flex items-center gap-2 min-w-0"><span className={withCls('flex-1 min-w-0 truncate', cc)}>{row.label}</span>{tail}</span></> }
+          : { rowCase: cc, content: <>{glyph}{row.label}</> }
+      }
       if (!row.icon && !aligned && !tail) return { rowCase: cc, content: row.label }
       const size = sizeOf(row, levelOf(row))
       return {

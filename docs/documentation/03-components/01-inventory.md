@@ -61,7 +61,7 @@ One row per source file — a component's compositional sub-parts are members of
 | `BackgroundVideo` | A non-interactive background HLS video — hls.js with Safari-native fallback. |
 | `Image` | A raster image with graceful missing-asset fallback. |
 | `Input` | Single-line text field with prefix/suffix, icons, and size variants. |
-| `Label` | A form-field label. |
+| `Label` | A form-field label. `icon` (a kol-icons name) draws a glyph before the text at the label's size. |
 | `OverlayGlassPanel` | A frosted-glass content card floating over hero or carousel media. |
 | `PaletteHarmonyWheel` | A hue-ring color picker — a draggable base-hue handle plus satellite markers at the active harmony's scheme hues; emits `{ hue, colors }` on every change. |
 | `ProgressBar` | A thin track and its fill, `value / max`, a caption (`true` → `3/7`), the ink or a status tone (2026-10-29). The Slider's track (`.kol-track`, 0.347.0). |

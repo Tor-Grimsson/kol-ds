@@ -4,6 +4,7 @@ import { ShellTocContext } from './SiteLayout.jsx'
 import PageHero from './PageHero.jsx'
 import PageSection from './PageSection.jsx'
 import { Contents } from './DocumentIndex.jsx'
+import VARIANTS from './markdownVariants.js'
 import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
 
 /* MARKDOWN PAGE — a markdown file as a document page (plan-2026-10-28-document W3.2, born in apps/document, home here
@@ -15,7 +16,8 @@ import { parseDocsMarkdown, splitFrontmatter } from '@kolkrabbi/kol-markdown'
  * `.tablewrap` (a key–value table plain), `CodeBlock` for fences, the `.media` figure grid, blockquote with `cite`,
  * `.tb` item text. No class of its own.
  *
- *   variant      the render style, a map of block → the theme's existing classes (VARIANTS below; no styling here):
+ *   variant      the render style, a map of block → the theme's existing classes (markdownVariants.js, shared with
+ *                kol-content's PortableTextRenderer; no styling here):
  *                'research' (default) — the research reading above, `.kol-sheet`, today's look;
  *                'article' — the website article, `.kol-prose`'s element sheet;
  *                'site' — the brand guide's voices without the brand guide: `PageHero` (title · frontmatter `label` ·
@@ -230,18 +232,6 @@ function Blocks({ blocks, sectionId, sources, ctx }) {
   })
   close('end')
   return out
-}
-
-/* block → class, per variant. `page` the outer inset, `root` the article's class, `proj` the numbered document's class
- * (only the sheet draws the number gutter), `sheet` the note numbers written as text (`.fnn`; a prose `ol` counts its own). `site` has no article: PageHero, the Chapters and a PageSection per chapter,
- * its blocks under `root`. */
-const VARIANTS = {
-  research: { page: 'kol-page', root: 'kol-sheet', proj: 'proj', sheet: true, maxWidth: 980 },
-  article: { page: 'kol-page', root: 'kol-prose', maxWidth: 980 },
-  /* the brand guide's ground, the fg-02 wash SiteLayout's `pageWash` lays under brand pages — painted here so the page reads
-   * without the frame, through `--kol-shell-page-wash` (what is left to paint): inside SiteLayout it is `transparent`, so
-   * the plane's wash is the only one, never two translucent layers (2026-11-08) */
-  site: { page: 'bg-[color:var(--kol-shell-page-wash,var(--kol-fg-02))]', root: 'kol-prose mt-12', chapters: { label: 'Overview', title: 'Chapters' } },
 }
 
 export default function MarkdownPage({ variant = 'research', source = '', numbered = false, toc = 'frame', linkNotes = false, fit = 'cover', ratio, resolveLink = (u) => u, assetUrl = () => null }) {

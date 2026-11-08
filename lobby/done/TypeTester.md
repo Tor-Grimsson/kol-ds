@@ -64,3 +64,10 @@ kol-component `Dropdown` and `Slider`. Nothing consumer-only once the sample tex
 - Molecule, `TypeTester`. Every value above becomes a prop, and text casing stays with the caller.
 - Leave the ladder to callers (kol-website renders four, kol-kerner one per font).
 - Figma: one master with the controls row and the sample, in light and dark.
+
+## ✅ RESOLUTION — 2026-11-08 · kol-component@0.352.0
+
+TypeTester is a kol-component molecule: a style Dropdown and Size / Leading / Spacing Sliders over an editable sample in the font under test, ported class-for-class from FontPreviewSection (side bearings and line clamp kept). Props: fontFamily, fontStyle, text, styles [{label, value}] (value is the font-weight), initialStyle, initialSize, initialLeading, lineClamp. The weight map, the Icelandic sample, the section header and the size ladder stay with the caller, per the ticket.
+
+**Remainder here:** none — kol-website bump kol-component@0.352.0; replace FontPreviewItem with TypeTester (pass the weight map as styles and the sample as text; keep the ladder).
+

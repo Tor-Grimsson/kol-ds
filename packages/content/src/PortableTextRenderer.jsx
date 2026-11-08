@@ -4,6 +4,7 @@ import { ImageBlock } from '@kolkrabbi/kol-component'
 import { VideoBlock } from '@kolkrabbi/kol-component'
 import { Table } from '@kolkrabbi/kol-component'
 import { Divider } from '@kolkrabbi/kol-component'
+import VARIANTS from '@kolkrabbi/kol-framework/src/markdownVariants.js'
 
 /**
  * slugify — heading text → anchor id (lowercase, non-word stripped, spaces to
@@ -100,10 +101,12 @@ const BLOCKS = {
  * applies no `text-transform`.
  *
  * @param {Array<{type:string}>} blocks  the document, in order
- * @param {boolean} prose      wrap output in a `.kol-prose` container (default true)
+ * @param {string}  variant    the render style — MarkdownPage's, from the one shared map (kol-framework
+ *                             markdownVariants.js): 'article' (default, `.kol-prose`) · 'research' (`.kol-sheet`) · 'site'
+ * @param {boolean} prose      wrap output in the variant's container (default true)
  * @param {string}  className  extra classes on the wrapper
  */
-export default function PortableTextRenderer({ blocks = [], prose = true, className = '' }) {
+export default function PortableTextRenderer({ blocks = [], variant = 'article', prose = true, className = '' }) {
   const rendered = blocks.map((block, i) => {
     const render = BLOCKS[block?.type]
     if (!render) return null
@@ -111,5 +114,6 @@ export default function PortableTextRenderer({ blocks = [], prose = true, classN
   })
 
   if (!prose) return <>{rendered}</>
-  return <div className={`kol-prose ${className}`.trim()}>{rendered}</div>
+  const root = (VARIANTS[variant] ?? VARIANTS.article).root
+  return <div className={`${root} ${className}`.trim()}>{rendered}</div>
 }

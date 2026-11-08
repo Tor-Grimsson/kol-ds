@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-framework
 
+## 0.73.0 — 2026-11-08
+
+- **Changed: `LinkPreview` is built from kol-component's `ContentMedia` (the image) and `ContentText` (title, text, site)** — same card, same look; no API change.
+
+## 0.72.0 — 2026-11-08
+
+- **`markdownVariants.js`** — `MarkdownPage`'s block → class map per variant (`research` · `article` · `site`) lifted into its own module (`@kolkrabbi/kol-framework/src/markdownVariants.js`), so kol-content's `PortableTextRenderer` reads the same map. `MarkdownPage` renders unchanged.
+
 ## 0.71.0 — 2026-11-08
 
 - **`MarkdownPage variant`** — three render styles, each a map of block → the theme's existing classes (no styling in the component): `research` (default, the `.kol-sheet` reading, unchanged), `article` (`.kol-prose`, the website article) and `site` (the brand guide's voices: `PageHero` from title + frontmatter `label` / `description`, a Chapters `PageSection` of `IndexCard`s, one `PageSection` per `##` with its blocks in `.kol-prose`, on the `fg-02` ground read through `--kol-shell-page-wash`, so inside SiteLayout the plane's wash is the only one). Note numbers (`.fnn`) are written only in `research`; a prose `ol` counts its own.

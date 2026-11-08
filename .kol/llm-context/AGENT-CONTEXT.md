@@ -16,7 +16,11 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 - **Tone variable names in plain words** (2026-11-03, parked). `--kol-tone-bg` / `-fg` / `-border` (and hover/active/pressed/panel siblings) read as dev shorthand; he wants ground · ink · edge. Code and Figma (`tone` collection) must rename together to stay one-to-one. Its own session.
 - **Custom categories on the Group-by page** (2026-09-30). `/components/group-by` is where categories get defined, not just picked: any rule can be a category (e.g. *every atom whose name has "search"*), including user-made ones kept for the session and shown in the left rail. Its own session.
 
-## 🏁 Current state (2026-11-06 — Labs on FloatLayout; the Figma library split into family files)
+## 🏁 Current state (2026-11-08 — markdown styles W5 in code + Figma; review fixes; foundry tickets)
+
+- MarkdownPage has three styles (site, research and article), all from one map, `packages/framework/src/markdownVariants.js`; PortableTextRenderer reads the same map. The Figma document set uses the same parts in each style. His Figma review got fixes in Figma (ColumnBrowser/row on OptionRow, ContentCard cover slot, LinkPreview, SectionText) and in code (ContentText meta with no middot, Label `icon`, an Icon for the back chevron). Lesson saved to memory: a Figma master is built from the parts its code renders, and checking it means opening its layers. Published: framework 0.73.0, content 0.16.0, component 0.354.0, shell 0.117.0, icons 0.67.0. Open: git push, the Figma publish, 23 no-export masters to review. Log: `session-log/2026-11-08-markdown-styles-w5-figma-review-fixes.md`.
+
+## Current state (2026-11-06 — Labs on FloatLayout; the Figma library split into family files)
 
 - Labs A/B ruled "neither is using float correctly"; `FloatLabsView` rebuilt on kol-shell FloatLayout (unpublished). Figma: library split into tier pages, every app's masters and screens moved to per-family files (folder kol-ds-ui [library files]); the setup lives in `docs/operations/10-figma/01-file-setup.md`. Open: cleanup pass, the held Studio/Catalog builds, W4/W5. Log: `session-log/2026-11-06-labs-floatlayout-figma-library-split.md`.
 
@@ -31,10 +35,6 @@ The maintenance home + npm host + showcase for the KOL design system. See `ARCHI
 ## Current state (2026-11-04 — Figma round 4, the Avatar initial in Inter)
 
 - **Published** kol-theme 0.210.3–0.210.4 (`font-inter` + Inter @font-face from /fonts/inter) · kol-component 0.333.3 (Avatar initial in Inter). Figma round 4 built (plan-2026-11-03-figma-round-4.md, all ✅): brand pages to the end, CodeBlock, /work list view, light images, small gaps. Open: he republishes the library. Log: `session-log/2026-11-04-figma-round-4-and-avatar-inter.md`.
-
-## Current state (2026-11-03 — the Figma library mirrors the showcase, Modules tier)
-
-- **Published** kol-component 0.333.0–0.333.1 (Rail/ShellDrawer → organisms, ButtonGroup → molecules, old deep paths aliased) · kol-shell 0.99.2–0.100.0 (four fxr tickets, closed). New `modules` tier in the showcase + taxonomy § The ladder. Figma library rebuilt in three rounds: his sidebar convention, master vs view pages, tier cards + placeholders, slotted modules, every Apps screen an instance. Library republished 2026-11-03. Open: TabsRow `--slot-ink` bug; undrawn parts (BrandBook/BrandAssets below the fold, /work list, CodeBlock, Avatar xs). Log: `session-log/2026-11-03-figma-library-mirrors-showcase-modules-tier.md`.
 
 ## Repo standup (2026-06-15)
 

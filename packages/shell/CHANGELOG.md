@@ -1,5 +1,10 @@
 # @kolkrabbi/kol-shell
 
+## 0.117.0 — 2026-11-08
+
+needs kol-icons ≥0.61.1:
+- **Changed: `StudioDetail`'s back link draws its chevron as an `Icon` (`chevron-left`, at the text's size)**, not the `‹` character. Still a text link; no API change.
+
 ## 0.116.0 — 2026-11-07
 
 plan-2026-11-07-menu-system W4.1 — needs kol-component ≥0.349.0:

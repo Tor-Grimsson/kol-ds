@@ -2610,6 +2610,9 @@ importers:
       '@kolkrabbi/kol-component':
         specifier: workspace:^
         version: link:../component
+      '@kolkrabbi/kol-framework':
+        specifier: workspace:^
+        version: link:../framework
       '@kolkrabbi/kol-icons':
         specifier: workspace:^
         version: link:../icons

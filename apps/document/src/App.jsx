@@ -153,7 +153,8 @@ function Review() {
 }
 
 /* THE CELL PROPS (OverviewTocAndLibraryIcons, kol-website 2026-10-29): `?assets=icon|icon-label` and `?lang=chips|icon` draw
- * the library with kol-icons' file glyphs and a Tag per language, beside today's label and text at the bare URL */
+ * the library with kol-icons' file glyphs and a Tag per language, beside today's label and text at the bare URL; an open
+ * document takes `?variant=research|article|site`, MarkdownPage's render style under the same files row (W5.2) */
 function Library() {
   const navigate = useNavigate()
   const toc = useToc()
@@ -161,7 +162,7 @@ function Library() {
   const q = new URLSearchParams(useLocation().search)
   const cells = { assetsView: q.get('assets') ?? undefined, langView: q.get('lang') ?? undefined }
   const row = LIBRARY.rows.find((r) => r.id === id)
-  if (row) return <DocumentView row={row} library={LIBRARY} toc={toc} assetsView={cells.assetsView} />
+  if (row) return <DocumentView row={row} library={LIBRARY} toc={toc} assetsView={cells.assetsView} variant={q.get('variant') ?? undefined} />
   const folder = LIBRARY.folders.find((f) => f.id === id)
   if (id && !folder) return <Navigate to="/library" replace />
   return <DocumentLibrary library={LIBRARY} folder={folder?.id} onNavigate={navigate} {...cells} />

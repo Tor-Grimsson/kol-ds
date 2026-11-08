@@ -14,7 +14,7 @@ Data is **consumer-injected** (portable text / project docs). The shared primiti
 | `ArticleHeader` | article masthead — tags, title, `AuthorLine`, meta, excerpt, hero image |
 | `AuthorLine` | the author cluster (Avatar + name + role), standalone |
 | `ArticleCard` | blog card family — `size` `hero` / `default` / `mini` |
-| `PortableTextRenderer`, `slugify` | portable-text body → 10 block types (heading, paragraph, list, quote, code, table, image, video, divider, caption) + inline `link` / `segmentTitle` marks |
+| `PortableTextRenderer`, `slugify` | portable-text body → 10 block types (heading, paragraph, list, quote, code, table, image, video, divider, caption) + inline `link` / `segmentTitle` marks; `variant` `article` (default) · `research` · `site` from kol-framework's shared map |
 | `ShareButtons` | share bar — copy-link + X / LinkedIn / email intents |
 | `SourcesReferences` | end-of-article sources / references block |
 

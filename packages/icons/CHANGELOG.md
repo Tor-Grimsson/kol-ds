@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-icons
 
+## 0.67.0 — 2026-11-08
+
+- **New identity `foundry`**: the Foundry app mark (the drafting compass at the keyline, `currentColor`), as `identity/foundry`.
+
 ## 0.66.0 — 2026-11-05
 
 - **New interface group `games`** (18): the twelve solid and outlined chess pieces from the Figma library (node 437:5529) as `chess-<piece>-black` and `chess-<piece>-white` for pawn, rook, bishop, knight, king and queen, beside the six outline `chess-*` moved out of `people`. The twelve are solid drawings (fill `currentColor`, outlines as even-odd cut-outs), fitted to the keyline (20, kings and queens 18) and centred; each black and white pair shares its fit.

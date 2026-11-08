@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-content",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "private": false,
   "description": "Blog and portfolio components",
   "license": "MIT",
@@ -15,6 +15,7 @@
   },
   "peerDependencies": {
     "@kolkrabbi/kol-component": ">=0.113.0",
+    "@kolkrabbi/kol-framework": ">=0.72.0",
     "@kolkrabbi/kol-theme": ">=0.51.0",
     "@kolkrabbi/kol-icons": ">=0.18.0",
     "react": "^18.3.0 || ^19.0.0",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@kolkrabbi/kol-component": "workspace:^",
+    "@kolkrabbi/kol-framework": "workspace:^",
     "@kolkrabbi/kol-icons": "workspace:^",
     "@kolkrabbi/kol-theme": "workspace:^"
   },
