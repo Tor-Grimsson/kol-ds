@@ -16,7 +16,7 @@ export default function LabeledJackPreview() {
       <LabeledJack type="out" label="out" />
       <LabeledJack type="in" label="cv" labelPosition="left" color="#497DA2" />
       <LabeledJack type="out" label="out" labelPosition="right" />
-      <LabeledJack type="out" icon="play" />
+      <LabeledJack type="out" icon="play-solid" />
       <LabeledJack type="in" label="off" dim color="#4ade80" />
       <LabeledJack type="out" label="wired" jackComponent={WiredJack} />
     </div>

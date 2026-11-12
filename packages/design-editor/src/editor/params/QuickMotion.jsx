@@ -1,4 +1,4 @@
-import { Dropdown, LabeledControlSection, SettingsRow } from '@kolkrabbi/kol-component'
+import { Dropdown, LabeledControlSection, SettingsRow } from '../float/controls'
 import { isBinding, resolveValue } from './resolve'
 import { visibleParams, paramTab } from './schema'
 import { transport } from './transport'

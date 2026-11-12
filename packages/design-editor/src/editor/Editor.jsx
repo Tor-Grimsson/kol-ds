@@ -79,13 +79,13 @@ function EditorBody({ children }) {
  * ephemeral chromes, or pointed at a separate slot so a second persisting
  * chrome (labs) can autosave without touching the editor's composition.
  */
-export function EditorProviders({ children, persistDraft = true, draftKey }) {
+export function EditorProviders({ children, persistDraft = true, draftKey, modalVariant }) {
   return (
     <EditorErrorBoundary>
       {/* ModalProvider outermost of the state stack — WITHOUT it every
         * useModal() (draft restore, discard confirms, save prompts) silently
         * falls back to the NATIVE browser dialog. */}
-      <ModalProvider>
+      <ModalProvider variant={modalVariant}>
         <GeneratorLibraryProvider>
           <ToolProvider>
             <ComposeStateProvider persistDraft={persistDraft} draftKey={draftKey}>

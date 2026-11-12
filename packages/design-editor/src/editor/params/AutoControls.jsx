@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Input, Slider, Dropdown, ViewToggle, ToggleSwitch, ButtonGroup, LabeledControl, SettingsRow, LabeledControlSection, Textarea, AccordionPanel } from '@kolkrabbi/kol-component'
+import { AccordionPanel, ButtonGroup, Dropdown, Input, LabeledControl, LabeledControlSection, SettingsRow, Slider, Textarea, ToggleSwitch, ViewToggle } from '../float/controls'
+import { useChrome } from '../float/chrome'
 import Hint from '../components/Hint'
 import { visibleParams, isAnimatable, paramTab, paramSection } from './schema'
 import { isBinding, resolveValue } from './resolve'
@@ -234,6 +235,7 @@ const ROW_H = { xs: 'h-[var(--kol-ctl-xs)]', sm: 'h-[var(--kol-ctl-sm)]', md: 'h
 
 function ParamControl({ param: p, layer, setProp, palette, bound, animate, inline, chars }) {
   const cs = useControlSize()
+  const float = useChrome() === 'float'
   const raw = layer[p.key]
   const value = raw === undefined ? p.default : raw
 
@@ -355,14 +357,16 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
    * uppercases too, instead of reading as the odd sentence-case line out. */
   /* a plain bool in the editor skin: label left, switch right, the row's own sentence-case voice */
   const plainBool = p.type === 'toggle' && !p.labels && !inline
+  /* the float chrome's labels are the hint role, as written — no uppercase */
+  const caps = (l) => (float ? l : String(l).toUpperCase())
   /* …and the row stands as tall as a dropdown's (the user: "same height as dropdown row items") */
   /* a bare switch: SettingsRow wraps it in an inline-flex span that sits on the text baseline, so the
      12px switch rode 6px below the label's middle (the user, 2026-10-09: "align this properly — middle").
      Same LabeledControl the row draws, with a block flex that centres. */
   if (rowInline && align === 'end' && !hint) {
-    return <LabeledControl inline label={String(p.label).toUpperCase()} labelWidth={INLINE_LABEL_W}><div className={`flex w-full items-center justify-end ${ROW_H[cs] ?? ''}`}>{body}</div></LabeledControl>
+    return <LabeledControl inline label={caps(p.label)} labelWidth={INLINE_LABEL_W}><div className={`flex w-full items-center justify-end ${ROW_H[cs] ?? ''}`}>{body}</div></LabeledControl>
   }
   return rowInline
     ? <SettingsRow label={p.label} hint={hint} align={align} labelWidth={INLINE_LABEL_W}>{body}</SettingsRow>
-    : <LabeledControl inline={plainBool} label={inline ? String(p.label).toUpperCase() : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>
+    : <LabeledControl inline={plainBool} label={inline ? caps(p.label) : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>
 }

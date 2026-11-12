@@ -236,7 +236,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
         <div className="flex items-center gap-2">
           <Button size="sm" tone="ghost" iconOnly="settings-01" aria-label="Deck settings" onClick={() => setSettingsOpen(true)} />
           <Button size="sm" tone="ghost" iconLeft="file" onClick={() => setFileOpen(true)}>File</Button>
-          <Button size="sm" tone="ghost" iconLeft="play" disabled={!slides.length} onClick={() => setPresent(active)}>Present</Button>
+          <Button size="sm" tone="ghost" iconLeft="play-solid" disabled={!slides.length} onClick={() => setPresent(active)}>Present</Button>
           <Button size="sm" disabled={!dirty} onClick={() => save().catch(() => {})}>Save</Button>
         </div>
       </div>

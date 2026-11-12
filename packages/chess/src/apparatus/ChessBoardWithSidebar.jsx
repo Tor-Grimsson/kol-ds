@@ -9,7 +9,7 @@ import ChessSidebar from './ChessSidebar.jsx'
 const GLYPH_TO_ICON = {
   '⏮': { icon: 'skip-start', label: 'Jump to start' },
   '◀': { icon: 'skip-back', label: 'Step backward' },
-  '▶': { icon: 'play', label: 'Play moves' },
+  '▶': { icon: 'play-solid', label: 'Play moves' },
   '▸': { icon: 'skip-forward', label: 'Step forward' },
   '⏭': { icon: 'skip-end', label: 'Jump to end' }
 }

@@ -10,8 +10,8 @@ import FamilyPage, { Part } from '../FamilyPage.jsx'
 const GLYPHS = [
   'alert-triangle', 'align-vertical-center', 'arrow-left', 'bookmark', ['brand', 'ball'], ['bucket', 'bin-lid'], 'calendar', 'cap-round',
   'check', 'chevron-down', 'circle', 'clock', 'clr-mono', 'copy', 'download', 'drag-handle', 'expand', 'eye-on', 'file', 'folder', 'grid',
-  'image', 'layers', 'layout', 'link', 'lock', 'maximize', 'minus', 'more', 'nav-create', ['overlap', 'transparency'], 'pause', 'pen',
-  'play', 'plus', 'pointer', 'radial-star', ['record', 'ring'], 'repeat', 'rotate-right', 'search', 'skip-back', 'skip-end',
+  'image', 'layers', 'layout', 'link', 'lock', 'maximize', 'minus', 'more', 'nav-create', ['overlap', 'transparency'], ['pause', 'pause-solid'], 'pen',
+  ['play', 'play-solid'], 'plus', 'pointer', 'radial-star', ['record', 'ring'], 'repeat', 'rotate-right', 'search', 'skip-back', 'skip-end',
   'space-evenly-horizontal', 'square', 'type', 'undo', 'unlock', 'user', 'video', 'x',
   ['add', 'plus'], ['add task', 'plus'], ['chev', 'chevron-right'], ['down', 'chevron-down'], ['hide', 'hamburger'],
   ['iconright', 'chevron-right'], ['layer', 'layers'], ['left', 'chevron-left'], ['links', 'link'], ['media', 'film-strip'],

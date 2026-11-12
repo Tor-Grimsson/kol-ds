@@ -232,7 +232,7 @@ export default function EnvelopeGenerator({ generator, reference = 'panel', clas
   const ownClock = !g.now
   const transport = (
     <div className="flex h-6 shrink-0 items-center gap-3">
-      {ownClock && <Button tone="ghost" size="sm" iconOnly={g.playing ? 'pause' : 'play'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />}
+      {ownClock && <Button tone="ghost" size="sm" iconOnly={g.playing ? 'pause-solid' : 'play-solid'} aria-label={g.playing ? 'Pause' : 'Play'} onClick={() => g.setPlaying(!g.playing)} />}
       {ownClock && <Field label="BPM" value={g.bpm} chars={3} onCommit={(v) => g.setBpm(Math.max(1, Math.min(999, num(v, g.bpm))))} />}
       {mode === 'adsr' && (
         <>

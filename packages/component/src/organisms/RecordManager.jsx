@@ -324,7 +324,7 @@ export default function RecordManager({
               <ToolbarIcon name="more" label="More" onClick={() => onOverflow(record)} />
             )}
             {onPreview && (
-              <ToolbarIcon name="play" label="Preview" onClick={() => onPreview(record)} />
+              <ToolbarIcon name="play-solid" label="Preview" onClick={() => onPreview(record)} />
             )}
             {saveState != null && <span className="kol-helper-10 text-meta truncate leading-normal">{saveState}</span>}
             {onPublish && (

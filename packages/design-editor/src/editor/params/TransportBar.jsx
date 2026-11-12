@@ -56,7 +56,8 @@ function LoopField({ seconds, onCommit, size }) {
   )
 }
 
-const glyph = (name, size) => <IconLoader name={name} size={glyphSize(size, true)} />
+/* outline at rest, the `-solid` cut when lit (transport set, 2026-11-12) */
+const glyph = (name, size, lit = false) => <IconLoader name={name} variant={lit ? 'solid' : 'outline'} size={glyphSize(size, true)} />
 
 /* THE GLYPH CELLS ARE SQUARE ON THE LADDER (26 / 32 / 40 — the DS icon-only geometry; ruled
  * 2026-09-02 so ▶❚❚ · Loop / N s · ■◀◀ is one line at every rail width). The 2026-09-27 rebuild
@@ -80,8 +81,8 @@ export default function TransportBar({ size = 'sm' }) {
         size={size} ariaLabel="Playback" value={playing ? 'play' : 'pause'} className={SQUARE[size]}
         onChange={(v) => (v === 'play' ? play() : pause())}
         options={[
-          { value: 'play', ariaLabel: 'Play', tooltip: 'Play (Space)', label: glyph('play', size) },
-          { value: 'pause', ariaLabel: 'Pause', tooltip: 'Pause (Space)', label: glyph('pause', size) },
+          { value: 'play', ariaLabel: 'Play', tooltip: 'Play (Space)', label: glyph('play', size, playing) },
+          { value: 'pause', ariaLabel: 'Pause', tooltip: 'Pause (Space)', label: glyph('pause', size, !playing) },
         ]}
       />
       <div className="flex-1 min-w-0">

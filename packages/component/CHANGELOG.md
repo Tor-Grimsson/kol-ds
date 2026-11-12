@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-component
 
+## 0.361.1 — 2026-11-12
+
+- `MediaLibrary`'s play badge, `PlayTile` and `RecordManager`'s Preview name `play-solid` / `pause-solid`, so they keep the filled look now that `play` and `pause` are outline (kol-icons 0.69.0). Peer `@kolkrabbi/kol-icons` >=0.69.0. `PlaybackBar` is a transport and draws the outline.
+
 ## 0.361.0 — 2026-11-08
 
 - **Fixed: `Slider variant="dual"` draws its label row only when `label1` or `label2` has text.** Empty strings (SettingsRange, the generator Rail) drew an empty 16px row that pushed the rail below the field's centre; SettingsRange now sits centred in its 28px field. Callers that pass no labels or real labels are unchanged.

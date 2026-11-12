@@ -58,8 +58,8 @@ export default function Parametric() {
         {['wave-sin', 'wave-tri', 'wave-sqr'].map((i) => (
           <IconButton key={i} icon={i} active={mode === i} onClick={() => setMode(i)} title={i} iconSize={12} />
         ))}
-        <IconButton icon="play" momentary title="momentary" iconSize={12} />
-        <IconButton icon="stop" disabled title="disabled" iconSize={12} />
+        <IconButton icon="play-solid" momentary title="momentary" iconSize={12} />
+        <IconButton icon="stop-solid" disabled title="disabled" iconSize={12} />
       </Specimen>
 
       <Specimen title="Jacks" ships="kol-hardware · JackSocket · LabeledJack"
@@ -72,7 +72,7 @@ export default function Parametric() {
         <JackSocket type="in" label="in" color="#4ade80" />
         <JackSocket type="in" label="cv" color="#497DA2" active />
         <LabeledJack type="in" label="in" labelPosition="top" color="#4ade80" />
-        <LabeledJack type="out" icon="play" />
+        <LabeledJack type="out" icon="play-solid" />
         <LabeledJack type="in" label="off" dim color="#4ade80" />
       </Specimen>
 

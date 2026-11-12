@@ -5,7 +5,7 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
 /* GALLERY — a wall of specimens with the controls that change how they are seen (the icons page): size,
  * guide; the plate is the size and the column follows it */
 export const stage = 'full'
-const NAMES = ['chevron-down', 'arrow-right', 'grid', 'search', 'settings-01', 'trash', 'play', 'pause', 'layers', 'code', 'image', 'folder']
+const NAMES = ['chevron-down', 'arrow-right', 'grid', 'search', 'settings-01', 'trash', 'play-solid', 'pause-solid', 'layers', 'code', 'image', 'folder']
 
 export default function GalleryTemplate() {
   const [size, setSize] = useState(48)

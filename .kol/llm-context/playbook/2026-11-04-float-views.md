@@ -77,3 +77,36 @@
   what → OptionRow 1760:8765 new (size × state, Menus); ColumnBrowser/row 1023:26566 columns = OptionRow, rows/rail/zones auto-layout on code values, real-size IconLoader, ContentText + RowMenuButton in zones; ContentCard 52:308 `cover` SLOT, empty plates gone; LinkPreview 917:25001 on ContentMedia; DeckEditor/layout-tile 1079:27892 on SlideThumb (`index` boolean added, off); SectionText 197:1153 headline+body `stack`, float meta row gone, eyebrow default Library; PageHeader "‹ BACK" → Library
   verify → live probe showcase :5293 (PID 72242, killed); audit 0 errors · nesting Molecules 51/51 · invalid assets 0 (ContentCard `mark` deleted, it lives in the slot)
   note → code mismatches reported: ColumnBrowser metaOf ' · ', zones row hand-rolls name/meta (not ContentText), LinkPreview raw img/spans, StudioDetail text ‹, SectionText has no headline+body wrapper
+
+[06:14 · 2026-11-12] · Float Labs screen · float views (kol-figma-agent)
+  what → `float — /views/float-labs` 34:8212 in section `float` 13:1603 (row 3, x 200 y 3735; section grown to 4935) on ↳ Views: stage 34:8213 (surface/primary, OutputCanvas 1360×850, canvas 680×850 black stand-in), NavRail float 34:8216, PropertyRail compact 35:9721 (352×880, clipped; Labs params + EditorFooter in the body slot), AppFloatNav/transport 34:8743 (inline, 1198/928) — each top-level, draggable
+  verify → measured on the user's :5216 (dark, 1600×1000, Scanline › Drift); params rows, sections, accordions, footer land on live y within 1px; audit 0 errors, 201 instances in the rails, 0 unlinked; invalid assets 0
+  note → held: 3-tab TabsRow (xs master has 2 tabs, drawn from a detached xs). Master drift vs code: Button float pressed draws white (live grey fg-16) → Rolls + transport pause/loop; TreeRow lg glyph at 13.5 (label 4px left of live); RailDisplayControls 70 tall vs live 78, theme toggle in mono 14 vs Inter 11; Slider float base only in 10% steps
+
+[06:29 · 2026-11-12] · plan-2026-11-12-float-file W1 + W2 · one Parts page, one page per view, one header (kol-figma-agent)
+  what → ↳ Parts 40:8923 (12 family sections left → right, each frame opens with SectionText float); 8 view pages 40:8924–40:8931 in VIEWS order, each one Dark section = SectionText float header + helper/10 labels + its frames; `_trash` 40:8933 after `---` 40:8932 holds `_Icons`, `_float2`, `_float` and the 36 old title texts; family pages 3:4–3:16 and ↳ Views 3:17 left empty for his GUI delete
+  verify → audit 0 errors, 0 unlinked; part instances 242 before = 242 after (+12 headers); 1 header per view page; labels on one style; look-check of Record tabs page and Controls section
+  note → file holds 0 local masters (parts are linked library instances); Float editor page has no frame (none existed); float2 = older paste: Button icon layers named iconLeft/iconRight, an empty TopControlsBar center slot on rails + record-float, workspace tabs 12px left, section in Dark; float lacked Dark mode on 7 frames — now Dark via their sections
+
+[06:56 GMT · 2026-11-12] · plan-2026-11-12-float-file W3 3.1 + 3.2 · Labs states (kol-figma-agent)
+  what → ↳ Float labs 40:8925, section 40:14657 (7400 wide, 4-col grid, helper/10 labels, header "11 states"): 01 34:8212 · 02 46:857 · 03 46:1020 (scrim + Modal float) · 04 46:1183 (NavRail float collapsed + Tooltip) · 05 46:1346 (RailTrigger) · 06 46:1509 · 07 46:1672 (File tab, ButtonGroup audio row) · 08 46:1835 · 09 46:1998 (Dither body, scrim + source card) · 10 46:2161 · 11 46:2324; divider rects → divider frames; library TabsRow xs gets tab3 (new) + tab4–6 layers, not published
+  verify → live :5216 1600×1000 dark, 390×844 phone, captures + measure.json in _tmp/2026-11-12-float-labs/live; rails, rows, footer y land on live; audit 0 errors, 0 unlinked (deep), invalid assets 0, nesting 33/33
+  note → no flyout in FloatLabs collapsed (no onItemHover; hover = Tooltip only); light theme never reaches the view (a `dark` wrapper pins it, only the toggle label flips); held 3-/5-tab copies stay until his publish; source-card buttons hug icons (live: icons at edges)
+
+[07:04 GMT · 2026-11-12] · plan-2026-11-12-float-file W4 4.1 · library masters match live (kol-figma-agent)
+  what → Button float 1143:1260: the 6 pressed variants fill fg/16 (0.16) with surface/on-primary ink (code: `.kol-float-chrome`/`.kol-tabs-float` pressed = fg-16 + fg-emphasis, kol-components-shell.css:321); TreeRow 583:20231 glyphs back to code size xs 14 · md 16 · lg 18 (were scaled 8.2 · 10.7 · 13.5), chevrons 12 (were 6); ThemeToggle 1349:3579 new `variant=button, size=sm, label=true` 1844:1213 (26 tall, 14 glyph, mono/12); RailDisplayControls 570:19864 uses it with float/label (Inter 11/16), well buttons gap 10 → 78 tall
+  verify → live :5216 1600×1000 dark: pressed bg fg-16/ink 250, row glyph 18 + label x 38, footer 26 + 8 + 44 = 78, label x 35 y 5, Collapse label x 45 — master instances land on each within 1px; audit 0 errors, nesting 77/77, invalid assets 0; captures in _tmp/2026-11-12-float-labs/w4
+  note → not published; the float file's 11 Labs frames pick it up on his publish (all: pressed buttons; 01 02 03 06 07 08 09 10: rail rows + footer)
+
+[07:20 GMT · 2026-11-12] · plan-2026-11-12-float-file W3 3.2 · held TabsRow swapped (kol-figma-agent)
+  what → float file 879P1y.. Labs 40:14657: 9 drawn strips in PropertyRail body slot content (01, 04-08, 10, 11 = Generate·Style·Animation; 09 = Dither·ASCII·Bitmap·Riso·Growing line) replaced by xs float TabsRow instances; 02 and 03 had none
+  verify → 0 held left, 0 unlinked, position deltas 0px, widths 196/301 unchanged, no frame overlaps; library untouched
+
+[08:23 GMT · 2026-11-12] · kol-icons 0.69.0 transport set mirrored to the library (kol-figma-agent)
+  what → Iconset media: play·pause·stop·rewind·skip-start·skip-end redrawn outline in place (same nodes) and set with a -solid variant; fast-forward + reverse sets, loop added; tr-* to _trash as _tr-* (frame _transport); AppFloatNav transport lit play = solid, stop = stop, back = skip-start; PropertyRail + GeneratorWindow collapse = panel-right
+  verify → 17 glyphs match SVG bounds; audit 0 errors, invalid assets 0, nesting fakes 0; unpublished, waits on his publish
+
+[08:43 GMT · 2026-11-12] · kol-icons 0.70.0 — every transport glyph outline + solid, code and library (kol-figma-agent)
+  what → 8 new -solid SVGs (stop-circle, skip-back/-forward, the -15s, shuffle, loop, repeat; line-only solids = 2.25 line, filled arrowheads, decided-for-review); skip-*-bold → aliases, drawings to _tmp/2026-11-12-transport-bold/; published 0.70.0. Figma: transport frame 297:126 back in Signal (between shaper and wave, un-trashed), 16 outline/solid sets moved into it from media + actions (masters moved, bold masters became the chevron solids); tr-* cells kept in _trash frame `_transport-retired` 1859:8030; both sections reflowed
+  verify → gates icon-cuts, icon-tags, roster, syntax, imports clean; npm 0.70.0 live; 32/32 masters match their SVG (Δ 0.00); media 0 transport glyphs; audit 0 errors, nesting 946/946, invalid assets 0; 55 transport instances all linked; :5216 float-labs loop lit = repeat-solid, rest = outline, 0 console errors
+  note → library unpublished (his click); kol-shell 0.119.1 still unpublished

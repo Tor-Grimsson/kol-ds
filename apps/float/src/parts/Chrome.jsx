@@ -29,8 +29,8 @@ const TRANSPORT = [
   { id: 'play', icon: 'play', label: 'Play', selected: true },
   { id: 'pause', icon: 'pause', label: 'Pause' },
   { id: 'loop', icon: 'repeat', label: 'Loop' },
-  { id: 'stop', icon: 'square', label: 'Stop' },
-  { id: 'back', icon: 'skip-back', label: 'Back' },
+  { id: 'stop', icon: 'stop', label: 'Stop' },
+  { id: 'back', icon: 'skip-start', label: 'Back' },
 ]
 const DOC_MENU = [{ label: 'Rename', icon: 'pencil', onPress: noop }, { label: 'Duplicate', icon: 'layers', onPress: noop }, { label: 'Move to…', icon: 'folder', onPress: noop }]
 const PANELS = [{ label: 'Side panel', icon: 'panel-right', onPress: noop }, { label: 'Task index', icon: 'list-bullet', onPress: noop }]

@@ -381,7 +381,7 @@ function LabsPhoneFloats({ paramsOpen, setParamsOpen, catalog, toggleCatalog, ra
     { icon: 'home-01', path: '#home', label: 'Home', onPress: () => navigateTo('/') },
     { icon: 'grid', path: '#catalog', label: 'Catalog', onPress: toggleCatalog, selected: catalog },
     { icon: 'slider-01', path: '#params', label: 'Params', onPress: () => setParamsOpen((v) => !v), selected: paramsOpen },
-    { icon: 'play', path: '#transport', label: 'Transport', onPress: () => setTransportOn((v) => !v), selected: transportOn },
+    { icon: 'play-solid', path: '#transport', label: 'Transport', onPress: () => setTransportOn((v) => !v), selected: transportOn },
   ]
   /* the footer's tabs, as More's rows: the panel opens with them (they render in its foot) */
   const actions = [
@@ -453,10 +453,39 @@ const LABS_REGISTRY_TOUCH = {
   ],
 }
 
-function LabsBody() {
-  const { setAspect, selectedId, select } = useComposeState()
-  const { layer, setOnly } = useLabsLayer()
+/* labs' boot, shared by LabsView and FloatLabsView: the default aspect and loop length once, then undo's floor */
+export function useLabsBoot() {
+  const { setAspect } = useComposeState()
   const bootedRef = useRef(false)
+  /* Boot once: theme, then the global default aspect — the same
+   * reconciliation EditorBody does (the provider seeds aspect '4:5' but
+   * canvas 1080×1080, so a full-frame layer would otherwise be built square
+   * inside a 4:5 frame).
+   *
+   * Deliberately NOT autoplaying and NOT picking anything: labs opens on an
+   * empty stage and the nav is the entry point. Auto-seeding a generator
+   * meant every visit silently started on whatever sat first in the tree. */
+  useEffect(() => {
+    if (bootedRef.current) return
+    bootedRef.current = true
+    /* UI theme: the topbar ThemeToggle's framework store applies it on
+     * mount — labs no longer boots the editor's theme store. */
+    const s = getAppSettings()
+    if (s.defaultAspect && s.defaultAspect !== 'custom') setAspect(s.defaultAspect)
+    if (s.defaultLoopSeconds) transport.setLoopSeconds(s.defaultLoopSeconds)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  /* THE LOADED PATCH IS THE FLOOR OF UNDO (plan 49 3.4): the seed above, a file opened by URL and the frame's fit to the
+     aspect all write tracked history on mount; clear it once they have landed, so ⌘Z never walks below what was opened.
+     ponytail: a settle delay, not a "boot done" signal — 800 ms covers the deep link, UrlIntents' tick and the fit. */
+  const { clearHistory } = useComposeState()
+  useEffect(() => { const t = setTimeout(clearHistory, 800); return () => clearTimeout(t) }, [clearHistory])
+}
+
+function LabsBody() {
+  const { selectedId, select } = useComposeState()
+  const { layer, setOnly } = useLabsLayer()
 
   /* Coarse pointer without the desktop opt-in (the `kol-desktop` key
    * `mobile/device.js` writes) — OR a window under 1024 (`LABS_BELOW`, 2026-10-05/06): narrowed, a
@@ -542,24 +571,7 @@ function LabsBody() {
   /* this chrome, for the shortcuts sheet's labs rows when the host's path says nothing */
   useEffect(() => { setMountedView('labs'); return () => setMountedView(null) }, [])
 
-  /* Boot once: theme, then the global default aspect — the same
-   * reconciliation EditorBody does (the provider seeds aspect '4:5' but
-   * canvas 1080×1080, so a full-frame layer would otherwise be built square
-   * inside a 4:5 frame).
-   *
-   * Deliberately NOT autoplaying and NOT picking anything: labs opens on an
-   * empty stage and the nav is the entry point. Auto-seeding a generator
-   * meant every visit silently started on whatever sat first in the tree. */
-  useEffect(() => {
-    if (bootedRef.current) return
-    bootedRef.current = true
-    /* UI theme: the topbar ThemeToggle's framework store applies it on
-     * mount — labs no longer boots the editor's theme store. */
-    const s = getAppSettings()
-    if (s.defaultAspect && s.defaultAspect !== 'custom') setAspect(s.defaultAspect)
-    if (s.defaultLoopSeconds) transport.setLoopSeconds(s.defaultLoopSeconds)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  useLabsBoot()
 
   /* The one thing that DOES open something: an explicit deep link
    * (`?view=labs&preset=<id>`) — someone asked for that preset by name, so it
@@ -574,11 +586,6 @@ function LabsBody() {
     if (group) setOnly('loop', presetLayerPatch(presetById(deepLink), group))
   }, [setOnly])
 
-  /* THE LOADED PATCH IS THE FLOOR OF UNDO (plan 49 3.4): the seed above, a file opened by URL and the frame's fit to the
-     aspect all write tracked history on mount; clear it once they have landed, so ⌘Z never walks below what was opened.
-     ponytail: a settle delay, not a "boot done" signal — 800 ms covers the deep link, UrlIntents' tick and the fit. */
-  const { clearHistory } = useComposeState()
-  useEffect(() => { const t = setTimeout(clearHistory, 800); return () => clearTimeout(t) }, [clearHistory])
 
   /* Space = play/pause. The editor gets this from PanZoomViewport (see
    * Canvas.jsx), which only mounts on the pan/zoom canvas — labs renders the

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Button, TabsRow, Tooltip, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, tabbarPillWidth, tabbarPillSlot, floatSurfaceClass, usePopover, PopoverPanel, useMediaQuery } from '@kolkrabbi/kol-component'
+import { hasIcon } from '@kolkrabbi/kol-icons'
 import MoreRows, { FloatMenu } from './MoreSheet.jsx'
 import Timecode from './Timecode.jsx'
 
@@ -307,7 +308,13 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
   }, [sheet])
 
   const top = placement === 'top'
-  const tabs = items.map((i) => ({ value: i.id, label: i.label, icon: i.icon, selected: sheet === i.id || !!i.selected }))
+  /* OUTLINE AT REST, SOLID WHEN LIT (transport set, 2026-11-12): a lit slot draws its glyph's `-solid` cut when the set
+     ships one — every transport glyph does since kol-icons 0.70.0, `loop` and `repeat` included */
+  const lit = (icon) => (icon && hasIcon(`${icon}-solid`) ? `${icon}-solid` : icon)
+  const tabs = items.map((i) => {
+    const selected = sheet === i.id || !!i.selected
+    return { value: i.id, label: i.label, icon: selected ? lit(i.icon) : i.icon, selected }
+  })
   const press = (id) => {
     if (sheetFor[id]) { setSheet((s) => (s === id ? null : id)); return }
     setSheet(null)

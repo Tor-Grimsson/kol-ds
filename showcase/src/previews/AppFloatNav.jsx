@@ -26,7 +26,7 @@ const PANEL = [
   { id: 'home', icon: 'nav-home', label: 'Home', onPress: () => {} },
   { id: 'catalog', icon: 'nav-library', label: 'Catalog', onPress: () => {} },
   { id: 'params', icon: 'slider-01', label: 'Params', onPress: () => {}, selected: true },
-  { id: 'transport', icon: 'play', label: 'Transport', onPress: () => {} },
+  { id: 'transport', icon: 'play-solid', label: 'Transport', onPress: () => {} },
 ]
 const TRANSPORT = [
   { id: 'play', icon: 'play', label: 'Play', selected: true },

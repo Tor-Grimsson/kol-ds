@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, LabeledControlSection, ButtonGroup, StepList, useModal } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, LabeledControlSection } from '../float/controls'
+import { StepList, useModal } from '@kolkrabbi/kol-component'
 import { loopById } from '../../loops/registry'
 import { useComposeState } from '../compose/state'
 import { useComposeFile } from '../compose/useComposeFile'

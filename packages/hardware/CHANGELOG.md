@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-hardware
 
+## 0.11.1 — 2026-11-12
+
+- `EnvelopeGenerator`'s own-clock button names `play-solid` / `pause-solid`, so it keeps the filled glyph (kol-icons 0.69.0). Peer `@kolkrabbi/kol-icons` >=0.69.0.
+
 ## 0.11.0 — 2026-11-08
 
 - Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.

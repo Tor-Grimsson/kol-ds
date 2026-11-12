@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControlSection, ButtonGroup, FullscreenOverlay, ModalShell, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, Dropdown, LabeledControlSection } from '../../float/controls'
+import { useChrome } from '../../float/chrome'
+import { FullscreenOverlay, ModalShell, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
@@ -207,7 +209,9 @@ export default function EditorFooter() {
    * if you want it then it comes with the transport and timeline"): in the editor the strip is down
    * until the timeline is up, then Transport · Output · File come together. Labs keeps it always. */
   const footerDown = currentView() === 'editor' && !!TransportBar && !timelineUp  /* no motion pack, no timeline: Output · File stay */
-  const showTransport = !!TransportBar && !touch && (currentView() !== 'editor' || timelineUp)
+  /* the float chrome's transport is its own float window (FloatEditorShell's `Transport`), never a tab here */
+  const float = useChrome() === 'float'
+  const showTransport = !!TransportBar && !touch && !float && (currentView() !== 'editor' || timelineUp)
   const tabs = showTransport ? TABS : TABS_TOUCH
   /* ON TOUCH THE FOOTER IS ONE ROW UNTIL A TAB IS OPENED (2026-10-05): the rail is a sheet half
    * the display high there, and Output's eight controls standing open took all of it. No tab is
@@ -325,7 +329,7 @@ export default function EditorFooter() {
   if (touch && !tab) return <>{modals}</>
 
   return (
-    <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: '16px 16px 20px' }}>
+    <div className="relative border-t border-oq-08 flex flex-col gap-3" style={{ padding: float ? '16px 0 0' : '16px 16px 20px' }}>
       {/* ON TOUCH THE STRIP IS GONE (plan 41 W4, frame E): Output and File are rows in the phone nav's
           More, so the sheet's foot shows only the tab that was opened — or nothing */}
       {!touch && <div className="flex items-center gap-2">

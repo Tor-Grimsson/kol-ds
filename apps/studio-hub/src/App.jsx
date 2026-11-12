@@ -206,7 +206,7 @@ export default function App() {
         { id: 'home', icon: 'home-01', label: 'Home', onPress: () => navigate('/') },
         { id: 'catalog', icon: 'grid', label: 'Catalog', sub: labsMenu(navigate) },
         { id: 'params', icon: 'slider-01', label: 'Params', onPress: () => setLabsParams((v) => !v), selected: labsParams },
-        { id: 'transport', icon: 'play', label: 'Transport', onPress: () => setLabsTransport((v) => !v), selected: labsTransport },
+        { id: 'transport', icon: 'play-solid', label: 'Transport', onPress: () => setLabsTransport((v) => !v), selected: labsTransport },
       ],
       actions: [
         { label: 'Output', icon: 'desktop', onPress: () => {} },

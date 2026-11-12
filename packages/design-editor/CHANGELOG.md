@@ -1,5 +1,12 @@
 # @kolkrabbi/design-editor
 
+## 0.36.0 — 2026-11-12
+
+- **The float transport uses the transport set:** stop draws `stop` (was `square`), back to start draws `skip-start` (was `skip-back`); the lit slot draws the `-solid` cut through AppFloatNav (kol-shell 0.119.0).
+- `TransportBar`: the lit play or pause cell draws its `-solid` cut, the rest outline. Labs' Transport nav toggle names `play-solid` (its look unchanged).
+- Peer `@kolkrabbi/kol-icons` >=0.69.0, `@kolkrabbi/kol-shell` >=0.119.0.
+- Also carries the in-progress float panel work in the tree (`editor/float/Movable.jsx`, `controls.jsx` and the inspectors that use them).
+
 ## 0.35.0 — 2026-11-08
 
 - **Every editor modal draws its panel through `ModalShell`** (`bordered`, plan-2026-11-08-modal-system 1.1): `NewFileDialog`, `RollScopesDialog`, the bake progress panel, `LayerEffectsWindow` and `ColorModesWindow` (the last two no longer borrow `kol-popover`). Content, copy and behaviour unchanged.

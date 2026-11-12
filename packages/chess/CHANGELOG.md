@@ -4,6 +4,10 @@
 > lives in the repo's session logs). From here every publish adds an entry, and
 > breaking or global-surface changes are flagged **BREAKING**.
 
+## 0.12.1 — 2026-11-12
+
+- The play / pause control names `play-solid` / `pause-solid`, so it keeps the filled glyph (kol-icons 0.69.0); jump to start and end now draw the triangle-and-bar `skip-start` / `skip-end`. Peer `@kolkrabbi/kol-icons` >=0.69.0.
+
 ## 0.12.0 — 2026-11-08
 
 - **The game-archive overlay draws its panel through kol-component's `ModalShell`** (`bordered`, plan-2026-11-08-modal-system 1.1), where it drew its own rounded surface. Content and behaviour unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.

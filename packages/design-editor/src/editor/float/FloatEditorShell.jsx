@@ -76,8 +76,8 @@ export function Transport({ className }) {
     { id: 'play', icon: 'play', label: 'Play', selected: playing, onPress: transport.play },
     { id: 'pause', icon: 'pause', label: 'Pause', selected: !playing, onPress: transport.pause },
     { id: 'loop', icon: 'repeat', label: looping ? 'Loop off' : 'Loop on', selected: looping, onPress: () => transport.clock.set({ looping: !looping }) },
-    { id: 'stop', icon: 'square', label: 'Stop', onPress: transport.stop },
-    { id: 'back', icon: 'skip-back', label: 'Back to start', onPress: transport.rewind },
+    { id: 'stop', icon: 'stop', label: 'Stop', onPress: transport.stop },
+    { id: 'back', icon: 'skip-start', label: 'Back to start', onPress: transport.rewind },
   ]
   return <AppFloatNav variant="transport" inline items={items} timecode={{ current: timecode(t * loopSeconds), total: timecode(loopSeconds) }} className={className} />
 }

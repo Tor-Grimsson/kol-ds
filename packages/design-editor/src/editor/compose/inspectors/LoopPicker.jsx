@@ -1,8 +1,8 @@
+import { Button } from '../../float/controls'
 import { useComposeState } from '../state'
 import { groupById, presetsInGroup, presetParams } from '../../../loops/registry'
 import { PICKER_TREE, LEGACY_GROUP_LABELS } from '../../../loops/taxonomy'
 import { PickerRow, PickerDropdown } from './TreePicker'
-import { Button } from '@kolkrabbi/kol-component'
 import { useControlSize } from '../../params/controlSize'
 import { stepPreset } from '../../labs/presetStep'
 

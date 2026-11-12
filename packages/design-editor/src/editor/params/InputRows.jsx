@@ -1,4 +1,5 @@
-import { Button, LabeledControlSection, MultiSelect } from '@kolkrabbi/kol-component'
+import { MultiSelect } from '@kolkrabbi/kol-component'
+import { Button, LabeledControlSection } from '../float/controls'
 import { isBinding, resolveValue } from './resolve'
 import { visibleParams } from './schema'
 import { getSource } from './sources'

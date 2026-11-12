@@ -17,7 +17,7 @@ const PlaybackControls = () => {
     { icon: 'skip-start', label: 'Jump to start', action: goToStart },
     { icon: 'skip-back', label: 'Step backward', action: stepBackward },
     {
-      icon: isPlaying ? 'pause' : 'play',
+      icon: isPlaying ? 'pause-solid' : 'play-solid',
       label: isPlaying ? 'Pause playback' : 'Play moves',
       action: togglePlayback
     },

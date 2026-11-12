@@ -509,7 +509,7 @@ function Thumb({ row, mediaUrl }) {
   return (
     <div className="kol-media-thumb">
       <span className="kol-media-thumb-fallback" data-painted={painted || !!row.poster}>
-        <IconLoader name="play" size={20} />
+        <IconLoader name="play-solid" size={20} />
         <span className="kol-mono-12">{fileName(row.key)}</span>
       </span>
       <video

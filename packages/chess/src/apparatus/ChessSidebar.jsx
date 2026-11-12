@@ -100,7 +100,7 @@ const ChessSidebar = ({
       <div className="board-playback__controls">
         {toolbarButton('skip-start', onGoToStart, 'Jump to start')}
         {toolbarButton('skip-back', onStepBackward, 'Step backward')}
-        {toolbarButton('play', onTogglePlayback, 'Toggle playback')}
+        {toolbarButton('play-solid', onTogglePlayback, 'Toggle playback')}
         {toolbarButton('skip-forward', onStepForward, 'Step forward')}
         {toolbarButton('skip-end', onGoToEnd, 'Jump to end')}
       </div>

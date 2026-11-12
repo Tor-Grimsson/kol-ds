@@ -1,5 +1,26 @@
 # @kolkrabbi/kol-icons
 
+## 0.70.1 — 2026-11-12
+
+- **The transport set moves to the signal set's `transport` folder** (`kol-icon-set-signal/transport/`), its home in the Figma library too, so code and Figma keep one place for it. All 32 files (play, pause, stop, stop-circle, rewind, fast-forward, reverse, skip-start, skip-end, skip-back, skip-forward, the `-15` skips, shuffle, loop and repeat, each with `-solid`) left interface `media` and `actions`. Names are unchanged, so `<IconLoader>` calls are unchanged. `KOL_ICON_SET_INTERFACE.media` and `.actions` no longer list them; `KOL_ICON_SET_SIGNAL.transport` does.
+
+## 0.70.0 — 2026-11-12
+
+- **Every transport glyph has an outline and a `-solid` cut** (the user's ruling 2026-11-12). Outline at rest, `-solid` when lit or pressed.
+- **New:** `stop-circle-solid` (the circle filled, the stop square its counter), `skip-back-solid`, `skip-forward-solid`, `skip-back-15-solid`, `skip-forward-15-solid`, `shuffle-solid`, `loop-solid` (media) and `repeat-solid` (actions).
+- **Line-only glyphs (decided, for review):** the solid cut draws the same line at stroke 2.25, with its arrowheads closed and filled where it has them (repeat, shuffle, the -15 arcs); loop and the step chevrons have none.
+- **Aliased:** `skip-back-bold` → `skip-back-solid`, `skip-forward-bold` → `skip-forward-solid` through `RENAMED_ICONS`. The bold drawings (stroke 3, 1.125× the chevron) moved to `_tmp/2026-11-12-transport-bold/`; the solid cuts sit on the outline's own points so each pair keeps one size.
+- `loop` and `repeat` now light to their solid cut in the float transport (it lights any glyph that ships a `-solid`). Tags for the eight new names (and the missing `foundry` tags); `cuts.json` regenerated.
+
+## 0.69.0 — 2026-11-12
+
+- **The transport set lands in `media`** (the user's approved review, `_tmp/icons/2026-11-12-transport/`). Outline at rest, `-solid` when pressed.
+- **Redrawn, look change:** `play`, `pause`, `stop` and `rewind` were filled; they are outline drawings now, and the filled look is their new `-solid` cut (`play-solid`, `pause-solid`, `stop-solid`, `rewind-solid`). A consumer that wants the old filled glyph names the `-solid` one (or `<IconLoader variant="solid">`).
+- **Redrawn:** `skip-start` and `skip-end` are a triangle with a bar (were a chevron with a bar), each with a `-solid` cut.
+- **New:** `fast-forward`, `fast-forward-solid`, `reverse`, `reverse-solid`, `loop` (outline only; `repeat` is unchanged and also outline only).
+- **Aliased:** `tr-right` → `play`, `tr-pause` → `pause`, `tr-inf` → `loop`, `tr-carets` → `reverse`, `tr-skip` → `skip-start`, `tr-rew` → `rewind`, `tr-fwd` → `fast-forward` through `RENAMED_ICONS`; the signal drawings moved to `_tmp/2026-11-12-transport-replaced/`. `tr-left` has no successor and stays.
+- Tags for the eleven new names; `cuts.json` regenerated.
+
 ## 0.68.0 — 2026-11-08
 
 - **Renamed: `Icon` is `IconLoader`** (user: "rename icon to iconloader that is the fucking name"). Same component, same props; the file is `src/IconLoader.jsx`. `Icon` stays exported as a deprecated alias of the same component, on the retirement ledger, so no consumer breaks. Import `IconLoader`.

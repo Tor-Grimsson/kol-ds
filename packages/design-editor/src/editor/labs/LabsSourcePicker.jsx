@@ -1,5 +1,5 @@
+import { Button, ButtonGroup } from '../float/controls'
 import { useRef, useState } from 'react'
-import { Button, ButtonGroup } from '@kolkrabbi/kol-component'
 import { useSheetChrome } from '../mobile/CategoryScreen'
 import { SPREAD } from '../mobile/device'
 import { proxied, isVideoType } from '../library/mediaLibrary'

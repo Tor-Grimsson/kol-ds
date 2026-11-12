@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-shell
 
+## 0.119.1 — 2026-11-12
+
+- `PropertyRail`'s collapse button draws `panel-right` (the right-hand twin of RailDisplayControls' `panel-left`). It borrowed `skip-end`, which kol-icons 0.69.0 redrew as the transport's triangle-and-bar.
+
+## 0.119.0 — 2026-11-12
+
+- **`AppFloatNav variant="transport"`: a lit slot draws its glyph's `-solid` cut** when kol-icons ships one (outline at rest, solid when lit); `loop` and `repeat` have none, so the slot's fill shows their state. Peer `@kolkrabbi/kol-icons` >=0.69.0.
+
 ## 0.118.0 — 2026-11-08
 
 - Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.

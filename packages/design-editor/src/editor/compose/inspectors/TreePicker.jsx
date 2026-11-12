@@ -1,4 +1,4 @@
-import { Dropdown, LabeledControl, SettingsRow } from '@kolkrabbi/kol-component'
+import { Dropdown, LabeledControl, SettingsRow } from '../../float/controls'
 import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
 
 /* PickerDropdown — the picker stack's dropdown styling (subtle / sm /

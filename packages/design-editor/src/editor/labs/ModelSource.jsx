@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Button, LabeledControlSection } from '@kolkrabbi/kol-component'
+import { Button, LabeledControlSection } from '../float/controls'
 import { proxied } from '../library/mediaLibrary'
 import { useControlSize } from '../params/controlSize'
 import MediaPickerDialog from '../library/MediaPickerDialog'

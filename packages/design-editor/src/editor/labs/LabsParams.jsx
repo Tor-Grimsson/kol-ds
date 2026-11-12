@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { Button, ButtonGroup, ToggleSwitch, Divider, Dropdown, LabeledControlSection, SettingsRow, Tag, Tooltip } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, Dropdown, LabeledControlSection, SettingsRow, ToggleSwitch } from '../float/controls'
+import { useChrome } from '../float/chrome'
+import { Divider, Tag, Tooltip } from '@kolkrabbi/kol-component'
 import { useComposeState } from '../compose/state'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import AutoControls from '../params/AutoControls'
@@ -125,6 +127,7 @@ function HistoryButtons() {
 function Surface({ chips, active, onPick, spread, pills, title, tabStrip, preStrip, fx = false, scope, ghostLabels, children }) {
   /* on touch the rail is a sheet whose header already reads the title (LabsView) */
   const titled = useControlSize() === 'sm'
+  const float = useChrome() === 'float'
   return (
     <div className={`flex flex-col gap-5${fx ? ' kol-labs-fx' : ''}`} data-label-scope={scope}>
       {/* The surface title wears the SAME eyebrow as the sections under it
@@ -134,7 +137,7 @@ function Surface({ chips, active, onPick, spread, pills, title, tabStrip, preStr
           the compose history the editor already keeps; ⌘Z / ⇧⌘Z do the same (LabsView) */}
       {title && titled && (
         <div className="flex items-center gap-1">
-          <p className="kol-eyebrow text-fg-96 flex-1 min-w-0">{title}</p>
+          <p className={`${float ? 'kol-float-label text-fg-emphasis' : 'kol-eyebrow text-fg-96'} flex-1 min-w-0`}>{title}</p>
           <HistoryButtons />
         </div>
       )}

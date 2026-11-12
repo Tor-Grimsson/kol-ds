@@ -259,7 +259,7 @@ function MagnetoPanel({
                       <span className="kol-helper-8 text-fg-inverse-88" style={{ lineHeight: 1 }}>1</span>
                     </div>
                     <Toggle value={headOn[0]} onChange={() => onHeadToggle(0)} size="md" />
-                    <IconButton icon="tr-inf" active={fbInf} onClick={() => onHeadTransport(0)} disabled={!transportMode} title="Infinite (toggle)" />
+                    <IconButton icon="loop" active={fbInf} onClick={() => onHeadTransport(0)} disabled={!transportMode} title="Infinite (toggle)" />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                     <LabeledJack type="out" port="h2" moduleId={id} signalRef={h2Ref} size="sm" />
@@ -268,7 +268,7 @@ function MagnetoPanel({
                       <span className="kol-helper-8 text-fg-inverse-88" style={{ lineHeight: 1 }}>2</span>
                     </div>
                     <Toggle value={headOn[1]} onChange={() => onHeadToggle(1)} size="md" />
-                    <IconButton icon="tr-carets" active={rev} onClick={() => onHeadTransport(1)} disabled={!transportMode} title="Reverse (toggle)" />
+                    <IconButton icon={rev ? 'reverse-solid' : 'reverse'} active={rev} onClick={() => onHeadTransport(1)} disabled={!transportMode} title="Reverse (toggle)" />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                     <LabeledJack type="out" port="h3" moduleId={id} signalRef={h3Ref} size="sm" />
@@ -277,7 +277,7 @@ function MagnetoPanel({
                       <span className="kol-helper-8 text-fg-inverse-88" style={{ lineHeight: 1 }}>3</span>
                     </div>
                     <Toggle value={headOn[2]} onChange={() => onHeadToggle(2)} size="md" />
-                    <IconButton icon="tr-skip" momentary onClick={() => onHeadTransport(2)} disabled={!transportMode} title="Restart (trigger)" />
+                    <IconButton icon="skip-start" momentary onClick={() => onHeadTransport(2)} disabled={!transportMode} title="Restart (trigger)" />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6 }}>
                     <LabeledJack type="out" port="h4" moduleId={id} signalRef={h4Ref} size="sm" />
@@ -286,7 +286,7 @@ function MagnetoPanel({
                       <span className="kol-helper-8 text-fg-inverse-88" style={{ lineHeight: 1 }}>4</span>
                     </div>
                     <Toggle value={headOn[3]} onChange={() => onHeadToggle(3)} size="md" />
-                    <IconButton icon="tr-pause" active={fbPause} onClick={() => onHeadTransport(3)} disabled={!transportMode} title="Pause (toggle)" />
+                    <IconButton icon={fbPause ? 'pause-solid' : 'pause'} active={fbPause} onClick={() => onHeadTransport(3)} disabled={!transportMode} title="Pause (toggle)" />
                   </div>
                 </div>
 
@@ -354,10 +354,10 @@ function MagnetoPanel({
           <LabeledJack type="in" port="cutCV" moduleId={id} label="clr" />
           <LabeledJack type="in" port="recGate" moduleId={id} label="rec" />
           <LabeledJack type="in" port="shift" moduleId={id} label="shft" />
-          <LabeledJack type="in" port="inf" moduleId={id} icon="tr-inf" />
-          <LabeledJack type="in" port="rev" moduleId={id} icon="tr-carets" />
-          <LabeledJack type="in" port="fwd" moduleId={id} icon="tr-skip" />
-          <LabeledJack type="in" port="pause" moduleId={id} icon="tr-pause" />
+          <LabeledJack type="in" port="inf" moduleId={id} icon="loop" />
+          <LabeledJack type="in" port="rev" moduleId={id} icon="reverse" />
+          <LabeledJack type="in" port="fwd" moduleId={id} icon="skip-start" />
+          <LabeledJack type="in" port="pause" moduleId={id} icon="pause" />
           <LabeledJack type="in" port="wowCV" moduleId={id} label="wow" />
           <LabeledJack type="in" port="tap" moduleId={id} label="tap" />
           <LabeledJack type="in" port="sprng" moduleId={id} label="sprng" />

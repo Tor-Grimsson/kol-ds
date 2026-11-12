@@ -43,7 +43,7 @@ export default function PropertyRail({ title, onCollapse, onExpand, density = 'r
         <span className="kol-float-panel text-emphasis">{title}</span>
         <span className="flex items-center gap-1">
           {onExpand && <Button variant="float" tone="ghost" size="sm" iconOnly="arrow-upright" aria-label="Expand" onClick={onExpand} />}
-          {onCollapse && <Button variant="float" tone="ghost" size="sm" iconOnly="skip-end" aria-label="Collapse" onClick={onCollapse} />}
+          {onCollapse && <Button variant="float" tone="ghost" size="sm" iconOnly="panel-right" aria-label="Collapse" onClick={onCollapse} />}
         </span>
       </div>
       {tabs?.length > 0 && <TabsRow variant="float" size="xs" tabs={tabs} value={tab} onChange={onTab} ariaLabel={`${title} tabs`} />}

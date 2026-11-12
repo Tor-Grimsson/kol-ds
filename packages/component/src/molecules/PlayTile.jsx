@@ -39,7 +39,7 @@ export function useCover(src) {
  * `.kol-play-disc` paints it after the IconFrame variants, so nothing is restated here. */
 function PlayDisc({ playing, onClick }) {
   return (
-    <IconFrame name={playing ? 'pause' : 'play'} variant="secondary" size="lg" radius="full" onClick={onClick} aria-label={playing ? 'Pause' : 'Play'} className="relative kol-play-disc" />
+    <IconFrame name={playing ? 'pause-solid' : 'play-solid'} variant="secondary" size="lg" radius="full" onClick={onClick} aria-label={playing ? 'Pause' : 'Play'} className="relative kol-play-disc" />
   );
 }
 

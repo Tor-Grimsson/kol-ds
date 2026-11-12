@@ -41,7 +41,7 @@ export default function AppControls() {
         {['nav', 'danger'].map((variant) => (
           <Button key={variant} variant={variant} size="sm">{variant}</Button>
         ))}
-        <Button tone="grey" size="sm" iconLeft="play">With icon</Button>
+        <Button tone="grey" size="sm" iconLeft="play-solid">With icon</Button>
       </Specimen>
 
       <Specimen title="SegmentedToggle" ships="kol-component · SegmentedToggle">

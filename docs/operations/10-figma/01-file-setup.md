@@ -3,7 +3,7 @@ title: Figma file setup
 type: reference
 status: active
 created: 2026-11-06
-updated: 2026-11-08
+updated: 2026-11-12
 description: Which Figma file holds what — the KOL library, the family files, the move between them
 aliases:
   - figma files
@@ -40,7 +40,7 @@ Fourteen files, in the folder's order (checked against the folder 2026-11-08; `c
 | `document--kol-ds-ui` | iYvYkjaQ1JGxGGhh1HO4hk | family | the document screens | no |
 | `layout--kol-ds-ui` | EMdyp9gS3UiMT9tYMZHF5T | instances | layout reference screens — shell, hub, the workshop layout | no |
 | `iconset--kol-ds-ui` | Lud0oSRKPTyHvT9MDVIczN | instances | icon review work — Icons WIP, review sheets, keyline boards | no |
-| `◇ float--kol-ds-ui` | 879P1yBsBPqpdGI5a5v2Y5 | instances | the float system's development file — apps/float's own views | no |
+| `◇ float--kol-ds-ui` | 879P1yBsBPqpdGI5a5v2Y5 | instances | the float system's development file — the float parts' home on one `↳ Parts` page (a section per family), then one page per apps/float view route, each opened by a `SectionText` float header | no |
 | `print--kol-ds-ui` | jQABZz0smdlw5UqbfMd6I4 | family | empty — Print kit is shared, so it stays in the library | no |
 | `modular--kol-ds-ui` | fqkq6IOFPPMFDRYWNwEDBR | family | rack, rack-hub, mixer, mixer-hub | yes |
 | `presentation--kol-ds-ui` | 265LaCcBZ2rPxdtWr2fEn2 | family | presentation, presentation-hub — screens only | no |

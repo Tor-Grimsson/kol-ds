@@ -1,8 +1,7 @@
 import { IconLoader } from '@kolkrabbi/kol-icons'
+import { Button, ButtonGroup, Dropdown, LabeledControl, SettingsRow, Slider, Textarea } from '../../float/controls'
 import { Fragment, useEffect, useState } from 'react'
-import { BezierPathEditor, Button,
-  Dropdown, LabeledControl, SettingsRow, Slider, Textarea, ButtonGroup,
-  ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
+import { BezierPathEditor, ToggleCheckbox, usePopover, PopoverPanel, MenuDropdownItem, Tooltip } from '@kolkrabbi/kol-component'
 import { ColorField } from './ColorField'
 import { TreePicker } from './TreePicker'
 import { resolveColor } from '../state'

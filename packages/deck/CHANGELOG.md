@@ -1,5 +1,9 @@
 # @kolkrabbi/kol-deck
 
+## 0.4.1 — 2026-11-12
+
+- The Present button names `play-solid`, so it keeps the filled glyph now that `play` is outline (kol-icons 0.69.0). Peer `@kolkrabbi/kol-icons` >=0.69.0.
+
 ## 0.4.0 — 2026-11-08
 
 - **Changed: `DeckFile` and `DeckSettings` are modals on kol-component's `ModalShell`** (plan-2026-11-08-outstanding W2.2) — over the scrim on the lift panel, where each was a bare column on an opaque page. The title is the shell's header, the actions its footer; content and copy unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.

@@ -10,7 +10,7 @@ export default function IconButtonPreview() {
   const [on, setOn] = useState(false)
   return (
     <div style={ROW}>
-      <IconButton icon="play" active={on} onClick={() => setOn((o) => !o)} title="Play" />
+      <IconButton icon="play-solid" active={on} onClick={() => setOn((o) => !o)} title="Play" />
       <IconButton icon="refresh" momentary onClick={() => {}} title="Retrigger" />
       <IconButton icon="x" disabled title="Clear" />
       <IconButton icon="grid" iconSize={14} onClick={() => {}} title="Grid" />

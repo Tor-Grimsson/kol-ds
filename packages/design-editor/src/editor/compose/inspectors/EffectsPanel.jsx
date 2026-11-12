@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import { Button, Dropdown, LabeledControl, LabeledControlSection, ButtonGroup, SettingsRow, ToggleSwitch, Slider, Input, Tooltip, XYPad } from '@kolkrabbi/kol-component'
+import { Button, ButtonGroup, Dropdown, Input, LabeledControl, LabeledControlSection, SettingsRow, Slider, ToggleSwitch } from '../../float/controls'
+import { Tooltip, XYPad } from '@kolkrabbi/kol-component'
 import { PickerRow, PickerDropdown } from './TreePicker'
 import { useComposeState } from '../state'
 import { findLayerDeep } from '../helpers'
