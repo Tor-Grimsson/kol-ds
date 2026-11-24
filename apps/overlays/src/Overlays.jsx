@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import {
-  Button, Dialog, FullscreenOverlay, LabeledControlSection, QuickLookFrame, ModalProvider, SettingsPanel, SettingsRow,
+  Button, ModalDialog, FullscreenOverlay, LabeledControlSection, QuickLookFrame, ModalProvider, SettingsPanel, SettingsRow,
   shortcutInScope, useModal,
 } from '@kolkrabbi/kol-component'
 import CommandModes, { KEYMAP } from './CommandModes.jsx'
@@ -38,12 +38,12 @@ function Dialogs() {
           <Open onClick={() => setDialog(variant)}>Dialog</Open>
         </Group>
       ))}
-      <Dialog open={dialog != null} onClose={() => setDialog(null)} title="Filter by browser" variant={dialog ?? 'lift'}>
+      <ModalDialog open={dialog != null} onClose={() => setDialog(null)} title="Filter by browser" variant={dialog ?? 'lift'}>
         <div className="flex flex-col gap-4 p-6">
           <span className="kol-mono-14 text-emphasis">Filter by browser</span>
           <div className="flex gap-2"><Button tone="grey" size="md" onClick={() => setDialog(null)}>Apply filter</Button><Button tone="ghost" size="md" onClick={() => setDialog(null)}>Cancel</Button></div>
         </div>
-      </Dialog>
+      </ModalDialog>
     </>
   )
 }

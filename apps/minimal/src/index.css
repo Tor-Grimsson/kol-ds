@@ -1,0 +1,126 @@
+@import "tailwindcss";
+
+/* IconLoader's own wrapper classes */
+@source "../node_modules/@kolkrabbi/kol-icons/src";
+/* the editor engine's own layout utilities (its canvas and timeline): read from its source, which no other sheet scans */
+@source "../../../packages/design-editor/src";
+
+/* The minimal style stands alone: no kol-theme. The two faces point at the root public/fonts. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --color-ground: #000000;
+  --color-panel: #0a0a0a;
+  --color-canvas: #171717;
+  --color-field: #1f1f1f;
+  --color-field-hover: #2a2a2a;
+  --color-line: #262626;
+  --color-line-strong: #3d3d3d;
+  --color-fg: #fcfbf8;
+  --color-muted: #a1a1a1;
+  --color-faint: #6b6b6b;
+  --color-accent: #fcfbf8;
+  --color-accent-fg: #0e0e11;
+
+  --radius-inner: 4px;
+  --radius-field: 6px;
+  --radius-nav: 8px;
+  --radius-bar: 10px;
+
+  /* label / title / value = 12/16 (weight and family on the element); caps 10/14; nav 14/20 */
+  --text-label: 12px;
+  --text-label--line-height: 16px;
+  --text-caps: 10px;
+  --text-caps--line-height: 14px;
+  --text-caps--letter-spacing: 0.06em;
+  --text-nav: 14px;
+  --text-nav--line-height: 20px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: var(--color-ground);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+}
+
+/* The editor screen loads the engine's sheet, whose Tailwind theme and kol-theme declare these two again on :root, in
+   their layers and after this one. Unlayered, the minimal faces win; nothing else in that sheet shares a name here. */
+:root {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Slider: 1px track, the filled part in text color (--p set inline), 9px thumb (11 on hover). */
+.range {
+  appearance: none;
+  background: transparent;
+  height: 16px;
+  cursor: pointer;
+}
+.range::-webkit-slider-runnable-track {
+  height: 1px;
+  background: linear-gradient(to right, var(--color-fg) var(--p), var(--color-line-strong) var(--p));
+}
+.range::-moz-range-track {
+  height: 1px;
+  background: linear-gradient(to right, var(--color-fg) var(--p), var(--color-line-strong) var(--p));
+}
+.range::-webkit-slider-thumb {
+  appearance: none;
+  width: 9px;
+  height: 9px;
+  margin-top: -4px;
+  border-radius: 9999px;
+  background: var(--color-fg);
+  border: 0;
+}
+.range::-moz-range-thumb {
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px;
+  background: var(--color-fg);
+  border: 0;
+}
+.range:hover::-webkit-slider-thumb {
+  width: 11px;
+  height: 11px;
+  margin-top: -5px;
+}
+.range:hover::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+}
+.range:focus-visible {
+  outline: 1px solid var(--color-fg);
+  outline-offset: 2px;
+}
+
+/* Select: the chevron at the right of the native field */
+.select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23fcfbf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7.5 L12 16.5 L21 7.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}

@@ -9,15 +9,17 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { Icon } from './parts'
 import { SHELVES, findDoc } from './shelf'
-import { Frame, Masthead, SearchOverlay, useSearchKey, Choice } from './Chrome'
+import { Frame, Masthead, SearchOverlay, useSearchKey } from './Chrome'
 import { ago, useSKey, useSettings, setSettings, CanvasTheme } from './settings'
-import Fence, { fenceOf, CodeLine, CODE_LANGS, prismOf } from './Fence'
-import { MenuBar, ToolRow, FindBar, StatusBar, NewOverlay, LibraryTree, ContextMenu, CommandPalette, Tool as Btn } from './EditorChrome'
+import { fenceOf, CodeLine, CODE_LANGS, prismOf, useCodeTheme } from './Fence'
+import { Button, CodeBlock, Dropdown, Figure, Input, Menu, TabsRow, Textarea, Tooltip } from '@kolkrabbi/kol-component'
+import { MenuBar, ToolRail } from '@kolkrabbi/kol-shell'
+import { FindBar, StatusBar, NewOverlay, LibraryTree, CommandPalette, folioItems, folioMenus } from './EditorChrome'
 import CodeEditor, { formatDocument } from './CodeEditor'
 import { undo as cmUndo, redo as cmRedo, toggleComment, selectAll as cmSelectAll } from '@codemirror/commands'
 import { foldAll, unfoldAll } from '@codemirror/language'
 import { nextDiagnostic, openLintPanel } from '@codemirror/lint'
-import { Figure, ImagePicker, embeds, pastedImage } from './Media'
+import { figureOf, ImagePicker, embeds, pastedImage } from './Media'
 import { urlOf } from './shelf'
 import { client } from './client'
 
@@ -50,7 +52,7 @@ const Found = ({ line, finder }) => {
   const parts = []
   let at = 0
   for (const m of line.matchAll(finder)) {
-    parts.push(line.slice(at, m.index), <mark key={m.index} className="rounded-[2px] bg-[color-mix(in_oklab,var(--color-folio-green)_30%,transparent)] text-inherit">{m[0]}</mark>)
+    parts.push(line.slice(at, m.index), <mark key={m.index} className="rounded-[2px] bg-[color-mix(in_oklab,var(--kol-folio-green)_30%,transparent)] text-inherit">{m[0]}</mark>)
     at = m.index + m[0].length
   }
   parts.push(line.slice(at))
@@ -80,24 +82,23 @@ const PREVIEW = {
   strong: ({ children }) => <b className="font-semibold">{children}</b>,
   blockquote: ({ children }) => <blockquote className="border-l-2 border-folio-green bg-folio-mint px-[20px] py-[13px] text-[14px] leading-[22px] text-folio-green [&_p]:text-folio-green">{children}</blockquote>,
   pre: ({ children }) => {
+    const dark = useCodeTheme() === 'dark'
     const fence = fenceOf(children)
-    return fence ? <Fence {...fence} /> : <pre className="overflow-x-auto bg-[color-mix(in_oklab,var(--color-folio-ink)_6%,var(--color-folio-paper))] px-[16px] py-[12px] font-[family-name:var(--kol-font-family-mono)] text-[12px] leading-[24px] [&_code]:bg-transparent [&_code]:p-0">{children}</pre>
+    return fence ? <CodeBlock variant="folio" {...fence} dark={dark} /> : <pre className="overflow-x-auto bg-[color-mix(in_oklab,var(--kol-folio-ink)_6%,var(--kol-folio-paper))] px-[16px] py-[12px] font-[family-name:var(--kol-font-family-mono)] text-[12px] leading-[24px] [&_code]:bg-transparent [&_code]:p-0">{children}</pre>
   },
-  code: ({ children }) => <code className="rounded-[3px] bg-[color-mix(in_oklab,var(--color-folio-ink)_8%,transparent)] px-[5px] py-[1px] font-[family-name:var(--kol-font-family-mono)] text-[12px]">{children}</code>,
+  code: ({ children }) => <code className="rounded-[3px] bg-[color-mix(in_oklab,var(--kol-folio-ink)_8%,transparent)] px-[5px] py-[1px] font-[family-name:var(--kol-font-family-mono)] text-[12px]">{children}</code>,
   a: ({ href, children }) => <a href={href} target="_blank" rel="noreferrer" className="text-[14px] leading-[22px] text-folio-green underline">{children}</a>,
   table: ({ children }) => <table className="w-full border-collapse text-[13px]">{children}</table>,
   th: ({ children }) => <th className="border-b border-folio-ink py-[6px] pr-[12px] text-left">{children}</th>,
   td: ({ children }) => <td className="border-b border-folio-rule py-[6px] pr-[12px] align-top">{children}</td>,
   hr: () => <hr className="border-folio-rule" />,
-  img: (props) => <Figure {...props} />,
+  img: (props) => <Figure variant="folio" {...figureOf(props)} />,
 }
 
-/* a local Input, Button and SegmentedToggle at the frame's sizes (32px tall, 3px corners) */
-const Field = (props) => <input {...props} className={`kol-reader-meta h-[32px] rounded-[3px] border border-folio-rule bg-folio-paper px-[10px] text-folio-ink outline-none focus:border-folio-green ${props.className ?? ''}`} />
+/* the field and the tool button wear kolbox's look (plan-2026-11-23 W8.2): Input kolbox, Button kolbox ghost */
+const Field = (props) => <Input variant="kolbox" {...props} />
 const Tool = ({ icon, children, ...rest }) => (
-  <button type="button" {...rest} className="kol-reader-meta flex h-[32px] shrink-0 items-center gap-[8px] whitespace-nowrap rounded-[3px] px-[10px] font-semibold text-folio-ink hover:bg-folio-surface">
-    {icon && <Icon name={icon} />}{children}
-  </button>
+  <Button variant="kolbox" tone="ghost" iconLeft={icon} pressed={rest['aria-pressed']} {...rest} className="shrink-0 whitespace-nowrap">{children}</Button>
 )
 
 /* the shortcut reference the rail lists */
@@ -158,37 +159,37 @@ function EditorRail({ source, onApply, isMd, shelf, onShelf, format, fileName, w
   const fm = readFm(source)
   const langs = (fm.lang ?? '').toLowerCase().split(/[-,\s]+/).filter(Boolean)
   const set = (fields) => onApply(writeFm(source, { date: fm.date ?? '', lang: langs.join(', '), description: fm.description ?? '', ...fields }))
-  const Head = ({ children }) => <p className="kol-reader-label border-b border-folio-ink pb-[10px] text-folio-muted">{children}</p>
+  const Head = ({ children }) => <p className="kol-folio-label border-b border-folio-ink pb-[10px] text-folio-muted">{children}</p>
   return (
     <aside aria-label="Editor settings" className="flex min-h-0 min-w-0 flex-col gap-[28px] overflow-y-auto overscroll-contain border-l border-folio-rule px-[24px] pb-[40px] pt-[24px]">
       <div className="flex flex-col gap-[10px]">
         <Head>Document</Head>
-        <div className="kol-reader-meta flex items-center justify-between gap-[12px]"><span className="text-folio-muted">Shelf</span>
-          <Choice label="Shelf" align="right" value={shelf} onChange={onShelf} options={SHELVES.map((x) => [x.id, x.label])} />
+        <div className="kol-folio-meta flex items-center justify-between gap-[12px]"><span className="text-folio-muted">Shelf</span>
+          <Dropdown variant="kolbox" ariaLabel="Shelf" align="right" value={shelf} onChange={onShelf} options={SHELVES.map((x) => ({ value: x.id, label: x.label }))} />
         </div>
-        <p className="kol-reader-meta flex justify-between"><span className="text-folio-muted">Format</span><span>{format}</span></p>
-        <p className="kol-reader-meta flex justify-between gap-[12px]"><span className="text-folio-muted">File</span><span className="truncate">{fileName}</span></p>
-        <p className="kol-reader-meta flex justify-between"><span className="text-folio-muted">Length</span><span>{words} words, {lines} lines</span></p>
+        <p className="kol-folio-meta flex justify-between"><span className="text-folio-muted">Format</span><span>{format}</span></p>
+        <p className="kol-folio-meta flex justify-between gap-[12px]"><span className="text-folio-muted">File</span><span className="truncate">{fileName}</span></p>
+        <p className="kol-folio-meta flex justify-between"><span className="text-folio-muted">Length</span><span>{words} words, {lines} lines</span></p>
       </div>
       {isMd && (
         <div className="flex flex-col gap-[12px]">
           <Head>Details</Head>
           <label className="flex flex-col gap-[6px]">
-            <span className="kol-reader-meta text-folio-muted">Date</span>
+            <span className="kol-folio-meta text-folio-muted">Date</span>
             <Field type="date" value={/^\d{4}-\d{2}-\d{2}$/.test(fm.date ?? '') ? fm.date : ''} onChange={(e) => set({ date: e.target.value })} />
           </label>
           <div className="flex flex-col gap-[6px]">
-            <span className="kol-reader-meta text-folio-muted">Language</span>
+            <span className="kol-folio-meta text-folio-muted">Language</span>
             <div className="flex gap-[6px]">
               {LANGS.map((l) => {
                 const on = langs.includes(l)
-                return <button key={l} type="button" aria-pressed={on} onClick={() => set({ lang: (on ? langs.filter((x) => x !== l) : [...langs, l]).join(', ') })} className={`kol-reader-control h-[32px] flex-1 rounded-[3px] border uppercase ${on ? 'border-folio-green bg-folio-mint text-folio-green' : 'border-folio-rule text-folio-muted hover:text-folio-ink'}`}>{l}</button>
+                return <Button variant="kolbox" key={l} pressed={on} aria-pressed={on} onClick={() => set({ lang: (on ? langs.filter((x) => x !== l) : [...langs, l]).join(', ') })} className="flex-1 uppercase">{l}</Button>
               })}
             </div>
           </div>
           <label className="flex flex-col gap-[6px]">
-            <span className="kol-reader-meta text-folio-muted">Description</span>
-            <textarea value={fm.description ?? ''} onChange={(e) => set({ description: e.target.value })} rows={3} className="kol-reader-meta resize-none rounded-[3px] border border-folio-rule bg-folio-paper p-[10px] text-folio-ink outline-none focus:border-folio-green" />
+            <span className="kol-folio-meta text-folio-muted">Description</span>
+            <Textarea variant="kolbox" value={fm.description ?? ''} onChange={(e) => set({ description: e.target.value })} rows={3} className="resize-none" />
           </label>
         </div>
       )}
@@ -197,16 +198,16 @@ function EditorRail({ source, onApply, isMd, shelf, onShelf, format, fileName, w
         <Head>Shortcuts</Head>
         {shortcutsFor(format).map(([group, rows]) => (
           <div key={group} className="flex flex-col">
-            <p className="kol-reader-meta pb-[4px] pt-[14px] font-semibold text-folio-muted">{group}</p>
+            <p className="kol-folio-meta pb-[4px] pt-[14px] font-semibold text-folio-muted">{group}</p>
             {rows.map(([what, keys, md]) => (
-              <div key={what} className="kol-reader-meta grid grid-cols-[1fr_auto] items-baseline gap-x-[10px] py-[6px]">
+              <div key={what} className="kol-folio-meta grid grid-cols-[1fr_auto] items-baseline gap-x-[10px] py-[6px]">
                 <span className="font-semibold">{what}{md && keys && <span className="ml-[6px] font-normal text-folio-muted">{keys}</span>}</span>
                 {md ? <code className="font-[family-name:var(--kol-font-family-mono)] text-folio-green">{md}</code> : <span className="text-folio-muted">{keys}</span>}
               </div>
             ))}
           </div>
         ))}
-        <p className="kol-reader-meta mt-[10px] text-folio-muted">Letters work as they are when you are not typing; while writing, hold ⌥ with the letter.</p>
+        <p className="kol-folio-meta mt-[10px] text-folio-muted">Letters work as they are when you are not typing; while writing, hold ⌥ with the letter.</p>
       </div>
     </aside>
   )
@@ -577,7 +578,7 @@ function FolioWrite({ routeKey }) {
       setShared({ bucket, url: out.url }); setState('')
     } catch (e) { setState(`Not in ${BUCKET_LABEL[bucket]} — ${e.message}`) }
   }
-  const sharedLink = shared && <a href={shared.url} target="_blank" rel="noreferrer" className="kol-reader-meta text-folio-green underline">In {BUCKET_LABEL[shared.bucket]} ↗</a>
+  const sharedLink = shared && <a href={shared.url} target="_blank" rel="noreferrer" className="kol-folio-meta text-folio-green underline">In {BUCKET_LABEL[shared.bucket]} ↗</a>
 
   const done = async () => {
     if (dirty.current || !file) await save()
@@ -590,7 +591,7 @@ function FolioWrite({ routeKey }) {
     return (
       <Frame>
         <Masthead onSearch={() => setSearching(true)} />
-        <p className="kol-reader-body px-[56px] py-[64px] text-folio-muted">Writing lives on the dev machine — this copy of the library is read-only.</p>
+        <p className="kol-folio-body px-[56px] py-[64px] text-folio-muted">Writing lives on the dev machine — this copy of the library is read-only.</p>
       </Frame>
     )
   }
@@ -666,21 +667,20 @@ function FolioWrite({ routeKey }) {
       ['Tools', [[`${m.stats.words} words, ${m.stats.chars} characters`], '-', ['Find & replace', () => setFinding(true), '⌘F'], ...(m.tools ?? []), '-', ['Command list…', () => setCommands(true), '⇧⌘P']]],
       ['Help', [['Undo, redo', null, '⌘Z ⇧⌘Z'], ['Save, find', null, '⌘S ⌘F'], ...m.help, ['Rail', null, ','], ['Writing mode', null, 'W'], ['Show or hide a band', null, 'T H M B F L , R'], ['Command list', null, '⇧⌘P or F1']]],
     ]
-    const iconBtn = 'flex size-[32px] items-center justify-center rounded-[3px] hover:bg-folio-surface disabled:opacity-30'
     return <>
       {commands && <CommandPalette menus={menus} onClose={() => setCommands(false)} />}
-      {!hidden.menus && <MenuBar menus={menus}>
+      {!hidden.menus && <MenuBar variant="kolbox" menus={folioMenus(menus, 'kolbox')}>
         <Tool icon="search" aria-pressed={finding} onClick={() => setFinding(!finding)}>Find &amp; replace</Tool>
         <Tool icon="folder-tree" aria-pressed={Boolean(tree)} onClick={() => setSettings({ editorTree: !tree })}>Library</Tool>
         <Tool icon="panel-right" aria-pressed={Boolean(rail)} onClick={() => setSettings({ editorRail: !rail })}>Rail</Tool>
       </MenuBar>}
-      {!hidden.tools && <ToolRow>{m.toolbar}
+      {!hidden.tools && <ToolRail variant="folio">{m.toolbar}
         {/* Undo · Redo at the toolbar's right end, under Rail (user, 2026-11-04) */}
         <div className="-mr-[8px] ml-auto flex shrink-0 items-center gap-[4px]">
-          <button type="button" aria-label="Undo" title="Undo ⌘Z" disabled={m.canUndo === false} onMouseDown={(e) => e.preventDefault()} onClick={m.undo} className={iconBtn}><Icon name="undo" /></button>
-          <button type="button" aria-label="Redo" title="Redo ⇧⌘Z" disabled={m.canRedo === false} onMouseDown={(e) => e.preventDefault()} onClick={m.redo} className={iconBtn}><Icon name="redo" /></button>
+          <Tooltip variant="kolbox" asChild label="Undo ⌘Z"><Button variant="kolbox" iconOnly="undo" aria-label="Undo" disabled={m.canUndo === false} onMouseDown={(e) => e.preventDefault()} onClick={m.undo} /></Tooltip>
+          <Tooltip variant="kolbox" asChild label="Redo ⇧⌘Z"><Button variant="kolbox" iconOnly="redo" aria-label="Redo" disabled={m.canRedo === false} onMouseDown={(e) => e.preventDefault()} onClick={m.redo} /></Tooltip>
         </div>
-      </ToolRow>}
+      </ToolRail>}
       {finding && <FindBar find={find} setFind={(v) => { setFind(v); setHit(0) }} repl={repl} setRepl={setRepl} matchCase={matchCase} setMatchCase={setMatchCase}
         count={m.find.count} onPrev={m.find.prev} onNext={m.find.next} onReplace={m.find.replaceOne} onReplaceAll={m.find.replaceAll} onClose={() => setFinding(false)} />}
       <div className="grid min-h-0 flex-1 overflow-hidden" style={{ gridTemplateColumns: `${tree ? 'minmax(0,300px) ' : ''}minmax(420px,1fr)${rail ? ' minmax(0,300px)' : ''}` }}>
@@ -692,9 +692,9 @@ function FolioWrite({ routeKey }) {
       </div>
       {!hidden.foot && <StatusBar left={`${m.stats.words} words      ${m.stats.chars} characters      ${m.stats.lines} ${isRich ? 'paragraphs' : 'lines'}`}>
         <span title={canConvert ? 'Change the format' : 'A library Markdown file stays Markdown'}>
-          <Choice label="Format" align="bottom-right" value={kindOf(format)} disabled={!canConvert} onChange={convertTo} options={FORMATS} />
+          <Dropdown variant="kolbox" tone="grey" size="xs" ariaLabel="Format" align="bottom-right" value={kindOf(format)} disabled={!canConvert} onChange={convertTo} options={FORMATS.map(([value, label]) => ({ value, label }))} />
         </span>
-        {format === 'code' && <Choice label="Language" align="bottom-right" value={ext} disabled={!canConvert} onChange={(e) => convertTo('code', e)} options={CODE_LANGS.map(([e, , label]) => [e, label])} />}
+        {format === 'code' && <Dropdown variant="kolbox" tone="grey" size="xs" ariaLabel="Language" align="bottom-right" value={ext} disabled={!canConvert} onChange={(e) => convertTo('code', e)} options={CODE_LANGS.map(([e, , label]) => ({ value: e, label }))} />}
         {m.status}
       </StatusBar>}
     </>
@@ -724,31 +724,27 @@ function FolioWrite({ routeKey }) {
     help: isMd ? [['Bold, italic, link', null, '⌘B ⌘I ⌘K']] : format === 'code' ? [['Indent, outdent', null, 'Tab ⇧Tab'], ['Comment line', null, '⌘/'], ['Fold, unfold here', null, '⌥⌘[ ⌥⌘]']] : [['Make Rich Text', null, '⇧⌘T']],
     toolbar: isMd ? <>
       {/* the mode tabs sit on the toolbar's bottom rule (13.1) */}
-      <div role="tablist" aria-label="Mode" className="-mb-px mr-[32px] flex shrink-0 gap-[24px] self-stretch">
-        {[['write', 'Write'], ['split', 'Split'], ['preview', 'Preview']].map(([md, label]) => (
-          <button key={md} type="button" role="tab" aria-selected={mode === md} onClick={() => setMode(md)} className={`kol-reader-control flex items-center ${mode === md ? 'text-folio-ink shadow-[inset_0_-2px_0_var(--color-folio-ink)]' : 'font-normal text-folio-muted hover:text-folio-ink'}`}>{label}</button>
-        ))}
-      </div>
-      <Choice label="Heading" value={<><Icon name="heading-6" />Heading</>} onChange={heading} options={[...[1, 2, 3, 4, 5, 6].map((n) => [n, `Heading ${n}`]), [0, 'Body text']]}
-        className="kol-reader-meta h-[32px] shrink-0 gap-[8px] whitespace-nowrap px-[10px] font-semibold hover:bg-folio-surface hover:text-folio-ink" />
+      <TabsRow variant="kolbox" tabs={[{ value: 'write', label: 'Write' }, { value: 'split', label: 'Split' }, { value: 'preview', label: 'Preview' }]} value={mode} onChange={setMode} className="mr-[32px] shrink-0" />
+      <Dropdown variant="kolbox" tone="grey" ariaLabel="Heading" value={<span className="flex items-center gap-2"><Icon name="heading-6" />Heading</span>} onChange={heading} options={[...[1, 2, 3, 4, 5, 6].map((n) => ({ value: n, label: `Heading ${n}` })), { value: 0, label: 'Body text' }]}
+        className="shrink-0" />
       {SHORTCUTS.slice(1).map((sc) => <Tool key={sc.label} icon={sc.icon} onMouseDown={(e) => e.preventDefault()} onClick={() => shortcut(sc)}>{sc.label}</Tool>)}
       <Tool icon="image" onClick={() => setPicking(true)}>Image</Tool>
     </> : format === 'txt' ? <>
       <Tool onClick={switchText} title="⇧⌘T">Make Rich Text</Tool>
-      <p className="kol-reader-meta ml-[8px] text-folio-muted">Plain text — no formatting, nothing to preview.</p>
+      <p className="kol-folio-meta ml-[8px] text-folio-muted">Plain text — no formatting, nothing to preview.</p>
     </> : <div className="-ml-[10px] flex items-center gap-[8px]">
-      {codeTools.map(([label, fn, keys]) => <Btn key={label} title={keys} onClick={fn}>{label}</Btn>)}
+      {codeTools.map(([label, fn, keys]) => <Button variant="kolbox" key={label} title={keys} onClick={fn}>{label}</Button>)}
       <span className="mx-[4px] h-[20px] w-px shrink-0 bg-folio-rule" />
-      <Btn icon="search" onClick={() => setCommands(true)} title="⇧⌘P or F1">Commands</Btn>
+      <Button variant="kolbox" iconLeft="search" onClick={() => setCommands(true)} title="⇧⌘P or F1">Commands</Button>
     </div>,
     status: isCode ? <>
       <button type="button" onClick={cm((v) => { openLintPanel(v); nextDiagnostic(v) })} title="Go to the next problem" className={`flex items-center gap-[10px] tabular-nums ${problems.errors ? 'text-[#c0392b]' : 'text-folio-muted'} hover:text-folio-ink`}>
         <span>ⓧ {problems.errors}</span><span className={problems.warnings ? 'text-[#b7791f]' : ''}>⚠ {problems.warnings}</span>
       </button>
       <span className="flex items-center">
-        <Btn aria-label="Zoom out" onClick={() => zoomTo(codeZoom - 10)} className="w-[32px] justify-center px-0">−</Btn>
+        <Button variant="kolbox" aria-label="Zoom out" onClick={() => zoomTo(codeZoom - 10)} className="w-[32px] justify-center px-0">−</Button>
         <span className="w-[48px] text-center tabular-nums">{codeZoom}%</span>
-        <Btn aria-label="Zoom in" onClick={() => zoomTo(codeZoom + 10)} className="w-[32px] justify-center px-0">+</Btn>
+        <Button variant="kolbox" aria-label="Zoom in" onClick={() => zoomTo(codeZoom + 10)} className="w-[32px] justify-center px-0">+</Button>
       </span>
       <span className="text-folio-muted">{'UTF-8      LF'}</span>
     </> : <span className="text-folio-muted">{'UTF-8      LF'}</span>,
@@ -762,7 +758,7 @@ function FolioWrite({ routeKey }) {
       }}>
         <div className="flex items-baseline justify-between px-[56px] pb-[18px]">
           <p className="font-[family-name:var(--kol-font-family-mono)] text-[12px] font-medium uppercase leading-[12px] tracking-[0.72px] text-folio-muted">Source</p>
-          <p className="kol-reader-meta text-folio-muted">{tabLabel}</p>
+          <p className="kol-folio-meta text-folio-muted">{tabLabel}</p>
         </div>
         <CodeEditor value={source} onChange={(v) => { if (v === source) return; dirty.current = true; setSource(v) }} ext={ext} dark={canvasTheme === 'dark'} zoom={codeZoom} minimap={codeMap} viewRef={codeView} onProblems={setProblems} />
       </section>
@@ -772,7 +768,7 @@ function FolioWrite({ routeKey }) {
           <section className="flex min-h-0 min-w-0 flex-col overflow-y-auto overscroll-contain px-[56px] pb-[40px] pt-[24px] [&+section]:border-l [&+section]:border-folio-rule">
             <div className="flex items-baseline justify-between pb-[34px]">
               <p className="font-[family-name:var(--kol-font-family-mono)] text-[12px] font-medium uppercase leading-[12px] tracking-[0.72px] text-folio-muted">Source</p>
-              <p className="kol-reader-meta text-folio-muted">{isMd ? 'Plain text, with a little structure.' : tabLabel}</p>
+              <p className="kol-folio-meta text-folio-muted">{isMd ? 'Plain text, with a little structure.' : tabLabel}</p>
             </div>
             {/* the highlighted lines sit under a transparent textarea with the same metrics, so the caret writes on them */}
             <div ref={scroller} className="relative font-[family-name:var(--kol-font-family-mono)] text-[14px] leading-[24px]">
@@ -785,7 +781,7 @@ function FolioWrite({ routeKey }) {
                 ))}
               </div>
               <textarea ref={area} value={source} onChange={(e) => edit(e.target.value)} onKeyDown={onKey} onPaste={onPaste} spellCheck={format !== 'code'} aria-label="Source"
-                className="absolute inset-y-0 left-[48px] right-0 resize-none overflow-hidden whitespace-pre-wrap break-words bg-transparent p-0 text-transparent caret-folio-ink outline-none selection:bg-[color-mix(in_oklab,var(--color-folio-green)_22%,transparent)] selection:text-transparent" />
+                className="absolute inset-y-0 left-[48px] right-0 resize-none overflow-hidden whitespace-pre-wrap break-words bg-transparent p-0 text-transparent caret-folio-ink outline-none selection:bg-[color-mix(in_oklab,var(--kol-folio-green)_22%,transparent)] selection:text-transparent" />
             </div>
           </section>
         )}
@@ -793,7 +789,7 @@ function FolioWrite({ routeKey }) {
           <section className="min-h-0 min-w-0 overflow-y-auto overscroll-contain border-l border-folio-rule bg-folio-surface px-[56px] pb-[40px] pt-[24px]">
             <div className="flex items-baseline justify-between pb-[30px]">
               <p className="font-[family-name:var(--kol-font-family-mono)] text-[12px] font-medium uppercase leading-[12px] tracking-[0.72px] text-folio-muted">Preview</p>
-              <p className="kol-reader-meta text-folio-muted">How your document reads</p>
+              <p className="kol-folio-meta text-folio-muted">How your document reads</p>
             </div>
             <div className="flex max-w-[608px] flex-col gap-[20px] font-folio">
               <Markdown remarkPlugins={[remarkGfm]} components={PREVIEW}>{body}</Markdown>
@@ -811,13 +807,13 @@ function FolioWrite({ routeKey }) {
     {/* ── document identity ── */}
     {!hidden.head && <div className="flex shrink-0 items-end justify-between gap-[32px] px-[56px] pb-[17px] pt-[24px]">
       <div className="flex min-w-0 flex-col gap-[16px]">
-        <p className="kol-reader-meta flex items-center gap-[8px] whitespace-pre text-folio-muted">
+        <p className="kol-folio-meta flex items-center gap-[8px] whitespace-pre text-folio-muted">
           <Link to={where ? `/${where.collection}/${where.id}` : '/'} className="flex items-center gap-[8px] hover:text-folio-ink"><Icon name="arrow-left" />My library</Link>
           {'   /   '}{existing ? existing.title : title === 'Untitled' ? 'New document' : title}
         </p>
         <div className="flex items-center gap-[23px]">
           <Field aria-label="File name" value={file ? file.split('/').pop() : name} placeholder={fileName} readOnly={Boolean(file)} onChange={(e) => setName(e.target.value)} className="w-[280px]" />
-          <p className="kol-reader-meta flex items-center gap-[8px] text-folio-green" role="status">
+          <p className="kol-folio-meta flex items-center gap-[8px] text-folio-green" role="status">
             {state || (saved ? <><Icon name="check" size={14} />Saved {ago(saved)}</> : 'Not saved yet')}
           </p>
           {sharedLink}
@@ -825,13 +821,13 @@ function FolioWrite({ routeKey }) {
       </div>
       <div className="flex shrink-0 flex-col items-end gap-[24px]">
         <div className="flex gap-[4px]">
-          <span className="flex items-center px-[8px]"><Choice label="Save to bucket" align="right" value="Save to bucket" onChange={toBucket} options={client().read('buckets').filter((b) => b.upload).sort((a, b) => a.upload - b.upload).map((b) => [b.id, `${b.label}, ${b.host}`])} className="kol-reader-meta" /></span>
+          <span className="flex items-center px-[8px]"><Dropdown variant="kolbox" tone="grey" ariaLabel="Save to bucket" align="right" value="Save to bucket" onChange={toBucket} options={client().read('buckets').filter((b) => b.upload).sort((a, b) => a.upload - b.upload).map((b) => ({ value: b.id, label: `${b.label}, ${b.host}` }))} /></span>
           <Tool icon="download" onClick={exportMd}>Export</Tool>
-          <button type="button" onClick={done} className="kol-reader-meta h-[32px] rounded-[3px] bg-folio-green px-[16px] font-semibold text-folio-paper">Done</button>
+          <Button variant="kolbox" tone="primary" onClick={done}>Done</Button>
         </div>
-        <p className="kol-reader-meta flex items-center gap-[6px] text-folio-muted">
+        <p className="kol-folio-meta flex items-center gap-[6px] text-folio-muted">
           In My library<span aria-hidden>/</span>
-          <Choice label="Shelf" align="right" value={shelf} onChange={(v) => { dirty.current = true; setShelf(v) }} options={SHELVES.map((x) => [x.id, x.label])} />
+          <Dropdown variant="kolbox" ariaLabel="Shelf" align="right" value={shelf} onChange={(v) => { dirty.current = true; setShelf(v) }} options={SHELVES.map((x) => ({ value: x.id, label: x.label }))} />
         </p>
       </div>
     </div>}
@@ -862,16 +858,16 @@ function FolioWrite({ routeKey }) {
                 onContextMenu={(e) => openCtx(e, [
                   ...(on ? (paired ? [['Close split', () => setSettings({ editorPair: null })]] : []) : [t.path === paired ? ['Close split', () => setSettings({ editorPair: null })] : ['Open beside', () => openBeside(t.path, t.label)]]),
                   ['Close', () => closeTab(t.path)], ['Close other tabs', tabs.length > 1 ? () => closeOthers(t.path) : null], '-', ['New document…', () => navigate('/new')]])}
-                className={`group flex h-[36px] shrink-0 items-center gap-[8px] rounded-t-[3px] pl-[14px] pr-[6px] ${chained ? 'shadow-[inset_0_2px_0_var(--color-folio-green)]' : ''} ${on || t.path === paired ? 'bg-folio-paper' : 'hover:bg-[color-mix(in_oklab,var(--color-folio-ink)_5%,var(--color-folio-surface))]'}`}>
-                <button type="button" onClick={() => { if (t.path === paired) setSettings({ editorPair: here }); openTab(t.path) }} className={`kol-reader-meta max-w-[220px] truncate ${on ? 'font-semibold text-folio-ink' : 'text-folio-muted'}`}>{t.label}</button>
+                className={`group flex h-[36px] shrink-0 items-center gap-[8px] rounded-t-[3px] pl-[14px] pr-[6px] ${chained ? 'shadow-[inset_0_2px_0_var(--kol-folio-green)]' : ''} ${on || t.path === paired ? 'bg-folio-paper' : 'hover:bg-[color-mix(in_oklab,var(--kol-folio-ink)_5%,var(--kol-folio-surface))]'}`}>
+                <button type="button" onClick={() => { if (t.path === paired) setSettings({ editorPair: here }); openTab(t.path) }} className={`kol-folio-meta max-w-[220px] truncate ${on ? 'font-semibold text-folio-ink' : 'text-folio-muted'}`}>{t.label}</button>
                 {on && (dirty.current || state === 'Saving…') && <span aria-label="Unsaved changes" className="size-[6px] rounded-full bg-folio-ink" />}
                 {!on && t.path !== paired && <button type="button" aria-label={`Open ${t.label} beside`} title="Open beside" onClick={() => setSettings({ editorPair: t.path })} className="flex size-[20px] items-center justify-center rounded-[3px] text-folio-muted opacity-0 hover:bg-folio-surface group-hover:opacity-100"><Icon name="panel-right" size={12} /></button>}
                 <button type="button" aria-label={`Close ${t.label}`} onClick={() => closeTab(t.path)} className="flex size-[20px] items-center justify-center rounded-[3px] text-folio-muted opacity-60 hover:bg-folio-surface hover:opacity-100"><Icon name="x" size={12} /></button>
               </span>
             )
           })}
-          {paired && <button type="button" onClick={() => setSettings({ editorPair: null })} className="kol-reader-meta flex h-[36px] shrink-0 items-center gap-[6px] px-[12px] text-folio-muted hover:text-folio-ink"><Icon name="panel-right" size={12} />Close split</button>}
-          <Link to="/new" className="kol-reader-meta flex h-[36px] shrink-0 items-center gap-[6px] px-[12px] text-folio-muted hover:text-folio-ink"><Icon name="plus" size={12} />New</Link>
+          {paired && <button type="button" onClick={() => setSettings({ editorPair: null })} className="kol-folio-meta flex h-[36px] shrink-0 items-center gap-[6px] px-[12px] text-folio-muted hover:text-folio-ink"><Icon name="panel-right" size={12} />Close split</button>}
+          <Link to="/new" className="kol-folio-meta flex h-[36px] shrink-0 items-center gap-[6px] px-[12px] text-folio-muted hover:text-folio-ink"><Icon name="plus" size={12} />New</Link>
         </div>
       )}
 
@@ -887,13 +883,13 @@ function FolioWrite({ routeKey }) {
           <iframe title="The document beside" src={`${paired}${paired.includes('?') ? '&' : '?'}pane`} className="min-w-0 flex-1 border-l border-folio-rule bg-folio-paper" />
         </div>
       ) : editor}
-      {drop && <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-40 w-1/2 border-2 border-folio-green bg-[color-mix(in_oklab,var(--color-folio-green)_12%,transparent)]" />}
+      {drop && <div aria-hidden className="pointer-events-none absolute inset-y-0 right-0 z-40 w-1/2 border-2 border-folio-green bg-[color-mix(in_oklab,var(--kol-folio-green)_12%,transparent)]" />}
       </div>
 
       {picking && <ImagePicker urlOf={urlOf} onPick={insertImage} onClose={() => setPicking(false)} />}
       {choosing && <NewOverlay onPick={choose} onClose={() => setChoosing(false)} />}
 
-      {ctx && <ContextMenu at={ctx} items={ctx.items} onClose={closeCtx} />}
+      {ctx && <Menu variant="kolbox" open anchor={ctx} aria-label="Context" items={folioItems(ctx.items, 'kolbox')} onClose={closeCtx} />}
       </div>
     </Frame>
   )

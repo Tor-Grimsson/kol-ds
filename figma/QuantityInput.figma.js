@@ -4,8 +4,8 @@
 import figma from 'figma'
 // variant float (the capsule, hugs its value) · default with controls chevron | split
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "float": "float", "default": "default" })
-const controls = instance.getEnum('controls', { "chevron": "chevron", "split": "split" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
+const controls = instance.getEnum('split', { "false": "chevron", "true": "split" })
 const size = instance.getEnum('size', { sm: 'sm', md: 'md', lg: 'lg' })
 const value = instance.getString('value')
 const un = instance.getBoolean('unit') ? ` unit="${instance.getString('unitText')}"` : ''

@@ -1,0 +1,37 @@
+{
+  "name": "@kolkrabbi/kol-tuner",
+  "version": "0.1.0",
+  "description": "The form tuner engine for logo construction",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "module": "./src/index.js",
+  "scripts": {
+    "test": "node test/run.mjs"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "keywords": [
+    "kol",
+    "kolkrabbi",
+    "design-system",
+    "logo",
+    "construction",
+    "geometry",
+    "engine"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tor-Grimsson/kol-ds.git",
+    "directory": "packages/tuner"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

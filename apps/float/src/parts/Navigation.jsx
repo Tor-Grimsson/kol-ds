@@ -25,7 +25,7 @@ const FLYOUT = [
   { icon: 'calendar', label: 'Upcoming', path: '/tasks/upcoming', count: 2 },
   { icon: 'check', label: 'Done', path: '/tasks/done', count: 41 },
 ]
-const FOOTPRINTS = [['Expanded', '--kol-shell-float-rail-open', '280'], ['Rail', '--kol-shell-float-rail-width', '72'], ['Hidden', '--kol-shell-float-rail-hidden', '0']]
+const FOOTPRINTS = [['Expanded', '--kol-shell-float-rail-open', '264'], ['Rail', '--kol-shell-float-rail-width', '72'], ['Hidden', '--kol-shell-float-rail-hidden', '0']]
 
 /* a state of a compound part, captioned */
 const State = ({ label, children }) => (
@@ -45,7 +45,7 @@ export default function Navigation() {
       {(surface) => (
         <>
           <Part name="NavRail float" slug="nav-rail">
-            <State label="Expanded · 280">
+            <State label="Expanded · 264">
               <div className="h-[640px]">
                 <NavRail variant="float" items={NAV} currentPath={path} onNavigate={setPath} title="Kolkrabbi" onSwitch={noop} onSearch={noop}
                   defaultExpanded={['/tasks']} footer={<RailDisplayControls onCollapse={noop} onHide={noop} />} />

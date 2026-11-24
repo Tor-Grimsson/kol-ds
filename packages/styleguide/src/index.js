@@ -50,7 +50,31 @@ export {
 // of this package pull foundry + opentype.js + framer-motion, so a consumer
 // that wanted one logo card could not build. Import them from their own homes:
 //   AssetGrid, FeatureSplit, ProsePreview, SpectrumGrid → @kolkrabbi/kol-component
-//   TypeSample, TypeSpecCard                            → @kolkrabbi/kol-foundry
+
+// THE SPECIMEN KIT (2026-11-14, type-ramp plan 7.5): one code home for the Figma Specimen family, names and props
+// equal to the library masters (Styleguide page). The first four moved in from kol-foundry, which keeps the old names
+// (TypeSample, TypeSpecCard, TypeSpecimenLive, SpecimenSectionHeader) as aliases on the retirement ledger.
+export { default as SpecimenSample } from './SpecimenSample.jsx'
+export { default as SpecimenSampleGroup } from './SpecimenSampleGroup.jsx'
+export { default as SpecimenSpec } from './SpecimenSpec.jsx'
+export { default as SpecimenLive, readMeta } from './SpecimenLive.jsx'
+export { default as SpecimenHeader } from './SpecimenHeader.jsx'
+// the rest of the Figma family (Sheet, Display and cards, Ramp, Weights sections); the ramp reads kol-theme's 48
+// `--kol-ramp-*` steps through RAMP, and a sheet's font is a prop passed down
+export { default as SpecimenSheet } from './SpecimenSheet.jsx'
+export { default as SpecimenFooterGroup } from './SpecimenFooterGroup.jsx'
+export { default as SpecimenNote } from './SpecimenNote.jsx'
+export { default as SpecimenDisplay } from './SpecimenDisplay.jsx'
+export { default as SpecimenFontCard } from './SpecimenFontCard.jsx'
+export { default as SpecimenFontSheet } from './SpecimenFontSheet.jsx'
+export { default as SpecimenFontFace } from './SpecimenFontFace.jsx'
+export { default as SpecimenRamp } from './SpecimenRamp.jsx'
+export { default as SpecimenRampSection } from './SpecimenRampSection.jsx'
+export { default as SpecimenRampRow } from './SpecimenRampRow.jsx'
+export { default as SpecimenWeights } from './SpecimenWeights.jsx'
+export { default as SpecimenWeightsSection } from './SpecimenWeightsSection.jsx'
+export { default as SpecimenWeightsRow } from './SpecimenWeightsRow.jsx'
+export { RAMP } from './specimenRamp.js'
 
 // The brand tool (brand-as-a-tool, 2026-09-27): the brand book's two pages over one manifest —
 // kol-olina's apps/brand, carried in. `Brand` is the tool; the pages render alone too.
@@ -68,7 +92,7 @@ export { guideSections, guideToc } from './guideBook.js'
 // with — TypeLab · ColorLab · ComboLab · LockupLab, each `<x>Lab(value)` · `<x>LabCss` · `DEFAULT_<X>_LAB`. The same
 // names ship from `@kolkrabbi/kol-styleguide/lab`.
 export {
-  LabWindow, LabOutput, useLabValue,
+  ModalLab, ModalLab as LabWindow, LabOutput, useLabValue,
   TypeLab, typeLab, typeLabCss, DEFAULT_TYPE_LAB, TYPE_RATIOS, TYPE_STEPS, TYPE_ROLES, TYPE_FACES, TYPE_CASES, TYPE_INKS,
   ColorLab, colorLab, colorLabCss, rollColorLab, DEFAULT_COLOR_LAB, COLOR_ROLES, COLOR_RELATIONS, INK_LEVELS, TEXT_STOPS,
   generateColors, assignRoles, tintLadder, midColor, simulateCvd, CVD_TYPES, paletteFromPixels, seededRng, oklchToHex, hexToOklch, contrastRatio, contrastGrade, inkOn, blendRamp,

@@ -3,7 +3,7 @@
 // component=FieldPair
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "float": "float", "default": "default" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 export default {
   example: variant === 'float'
     ? figma.code`<FieldPair variant="float" size="sm" fields={[{ prefix: 'X', value: x, onChange: setX }, { prefix: 'Y', value: y, onChange: setY }]} />`

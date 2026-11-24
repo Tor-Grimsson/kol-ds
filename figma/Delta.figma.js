@@ -4,10 +4,10 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const direction = instance.getEnum('direction', { "up": "up", "down": "down" })
+const direction = instance.getEnum('direction', { "up": "up", "down": "down", "flat": "flat" })
 const value = instance.getString('value')
 const from = instance.getString('from').replace(/^(from|was) /, '')
-const xd = direction === 'up' ? '' : ' direction="down"'
+const xd = direction === 'up' ? '' : ` direction="${direction}"`
 
 export default {
   example: figma.code`<Delta value="${value}"${xd} from="${from}" />`,

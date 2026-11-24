@@ -1,5 +1,5 @@
 import { IconLoader } from '@kolkrabbi/kol-icons'
-import { openColorModes } from '../color/ColorModesWindow'
+import { openColorModes } from '../color/ModalColorModes'
 import { useCallback, useEffect } from 'react'
 import { MenuItem, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest, useModal } from '@kolkrabbi/kol-component'
 import { useNavHidden } from '@kolkrabbi/kol-shell'
@@ -23,7 +23,7 @@ import { toggleDots, useBindDots } from '../params/dotVisibility'
 import { toggleTimelinePinned, useTimelinePinned } from '../params/timelinePinned'
 import { openTab } from './openTab'
 import { LiveFilterRows } from './LiveFilterRows'
-import { useZoom } from './zoomStore'
+import { useZoomSettled } from './zoomStore'
 import { applyWorkspace, currentWorkspaceName, resetWorkspace, saveWorkspace, useWorkspace } from '../state/workspace'
 
 /* The seam (editor/packs.js) — layer creation and effects come from the generators / effects /
@@ -115,7 +115,7 @@ export default function MenuTop() {
   const modal = useModal()
   const dots = useBindDots()
   const timelinePinned = useTimelinePinned()
-  const zoom = useZoom()
+  const zoom = useZoomSettled() /* the Zoom submenu's check marks: the settled zoom (W18), not one menu bar render per pinch step */
   const workspace = useWorkspace()
   const workspaceName = currentWorkspaceName(workspace)
   const onSaveWorkspace = async () => {

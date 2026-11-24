@@ -216,8 +216,8 @@ function Links() {
       <div className="grid grid-cols-[432px_1fr] gap-4 items-start">
         <div className="flex flex-col gap-4">
           <Card variant="float" title="Sites" count={3} className="h-[300px]">{links(SITES)}</Card>
-          <Card variant="float" title="Profiles" className="mt-2" folded={!open.profiles} onFold={fold('profiles')} />
-          <Card variant="float" title="Services & infra" folded={!open.services} onFold={fold('services')} />
+          <Card variant="float" title="Profiles" className="mt-2" collapsedV={!open.profiles} onCollapseV={fold('profiles')} />
+          <Card variant="float" title="Services & infra" collapsedV={!open.services} onCollapseV={fold('services')} />
         </div>
         <Card variant="float" title="Socials" count={8} className="h-[664px]">{links(SOCIALS)}</Card>
       </div>

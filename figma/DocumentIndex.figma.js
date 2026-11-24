@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "cards": "cards", "table": "table" })
+const variant = instance.getEnum('cards', { "true": "cards", "false": "table" })
 const v = variant === 'table' ? ' variant="table"' : ''
 
 export default {

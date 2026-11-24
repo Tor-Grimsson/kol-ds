@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { Button, MenuRow } from '@kolkrabbi/kol-component'
+import { Button, MenuRow, SectionText } from '@kolkrabbi/kol-component'
 import { CatalogPage } from '@kolkrabbi/kol-shell'
 
 export const stage = 'full'
 /* `catalog` = the app tier's Home / Library page · `app` = an app's saved files (preset) · `shelf` = the whole deck page as one word (preset) */
-export const variants = ['catalog', 'app', 'shelf']
+export const variants = ['catalog', 'app', 'shelf', 'kolbox']
 
 const IMG = (h) => 'data:image/svg+xml,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="600" height="850"><rect width="600" height="850" fill="hsl(${h} 25% 50%)"/></svg>`)
 const RECENT = [
@@ -24,6 +24,8 @@ const DECKS = [
 /* the app tier's Home / Library page: PageHeader → ContentFilters → the catalog
  * grid → the bottom action row; RECENT / SAVED semantics are the consumer's */
 export default function CatalogPagePreview({ variant = 'catalog' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return <div className="h-[320px] w-full"><CatalogPage variant="kolbox" sidebar={<div className="w-60 shrink-0" />}><SectionText variant="kolbox" headline="Drafts" /></CatalogPage></div>
   const [view, setView] = useState('recent')
   const [tour, setTour] = useState(false)
   const [favs, setFavs] = useState(() => new Set(['press']))

@@ -25,9 +25,9 @@
      same width as we just set"*); it ramped 264 · 320 from 1536 until then */
   --kol-shell-rail-open: 380px;
   /* THE FLOAT RAIL'S FOOTPRINTS (float-everything W9 row 144, 2026-11-04 — the exploration's `Navigation layout
-   * footprints`): expanded 280 · rail 72 · hidden 0, beside the app rail's 48 / 380 above and the site rail's 240
+   * footprints`): expanded 264 (the default float Rail, `--kol-float-module-w`; 280 until his ruling 2026-11-12) · rail 72 · hidden 0, beside the app rail's 48 / 380 above and the site rail's 240
    * (kol-framework `--kol-sidenav-w`). Pinned states reflow the content; overlays (RailTrigger's card, RailFlyout) never. */
-  --kol-shell-float-rail-open: 280px;
+  --kol-shell-float-rail-open: var(--kol-float-module-w, 264px);
   --kol-shell-float-rail-width: 72px;
   --kol-shell-float-rail-hidden: 0px;
   /* Page gutter — PageShell's padding and PageBleed's negative margin.
@@ -329,9 +329,75 @@
 .kol-tool-rail .kol-btn.kol-btn-float.kol-tool-search { height: var(--kol-float-row); }
 /* RailFlyout: 34 rows on the list round, 12 in, the glyph 12 off the label */
 .kol-rail-flyout .kol-btn.kol-btn-float { height: 34px; padding: 0 12px; gap: 12px; border-radius: var(--kol-float-list-r); font-size: var(--kol-float-t-sm); }
+/* its current row takes the ink and its dot, NO fill — hover is the only fill in a list (plan-2026-11-12 W11.1) */
+.kol-float-chrome.kol-rail-flyout .kol-btn.kol-btn-float[aria-current="page"]:not(.kol-dd-trigger):not(:hover):not(:focus-visible) { background: transparent; }
 /* the float Slider's track fills a dock's column */
 .kol-progress-dock .kol-slider-float { width: 100%; }
 
 /* ── StudioDetail — the preview's hover veil (kol-shell 0.78.0, 2026-10-24): "Click to expand" over the image on hover
    only; the overlay itself is opacity 0 inline, so a touch device never sees it until a tap opens the full view ── */
 .kol-detail-preview:hover .kol-detail-preview-overlay { opacity: 1; }
+
+/* batch 5 (W31.2, 2026-11-18): kolbox's tool dock, transport, phone nav, file browser frame and document title, carried
+   class for class from apps/kolbox. Every rule hangs off the variant's own root class; only what kolbox's own classes
+   set. The dock's surface is `.kol-kolbox-surface` (kol-components-atoms.css). */
+
+/* ToolRail kolbox (kolbox's ToolDock): radius 12, the panel fill; its rules 1 by 24 in oq-24. A slot (ToolRailSlot) 32
+   square (Figma's dock, W16.3), radius 6, the 20 glyph in the ink (R3.4, his "bigger icons", drawn white as his reference), hover the field
+   fill; the armed tool solid accent on the accent's ink;
+   a lit toggle the accent tint. A tool with a fold is ButtonSplit kolbox's icon-only form (kol-components-molecules.css) */
+.kol-tool-rail--kolbox { border-radius: var(--kol-radius-13); /* Figma's toolbar, measured 13 (W7) */ background-color: var(--kol-surface-secondary); }
+.kol-tool-rail--kolbox .kol-tool-rail-rule { background-color: var(--kol-kolbox-line); }
+.kol-tool-slot--kolbox { border-radius: var(--kol-radius-4); color: var(--kol-surface-on-primary); }
+.kol-tool-slot--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-tool-slot--kolbox:not(.is-active):not(.is-lit):enabled:hover { background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+/* a lit toggle: the field wash and the ink; only the armed tool keeps the accent (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-tool-slot--kolbox.is-lit { background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+.kol-tool-slot--kolbox.is-active { background-color: var(--kol-accent-primary); color: var(--kol-accent-on-primary); }
+
+/* ToolRail folio (Folio's ToolRow, batch D 2026-11-22): its rule under it in Folio's rule ink */
+.kol-tool-rail--folio { border-color: var(--kol-folio-rule); }
+
+/* AppFloatNav folio, transport (Folio's ToolTransport, batch D 2026-11-22): its slots are Button folio's icon (batch A);
+   the time mono 12 / 16, its total muted */
+.kol-transport--folio .kol-transport-time { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+.kol-transport--folio .kol-transport-total { color: var(--kol-folio-muted); }
+
+/* AppFloatNav kolbox, transport: the time mono 12 / 16 in the ink */
+.kol-transport--kolbox .kol-transport-time { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-surface-on-primary); }
+
+/* AppFloatNav kolbox, the phone nav (kolbox's RailPhone): the pill and More's circle on the field fill, the lit slot
+   oq-24, the glyphs in the ink */
+.kol-phone-nav--kolbox .kol-phone-nav-pill,
+.kol-phone-nav--kolbox .kol-phone-nav-slot.is-round { background-color: var(--kol-kolbox-field); }
+.kol-phone-nav--kolbox .kol-phone-nav-slot { color: var(--kol-surface-on-primary); }
+.kol-phone-nav--kolbox .kol-phone-nav-slot.is-lit:not(.is-round) { background-color: var(--kol-kolbox-field-strong); }
+.kol-phone-nav--kolbox .kol-phone-nav-slot:focus-visible { outline-color: var(--kol-accent-primary); }
+
+/* CatalogPage kolbox (kolbox's Browser): the panel fill, the sans at 12 / 16 in the ink */
+.kol-catalog-page--kolbox { background-color: var(--kol-surface-secondary); font-family: var(--kol-font-family-sans); font-size: 12px; line-height: 16px; color: var(--kol-surface-on-primary); }
+
+/* DocumentCapsule kolbox (the top rail's document title): the slash 14 / 20 muted; the name 13 / 18 medium in the ink,
+   the accent on hover and while its menu is open; the chevron muted at rest */
+.kol-document-title--kolbox .kol-document-title-slash { font-size: 14px; line-height: 20px; color: var(--kol-oq-64); }
+.kol-document-title--kolbox .kol-document-title-name { border-radius: var(--kol-radius-4); font-size: 13px; line-height: 18px; font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-document-title--kolbox .kol-document-title-name:enabled:hover,
+.kol-document-title--kolbox .kol-document-title-name.is-open { background-color: var(--kol-kolbox-field); } /* (plan-2026-11-23-editor-measured-against-figma W4), was the accent ink */
+.kol-document-title--kolbox .kol-document-title-name:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-document-title--kolbox .kol-document-title-chevron { color: var(--kol-oq-64); }
+
+/* MenuBar folio (Folio batch B, 2026-11-22): the bar between two rules; a trigger Folio's meta in the ink, the surface on
+   hover and while its list is open */
+.kol-menubar--folio { border-color: var(--kol-folio-rule); }
+.kol-menubar-trigger--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; color: var(--kol-folio-ink); }
+.kol-menubar-trigger--folio:hover,
+.kol-menubar-trigger--folio.is-open { background-color: var(--kol-folio-surface); }
+
+/* MenuBar kolbox (Folio on kolbox, 2026-11-22; kolbox's retired top rail bar): the panel fill, the rails' line under it;
+   a trigger radius 4, the label role (12 / 16 at the look's label weight) in the ink, the field fill on hover and while
+   its list is open, the accent's focus line */
+.kol-menubar--kolbox { background-color: var(--kol-surface-secondary); border-color: var(--kol-kolbox-line); }
+.kol-menubar-trigger--kolbox { border-radius: var(--kol-radius-4); font-family: var(--kol-font-family-sans); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-menubar-trigger--kolbox:hover,
+.kol-menubar-trigger--kolbox.is-open { background-color: var(--kol-kolbox-field); }
+.kol-menubar-trigger--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }

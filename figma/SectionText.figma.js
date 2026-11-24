@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "page": "page", "app": "app", "section": "section", "content": "content", "document": "document", "float": "float" })
+const variant = instance.getEnum('variant', { "page": "page", "app": "app", "section": "section", "content": "content", "document": "document", "float": "float", "kolbox": "kolbox" })
 const eyebrow = instance.getBoolean('eyebrow') ? figma.code` eyebrow="${instance.getString('eyebrowText')}"` : ''
 const headline = instance.getString('headline')
 const body = instance.getBoolean('lede') ? figma.code` body="${instance.getString('body')}"` : ''

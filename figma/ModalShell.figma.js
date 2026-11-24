@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 // header, body and footer are slots; padding and gap are the caller's className
-const variant = instance.getEnum('variant', { "lift": "lift", "bordered": "bordered", "float": "float", "settings": "settings" })
+const variant = instance.getEnum('variant', { "lift": "lift", "bordered": "bordered", "float": "float", "settings": "settings", "kolbox": "kolbox" })
 const v = variant === 'lift' ? '' : ` variant="${variant}"`
 
 export default {

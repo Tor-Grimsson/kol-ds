@@ -59,7 +59,7 @@ export default function App() {
       nav={NAV} defaultExpanded={['/parts', '/views']} currentPath={path} onNavigate={go} title="Float"
       bar={{ document: { name: view ? `Float / ${view.label}` : 'Float' }, ...bar }}
       inspector={view?.mod?.inspector ?? (({ hide }) => (
-        <PropertyRail title="Inspector" onCollapse={hide} tabs={[{ value: 'layers', label: 'Layers' }, { value: 'properties', label: 'Properties' }]} tab={mode} onTab={setMode}
+        <PropertyRail title="Inspector" onCollapseH={hide} tabs={[{ value: 'layers', label: 'Layers' }, { value: 'properties', label: 'Properties' }]} tab={mode} onTab={setMode}
           sections={[{ rows: [{ render: () => <EmptyState variant="float" title="Nothing selected" body="Select something to see its fields." /> }] }]} />
       ))}
       {...layout}

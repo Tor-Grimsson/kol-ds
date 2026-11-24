@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import ColorSwatch from './ColorSwatch.jsx'
-import Input from '../atoms/Input.jsx'
+import Input, { selectOnFirstPress, useKolboxField } from '../atoms/Input.jsx'
+import FieldPair from './FieldPair.jsx'
 import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
 
 /**
@@ -66,7 +67,7 @@ import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
  *   transparentTone — TransparentX stroke tone for the null/unused swatch:
  *                     'warning' (default) | 'error' | 'info' | 'success'
  */
-export default function ColorInputRow({
+function ColorInputRowDefault({
   value,
   onChange,
   label,
@@ -160,7 +161,7 @@ export default function ColorInputRow({
       {chip('stretch')}
       <span
         aria-hidden="true"
-        className={`absolute inset-0 inline-flex items-center justify-center rounded-[var(--kol-radius-xs)] transition-opacity bg-fg-ab-48 text-white pointer-events-none ${
+        className={`absolute inset-0 inline-flex items-center justify-center rounded-[var(--kol-radius-2)] transition-opacity bg-fg-ab-48 text-white pointer-events-none ${
           locked ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}
       >
@@ -278,4 +279,124 @@ export default function ColorInputRow({
       )}
     </>
   )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's FillRow (Figma 84:12831), carried from apps/kolbox/src/ui/FillRow.jsx: one joined field (oq-16, radius 4, no
+ * outline) holding the hex segment (the 16 swatch and the hex in Inter 11, padding 6 and 8, gap 8) and, after a 1px
+ * gap in the rail ground (1 by 22, W16.5), the opacity segment (the value mono 11 and "%" muted, 8 in, the % 16 after the
+ * value and 4 off the end); with `actions` the row is FieldPair
+ * kolbox's: the field over both field columns of the rail's grid, the actions on its icon columns (R3.1). The
+ * swatch opens the caller's color overlay through `onSwatch` (with `lit` while it is open), or else the row's own
+ * `picker` (ColorPickerPopover variant="kolbox": this row is a molecule and cannot import the organism, so the caller
+ * hands it in), beside the rail level with the swatch. The hex is edited in place (one press selects it, a short hex grows on Enter or blur: `expandHex`); a value that is not a plain hex shows
+ * `resolved` on the swatch and its own text in the field. `opacity` 0 to 100 through `onOpacity` (read-only without it);
+ * null draws no opacity segment. `clearable`: emptying the hex commits null (an optional color, unset). `hidden` (the paint's eye is off) dims the opacity value; the color stays readable. `label` names the row's parts for a reader; this look draws no label. */
+const HEX_KOLBOX = /^[0-9a-f]{6}$/i
+/* a short hex grows on commit: 1 character six times, 2 three times, 3 each doubled; 6 as written; anything else is null */
+export function expandHex(raw) {
+  const d = String(raw ?? '').trim().replace(/^#/, '')
+  if (!/^[0-9a-f]+$/i.test(d)) return null
+  if (d.length === 1) return d.repeat(6)
+  if (d.length === 2) return d.repeat(3)
+  if (d.length === 3) return [...d].map((c) => c + c).join('')
+  return d.length === 6 ? d : null
+}
+function ColorInputRowKolbox({ label, value, resolved, onChange, onSwatch, opacity, onOpacity, actions, lit = false, hidden = false, clearable = false, picker: Picker }) {
+  const hex = HEX_KOLBOX.test(String(value ?? '').replace('#', '')) ? String(value).replace('#', '').toUpperCase() : null
+  const swatch = resolved ?? (hex ? `#${hex}` : null)
+  const swatchRef = useRef(null)
+  const [picking, setPicking] = useState(false)
+  /* the row's own picker opens beside the rail (never over it), level with the swatch; outside a rail, beside the swatch */
+  const anchor = useMemo(() => ({
+    getBoundingClientRect() {
+      const sw = swatchRef.current?.getBoundingClientRect()
+      const rail = swatchRef.current?.closest('[data-rail]')?.getBoundingClientRect()
+      return rail ? { left: rail.left, right: rail.left, top: sw.top, bottom: sw.top } : sw
+    },
+    contains: (t) => !!swatchRef.current?.contains(t),
+  }), [])
+  /* the hex and the opacity are kolbox's fields (Input's useKolboxField): Escape restores, the opacity's arrows step */
+  const hexField = useKolboxField(hex ?? String(value ?? ''), (text) => {
+    if (clearable && !text) { if (value) onChange?.(null); return }
+    const d = expandHex(text)
+    if (d) onChange?.(`#${d.toLowerCase()}`)
+  }, { step: false })
+  const op = opacity == null ? null : Math.round(opacity)
+  const opField = useKolboxField(op, (text) => { const n = parseFloat(text); if (Number.isFinite(n)) onOpacity?.(Math.min(100, Math.max(0, n))) })
+  const field = (
+      <div className={`kol-color-row-field flex h-(--kol-kolbox-ctl) min-w-0 flex-1 items-stretch${lit || picking ? ' is-lit' : ''}`} data-fill-field>
+        <div className="flex min-w-0 flex-1 items-center gap-2 pr-2 pl-1.5" data-fill-hex>
+          <Tooltip variant="kolbox" asChild label={label}>
+          <button
+            ref={swatchRef}
+            type="button"
+            aria-label={`${label}: ${swatch ?? hexField.value}`}
+            aria-expanded={onSwatch ? lit : picking}
+            className="kol-color-row-swatch relative size-3.5 shrink-0 outline-none focus-visible:outline-solid focus-visible:outline-1"
+            style={{ background: swatch ?? 'transparent' }}
+            onClick={(e) => (onSwatch ? onSwatch(e) : setPicking((o) => !o))}
+          />
+          </Tooltip>
+          <input
+            className="kol-color-row-hex min-w-0 flex-1 self-stretch bg-transparent uppercase outline-none"
+            aria-label={`${label} hex`}
+            {...hexField}
+            onMouseDown={selectOnFirstPress}
+          />
+        </div>
+        {op != null && (
+          <>
+            {/* Figma's pair (W16.5): a 1 by 22 gap in the rail's ground; the number 8 in, the % 16 after it and 4 off the end */}
+            <span className="kol-color-row-rule my-px w-px shrink-0" />
+            <label className="flex shrink-0 items-center gap-4 self-stretch pr-1 pl-2" data-fill-opacity>
+              <input
+                aria-label={`${label} opacity`}
+                readOnly={!onOpacity}
+                {...opField}
+                onMouseDown={selectOnFirstPress}
+                className="kol-color-row-opacity field-sizing-content min-w-0 self-stretch bg-transparent outline-none"
+              />
+              <span className="kol-color-row-unit">%</span>
+            </label>
+          </>
+        )}
+      </div>
+  )
+  const picker = !onSwatch && Picker && (
+        <Picker
+          variant="kolbox"
+          anchor={anchor}
+          open={picking}
+          onClose={() => setPicking(false)}
+          color={swatch && HEX_KOLBOX.test(swatch.replace('#', '')) ? swatch : undefined}
+          opacity={op ?? 100}
+          onChange={({ value: v, opacity: o }) => { onChange?.(v.toLowerCase()); if (op != null && o !== op) onOpacity?.(o) }}
+        />
+      )
+  const root = `kol-color-row--kolbox min-w-0 flex-1 ${hidden ? 'is-hidden' : ''}`
+  /* with actions the row is a rail row: the field spans the grid's two field columns, the actions sit on its icon
+     columns (FieldPair kolbox, R3.1); alone it is a field that fills its cell */
+  return actions
+    ? <><FieldPair variant="kolbox" span className={root} data-fill-row first={field} trailing={actions} />{picker}</>
+    : <div className={`${root} flex h-(--kol-kolbox-ctl) items-center`} data-fill-row>{field}{picker}</div>
+}
+
+/* ── folio (Folio batch C, 2026-11-22): Folio's SwatchRow, carried class for class. The swatch (the `picker`,
+ * ColorPickerPopover variant="folio", handed in as kolbox's is: a molecule cannot import the organism), the `label`
+ * (12 / 16 medium, taking the room) and the hex (mono 12 / 16, capitals, Folio's muted ink), 12 apart. `swatches`
+ * ([name, hex]) go to the picker; `onChange(hex)`. Chrome in kol-theme `.kol-color-row--folio`. ── */
+function ColorInputRowFolio({ label, value, swatches, onChange, picker: Picker }) {
+  return (
+    <div className="kol-color-row--folio flex w-full items-center gap-[12px]">
+      {Picker && <Picker variant="folio" label={label} color={value} swatches={swatches} onChange={onChange} />}
+      <p className="kol-color-row-label min-w-0 flex-1 truncate">{label}</p>
+      <p className="kol-color-row-value shrink-0 uppercase">{value}</p>
+    </div>
+  )
+}
+
+export default function ColorInputRow(props) {
+  if (props.variant === 'folio') return <ColorInputRowFolio {...props} />
+  return props.variant === 'kolbox' ? <ColorInputRowKolbox {...props} /> : <ColorInputRowDefault {...props} />
 }

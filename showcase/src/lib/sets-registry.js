@@ -77,6 +77,7 @@ export const SET_FAMILY = {
   'section-set': 'component',
   'stack-blog': 'content',
   styleguide: 'styleguide',
+  specimen: 'styleguide',
   'work-portfolio': 'content',
 }
 export const setsOfFamily = (dir) => SETS.filter((s) => (SET_FAMILY[s.key] ?? 'component') === dir)

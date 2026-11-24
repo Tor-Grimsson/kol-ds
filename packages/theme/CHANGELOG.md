@@ -1,5 +1,57 @@
 # @kolkrabbi/kol-theme
 
+## Unreleased
+
+- **Kolbox light's grounds pulled back to near neutral** (plan-2026-11-18-kolbox-system W17, decided for his review): in `kol-color.css`'s kolbox light block, surface primary `#f9f5d7` → `#f7f6f0`, secondary `#fbf1c7` → `#f6f4ea`, and the pinned oq 08 `#f2e5bc` → `#eeebe2`, 16 `#ebdbb2` → `#e8e4db`, 24 `#d5c4a1` → `#d7d3cb`, 32 `#bdae93` → `#c6c2bc` (24% toward white, then 30% of the chroma kept in Oklab). Inks, accent, status and palette unchanged; derived steps (accent-strong, the other oq steps, secondary hover and press) follow. Kolbox dark, kolcore, minimal and folio: 0 variables changed in light, dark, os-dark and os-light.
+
+- **The mono, helper and table cell classes read the type ramp** (plan-2026-11-15-typography-page 6.2): every `font-size` and `line-height` in `.kol-mono-{8,10,12,14,16,20}` (T10, L8, L6, L5, L4, L2), `.kol-helper-{8,10,12,14,16,20}` (U10, U8, U6, U5, U4, U2), `.kol-table-cell-title` and `.kol-table-cell-text` (L6) is a `--kol-ramp-*` token. Changed line heights: `.kol-mono-10` 14 → 13, `.kol-mono-16` 22 → 21, the table cells 16 (title was 15.6, text 16.8). Everything else computes as before. `kol-type-mono-classes.css` now needs `kol-typography.css` loaded for the tokens.
+
+## 0.225.0 — 2026-11-12
+
+- **`--kol-float-window-w`** — the float window's width, 562 (plan-2026-11-12-one-header W6.1): ModalDialog float and the useModal float prompts read it (they set 562 / 418 by hand).
+
+## 0.224.0 — 2026-11-12
+
+- **`--kol-float-collapsed-h`** — the collapsed-v Rail's pill, 40 (48 on touch) (plan-2026-11-12-one-header W2.1). `--kol-float-fold-h` stays as its deprecated alias (`var(--kol-float-collapsed-h)`).
+
+## 0.223.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma, the user's pick from the selected-row board:
+
+- **LayerStack's selected row is `--kol-fg-12`** (white 12% in dark, ink 12% in light), fill only, no stroke; its name at
+  `--kol-fg-emphasis`, its glyph on `--kol-oq-96` (icons take oq). It was an accent mix at 26%. A selected container's
+  expanded children tint `--kol-fg-08` (was accent 11%). Hover stays `--kol-fg-04`.
+
+## 0.222.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W11.1 (the user: *"what did I also say now 5 times about hover states and gaps?"*):
+- **Added: `--kol-spacing-0-5` (0.125rem, 2px)** — the gap between list rows, so two fills never touch.
+- **Changed: the menu panel's current row** (`.kol-menu-panel .kol-menu-row--current`, non-float) takes the ink and its dot, NO fill (it was oq-16, like hover). Hover, keyboard focus (`:focus-visible`, new) and an open flyout's row are the only fill.
+- **Changed: RailFlyout's current row** takes no fill (it was fg-16); hover is the only fill.
+- **Changed: `.kol-dd-list`'s max-height** counts the 2px gaps between its rows.
+
+
+## 0.221.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma 2.1 (his ruling, P1 LAW: *"264 AND 360"* — float Rails are 264 and 360 wide, nothing else):
+- **Changed: `--kol-float-module-w` 264** (was 272) and **`--kol-float-module-w-wide` 360** (was 352).
+- **Changed: `--kol-shell-float-rail-open` reads `--kol-float-module-w`** (264, was 280) — the float NavRail expanded is the default Rail.
+
+## 0.220.0 — 2026-11-12
+
+plan-2026-11-12-float-system W3.1:
+- **Changed: the float list's states** — hover is the only fill: a hovered, keyboard-focused or opened row lifts on `--kol-float-row-hover` (fg-16); the current row (`.kol-menu-row--current`) takes the ink and its dot on `--kol-float-row-selected` (no fill — it was fg-16). Keyboard focus is the hover fill, not the 2px ring. The two tokens are set on `.kol-menu-panel--float`. The row reads `--kol-float-list-row` (34, unchanged).
+
+## 0.219.0 — 2026-11-12
+
+plan-2026-11-12-float-system W2.1:
+- **Changed: `.kol-slider-float` stands at `--kol-float-h-sm`** (28; touch 36), was 24 — the float Slider is track and thumb only on a row of the control height (kol-component 0.363.0). The track and thumb are unchanged.
+
+## 0.218.0 — 2026-11-12
+
+plan-2026-11-12-float-system W1.2 (the float spec, docs/documentation/04-compositions/25-float-spec.md):
+- **New float spec tokens**, beside the `--kol-float-*` sizes: `--kol-float-chev-{sm,md,lg}` (12 · 12 · 16; touch 14 · 14 · 16), `--kol-float-ic-{sm,md,lg}` (the adjacent glyph, 14 · 16 · 18; touch 16 · 18 · 20), `--kol-float-module-w` (272) and `--kol-float-module-w-wide` (352), `--kol-float-label-w` (110), `--kol-float-label-gap` (8), `--kol-float-module-gap` (18), `--kol-float-fold-h` (40; touch 48), `--kol-float-list-row` (34). Additive; nothing reads them differently yet.
+
 ## 0.217.0 — 2026-11-08
 
 plan-2026-11-08-outstanding W2 (one modal panel):

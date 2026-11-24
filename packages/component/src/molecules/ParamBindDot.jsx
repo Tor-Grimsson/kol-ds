@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { Menu } from './Menu.jsx'
 import { Tooltip } from '../utilities/Popover.jsx'
 
@@ -39,7 +40,7 @@ const SIZE = {
  * @param {number} [minWidth=180] - The menu's minimum width
  * @param {string} [className] - Extra classes on the trigger
  */
-export default function ParamBindDot({
+function ParamBindDotDefault({
   bound = false,
   mode,
   items = [],
@@ -60,7 +61,7 @@ export default function ParamBindDot({
           aria-label={name}
           {...props}
           className={[
-            'kol-param-bind-dot group inline-flex shrink-0 items-center justify-center p-0 border-0 bg-transparent cursor-pointer rounded-[var(--kol-radius-xs)] outline-none',
+            'kol-param-bind-dot group inline-flex shrink-0 items-center justify-center p-0 border-0 bg-transparent cursor-pointer rounded-[var(--kol-radius-2)] outline-none',
             'focus-visible:outline focus-visible:outline-1 focus-visible:outline-[var(--kol-focus-ring-quiet)]',
             SIZE[size] ?? SIZE.sm,
             className,
@@ -76,4 +77,30 @@ export default function ParamBindDot({
       </Tooltip>
     )} />
   )
+}
+
+/* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): kolbox's BindDot (round 4, W5), its drawing carried
+ * from apps/kolbox/src/labs/Params.jsx (the binding itself stays the caller's): a 16 hit box, a 6 dot hollow on the muted
+ * ring, filled in the accent once `bound`; the kolbox Tooltip (`tooltip`, else "Modulate"); a press opens Menu kolbox
+ * beside it with `items` ({ label, checked, onClick }) as one group. */
+function ParamBindDotKolbox({ bound = false, items = [], label, tooltip, minWidth = 180 }) {
+  const ref = useRef(null)
+  const [open, setOpen] = useState(false)
+  return (
+    <>
+      <Tooltip variant="kolbox" label={tooltip ?? 'Modulate'}>
+        <button ref={ref} type="button" aria-label={`Modulate${label ? ` ${label}` : ''}`} aria-haspopup="menu" aria-expanded={open} data-bind-dot
+          onClick={() => setOpen((o) => !o)}
+          className="kol-bind-dot--kolbox inline-flex size-4 shrink-0 items-center justify-center rounded-full outline-none focus-visible:outline-solid focus-visible:outline-1">
+          <span className={`kol-bind-dot-mark${bound ? ' is-bound' : ''} size-1.5 rounded-full`} />
+        </button>
+      </Tooltip>
+      <Menu variant="kolbox" aria-label="Modulate" anchor={ref} open={open} onClose={() => setOpen(false)} minWidth={minWidth}
+        groups={[items.map((it, i) => ({ label: it.label, value: i, check: !!it.checked }))]} onSelect={(r) => items[r.value]?.onClick?.()} />
+    </>
+  )
+}
+
+export default function ParamBindDot(props) {
+  return props.variant === 'kolbox' ? <ParamBindDotKolbox {...props} /> : <ParamBindDotDefault {...props} />
 }

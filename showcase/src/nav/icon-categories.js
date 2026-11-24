@@ -8,6 +8,8 @@ export const ICON_CATEGORIES = {
   /* interface (kol-icons 0.58.0, plan-2026-10-31-icon-categories): the folders ARE the user's 18 categories (20 since 2026-11-05: `communication` split out of people, then `games` — the chess sets), so no
    * category layer sits over them — each folder is its own page */
   'kol-icon-set-interface': [],
+  /* editor (2026-11-22): two groups, design and typography, each its own page */
+  'kol-icon-set-editor': [],
   'kol-icon-set-signal': [
     { slug: 'waves', name: 'Waves', groups: ['wave', 'curve', 'ramp', 'shaper', 'filter'] },
     { slug: 'patterns', name: 'Patterns', groups: ['dither', 'pattern', 'ascii', 'line', 'radial'] },

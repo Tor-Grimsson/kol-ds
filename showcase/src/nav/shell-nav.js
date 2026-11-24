@@ -246,6 +246,8 @@ export const buildShellSearchItems = () => {
    * an icon's tags (KOL_ICON_TAGS) ride its keywords, so "lab" finds the flasks */
   const icons = Object.entries(ICON_SETS).flatMap(([set, { title: setTitle, groups }]) => {
     return [
+      /* the Icons page itself, over every set (the Styles rail's Icons label) */
+      ...(set === Object.keys(ICON_SETS)[0] ? [{ id: 'icons', title: 'Icons', kind: 'icon set', space: 'styles', category: 'Icon sets', href: '/icons' }] : []),
       { id: `icons-${set}`, title: setTitle, kind: 'icon set', space: 'styles', category: 'Icon sets', keywords: [set], href: `/icons/${set}` },
       /* a category is a page over its groups (Round 15, 2026-10-20); its groups file under it. The row
        * files under ITS OWN name: a query that names a section lists that section's rows (the engine's
@@ -253,7 +255,9 @@ export const buildShellSearchItems = () => {
       ...(ICON_CATEGORIES[set] ?? []).map((c) => ({ id: `icons-${set}-c-${c.slug}`, title: c.name, kind: 'icon category', space: 'styles', category: c.name, keywords: [setTitle, ...c.groups.map(label)], href: `/icons/${set}/${c.slug}` })),
       ...Object.entries(groups).flatMap(([folder, names]) => [
         { id: `icons-${set}-${folder}`, title: label(folder), kind: 'icon group', space: 'styles', category: categoryOf(set, folder)?.name ?? setTitle, href: `/icons/${set}/${folder}` },
-        ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), keywords: [setTitle, ...(KOL_ICON_TAGS[name] ?? [])], href: `/icons/${set}/${folder}` })),
+        /* an icon is found inside a page, not a page: the search modal lists it after every page, under one Icons
+         * heading, with a row to the catalog (plan-2026-11-20 W17.2) */
+        ...names.map((name) => ({ id: `icon-${name}`, title: name, kind: 'icon', space: 'styles', category: label(folder), within: 'Icons', withinHref: '/icons', keywords: [setTitle, ...(KOL_ICON_TAGS[name] ?? [])], href: `/icons/${set}/${folder}` })),
       ]),
     ]
   })

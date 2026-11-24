@@ -1,7 +1,7 @@
 /**
  * ButtonGroup — the one component for a group of buttons (plan-2026-11-06-buttons-page 2.7; the user,
  * 2026-11-06: *"button group CAN be segmented toggle … just by the fact it wraps multiple buttons"*).
- * Three layouts:
+ * Five layouts:
  *
  *   layout="row"    (default) — a responsive layout wrapper for a group of Buttons: stacked full-width on
  *                   mobile, a horizontal row from `sm` up, aligned left / center / right. Pure layout —
@@ -13,9 +13,15 @@
  *   layout="stack"  — the same wrapper, stacked at every width (the row's 8 stacked gap).
  *   layout="joined" — the segmented control (was `SegmentedToggle`, kept as its alias on the retirement
  *                   ledger): joined cells, no gap, built from `options` instead of children. See below.
+ *   layout="wrap"   — the buttons 8 apart in a row that wraps to the next line when its column runs out, full
+ *                   width (kolbox's rail rows, plan-2026-11-18-kolbox-system W31.2, 2026-11-18).
+ *   layout="grid"   — two equal columns 8 apart, full width, so the longest label fits a narrow rail (kolbox's
+ *                   Rolls and randomise rows). wrap and grid take no `align` or `title`; other props land on the box.
  *
  * row / stack props:
- * @param {'left'|'center'|'right'} align horizontal alignment + container layout mode (default 'center')
+ * @param {'left'|'center'|'right'|'between'} align horizontal alignment + container layout mode (default 'center'); `between`
+ *   (2026-11-12, plan-2026-11-12-one-header W6.1) sets the first button at the left and the last at the right — a float
+ *   window's Cancel · Export row
  * @param {string}    title     optional heading rendered above the group, authored at the call site
  * @param {string}    className extra container classes (appended) — note this lands on the OUTER
  *   container, not the flex row that carries the gap; the gap is responsive by default (8 stacked,
@@ -87,24 +93,36 @@
  *               (`floatSurfaceClass`, kol-theme `.kol-float-*`)
  *   ariaLabel — accessible name for the group
  *   className — additional classes on the outer shell
+ *   variant="kolbox" — kolbox's icon group (W31.2 batch 3): `options` `[{ icon, ariaLabel, pressed, onPress }]`, each its
+ *               own action; `tone` unset (cells) or `sunken` (the track). With `value` (Folio on kolbox, 2026-11-22) kolbox's
+ *               choice that stays, its tab track: `options` `[{ value, label }]`, the picked cell lit, aria-pressed
+ *   variant="folio" — Folio's (batch A, 2026-11-22), by the state law: with `value` its segmented choice (`options`
+ *               `[{ value, label }]`, the picked cell lit, aria-pressed); without, its tool icons joined (`options`
+ *               `[{ icon, ariaLabel, pressed, onPress }]`)
  */
 import { toneClass, floatSurfaceClass } from '../utilities/tone.js'
 import { Tooltip } from '../utilities/Popover.jsx'
+import Button from '../atoms/Button.jsx'
 
 const CONTAINER = {
   left: 'flex flex-col w-full',
   center: 'flex sm:inline-flex flex-col w-full sm:w-auto sm:mx-auto',
   right: 'flex flex-col w-full',
+  between: 'flex flex-col w-full',
 }
 
 const JUSTIFY = {
   left: 'sm:justify-start',
   center: 'sm:justify-center',
   right: 'sm:justify-end',
+  between: 'sm:justify-between',
 }
 
 export default function ButtonGroup({ layout = 'row', align = 'center', title, className = '', children, ...joined }) {
   if (layout === 'joined') return <Joined className={className} {...joined} />
+  if (layout === 'wrap' || layout === 'grid') {
+    return <div className={`${layout === 'grid' ? 'grid grid-cols-2' : 'flex flex-wrap items-center'} w-full min-w-0 gap-2 ${className}`.trim()} {...joined}>{children}</div>
+  }
   return (
     <div className={[CONTAINER[align] || CONTAINER.center, className].filter(Boolean).join(' ')}>
       {title && <h3 className="kol-sans-heading-05 text-emphasis mb-6">{title}</h3>}
@@ -130,8 +148,66 @@ export default function ButtonGroup({ layout = 'row', align = 'center', title, c
   )
 }
 
+/* layout="joined" variant="kolbox" (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's IconGroup carried
+ * class for class. Each option is its own action, a kolbox icon Button (`{ icon, ariaLabel, pressed, onPress }`): no
+ * `value`, every option lights by its own `pressed`. Unset tone: each glyph in its own oq-16 cell, 1px apart so the
+ * ground shows between them, radius 4 on the group's outer corners only, a pressed cell the accent tint. `tone="sunken"`:
+ * Home's view switch, square cells the group's height (24, Figma's view toggles measured, plan-2026-11-23-editor-measured-
+ * against-figma W7), side by side on the ground, the pressed cell (aria-pressed only) the oq-16 field
+ * with its glyph in the ink, the others bare. Chrome in kol-theme `.kol-btn-group--kolbox`. */
+function JoinedKolbox({ options, tone, className }) {
+  const sunken = tone === 'sunken'
+  return (
+    <div className={`kol-btn-group--kolbox${sunken ? ' kol-btn-group--kolbox-sunken' : ' gap-px overflow-hidden'} inline-flex h-(--kol-kolbox-ctl) shrink-0 ${className}`}>
+      {options.map(({ icon, ariaLabel, pressed, onPress }) => (sunken
+        ? <Button key={ariaLabel} variant="kolbox" iconOnly={icon} aria-label={ariaLabel} aria-pressed={!!pressed} onClick={onPress} className="aspect-square h-full! w-auto!" />
+        : <Button key={ariaLabel} variant="kolbox" iconOnly={icon} aria-label={ariaLabel} pressed={pressed} onClick={onPress} className="flex-1 rounded-none" />))}
+    </div>
+  )
+}
+
+/* layout="joined" variant="folio" (Folio migration batch A, 2026-11-22): Folio's two joined parts, split by the segmented
+ * state law. With a `value` it is Folio's Seg (apps/folio Chrome.jsx), a choice that stays: 32 high, radius 4, the rule
+ * line round equal cells padded 16, the picked one the accent's soft ground and strong ink (aria-pressed, as Folio's),
+ * the rest muted, the ink on hover. Stateless it is Folio's ToolGroup (EditorChrome.jsx): Folio's tool icons side by side,
+ * no gap, `options` `[{ icon, ariaLabel, pressed, onPress }]`, each its own action. Chrome in kol-theme
+ * `.kol-btn-group--folio`. */
+function JoinedFolio({ value, onChange, options, ariaLabel, className }) {
+  if (value == null) {
+    return (
+      <span role="group" aria-label={ariaLabel} className={`flex shrink-0 items-center ${className}`.trim()}>
+        {options.map(({ icon, ariaLabel: name, pressed, onPress }) => <Button key={name} variant="folio" iconOnly={icon} aria-label={name} pressed={pressed} onClick={onPress} />)}
+      </span>
+    )
+  }
+  return (
+    <div role="group" aria-label={ariaLabel} className={`kol-btn-group--folio flex h-[32px] overflow-hidden rounded-[4px] border ${className}`.trim()}>
+      {options.map((opt) => (
+        <button key={opt.value} type="button" aria-pressed={value === opt.value} onClick={() => onChange?.(opt.value)} className="kol-btn-group-cell flex-1 whitespace-nowrap px-[16px]">{opt.label}</button>
+      ))}
+    </div>
+  )
+}
+/* layout="joined" variant="kolbox" with a `value` (Folio on kolbox, 2026-11-22): kolbox's choice that stays (Off and On,
+ * Miter, Round and Bevel) is its tab track, so this draws TabsRow kolbox sm's track and cells (its chrome,
+ * `.kol-tabs--kolbox-sm`, kol-components-molecules.css) as a group: `options` `[{ value, label }]`, the picked cell lit and
+ * aria-pressed, `ariaLabel` names it. */
+function JoinedKolboxChoice({ value, onChange, options, ariaLabel, className }) {
+  return (
+    <div role="group" aria-label={ariaLabel} className={`kol-tabs--kolbox kol-tabs--kolbox-sm inline-flex h-(--kol-kolbox-ctl) items-center gap-px p-0.5 ${className}`.trim()}>
+      {options.map((opt) => (
+        <button key={opt.value} type="button" aria-pressed={opt.value === value} disabled={opt.disabled} onClick={() => onChange?.(opt.value)}
+          className={`kol-tabs-tab${opt.value === value ? ' is-active' : ''} flex h-full min-w-0 flex-1 items-center justify-center px-3 whitespace-nowrap outline-none focus-visible:outline-solid focus-visible:outline-1 disabled:opacity-40`}>{opt.label}</button>
+      ))}
+    </div>
+  )
+}
+
+
 /* layout="joined" — the segmented control (SegmentedToggle's implementation, moved here 2026-11-06) */
 function Joined({ value, onChange, options = [], variant = 'default', size = 'md', tone = 'default', surface = 'solid', ariaLabel, className = '' }) {
+  if (variant === 'kolbox') return value == null ? <JoinedKolbox options={options} tone={tone} className={className} /> : <JoinedKolboxChoice value={value} onChange={onChange} options={options} ariaLabel={ariaLabel} className={className} />
+  if (variant === 'folio') return <JoinedFolio value={value} onChange={onChange} options={options} ariaLabel={ariaLabel} className={className} />
   const float = variant === 'float'
   const cellType = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }[size]
   const stateless = value == null

@@ -5,9 +5,9 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 // variant default · media × checked (2026-11-07)
-const variant = instance.getEnum('variant', { "default": "default", "media": "media" })
+const variant = instance.getEnum('variant', { "default": "default", "media": "media", "float": "float", "kolbox": "kolbox" })
 const checked = instance.getEnum('checked', { "true": "true", "false": "false" })
-const xv = variant === 'media' ? ' variant="media"' : ''
+const xv = variant === 'media' || variant === 'kolbox' ? ` variant="${variant}"` : ''
 export default {
   example: figma.code`<ToggleCheckbox${xv} label="Accept" checked={${checked}} onChange={setChecked} />`,
   imports: ["import { ToggleCheckbox } from \"@kolkrabbi/kol-component\""],

@@ -69,17 +69,19 @@ export const MODES_MORE = [
 export const goPath = (p) => (p === '/labs' ? goMode('labs') : p === '/randomiser' ? goMode('randomiser') : p === '/editor' ? null : navigateTo(p))
 
 /* the transport, on the clock — its own component, so the clock's ticks re-render it alone */
-export function Transport({ className }) {
+/* ONE play/pause button (plan-2026-11-12-one-header W11, P14): play (outline) at rest, pause (its solid cut, lit) while
+ * playing; it is the LAST item, beside the timecode, so a collapsible transport (`collapsibleH`) keeps it and opens the
+ * extras — skip-start · stop · loop — to its left */
+export function Transport({ className, collapsibleH }) {
   const { playing, t, loopSeconds } = useTransport()
   const looping = !!transport.clock.state.looping
   const items = [
-    { id: 'play', icon: 'play', label: 'Play', selected: playing, onPress: transport.play },
-    { id: 'pause', icon: 'pause', label: 'Pause', selected: !playing, onPress: transport.pause },
-    { id: 'loop', icon: 'repeat', label: looping ? 'Loop off' : 'Loop on', selected: looping, onPress: () => transport.clock.set({ looping: !looping }) },
-    { id: 'stop', icon: 'stop', label: 'Stop', onPress: transport.stop },
     { id: 'back', icon: 'skip-start', label: 'Back to start', onPress: transport.rewind },
+    { id: 'stop', icon: 'stop', label: 'Stop', onPress: transport.stop },
+    { id: 'loop', icon: 'repeat', label: looping ? 'Loop off' : 'Loop on', selected: looping, onPress: () => transport.clock.set({ looping: !looping }) },
+    { id: 'play', icon: playing ? 'pause' : 'play', label: playing ? 'Pause' : 'Play', selected: playing, onPress: playing ? transport.pause : transport.play },
   ]
-  return <AppFloatNav variant="transport" inline items={items} timecode={{ current: timecode(t * loopSeconds), total: timecode(loopSeconds) }} className={className} />
+  return <AppFloatNav variant="transport" inline collapsibleH={collapsibleH} items={items} timecode={{ current: timecode(t * loopSeconds), total: timecode(loopSeconds) }} className={className} />
 }
 
 /* the settings drawer, answering `kol:open-settings` (EditorShell's host, which this shell may not import from — the
@@ -211,8 +213,8 @@ export default function FloatEditorShell({ registry }) {
   const { app, menus, end } = useFloatMenus({ cards: { open }, toggleRail, tools: { place, setPlace: setPlaceChoice } })
   /* a generator tool's Rail (Tools › Generate · Repeat · Paratype letter, W7.6) takes the right-hand column while it is open */
   const { rail: openRail } = useToolUi()
-  const GeneratorRail = pack('generators')?.GeneratorRail
-  const toolRail = GeneratorRail ? openRail : null
+  const RailSettings = pack('generators')?.RailSettings
+  const toolRail = RailSettings ? openRail : null
 
   /* the timeline's height, so the cards and the mode switch stand above it */
   const tlRef = useRef(null)
@@ -272,7 +274,7 @@ export default function FloatEditorShell({ registry }) {
     const fold = () => setFolded((f) => ({ ...f, [c.id]: !f[c.id] }))
     if (c.Panel) {
       const Panel = c.Panel
-      return <Card key={c.id} variant="float" radius="window" tabs={[{ key: c.id, label: c.title }]} folded={isFolded} onFold={fold}>{() => <Panel key={(textLayer ?? layer)?.id} layer={textLayer ?? layer} bare />}</Card>
+      return <Card key={c.id} variant="float" radius="window" tabs={[{ key: c.id, label: c.title }]} collapsedV={isFolded} onCollapseV={fold}>{() => <Panel key={(textLayer ?? layer)?.id} layer={textLayer ?? layer} bare />}</Card>
     }
     const tabs = c.tabs.map((id) => tabsById.get(id)).filter((t) => t && (!t.when || t.when(ctx)))
     if (!tabs.length) return null
@@ -280,7 +282,7 @@ export default function FloatEditorShell({ registry }) {
     const def = tabsById.get(current)
     const Footer = def?.Footer
     return (
-      <Card key={c.id} variant="float" radius="window" folded={isFolded} onFold={fold}
+      <Card key={c.id} variant="float" radius="window" collapsedV={isFolded} onCollapseV={fold}
         tabs={tabs.map((t) => ({ key: t.tab, label: c.labels?.[t.tab] ?? t.label }))} tab={current} onTab={(k) => setLit((m) => ({ ...m, [c.id]: k }))}
         foot={Footer ? <Footer /> : undefined}>
         {() => { const Body = def.Component; return <Body /> }}
@@ -328,7 +330,7 @@ export default function FloatEditorShell({ registry }) {
               {textLayer && <FloatTextToolbar layer={textLayer} className="absolute left-1/2 -translate-x-1/2 top-[242px]" />}
               <div className={`absolute right-6 top-[108px] ${toolRail ? 'w-96' : 'w-80'} flex flex-col gap-4 overflow-y-auto overscroll-contain rounded-[var(--kol-float-window-r)] scrollbar-none`}
                 style={{ bottom: tlH ? tlH + 12 : 24 }}>
-                {toolRail ? <GeneratorRail key={toolRail} id={toolRail} onClose={() => setUi({ rail: null })} className="shrink-0" /> : stack}
+                {toolRail ? <RailSettings key={toolRail} id={toolRail} onClose={() => setUi({ rail: null })} className="shrink-0" /> : stack}
               </div>
               {/* the mode pill is fixed to the viewport (a phone's); a transformed box is its containing block */}
               <div className={`absolute ${place === 'dock' ? 'left-6' : 'left-[141px]'} w-[418px] h-[66px] [transform:translateZ(0)] [&_.kol-mobile-tabbar]:!flex`} style={{ bottom: tlH ? tlH + 12 : 35 }}>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { ToggleCheckbox } from '@kolkrabbi/kol-component'
 
-export const variants = ['default', 'media', 'float']
+export const variants = ['default', 'media', 'float', 'kolbox']
 
 /* `media`: the unchecked box carries the media control's solid plate so it
  * reads over a photo — shown here over a dark gradient.
@@ -14,6 +14,15 @@ export default function ToggleCheckboxPreview({ variant = 'default' }) {
       <div className="flex items-center gap-6">
         <ToggleCheckbox variant="float" label="Snap" checked={snap} onChange={setSnap} />
         <ToggleCheckbox variant="float" label="Grid" checked={on} onChange={setOn} />
+      </div>
+    )
+  }
+  /* kolbox (W31.2): the 16 box in its 28 hit box, no label of its own */
+  if (variant === 'kolbox') {
+    return (
+      <div className="flex items-center gap-2">
+        <ToggleCheckbox variant="kolbox" aria-label="Snap" checked={snap} onChange={setSnap} />
+        <ToggleCheckbox variant="kolbox" aria-label="Grid" checked={on} onChange={setOn} />
       </div>
     )
   }

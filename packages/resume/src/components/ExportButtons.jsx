@@ -29,7 +29,7 @@ export default function ExportButtons({ treatment, lang = 'en', options }) {
           {busy === 'svg' ? 'Generating…' : 'SVG (.zip)'}
         </Button>
       )}
-      {err && <pre className="basis-full kol-mono-10 max-w-md whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-sm)] p-2">{err}</pre>}
+      {err && <pre className="basis-full kol-mono-10 max-w-md whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-4)] p-2">{err}</pre>}
     </div>
   )
 }

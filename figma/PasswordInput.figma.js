@@ -3,7 +3,7 @@
 // component=PasswordInput
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 const revealed = instance.getEnum('revealed', { "true": true, "false": false })
 export default {
   example: figma.code`<PasswordInput${variant === 'float' ? ' variant="float"' : ''} value={value} onChange={setValue}${revealed ? ' revealed onRevealChange={setRevealed}' : ''} width="100%" />`,

@@ -27,8 +27,8 @@ export default function SettingsForm() {
         <Textarea variant="filled" rows={3} placeholder="A short introduction…" value={bio} onChange={(e) => setBio(e?.target?.value ?? e)} />
       </LabeledControl>
       <Divider />
-      <ToggleSwitch label="Public profile" checked={publicProfile} onChange={setPublicProfile} />
-      <ToggleSwitch label="Newsletter" checked={newsletter} onChange={setNewsletter} />
+      <LabeledControl horizontal label="Public profile" labelWidth="auto"><ToggleSwitch checked={publicProfile} onChange={setPublicProfile} aria-label="Public profile" /></LabeledControl>
+      <LabeledControl horizontal label="Newsletter" labelWidth="auto"><ToggleSwitch checked={newsletter} onChange={setNewsletter} aria-label="Newsletter" /></LabeledControl>
       <Divider />
       <div className="flex items-center justify-end gap-2">
         <Button tone="ghost">Cancel</Button>

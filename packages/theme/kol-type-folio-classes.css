@@ -1,0 +1,58 @@
+/**
+ * kol-type-folio-classes — the folio look's type roles (Folio migration batch 0, 2026-11-22).
+ *
+ * Fifteen roles and the reading text, carried value for value from apps/folio's own family (src/folio/reader.css, where
+ * they were `kol-reader-*`), as kolbox's are in kol-type-kolbox-classes.css. Roles from the Folio Figma frame 228:13142
+ * ("03 / One family. A clear hierarchy."). The face is the float style's Inter, `--kol-font-family-float`, as Folio reads
+ * it; the reading text's mono is `--kol-font-family-mono`. Sizes are fixed, except the prose, which the viewer sizes.
+ *
+ *   role        size / weight / line, tracking         use
+ *   wordmark     38 / 800 / normal, -2                 the masthead's "folio"
+ *   title        72 / 700 / 1, -3.4                    a page title (My library, an article)
+ *   figure       56 / 700 / 1, -2.5                    a big count
+ *   chapter      56 / 700 / 1.05, -2.4                 a chapter's opening title
+ *   section      28 / 700 / 1.2, -0.8                  a section heading
+ *   book         25 / 700 / 1.21, -0.7                 a book's title in a card or the rail
+ *   shelf        16 / 700 / 1.2, -0.3                  a title under a cover
+ *   row          14 / 600                              a book's title in the table
+ *   glyph        16 / 400                              the chevron, plus and arrow beside a control's label
+ *   nav          13 / 500                              masthead and rail links
+ *   body         13 / 400 / 1.5                        interface body text
+ *   control      12 / 600                              buttons and fields
+ *   meta         11 / 400                              supporting text
+ *   meta-sm      10 / 400                              table metadata
+ *   label        10 / 600, +1.1, capitals              kickers and column heads
+ *   prose        --kol-folio-prose-size (16 default) / 400 / 1.65   the reading text; em-scaled inside, data-family="mono" for mono
+ */
+
+.kol-folio-wordmark { font-family: var(--kol-font-family-float); font-size: 38px; font-weight: 800; line-height: normal; letter-spacing: -2px; }
+.kol-folio-title    { font-family: var(--kol-font-family-float); font-size: 72px; font-weight: 700; line-height: 1; letter-spacing: -3.4px; }
+.kol-folio-figure   { font-family: var(--kol-font-family-float); font-size: 56px; font-weight: 700; line-height: 1; letter-spacing: -2.5px; }
+.kol-folio-chapter  { font-family: var(--kol-font-family-float); font-size: 56px; font-weight: 700; line-height: 1.05; letter-spacing: -2.4px; }
+.kol-folio-section  { font-family: var(--kol-font-family-float); font-size: 28px; font-weight: 700; line-height: 1.2; letter-spacing: -0.8px; }
+.kol-folio-book     { font-family: var(--kol-font-family-float); font-size: 25px; font-weight: 700; line-height: 1.21; letter-spacing: -0.7px; }
+.kol-folio-shelf    { font-family: var(--kol-font-family-float); font-size: 16px; font-weight: 700; line-height: 1.2; letter-spacing: -0.3px; }
+.kol-folio-row      { font-family: var(--kol-font-family-float); font-size: 14px; font-weight: 600; line-height: 1.21; }
+.kol-folio-glyph    { font-family: var(--kol-font-family-float); font-size: 16px; font-weight: 400; line-height: 1; }
+.kol-folio-nav      { font-family: var(--kol-font-family-float); font-size: 13px; font-weight: 500; line-height: 1.21; }
+.kol-folio-body     { font-family: var(--kol-font-family-float); font-size: 13px; font-weight: 400; line-height: 1.5; }
+.kol-folio-control  { font-family: var(--kol-font-family-float); font-size: 12px; font-weight: 600; line-height: 1.21; }
+.kol-folio-meta     { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-folio-meta-sm  { font-family: var(--kol-font-family-float); font-size: 10px; font-weight: 400; line-height: 1.21; }
+.kol-folio-label    { font-family: var(--kol-font-family-float); font-size: 10px; font-weight: 600; line-height: 1.21; letter-spacing: 1.1px; text-transform: uppercase; }
+
+/* the reading text, sized by the viewer (−/+), set in sans or mono */
+.kol-folio-prose {
+  font-family: var(--kol-font-family-float);
+  font-size: var(--kol-folio-prose-size, 16px);
+  font-weight: 400;
+  line-height: 1.65;
+}
+.kol-folio-prose[data-family="mono"] { font-family: var(--kol-font-family-mono), ui-monospace, monospace; line-height: 1.6; }
+.kol-folio-prose h2 { font-family: var(--kol-font-family-float); font-size: 1.75em; font-weight: 700; line-height: 1.2; letter-spacing: -0.03em; }
+.kol-folio-prose h3 { font-family: var(--kol-font-family-float); font-size: 1.25em; font-weight: 700; line-height: 1.3; }
+.kol-folio-prose h4 { font-family: var(--kol-font-family-float); font-size: 0.625em; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; }
+.kol-folio-prose blockquote { font-size: 1.25em; font-weight: 500; line-height: 1.45; letter-spacing: -0.02em; }
+.kol-folio-prose table { font-size: 0.875em; line-height: 1.5; }
+.kol-folio-prose th { font-family: var(--kol-font-family-float); font-size: 10px; font-weight: 600; letter-spacing: 1.1px; text-transform: uppercase; }
+.kol-folio-prose pre { font-size: 0.9em; }

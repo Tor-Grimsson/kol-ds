@@ -15,7 +15,7 @@ import { getAppSettings } from './lib/appSettings'
 import { PaletteStateProvider } from './modes/palette/state'
 import { PatternStateProvider } from './modes/pattern/state'
 import { TypeStateProvider }    from './modes/type/state'
-import ColorModesWindow from './color/ColorModesWindow'
+import ModalColorModes from './color/ModalColorModes'
 import FilesDialogHost from './library/FilesDialogHost'
 import Compose from './Compose'
 import FloatCompose from './float/FloatCompose'
@@ -27,7 +27,7 @@ import FloatCompose from './float/FloatCompose'
  * providers stay mounted (nesting order preserved from the old registry:
  * ToolProvider > Compose > Palette > Pattern > Type) — the color modal and
  * library flows read palette state, and pattern / type state can still back
- * library items. ColorModesWindow (the one palette generator, plan 39 § 4.1)
+ * library items. ModalColorModes (the one palette generator, plan 39 § 4.1)
  * mounts in EditorProviders so every chrome (editor, Labs) has it; opens on
  * `kol:open-color-modes`.
  */
@@ -95,7 +95,7 @@ export function EditorProviders({ children, persistDraft = true, draftKey, modal
                     <UrlIntents />
                     {children}
                     {/* in the shared stack, not EditorBody, so Labs' Color row opens it too (plan 41 § 6.1) */}
-                    <ColorModesWindow />
+                    <ModalColorModes />
                   </TypeStateProvider>
                 </PatternStateProvider>
               </PaletteStateProvider>

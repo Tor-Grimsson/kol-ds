@@ -864,7 +864,7 @@ function BrowserShell({ onSelect }) {
 
 const VIEW_OPTIONS = [
   { value: 'grid', icon: 'grid', label: 'Grid' },
-  { value: 'list', icon: 'view-list', label: 'List' },
+  { value: 'list', icon: 'list-bullet', label: 'List' },
 ]
 
 /* The path at the FOOT of the picker card; the hidden-system count rides it —
@@ -1174,7 +1174,7 @@ function FloatPicker({ onClose, onPick, onImport, importLabel = 'Import', title 
         {files.map((o) => (
           <li key={o.key}>
             <button type="button" onClick={() => pick(o)} aria-pressed={picked === o.key}
-              className={`flex w-full items-center gap-3 rounded-[var(--kol-float-list-r)] p-1 text-left cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${picked === o.key ? 'bg-fg-16' : 'hover:bg-fg-08'}`}>
+              className={`flex w-full items-center gap-3 rounded-[var(--kol-float-list-r)] p-1 text-left cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${picked === o.key ? 'bg-fg-12' : 'hover:bg-fg-04'}`}>
               <span className="h-[54px] w-11 shrink-0 overflow-hidden rounded-md bg-fg-08"><Thumb row={o} mediaUrl={mediaUrl} /></span>
               <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                 <span className="kol-float-hint truncate text-fg-emphasis" style={{ fontSize: 13 }}>{o.displayKey}</span>

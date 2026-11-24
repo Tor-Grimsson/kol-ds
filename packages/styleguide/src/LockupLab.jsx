@@ -1,7 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { Input, SettingsSections } from '@kolkrabbi/kol-component'
 import { DEFAULT_LOCKUP_LAB, LOCKUP_CASES, LOCKUP_GRID, LOCKUP_PARTS, LOCKUP_SHAPES, LOCKUP_SUB_PRESETS, LOCKUP_TYPES, lockupLab } from './lockupLab.js'
-import LabWindow, { LabHistory, useLabValue } from './lab/LabWindow.jsx'
+import ModalLab, { LabHistory, useLabValue } from './lab/ModalLab.jsx'
 
 /* taxonomy-ok: organism — the lockup generator in the lab window: type, shape and text in the rail, the lockup on the stage */
 
@@ -145,7 +145,7 @@ export default function LockupLab({ value: valueProp, onChange, mark, font, pres
 
   const at = lockupLab(value, 100)
   return (
-    <LabWindow
+    <ModalLab
       className={className}
       title="Lockup Lab"
       tabs={tabs}
@@ -178,7 +178,7 @@ export default function LockupLab({ value: valueProp, onChange, mark, font, pres
       <FitStage>
         <BrandLockup value={value} size={64} mark={mark} font={font} />
       </FitStage>
-    </LabWindow>
+    </ModalLab>
   )
 }
 

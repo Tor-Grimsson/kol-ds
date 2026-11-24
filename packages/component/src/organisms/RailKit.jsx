@@ -35,18 +35,8 @@ import { RAIL_ROW } from '../hooks/railRow.js'
  * inspector like fxr's, a list rail like monitor's patch table, and the bottom rail — in both tiers.
  */
 
-/** RailHeader — the rail's title line: title, subtitle, and the actions before the × (which Rail draws). */
-export function RailHeader({ title, subtitle, actions }) {
-  return (
-    <div className="flex min-w-0 items-center gap-2">
-      <div className="flex min-w-0 flex-1 flex-col">
-        {title && <span className="kol-helper-14 uppercase text-emphasis">{title}</span>}
-        {subtitle && <span className="kol-mono-12 text-meta">{subtitle}</span>}
-      </div>
-      {actions}
-    </div>
-  )
-}
+/* RailHeader is its own molecule (molecules/RailHeader.jsx, 2026-11-12 — the default and float headers, one component); the kit ships it */
+export { default as RailHeader } from '../molecules/RailHeader.jsx'
 
 /** RailTabs — segmented tabs across the rail: `tabs` `[{ value, label }]`, controlled by `value` / `onChange`. */
 export function RailTabs({ tabs = [], value, onChange, ariaLabel = 'Tabs', className = '' }) {

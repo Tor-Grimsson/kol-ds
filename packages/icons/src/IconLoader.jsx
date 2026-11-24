@@ -1,7 +1,7 @@
 /**
  * IconLoader Component (named Icon until 0.68.0 — `Icon` stays exported as a deprecated alias)
  *
- * Dynamically loads and renders SVG icons from kol-icon-set-interface,
+ * Dynamically loads and renders SVG icons from kol-icon-set-interface, kol-icon-set-editor,
  * kol-icon-set-signal, kol-icon-set-identity and kol-icon-set-external (or consumer-registered sets)
  *
  * @param {Object} props
@@ -14,6 +14,7 @@
  */
 import { useEffect, useState } from 'react'
 import { setOf } from './iconNames.js'
+import ALIASES from './aliases.json'
 
 /* THREE SETS, THREE CHUNKS (1.5, plan-2026-10-28-identity — user: "I cant believe you have to take every icon we
  * ship if you only need one? is kol-icon just one tier?"). Until 0.50.0 every set's SVG text sat in ONE async
@@ -25,6 +26,7 @@ import { setOf } from './iconNames.js'
  * is cached at module scope, so resolution stays synchronous for every render after. Nothing is prefetched at boot. */
 const SETS = {
   interface: () => import('./sets/interface.js'),
+  editor: () => import('./sets/editor.js'),
   signal: () => import('./sets/signal.js'),
   identity: () => import('./sets/identity.js'),
   external: () => import('./sets/external.js'),
@@ -41,6 +43,12 @@ const loadSet = (set) => {
       LOADED[set] = mod.default
       subscribers.forEach((fn) => fn())
       return mod.default
+    }, (err) => {
+      /* a failed chunk fetch is not kept (2026-11-19, R1): held as the set's pending import it blanked every glyph of
+         that set for the rest of the session, silently; the next icon to render asks again */
+      delete PENDING[set]
+      console.error(`kol-icons: the "${set}" icon set did not load`, err)
+      return null
     })
   }
   return PENDING[set]
@@ -60,8 +68,11 @@ const useIconsReady = (name) => {
     setReady(false)
     const cb = () => { if (LOADED[set]) setReady(true) }
     subscribers.add(cb)
-    loadSet(set)
-    return () => subscribers.delete(cb)
+    /* a failed load is retried twice, a second apart (loadSet does not keep the failure) */
+    let tries = 0, timer
+    const go = () => loadSet(set).then((m) => { if (!m && ++tries < 3) timer = setTimeout(go, 1000) })
+    go()
+    return () => { subscribers.delete(cb); clearTimeout(timer) }
   }, [set])
   return ready
 }
@@ -114,6 +125,13 @@ export const registerIcons = (globMap) => {
  *     _tmp/2026-11-12-transport-replaced/). tr-left has no successor and stays a signal glyph. */
 export const RENAMED_ICONS = { overlap: 'transparency', customize: 'nav-settings', 'user-interface': 'metric', metrics: 'metric', rack: 'rack-v', 'flask-round': 'lab-flask', 'flask-conical': 'lab-conical', beaker: 'lab-beaker', 'cube-dashed-02': 'cube-dashed', 'select-frame-02': 'select-frame', 'kanban-02': 'kanban', 'calendar-02': 'calendar', 'direction-opposite': 'swap', 'nav-rack': 'rack-v', 'lines-three': 'hamburger', 'tr-right': 'play', 'tr-pause': 'pause', 'tr-inf': 'loop', 'tr-carets': 'reverse', 'tr-skip': 'skip-start', 'tr-rew': 'rewind', 'tr-fwd': 'fast-forward', 'skip-back-bold': 'skip-back-solid', 'skip-forward-bold': 'skip-forward-solid' }
 
+/* HIS ATLAS NAMES (W20.1, 2026-11-20 — user: "did I say that you can choose?"): every name in his atlas set loads.
+ * aliases.json maps each of his names that is not a drawing or an entry of its own to the icon that draws it (his
+ * `hosting-vm` is `globe-network`, his `incident-report` the set's `siren`). Permanent, not the retirement ledger above;
+ * the target's tile carries the name as a search tag. */
+export { ALIASES }
+const nameOf = (name) => RENAMED_ICONS[name] ?? ALIASES[name] ?? name
+
 /* A REGISTERED GLYPH NEVER OVERRIDES A DS NAME (user 2026-10-24: kol-mirror registered its own set over the resolver and
  * its `refresh` replaced the DS's in the settings rail's reset — *"how can it register its own in a FIXED PRESET OF
  * SETTINGS?"*). The packaged sets win for every name they ship; a consumer's glyph resolves only for names the DS has
@@ -121,7 +139,7 @@ export const RENAMED_ICONS = { overlap: 'transparency', customize: 'nav-settings
  * Dev warns once per overridden name, so a collision is seen, not silently lost. */
 const overridden = new Set()
 const resolveIcon = (name) => {
-  const n = RENAMED_ICONS[name] ?? name
+  const n = nameOf(name)
   const set = setOf(n)
   if (set) {
     /* a DS name: its set's map, or nothing yet while that chunk streams — never the custom glyph */
@@ -166,7 +184,7 @@ const applySizeToMarkup = (markup, sizeValue) => {
  * solid twin renders its outline, so a variant never blanks an icon. The `-solid` names keep resolving. */
 const withVariant = (name, variant) => {
   if (variant !== 'solid' || !name || name.endsWith('-solid')) return name
-  const solid = `${RENAMED_ICONS[name] ?? name}-solid`
+  const solid = `${nameOf(name)}-solid`
   return setOf(solid) || CUSTOM[solid] ? solid : name
 }
 
@@ -179,7 +197,7 @@ const IconLoader = ({
   children
 }) => {
   const name = withVariant(baseName, variant)
-  const ready = useIconsReady(RENAMED_ICONS[name] ?? name)
+  const ready = useIconsReady(nameOf(name))
 
   // If children are provided, render directly (for custom icons)
   if (children) {

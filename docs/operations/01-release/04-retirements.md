@@ -3,7 +3,7 @@ title: Retirements
 type: reference
 status: active
 created: 2026-08-26
-updated: 2026-11-08
+updated: 2026-11-18
 audience: internal
 description: Every shipped alias and when it drops
 tags:
@@ -33,14 +33,32 @@ What counts as an alias is detected from source — a barrel line exporting one 
 
 | Alias | Package | Replacement | Since |
 |---|---|---|---|
+| `TypeSample` | foundry | `SpecimenSample` from `@kolkrabbi/kol-styleguide` — the same component, same props, plus `horizontal` (the Specimen kit's one code home, type-ramp plan 7.5) | 2026-11-14 |
+| `TypeSpecCard` | foundry | `SpecimenSpec` from `@kolkrabbi/kol-styleguide` — the same component, same props | 2026-11-14 |
+| `TypeSpecimenLive` | foundry | `SpecimenLive` from `@kolkrabbi/kol-styleguide` — the same component, same props; `readMeta` moved with it (kol-foundry re-exports it) | 2026-11-14 |
+| `SpecimenSectionHeader` | foundry | `SpecimenHeader` from `@kolkrabbi/kol-styleguide` — every prop still works; now on kol-component's `SectionHeader`, the icon in the leading slot (left of the title), plus `controls` | 2026-11-14 |
 | `PageHeader` from `@kolkrabbi/kol-shell` | 2026-09-03 | import it from `@kolkrabbi/kol-component` — same component, same props, plus `register` | moved, not aliased: shell peers on component so every consumer already has it (page-header-one-masthead) |
 | `ShellSidebar` | workshop | `ShellRail` — the same component, same props (a rail is a rail: "if it comes to view form the sides ITS RAIL") | 2026-11-08 |
 | `WorkshopSidebar` | workshop | `WorkshopRail` — the same composition, same props | 2026-11-08 |
 | `WorkshopDefaultSidebar` | workshop | `WorkshopDefaultRail` — the same composition, same props | 2026-11-08 |
 | `Icon` | icons | `IconLoader` — the same component, same props; kol-component re-exports both names | 2026-11-08 |
+| `Dialog` | component | `ModalDialog` — the same component, same props (a family leads with its word: Modal) | 2026-11-12 |
+| `LabWindow` | styleguide | `ModalLab` — the same component, same props; `/lab` ships both names | 2026-11-12 |
+| `FloatModule` | component | `RailFloat` — the same component, same props; kol-shell re-exports both names | 2026-11-12 |
+| `GeneratorRail` | design-editor | `RailSettings` — the same Rail, now on `RailFloat`; the `/generators` pack keeps `GeneratorRail` as a deprecated key (`GeneratorWindow`, `LayerEffectsWindow`, `ColorModesWindow` are now `ModalSettings`, `ModalLayerEffects`, `ModalColorModes`, 0.43.0) | 2026-11-12 |
+| `FloatModuleHeader` | component | `Header variant="property"` — the same header (it was `RailHeader variant="float"`); the title is a slot | 2026-11-12 |
 | `RailSection` | component | `LabeledControlSection` — the same component, same props (it has nothing to do with a Rail; "I never approved the rename"). kol-workshop's own `RailSection` is a different, nav component and keeps its name | 2026-11-08 |
 | `RailRow` | component | `SettingsRow` — the same component, same props. kol-workshop's own `RailRow` is a different, nav component and keeps its name | 2026-11-08 |
 | `QuickLookHeader` | component | `ModalHeader` — the same component, same props; the window row (`meta` · `nav` · `onMinimise` · `onClose`) in both looks | 2026-11-08 |
+| `SettingsGroup` | component | `LabeledControlSection variant="settings"` — `title` → `label`, `note` → `end`, `ruled` → `divided`; the same render (plan-2026-11-12-float-rails-figma W13.1: every group is a LabeledControlSection) | 2026-11-12 |
+| `SettingsCell` | component | `LabeledControl variant="float"` around the control (`col-span-2` for a wide cell) — it wrapped LabeledControl and added nothing (plan-2026-11-12-one-header W6.1, P9: *"SettingsCell … just wraps labeled control for NO reason"*) | 2026-11-12 |
+| `SettingsSlider` | component | `Slider variant="float" readout="input"` — the float track with its value as a float Input pill; `format` → `formatValue`. The private `NumberBox` it drew is gone (P9: *"'readout' should just be an input"*) | 2026-11-12 |
+| `SettingsRange` | component | `Slider variant="dual"` — `value` → `value` / `value2`, the formatted values as `label1` / `label2` | 2026-11-12 |
+| `SettingsSelect` | component | `Dropdown variant="float"` | 2026-11-12 |
+| `SettingsSegmented` | component | `TabsRow variant="float"` (`options` → `tabs`) | 2026-11-12 |
+| `SettingsToggle` | component | `LabeledControl variant="float" horizontal` around a bare `ToggleSwitch variant="float"` | 2026-11-12 |
+| `SettingsText` | component | `Input variant="float"` | 2026-11-12 |
+| LabeledControl `inline` | component | `horizontal` — the same boolean, the same render: true, the label beside the control; false, above it (plan-2026-11-12-float-rails-figma W7.1, *"this is obviously horizontal and this vertical"*) | 2026-11-12 |
 | `MenuDropdownItem` | component | `MenuRow` — same component, same props (the Menu* family, metric Round 4) | 2026-10-31 |
 | `MenuDropdownDivider` | component | `MenuDivider` — same component, same props | 2026-10-31 |
 | Dropdown `variant="raised"` | component | `tone="faint"` — the same oq-06 ground; the variant only ever differed by colour | 2026-10-31 |
@@ -119,6 +137,23 @@ Aliases the gate cannot see — a prop value is not an export. Same lifetime, ke
 | `Button variant="secondary"` | component | `tone="inverted"` — `secondary` painted the inverted fill; tone `secondary` is the page surface | 2026-10-01 |
 | `Button variant="control"` | component | `tone="ghost"` | 2026-10-01 |
 | `SectionText level` · `PageHeader level` | component | `variant` — same values (page · app · section · content · document); `variant` is the only word for a variant (user 2026-10-31). Still read by kol-shell (CatalogPage, AppStudio, HubDev, StudioDetail) and kol-framework (DocumentIndex) until their next release | 2026-10-31 |
+| `RailHeader variant="float"` | component | `Header variant="property"` — the same row; `actions` → `end`, `folded` / `onFold` → `collapsedV` / `onCollapseV` (plan-2026-11-12-one-header W1.1). RailHeader's default title line stays | 2026-11-12 |
+| `ModalHeader variant="float"` window row (`onMinimise` · `onClose`) | component | `Header variant="modal"` — the same row; `actions` → `end`. ModalHeader's menu row and default window row stay | 2026-11-12 |
+| `foldable` · `folded` · `defaultFolded` · `onFold` on `RailFloat` · `NavRail variant="float"` · `PropertyRail` | component · shell | `collapsibleV` · `collapsedV` · `defaultCollapsedV` · `onCollapseV` — collapse-v, the Rail collapses up to its header bar (plan-2026-11-12-one-header W2.1: *"we dont say 'folded'… we say EXPAND COLLAPSE"*) | 2026-11-12 |
+| `foldable` · `folded` · `onFoldChange` on `AppFloatNav variant="transport"` | shell | `collapsibleH` · `collapsedH` · `onCollapseH` — collapse-h; the inline capsule collapses to the play/pause + timecode (plan-2026-11-12-one-header W11) | 2026-11-13 |
+| `PropertyRail onCollapse` | shell | `onCollapseH` — collapse-h, the panel button: the Rail collapses sideways out of view | 2026-11-12 |
+| ToggleSwitch `label` · `hint` | component | a `LabeledControl` (`horizontal`) around the bare switch — a control never carries its own label (LAW 17, P8: *"illegal toggleswitch that has LABEL!!"*). Still drawn, warns once in dev | 2026-11-12 |
+| `folded` · `onFold` · `defaultFolded` on `Card` · `SectionHead` | dashboards | `collapsedV` · `onCollapseV` · `defaultCollapsedV` — collapse-v, as the Rails (plan-2026-11-12-one-header W2.1) | 2026-11-12 |
+| `MenuFloat` · `MenuFloatRows` from `@kolkrabbi/kol-shell` | shell | import them from `@kolkrabbi/kol-component` — the same components, moved so ButtonSplit's float menu is the one menu; kol-shell re-exports both | 2026-11-12 |
+| `ReadingPanel onFold` | component | `onCollapseV` — the same ⌃ | 2026-11-12 |
+| `--kol-float-fold-h` (token) | theme | `--kol-float-collapsed-h` — the same 40 (48 on touch); the old name is `var(--kol-float-collapsed-h)` | 2026-11-12 |
+| `--kol-radius-none` (token) | theme | `--kol-radius-0` — the same 0px; the old name is `var(--kol-radius-0)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-xs` (token) | theme | `--kol-radius-2` — the same 2px; the old name is `var(--kol-radius-2)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-sm` (token) | theme | `--kol-radius-4` — the same 4px; the old name is `var(--kol-radius-4)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-md` (token) | theme | `--kol-radius-4` — the same 4px (collapsed from 8 by the 2026-08-09 ruling); the old name is `var(--kol-radius-4)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-lg` (token) | theme | `--kol-radius-4` — the same 4px (collapsed by the 2026-08-09 ruling); the old name is `var(--kol-radius-4)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-xl` (token) | theme | `--kol-radius-4` — the same 4px (collapsed by the 2026-08-09 ruling); the old name is `var(--kol-radius-4)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
+| `--kol-radius-2xl` (token) | theme | `--kol-radius-4` — the same 4px (collapsed by the 2026-08-09 ruling); the old name is `var(--kol-radius-4)`. Radius is named by its number (plan-2026-11-18-kolbox-system W1.2); `packages/` moved off it the same day | 2026-11-18 |
 
 `variant` keeps `accent · danger · nav`. The six still render as they did and warn once in dev; `pnpm validate:variants` (V3) keeps this repo off them.
 
@@ -131,6 +166,8 @@ Type and chrome classes retire the same way — the marker line above the rule i
 | `kol-card-kicker` | theme | `kol-eyebrow` — the eyebrow has one name; the props `kicker` (ContentText) and `label` (SectionText + the sections) are aliases too, documented on the components (the gate cannot see props) | 2026-08-27 |
 
 ## History
+
+- 2026-11-18 — **Radius named by its number** (plan-2026-11-18-kolbox-system W1.2): `--kol-radius-0`, `-2`, `-4`, `-6`, `-8`, `-12`, `-16` and `-full`. The seven size names are token aliases, each the px it was, so no consumer moves. This gate reads barrels and classes, not tokens, so the rows above come off when a human decides, as `--kol-float-fold-h`.
 
 - 2026-11-07 — **Three deep-path aliases** (`atoms/CloseButton`, `utilities/FullscreenOverlay`, `utilities/LoaderOverlay`) on the ledger: the files moved to `molecules/`, the old subpaths stay in kol-component's `exports`. ⚠️ This gate reads barrel exports, not the `exports` map, so it cannot age these out; drop them by hand once no repo imports the old path (kol-website `apps/media/src/KindOverview.jsx` and media-fixture did on the day).
 

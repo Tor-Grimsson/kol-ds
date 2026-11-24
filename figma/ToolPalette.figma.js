@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const orientation = instance.getEnum('orientation', { "horizontal": "horizontal", "vertical": "vertical" })
+const orientation = instance.getEnum('vertical', { "true": "vertical", "false": "horizontal" })
 const o = orientation === 'vertical' ? ' orientation="vertical"' : ''
 
 export default {

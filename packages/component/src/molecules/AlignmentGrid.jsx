@@ -1,5 +1,6 @@
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import ButtonGroup from './ButtonGroup.jsx'
+import FieldPair from './FieldPair.jsx'
 import { glyphSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -23,6 +24,8 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {Array} items - `[{ axis, mode, icon, title }]` cells (default the standard 6, three per axis)
  * @param {'xs'|'sm'|'md'|'lg'} size - The strips' rung (default 'sm')
  * @param {string} className - Extra classes on the wrapper
+ * @param {'kolbox'} [variant] - `kolbox`: kolbox's align row, the X and Y strips as `ButtonGroup layout="joined" variant="kolbox"`
+ *   side by side in a `FieldPair variant="kolbox"`; `items` carry the set's glyph names
  */
 const ALIGN_BUTTONS = [
   { axis: 'h', mode: 'start',  icon: 'align-horizontal-left-solid',   title: 'Align left' },
@@ -33,8 +36,17 @@ const ALIGN_BUTTONS = [
   { axis: 'v', mode: 'end',    icon: 'align-vertical-bottom-solid',   title: 'Align bottom' },
 ]
 
-export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = 'sm', className = '' }) {
+export default function AlignmentGrid({ onAlign, items = ALIGN_BUTTONS, size = 'sm', className = '', variant }) {
   const strip = (axis) => items.filter((b) => b.axis === axis)
+  /* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's AlignmentRow carried, the two
+   * strips as kolbox icon groups, each filling its cell of a kolbox FieldPair (two cells 8 apart) */
+  if (variant === 'kolbox') {
+    const group = (axis) => (
+      <ButtonGroup layout="joined" variant="kolbox" className="w-full"
+        options={strip(axis).map((b) => ({ icon: b.icon, ariaLabel: b.title, onPress: () => onAlign?.(b.axis, b.mode) }))} />
+    )
+    return <FieldPair variant="kolbox" first={group('h')} second={group('v')} />
+  }
 
   return (
     <div className={`kol-alignment-grid flex flex-col gap-1 ${className}`.trim()}>

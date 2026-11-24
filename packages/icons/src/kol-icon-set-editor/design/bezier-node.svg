@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M16.40 14.03L16.17 10.43" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M3.75 5.25C3.75 5.52 3.86 5.77 4.04 5.96C4.23 6.14 4.48 6.25 4.75 6.25C5.02 6.25 5.27 6.14 5.46 5.96C5.64 5.77 5.75 5.52 5.75 5.25C5.75 4.98 5.64 4.73 5.46 4.54C5.27 4.36 5.02 4.25 4.75 4.25C4.48 4.25 4.23 4.36 4.04 4.54C3.86 4.73 3.75 4.98 3.75 5.25Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M8.11 12.4H9.39C9.62 12.4 9.84 12.49 10 12.65C10.16 12.81 10.25 13.03 10.25 13.26V14.54C10.25 14.77 10.16 14.99 10 15.15C9.84 15.31 9.62 15.4 9.39 15.4H8.11C7.88 15.4 7.66 15.31 7.5 15.15C7.34 14.99 7.25 14.77 7.25 14.54V13.26C7.25 13.03 7.34 12.81 7.5 12.65C7.66 12.49 7.88 12.4 8.11 12.4Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M15 5.25H6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M13 5.25C10.65 6.5 9 9 9 12.25" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M16.25 3.75H17.25C17.51 3.75 17.77 3.85 17.95 4.04C18.14 4.23 18.25 4.48 18.25 4.75V5.75C18.25 6.01 18.14 6.27 17.95 6.45C17.77 6.64 17.51 6.75 17.25 6.75H16.25C15.98 6.75 15.73 6.64 15.54 6.45C15.35 6.27 15.25 6.01 15.25 5.75V4.75C15.25 4.48 15.35 4.23 15.54 4.04C15.73 3.85 15.98 3.75 16.25 3.75Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M16.25 9.5L19.25 14L18 17.5H14.5L13.25 14L16.25 9.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+<path d="M14.75 18.5H17.75C17.88 18.5 18.01 18.55 18.1 18.65C18.2 18.74 18.25 18.87 18.25 19V20C18.25 20.13 18.2 20.26 18.1 20.35C18.01 20.45 17.88 20.5 17.75 20.5H14.75C14.62 20.5 14.49 20.45 14.4 20.35C14.3 20.26 14.25 20.13 14.25 20V19C14.25 18.87 14.3 18.74 14.4 18.65C14.49 18.55 14.62 18.5 14.75 18.5Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" stroke="currentColor"/>
+</svg>

@@ -126,6 +126,14 @@ function validatePreset(spec) {
     ...(typeof spec.canvasW === 'number' && typeof spec.canvasH === 'number' ? { canvasW: spec.canvasW, canvasH: spec.canvasH } : {}),
     ...(typeof spec.mode === 'string' ? { mode: spec.mode } : {}),
     ...(spec.morph && typeof spec.morph === 'object' ? { morph: spec.morph } : {}),
+    /* the frame's place, fill, opacity and page color (plan-2026-11-18-kolbox-system 11.3, compose/frame.js) */
+    ...(typeof spec.canvasX === 'number' && typeof spec.canvasY === 'number' ? { canvasX: spec.canvasX, canvasY: spec.canvasY } : {}),
+    ...(spec.canvas && typeof spec.canvas === 'object' ? { canvas: spec.canvas } : {}),
+    /* the model marks and the pages (C1, W22, C4.4: compose/frame.js, layerModel.js); dropped here, a file with pages
+       reopened as one page and a marked file was converted again */
+    ...(Array.isArray(spec.pages) ? { pages: spec.pages } : {}),
+    ...(typeof spec.frameModel === 'number' ? { frameModel: spec.frameModel } : {}),
+    ...(typeof spec.layerModel === 'number' ? { layerModel: spec.layerModel } : {}),
     /* the frame at save time, a small webp data URL (useComposeFile `captureThumb`) */
     ...(typeof spec.thumb === 'string' ? { thumb: spec.thumb } : {}),
     /* a SHIPPED file (shipped.js) — local only, listed by the Library under its group and category */

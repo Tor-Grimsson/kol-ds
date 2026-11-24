@@ -13,7 +13,7 @@ import { pack } from '../packs'
 const loopById = (id) => pack('generators')?.loopById(id) ?? null
 
 /**
- * PaletteBody — the body of the Color Modes window (`ColorModesWindow`, plan 39 § 4.1; it was the colour
+ * PaletteBody — the body of the Color Modes window (`ModalColorModes`, plan 39 § 4.1; it was the colour
  * pane's Palette tab in plan 37). ONE COLOUR GENERATES THE PALETTE (plan 41 § 6.2, the Adobe Color
  * model): a base colour, a relationship and a count (2–8) make the list (`generatePalette`, OKLCH);
  * Roll re-rolls around the same base. Roles are assigned AFTER, by meaning (`assignRoles`: the darkest

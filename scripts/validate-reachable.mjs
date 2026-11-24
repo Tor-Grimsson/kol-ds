@@ -119,9 +119,9 @@ if (!/action:\s*item\.action/.test(projection)) {
 }
 
 /* ── E4 · every nav icon resolves ── */
-const iconDir = join(REPO, 'packages/icons/src/kol-icon-set-interface')
+/* interface and editor (2026-11-22: design and typography moved to the editor set; IconLoader resolves both) */
 const iconNames = new Set()
-if (existsSync(iconDir)) {
+for (const iconDir of ['interface', 'editor'].map((s) => join(REPO, `packages/icons/src/kol-icon-set-${s}`))) if (existsSync(iconDir)) {
   const walk = (dir) => {
     for (const e of readdirSync(dir, { withFileTypes: true })) {
       const full = join(dir, e.name)
@@ -134,7 +134,7 @@ if (existsSync(iconDir)) {
 for (const m of navSrc.matchAll(/icon:\s*'([^']+)'/g)) {
   if (iconNames.size && !iconNames.has(m[1])) {
     errors.push(
-      `showcase/src/nav/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-interface — ` +
+      `showcase/src/nav/shell-nav.js  icon '${m[1]}' is not in kol-icon-set-interface or kol-icon-set-editor — ` +
       'Icon warns and renders null, so the tab ships label-only'
     )
   }

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { SwatchControls, SwatchStack, EyedropPick } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
+/* kolbox (W31.2): SwatchStack in the 32 dock cell */
+export const variants = ['default', 'kolbox']
 
 /* The EyeDropper call + canvas sampling are app-side (behind onPick). Here the
  * call site drives the real browser EyeDropper where it exists; the button is
@@ -16,7 +18,7 @@ async function eyedrop(setSample) {
   }
 }
 
-export default function SwatchControlsPreview() {
+export default function SwatchControlsPreview({ variant = 'default' }) {
   const [fill, setFill] = useState('#F59E0B')
   const [stroke, setStroke] = useState('#0EA5E9')
   const [active, setActive] = useState('fill')
@@ -60,6 +62,7 @@ export default function SwatchControlsPreview() {
         <div className="flex flex-col gap-2">
           <p className="kol-mono-12 text-fg-48">SwatchStack</p>
           <SwatchStack
+            variant={variant}
             fillColor={fill}
             strokeColor={stroke}
             activePaint={active}

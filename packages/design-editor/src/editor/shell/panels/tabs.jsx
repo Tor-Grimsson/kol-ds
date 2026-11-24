@@ -63,7 +63,7 @@ export const composeTabs = () => [
   { tab: 'Stroke',     label: 'Stroke',     pane: 'color',     order: 0, Component: StrokeBody },
   { tab: 'Colour',     label: 'Color',      pane: 'color',     order: 1, Component: ColourBody },
   { tab: 'Swatches',   label: 'Swatches',   pane: 'color',     order: 2, Component: SwatchesTab },
-  /* Color Modes is a tool window now, not a tab here (plan 39 § 4.1 — `color/ColorModesWindow`) */
+  /* Color Modes is a tool window now, not a tab here (plan 39 § 4.1 — `color/ModalColorModes`) */
   { tab: 'Inspector',  label: 'Inspector',  pane: 'selection', order: 0, Component: InspectorRail },
   { tab: 'Parameters', label: 'Parameters', pane: 'selection', order: 1, Component: ParametersPanel },
   ...(pack('effects') ? [{ tab: 'Effects', label: 'Effects', pane: 'selection', order: 2, Component: EffectsTab }] : []),

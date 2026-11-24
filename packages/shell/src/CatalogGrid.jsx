@@ -20,7 +20,7 @@ import { useCallback, useRef, useState } from 'react'
  * @param {Function} onColumns      `(n) => void` — the measured track count, whenever it changes
  * @param {ReactNode} children      the cards (grid) or rows (list)
  */
-export default function CatalogGrid({ layout = 'grid', minColumn = 160, maxColumns = 6, listColumns = 4, listLayout = 'grid', onColumns, children, className, style }) {
+function CatalogGridDefault({ layout = 'grid', minColumn = 160, maxColumns = 6, listColumns = 4, listLayout = 'grid', onColumns, children, className, style }) {
   const [cols, setCols] = useState(null)
   const observer = useRef(null)
   const report = useRef(onColumns)
@@ -53,4 +53,18 @@ export default function CatalogGrid({ layout = 'grid', minColumn = 160, maxColum
       {children}
     </div>
   )
+}
+
+/* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5): tracks no narrower than 240, gap 32, 34 in from the sides and 22 under the title row, so
+   Figma's file browser's 4 cards a row at its width (plan-2026-11-23 W6); one a row on a phone */
+function CatalogGridKolbox({ children, className }) {
+    return (
+      <div className={`min-h-0 flex-1 overflow-y-auto max-md:flex-none max-md:overflow-visible ${className ?? ''}`.trim()} data-file-grid>
+        <div role="list" className="grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] gap-x-8 gap-y-8 px-[34px] pt-[22px] pb-8 max-md:grid-cols-1 max-md:px-4 max-md:pb-28">{children}</div>
+      </div>
+    )
+}
+
+export default function CatalogGrid(props) {
+  return props.variant === 'kolbox' ? <CatalogGridKolbox {...props} /> : <CatalogGridDefault {...props} />
 }

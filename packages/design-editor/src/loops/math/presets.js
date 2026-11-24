@@ -21,8 +21,9 @@ import fields from './fields.js'
 import curves from './curves.js'
 import orbits from './orbits.js'
 import pendulum from './pendulum.js'
+import relief from './relief.js'
 
-export const MATH_LOOPS = [expression, spinner, threads, surface, waveform, fields, curves, orbits, pendulum]
+export const MATH_LOOPS = [expression, spinner, threads, surface, waveform, fields, curves, orbits, pendulum, relief]
 
 const P = (id, label, loop, params = {}, sub) => ({ id, label, loop, params, sub })
 
@@ -87,6 +88,10 @@ export const MATH_PRESETS = [
   P('surface-lorenz', 'Lorenz', 'math-surface', { kind: 'attractor', attractor: 'lorenz', stroke: '#9ec1ff', gradient: true }, 'Surfaces'),
   P('surface-rossler', 'Rössler', 'math-surface', { kind: 'attractor', attractor: 'rossler', stroke: '#ffd23f', steps: 9000 }, 'Surfaces'),
   P('surface-aizawa', 'Aizawa', 'math-surface', { kind: 'attractor', attractor: 'aizawa', stroke: '#ff5470' }, 'Surfaces'),
+  /* the Atlas relief boards (C7): your shape or image as the height, turned, on a globe, or flown round its shore */
+  P('relief-turn', 'Relief, turning', 'math-relief', {}, 'Surfaces'),
+  P('relief-globe', 'Relief, on a globe', 'math-relief', { view: 'globe', tiltSwing: 9, seaGrid: true, pulseLaps: 1 }, 'Surfaces'),
+  P('relief-fly', 'Relief, flying the shore', 'math-relief', { view: 'fly', fieldSource: 'star', pulseLaps: 2 }, 'Surfaces'),
   // Fields — f(x,y) heatmap + flow particles · complex f(z) domain coloring
   // (labs FIELD_PRESETS over the fields FALLBACK).
   P('field-waves', 'Waves', 'math-field', { kind: 'scalar', fn: 'waves', range: 8, low: '#0b1530', high: '#ffce54' }, 'Fields'),

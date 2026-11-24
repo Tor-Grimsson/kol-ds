@@ -3,9 +3,9 @@ import { useEffect, useState } from 'react'
 /**
  * The saved mark (plan 29 § 1) — the document as it was at the last save or open, so the status
  * bar can draw Affinity's `*` while anything differs from it: the layers and the canvas (aspect,
- * size, fill, backdrop). Every part is immutable state or a primitive, so identity is the test.
+ * size, position, fill, backdrop). Every part is immutable state or a primitive, so identity is the test.
  */
-const PARTS = ['layers', 'aspect', 'canvasW', 'canvasH', 'canvasFill', 'canvasFillOpacity', 'infiniteFill']
+const PARTS = ['layers', 'styles', 'aspect', 'canvasW', 'canvasH', 'canvasX', 'canvasY', 'canvasFill', 'canvasFillOpacity', 'infiniteFill']
 
 let saved = null
 const subs = new Set()

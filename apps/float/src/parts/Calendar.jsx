@@ -1,9 +1,10 @@
 import { ThemeTile } from '@kolkrabbi/kol-styleguide'
 import { useState } from 'react'
 import {
-  Button, CalendarDay, CalendarMonth, CalendarTimeline, CalendarWeek,
+  Button, CalendarDay, CalendarMonth, CalendarTimeline, CalendarWeek, RailFloat,
   ReadingActions, ReadingChapterNav, ReadingColumn, ReadingContents, ReadingHighlight, ReadingNotes, ReadingOverview, ReadingPanel, ReadingSettings,
 } from '@kolkrabbi/kol-component'
+import { PropertyRail } from '@kolkrabbi/kol-shell'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
 /* Calendar + reader (24-float-system.md § The parts, by family, row 11) — every part live from kol-component. */
@@ -114,12 +115,19 @@ export default function Calendar() {
           </Part>
 
           <Part name="ReadingContents" slug="reading-contents">
-            <ReadingContents book="The Waves" author="Virginia Woolf" count="9 interludes" chapters={CHAPTERS} current={chapter} onSelect={setChapter}
-              progress={42} status="Reading position saved" onFold={noop} className="max-w-full" />
+            <RailFloat as="aside" title="Contents" collapsibleV className="max-w-full" footer={<span className="kol-float-label text-fg-64">Reading position saved</span>}>
+              <ReadingContents book="The Waves" author="Virginia Woolf" count="9 interludes" chapters={CHAPTERS} current={chapter} onSelect={setChapter} progress={42} />
+            </RailFloat>
+          </Part>
+
+          <Part name="ReadingContents in the module" slug="property-rail">
+            <PropertyRail title="Contents" collapsibleV className="max-w-full" footer={<span className="kol-float-label text-fg-64">Reading position saved</span>}>
+              <ReadingContents book="The Waves" author="Virginia Woolf" count="9 interludes" chapters={CHAPTERS} current={chapter} onSelect={setChapter} progress={42} />
+            </PropertyRail>
           </Part>
 
           <Part name="ReadingPanel" slug="reading-panel">
-            <ReadingPanel tab={tab} onTab={setTab} onFold={noop} className="max-w-full">
+            <ReadingPanel tab={tab} onTab={setTab} onCollapseV={noop} className="max-w-full">
               {tab === 'notes' ? (
                 <ReadingNotes quote={QUOTE} location="Third interlude · Page 125" note={note} onNoteChange={setNote} status="All changes saved"
                   onView={noop} onRemove={noop} footer="Note 1 / Page 125" />

@@ -1,7 +1,9 @@
-import { cloneElement, createContext, isValidElement, useContext, useLayoutEffect, useState, version as reactVersion } from 'react'
+import { cloneElement, createContext, forwardRef, isValidElement, useContext, useEffect, useLayoutEffect, useRef, useState, version as reactVersion } from 'react'
+import { createPortal } from 'react-dom'
 import { toneClass, TONE_VARS } from './tone.js'
 import { floatMotion } from './motion.js'
 import useFloatPresence from '../hooks/useFloatPresence.js'
+import Button from '../atoms/Button.jsx'
 import {
   useFloating,
   autoUpdate,
@@ -137,6 +139,250 @@ export function usePopover({
   return { ...data, floatingStyles, ...interactions, open }
 }
 
+
+/* ── the kolbox variant's layer (plan-2026-11-18-kolbox-system W31.2 batch 4, 2026-11-18) ──
+ * kolbox's OverlayLayer carried line for line: the layer `Menu`, `PopoverPanel` and `ModalDialog` draw their kolbox look
+ * in. Not floating-ui: its placements (`over`, a Dropdown's list lying over its field, 28.5; `beside`, a child menu
+ * beside its parent panel) and its press-outside (on the window in the capture phase, 28.4) are kolbox's behavior and
+ * belong to its variant only; KOL's default and float keep usePopover.
+ *
+ * A portal to document.body (never inside a rail), fixed at its anchor (an element, a ref, or anything with
+ * getBoundingClientRect), closing on a press outside it and its anchor, and on Escape. placement: bottom-start (a menu
+ * dropped from its trigger), left-start / right-start (a panel beside the rail), beside, over, or center (a Modal: the
+ * layer is the dim, and a click on the dim closes it, on click so focus can go back to the trigger after the press;
+ * `blocking={false}`: no dim, the layer lets every press and wheel through to what is under it, and only the window
+ * itself takes them).
+ * Unplaced, the layer is transparent, not hidden, so a Menu can take focus on its first frame. Nested layers: a layer
+ * opened later (a Dropdown's Menu inside a Popover or Modal) sits after it in the body, so a press inside it is not
+ * outside this one, and Escape closes only the last layer. Exported for a kolbox part that draws its own panel in it (the
+ * search window, until it moves). */
+const anchorEl = (anchor) => (anchor && 'current' in anchor ? anchor.current : anchor)
+const later = (a, b) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING)
+/* spend a press: stop it here, and swallow the mouse events and the click it raises until the press ends. Several
+   layers may close on one press; the first spends it, the rest find it stopped and do nothing more. */
+function spend(e) {
+  if (e.cancelBubble) return
+  e.stopPropagation(); e.preventDefault()
+  const stop = (ev) => { ev.stopPropagation(); ev.preventDefault() }
+  const kinds = ['mousedown', 'mousemove', 'mouseup', 'click', 'pointermove', 'pointerup']
+  kinds.forEach((k) => window.addEventListener(k, stop, true))
+  const end = () => setTimeout(() => kinds.forEach((k) => window.removeEventListener(k, stop, true)))
+  window.addEventListener('pointerup', end, { capture: true, once: true })
+  window.addEventListener('pointercancel', end, { capture: true, once: true })
+}
+export function PopoverLayer({ anchor, open, onClose, placement = 'bottom-start', kind, blocking = true, children }) {
+  const ref = useRef(null)
+  const [pos, setPos] = useState(null)
+
+  useLayoutEffect(() => {
+    if (!open) return setPos(null)
+    if (placement === 'center') return setPos({})
+    const place = () => {
+      const a = anchorEl(anchor), box = ref.current
+      if (!a || !box) return
+      const r = a.getBoundingClientRect(), w = box.offsetWidth
+      /* a panel beside its anchor keeps its top on the anchor: one too tall for the room under it shrinks, and its body
+         scrolls, rather than moving up (160 at least, then it moves up as far as it must) */
+      const panel = (placement === 'left-start' || placement === 'right-start') ? box.firstElementChild : null
+      if (panel) panel.style.maxHeight = ''
+      let h = box.offsetHeight
+      const vw = window.innerWidth, vh = window.innerHeight
+      if (panel && r.top + h > vh - 8) {
+        const top = Math.max(8, Math.min(r.top, vh - 8 - 160))
+        h = Math.min(h, vh - 8 - top)
+        panel.style.maxHeight = `${h}px`
+      }
+      let x, y
+      if (placement === 'bottom-start') { x = r.left; y = r.bottom + 4; if (y + h > vh - 8) y = r.top - h - 4 }
+      else if (placement === 'left-start') { x = r.left - w - 8; y = r.top; if (x < 8) x = r.right + 8 }
+      /* a child menu: the anchor is the parent PANEL; the child stands 4 off its right edge (its left when the window
+         ends), its top level with the parent's top, moved up only as far as it must to fit */
+      else if (placement === 'beside') { x = r.right + 4; y = r.top; if (x + w > vw - 8) x = r.left - w - 4 }
+      /* over (28.5): the list opens OVER its field, its left edge on the field's, the chosen row (`data-chosen`) lying on
+         the field. A list that fits the window moves only as far as it must at an edge. A list taller than the window
+         starts where its rows would start, runs to the window's foot (160 at least) and scrolls its rows so the chosen
+         one still lies on the field */
+      else if (placement === 'over') {
+        const row = box.querySelector('[data-chosen]'), list = box.querySelector('[data-kolbox-menu]')
+        x = r.left; y = r.top
+        /* past the right edge the menu flips to the field's right edge; the window margin is 4 */
+        if (x + w > vw - 4) x = r.right - w
+        if (row && list) {
+          list.style.maxHeight = ''; list.scrollTop = 0
+          const rr = row.getBoundingClientRect(), lt = list.getBoundingClientRect().top
+          y = r.top + r.height / 2 - (rr.top - lt + rr.height / 2)
+          if (list.scrollHeight > vh - 8) {
+            const top = Math.max(4, Math.min(y, vh - 4 - 160))
+            h = vh - 4 - top
+            list.style.maxHeight = `${h}px`
+            list.scrollTop = top - y
+            y = top
+          }
+        }
+      }
+      else { x = r.right + 8; y = r.top; if (x + w > vw - 8) x = r.left - w - 8 }
+      const m = placement === 'over' ? 4 : 8
+      setPos({ x: Math.max(m, Math.min(x, vw - w - m)), y: Math.max(m, Math.min(y, vh - h - m)) })
+    }
+    place()
+    /* a scroll inside the overlay (a long list) never moves it */
+    const scrolled = (e) => { if (!ref.current?.contains(e.target)) place() }
+    window.addEventListener('resize', place)
+    window.addEventListener('scroll', scrolled, true)
+    return () => { window.removeEventListener('resize', place); window.removeEventListener('scroll', scrolled, true) }
+  }, [open, anchor, placement])
+
+  /* A press outside closes (28.4). On the window in the capture phase: an editor's canvas may stop its own presses, so
+     a listener on the document never hears them. A press on the canvas (`[data-canvas]`) that closes an overlay is
+     spent on closing: it goes no further and the mouse events and click it would raise are swallowed, so the canvas
+     neither deselects nor starts a drag. */
+  useEffect(() => {
+    if (!open) return
+    const down = (e) => {
+      const me = ref.current, hit = e.target.closest?.('[data-kolbox-overlay]')
+      if (!me || placement === 'center' || (hit && hit !== me && later(me, hit))) return
+      if (me.contains(e.target) || anchorEl(anchor)?.contains?.(e.target)) return
+      /* a window beside the rail (kind "popover") holds through a press on the canvas; it closes by its close, Escape or
+         its caller's toggle. A press on a layer goes on to the canvas (it selects, and a window on the old selection
+         goes with it); a press on the empty canvas is spent, so it does not drop the selection the window edits */
+      if (kind === 'popover' && e.target.closest?.('[data-canvas]')) {
+        if (!e.target.closest('[data-layer-id]')) spend(e)
+        return
+      }
+      onClose?.()
+      if (e.target.closest?.('[data-canvas]')) spend(e)
+    }
+    const key = (e) => {
+      const all = document.querySelectorAll('[data-kolbox-overlay]')
+      if (e.key === 'Escape' && all[all.length - 1] === ref.current) onClose?.()
+    }
+    window.addEventListener('pointerdown', down, true)
+    document.addEventListener('keydown', key)
+    return () => { window.removeEventListener('pointerdown', down, true); document.removeEventListener('keydown', key) }
+  }, [open, anchor, onClose, placement, kind])
+
+  if (!open) return null
+  return createPortal(
+    <div
+      ref={ref}
+      data-kolbox-overlay={kind}
+      className={placement !== 'center' ? 'fixed z-50' : blocking ? 'kol-popover-layer--kolbox-dim fixed inset-0 z-50 flex items-center justify-center' : 'pointer-events-none fixed inset-0 z-50 flex items-center justify-center [&>*]:pointer-events-auto'}
+      onClick={placement === 'center' && blocking ? (e) => e.target === e.currentTarget && onClose?.() : undefined}
+      style={placement === 'center' ? undefined : { left: pos?.x ?? 0, top: pos?.y ?? 0, opacity: pos ? 1 : 0 }}
+    >
+      {children}
+    </div>,
+    document.body,
+  )
+}
+
+/* Tooltip `variant="kolbox"` (W31.2 batch 4): kolbox's Tooltip carried line for line, CSS-placed, no floating-ui. It
+ * wraps its trigger; the tip shows above it on hover or keyboard focus, on the one floating surface. Centred on the
+ * trigger, then shifted back inside the window (8 from its edge) when a trigger near the edge would push it past; below
+ * the trigger when there is no room above it. Inside a rail (`[data-rail]`) the tip stands level with its trigger, at
+ * its left, so it never sits over a section's divider line above the trigger's row; a tip too long to stand there
+ * wraps to the rail's width. Takes `label`, `children` and `asChild` (no wrapper: the tip hangs on the one child element);
+ * renders its wrapper even with no label, as kolbox's did. */
+/* ON THE LAYER ABOVE (plan-2026-11-18-kolbox-system W23.2, 2026-11-18): the tip was placed in CSS inside its trigger's
+ * wrapper, so any ancestor with overflow hidden (every kolbox window and popover shell) cut it; "a popup … clipped by
+ * modal container". It is now portalled to <body>, fixed, and placed from the trigger's box, as the kolbox menus and
+ * dropdowns are (PopoverLayer); same plate, same places. Shown on hover or keyboard focus; no label, no plate. */
+const TIP_EDGE = 8
+const TIP_GAP = 4
+/* true inside a kolbox tooltip's trigger: an icon-only kolbox Button there leaves the tip to it (Button.jsx) */
+export const InTooltipKolbox = (globalThis[Symbol.for('@kolkrabbi/kol-component/InTooltipKolbox')] ??= createContext(false))
+function TooltipKolbox({ label, asChild = false, children }) {
+  const wrap = useRef(null)
+  const tip = useRef(null)
+  const [open, setOpen] = useState(false)
+  const [pos, setPos] = useState(null)
+  const show = label != null && label !== '' && open
+
+  useLayoutEffect(() => {
+    if (!show) return setPos(null)
+    const t = tip.current, w0 = wrap.current
+    if (!t || !w0) return
+    const r = w0.getBoundingClientRect()
+    const railEl = w0.closest('[data-rail]')
+    const rail = railEl?.getBoundingClientRect()
+    const vw = window.innerWidth, vh = window.innerHeight
+    t.style.maxWidth = ''; t.style.whiteSpace = ''; t.style.height = ''
+    let w = t.offsetWidth, h = t.offsetHeight
+    let x, y, wrapped = null
+    /* inside a rail the tip stands level with its trigger, at its left, so it never sits over a section's divider */
+    if (rail && r.left - TIP_GAP - w >= rail.left + TIP_EDGE) { x = r.left - TIP_GAP - w; y = r.top + r.height / 2 - h / 2 }
+    else {
+      /* a tip too long for the rail wraps to the rail's width */
+      if (rail && w > rail.width - 2 * TIP_EDGE) {
+        wrapped = rail.width - 2 * TIP_EDGE
+        Object.assign(t.style, { maxWidth: `${wrapped}px`, whiteSpace: 'normal', height: 'auto' })
+        w = t.offsetWidth; h = t.offsetHeight
+      }
+      const lo = (rail ? rail.left : 0) + TIP_EDGE, hi = (rail ? rail.right : vw) - TIP_EDGE - w
+      x = Math.max(lo, Math.min(r.left + r.width / 2 - w / 2, hi))
+      y = r.top - TIP_GAP - h
+      /* no room above: below the trigger */
+      if (y < TIP_EDGE) y = r.bottom + TIP_GAP
+    }
+    x = Math.max(TIP_EDGE, Math.min(x, vw - TIP_EDGE - w))
+    y = Math.max(TIP_EDGE, Math.min(y, vh - TIP_EDGE - h))
+    setPos({ x, y, wrapped })
+  }, [show, label])
+
+  const tipNode = show && typeof document !== 'undefined' && createPortal(
+    <span
+      ref={tip}
+      role="tooltip"
+      className="kol-tooltip--kolbox kol-kolbox-surface pointer-events-none fixed z-[60] flex h-7 items-center px-2 whitespace-nowrap transition-opacity"
+      style={{ left: pos?.x ?? 0, top: pos?.y ?? 0, opacity: pos ? 1 : 0, ...(pos?.wrapped ? { maxWidth: pos.wrapped, whiteSpace: 'normal', height: 'auto', paddingTop: 'var(--kol-spacing-1)', paddingBottom: 'var(--kol-spacing-1)' } : null) }}
+    >
+      {label}
+    </span>,
+    document.body,
+  )
+  const on = {
+    onPointerEnter: (e) => e.pointerType !== 'touch' && setOpen(true),
+    onPointerLeave: () => setOpen(false),
+    onFocus: (e) => e.target.matches?.(':focus-visible') && setOpen(true),
+    onBlur: () => setOpen(false),
+  }
+  /* `asChild`: the tip hangs on its one child element itself, no wrapper in the layout (an icon-only kolbox Button,
+     whose parent's rules address it as a direct child); the child's own handlers run first */
+  if (asChild && isValidElement(children)) {
+    const own = children.props
+    const chain = (k) => (e) => { own[k]?.(e); on[k](e) }
+    /* the child's own ref is kept beside the tip's */
+    const theirs = childRefOf(children)
+    const ref = (node) => { wrap.current = node; if (typeof theirs === 'function') theirs(node); else if (theirs) theirs.current = node }
+    return (
+      <>
+        {cloneElement(children, { ref, onPointerEnter: chain('onPointerEnter'), onPointerLeave: chain('onPointerLeave'), onFocus: chain('onFocus'), onBlur: chain('onBlur') })}
+        {tipNode}
+      </>
+    )
+  }
+  return (
+    /* a trigger that fills its row (w-full) makes the wrapper fill it too, so wrapping a control never narrows it */
+    <span ref={wrap} data-kol-tooltip="" className="relative inline-flex has-[>.w-full]:flex has-[>.w-full]:w-full" {...on}>
+      <InTooltipKolbox.Provider value>{children}</InTooltipKolbox.Provider>
+      {tipNode}
+    </span>
+  )
+}
+
+/* Tooltip `variant="folio"` (Folio migration batch A, 2026-11-22): Folio's Tooltip carried class for class (apps/folio
+ * EditorChrome.jsx): a hairline box at radius 4 padded 4 by 8, 6 over its trigger, the text 11 / 15; shown on hover or
+ * focus inside its wrapper, placed in CSS, no portal (so it keeps the frame's `data-folio-*`; an overflow-hidden parent
+ * clips it, as Folio's did). Chrome in kol-theme `.kol-tooltip--folio`. */
+function TooltipFolio({ label, children }) {
+  return (
+    <span className="group relative inline-flex">
+      {children}
+      <span role="tooltip" className="kol-tooltip--folio pointer-events-none invisible absolute bottom-[calc(100%+6px)] left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-[4px] border px-[8px] py-[4px] group-focus-within:visible group-hover:visible">{label}</span>
+    </span>
+  )
+}
+
 /**
  * Tooltip — hover-triggered popover with text content. Wraps any trigger
  * element. Built on `usePopover` with `hover: true`, `click: false`,
@@ -164,6 +410,8 @@ const TooltipNest = (globalThis[Symbol.for('@kolkrabbi/kol-component/TooltipNest
 const childRefOf = (el) => ('ref' in (el.props ?? {}) ? el.props.ref : reactVersion.startsWith('18') ? el.ref : undefined)
 
 export function Tooltip(props) {
+  if (props.variant === 'kolbox') return <TooltipKolbox label={props.label} asChild={props.asChild}>{props.children}</TooltipKolbox>
+  if (props.variant === 'folio') return <TooltipFolio label={props.label}>{props.children}</TooltipFolio>
   /* no label → no tooltip: several call sites pass an optional hint, and an empty panel is worse
    * than none. A separate component so the hooks below never run conditionally. */
   if (props.label == null || props.label === '') return props.children
@@ -270,7 +518,55 @@ function TooltipOn({
 /* how many floats this one is opened from inside — context crosses portals, the DOM order does not */
 const FloatDepth = (globalThis[Symbol.for('@kolkrabbi/kol-component/FloatDepth')] ??= createContext(0))
 
-export function PopoverPanel({
+
+/* The kolbox panel shell (W31.2 batch 4): kolbox's PopoverShell carried line for line, the panel every kolbox popover
+ * and window draws: radius 16, the secondary surface on the one floating surface (`.kol-kolbox-surface`), 240 wide
+ * (`--kol-kolbox-popover-w`) unless `width` says otherwise. Header: a `leading` slot (tabs, or an icon and name), the
+ * `title`, the `actions`, close (only with `onClose`: a dialog with none cannot be dismissed). The body is the
+ * children; `footer`, when given, is a row of buttons under it. Drawn by `PopoverPanel variant="kolbox"` beside its
+ * anchor, by `ModalDialog variant="kolbox"` centred, and on its own as `ModalShell variant="kolbox"`. Other props
+ * (aria-modal, data-*) and the ref go on the dialog. Not exported from the package. */
+export const KolboxShell = forwardRef(function KolboxShell({ onClose, title, leading, actions, footer, width, className = '', children, ...rest }, ref) {
+  return (
+    <section
+      ref={ref}
+      role="dialog"
+      aria-label={typeof title === 'string' ? title : undefined}
+      data-kolbox-popover=""
+      className={`kol-modal--kolbox kol-kolbox-surface flex flex-col overflow-hidden ${className}`}
+      style={width ? { width } : undefined}
+      {...rest}
+    >
+      <header className="flex shrink-0 items-center gap-1 py-2 pr-2 pl-4">
+        {leading}
+        {title && <h2 className="kol-modal-title--kolbox min-w-0 flex-1 truncate">{title}</h2>}
+        {!title && <span className="flex-1" />}
+        {actions}
+        {onClose && <Button variant="kolbox" iconOnly="x" aria-label="Close" onClick={onClose} />}
+      </header>
+      <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">{children}</div>
+      {footer && <footer className="flex shrink-0 items-center justify-end gap-2 px-4 pb-4">{footer}</footer>}
+    </section>
+  )
+})
+
+/* `variant="kolbox"` (W31.2 batch 4): kolbox's Popover carried line for line, `ModalShell variant="kolbox"` (its shell)
+ * in `PopoverLayer`, beside its anchor: `anchor`, `open`, `onClose`, `placement` (left-start by default, beside the right
+ * rail), and the shell's `title`, `leading`, `actions`, `footer`, `width`, `aria-label`, `className`, `children`. */
+function PopoverKolbox({ anchor, open, onClose, placement = 'left-start', variant, ...shell }) {
+  return (
+    <PopoverLayer anchor={anchor} open={open} onClose={onClose} placement={placement} kind="popover">
+      <KolboxShell onClose={onClose} {...shell} />
+    </PopoverLayer>
+  )
+}
+
+export function PopoverPanel(props) {
+  if (props.variant === 'kolbox') return <PopoverKolbox {...props} />
+  return <PopoverPanelOn {...props} />
+}
+
+function PopoverPanelOn({
   popover,
   children,
   panel = true,

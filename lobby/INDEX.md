@@ -31,13 +31,16 @@ lobby standard). Spec: `~/.dotfiles/docs/operations/systems/lobby/`.
 **Bar for 🟢 closed in this repo:** a shipped version / changeset cited in the
 resolution. `read` and `addressed` are never `closed`.
 
-## Queue — 109 entries
+## Queue — 112 entries
 The queue holds LIVE TASKS ONLY (user ruling 2026-07-30). Exception below:
 `ListGridCards` sits here as an **open collection** by the user's call — it
 accrues entries and never closes.
 
 | | Entry | About | Staged | State |
 |---|---|---|---|---|
+| 🔵 | [FigmaDocFrameRule](inbox/FigmaDocFrameRule.md) | **kol-atlas** — the Figma doc frame rule from his own frame in library--atlas (763:3176): Header, a Wrapper with 24 padding, Specimen, masters; the component set (or Specimen, when the components are separate) holds the 64 padding, fill and dashed stroke; the annotation ignores auto layout, 64 tall, 16 on top, centred; no Grid or Column; doc colours as variables, no hex; sections without a stroke | 2026-11-21 | 🔵 `filed` |
+| 🔵 | [LogoShapes](inbox/LogoShapes.md) | **kol-branding** — logo shape generators as a KOL package: one engine, System (a mark from measures) and Tuner (a form rebuilt from circles and lines on a harmony ladder) first, line effects second; spec is `kol-branding/docs/documentation/05-logo-shapes/`, source in its `_files/` | 2026-11-18 | 🔵 `filed` |
+| 🔵 | [LogoShapesReorganized](inbox/LogoShapesReorganized.md) | **kol-branding** — the same logo shape generators, reorganized and audited, filed beside [LogoShapes](inbox/LogoShapes.md) so the two can be diffed: one master and one sheet per effect, a `variant` number that loads a sheet tile, controls measured and cut (the five 61-control masters now 38 and 32), plus a gradient master, an SVG library, saved slots and an export frame; spec is `kol-branding/docs/documentation/05-logo-shapes/07-controls-audit.md`, source in `_files/canvas-organized/` | 2026-11-21 | 🔵 `filed` |
 | 🟢 | [LibraryMastersFoundryWebsite](done/LibraryMastersFoundryWebsite.md) | **kol-website** — Figma only: 14 library masters missing or off for the foundry and website files (TypeTester, SectionFaq + Accordion, ContentRow/ContentCard `typeface`, SectionCardItem text-only, SectionHero `split`, ContentCard `showcase`, SectionCta `centered`, ExhibitLinkCard, SourcesReferences; SectionText/SectionHero/ContentCard heights, ShellHeader tabs slot, Slider `value`; Mirror + Pin icons) | 2026-11-08 | 🟢 `closed` 2026-11-08 — library masters built, ids in the resolution; publish is the user's |
 | 🟢 | [IdentityFoundry](done/IdentityFoundry.md) | **kol-foundry** — kol-icons `identity/foundry`: the Foundry app's mark, the drafting compass (app-icon pick `compass-big-up`), file attached | 2026-11-08 | 🔵 `filed` |
 | 🟢 | [SiteRailPageIcons](done/SiteRailPageIcons.md) | **kol-foundry** — site rail page rows take an icon the app-rail way: glyph in the gutter column, the label where a plain page row's sits (today +20px shift with `alignIcons`) | 2026-11-08 | 🔵 `filed` |
@@ -563,6 +566,9 @@ outstanding. Returned receipts with `Remainder here: none` graduate to
 
 | Date | Event |
 |---|---|
+| 2026-11-21 | 🔵 LogoShapesReorganized filed from kol-branding (the reorganized, audited Line Swell canvas, to diff against LogoShapes) |
+| 2026-11-21 | 🔵 FigmaDocFrameRule filed from kol-atlas (doc frame structure, floating annotation, doc colours as variables) |
+| 2026-11-18 | 🔵 LogoShapes filed from kol-branding (Line Swell canvas: System, Tuner, line effects) |
 | 2026-11-08 | 🟢 LibraryMastersFoundryWebsite closed — 14 library masters built / corrected in ❖ library--kol-ds-ui (unpublished), receipt to kol-website |
 | 2026-11-08 | 🔵 KolPageShrinksInPageShell filed from kol-foundry (kol-kerner overview pages) |
 | 2026-11-08 | 🔵 LibraryMastersFoundryWebsite filed from kol-website (foundry + website Figma files, plan 2.2b) |

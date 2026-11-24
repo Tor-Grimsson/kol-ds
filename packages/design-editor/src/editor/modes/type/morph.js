@@ -17,7 +17,7 @@
 // via the rail's XY sliders (KineticPanel) instead of labs' on-canvas
 // drag-a-bezier overlay; curveBlend honors them either way.
 
-import opentype from 'opentype.js'
+import { loadFontFile } from './fontLoader'
 const TAU = Math.PI * 2
 
 // generalized (lo, hi) clamp — deliberately not lib/util's fixed clamp01
@@ -39,21 +39,9 @@ function mulberry32(seed) {
 }
 
 // ── font loading (cached by url) ─────────────────────────────────────────────
-const fontCache = new Map() // url → Promise<opentype.Font>
-
-export function loadGlyphFont(url) {
-  if (fontCache.has(url)) return fontCache.get(url)
-  const promise = (async () => {
-    const buf = await fetch(url).then((r) => {
-      if (!r.ok) throw new Error(`font fetch failed: ${url}`)
-      return r.arrayBuffer()
-    })
-    return opentype.parse(buf)
-  })()
-  fontCache.set(url, promise)
-  promise.catch(() => fontCache.delete(url))
-  return promise
-}
+// The type mode's loader (variable fonts since 2026-11-18): one parse per file,
+// with its opentype.js fixes (gvar, ccmp, kerning), shared with the text engine.
+export const loadGlyphFont = loadFontFile
 
 // Synchronous accessor for an already-resolved font (null until loaded).
 const resolved = new Map() // url → Font

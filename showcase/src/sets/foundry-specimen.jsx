@@ -4,8 +4,8 @@ import {
   GlyphMetricsGrid,
   FoundryCharacterSets,
   FontPreviewSection,
-  SpecimenSectionHeader,
 } from '@kolkrabbi/kol-foundry'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import { Table } from '@kolkrabbi/kol-component'
 
 export const meta = {
@@ -124,7 +124,7 @@ export default function FoundrySpecimenSet() {
       {/* Glyph inspector with parsed-metric overlay */}
       <section className="w-full py-12 lg:py-16">
         <div className="max-w-[var(--kol-content-shell)] mx-auto flex flex-col gap-8">
-          <SpecimenSectionHeader
+          <SpecimenHeader
             label="Glyph Metrics"
             size="sm"
             showDropdown={false}
@@ -151,7 +151,7 @@ export default function FoundrySpecimenSet() {
       {/* TypeScaleSection recipe */}
       <section className="w-full py-12 lg:py-16">
         <div className="max-w-[var(--kol-content-shell)] mx-auto flex flex-col gap-8">
-          <SpecimenSectionHeader
+          <SpecimenHeader
             label="Type Scale"
             size="sm"
             showDropdown={false}

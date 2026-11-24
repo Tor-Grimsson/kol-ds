@@ -58,7 +58,7 @@ export default function Cards() {
           <Part name="Card float · tabs (the editor card)" slug="card">
             <div className="w-80 flex flex-col gap-4">
               {EDITOR_CARDS.map((c) => (
-                <Card key={c.key} variant="float" radius="window" tabs={c.tabs} defaultFolded={c.folded} foot={c.foot}>
+                <Card key={c.key} variant="float" radius="window" tabs={c.tabs} defaultCollapsedV={c.folded} foot={c.foot}>
                   {(tab) => <span className="kol-float-label text-fg-64">{tab} rows</span>}
                 </Card>
               ))}
@@ -73,13 +73,13 @@ export default function Cards() {
           </Part>
           <Part name="SectionHead" slug="section-head">
             <div className="w-[608px] max-w-full flex flex-col gap-4 bg-surface-secondary rounded-[var(--kol-float-menu-r)] p-5">
-              <SectionHead title="Briefs" count={1} folded={headFolded} onFold={() => setHeadFolded((f) => !f)} />
+              <SectionHead title="Briefs" count={1} collapsedV={headFolded} onCollapseV={() => setHeadFolded((f) => !f)} />
               <SectionHead title="Pageviews" meta="Last 30 days" value="1,036" />
             </div>
           </Part>
           <Part name="GroupCard" slug="card">
             <div className="w-[640px] max-w-full">
-              <Card variant="float" title="Todos" count="2 open" folded={folded} onFold={() => setFolded((f) => !f)} addLabel="New todo" onAdd={noop}>
+              <Card variant="float" title="Todos" count="2 open" collapsedV={folded} onCollapseV={() => setFolded((f) => !f)} addLabel="New todo" onAdd={noop}>
                 <TaskCard size="sm" title="Wire the capture inbox" date="2026-07-04" done={false} onToggle={noop} />
                 <TaskCard size="sm" title="Rename a card" chip="S" done={false} onToggle={noop} />
               </Card>
@@ -119,7 +119,7 @@ export default function Cards() {
             </div>
           </Part>
           <Part name="CollapsedGroup" slug="card">
-            <div className="w-[640px] max-w-full"><Card variant="float" title="Profiles" count="3" folded onFold={noop} /></div>
+            <div className="w-[640px] max-w-full"><Card variant="float" title="Profiles" count="3" collapsedV onCollapseV={noop} /></div>
           </Part>
           <Part name="CoverTile" slug="cover-tile">
             <CoverTile src={IMG} title="The Waves" author="Virginia Woolf" width={160} onClick={noop} />

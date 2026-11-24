@@ -67,7 +67,7 @@ function FloatingPanel({ title, children }) {
     handleProps: { onMouseDown: onGrab, role: 'button', 'aria-label': `Move ${title}`, className: 'relative cursor-grab active:cursor-grabbing select-none' },
   }
   return (
-    <div className="kol-tone-secondary fixed w-80 max-h-[80vh] flex flex-col bg-surface-primary border border-oq-04 rounded-[var(--kol-radius-sm)]"
+    <div className="kol-tone-secondary fixed w-80 max-h-[80vh] flex flex-col bg-surface-primary border border-oq-04 rounded-[var(--kol-radius-4)]"
       style={{ left: pos.x, top: pos.y, zIndex: 'var(--kol-z-sticky, 20)' }}>
       <div className="p-3 overflow-y-auto">{children(grab)}</div>
     </div>
@@ -269,7 +269,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
               onDragEnd={() => setDragI(null)}
             >
               <button type="button" onClick={() => go(i)} aria-label={`Slide ${i + 1}`} aria-current={i === active}
-                className={`block w-full overflow-hidden rounded-[var(--kol-radius-sm)] transition-opacity duration-300 ${i === active ? 'opacity-100' : 'opacity-48 hover:opacity-80'}`}>
+                className={`block w-full overflow-hidden rounded-[var(--kol-radius-4)] transition-opacity duration-300 ${i === active ? 'opacity-100' : 'opacity-48 hover:opacity-80'}`}>
                 <SlideThumb doc={s.doc} />
               </button>
               {/* absolute ink with an absolute shadow — a slide's ground does not flip with the app theme */}
@@ -284,7 +284,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
             </div>
           ))}
           <button type="button" onClick={() => setPicker(true)} aria-label="Add slide"
-            className="shrink-0 flex items-center justify-center rounded-[var(--kol-radius-sm)] border border-dashed border-fg-16 text-fg-48 hover:text-fg-96 hover:border-fg-48"
+            className="shrink-0 flex items-center justify-center rounded-[var(--kol-radius-4)] border border-dashed border-fg-16 text-fg-48 hover:text-fg-96 hover:border-fg-48"
             style={{ width: TILE_W, aspectRatio: '16 / 9' }}>
             <span className="kol-helper-12 uppercase">+ Add</span>
           </button>
@@ -302,7 +302,7 @@ export default function DeckEditor({ deck, layouts = [], onSave, onClose, mediaC
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 w-[80vw] max-w-[1400px] max-h-[80vh] overflow-y-auto">
           {allLayouts.map((l) => (
             <button key={l.slug} type="button" onClick={() => addFrom(l)} className="text-left group">
-              <div className="overflow-hidden rounded-[var(--kol-radius-sm)] opacity-64 group-hover:opacity-100 transition-opacity border border-oq-08"><SlideThumb doc={l.doc} /></div>
+              <div className="overflow-hidden rounded-[var(--kol-radius-4)] opacity-64 group-hover:opacity-100 transition-opacity border border-oq-08"><SlideThumb doc={l.doc} /></div>
               <div className="mt-2 kol-helper-12 uppercase text-fg-48 group-hover:text-fg-96">{l.name}</div>
             </button>
           ))}

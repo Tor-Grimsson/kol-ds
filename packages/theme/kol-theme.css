@@ -39,6 +39,8 @@
 @import "./kol-type-mono-classes.css" layer(components);
 @import "./kol-type-roles.css" layer(components);
 @import "./kol-type-float-classes.css" layer(components);
+@import "./kol-type-kolbox-classes.css" layer(components);
+@import "./kol-type-folio-classes.css" layer(components);
 @import "./kol-utilities.css" layer(components);
 @import "./kol-components-atoms.css" layer(components);
 @import "./kol-components-molecules.css" layer(components);

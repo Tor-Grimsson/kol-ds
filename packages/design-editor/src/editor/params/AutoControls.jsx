@@ -190,8 +190,10 @@ function RangeField({ param: p, layer, setProp, chars: sectionChars }) {
     setProp(p.key, { bind: 'mod', source: 'expr', transform: { ...(bound ? raw.transform : {}), expr: s, range } })
   }
 
+  /* the float track is a bare range (no wrapper of its own, W2.1): the row fills its cell so the track takes the rest */
+  const float = useChrome() === 'float'
   return (
-    <div className="flex items-center gap-3">
+    <div className={`flex items-center gap-3${float ? ' w-full' : ''}`}>
       {/* the DS slider, readout off — the value field beside it is the readout (audit E1; this was
           the one native range input left in src/) */}
       {/* bound: the modulation drives the value, so no disabled slider — the field beside it edits the expression (plan 51 3.1) */}
@@ -364,9 +366,9 @@ function ParamControl({ param: p, layer, setProp, palette, bound, animate, inlin
      12px switch rode 6px below the label's middle (the user, 2026-10-09: "align this properly — middle").
      Same LabeledControl the row draws, with a block flex that centres. */
   if (rowInline && align === 'end' && !hint) {
-    return <LabeledControl inline label={caps(p.label)} labelWidth={INLINE_LABEL_W}><div className={`flex w-full items-center justify-end ${ROW_H[cs] ?? ''}`}>{body}</div></LabeledControl>
+    return <LabeledControl horizontal label={caps(p.label)} labelWidth={INLINE_LABEL_W}><div className={`flex w-full items-center justify-end ${ROW_H[cs] ?? ''}`}>{body}</div></LabeledControl>
   }
   return rowInline
     ? <SettingsRow label={p.label} hint={hint} align={align} labelWidth={INLINE_LABEL_W}>{body}</SettingsRow>
-    : <LabeledControl inline={plainBool} label={inline ? caps(p.label) : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>
+    : <LabeledControl horizontal={plainBool} label={inline ? caps(p.label) : p.label} hint={hint} labelWidth={plainBool ? 'auto' : INLINE_LABEL_W}>{body}</LabeledControl>
 }

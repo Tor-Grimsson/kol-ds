@@ -7,6 +7,7 @@ import { DEFAULT_SHAPE_ID, getShapeSvg } from '../modes/pattern/shapes'
 import { PRESET_SIZES } from '../shell/aspects'
 import { buildPatternSvg } from '../modes/pattern/render'
 import { computeFrameGlyphs } from '../modes/type/buildTypeSvg'
+import { layerFamily } from '../modes/type/families'
 import { getAppSettings } from '../lib/appSettings'
 import { findLayerDeep } from './helpers'
 import { deleteClip, gcClips, loadClip, saveClip } from '../lib/clipStore'
@@ -19,6 +20,10 @@ import { MAX_FILTERS, makeStage, bareChain, normalizeLayersDeep } from './filter
 import { hydrateVideoClips } from '../lib/clipStore'
 import { marksCount, marksToShapes } from '../../generate/geom.js'
 import { REPEAT_DEFAULTS, copyMatrices, decompose, apply as applyMatrix } from '../../generate/repeat.js'
+import { FRAME_DEFAULTS, FRAME_MODEL, frameSpec, frameFromSpec, toFramesDoc, activeFrameOf, membersOf, frameAt, PAGE_NAME, toPages, pagesSpec, everyFrameOf, placePaste, placeInList, turnMembers } from './frame'
+import { EMPTY_STYLES, followAll, followPages, hasStyles, newStyleId, pageColorOf, stylesFrom } from './styles'
+import { getClip, setClip, clientToPage, copySet } from './clipboard'
+import { LAYER_MODEL, toModel, toModelDeep, makeContent, patchContent, contentOf, contentView } from './layerModel'
 
 /* The seam (editor/packs.js): the loop, kinetic and filter catalogs are reached through their
  * packs. `loop`/`misc` and `kinetic` are only offered when their pack is registered, so the
@@ -31,9 +36,12 @@ const filterById = (id) => pack('effects')?.filterById(id) ?? null
 /* Layer types that own a `color` (and may own a `stroke`). Single source
  * of truth — `useColorTarget` and the inspector both consult this set
  * instead of duplicating the literal. */
-export const COLOR_LAYER_TYPES = new Set(['background', 'pattern', 'shape', 'text', 'path', 'bool'])
+export const COLOR_LAYER_TYPES = new Set(['background', 'pattern', 'shape', 'text', 'path', 'bool', 'frame'])
 
 const DRAFT_KEY = 'kol.editor.draft'
+
+/* the Undo row's words for a frame's delete (C1): "Delete Frame and its 3 layers" */
+const frameDeleteLabel = (f, n) => `Delete ${f.name || 'Frame'}${n ? ` and its ${n} layer${n === 1 ? '' : 's'}` : ''}`
 
 /* Modulation sources that consume the transport's pointer state (window
  * mouse / stage pointer) — keep in sync with the pointer registrations in
@@ -130,7 +138,7 @@ function patchLayerDeep(list, id, partial) {
  * free those clips when the subtree is deleted. */
 function collectVideoClipIds(layer, out = []) {
   if (!layer) return out
-  if (layer.srcType === 'video' || layer.srcType === 'image') out.push(layer.id) /* images are clips too since 2026-10-09 (audit F1); deleteClip is a no-op for an id with no clip */
+  if (layer.srcType === 'video' || layer.srcType === 'image' || layer.fill?.srcType === 'video' || layer.fill?.srcType === 'image') out.push(layer.id) /* an image fill holds the photo's clip (W22); images are clips too since 2026-10-09 (audit F1); deleteClip is a no-op for an id with no clip */
   if (Array.isArray(layer.children)) for (const c of layer.children) collectVideoClipIds(c, out)
   return out
 }
@@ -334,8 +342,7 @@ function boxFromAnchor(anchor, w, h, vh = CANVAS_H) {
  * newFrame() defaults so picking a saved type spec or starting fresh yields
  * the same baseline shape across the two surfaces. */
 export const TEXT_DEFAULTS = {
-  family:     'right-grotesk',   /* the 2026-08-12 family model (families.js) */
-  width:      'Tight',
+  family:     'inter',     /* the font model (families.js) — variable since 2026-11-18 */
   weight:     600,
   italic:     false,
   size:       96,
@@ -346,19 +353,16 @@ export const TEXT_DEFAULTS = {
   verticalAlign: 'middle',       /* top | middle | bottom of the frame */
   resizing:   'fixed',           /* fixed | auto-w | auto-h (Figma Layout) */
   /* Variable axis — the brand editor's basic morph setting (Type mode frame
-   * model): Cut A is width/weight above, Cut B is width2/weight2. The blend
+   * model): one variable file from weight above to weight2. The blend
    * lives as `axisBlend` on the LAYER (`blend` is taken by the compositing
    * mode); frame-model consumers (computeFrameGlyphs) fall back to it. */
   axisOn:           false,
   axisMode:         'morph',
-  width2:           'Spatial',
   weight2:          900,
   axisBlend:        0.5,
   axisCurve:        'flat',
   curveCp1:         { x: 0.33, y: 0.33 },
   curveCp2:         { x: 0.66, y: 0.66 },
-  randomWidthLock:  '',
-  randomWeightLock: '',
 }
 
 /* Defaults for a pattern layer's Pattern Lab fields. Mirrors PatternLab's
@@ -489,7 +493,8 @@ const layerDefaults = (type, vh = CANVAS_H) => {
         comp:        mot().presetComp(preset),
       })
     }
-    case 'text':       return placed(600, 120, { ...TEXT_DEFAULTS, text: 'New text', color: 'palette:dark' })
+    /* a new text opens empty, at 12, left and top: only the caret until something is typed */
+    case 'text':       return placed(600, 120, { ...TEXT_DEFAULTS, size: 12, textAlign: 'left', verticalAlign: 'top', text: '', color: 'palette:dark' })
     /* path geometry comes from the pen tool via `extras`; these are just
      * safe fallbacks so a bare addLayer('path') never yields undefined nodes. */
     case 'group':      return fullCanvas({ children: [], name: 'Layer' })
@@ -510,7 +515,30 @@ const layerDefaults = (type, vh = CANVAS_H) => {
  * `draftKey` picks WHICH slot a persisting chrome autosaves to. Labs mode
  * passes its own (plan.md Phase 11.6) so it neither offers to restore the
  * editor's composition nor overwrites it; the editor keeps the default. */
-export function ComposeStateProvider({ children, persistDraft = true, draftKey = DRAFT_KEY }) {
+/* `layerModel` (plan-2026-11-18-kolbox-system W22, ./layerModel.js): the chrome works in layer model 2, so an old
+ * photo, pattern, kinetic, generate or loop layer converts on load and on add, in one place. Off for the chromes whose
+ * stage is built from those layers (Labs, Morph, the Randomiser) and for apps/editor's own inspectors, which still
+ * switch on the old types. Drawing is shared, so every chrome draws a layer-model-2 file. */
+/* `frames` (plan-2026-11-19-kolbox-whats-left C1, ./frame.js): frames are objects the user draws, 0 or more; the stage
+ * is the page. Off for the chromes with one stage (Labs, Morph, apps/editor), which keep their built-in frame. */
+export function ComposeStateProvider({ children, persistDraft = true, draftKey = DRAFT_KEY, layerModel = false, frames: framesProp = false }) {
+  const modelRef = useRef(layerModel)
+  modelRef.current = layerModel
+  /* A DOCUMENT WITH FRAMES OPENS AS FRAMES in a chrome that has none (plan-2026-11-19-kolbox-whats-left R1, "editors
+     dont load with frames"): the default editor shares the draft and the library with the kolbox style, and read a
+     frames or pages document as one stage, its frames drawn as rectangles and every page stacked on it. A file or draft
+     marked `frameModel` 2 or more, or holding a frame, turns frames on for as long as it is open; a stage file, or a
+     cleared canvas, turns them off again. Where the chrome asks for frames (`frames`), they are always on. */
+  const [docFrames, setDocFrames] = useState(false)
+  const frameMode = framesProp || docFrames
+  const framesRef = useRef(frameMode)
+  framesRef.current = frameMode
+  const adoptDoc = (spec) => {
+    if (framesProp) return
+    const on = spec?.frameModel >= 2 || (Array.isArray(spec?.layers) && spec.layers.some((l) => l?.type === 'frame'))
+    framesRef.current = on
+    setDocFrames(on)
+  }
   /* ─── Frame: aspect + canvas dimensions ───
    * `aspect` is the preset label (or 'custom'); `canvasW`/`canvasH` are the
    * real pixel output dimensions. The 1080-virtual coordinate space is
@@ -567,11 +595,51 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * the "disable" state); a `var(--kol-*)` token = themed auto that flips
    * with light/dark. The frame defaults to the absolute black/white pair
    * (white in light mode, black in dark). */
-  const [canvasFill,        setCanvasFill]        = useState('var(--kol-surface-ab-split)')
-  const [canvasFillOpacity, setCanvasFillOpacity] = useState(1)      /* 0..1 */
+  const [canvasFill,        setCanvasFill]        = useState(FRAME_DEFAULTS.canvasFill)
+  const [canvasFillOpacity, setCanvasFillOpacity] = useState(FRAME_DEFAULTS.canvasFillOpacity)      /* 0..1 */
   /* Infinite backdrop (the area around the frame). Themed surface token by
    * default so it flips with the theme; overridable via the inspector swatch. */
-  const [infiniteFill,      setInfiniteFill]      = useState('var(--kol-surface-secondary)')
+  /* PAGES (C4.4, ./frame.js): the document's pages, the open one's layers live in `layers` below and every other page's
+   * in its entry; the page color (the backdrop) is the open page's own. Chromes without frames keep the one page. */
+  const [pages, setPagesState] = useState(() => [{ id: 'page-1', name: PAGE_NAME(1), color: FRAME_DEFAULTS.infiniteFill, layers: [] }])
+  const [pageId, setPageIdState] = useState('page-1')
+  const pagesRef = useRef(pages)
+  /* the file's styles (W7, ./styles.js), in history with the layers that follow them */
+  const [styles, setStylesState] = useState(EMPTY_STYLES)
+  const stylesRef = useRef(styles)
+  pagesRef.current = pages
+  const pageIdRef = useRef(pageId)
+  pageIdRef.current = pageId
+  const infiniteFill = (pages.find((p) => p.id === pageId) ?? pages[0]).color
+  /* the page color is a setting, not an undo step (as the backdrop always was); a direct edit detaches its style (W7) */
+  const setInfiniteFill = useCallback((c) => {
+    const next = pagesRef.current.map((p) => {
+      if (p.id !== pageIdRef.current) return p
+      const { style: _drop, ...rest } = p
+      return { ...rest, color: typeof c === 'function' ? c(p.color) : c }
+    })
+    pagesRef.current = next
+    setPagesState(next)
+  }, [])
+  /* the open page takes a color style and follows it (W7) */
+  const setPageStyle = useCallback((style) => {
+    const next = pagesRef.current.map((p) => (p.id === pageIdRef.current ? { ...p, color: pageColorOf(style), style: style.id } : p))
+    pagesRef.current = next
+    setPagesState(next)
+  }, [])
+  /* the frame's name (plan-2026-11-18-kolbox-system 28.1), renamed on its canvas label or its Layers row; null = "Canvas" */
+  const [canvasName,        setCanvasNameState]   = useState(FRAME_DEFAULTS.canvasName)
+  const setCanvasName = useCallback((n) => setCanvasNameState(typeof n === 'string' && n.trim() ? n.trim() : null), [])
+
+  /* ─── Frame: position (plan-2026-11-18-kolbox-system 11.3) ───
+   * Where the frame sits, in frame units (the 1080-wide virtual space). Layers are frame-relative, so they travel
+   * with it and their stored x/y never change. One object so history can snapshot it by identity; see
+   * setCanvasPos below for the history write. */
+  const [canvasPos, setCanvasPosState] = useState({ x: FRAME_DEFAULTS.canvasX, y: FRAME_DEFAULTS.canvasY })
+  const canvasPosRef = useRef(canvasPos)
+  canvasPosRef.current = canvasPos
+  const canvasX = canvasPos.x
+  const canvasY = canvasPos.y
 
   /* ─── Active paint + app-level paint pair ───
    * Photoshop / Affinity model. SwatchStack reads `paintFill` / `paintStroke`
@@ -625,11 +693,13 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     setSelectedIds(id == null ? [] : [id])
   }, [])
 
-  /* Selecting Canvas selects every top-level layer along with it — Canvas
-   * is the parent of all layers, so its selection means "everything". */
+  /* Selecting the frame selects the frame and only it (plan-2026-11-18-kolbox-system 11.3): it is an object you
+   * move and fill, as in Figma. It used to mean "everything" ('canvas' + every top-level id); Select all is
+   * selectMany over the layers, its own path. */
+  /* with frames as objects (C1) there is no 'canvas': it selects the frame the rulers read, or nothing */
   const selectCanvas = useCallback(() => {
-    const ids = layersRef.current.map((l) => l.id)
-    setSelectedIds(['canvas', ...ids])
+    if (framesRef.current) { const f = activeFrameOf(layersRef.current, selectedIdsRef.current[0]); setSelectedIds(f ? [f.id] : []); return }
+    setSelectedIds(['canvas'])
   }, [])
 
   /* Toggle a layer in/out of multi-select. Falls back to empty selection
@@ -672,7 +742,33 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
   pastRef.current        = past
   futureRef.current      = future
 
-  const snap = () => ({ layers: layersRef.current, selectedIds: selectedIdsRef.current })
+  /* `frame` rides along so a frame move undoes like a layer move (11.3) */
+  /* `pages` and `pageId` ride along (C4.4): an undo of a page's add, delete, rename or duplicate, or of an edit made on
+     another page, brings the document back as it was, on the page it was on */
+  const snap = () => ({ layers: layersRef.current, selectedIds: selectedIdsRef.current, frame: canvasPosRef.current, pages: pagesRef.current, pageId: pageIdRef.current, styles: stylesRef.current })
+  /* a restored snapshot's pages, each keeping its page color as it is now (colors are not in history), except a page
+     that follows a style, whose color goes back with the style (W7) */
+  const keepColors = (ps) => {
+    const now = new Map(pagesRef.current.map((p) => [p.id, p]))
+    return ps.map((p) => {
+      const cur = now.get(p.id)
+      if (!cur || cur.color === p.color || p.style || cur.style) return p
+      return { ...p, color: cur.color }
+    })
+  }
+  const restore = (r) => {
+    layersRef.current      = r.layers
+    selectedIdsRef.current = r.selectedIds
+    setLayers(r.layers)
+    setSelectedIds(r.selectedIds)
+    if (r.frame) { canvasPosRef.current = r.frame; setCanvasPosState(r.frame) }
+    if (r.styles) { stylesRef.current = r.styles; setStylesState(r.styles) }
+    if (r.pages) {
+      const ps = keepColors(r.pages)
+      pagesRef.current = ps; setPagesState(ps)
+      pageIdRef.current = r.pageId; setPageIdState(r.pageId)
+    }
+  }
 
   /* History writes happen at the TOP LEVEL of these callbacks — never inside
    * a setState updater. StrictMode double-invokes updaters, so a nested
@@ -680,13 +776,31 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * the refs, next is computed once, then every set is issued with a plain
    * value; the refs are updated eagerly so same-tick sequences (transaction
    * commits, chained removes) stay consistent before React re-renders. */
+  /* A text being born ({ id, depth }): its first typing and the box fitting it fold into the step that made it, and
+     left empty it goes with that step, so one undo takes back a new text and what was typed into it */
+  const bornRef = useRef(null)
   const setLayersTracked = useCallback((updater) => {
     const prev = layersRef.current
     const next = typeof updater === 'function' ? updater(prev) : updater
     if (next === prev) return
+    const born = txRef.current === null ? bornRef.current : null
+    if (born) {
+      const was = prev.find((l) => l.id === born.id)
+      const now = next.find((l) => l.id === born.id)
+      const others = prev.length === next.length && next.every((l, i) => l === prev[i] || (l.id === born.id && prev[i].id === born.id))
+      const fits = was && now && Object.keys({ ...was, ...now }).every((k) => was[k] === now[k] || k === 'w' || k === 'h')
+      if (others && now && (was.editOnMount || fits)) { layersRef.current = next; setLayers(next); return }
+      bornRef.current = null
+      if (was && !now && next.length === prev.length - 1 && pastRef.current.length === born.depth) {
+        const nextPast = pastRef.current.slice(0, -1)
+        pastRef.current = nextPast; setPast(nextPast)
+        layersRef.current = next; setLayers(next)
+        return
+      }
+    }
     if (txRef.current === null) {
       /* discrete action — push pre-state (layers + selection) to past. */
-      const nextPast = [...pastRef.current, { layers: prev, selectedIds: selectedIdsRef.current }].slice(-100)
+      const nextPast = [...pastRef.current, snap()].slice(-100)
       pastRef.current   = nextPast
       futureRef.current = []
       setPast(nextPast)
@@ -714,6 +828,8 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     const vh = CANVAS_W / (canvasW / canvasH)
     const prev = prevFrameRef.current
     prevFrameRef.current = vh
+    /* with frames as objects the stage is the page, which nobody sees: nothing is "full frame" on it */
+    if (framesRef.current) return
     if (prev == null || Math.abs(prev - vh) < 0.5) return
     const wasFull = (l) => l.x === 0 && l.y === 0 && l.w === CANVAS_W && Math.abs(l.h - prev) < 0.5
     setLayersTracked((ls) => (
@@ -721,20 +837,38 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     ))
   }, [canvasW, canvasH, setLayersTracked])
 
-  const beginTransaction  = useCallback(() => {
-    if (txRef.current === null) txRef.current = snap()
+  /* `label` names the step for Undo's row ("Undo Delete frame …"); a transaction without one is a plain Undo */
+  const beginTransaction  = useCallback((label) => {
+    if (txRef.current === null) txRef.current = typeof label === 'string' ? { ...snap(), label } : snap()
   }, [])
   const commitTransaction = useCallback(() => {
     if (txRef.current === null) return
     const snapshot = txRef.current
     txRef.current = null
-    if (snapshot.layers !== layersRef.current || snapshot.selectedIds !== selectedIdsRef.current) {
+    if (snapshot.layers !== layersRef.current || snapshot.styles !== stylesRef.current || snapshot.selectedIds !== selectedIdsRef.current || snapshot.frame !== canvasPosRef.current || snapshot.pageId !== pageIdRef.current || snapshot.pages.length !== pagesRef.current.length) {
       const nextPast = [...pastRef.current, snapshot].slice(-100)
       pastRef.current   = nextPast
       futureRef.current = []
       setPast(nextPast)
       setFuture([])
     }
+  }, [])
+
+  /* Move the frame (11.3). Inside a transaction (a drag) the transaction's snapshot is the undo entry; outside one
+   * (the X / Y fields) it pushes its own, as setLayersTracked does for a discrete layer edit. */
+  const setCanvasPos = useCallback((x, y) => {
+    const prev = canvasPosRef.current
+    const next = { x: Number.isFinite(x) ? x : prev.x, y: Number.isFinite(y) ? y : prev.y }
+    if (next.x === prev.x && next.y === prev.y) return
+    if (txRef.current === null) {
+      const nextPast = [...pastRef.current, snap()].slice(-100)
+      pastRef.current = nextPast
+      futureRef.current = []
+      setPast(nextPast)
+      setFuture([])
+    }
+    canvasPosRef.current = next
+    setCanvasPosState(next)
   }, [])
 
   /* THE LOADED PATCH IS THE FLOOR (plan 49 3.4): a chrome that seeds its stage on mount (Labs' deep link, the frame fit
@@ -751,6 +885,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
      * gesture keeps writing patches, then commit would push the pre-drag
      * snapshot onto the rewound past — corrupted history. Bail instead. */
     if (txRef.current !== null) return
+    bornRef.current = null
     const p = pastRef.current
     if (p.length === 0) return
     const restored   = p[p.length - 1]
@@ -758,16 +893,14 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     const nextFuture = [snap(), ...futureRef.current].slice(0, 100)  /* snap() BEFORE the refs move */
     pastRef.current        = nextPast
     futureRef.current      = nextFuture
-    layersRef.current      = restored.layers
-    selectedIdsRef.current = restored.selectedIds
     setPast(nextPast)
     setFuture(nextFuture)
-    setLayers(restored.layers)
-    setSelectedIds(restored.selectedIds)
+    restore(restored)
   }, [])
 
   const redo = useCallback(() => {
     if (txRef.current !== null) return  /* mid-transaction — see undo */
+    bornRef.current = null
     const f = futureRef.current
     if (f.length === 0) return
     const restored   = f[0]
@@ -775,13 +908,159 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     const nextFuture = f.slice(1)
     pastRef.current        = nextPast
     futureRef.current      = nextFuture
-    layersRef.current      = restored.layers
-    selectedIdsRef.current = restored.selectedIds
     setPast(nextPast)
     setFuture(nextFuture)
-    setLayers(restored.layers)
-    setSelectedIds(restored.selectedIds)
+    restore(restored)
   }, [])
+
+  /* ─── Pages (C4.4) ───
+   * One writer for a document-level change: the open page's live layers go back into its entry, then the new pages,
+   * open page, layers and selection are set together. `label` names the Undo row; `track: false` is a switch, which is
+   * no undo step. */
+  const writeDoc = (next, { label, track = true } = {}) => {
+    if (track && txRef.current === null) {
+      const nextPast = [...pastRef.current, label ? { ...snap(), label } : snap()].slice(-100)
+      pastRef.current = nextPast; futureRef.current = []
+      setPast(nextPast); setFuture([])
+    }
+    pagesRef.current = next.pages; setPagesState(next.pages)
+    if (next.pageId !== undefined) { pageIdRef.current = next.pageId; setPageIdState(next.pageId) }
+    if (next.layers !== undefined) { layersRef.current = next.layers; setLayers(next.layers) }
+    if (next.selectedIds !== undefined) { selectedIdsRef.current = next.selectedIds; setSelectedIds(next.selectedIds) }
+  }
+  /* the pages with the open page's live layers stored in its entry */
+  const storedPages = () => pagesRef.current.map((p) => (p.id === pageIdRef.current && p.layers !== layersRef.current ? { ...p, layers: layersRef.current } : p))
+  const layersOfPage = (id) => (id === pageIdRef.current ? layersRef.current : pagesRef.current.find((p) => p.id === id)?.layers ?? [])
+
+  /* open a page: its layers on the canvas, in Layers and the inspector; the selection clears. Not an undo step. */
+  const setPage = useCallback((id) => {
+    if (txRef.current !== null || id === pageIdRef.current) return
+    const ps = storedPages()
+    const target = ps.find((p) => p.id === id)
+    if (!target) return
+    writeDoc({ pages: ps, pageId: id, layers: target.layers, selectedIds: [] }, { track: false })
+  }, [])
+  /* a new empty page after the last, opened */
+  const addPage = useCallback((name) => {
+    const ps = storedPages()
+    const id = newId('page')
+    const n = ps.length + 1
+    const page = { id, name: typeof name === 'string' && name.trim() ? name.trim() : PAGE_NAME(n), color: FRAME_DEFAULTS.infiniteFill, layers: [] }
+    writeDoc({ pages: [...ps, page], pageId: id, layers: [], selectedIds: [] }, { label: 'Add page' })
+    return id
+  }, [])
+  const renamePage = useCallback((id, name) => {
+    const n = typeof name === 'string' ? name.trim() : ''
+    const ps = pagesRef.current
+    if (!n || !ps.some((p) => p.id === id && p.name !== n)) return
+    writeDoc({ pages: ps.map((p) => (p.id === id ? { ...p, name: n } : p)) }, { label: 'Rename page' })
+  }, [])
+  /* a copy of a page with its content (new ids, each frame's layers kept in it), right after it, opened */
+  const duplicatePage = useCallback((id) => {
+    const ps = storedPages()
+    const i = ps.findIndex((p) => p.id === id)
+    if (i < 0) return null
+    const src = ps[i]
+    const copy = { id: newId('page'), name: `${src.name} copy`, color: src.color, layers: reidOnly(src.layers) }
+    writeDoc({ pages: [...ps.slice(0, i + 1), copy, ...ps.slice(i + 1)], pageId: copy.id, layers: copy.layers, selectedIds: [] }, { label: `Duplicate ${src.name}` })
+    return copy.id
+  }, [])
+  /* move a page one place up (-1) or down (1) in the list, one undo step; the open page stays open */
+  const movePage = useCallback((id, by) => {
+    const ps = storedPages()
+    const i = ps.findIndex((p) => p.id === id)
+    const j = i + by
+    if (i < 0 || j < 0 || j >= ps.length) return
+    const next = ps.slice()
+    next.splice(j, 0, next.splice(i, 1)[0])
+    writeDoc({ pages: next }, { label: `Move ${ps[i].name} ${by < 0 ? 'up' : 'down'}` })
+  }, [])
+  /* new words in text layers on any page, one undo step (kolbox find's Replace all, plan-2026-11-20 W12.2) */
+  const replaceTexts = useCallback((edits, label = 'Replace') => {
+    if (!edits?.length) return
+    const ps = storedPages().map((p) => {
+      const mine = edits.filter((e) => e.pageId === p.id)
+      return mine.length ? { ...p, layers: mine.reduce((list, e) => patchLayerDeep(list, e.id, { text: e.text }), p.layers) } : p
+    })
+    writeDoc({ pages: ps, layers: ps.find((p) => p.id === pageIdRef.current)?.layers }, { label })
+  }, [])
+  /* delete a page and its content, one undo step that names it; the last page stays */
+  const deletePage = useCallback((id) => {
+    const ps = storedPages()
+    const i = ps.findIndex((p) => p.id === id)
+    if (i < 0 || ps.length < 2) return
+    const gone = ps[i]
+    const n = gone.layers.length
+    const rest = ps.filter((p) => p.id !== id)
+    const label = `Delete ${gone.name}${n ? ` and its ${n} layer${n === 1 ? '' : 's'}` : ''}`
+    if (id !== pageIdRef.current) { writeDoc({ pages: rest }, { label }); return }
+    const open = rest[Math.max(0, i - 1)]
+    writeDoc({ pages: rest, pageId: open.id, layers: open.layers, selectedIds: [] }, { label })
+  }, [])
+  /* every frame on every page, or on one (the Export window's "every frame") */
+  const everyFrame = useCallback((onPage = null) => everyFrameOf(pagesRef.current, pageIdRef.current, layersRef.current, onPage), [])
+  /* the file's pages and its one layers list, each layer stamped with its page (useComposeFile's buildSpec, the draft) */
+  const pagesDoc = useCallback(() => pagesSpec(pagesRef.current, pageIdRef.current, layersRef.current), [])
+
+  /* ─── The clipboard (C4.4, ./clipboard.js) ───
+   * Copy keeps the selected layers (a frame with its layers) in the app; Paste puts a fresh copy (new ids, fills and
+   * effect rows as they were) on the open page, in place, or with `client` at that screen point; each lands in the
+   * frame under it or on the page. One undo step each. */
+  const copySelected = useCallback(({ cut = false } = {}) => {
+    const set = copySet(layersRef.current, selectedIdsRef.current.filter((id) => id !== 'canvas'))
+    if (!set.length) return null
+    const clip = setClip(set)
+    if (cut) {
+      const ids = new Set(set.map((l) => l.id))
+      beginTransaction('Cut')
+      setLayersTracked((prev) => prev.filter((l) => !ids.has(l.id)))
+      setSelectedIds([])
+      commitTransaction()
+    }
+    return clip
+  }, [])
+  const pasteLayers = useCallback(({ client = null, layers: given = null } = {}) => {
+    const src = given ?? getClip()?.layers
+    if (!src?.length) return []
+    const fresh = reidOnly(src)
+    const at = client ? clientToPage(client.x, client.y) : null
+    const placed = placePaste(fresh, layersRef.current, at)
+    setLayersTracked((prev) => [...prev, ...placed])
+    const top = placed.filter((l) => l.type === 'frame' || !placed.some((f) => f.type === 'frame' && f.id === l.frameId)).map((l) => l.id)
+    setSelectedIds(top)
+    return top
+  }, [setLayersTracked])
+
+  /* the standard keys, through the browser's own copy, cut and paste events (they carry the system clipboard): only
+     where frames are on (kolbox's editor), never while a field has the focus or text is selected on the page */
+  const addLayerRef = useRef(null)
+  useEffect(() => {
+    if (!frameMode) return undefined
+    const away = (e) => {
+      const t = e.target
+      if (t?.closest?.('input, textarea, select, [contenteditable=""], [contenteditable="true"]')) return true
+      const sel = window.getSelection?.()
+      return !!(sel && !sel.isCollapsed && String(sel).trim())
+    }
+    const onCopy = (e) => {
+      if (away(e)) return
+      const clip = copySelected({ cut: e.type === 'cut' })
+      if (!clip) return
+      e.preventDefault()
+      e.clipboardData?.setData('text/plain', clip.text)
+    }
+    const onPaste = (e) => {
+      if (away(e)) return
+      const text = e.clipboardData?.getData('text/plain') ?? ''
+      const clip = getClip()
+      if (clip && (!text || text === clip.text)) { e.preventDefault(); pasteLayers(); return }
+      if (text.trim()) { e.preventDefault(); addLayerRef.current?.('text', { text: text.trim() }) }
+    }
+    document.addEventListener('copy', onCopy)
+    document.addEventListener('cut', onCopy)
+    document.addEventListener('paste', onPaste)
+    return () => { document.removeEventListener('copy', onCopy); document.removeEventListener('cut', onCopy); document.removeEventListener('paste', onPaste) }
+  }, [frameMode, copySelected, pasteLayers])
 
   const isSeedPool    = poolFor(poolId).isSeed
   const isSeedSeeding = isSeedPool && !hasRandomized
@@ -856,10 +1135,28 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         ? { color: paintFillRef.current }
         : { color: paintFillRef.current, stroke: paintStrokeRef.current })
       : {}
-    setLayersTracked((prev) => [
-      ...prev,
-      { id, type, visible: true, opacity: 1, blend: 'normal', ...layerDefaults(type, virtualHRef.current), ...paintExtras, ...extras },
-    ])
+    let fresh = { id, type, visible: true, opacity: 1, blend: 'normal', ...layerDefaults(type, virtualHRef.current), ...paintExtras, ...extras }
+    /* frames (C1): a layer drawn on a frame lands in it; one added with no place lands in the active frame, a
+       full-frame default fitted to it and anything else centred in it. With no frame it sits on the page. */
+    if (framesRef.current && type !== 'frame' && fresh.frameId === undefined && typeof fresh.x === 'number') {
+      const all = layersRef.current
+      if (typeof extras.x === 'number') {
+        const f = frameAt(all, fresh.x + (fresh.w ?? 0) / 2, fresh.y + (fresh.h ?? 0) / 2)
+        if (f) fresh = { ...fresh, frameId: f.id }
+      } else {
+        const f = activeFrameOf(all, selectedIdsRef.current[0])
+        if (f) {
+          fresh = fresh.x === 0 && fresh.y === 0 && fresh.w === CANVAS_W
+            ? { ...fresh, x: f.x, y: f.y, w: f.w, h: f.h, frameId: f.id }
+            : { ...fresh, x: f.x + (f.w - (fresh.w ?? 0)) / 2, y: f.y + (f.h - (fresh.h ?? 0)) / 2, frameId: f.id }
+        }
+      }
+    }
+    /* layer model 2 (W22): an old type added through any door arrives as the model has it (a photo → a rectangle
+       with an image fill; pattern, kinetic type, generate, a loop → a rectangle with that effect) */
+    bornRef.current = null
+    setLayersTracked((prev) => [...prev, modelRef.current ? toModel(fresh) : fresh])
+    if (fresh.editOnMount && txRef.current === null) bornRef.current = { id, depth: pastRef.current.length }
     /* Adding a layer always moves focus to the new layer — canvas (or
      * whatever was selected) gets replaced. Until the layer is committed,
      * the [+] button and its dropdown should preserve canvas selection
@@ -870,6 +1167,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
      * video clip. Existing callers ignore the return. */
     return id
   }, [setLayersTracked])
+  addLayerRef.current = addLayer
 
   const removeLayer = useCallback((id) => {
     /* Free any IndexedDB video clips owned by the removed subtree (the id may
@@ -878,6 +1176,18 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
      * one session loses the clip (undo history doesn't survive reload anyway). */
     const removed = findLayerDeep(layersRef.current, id)
     if (removed) collectVideoClipIds(removed).forEach((vid) => deleteClip(vid))
+    /* A FRAME TAKES ITS LAYERS WITH IT (C1), one undo step whose Undo row says so */
+    if (removed?.type === 'frame') {
+      const members = membersOf(layersRef.current, id)
+      members.forEach((m) => collectVideoClipIds(m).forEach((vid) => deleteClip(vid)))
+      const gone = new Set([id, ...members.map((m) => m.id)])
+      const own = txRef.current === null
+      if (own) beginTransaction(frameDeleteLabel(removed, members.length))
+      setLayersTracked((prev) => prev.filter((l) => !gone.has(l.id)))
+      setSelectedIds((prev) => (prev.some((sid) => gone.has(sid)) ? prev.filter((sid) => !gone.has(sid)) : prev))
+      if (own) commitTransaction()
+      return
+    }
     /* Deep remove — the id may live inside a group/bool (removeLayerDeep
      * refits bool ancestors, same recompute path as patchLayerDeep). It
      * returns the input list unchanged when the id isn't found, so
@@ -893,13 +1203,104 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
   const deleteSelected = useCallback(() => {
     const ids = selectedIds.filter((id) => id !== 'canvas')
     if (ids.length === 0) return
-    beginTransaction()
+    /* a frame among them names the step (C1): its layers go with it */
+    const frames = ids.map((id) => layersRef.current.find((l) => l.id === id)).filter((l) => l?.type === 'frame')
+    beginTransaction(frames.length === 1 && ids.length === 1 ? frameDeleteLabel(frames[0], membersOf(layersRef.current, frames[0].id).length)
+      : frames.length ? 'Delete frames and their layers' : undefined)
     ids.forEach(removeLayer)
     commitTransaction()
   }, [selectedIds, removeLayer, beginTransaction, commitTransaction])
 
+  /* Move a frame and its layers by its X and Y (C1, the inspector's fields; a drag moves them as one group) */
+  const moveFrame = useCallback((id, x, y) => {
+    setLayersTracked((prev) => {
+      const f = prev.find((l) => l.id === id)
+      if (!f) return prev
+      const dx = (Number.isFinite(x) ? x : f.x) - f.x
+      const dy = (Number.isFinite(y) ? y : f.y) - f.y
+      if (!dx && !dy) return prev
+      return prev.map((l) => ((l.id === id || l.frameId === id) && typeof l.x === 'number' ? { ...l, x: l.x + dx, y: l.y + dy } : l))
+    })
+  }, [setLayersTracked])
+
+  /* R5: a layer (or a frame with its members) moved in the list and into, out of or between frames, one undo step
+     (./frame.js placeInList) */
+  const placeLayer = useCallback((id, targetId, position) => {
+    setLayersTracked((prev) => placeInList(prev, id, targetId, position))
+  }, [setLayersTracked])
+
+  /* STYLES (W7): every write is one undo step; a style's change, or its removal, reaches every layer that uses it, on
+     every page, in that step */
+  const writeStyles = (next) => {
+    if (txRef.current === null) {
+      const nextPast = [...pastRef.current, snap()].slice(-100)
+      pastRef.current = nextPast; futureRef.current = []
+      setPast(nextPast); setFuture([])
+    }
+    stylesRef.current = next; setStylesState(next)
+  }
+  const followEverywhere = (next) => {
+    setLayersTracked((prev) => followAll(prev, next))
+    const ps = pagesRef.current
+    const moved = followPages(ps, next).map((p) => (p.id === pageIdRef.current || !Array.isArray(p.layers) ? p : (() => { const ls = followAll(p.layers, next); return ls === p.layers ? p : { ...p, layers: ls } })()))
+    if (moved.some((p, i) => p !== ps[i])) { pagesRef.current = moved; setPagesState(moved) }
+  }
+  /* a new style ('color': { color, opacity }; 'text': { value }) with the next free name; its id back */
+  const saveStyle = useCallback((kind, data, name) => {
+    const key = kind === 'text' ? 'texts' : 'colors'
+    const list = stylesRef.current[key]
+    const id = newStyleId(kind)
+    const base = kind === 'text' ? 'Text style' : 'Color style'
+    let n = list.length + 1
+    while (list.some((s) => s.name === `${base} ${n}`)) n++
+    writeStyles({ ...stylesRef.current, [key]: [...list, { id, name: name || `${base} ${n}`, ...data }] })
+    return id
+  }, [])
+  const updateStyle = useCallback((id, patch) => {
+    const cur = stylesRef.current
+    const at = (list) => list.map((s) => (s.id === id ? { ...s, ...patch } : s))
+    const next = { colors: at(cur.colors), texts: at(cur.texts) }
+    const opened = txRef.current === null
+    if (opened) beginTransaction('Edit style')
+    writeStyles(next)
+    followEverywhere(next)
+    if (opened) commitTransaction()
+  }, [])
+  const removeStyle = useCallback((id) => {
+    const cur = stylesRef.current
+    const next = { colors: cur.colors.filter((s) => s.id !== id), texts: cur.texts.filter((s) => s.id !== id) }
+    beginTransaction('Delete style')
+    writeStyles(next)
+    followEverywhere(next)
+    commitTransaction()
+  }, [])
+
   const updateLayer = useCallback((id, partial) => {
-    setLayersTracked((prev) => patchLayerDeep(prev, id, partial))
+    /* a frame's turn carries its layers (W5, ./frame.js turnMembers) */
+    setLayersTracked((prev) => ('rotation' in partial ? turnMembers(prev, patchLayerDeep(prev, id, partial), id) : patchLayerDeep(prev, id, partial)))
+  }, [setLayersTracked])
+
+  /* EFFECT ROWS THAT DRAW (W22, ./layerModel.js): pattern, kinetic type, generate and motion on a layer. `addContent`
+   * puts a row on the layer (its params the old layer's defaults, then `params`) and returns the row; `updateContent`
+   * merges into a row's params, the way the old layer of that type took a patch. Eye and minus are plain layer writes
+   * of `content`. On a text layer, kinetic type takes the layer's words. */
+  const addContent = useCallback((id, type, params = {}) => {
+    const host = findLayerDeep(layersRef.current, id)
+    if (!host) return null
+    const defaults = { ...layerDefaults(type, virtualHRef.current) }
+    for (const k of ['x', 'y', 'w', 'h']) delete defaults[k]
+    if (type === 'kinetic' && host.type === 'text' && defaults.comp?.instances) {
+      defaults.comp = { ...defaults.comp, instances: defaults.comp.instances.map((x) => ({ ...x, text: host.text ?? x.text })) }
+    }
+    const row = makeContent(type, { ...defaults, ...params })
+    setLayersTracked((prev) => patchLayerDeep(prev, id, { content: [...contentOf(host), row] }))
+    return row
+  }, [setLayersTracked])
+  const updateContent = useCallback((id, key, patch) => {
+    setLayersTracked((prev) => {
+      const host = findLayerDeep(prev, id)
+      return host ? patchLayerDeep(prev, id, patchContent(host, key, patch)) : prev
+    })
   }, [setLayersTracked])
 
   /* ─── Filter chain actions (labs post-FX chain) ───
@@ -1187,6 +1588,18 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       const found = locateLayer(prev, id)
       if (!found) return prev
       const src = found.layer
+      /* a frame comes with its layers (W5): each copied with a fresh id into the copy, the block above the original's */
+      if (src.type === 'frame' && !found.parent) {
+        const members = prev.filter((l) => l.frameId === id).map((l) => {
+          const c = { ...l, id: newId(l.type), frameId: nid }
+          if (Array.isArray(c.children)) c.children = reidLayers(c.children)
+          if (typeof c.x === 'number') { c.x += offset; c.y += offset }
+          return c
+        })
+        const end = prev.reduce((k, l, i) => (l.frameId === id && i > k ? i : k), found.index)
+        const copy = { ...src, id: nid, x: src.x + offset, y: src.y + offset }
+        return [...prev.slice(0, end + 1), copy, ...members, ...prev.slice(end + 1)]
+      }
       const clone = { ...src, id: nid }
       /* Group/bool children get fresh ids too — duplicated child ids would
        * make panel-side child edits write into both copies at once. */
@@ -1202,7 +1615,11 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * than overwriting the previously-loaded one. Tracked through history
    * (layers); undo restores layers (preset tracking does not undo). */
   const clearLayers = useCallback(() => {
-    setLayersTracked(() => [])
+    /* with pages (C4.4) a cleared document is one empty page; a chrome without frames goes back to its stage */
+    if (!framesProp && framesRef.current) { adoptDoc(null); setCanvasFill(FRAME_DEFAULTS.canvasFill) }
+    if (framesRef.current) writeDoc({ pages: [{ id: 'page-1', name: PAGE_NAME(1), color: FRAME_DEFAULTS.infiniteFill, layers: [] }], pageId: 'page-1', layers: [] })
+    else setLayersTracked(() => [])
+    stylesRef.current = EMPTY_STYLES; setStylesState(EMPTY_STYLES)
     setSelectedIds([])
     setCurrentPresetId(null)
     setCurrentPresetName(null)
@@ -1436,7 +1853,10 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * history; undo restores. */
   const flattenPattern = useCallback((layerId) => {
     setLayersTracked((prev) => {
-      const layer = findLayerDeep(prev, layerId)
+      const found = findLayerDeep(prev, layerId)
+      /* a layer carrying a Pattern effect (W22) flattens from that row, as Generate's Expand does */
+      const row = found && found.type !== 'pattern' ? contentOf(found).find((c) => c.type === 'pattern') : null
+      const layer = row ? { ...contentView(found, row), visible: found.visible, opacity: found.opacity, blend: found.blend } : found
       if (!layer || layer.type !== 'pattern') return prev
       const shapeSvg = getShapeSvg(layer.shapeId, layer.customSvg)
       if (!shapeSvg) return prev
@@ -1490,7 +1910,10 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
   const flattenGenerate = useCallback((layerId) => {
     const EXPAND_MAX = 2000
     setLayersTracked((prev) => {
-      const layer = findLayerDeep(prev, layerId)
+      const found = findLayerDeep(prev, layerId)
+      /* a layer carrying a Generate effect (W22) expands from that row, the row's params on the layer's box */
+      const row = found && found.type !== 'generate' ? contentOf(found).find((c) => c.type === 'generate') : null
+      const layer = row ? { ...contentView(found, row), visible: found.visible, opacity: found.opacity, blend: found.blend } : found
       if (!layer || layer.type !== 'generate') return prev
       /* the engine is the generators pack's (the core / pack seam) */
       const { generateMarks, generateBody } = gen()
@@ -1692,13 +2115,26 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
    * ids regardless of what the source preset stored. Doubles as the preset/
    * settings-file compat seam: every layer routes through the filter-chain
    * normalizer (legacy `filterId` + flat params → `filters` chain). */
-  const reidLayers = (arr) => normalizeLayersDeep(Array.isArray(arr) ? arr : []).map((l) => ({
-    ...l,
-    id: newId(l.type ?? 'layer'),
-    ...(Array.isArray(l.children)
-      ? { children: reidLayers(l.children) }
-      : {}),
-  }))
+  /* the layer model's conversion rides the same seam (W22): one place, skipped for a file that carries its mark */
+  const reidLayers = (arr, { convert = true } = {}) => {
+    const norm = normalizeLayersDeep(Array.isArray(arr) ? arr : [])
+    return reidOnly(modelRef.current && convert ? toModelDeep(norm) : norm)
+  }
+  const reidOnly = (arr) => {
+    /* a layer's frameId follows its frame's new id (C1) */
+    const ids = new Map()
+    const out = arr.map((l) => {
+      const id = newId(l.type ?? 'layer')
+      ids.set(l.id, id)
+      return { ...l, id, ...(Array.isArray(l.children) ? { children: reidOnly(l.children) } : {}) }
+    })
+    return out.map((l) => (l.frameId && ids.has(l.frameId) ? { ...l, frameId: ids.get(l.frameId) } : l))
+  }
+  /* an old file's stage, for its one frame (C1): its page-unit size and its export px per unit */
+  const stageOf = (spec) => {
+    const d = typeof spec?.canvasW === 'number' && typeof spec?.canvasH === 'number' ? { w: spec.canvasW, h: spec.canvasH } : PRESET_SIZES[spec?.aspect] ?? null
+    return { id: newId('frame'), stageW: CANVAS_W, stageH: d ? (CANVAS_W * d.h) / d.w : virtualHRef.current, density: d ? d.w / CANVAS_W : 1 }
+  }
 
   /* Load a saved preset into the live state. Whole-frame intent replaces
    * the canvas (aspect + layers + bound palette); partial-chunk intent
@@ -1723,7 +2159,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       if (Array.isArray(preset.palette.colors)) setColors(preset.palette.colors)
       if (Array.isArray(preset.palette.locks)) setLocks(preset.palette.locks)
     }
-    const fresh = reidLayers(preset.layers)
+    const fresh = reidLayers(preset.layers, { convert: !(preset.layerModel >= LAYER_MODEL) })
     /* A SAVED FILE RE-LINKS ITS UPLOADS (plan 26 § 13): an upload saved before stills went into the
        file is a `blob:` src + bytes in this browser's clip store, keyed by the OLD layer id — only the
        draft restore re-minted it, so an opened file showed nothing. reidLayers keeps the tree's shape,
@@ -1738,7 +2174,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         if (!blob) return
         saveClip(neu.id, blob)
         const url = URL.createObjectURL(blob)
-        const swap = (ls) => ls.map((l) => (l.id === neu.id ? { ...l, src: url } : Array.isArray(l.children) ? { ...l, children: swap(l.children) } : l))
+        const swap = (ls) => ls.map((l) => (l.id === neu.id ? (l.fill?.src ? { ...l, fill: { ...l.fill, src: url } } : { ...l, src: url }) : Array.isArray(l.children) ? { ...l, children: swap(l.children) } : l))
         setLayers((prev) => swap(prev))
       })
     }
@@ -1747,11 +2183,30 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       /* partial chunks don't claim the loaded-preset slot; the host frame
        * keeps its currentPresetId. */
     } else {
-      /* default: whole-frame replace */
-      setLayersTracked(() => fresh)
+      /* default: whole-frame replace; an old file opens as one frame holding its layers (C1) */
+      adoptDoc(preset)
+      /* the file's styles (W7), set before the layers so the open's one undo step holds both */
+      const st = stylesFrom(preset)
+      const ownTx = txRef.current === null
+      if (ownTx) beginTransaction()
+      stylesRef.current = st; setStylesState(st)
+      if (framesRef.current) {
+        /* the file's pages (C4.4): an old file is one page holding its content; the first page opens */
+        const ps = toPages(preset, toFramesDoc(preset, fresh, stageOf(preset)))
+        writeDoc({ pages: ps, pageId: ps[0].id, layers: ps[0].layers })
+      } else setLayersTracked(() => fresh)
+      /* the frame (11.3): place, fill, opacity, page color; a file without them opens at 0,0 on the defaults.
+         Set AFTER the tracked layer write, so its undo entry keeps the frame as it was before the open. */
+      const f = frameFromSpec(preset)
+      canvasPosRef.current = { x: f.canvasX, y: f.canvasY }
+      setCanvasPosState(canvasPosRef.current)
+      setCanvasFill(framesRef.current ? null : f.canvasFill); setCanvasFillOpacity(f.canvasFillOpacity)
+      if (!framesRef.current) setInfiniteFill(f.infiniteFill)
+      setCanvasNameState(f.canvasName)
       /* a shipped file is not stored (library/shipped.js) — Save on it asks for a name and makes the user's own */
       setCurrentPresetId(preset.shipped ? null : preset.id ?? null)
       setCurrentPresetName(preset.name ?? null)
+      if (ownTx) commitTransaction()
     }
     setSelectedIds([])
   }, [setLayersTracked])
@@ -1787,7 +2242,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         x: 0, y: 0, w: CANVAS_W, h: virtualHRef.current,
         ...patternFromSpec(item),
       }
-      setLayersTracked((prev) => [...prev, layer])
+      setLayersTracked((prev) => [...prev, modelRef.current ? toModel(layer) : layer])
       setSelectedIds([layer.id])
       return
     }
@@ -1802,10 +2257,11 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         visible: true, opacity: 1, blend: 'normal',
         ...pos, w, h,
         text:       item.text       ?? 'New text',
-        /* family model: legacy specs carry no family — layerFamily()'s
-         * read-time migration resolves them (mono width → JetBrains). */
-        family:     item.family     ?? (item.width === 'mono' ? 'jetbrains-mono' : 'right-grotesk'),
-        width:      item.width      ?? 'Tight',
+        /* family model: legacy specs carry no family (or Right Grotesk) —
+         * layerFamily()'s read-time migration resolves them (mono width →
+         * JetBrains, the rest → Inter). */
+        family:     layerFamily(item),
+        ...(item.width === 'mono' ? { width: 'mono' } : {}),
         weight:     item.weight     ?? 600,
         italic:     item.italic     ?? false,
         size:       item.size       ?? 96,
@@ -1868,6 +2324,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
       /* ModalConfirmLabels shipped (0.35.0) — the buttons say the outcome. */
       const ok = await modal.confirm('Restore your last canvas?', { okLabel: 'Restore', cancelLabel: 'New file' })
       if (ok) {
+        adoptDoc(draft)
         /* Raw setters, not the smart setAspect — a saved 'custom' canvas
          * must keep its stored W/H, not snap back to a preset table entry. */
         if (draft.aspect) setAspectState(draft.aspect)
@@ -1876,10 +2333,13 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
         if (typeof draft.showGrid === 'boolean') setShowGrid(draft.showGrid)
         if (typeof draft.showRulers === 'boolean') setShowRulers(draft.showRulers)
         if (draft.guides && Array.isArray(draft.guides.h) && Array.isArray(draft.guides.v)) setGuides(draft.guides)
-        if (draft.canvas) {
-          if (draft.canvas.fill !== undefined)        setCanvasFill(draft.canvas.fill)
-          if (draft.canvas.infiniteFill !== undefined) setInfiniteFill(draft.canvas.infiniteFill)
-          if (typeof draft.canvas.fillOpacity === 'number') setCanvasFillOpacity(draft.canvas.fillOpacity)
+        { /* the frame (11.3), read as a saved file reads it */
+          const f = frameFromSpec(draft)
+          canvasPosRef.current = { x: f.canvasX, y: f.canvasY }
+          setCanvasPosState(canvasPosRef.current)
+          setCanvasFill(framesRef.current ? null : f.canvasFill); setCanvasFillOpacity(f.canvasFillOpacity)
+          if (!framesRef.current) setInfiniteFill(f.infiniteFill)
+          setCanvasNameState(f.canvasName)
         }
         if (draft.palette) {
           if (draft.palette.poolId) setPoolId(draft.palette.poolId)
@@ -1900,9 +2360,21 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
          * (keyed by layer id) before the layers mount — library/CDN videos and
          * non-video layers pass through untouched. Awaited so there's no
          * dead-blob flash. */
-        const restoredLayers = await hydrateVideoClips(normalizeLayersDeep(draft.layers))   /* legacy filterId drafts → chain */
-        setLayers(restoredLayers)
-        setSelectedIds([])
+        const hydrated = await hydrateVideoClips(normalizeLayersDeep(draft.layers))   /* legacy filterId drafts → chain */
+        const modelled = modelRef.current && !(draft.layerModel >= LAYER_MODEL) ? toModelDeep(hydrated) : hydrated
+        /* a draft from before frames were objects opens as its one frame (C1) */
+        const restoredLayers = framesRef.current ? toFramesDoc(draft, modelled, stageOf(draft)) : modelled
+        /* the draft's styles (W7) */
+        const st = stylesFrom(draft)
+        stylesRef.current = st; setStylesState(st)
+        if (framesRef.current) {
+          /* the draft's pages (C4.4), as a file's */
+          const ps = toPages(draft, restoredLayers)
+          writeDoc({ pages: ps, pageId: ps[0].id, layers: ps[0].layers, selectedIds: [] }, { track: false })
+        } else {
+          setLayers(restoredLayers)
+          setSelectedIds([])
+        }
         resolve(restoredLayers)
       } else {
         try { localStorage.removeItem(draftKey) } catch { /* ignore */ }
@@ -1915,23 +2387,28 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     if (!restoreResolvedRef.current) return
     const t = setTimeout(() => {
       try {
-        if (layers.length === 0) {
+        /* with pages (C4.4) the draft is every page, each layer stamped with its own */
+        const doc = framesRef.current ? pagesSpec(pages, pageId, layers) : { layers }
+        if (doc.layers.length === 0 && !(doc.pages?.length > 1)) {
           localStorage.removeItem(draftKey)
           return
         }
         const draft = {
           aspect,
           canvasW, canvasH, showGrid, showRulers, guides,
-          layers,
-          canvas:  { fill: canvasFill, fillOpacity: canvasFillOpacity, infiniteFill },
+          ...doc,
+          ...frameSpec({ canvasX, canvasY, canvasFill: framesRef.current ? null : canvasFill, canvasFillOpacity, infiniteFill, canvasName }),
+          ...(modelRef.current ? { layerModel: LAYER_MODEL } : {}),
+          ...(framesRef.current ? { frameModel: FRAME_MODEL } : {}),
           palette: { poolId, modeId, colors, locks },
           paint:   { fill: paintFill, stroke: paintStroke, active: activePaint },
+          ...(hasStyles(styles) ? { styles } : {}),
         }
         localStorage.setItem(draftKey, JSON.stringify(draft))
       } catch { /* quota / disabled storage: ignore */ }
     }, 500)
     return () => clearTimeout(t)
-  }, [layers, aspect, canvasW, canvasH, showGrid, showRulers, guides, canvasFill, canvasFillOpacity, infiniteFill, poolId, modeId, colors, locks, paintFill, paintStroke, activePaint])
+  }, [layers, pages, pageId, styles, aspect, canvasW, canvasH, showGrid, showRulers, guides, canvasX, canvasY, canvasFill, canvasFillOpacity, infiniteFill, canvasName, poolId, modeId, colors, locks, paintFill, paintStroke, activePaint])
 
   /* Move a layer so it ends up at position `toIndex` post-move among its
    * SIBLINGS — nested layers z-reorder within their parent's children
@@ -2027,6 +2504,13 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
 
   const canUndo = past.length > 0
   const canRedo = future.length > 0
+  /* what Undo would undo, when the step was named (C1: a frame's delete) */
+  const undoLabel = past[past.length - 1]?.label ?? null
+  /* frames as objects (C1): the page's frames and the one the rulers, zoom fit, size controls and export read */
+  const frameList = useMemo(() => (frameMode ? layers.filter((l) => l.type === 'frame') : []), [frameMode, layers])
+  const activeFrame = useMemo(() => (frameMode ? activeFrameOf(layers, selectedId) : null), [frameMode, layers, selectedId])
+  /* the pages as a host lists and searches them (C4.4): the open page's entry carries the live layers */
+  const pageList = useMemo(() => pages.map((p) => (p.id === pageId ? { ...p, layers } : p)), [pages, pageId, layers])
 
   /* Context value — memoized so a provider render only mints a new object
    * when something a consumer can observe actually changed (every function
@@ -2045,15 +2529,26 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     /* aspect + canvas dimensions + view */
     aspect, setAspect,
     canvasW, canvasH, canvasRatio, setCanvasSize,
+    canvasX, canvasY, setCanvasPos,
     showGrid, setShowGrid, toggleGrid,
     showRulers, toggleRulers,
     guides, setGuides,
     view, setView,
 
     /* canvas fill (bottom-most "layer") + infinite backdrop */
-    canvasFill, setCanvasFill,
+    /* frames as objects: the stage is the page and has no fill */
+    canvasFill: frameMode ? null : canvasFill, setCanvasFill,
     canvasFillOpacity, setCanvasFillOpacity,
-    infiniteFill, setInfiniteFill,
+    infiniteFill, setInfiniteFill, setPageStyle,
+    pageStyle: (pages.find((p) => p.id === pageId) ?? pages[0]).style ?? null,
+    canvasName, setCanvasName,
+    /* frames as objects (C1, ./frame.js) */
+    frameMode, frames: frameList, activeFrame, moveFrame, placeLayer,
+    /* pages (C4.4) and the clipboard */
+    pages: pageList, pageId, setPage, addPage, renamePage, duplicatePage, deletePage, movePage, replaceTexts, everyFrame, pagesDoc,
+    copySelected, pasteLayers,
+    /* the file's styles (W7, ./styles.js) */
+    styles, saveStyle, updateStyle, removeStyle,
 
     /* active paint (fill / stroke pair) + app-level paint colors */
     activePaint, setActivePaint,
@@ -2070,6 +2565,8 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     /* layers */
     layers,
     addLayer, removeLayer, updateLayer, toggleLayer, toggleLayerLock, moveLayer, duplicateLayer, clearLayers, deleteSelected,
+    /* the layer model (W22) */
+    layerModel, addContent, updateContent,
     /* filter chain (labs post-FX chain — per-layer effect stack) */
     addFilter, removeFilter, toggleFilter, moveFilter, patchFilter, replaceFilter,
     /* booleanSelected kept as an alias — existing call sites now wrap
@@ -2080,6 +2577,7 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     /* history */
     canUndo,
     canRedo,
+    undoLabel,
     undo, redo, clearHistory,
     /* the stacks themselves, for the History panel (G6) — snapshots, oldest first / next first */
     historyPast: past, historyFuture: future,
@@ -2088,14 +2586,17 @@ export function ComposeStateProvider({ children, persistDraft = true, draftKey =
     selectedId, selectedIds, select, selectCanvas, toggleSelection, selectMany,
     snapEnabled, toggleSnap,
     currentPresetId, currentPresetName,
-    aspect, setAspect, canvasW, canvasH, canvasRatio, setCanvasSize,
+    aspect, setAspect, canvasW, canvasH, canvasRatio, setCanvasSize, canvasX, canvasY, setCanvasPos,
     showGrid, toggleGrid, showRulers, toggleRulers, guides, view,
-    canvasFill, canvasFillOpacity, infiniteFill,
+    canvasFill, canvasFillOpacity, infiniteFill, canvasName, setCanvasName,
+    frameMode, frameList, activeFrame, moveFrame, placeLayer, undoLabel,
+    pageList, pageId, setPage, addPage, renamePage, duplicatePage, deletePage, movePage, replaceTexts, everyFrame, pagesDoc, copySelected, pasteLayers, styles,
     activePaint, paintFill, paintStroke,
     poolId, modeId, colors, locks, edited, bgOn, isSeedPool, isSeedSeeding, palette,
     setPoolIdWithReset, setModeIdWithReset, toggleLock, setColorAt, randomize, reset, toggleBg, loadPalette,
     layers,
     addLayer, removeLayer, updateLayer, toggleLayer, toggleLayerLock, moveLayer, duplicateLayer, clearLayers, deleteSelected,
+    layerModel, addContent, updateContent,
     addFilter, removeFilter, toggleFilter, moveFilter, patchFilter, replaceFilter,
     flipLayer, flipSelected, booleanGroup, flattenSelected, convertShapeToPath,
     groupLayers, ungroupLayer, releaseBoolean, reparentLayer, alignSelected, flattenPattern, flattenGenerate, flattenRepeat, flattenText, flattenParatype, addFlattenedFromFrame, loadPreset, insertFromLibrary,

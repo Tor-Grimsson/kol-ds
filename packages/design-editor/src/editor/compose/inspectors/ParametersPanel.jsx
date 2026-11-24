@@ -312,9 +312,9 @@ function TextFields({ layer, setProp, updateLayer, palette, renderAnimate, tab }
 {isOutlineFamily(layerFamily(layer)) && ( /* not drawn when it cannot act (plan 51 3.1) */
           <Tooltip label={isOutlineFamily(layerFamily(layer))
               ? 'Flatten the text to glyph-outline shapes (one-way)'
-              : 'Flatten needs an outline font — switch the Family to Right Grotesk'}><Button aria-label={isOutlineFamily(layerFamily(layer))
+              : 'Flatten needs an outline font — switch the Family to Inter or Malromur'}><Button aria-label={isOutlineFamily(layerFamily(layer))
               ? 'Flatten the text to glyph-outline shapes (one-way)'
-              : 'Flatten needs an outline font — switch the Family to Right Grotesk'} tone="primary" size={cs} className="w-full" onClick={onFlatten}
+              : 'Flatten needs an outline font — switch the Family to Inter or Malromur'} tone="primary" size={cs} className="w-full" onClick={onFlatten}
            >
             Flatten
           </Button></Tooltip>

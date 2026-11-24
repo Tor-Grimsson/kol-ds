@@ -45,14 +45,14 @@
  * override the type class for one-off cases (e.g. uppercase labels in helpers)
  * without forking the size variant.
  *
- * Radius is hard-coded to var(--kol-radius-sm) (4px). Repo invariant — never
+ * Radius is hard-coded to var(--kol-radius-4) (4px). Repo invariant — never
  * exceed 4px.
  */
 
 .kol-control {
   display: inline-flex;
   align-items: center;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   /* paint from the TONE properties (kol-components-molecules.css, TONE):
    * `--filled` / `--outline` are aliases of the primary / outline tones, the
    * fallback is filled, and a toned wrapper reaches a shell with no modifier */
@@ -133,7 +133,7 @@
  * the xs radius; the icon-only square is 22, the same height (2026-09-02).
  * Opt-in by prop only — the 2026-07-28 "dropdowns are sm at every viewport"
  * law is untouched; nothing ramps to xs by viewport. */
-.kol-control-xs { padding: 4px 8px; border-radius: var(--kol-radius-xs); }
+.kol-control-xs { padding: 4px 8px; border-radius: var(--kol-radius-2); }
 .kol-control-sm { padding: 4px 12px; }
 .kol-control-md { padding: 6px 16px; }
 .kol-control-lg { padding: 8px 20px; }
@@ -229,14 +229,14 @@
  *
  * Type: applied via .kol-mono-{12,14,16} on the size variant in JSX.
  * No uppercase / capitalize — author strings in the case they should
- * render (per ARCHITECTURE.md §2). Radius hard 4px (--kol-radius-sm).
+ * render (per ARCHITECTURE.md §2). Radius hard 4px (--kol-radius-4).
  * ═══════════════════════════════════════════════════════════════ */
 
 .kol-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   white-space: nowrap;
   transition: background-color var(--kol-transition-base),
               color var(--kol-transition-base),
@@ -327,7 +327,7 @@
 }
 
 /* xs — the panel rung (ControlsXsRung, 2026-09-01): 22px shell (20 + ring), xs radius */
-.kol-btn-xs { padding: 4px 8px; border-radius: var(--kol-radius-xs); }
+.kol-btn-xs { padding: 4px 8px; border-radius: var(--kol-radius-2); }
 .kol-btn-sm { padding: 4px 12px; }
 .kol-btn-md { padding: 6px 16px; }
 .kol-btn-lg { padding: 8px 20px; }
@@ -445,7 +445,7 @@
   gap: 12px;
   padding: 0;
   border: 1px solid transparent;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   background-color: transparent;
   color: var(--kol-surface-on-primary);
   cursor: pointer;
@@ -967,7 +967,7 @@ a:hover .icon-hover,
   padding: 0.5rem;
   background: color-mix(in srgb, var(--kol-surface-on-primary) 2%, transparent);
   border: none;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   color: color-mix(in srgb, var(--kol-surface-on-primary) 72%, transparent);
   cursor: pointer;
   transition: background-color var(--kol-transition-base), color var(--kol-transition-base);
@@ -993,7 +993,7 @@ a:hover .icon-hover,
   height: 32px;
   padding: 0;
   border: none;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   background: var(--kol-oq-12);
   color: var(--kol-surface-on-primary);
   cursor: pointer;
@@ -1097,6 +1097,10 @@ a:hover .icon-hover,
 /* .kol-caption-label / .kol-caption-text retired 2026-07-28 — Figure rides
  * the kol-doc-eyebrow / kol-doc-caption roles (one caption definition). */
 
+/* Figure folio (Folio's figure, Folio batch E): the image on Folio's hairline, the caption in its muted ink */
+.kol-figure--folio .kol-figure-image { border-color: var(--kol-folio-rule); }
+.kol-figure--folio .kol-figure-caption { color: var(--kol-folio-muted); }
+
 /* ── target-file: packages/theme/kol-components-atoms.css ──────────────
  * Append directly after the .kol-btn-quiet block
  * (after `.kol-btn-quiet:not(:disabled):hover { opacity: 1; }`). */
@@ -1163,7 +1167,7 @@ a:hover .icon-hover,
   justify-content: center;
   flex-shrink: 0;
   line-height: 0;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   padding: 0;
   /* paint from the TONE properties (kol-components-molecules.css, TONE); the
    * variant classes are aliases of the tones, the fallback is the `secondary`
@@ -1216,7 +1220,7 @@ a.kol-icon-frame {
  * ONE rule rather than a second copy of the value — no --kol-* token holds a
  * full round today (checked, zero hits), and inventing one for a single value
  * used by one rule adds a name without adding a source of truth. If such a
- * token ever lands beside --kol-radius-sm, this one selector reads it. */
+ * token ever lands beside --kol-radius-4, this one selector reads it. */
 .kol-icon-frame-radius-full,
 .kol-btn-radius-full { border-radius: 9999px; }
 
@@ -1261,7 +1265,7 @@ a.kol-icon-frame {
   padding: 0;
   border: 0;
   background: transparent;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   color: var(--kol-oq-32);
   cursor: pointer;
 }
@@ -1341,7 +1345,7 @@ a.kol-icon-frame {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   white-space: nowrap;
   cursor: pointer;
 }
@@ -1639,10 +1643,10 @@ a.kol-icon-frame {
 .toggle-checkbox--float.is-active .toggle-checkbox-indicator { background-color: transparent; }
 .toggle-checkbox--float:has(input:focus-visible) .toggle-checkbox-indicator { box-shadow: var(--kol-float-focus); }
 .toggle-checkbox--float:has(input:disabled) { opacity: 0.4; }
-/* the slider (row 23): the float track (`.kol-track--float` tokens, above): a 3px capsule track, the run fg-64 up to the thumb (`--kol-slider-pct`, set by Slider), a 12 thumb; `--kol-slider-float-run` recolours the run (the generator Rails take the ink accent) */
+/* the slider (row 23; track only, at the float sm height — plan-2026-11-12-float-system W2.1): the float track (`.kol-track--float` tokens, above): a 3px capsule track, the run fg-64 up to the thumb (`--kol-slider-pct`, set by Slider), a 12 thumb; `--kol-slider-float-run` recolours the run (the generator Rails take the ink accent) */
 .kol-slider-float {
   -webkit-appearance: none; appearance: none;
-  background: transparent; cursor: pointer; height: 24px; touch-action: pan-y;
+  background: transparent; cursor: pointer; height: var(--kol-float-h-sm); touch-action: pan-y;
 }
 .kol-slider-float::-webkit-slider-runnable-track { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: linear-gradient(var(--kol-track-run), var(--kol-track-run)) 0 0 / var(--kol-slider-pct, 0%) 100% no-repeat, var(--kol-track-bg); }
 .kol-slider-float::-moz-range-track { height: var(--kol-track-h); border-radius: var(--kol-track-r); background: var(--kol-track-bg); }
@@ -1699,3 +1703,161 @@ a.kol-icon-frame {
     backdrop-filter: none;
   }
 }
+
+/* =============================================================================
+ * KOLBOX (plan-2026-11-18-kolbox-system W31.2, 2026-11-18). `variant="kolbox"`, the look a theme cannot carry, carried
+ * class for class from apps/kolbox/src/ui. Every rule hangs off the variant's own root class, so the default and float
+ * looks cannot change.
+ * ============================================================================= */
+
+/* XYPad: no stroke, the field's ground at radius 4, 1px guides, the puck in the ink, labels Inter 11 / 15 at the weight
+   of the row it sits in (kolbox sets none) */
+.kol-xy-pad--kolbox .kol-xy-pad-labels { font-family: var(--kol-font-family-sans); font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+.kol-xy-pad--kolbox .kol-xy-pad { background: var(--kol-kolbox-field); border-radius: var(--kol-radius-4); }
+.kol-xy-pad--kolbox .kol-xy-pad-guide { background: var(--kol-kolbox-line); }
+.kol-xy-pad--kolbox .kol-xy-pad-puck { background: var(--kol-surface-on-primary); }
+
+/* batch 2 (W31.2, 2026-11-18): kolbox's ToggleSwitch, ToggleCheckbox, Textarea and Kbd looks, and Link (new, its one
+   look). Values are kolbox's roles on the theme's tokens (_tmp/2026-11-18-kolbox-system/color-map.md): field oq-16,
+   border oq-24, canvas oq-08, muted oq-64, text the ink, accent and on-accent the accent pair. Only what kolbox's own
+   classes set; nothing kolbox inherits (family and weight stay the row's where kolbox sets none). */
+
+/* your icons in a kolbox part: one 1px stroke at every size, as Figma's UI (the 16 lens and the 20 row glyphs drew 1.0
+   and 1.25; his "not the same stroke", 2026-11-23) */
+.kol-kolbox-icon [stroke-width] { stroke-width: 1px; vector-effect: non-scaling-stroke; }
+
+/* ToggleSwitch kolbox: a hit box at the kolbox control height (24) at radius 4; the track oq-24, on the accent; the knob the ink, on the on-accent */
+.kol-toggle-switch--kolbox { border-radius: var(--kol-radius-4); }
+.kol-toggle-switch--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-toggle-switch--kolbox .kol-toggle-switch-track { background-color: var(--kol-kolbox-field-strong); }
+.kol-toggle-switch--kolbox .kol-toggle-switch-knob { background-color: var(--kol-surface-on-primary); }
+.kol-toggle-switch--kolbox[data-state="on"] .kol-toggle-switch-track { background-color: var(--kol-accent-primary); }
+.kol-toggle-switch--kolbox[data-state="on"] .kol-toggle-switch-knob { background-color: var(--kol-accent-on-primary); }
+
+/* ToggleCheckbox kolbox: the 24 hit box (`--kol-kolbox-ctl`) and the 16 box at radius 4; unchecked the field with the oq-24 line, checked
+   the accent fill and line, the check in the on-accent ink */
+.kol-toggle-checkbox--kolbox { border-radius: var(--kol-radius-4); }
+.kol-toggle-checkbox--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-toggle-checkbox--kolbox .kol-toggle-checkbox-box { border-radius: var(--kol-radius-4); border-color: var(--kol-kolbox-line); background-color: var(--kol-kolbox-field); }
+.kol-toggle-checkbox--kolbox.is-active .kol-toggle-checkbox-box { border-color: var(--kol-accent-primary); background-color: var(--kol-accent-primary); color: var(--kol-accent-on-primary); }
+
+/* Textarea kolbox: the field, the oq-24 line at radius 4, JetBrains Mono 12 / 16 in the ink; the accent line focused */
+.kol-textarea--kolbox { border-radius: var(--kol-radius-4); border-color: var(--kol-kolbox-line); background-color: var(--kol-kolbox-field); font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-surface-on-primary); }
+.kol-textarea--kolbox:focus { border-color: var(--kol-kolbox-line); }
+
+/* Kbd kolbox: radius 2, the oq-08 plate and oq-64 ink; mono 10 / 14 (sm) and 12 / 16 (md); on an accent row the
+   on-accent ink over a 15% wash of it */
+.kol-kbd--kolbox { border-radius: var(--kol-radius-2); background-color: var(--kol-kolbox-canvas); color: var(--kol-oq-64); font-family: var(--kol-font-family-mono); }
+.kol-kbd--kolbox-sm { font-size: 10px; line-height: 14px; }
+.kol-kbd--kolbox-md { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-kbd--kolbox.kol-kbd--kolbox-on-accent { background-color: color-mix(in oklab, var(--kol-accent-on-primary) 15%, transparent); color: var(--kol-accent-on-primary); }
+
+/* Link: 11 / 15 in the palette's teal; in a light theme other than kolbox's (whose light carries its own darker aqua)
+   the teal is taken toward black, 6.6:1 on white, where it is 3:1 (moved from apps/kolbox's --color-link) */
+.kol-link { font-size: 11px; line-height: 15px; color: var(--kol-palette-teal); }
+.kol-link:focus-visible { outline-color: var(--kol-accent-primary); }
+:root[data-theme="light"]:not([data-theme-variant="kolbox"]) .kol-link { color: color-mix(in srgb, var(--kol-palette-teal) 62%, black); }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]):not([data-theme-variant="kolbox"]) .kol-link { color: color-mix(in srgb, var(--kol-palette-teal) 62%, black); }
+}
+
+/* batch 3 (W31.2, 2026-11-18): kolbox's Button (with its icon button) and Input looks, carried class for class, kolbox's
+   roles on the theme's tokens as batch 2's. Hover only while enabled: a disabled button never takes the hover fill. */
+
+/* Button kolbox: radius 4, Inter 12 / 16 / 500 (the family is the row's), the accent's focus line; the grounds are its
+   tones, the lit look is `pressed` */
+.kol-btn--kolbox { border-radius: var(--kol-radius-4); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); }
+.kol-btn--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+/* primary: the accent fill, no border (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-btn--kolbox-primary { border-color: transparent; background-color: var(--kol-accent-primary); color: var(--kol-accent-on-primary); }
+/* secondary: the fill only, no border (W15.4; Button.jsx draws it border-0) */
+.kol-btn--kolbox-secondary { background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+.kol-btn--kolbox-secondary:enabled:hover { background-color: var(--kol-kolbox-field-strong); }
+/* outline: the line, no fill (Figma's browser top bar, 2026-11-23); the field on hover */
+.kol-btn--kolbox-outline { border-color: var(--kol-kolbox-line); background-color: transparent; color: var(--kol-surface-on-primary); }
+.kol-btn--kolbox-outline:enabled:hover { background-color: var(--kol-kolbox-field); }
+.kol-btn--kolbox-ghost { border-color: transparent; color: var(--kol-oq-64); }
+.kol-btn--kolbox-ghost:enabled:hover { background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+/* lit: the field wash and the ink, no accent (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-btn--kolbox-lit { border-color: transparent; background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+
+/* Button kolbox iconOnly: the glyph in oq-64 (the ink on hover); the 24 frame (::before, `--kol-kolbox-ctl`) oq-16 on hover, the accent tint
+   pressed, the pressed glyph the accent's */
+.kol-icon-btn--kolbox { border-radius: var(--kol-radius-4); color: var(--kol-oq-64); }
+.kol-icon-btn--kolbox::before { border-radius: var(--kol-radius-4); }
+.kol-icon-btn--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-icon-btn--kolbox:not(.is-pressed):enabled:hover { color: var(--kol-surface-on-primary); }
+.kol-icon-btn--kolbox:not(.is-pressed):enabled:hover::before { background-color: var(--kol-kolbox-field); }
+/* pressed: the field wash and the ink, no accent (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-icon-btn--kolbox.is-pressed { color: var(--kol-surface-on-primary); }
+.kol-icon-btn--kolbox.is-pressed::before { background-color: var(--kol-kolbox-field); }
+
+/* Input kolbox: the oq-16 field, no outline; sm (kolbox's field) radius 4, the value JetBrains Mono 12 / 16, the accent
+   line inside the box focused; md (its search) radius 8, the value 12 / 16 in the row's family, the accent line
+   focused; lg (the search modal's field) radius 8, the value Inter 16 / 22 / 500, no ring. The lead and a text suffix
+   are mono 12 / 16 in oq-64, the glyph oq-64, the value the ink, the md and lg placeholder oq-64 */
+.kol-input--kolbox { background-color: var(--kol-kolbox-field); }
+/* focused: the one edge, no accent (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-input--kolbox:focus-within { outline-color: var(--kol-kolbox-line); }
+.kol-input--kolbox-sm { border-radius: var(--kol-radius-4); }
+.kol-input--kolbox-md,
+.kol-input--kolbox-lg { border-radius: var(--kol-radius-4); }
+.kol-input--kolbox .kol-input-value { color: var(--kol-surface-on-primary); }
+.kol-input--kolbox-sm .kol-input-value { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+.kol-input--kolbox-md .kol-input-value { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-input--kolbox-lg .kol-input-value { font-size: 16px; line-height: 22px; font-weight: 500; }
+.kol-input--kolbox-md .kol-input-value::placeholder,
+.kol-input--kolbox-lg .kol-input-value::placeholder { color: var(--kol-oq-64); }
+.kol-input--kolbox .kol-input-lead,
+.kol-input--kolbox .kol-input-suffix { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-oq-64); }
+.kol-input--kolbox .kol-input-icon { color: var(--kol-oq-64); }
+
+/* batch 4 (W31.2, 2026-11-18): kolbox's one floating surface and its chevron, shared by every kolbox part that floats. */
+
+/* THE ONE FLOATING SURFACE (plan-2026-11-18-kolbox-system 28.3, 24.1; moved from apps/kolbox's `@utility`): everything
+   of kolbox's that floats (a menu, a popover, a window, the toast, a tooltip, the dock) takes the dock's surface: the
+   file's effect style shadow/dock value for value (two drops, two inset hairlines, the second drop the float well) and no
+   bright edge. Where a floating part draws a border, the line is the rails' quiet one, oq-24
+   (_tmp/2026-11-18-kolbox-system/w28-surface.md). */
+.kol-kolbox-surface {
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.5), 0 3px 8px var(--kol-float-well), inset 0 0 0.5px rgb(255 255 255 / 0.3), inset 0 0.5px 0 rgb(255 255 255 / 0.08);
+  border-color: var(--kol-kolbox-line);
+}
+
+/* a chevron in a kolbox part: a 12 box holding the design's 6 x 3 glyph at 1.25px. The set's chevron spans 18 of its
+   24 grid, so drawn at 12 it was 9 x 4.5, half again too big (his ruling 2026-11-18); the glyph is drawn at 8 (6 x 3),
+   centred in the 12 box, and 3.75 user units at 8 are the 1.25px line. */
+.kol-kolbox-chevron { display: inline-flex; align-items: center; justify-content: center; }
+.kol-kolbox-chevron svg { width: 8px; height: 8px; }
+.kol-kolbox-chevron * { stroke-width: 3.75; }
+
+/* FOLIO batch A (Folio migration, 2026-11-22): `variant="folio"` on Button (Folio's Action, Tool and ToolIcon), Input and
+   ToggleSwitch, carried class for class from apps/folio (parts.jsx, EditorChrome.jsx, Chrome.jsx). Colors are Folio's own
+   (`--kol-folio-*`, kol-color.css), so the frame's data-folio-theme, -palette and -accent reach them. Only what Folio's
+   classes set; the family and line height a part inherits from Folio's frame are not set here. */
+
+/* Button folio md (Folio's Tool): Inter 11 (kol-folio-meta's values); ghost the ink, the surface on hover, lit the
+   accent's soft ground and strong ink */
+.kol-btn--folio-md { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-btn--folio-ghost { color: var(--kol-folio-ink); }
+@media (hover: hover) { .kol-btn--folio-ghost:hover { background-color: var(--kol-folio-surface); } }
+.kol-btn--folio-md[aria-pressed="true"] { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+/* Button folio lg (Folio's Action): the label 12 / 600, its glyph 16; outline the paper on the rule line, primary the
+   accent fill and line with the paper ink */
+.kol-btn--folio-lg .kol-btn-label { font-size: 12px; font-weight: 600; }
+.kol-btn--folio-lg .kol-btn-glyph { font-size: 16px; }
+.kol-btn--folio-outline { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); }
+.kol-btn--folio-primary { border-color: var(--kol-folio-green); background-color: var(--kol-folio-green); color: var(--kol-folio-paper); }
+/* Button folio iconOnly (Folio's ToolIcon): the paper on hover; lit (the transport's play and loop) the soft ground and
+   strong ink */
+@media (hover: hover) { .kol-icon-btn--folio:hover { background-color: var(--kol-folio-paper); } }
+.kol-icon-btn--folio[aria-pressed="true"] { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+
+/* Input folio: the rule line on the paper, the value JetBrains Mono 12 / 16 in the ink, the accent line focused */
+.kol-input--folio { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+.kol-input--folio:focus { border-color: var(--kol-folio-green); }
+
+/* ToggleSwitch folio: the rule track, the accent when on; the knob the paper */
+.kol-toggle-switch--folio { background-color: var(--kol-folio-rule); }
+.kol-toggle-switch--folio[aria-checked="true"] { background-color: var(--kol-folio-green); }
+.kol-toggle-switch--folio .kol-toggle-switch-knob { background-color: var(--kol-folio-paper); }

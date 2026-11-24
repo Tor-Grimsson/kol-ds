@@ -8,10 +8,16 @@
  * import — `@import "./kol-design-tokens.css" layer(components);`.
  */
 :root {
-  /* Spacing scale (4px base) */
+  /* Spacing scale (4px base). The name is px ÷ 4, a decimal written with a dash. 1, 6, 10 and 14 added
+   * 2026-11-18 (plan-2026-11-18-kolbox-system W1.1: tool UIs sit under 16, where the scale had four stops) */
+  --kol-spacing-0-25: 0.0625rem; /* 1px */
+  --kol-spacing-0-5: 0.125rem; /* 2px — the gap between list rows, so two fills never touch (2026-11-12) */
   --kol-spacing-1: 0.25rem;    /* 4px */
+  --kol-spacing-1-5: 0.375rem; /* 6px */
   --kol-spacing-2: 0.5rem;     /* 8px */
+  --kol-spacing-2-5: 0.625rem; /* 10px */
   --kol-spacing-3: 0.75rem;    /* 12px */
+  --kol-spacing-3-5: 0.875rem; /* 14px */
   --kol-spacing-4: 1rem;       /* 16px */
   --kol-spacing-5: 1.25rem;    /* 20px */
   --kol-spacing-6: 1.5rem;     /* 24px */
@@ -126,23 +132,29 @@
   --kol-content-column: 768px;
   --kol-content-measure: 65ch;
 
-  /* Border radius (4px increments) */
-  --kol-radius-none: 0;
-  /* xs (2026-08-01) — the hairline rung. Claimed out loud: 2px had SIX
-     hand-written `rounded-[2px]` call sites (swatches, color rows, the
-     glass panel) and no token, so the scale's 4px floor was simply being
-     ignored rather than followed. A value used six times is a rung. */
-  --kol-radius-xs: 2px;
-  --kol-radius-sm: 4px;
-  /* CONTAINERS ARE 4px (user ruling 2026-08-09, "change 8px radius to 4px in
-     containers. everywhere."). The repo ships 4px or full, nothing between —
-     md/lg/xl/2xl stay resolvable so no consumer's var() breaks, but they all
-     collapse to the 4px value. Do not re-widen a rung without a ruling. */
-  --kol-radius-md: 4px;
-  --kol-radius-lg: 4px;
-  --kol-radius-xl: 4px;
-  --kol-radius-2xl: 4px;
+  /* Border radius — NAMED BY ITS NUMBER (plan-2026-11-18-kolbox-system W1.2, his word: *"I want numbers for radius not
+     xc sm md etc."*). One value in every theme: a theme does not change a corner. 2 is the hairline rung (2026-08-01:
+     six hand-written `rounded-[2px]` call sites and no token). 4 IS STILL THE CONTAINER (user ruling 2026-08-09,
+     "change 8px radius to 4px in containers. everywhere."): the new 6, 8, 12 and 16 are rungs a tool UI may pick, not
+     a re-widening of any container, and every old name below still lands on 4. */
+  --kol-radius-0: 0;
+  --kol-radius-2: 2px;
+  --kol-radius-4: 4px;
+  --kol-radius-6: 6px;
+  --kol-radius-8: 8px;
+  --kol-radius-12: 12px;
+  --kol-radius-13: 13px; /* Figma's file card and toolbar corner, measured (plan-2026-11-23-editor-measured-against-figma W6, W7); kolbox only */
+  --kol-radius-16: 16px;
   --kol-radius-full: 9999px;
+  /* ALIASES — the size names (on the retirement ledger 2026-11-18), each the px it was: none 0, xs 2, the rest 4
+     (md/lg/xl/2xl collapsed to 4 by the 2026-08-09 ruling). New code writes the number. */
+  --kol-radius-none: var(--kol-radius-0);
+  --kol-radius-xs: var(--kol-radius-2);
+  --kol-radius-sm: var(--kol-radius-4);
+  --kol-radius-md: var(--kol-radius-4);
+  --kol-radius-lg: var(--kol-radius-4);
+  --kol-radius-xl: var(--kol-radius-4);
+  --kol-radius-2xl: var(--kol-radius-4);
 
   /* Shadows (subtle elevation) */
   --kol-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -195,6 +207,57 @@
   --kol-float-inset: 6px;
   --kol-float-tip-h: 24px;
   --kol-float-tip-t: 11px;
+  /* THE FLOAT SPEC (plan-2026-11-12-float-system W1.2; the law is docs/documentation/04-compositions/25-float-spec.md,
+   * `pnpm validate:float` holds the components to it). What was a literal in each component is a token here.
+   * chev  the indicator (a dropdown caret, a section's fold) per control size — the layer rows' 12 at sm and md, 16 at lg
+   *       (decided for his review, P3) · ic-*  the adjacent glyph per size (glyphLadders.js ADJACENT) */
+  --kol-float-chev-sm: 12px;
+  --kol-float-chev-md: 12px;
+  --kol-float-chev-lg: 16px;
+  --kol-float-ic-sm: 14px;
+  --kol-float-ic-md: 16px;
+  --kol-float-ic-lg: 18px;
+  /* the float Rail widths — 264 and 360, nothing else (his ruling 2026-11-12, P1 LAW: *"264 AND 360"*): 264 the default
+   * Rail (NavRail float expanded, PropertyRail, ReadingContents, the inspector slot), 360 the wide Rail (Labs params, the
+   * generator Rails). Replaced 272 · 280 · 352 · 384 */
+  --kol-float-module-w: 264px;
+  --kol-float-module-w-wide: 360px;
+  /* the float window's width (ModalDialog float, the useModal float prompts, QuickLookFrame float; plan-2026-11-12-one-header
+   * W6.1, P8: *"why doesnt it use width?"*) — was a literal 562 / 418 in each */
+  --kol-float-window-w: 562px;
+  /* the kolbox variant's widths (his ruling 2026-11-18, plan-2026-11-18-kolbox-system 31.1b: kolbox's widths are kept and
+   * written as the kolbox variant's; foundations 09-sizes.md): a popover's panel 240 (its color, stroke and effect
+   * popovers, beside the 240 rail) and a centred window 480 (a confirm, a prompt, the restore prompt) */
+  --kol-kolbox-popover-w: 240px;
+  --kol-kolbox-modal-w: 480px;
+  /* batch 5: the rails (240, the collapsed strip 49), the search modal (576), the timeline (200, 480 expanded) */
+  --kol-kolbox-rail-w: 240px;
+  --kol-kolbox-rail-w-collapsed: 49px;
+  --kol-kolbox-search-w: 576px;
+  --kol-kolbox-timeline-h: 200px;
+  --kol-kolbox-timeline-h-expanded: 480px;
+  /* the kolbox control height, ONE place (his ruling 2026-11-19, "they should all be 24 not 28", from his Figma frame):
+   * every kolbox control reads it (Button and its icon button and hover frame, ButtonSplit, ButtonGroup joined, Input
+   * sm, Dropdown, TabsRow sm, Slider, ToggleSwitch, ToggleCheckbox, ColorInputRow, LabeledControl's row, the timeline's
+   * time and zoom fields; apps/kolbox's `h-control`). Was 28 */
+  --kol-kolbox-ctl: var(--kol-ctl-24);
+  /* the kolbox UI text, ONE place (plan-2026-11-23-editor-measured-against-figma W2, read from Figma's own editor by the rig
+   * in _tmp/2026-11-23-editor-diff): every label, row, section heading and button reads Inter 11 on a 16 line at 0.005em
+   * (Figma 0.055px). Was 12 on 16 or 17, set by eye */
+  --kol-kolbox-text: 11px;
+  --kol-kolbox-text-lh: 16px;
+  --kol-kolbox-text-ls: 0.005em;
+  /* the module's rows: the label column of a LabeledControl float `inline` row and its gap to the control; the
+   * regular rhythm between rows (compact is spacing-2); the collapsed-v module's pill (`--kol-float-fold-h` is its
+   * deprecated alias, plan-2026-11-12-one-header W2.1) */
+  --kol-float-label-w: 110px;
+  --kol-float-label-gap: 8px;
+  --kol-float-module-gap: 18px;
+  --kol-float-collapsed-h: 40px;
+  --kol-float-fold-h: var(--kol-float-collapsed-h);
+  /* the float list's row (a Dropdown's, a Menu's); its hover and selected fills are set on the list panel, where the
+   * fg ladder resolves for the panel's theme (`.kol-menu-panel--float`, kol-components-molecules.css) */
+  --kol-float-list-row: 34px;
   /* THE FLOAT RADII (float-everything W0.1, 2026-11-04, from the exploration's own scale): a bare list 8 · a sheet or
    * panel 20 (the More sheet, inspector, cards) · a window 28 · a control is a pill. menu-r was 26 (round 3). */
   /* THE FLOAT FOCUS RING (W0.2): 2px of the ink, on every float control's :focus-visible. Round 3 had none. */
@@ -272,6 +335,13 @@
     --kol-float-window-r: 32px;
     --kol-float-tip-h: 28px;
     --kol-float-tip-t: 12px;
+    --kol-float-chev-sm: 14px;
+    --kol-float-chev-md: 14px;
+    --kol-float-chev-lg: 16px;
+    --kol-float-ic-sm: 16px;
+    --kol-float-ic-md: 18px;
+    --kol-float-ic-lg: 20px;
+    --kol-float-collapsed-h: 48px;
   }
 }
 
@@ -350,9 +420,15 @@
    * them to NOTHING EMITTED, no error — the same silent failure this block was
    * written to end for `z-modal`. Closing the ladder is a real ruling and it
    * needs its own sweep, not a side effect of registering the scale. */
+  /* the 2026-11-18 stops (W1.1): `gap-px`, `p-1.5`, `p-2.5` and `p-3.5` resolve through KOL's token; Tailwind's own
+   * name for 1px is `px` */
+  --spacing-px:   var(--kol-spacing-0-25);
   --spacing-1:  var(--kol-spacing-1);
+  --spacing-1\.5: var(--kol-spacing-1-5);
   --spacing-2:  var(--kol-spacing-2);
+  --spacing-2\.5: var(--kol-spacing-2-5);
   --spacing-3:  var(--kol-spacing-3);
+  --spacing-3\.5: var(--kol-spacing-3-5);
   --spacing-4:  var(--kol-spacing-4);
   --spacing-5:  var(--kol-spacing-5);
   --spacing-6:  var(--kol-spacing-6);

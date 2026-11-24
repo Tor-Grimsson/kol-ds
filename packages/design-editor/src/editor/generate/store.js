@@ -27,7 +27,13 @@ export const openTool = (tool, form = 'rail') => setUi(form === 'dialog' ? { dia
 /* open a tool on a layer it drew (a generate or repeat layer): its params become the tool's, Apply updates it */
 export function editLayer(tool, layer, form = 'rail') {
   const { id, type, children, ...params } = layer
-  setTool(tool, { params, layerId: id })
+  setTool(tool, { params, layerId: id, contentKey: null })
+  openTool(tool, form)
+}
+
+/* open a tool on a layer's effect row (W22, compose/layerModel.js): the row's params are the tool's, Apply updates the row */
+export function editContent(tool, host, row, form = 'rail') {
+  setTool(tool, { params: row.params, layerId: host.id, contentKey: row.key })
   openTool(tool, form)
 }
 

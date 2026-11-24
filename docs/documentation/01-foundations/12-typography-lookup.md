@@ -3,7 +3,7 @@ title: Typography lookup
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-03
+updated: 2026-11-14
 verified: 2026-09-03
 description: Every type class, with its real values
 aliases:
@@ -36,15 +36,17 @@ leading and takes anything that can wrap. See [[03-typography|type classes]].
 | Class | Family | Size | Line height | Weight | Tracking | Transform |
 |---|---|---|---|---|---|---|
 | `.kol-mono-8` | `mono` | `8px` | 12px | 400 | — | — |
-| `.kol-mono-10` | `mono` | `10px` | 14px | 400 | — | — |
+| `.kol-mono-10` | `mono` | `10px` | 13px | 400 | — | — |
 | `.kol-mono-12` | `mono` | `12px` | 16px | 400 | — | — |
 | `.kol-mono-14` | `mono` | `14px` | 18px | 400 | — | — |
-| `.kol-mono-16` | `mono` | `16px` | 22px | 400 | — | — |
+| `.kol-mono-16` | `mono` | `16px` | 21px | 400 | — | — |
 | `.kol-mono-20` | `mono` | `20px` | 26px | 400 | — | — |
+
+Each reads its [[15-type-ramp|type ramp]] step: 8 T10, 10 L8, 12 L6, 14 L5, 16 L4, 20 L2.
 
 ## Helper
 
-Single-line chrome. Weight 500, no leading, letter-spaced.
+Single-line chrome. Weight 500, no leading, letter-spaced. Each reads its Utility step: 8 U10, 10 U8, 12 U6, 14 U5, 16 U4, 20 U2.
 
 | Class | Family | Size | Line height | Weight | Tracking | Transform |
 |---|---|---|---|---|---|---|
@@ -101,6 +103,8 @@ Single-line chrome. Weight 500, no leading, letter-spaced.
 | `.kol-card-excerpt` | `mono` | `14px` | 18px | 400 | — | — |
 | `.kol-card-value` | `mono` | `16px` | 22px | 500 | — | — |
 | `.kol-card-tag` | `mono` | `10px` | 1 | 500 | 0.1em | uppercase |
+
+The `.kol-doc-*` values above are the doc half only. Their `.kol-prose` twins (code block, inline code, table, table head, caption, footer), every `.kol-prose` and `.kol-prose-*` class and the `.kol-sheet` rules take size and line height from the [[15-type-ramp|type ramp]], one step per role as listed in [[17-type-sets|type sets]] (since 2026-11-14).
 
 ## Size tokens
 

@@ -92,6 +92,10 @@ and `apps/search`.
   category/kind/space is read as that filter (`atom` → Atoms). Items in kol-search's shape
   (`title · kind · space · category · tags · headings · keywords · description · date · href`) or the
   older `label/sectionLabel` rows.
+- **Pages first** (2026-11-20, plan W17.2) — every page is listed before anything found inside a page; a page whose
+  title holds the typed word leads even when the word also names a filter (`icons`). An item carrying `within` (the
+  showcase's icons: `within: 'Icons'`) is content, not a page: it follows the pages under one heading named by `within`,
+  its best 5 rows, then one row to `${withinHref}?q=<word>`, the full catalog with the word carried over.
 - **`searchPath`** — Enter opens `${searchPath}?q=…`, the **`SearchPage`**: the query is the whole
   state and lives in the URL; the scope row and the facets (kind · category · tags) write `in:` ·
   `kind:` · `cat:` · `tag:` tokens back into it; "read as" chips remove a token. Without

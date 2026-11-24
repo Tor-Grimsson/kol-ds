@@ -279,7 +279,7 @@ export default function useDragResize(ref, options = {}) {
     /* the grid's grid-template-columns ease would trail the pointer —
      * kol-framework.css suspends it while this attribute is stamped */
     root().setAttribute(names.draggingAttr, '')
-    document.body.style.cursor = 'col-resize'
+    document.body.style.cursor = vertical ? 'row-resize' : 'col-resize'
     document.body.style.userSelect = 'none'
   }
 

@@ -60,8 +60,8 @@ const morphMode = (c, i = 0) => morph(c, i).mode ?? 'morph'
 const cutB = (c, i = 0) => morphOn(c, i) && ['morph', 'fade'].includes(morphMode(c, i)) // Cut B applies to morph/fade
 const axisOf = (c, tag, i = 0) => fontByKey(inst(c, i)?.font).axes.find((a) => a.tag === tag)
 // Cut B axis writes clamp to the instance font's real axis range (knob min/max
-// are static schema numbers; the fonts' ranges differ — e.g. wght 100..900 on
-// rot vs 300..900 on malromur/gullhamrar).
+// are static schema numbers; the fonts' ranges differ — wght 100..900 on
+// Inter and Rot vs 300..900 on Malromur and Gullhamrar).
 const setMorphAxis = (c, tag, v, i = 0) => {
   const a = axisOf(c, tag, i)
   const clamped = a ? Math.min(a.max, Math.max(a.min, v)) : v
@@ -75,8 +75,8 @@ const setVfAxis = (c, tag, v, i = 0) => {
   return patchInst(c, { vf: { ...(inst(c, i)?.vf ?? {}), [tag]: Math.round(clamped) } }, i)
 }
 // One VF-axis knob per tag the shipped fonts expose. min/max are FUNCTIONS of
-// (comp, i) — the slider range follows the selected instance's font (rot wght
-// 100..900 vs malromur/gullhamrar 300..900); knobRange() resolves them.
+// (comp, i) — the slider range follows the selected instance's font (Inter and
+// Rot wght 100..900 vs Malromur and Gullhamrar 300..900); knobRange() resolves them.
 const vfAxisKnob = (tag) => ({
   key: `vf${tag[0].toUpperCase()}${tag.slice(1)}`, label: AXIS_LABELS[tag] || tag,
   tab: 'style', section: 'Axes', type: 'range', step: 1,
@@ -103,7 +103,7 @@ export const KINETIC_KNOBS = [
   { key: 'fill', label: 'Fill', tab: 'style', type: 'color', role: 'fg', noRandom: true,
     get: (c, i = 0) => inst(c, i)?.fill, set: (c, v, i = 0) => patchInst(c, { fill: v }, i) },
   { key: 'font', label: 'Font', tab: 'style', type: 'select', options: FONT_OPTIONS, noRandom: true,
-    get: (c, i = 0) => inst(c, i)?.font,
+    get: (c, i = 0) => fontByKey(inst(c, i)?.font).key,
     set: (c, v, i = 0) => patchInst(c, { font: v, vf: normalizeVf(v, inst(c, i)?.vf) }, i) },
   { key: 'italic', label: 'Italic', tab: 'style', type: 'select', noRandom: true,
     options: [{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }],
@@ -207,11 +207,11 @@ export const KINETIC_KNOBS = [
   { key: 'morphFace2', label: 'Cut B face', tab: 'style', section: 'Morph', type: 'select', noRandom: true,
     when: cutB, options: (c, i = 0) => [{ value: '', label: 'Off' }, ...FONT_OPTIONS.filter((o) => o.value !== inst(c, i)?.font)],
     get: (c, i = 0) => morph(c, i).face2 ?? '', set: (c, v, i = 0) => patchMorph(c, { face2: v }, i) },
-  { key: 'morphVf2Wdth', label: 'Cut B · Width', tab: 'style', section: 'Morph', type: 'range', min: 64, max: 172, step: 1,
+  { key: 'morphVf2Wdth', label: 'Cut B width', tab: 'style', section: 'Morph', type: 'range', min: 64, max: 172, step: 1,
     when: (c, i = 0) => cutB(c, i) && !morph(c, i).face2 && !!axisOf(c, 'wdth', i),
     get: (c, i = 0) => morph(c, i).vf2?.wdth ?? axisOf(c, 'wdth', i)?.max ?? 172,
     set: (c, v, i = 0) => setMorphAxis(c, 'wdth', v, i) },
-  { key: 'morphVf2Wght', label: 'Cut B · Weight', tab: 'style', section: 'Morph', type: 'range', min: 100, max: 900, step: 1,
+  { key: 'morphVf2Wght', label: 'Cut B weight', tab: 'style', section: 'Morph', type: 'range', min: 100, max: 900, step: 1,
     when: (c, i = 0) => cutB(c, i) && !morph(c, i).face2 && !!axisOf(c, 'wght', i),
     get: (c, i = 0) => morph(c, i).vf2?.wght ?? axisOf(c, 'wght', i)?.max ?? 900,
     set: (c, v, i = 0) => setMorphAxis(c, 'wght', v, i) },

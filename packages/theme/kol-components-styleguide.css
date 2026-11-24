@@ -479,6 +479,6 @@
   .kol-lab-grid { grid-template-rows: 1fr; grid-template-columns: clamp(320px, var(--kol-lab-rail-w), 560px) minmax(0, 1fr); }
 }
 /* the colour column's hex IS the "Edit color" button (review 1, Adobe's ref 2): bare, a wash of the column's own ink on hover */
-.kol-lab-hex { border-radius: var(--kol-radius-sm, 4px); color: inherit; }
+.kol-lab-hex { border-radius: var(--kol-radius-4, 4px); color: inherit; }
 .kol-lab-hex:hover,
 .kol-lab-hex[aria-expanded="true"] { background: color-mix(in srgb, currentColor 14%, transparent); }

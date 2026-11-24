@@ -29,6 +29,9 @@ import { useRef } from 'react'
  * @param {Function} onChange - `(x, y) => void` on pointer down and on every move while a button is held — the caller coalesces if it wants one patch per gesture
  * @param {ReactNode} xLabel - Left label above the pad
  * @param {ReactNode} yLabel - Right label above the pad
+ * @param {'default'|'kolbox'} [variant='default'] - The look. `kolbox` (plan-2026-11-18-kolbox-system W31.2, 2026-11-18):
+ *   kolbox's pad carried class for class: no stroke, the field's oq-16 ground at radius 4, 1px oq-24 guides, the puck in
+ *   the ink, the labels Inter 11 / 15 in oq-64; it also takes `w-full min-w-0`. Chrome in kol-theme `.kol-xy-pad--kolbox`.
  * @param {string} [className] - Extra classes on the wrapper
  */
 export default function XYPad({
@@ -38,6 +41,7 @@ export default function XYPad({
   onChange,
   xLabel,
   yLabel,
+  variant = 'default',
   className = '',
 }) {
   const ref = useRef(null)
@@ -65,6 +69,27 @@ export default function XYPad({
   const span = (max, min) => (max - min) || 1
   const puckX = ((xValue - xMin) / span(xMax, xMin)) * 100
   const puckY = (1 - (yValue - yMin) / span(yMax, yMin)) * 100
+
+  if (variant === 'kolbox') {
+    return (
+      <div className={`kol-xy-pad--kolbox flex w-full min-w-0 flex-col gap-1 ${className}`.trim()}>
+        <div className="kol-xy-pad-labels flex justify-between">
+          <span>{xLabel}</span>
+          <span>{yLabel}</span>
+        </div>
+        <div
+          ref={ref}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          className="kol-xy-pad relative aspect-square w-full cursor-crosshair touch-none"
+        >
+          <div className="kol-xy-pad-guide absolute inset-x-0 top-1/2 h-px" />
+          <div className="kol-xy-pad-guide absolute inset-y-0 left-1/2 w-px" />
+          <div className="kol-xy-pad-puck pointer-events-none absolute -mt-1.5 -ml-1.5 size-3 rounded-full" style={{ left: `${puckX}%`, top: `${puckY}%` }} />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`flex flex-col gap-1 ${className}`.trim()}>

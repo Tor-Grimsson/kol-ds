@@ -3,7 +3,7 @@
 // component=LinkAddRow
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "float": "float", "default": "default" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 export default {
   example: figma.code`<LinkAddRow${variant === 'float' ? ' variant="float"' : ''} title="kol-vault" href={url} onAdd={addLink} />`,
   imports: ["import { LinkAddRow } from \"@kolkrabbi/kol-component\""],

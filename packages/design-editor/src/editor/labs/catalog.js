@@ -3,7 +3,7 @@ import { groupById, presetsInGroup, presetsInSub, presetLayerPatch } from '../..
 import { KINETIC_TREE, KINETIC_PRESETS, presetComp } from '../../kinetic/presets'
 import { FILTERS } from '../../filters'
 import { effectCategories, FX_RACK_GROUPS } from '../compose/inspectors/effectCategories'
-import { openColorModes } from '../color/ColorModesWindow'
+import { openColorModes } from '../color/ModalColorModes'
 import { MORPH_TYPES, morphPresets, firstMorphPreset, loadMorphPreset } from '../morph/presets'
 import { getMorph } from '../morph/morphStore'
 
@@ -190,7 +190,7 @@ export function buildLabsCatalog({ layer, setOnly, addFilter, patchFilter, carri
 
   return [
     /* COLOR (plan 41 § 6.1) — Color Modes' home in Labs: a row at the section level that opens the
-       one palette window (`color/ColorModesWindow`), not a section. First in the stream because the
+       one palette window (`color/ModalColorModes`), not a section. First in the stream because the
        rail folds a row after a section marker into that section. */
     { id: 'color', label: 'Color', icon: 'clr-tri', onSelect: openColorModes, pages: [] },
 

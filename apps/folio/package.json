@@ -28,6 +28,7 @@
     "@kolkrabbi/kol-framework": "workspace:*",
     "@kolkrabbi/kol-icons": "workspace:*",
     "@kolkrabbi/kol-search": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
     "@kolkrabbi/kol-theme": "workspace:*",
     "@replit/codemirror-minimap": "0.5.2",
     "@tailwindcss/vite": "^4.2.4",

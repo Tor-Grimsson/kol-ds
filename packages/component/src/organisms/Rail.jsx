@@ -57,7 +57,7 @@ const FOCUSABLE =
  * @param {ReactNode}     nav       A RAIL INSIDE THE RAIL (review 2, 2026-10-25 — *"like a siderail in the bottom rail"*): `RailNav`, the
  *                                  collapsed nav rail's 48 icon column, stood at the panel's edge with the header, body and foot
  *                                  padded beside it — so a bottom rail over the nav rail carries its views as glyphs under it
- * @param {'app'|'site'}  variant   THE TIER (RailKit, kol-monitor 2026-10-24): its width when `width` / `height` is not given
+ * @param {'app'|'site'|'kolbox'|'folio'}  variant   `kolbox` and `folio` are those looks (below). THE TIER (RailKit, kol-monitor 2026-10-24): its width when `width` / `height` is not given
  *                                  (`--kol-rail-w-app` 320 · `--kol-rail-w-site` 380) and its padding (`--kol-pad-rail-app` ·
  *                                  `--kol-pad-rail-site`), kol-theme's tokens — so the settings rail and a page rail of one
  *                                  app are one size. Unset = the rail as before (`--kol-pad-overlay`, the width yours)
@@ -139,8 +139,40 @@ export function useRailKey(role, onToggle, enabled = true) {
   }, [role, enabled])
 }
 
+/* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): kolbox's one rail shell, carried from
+ * apps/kolbox/src/ui/Rail.jsx. It alone draws the panel fill, the edge line, the 240 width (`--kol-kolbox-rail-w`) and
+ * the clip. Slots: `header` and `footer` stay put, the body scrolls. `side` left draws its edge line on the right, right
+ * on the left, in the field ink, over the rail's own edge so the content keeps the full 240. `collapsed` the narrow
+ * strip, 49 (`--kol-kolbox-rail-w-collapsed`). Under 768 a rail lies along the bottom or stacks in a column: the full
+ * width, as tall as its content, its edge line along its top. `aria-label` names it. None of the roles, the scrim, the
+ * resize or the phone rule: the look's rails are docked frames. */
+function RailKolbox({ side = 'left', 'aria-label': ariaLabel, header, footer, collapsed = false, children, className = '' }) {
+  return (
+    <aside
+      aria-label={ariaLabel}
+      data-rail={side}
+      data-collapsed={collapsed || undefined}
+      className={`kol-rail--kolbox${collapsed ? ' is-collapsed' : ''} relative flex h-full shrink-0 flex-col overflow-hidden max-md:h-auto before:absolute before:inset-y-0 before:z-10 before:w-px ${side === 'left' ? 'before:right-0' : 'before:left-0'} max-md:before:inset-x-0 max-md:before:top-0 max-md:before:bottom-auto max-md:before:h-px max-md:before:w-auto ${className}`.trim()}
+    >
+      {header && <div className="shrink-0">{header}</div>}
+      <div className="min-h-0 flex-1 overflow-y-auto" data-rail-body>{children}</div>
+      {footer && <div className="shrink-0">{footer}</div>}
+    </aside>
+  )
+}
+
+/* `variant="folio"` (Folio migration batch D, 2026-11-22): Folio's edge Rail, carried from apps/folio's EditorChrome.jsx.
+ * The bare aside, a column that clips: no fill, no edge, no width, no padding (its content brings Folio's 16, its edge
+ * line and width are the caller's `className`). `aria-label` names it (Folio's `label`). None of the roles, the scrim,
+ * the resize or the phone rule. */
+function RailFolio({ 'aria-label': ariaLabel, children, className = '' }) {
+  return <aside aria-label={ariaLabel} className={`kol-rail--folio flex min-w-0 flex-col overflow-hidden ${className}`.trim()}>{children}</aside>
+}
+
 /* the role's shell, the phone rule over it, then whatever the call site passed (an `undefined` prop is not a pass) */
 export default function Rail({ role, ...props }) {
+  if (props.variant === 'kolbox') return <RailKolbox {...props} />
+  if (props.variant === 'folio') return <RailFolio {...props} />
   const phone = useMediaQuery('(max-width: 767px)')
   const r = role ? RAIL_ROLES[role] : null
   if (role && !r && import.meta.env?.DEV) console.warn(`Rail: no role "${role}" — patch · page · settings · bottom`)

@@ -14,6 +14,23 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  *   variant="float"            — the floating style (round 3, W16 2026-10-31): a capsule on the float's well
  *                                (`--kol-float-well`), 16 in, sm · md · lg 28 · 36 · 44 (touch 36 · 44 · 52) with
  *                                12 · 13 · 14 (13 · 15 · 16) type; AccountForm's box passes it
+ *   variant="kolbox"           — kolbox's field (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18), carried class
+ *                                for class: the oq-16 fill, no outline. `size` sm (its default) the 28 field, radius 4,
+ *                                8 in, 4 between, the value JetBrains Mono 12 / 16, the accent line inside the box when
+ *                                focused; md the rail's search, 32, radius 8, 4 in, 8 between, the value 12 / 16 in the
+ *                                row's family; lg the search modal's field, 44, radius 8, 12 in and between, a 20 glyph,
+ *                                the value Inter 16 / 22 / 500, no ring. `prefix` is the 16 letter slot (mono 12, oq-64),
+ *                                `iconLeft` the glyph, `suffix` a unit (mono 12, oq-64), `slotRight` a node at the right;
+ *                                `hug` sizes the value to its text (a number field, its unit right after it);
+ *                                the glyph is your icons with the stroke lift. The press that focuses the field selects
+ *                                its whole value, a second press places the caret. With `onCommit` (the field's commit,
+ *                                `(text) => void`) it is kolbox's field (`useKolboxField`): Enter or leaving commits a
+ *                                changed value, Escape restores the value from before the edit and leaves, ArrowUp and
+ *                                ArrowDown step a number by 1 (Shift 10) and commit. Chrome in kol-theme `.kol-input--kolbox`.
+ *   variant="folio"            — Folio's field (Folio migration batch A, 2026-11-22), carried class for class: a bare
+ *                                <input> 32 high, 16 in, radius 4, the rule line on the paper, the value JetBrains Mono
+ *                                12 / 16 in the ink, the accent line focused; no shell, so the slots and `size` are not
+ *                                read and the width is the caller's `className`. Chrome in kol-theme `.kol-input--folio`.
  *   tone="inverse"             — the dark chip (`fg-ab-24`) for a washed plane
  *                                (ControlToneInverse, 2026-08-27); same prop on ViewToggle · Dropdown
  *   size="xs"                  — the panel rung (ControlsXsRung, 2026-09-01):
@@ -73,7 +90,65 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * Input owns prefix/suffix/icon layout + the inner <input> styling.
  */
 
+/* kolbox: each size's box (radius, fill and type in the theme rule) and its glyph */
+const KOLBOX_SIZE = {
+  sm: { box: 'h-(--kol-kolbox-ctl) gap-1 px-2 focus-within:outline-1 focus-within:-outline-offset-1', icon: 16 },
+  md: { box: 'h-8 gap-2 px-1 focus-within:outline-1 focus-within:-outline-offset-1', icon: 18 },
+  lg: { box: 'h-11 gap-3 px-3', icon: 20 },
+}
+
 const SIZE_TYPE = { xs: 'kol-mono-8', sm: 'kol-mono-12', md: 'kol-mono-14', lg: 'kol-mono-16' }
+
+/* kolbox's fields: the press that focuses a field selects its whole value; a press in a focused field places the caret.
+   A mousedown handler for any kolbox <input> (ColorInputRow's hex and opacity take it too). */
+export function selectOnFirstPress(e) {
+  const el = e.currentTarget
+  if (e.button !== 0 || document.activeElement === el || el.disabled || el.readOnly) return
+  e.preventDefault()
+  el.focus()
+  el.select()
+}
+
+/* kolbox's arrow step: a number, alone or with a unit after it (12, -4.5, 45°, 50%), moves by `by`; anything else
+   (a hex, a word, empty) does not step and gives null */
+const STEPPABLE = /^\s*(-?\d*\.?\d+)\s*(°|%|px|pt|ms|s|x)?\s*$/
+export function stepText(text, by) {
+  const m = STEPPABLE.exec(String(text ?? ''))
+  if (!m) return null
+  const places = (m[1].split('.')[1] ?? '').length
+  return `${Number((parseFloat(m[1]) + by).toFixed(places))}${m[2] ?? ''}`
+}
+
+/* kolbox's field behaviour, one place for every kolbox field (Input's own, ColorInputRow's hex and opacity): a draft
+   while editing; Enter or leaving commits it, when it differs; Escape puts back the value from before the edit and
+   leaves the field; ArrowUp and ArrowDown step a number by 1, with Shift by 10, and commit at once (`step: false`
+   for a value that is not a number). `commit(text)` gets the trimmed text. Returns the <input>'s props. */
+export function useKolboxField(value, commit, { step = true } = {}) {
+  const shown = value == null ? '' : String(value)
+  const [draft, setDraft] = useState(null)
+  const live = useRef(null)
+  const end = (text) => { live.current = null; setDraft(null); if (text != null && text.trim() !== shown) commit?.(text.trim()) }
+  return {
+    value: draft ?? shown,
+    onChange: (e) => { live.current = e.target.value; setDraft(e.target.value) },
+    onBlur: () => end(live.current),
+    onKeyDown: (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur() }
+      else if (e.key === 'Escape') {
+        /* the field takes this Escape: a window or the editor hears the next one */
+        e.preventDefault(); e.stopPropagation()
+        live.current = null; setDraft(null); e.currentTarget.blur()
+      } else if (step && (e.key === 'ArrowUp' || e.key === 'ArrowDown') && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        const next = stepText(live.current ?? shown, (e.key === 'ArrowUp' ? 1 : -1) * (e.shiftKey ? 10 : 1))
+        if (next == null) return
+        e.preventDefault(); e.stopPropagation()
+        const el = e.currentTarget
+        live.current = null; setDraft(null); commit?.(next)
+        requestAnimationFrame(() => { if (document.activeElement === el) el.select() })
+      }
+    },
+  }
+}
 
 export default function Input({
   type = 'text',
@@ -83,7 +158,7 @@ export default function Input({
   variant,
   preset,
   tone = 'default',
-  size = 'md',
+  size: sizeProp,
   chars,
   prefix,
   suffix,
@@ -99,8 +174,11 @@ export default function Input({
   width,
   className = '',
   inputClassName = '',
+  hug = false,
   ...inputProps
 }) {
+  /* kolbox's field is its own default size (sm); every other look defaults to md */
+  const size = sizeProp ?? (variant === 'kolbox' ? 'sm' : 'md')
   const isNumber = type === 'number'
   const fixedChars = typeof chars === 'number'
   // The text-adjacent ladder — an Input's icon sits in the rung's line box
@@ -141,6 +219,7 @@ export default function Input({
   /* the ref mirrors the draft so a blur that lands in the same tick as the
    * last keystroke commits what was typed, not the last RENDER's draft */
   const draftRef = useRef(value ?? '')
+  const kolboxField = useKolboxField(value, onCommit)
   useEffect(() => { if (onCommit) { setDraft(value ?? ''); draftRef.current = value ?? '' } }, [value, onCommit])
   const commitProps = onCommit
     ? {
@@ -163,6 +242,31 @@ export default function Input({
         },
       }
     : null
+
+  /* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's Input carried class for
+   * class, the chrome in kol-theme `.kol-input--kolbox`. Its sizes are its three fields: sm the field (`--kol-kolbox-ctl`, 24), md the rail's
+   * search (32), lg the search modal's (44). A slot that holds nothing is not drawn, so it takes no space. */
+  if (variant === 'kolbox') {
+    const k = KOLBOX_SIZE[size] ?? KOLBOX_SIZE.sm
+    return (
+      <label className={`kol-input--kolbox kol-input--kolbox-${KOLBOX_SIZE[size] ? size : 'sm'} flex min-w-0 items-center has-disabled:opacity-40 ${k.box} ${className}`}>
+        {iconLeft && <IconLoader name={iconLeft} size={k.icon} className="kol-input-icon kol-kolbox-icon shrink-0" />}
+        {prefix !== undefined && <span className="kol-input-lead w-4 shrink-0">{prefix}</span>}
+        <input type={type} value={value} onChange={onChange} placeholder={placeholder} disabled={disabled} className={`kol-input-value min-w-0 ${hug ? 'field-sizing-content' : 'flex-1'} bg-transparent text-left outline-none`} {...inputProps}
+          {...(onCommit ? kolboxField : null)}
+          onMouseDown={(e) => { inputProps.onMouseDown?.(e); selectOnFirstPress(e) }} />
+        {suffix !== undefined && <span className="kol-input-suffix shrink-0">{suffix}</span>}
+        {slotRight}
+      </label>
+    )
+  }
+
+  /* `variant="folio"` (Folio migration batch A, 2026-11-22): Folio's text field carried class for class (apps/folio
+   * EditorChrome.jsx Input), the bare field with no shell, the chrome in kol-theme `.kol-input--folio`. The width is the
+   * caller's `className`. */
+  if (variant === 'folio') {
+    return <input type={type} value={value} onChange={onChange} placeholder={placeholder} disabled={disabled} {...inputProps} className={`kol-input--folio h-[32px] rounded-[4px] border px-[16px] outline-none ${className}`} />
+  }
 
   const propertyLen = Math.max(String(value ?? placeholder ?? '').length, 1)
 

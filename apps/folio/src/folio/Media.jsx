@@ -4,7 +4,7 @@
    caption. In dev the private files come through record's dev server (shelf.js urlOf). */
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { client } from './client'
-import { MediaPlayer, ModalShell } from '@kolkrabbi/kol-component'
+import { Input, MediaPlayer, ModalShell } from '@kolkrabbi/kol-component'
 
 const IMAGE = /\.(png|jpe?g|webp|gif|svg)$/i
 const BUCKET = client().read('bucket')
@@ -25,16 +25,11 @@ export function embeds(md, urlOf) {
 /* a pasted image link (a bucket or any image URL) becomes Markdown */
 export const pastedImage = (text) => (/^https?:\/\/\S+$/.test(text.trim()) && (IMAGE.test(text.trim().split('?')[0]) || BUCKETS.some((b) => b.host && text.includes(`//${b.host}/`))) ? `![](${text.trim()})` : null)
 
-/* the image as a figure: the caption from the alt text, a width from `"w=300"` */
-export function Figure({ src, alt, title }) {
+/* the image as a figure (KOL's Figure variant="folio" since Folio batch E): the caption from the alt text, a width from
+   `"w=300"` */
+export function figureOf({ src, alt, title }) {
   const width = /^w=(\d+)$/.exec(title ?? '')?.[1]
-  return (
-    /* spans, not <figure>: an image that shares a line with text sits inside a <p>, where a figure is not allowed */
-    <span data-wide role="figure" aria-label={alt || title || undefined} className="flex flex-col items-start gap-[10px]">
-      <img src={src} alt={alt ?? ''} loading="lazy" className="max-w-full rounded-[2px] border border-folio-rule" style={width ? { width: `${width}px` } : undefined} />
-      {(alt || (title && !width)) && <span className="kol-reader-meta block text-folio-muted">{alt || title}</span>}
-    </span>
-  )
+  return { src, alt, width, caption: alt || (width ? undefined : title) }
 }
 
 /* the editor's Image picker — the four buckets, named (user, 2026-11-04: "what bucket? I have 4"). Private comes from
@@ -69,18 +64,21 @@ export function ImagePicker({ urlOf, onPick, onClose }) {
   const src = (f) => f.url ?? urlOf(f)
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[10vh]" onMouseDown={onClose}>
-      <ModalShell variant="bordered" role="dialog" aria-label="Insert an image" onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="max-h-[75vh] w-full max-w-[820px] overflow-hidden shadow-[0_24px_64px_rgb(0_0_0/0.18)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
-        <div role="tablist" aria-label="Bucket" className="flex shrink-0 gap-[4px] border-b border-folio-rule px-[12px] pt-[10px]">
-          {BUCKETS.map((b) => (
-            <button key={b.id} type="button" role="tab" aria-selected={bucket === b.id} onClick={() => setBucket(b.id)} className={`-mb-px flex flex-col items-start gap-[2px] px-[12px] pb-[10px] pt-[4px] text-left ${bucket === b.id ? 'shadow-[inset_0_-2px_0_var(--color-folio-ink)]' : 'text-folio-muted hover:text-folio-ink'}`}>
-              <span className="kol-reader-control">{b.label}</span>
-              <span className="kol-reader-meta-sm text-folio-muted">{b.note}</span>
-            </button>
-          ))}
-        </div>
-        <div className="flex h-[52px] shrink-0 items-center gap-[12px] border-b border-folio-rule px-[16px]">
-          <input ref={input} value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Find an image in ${here.label}`} className="kol-reader-nav min-w-0 flex-1 bg-transparent font-normal outline-none placeholder:text-folio-muted" />
-          <span className="kol-reader-meta text-folio-muted">{state || `${list.length} images${list.length > SHOWN ? `, first ${SHOWN} shown — search to narrow` : ''}, esc`}</span>
+      {/* kolbox's window (plan-2026-11-23 W8.2): the bucket tabs in its header row beside the close; the find row and the grid are Folio's */}
+      <ModalShell variant="kolbox" aria-label="Insert an image" width={820} onClose={onClose} onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="max-h-[75vh] max-w-full"
+        leading={
+          <div role="tablist" aria-label="Bucket" className="-my-2 -ml-4 mr-auto flex shrink-0 gap-[4px] px-[4px] pt-[10px]">
+            {BUCKETS.map((b) => (
+              <button key={b.id} type="button" role="tab" aria-selected={bucket === b.id} onClick={() => setBucket(b.id)} className={`-mb-px flex flex-col items-start gap-[2px] px-[12px] pb-[10px] pt-[4px] text-left ${bucket === b.id ? 'shadow-[inset_0_-2px_0_var(--kol-folio-ink)]' : 'text-folio-muted hover:text-folio-ink'}`}>
+                <span className="kol-folio-control">{b.label}</span>
+                <span className="kol-folio-meta-sm text-folio-muted">{b.note}</span>
+              </button>
+            ))}
+          </div>
+        }>
+        <div className="flex h-[52px] shrink-0 items-center gap-[12px] border-y border-folio-rule px-[16px]">
+          <Input variant="kolbox" size="md" ref={input} value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Find an image in ${here.label}`} className="min-w-0 flex-1" />
+          <span className="kol-folio-meta text-folio-muted">{state || `${list.length} images${list.length > SHOWN ? `, first ${SHOWN} shown — search to narrow` : ''}, esc`}</span>
         </div>
         <div className="grid grid-cols-4 gap-[12px] overflow-y-auto p-[16px]">
           {list.slice(0, SHOWN).map((f) => (
@@ -88,10 +86,10 @@ export function ImagePicker({ urlOf, onPick, onClose }) {
               <span className="block aspect-[4/3] w-full overflow-hidden rounded-[2px] border border-folio-rule bg-folio-surface">
                 <img src={src(f)} alt="" loading="lazy" className="size-full object-cover transition-opacity group-hover:opacity-85" />
               </span>
-              <span className="kol-reader-meta truncate" title={f.key}>{f.name}</span>
+              <span className="kol-folio-meta truncate" title={f.key}>{f.name}</span>
             </button>
           ))}
-          {!state && !list.length && <p className="kol-reader-body col-span-4 py-[24px] text-folio-muted">No image matches “{q}” in {here.label}.</p>}
+          {!state && !list.length && <p className="kol-folio-body col-span-4 py-[24px] text-folio-muted">No image matches “{q}” in {here.label}.</p>}
         </div>
       </ModalShell>
     </div>

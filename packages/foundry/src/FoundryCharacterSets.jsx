@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Button } from '@kolkrabbi/kol-component'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import { glyphSets, glyphCategories } from './glyphData.js'
 
-/* taxonomy-ok: organism — nests Button + SpecimenSectionHeader (relative
+/* taxonomy-ok: organism — nests Button + SpecimenHeader (kol-styleguide
  * imports) plus same-file GlyphCategory / GlyphItem. */
 
 /** GlyphItem (same-file) — one bordered glyph cell that flips to the inverse
@@ -68,7 +68,7 @@ const FoundryCharacterSets = ({
   return (
     <section className="w-full py-12 lg:py-16">
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader
+        <SpecimenHeader
           label="Character Sets"
           icon="grid"
           size="md"

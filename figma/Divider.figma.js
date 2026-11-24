@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "horizontal": "horizontal", "vertical": "vertical" })
+const variant = instance.getEnum('vertical', { "false": "horizontal", "true": "vertical" })
 
 export default {
   example: figma.code`<Divider variant="${variant}" />`,

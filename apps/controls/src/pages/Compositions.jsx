@@ -102,7 +102,7 @@ function ParamsRail() {
         <LabeledControl label="THEME">
           <Dropdown value={theme} onChange={setTheme} variant="grey" size="sm" options={[{ value: 'kol', label: 'KOL' }, { value: 'paper', label: 'Paper' }, { value: 'dark', label: 'Dark' }]} />
         </LabeledControl>
-        <ToggleSwitch label="Invert" checked={invert} onChange={setInvert} />
+        <LabeledControl horizontal label="Invert" labelWidth="auto"><ToggleSwitch checked={invert} onChange={setInvert} aria-label="Invert" /></LabeledControl>
       </LabeledControlSection>
     </div>
   )

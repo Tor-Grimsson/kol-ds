@@ -14,7 +14,7 @@ import CompositionDiagram from '../lib/CompositionDiagram.jsx'
  */
 
 export const LAYERS = [
-  { id: 'engine', label: 'Engine', what: 'Plain JS, no UI — parse, index, rank. Its app is a lab: input in, what the engine reads out.', lives: 'kol-markdown · kol-search · kol-growth' },
+  { id: 'engine', label: 'Engine', what: 'Plain JS, no UI — parse, index, rank. Its app is a lab: input in, what the engine reads out.', lives: 'kol-markdown, kol-search, kol-growth and kol-tuner' },
   { id: 'shell', label: 'Shell', what: 'The frame — the rail, the layout root, the nav keys, the phone bar.', lives: 'kol-shell AppShell + NavRail · kol-workshop ShellLayout' },
   { id: 'hub', label: 'Hub', what: 'The standard pages around the work — Home, Settings, the shortcuts sheet, the walkthrough. Opt-in, page by page. The Studio is the Hub plus the workstation pages — Library · Create · Use.', lives: 'kol-shell AppHub · AppStudio' },
   { id: 'catalog', label: 'Catalog', what: 'The ContentFilters page — masthead, filter + search, views, LIST · GRID, the cards.', lives: 'kol-shell CatalogPage' },
@@ -33,6 +33,8 @@ export const APPS = [
     layers: ['Engine', 'Tool frame'], packages: ['kol-search', 'kol-component (ShellSearchOverlay)', 'kol-workshop (TagGraph)'], optIns: ['search engine', 'tag system', 'node graph', 'fixture: workshop-fixture'], consumer: 'Depend on @kolkrabbi/kol-search; index your items with createIndex, query with search, graph with tagGraph.' },
   { name: 'growth', layer: 'engine', port: 5215, what: 'The growing line alone — one closed line growing into the orb and into an SVG path; the pointer pushes it, a press blasts it.',
     layers: ['Engine', 'Hub'], packages: ['kol-growth', 'kol-component (GrowthLineStage)', 'kol-shell'], optIns: [], consumer: 'GrowthLineStage from @kolkrabbi/kol-component with a shape; or run @kolkrabbi/kol-growth Growth in your own loop.' },
+  { name: 'tuner', layer: 'engine', port: 5220, what: 'The form tuner alone — a mark built from measures with six handles, its 24 rolls, and a dropped logo rebuilt from circles and lines on one ladder.',
+    layers: ['Engine', 'Hub'], packages: ['kol-tuner', 'kol-shell (PropertyRail)'], optIns: [], consumer: 'Depend on @kolkrabbi/kol-tuner; system() and tuner() return SVG paths and labels, no colour.' },
   { name: 'shell', layer: 'shell', port: 5186, what: 'The frame alone, under either rail — the Variants button switches Rail: app (AppShell, the phone bar) · site (SiteLayout, the phone drawer) — around ten placeholder pages.',
     layers: ['Shell'], packages: ['kol-shell'], optIns: ['phone bar (touch="bar")', 'nav keys'], consumer: 'AppShell with items + bottomItems; touch="bar" for the phone bar, masthead for the app’s one header voice.' },
   { name: 'workshop', layer: 'shell', port: 5183, what: 'The workshop shell alone — header, rails, search modal, tag browser and reader over an invented corpus.',

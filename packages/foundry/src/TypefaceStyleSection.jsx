@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 
-/* taxonomy-ok: organism — nests SpecimenSectionHeader (relative import) plus a
+/* taxonomy-ok: organism — nests SpecimenHeader (kol-styleguide) plus a
  * same-file StyleCard row; owns the axis/selection state. */
 
 /**
@@ -126,7 +126,7 @@ const TypefaceStyleSection = ({
   return (
     <section className="w-full py-12 lg:py-16">
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader
+        <SpecimenHeader
           selectedStyle={selectedStyleVariant}
           onStyleChange={handleStyleVariantChange}
           styleOptions={styleOptions || undefined}

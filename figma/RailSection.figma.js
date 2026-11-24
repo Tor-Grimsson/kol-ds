@@ -4,7 +4,7 @@
 import figma from 'figma'
 // level 1 = .shell-sidebar-toggle (the category eyebrow), level 2 = .shell-nav-group-header (the chapter); children is the slot
 const instance = figma.selectedInstance
-const level = instance.getEnum('level', { "1": 1, "2": 2 })
+const level = instance.getEnum('nested', { "false": 1, "true": 2 })
 const collapsed = instance.getEnum('collapsed', { "false": false, "true": true })
 const label = instance.getString('label')
 const children = instance.getSlot('children')

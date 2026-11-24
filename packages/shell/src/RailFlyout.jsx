@@ -7,7 +7,7 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
  * RailFlyout — A section's children beside the rail (float-everything W9 row 130, 2026-11-04): the hover card a 72
  * rail opens for a row that holds pages — the section's glyph and name (`kol-float-body`), then its rows 34 tall on
  * the `--kol-float-list-r` round (a 16 glyph, the label in `kol-float-hint`, a count in `kol-float-ruler` at the end),
- * the current one lit. With `anchor` it hangs right of that element (the popover); without, it is the card alone.
+ * the current one marked by its dot, never a fill (W11.1, 2026-11-12). With `anchor` it hangs right of that element (the popover); without, it is the card alone.
  * The exploration's `Dashboard rail flyout` (kol-float--style 9:14981).
  *
  * @param {string}   icon · {string} title   the section
@@ -31,12 +31,17 @@ export default function RailFlyout({ icon, title, items = [], active, onPick, an
         {icon && <IconLoader name={icon} size={18} className="text-oq-96" />}
         <span className="kol-float-body text-emphasis">{title}</span>
       </div>
-      {items.map((i) => (
-        <Button key={i.path ?? i.label} variant="nav" size="lg" iconLeft={i.icon} iconSize={16} aria-current={i.path != null && i.path === active ? 'page' : undefined} className="kol-btn-float w-full justify-start" onClick={() => onPick?.(i)}>
-          <span className="flex-1 text-left">{i.label}</span>
-          {i.count != null && <span className="kol-float-ruler text-oq-64">{i.count}</span>}
-        </Button>
-      ))}
+      {items.map((i) => {
+        const current = i.path != null && i.path === active
+        return (
+          <Button key={i.path ?? i.label} variant="nav" size="lg" iconLeft={i.icon} iconSize={16} aria-current={current ? 'page' : undefined} className="kol-btn-float w-full justify-start" onClick={() => onPick?.(i)}>
+            <span className="flex-1 text-left">{i.label}</span>
+            {i.count != null && <span className="kol-float-ruler text-oq-64">{i.count}</span>}
+            {/* the current row's mark is its dot, never a fill (W11.1) — MenuRow's `ascii-dot`, drawn the same way */}
+            {current && <IconLoader name="ascii-dot" size={24} style={{ margin: -5 }} className="text-oq-88" />}
+          </Button>
+        )
+      })}
     </div>
   )
   if (!anchor) return card

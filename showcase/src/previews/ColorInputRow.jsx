@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ColorInputRow } from '@kolkrabbi/kol-component'
+import { ColorInputRow, ColorPickerPopover } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
@@ -39,7 +39,15 @@ const resolveRef = (value) => PALETTE[value] ?? null
 
 export const sizes = ['sm', 'xs', 'md']
 
-export default function ColorInputRowPreview({ size = 'sm' }) {
+export const variants = ['default', 'kolbox', 'folio']
+
+export default function ColorInputRowPreview({ size = 'sm', variant = 'default' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  /* folio (Folio batch C): Folio's SwatchRow, its swatch opening the set */
+  if (variant === 'folio') return <FolioRow />
+  if (variant === 'kolbox') return (
+    <div className="flex w-56"><ColorInputRow variant="kolbox" label="Fill" value="#d65d0e" opacity={100} onChange={() => {}} onOpacity={() => {}} picker={ColorPickerPopover} /></div>
+  )
   const [fill, setFill] = useState('#49A0A2')
   const [ref, setRef] = useState('palette:accent')
   const [accent, setAccent] = useState('#FFCF33')
@@ -94,4 +102,10 @@ export default function ColorInputRowPreview({ size = 'sm' }) {
       />
     </div>
   )
+}
+
+const FOLIO_SWATCHES = [['ink', '#121215'], ['slate', '#2B2F36'], ['moss', '#3A4A3F'], ['paper', '#F4F1EA']]
+function FolioRow() {
+  const [v, setV] = useState('#121215')
+  return <div className="flex w-60"><ColorInputRow variant="folio" picker={ColorPickerPopover} label="Fill" value={v} swatches={FOLIO_SWATCHES} onChange={setV} /></div>
 }

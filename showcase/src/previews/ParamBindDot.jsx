@@ -7,7 +7,13 @@ export const sizes = ['sm', 'xs', 'md']
 const SOURCES = [['none', 'Constant'], ['track', 'Keyframes'], ['lfo', 'LFO'], ['mouse', 'Mouse']]
 
 /* fxr's param row: a slider, the dot in the trailing slot; the menu binds the param to a source */
-export default function ParamBindDotPreview({ size = 'sm' }) {
+export const variants = ['default', 'kolbox']
+
+export default function ParamBindDotPreview({ size = 'sm', variant = 'default' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <div className="flex gap-4"><ParamBindDot variant="kolbox" label="Opacity" items={[{ label: 'Constant', checked: true }, { label: 'Keyframes' }]} /><ParamBindDot variant="kolbox" bound label="Scale" tooltip="Modulated (lfo)" items={[{ label: 'Constant' }, { label: 'LFO', checked: true }]} /></div>
+  )
   const [mode, setMode] = useState('none')
   const [v, setV] = useState(40)
   const bound = mode !== 'none'

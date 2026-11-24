@@ -10,9 +10,9 @@ import RailDisplayControls from './RailDisplayControls.jsx'
 /**
  * FloatLayout — The float workspace frame (plan-2026-11-04-float-views W1.1 — kol-float--style 9:15449 "Adaptive
  * workspace", its rules 9:15179). Assembled from the float chrome, nothing drawn here: the nav Rail (`NavRail
- * variant="float"`) in three states — `expanded` 280, `collapsed` 72 (a section's rows open beside a slot on hover,
+ * variant="float"`) in three states — `expanded` 264, `collapsed` 72 (a section's rows open beside a slot on hover,
  * RailFlyout), `hidden` 0 (RailTrigger and the breadcrumb take the corner) — the 64 TopControlsBar, the content slot,
- * ONE inspector slot (PropertyRail, 272 on the sheet radius), and a `bottom` Rail under both. 24 round the page and between the Rails, 40 under the bar.
+ * ONE inspector slot (PropertyRail, 264 on the sheet radius), and a `bottom` Rail under both. 24 round the page and between the Rails, 40 under the bar.
  *
  * Visibility controls space, selection controls content: a hidden Rail is never removed — Panels ▾ (PanelsRestore)
  * shows in the bar exactly while one is hidden and brings it back as it was (the nav at its last width). Below `md` the
@@ -93,7 +93,7 @@ export default function FloatLayout({
     setFly(item.sub?.length ? { item, el } : null)
   }
 
-  /* the rail keys (useRailKeys): `\` 280 ↔ 72, `⇧\` hide ↔ show at its last width (`lastShown`) */
+  /* the rail keys (useRailKeys): `\` 264 ↔ 72, `⇧\` hide ↔ show at its last width (`lastShown`) */
   useRailKeys(railKeys, {
     onCollapse: () => { if (railNow !== 'hidden') { setFly(null); setRail(railNow === 'expanded' ? 'collapsed' : 'expanded') } },
     onHide: () => setRail(railNow === 'hidden' ? lastShown.current : 'hidden'),
@@ -142,7 +142,7 @@ export default function FloatLayout({
           {bottom && <div className="kol-float-layout-bottom min-w-0 shrink-0">{bottom}</div>}
         </div>
       </div>
-      {search && <CommandOverlay {...search} surface={surface} motion={motion} />}
+      {search && <CommandOverlay {...search} variant="float" surface={surface} motion={motion} />}
     </div>
   )
 }

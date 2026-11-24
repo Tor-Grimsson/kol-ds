@@ -17,7 +17,7 @@ export function ZoomReadout({ value, onMenu, onFit, className = '' }) {
     <div className={`kol-zoom-readout inline-flex items-center gap-3 ${className}`.trim()}>
       <button type="button" onClick={onMenu} aria-haspopup={onMenu ? 'menu' : undefined} className="kol-float-timecode text-oq-64 hover:text-oq-96 inline-flex items-center gap-3 bg-transparent border-0 p-0 cursor-pointer">
         {value}
-        {onMenu && <IconLoader name="chevron-down" size={16} className="text-oq-64" />}
+        {onMenu && <IconLoader name="chevron-down" size="var(--kol-float-chev-sm)" className="text-oq-64" />}
       </button>
       {onFit && (
         <button type="button" onClick={onFit} aria-label="Fit" className="inline-flex text-oq-64 hover:text-oq-96 bg-transparent border-0 p-0 cursor-pointer">

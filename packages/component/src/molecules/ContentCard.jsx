@@ -3,6 +3,9 @@ import ContentMedia from './ContentMedia.jsx'
 import ContentText from './ContentText.jsx'
 import { useAppItem } from './AppItem.jsx'
 import { toneClass } from '../utilities/tone.js'
+import Button from '../atoms/Button.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
+import KolboxGlyph from '../utilities/kolboxGlyph.jsx'
 
 /**
  * ContentCard — the card form of the content-card system. Variants differ in
@@ -179,7 +182,7 @@ const MEDIA = {
 const ALIAS = { default: 'file', print: 'catalog', work: 'showcase', typeface: 'showcaseCanvas' }
 const LAYOUT_KEY = { canvas: 'showcaseCanvas', drawer: 'showcase' }
 
-export default function ContentCard({
+function ContentCardDefault({
   variant: variantProp = 'file',
   layout,
   hero = false,
@@ -543,7 +546,7 @@ export default function ContentCard({
     'data-back': backMode && backMode !== 'flip-card' ? backMode : undefined,
     'data-back-hover': backMode && backMode !== 'flip-card' && backHover ? '' : undefined,
     'data-flipped': backMode && backMode !== 'flip-card' && flipped ? '' : undefined,
-    className: `kol-card group flex ${toneClass(tone)} ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-card group flex ${toneClass(tone)} ${box.layout === 'canvas' && reveal != null ? 'has-reveal' : ''} ${expanded ? 'flex-col md:flex-row-reverse' : 'flex-col'} ${box.layout === 'drawer' ? 'relative overflow-hidden rounded-[var(--kol-radius-4)]' : ''} ${framed ? 'overflow-hidden rounded-[var(--kol-radius-4)]' : ''} ${box.border ? 'border' : ''} ${box.layout === 'canvas' ? 'relative' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${hoverBg && interactive ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: {
       /* same reason as ContentRow: rest colors are PROPERTIES, because an
        * inline background/borderColor outranks the hover class and the step
@@ -568,7 +571,7 @@ export default function ContentCard({
     <div className="kol-card-turn" data-back="flip-card" data-back-hover={backHover ? '' : undefined} data-flipped={flipped ? '' : undefined} style={{ gridColumn: common.style.gridColumn, gridRow: common.style.gridRow }}>
       <div className="kol-card-turn-inner">
         <div className="kol-card-face kol-card-face--front">{root}</div>
-        <div className="kol-card-face kol-card-face--back overflow-hidden rounded-[var(--kol-radius-sm)] bg-surface-secondary" aria-hidden={!flipped || undefined}>
+        <div className="kol-card-face kol-card-face--back overflow-hidden rounded-[var(--kol-radius-4)] bg-surface-secondary" aria-hidden={!flipped || undefined}>
           <ContentMedia ratio={null} radius={false} fit="cover">{backNode}</ContentMedia>
         </div>
       </div>
@@ -603,4 +606,102 @@ export default function ContentCard({
     )
   }
   return turn(<article {...common}>{turned}</article>)
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's FileCard (Figma `FileCard`; round 4 W13, his card law), carried from apps/kolbox/src/home/FileCard.jsx; its
+ * geometry is Figma's file browser card, measured (plan-2026-11-23 W6): the cover 16:9 (167 on Figma's 297 card; the
+ * file's thumbnail whole, fitted and centred on oq-08), the 24 mark and buttons 16 in from the cover's corners, the foot
+ * 59 with 12 / 16 padding: the file glyph, the name and the meta line 2 under it. Opens on a double click or Enter. kolbox's words, which the
+ * default card has no twin for: `file` { id, name, thumb, modified, size, mark: { icon, label } }, `onOpen(file)`,
+ * `onDownload(file)` (the download beside the star), `onSettings(file)` (the cog), `onRemove(file)` (the trash under
+ * it), `onStar(file)` (the star, lit while `file.starred`), `onMenu(file, event)` (right click); each part drawn only when
+ * given. `file.icon` names the foot's glyph (default `file`; a folder card passes `folder`).
+ * Folio on kolbox (2026-11-22): `media`, a node drawn centred in the cover in place of `file.thumb` (Folio's generated
+ * jacket); `meta`, a node in place of the foot's second line (Folio's call number, shelf and flags). Unset, the card
+ * draws as before. */
+
+/* "2 hours ago" from a stored time, in the browser's own words; the ISO day */
+const RTF_KOLBOX = new Intl.RelativeTimeFormat('en', { numeric: 'always' })
+const STEPS_KOLBOX = [['year', 31536e6], ['month', 2592e6], ['week', 6048e5], ['day', 864e5], ['hour', 36e5], ['minute', 6e4], ['second', 1e3]]
+export const fileAgo = (t) => {
+  if (!t) return ''
+  const d = t - Date.now()
+  const [unit, ms] = STEPS_KOLBOX.find(([, s]) => Math.abs(d) >= s) ?? STEPS_KOLBOX[STEPS_KOLBOX.length - 1]
+  return RTF_KOLBOX.format(Math.round(d / ms), unit)
+}
+export const fileDay = (t) => (t ? new Date(t).toISOString().slice(0, 10) : '')
+
+function ContentCardKolbox({ file, media, meta, onOpen, onDownload, onStar, onSettings, onRemove, onMenu }) {
+  const stop = (fn) => (e) => { e.stopPropagation(); fn(file, e) }
+  return (
+    <div
+      role="listitem"
+      tabIndex={0}
+      aria-label={file.name}
+      onDoubleClick={() => onOpen?.(file)}
+      onKeyDown={(e) => { if (e.key === 'Enter' && e.target === e.currentTarget) onOpen?.(file) }}
+      onContextMenu={onMenu ? (e) => { e.preventDefault(); onMenu(file, e) } : undefined}
+      className="kol-content-card--kolbox flex cursor-default flex-col overflow-hidden border outline-none"
+      data-file-card={file.id}
+    >
+      <div className="kol-content-card-cover relative aspect-video min-h-0 shrink-0" data-file-cover>
+        {media != null ? <div className="flex size-full items-center justify-center">{media}</div> : file.thumb && <img src={file.thumb} alt="" className="size-full object-contain" />}
+        {file.mark && (
+          <span className="absolute top-4 left-4">
+            <Tooltip variant="kolbox" label={file.mark.label}>
+              <span role="img" aria-label={file.mark.label} className="kol-content-card-mark kol-content-card-on-panel flex size-6 items-center justify-center" data-file-mark>
+                <KolboxGlyph name={file.mark.icon} />
+              </span>
+            </Tooltip>
+          </span>
+        )}
+        <span className="absolute top-4 right-4 flex gap-1">
+          {onDownload && <Tooltip variant="kolbox" label="Download"><Button variant="kolbox" iconOnly="download" aria-label="Download" onClick={stop(onDownload)} onDoubleClick={(e) => e.stopPropagation()} className="kol-content-card-on-panel size-6!" /></Tooltip>}
+          {onStar && <Tooltip variant="kolbox" label={file.starred ? 'Unstar' : 'Star'}><Button variant="kolbox" iconOnly="star" aria-label="Star" pressed={!!file.starred} onClick={stop(onStar)} onDoubleClick={(e) => e.stopPropagation()} className="kol-content-card-on-panel size-6!" /></Tooltip>}
+        </span>
+      </div>
+      <div className="kol-content-card-foot flex h-[59px] shrink-0 items-center gap-3 border-t px-4 py-3">
+        <KolboxGlyph name={file.icon ?? 'file'} className="kol-content-card-icon" />
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <span className="kol-content-card-name truncate">{file.name}</span>
+          {meta != null
+            ? <span className="kol-content-card-meta flex items-center gap-3 truncate" data-file-meta>{meta}</span>
+            : file.size != null
+            ? <span className="kol-content-card-meta flex gap-3 truncate" data-file-meta><span>{fileDay(file.modified)}</span><span>{file.size}</span></span>
+            : <span className="kol-content-card-edited truncate">Edited {fileAgo(file.modified)}</span>}
+        </div>
+        {(onSettings || onRemove) && (
+          <span className="-mr-2 flex shrink-0 flex-col" onDoubleClick={(e) => e.stopPropagation()}>
+            {onSettings && <Tooltip variant="kolbox" label="Settings"><Button variant="kolbox" iconOnly="settings-01" aria-label="Settings" onClick={stop(onSettings)} className="size-6!" /></Tooltip>}
+            {onRemove && <Tooltip variant="kolbox" label="Delete"><Button variant="kolbox" iconOnly="trash" aria-label="Delete" onClick={stop(onRemove)} className="size-6!" /></Tooltip>}
+          </span>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ── folio (Folio batch E, 2026-11-22) ─────────────────────────────────────────────────────────────────────────────
+ * Folio's cover card, carried from apps/folio's FolioShelf ("Fresh on your shelf"): the `media` (Folio's generated
+ * jacket, a node the caller draws at the card's width) over three lines 6 apart, 12 under the cover: the `title` in
+ * Folio's shelf type, two lines held open and underlined on hover, the `meta` (chapters or call number) and the `label`
+ * (the shelf, with its language flags) in Folio's meta type, muted. The whole card is one link: `href`, drawn by
+ * `linkComponent` (a router's Link; default `a`); `style` carries the caller's width cap. */
+function ContentCardFolio({ media, title, meta, label, href, linkComponent: L = 'a', style, className = '' }) {
+  return (
+    <L {...(L === 'a' ? { href } : { to: href })} className={`kol-content-card--folio group flex min-w-0 flex-1 flex-col gap-[12px] ${className}`.trim()} style={style}>
+      {media}
+      <span className="flex flex-col gap-[6px]">
+        <span className="kol-folio-shelf line-clamp-2 min-h-[38px] group-hover:underline">{title}</span>
+        {meta != null && <span className="kol-folio-meta kol-content-card-muted">{meta}</span>}
+        {label != null && <span className="kol-folio-meta-sm kol-content-card-muted flex items-center gap-[6px]">{label}</span>}
+      </span>
+    </L>
+  )
+}
+
+export default function ContentCard(props) {
+  if (props.variant === 'folio') return <ContentCardFolio {...props} />
+  return props.variant === 'kolbox' ? <ContentCardKolbox {...props} /> : <ContentCardDefault {...props} />
 }

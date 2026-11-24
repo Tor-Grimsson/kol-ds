@@ -1,0 +1,29 @@
+{
+  "name": "tuner",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "kol-tuner alone, in the tool frame: System (a mark from measures, six handles, 24 rolls) and the Tuner (a dropped logo rebuilt on one ladder). Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@floating-ui/react": "^0.27.19",
+    "@kolkrabbi/kol-component": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@kolkrabbi/kol-shell": "workspace:*",
+    "@kolkrabbi/kol-theme": "workspace:*",
+    "@kolkrabbi/kol-tuner": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10"
+  }
+}

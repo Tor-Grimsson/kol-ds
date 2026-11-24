@@ -9,9 +9,12 @@ const pointName = (xi, yi) => (xi === 1 && yi === 1 ? 'center' : `${X_NAME[xi]} 
 /* box padding + cell + dot per rung: 2·pad + 3·cell = the field's height (22 · 26 · 32; touch 32 · 32 · 36).
  * The xs touch lift skips a hardware panel, as Input's does. */
 const SIZE = {
-  xs: 'p-[2px] [--op-cell:6px] [--op-dot:4px] rounded-[var(--kol-radius-xs)] pointer-coarse:not-[.kol-hw-panel_*]:p-px pointer-coarse:not-[.kol-hw-panel_*]:[--op-cell:10px] pointer-coarse:not-[.kol-hw-panel_*]:[--op-dot:6px]',
-  sm: 'p-px [--op-cell:8px] [--op-dot:4px] rounded-[var(--kol-radius-sm)] pointer-coarse:[--op-cell:10px] pointer-coarse:[--op-dot:6px]',
-  md: 'p-px [--op-cell:10px] [--op-dot:6px] rounded-[var(--kol-radius-sm)] pointer-coarse:p-[3px]',
+  /* 2xs: the 16 icon slot a rail row's third cell takes (kolbox, plan-2026-11-18-kolbox-system W31.2): nine 4 dots 2 apart,
+   * no ground and no touch lift, as an icon has none */
+  '2xs': 'gap-0.5 [--op-cell:4px] [--op-dot:4px] [--kol-tone-bg:transparent] rounded-[var(--kol-radius-2)]',
+  xs: 'p-[2px] [--op-cell:6px] [--op-dot:4px] rounded-[var(--kol-radius-2)] pointer-coarse:not-[.kol-hw-panel_*]:p-px pointer-coarse:not-[.kol-hw-panel_*]:[--op-cell:10px] pointer-coarse:not-[.kol-hw-panel_*]:[--op-dot:6px]',
+  sm: 'p-px [--op-cell:8px] [--op-dot:4px] rounded-[var(--kol-radius-4)] pointer-coarse:[--op-cell:10px] pointer-coarse:[--op-dot:6px]',
+  md: 'p-px [--op-cell:10px] [--op-dot:6px] rounded-[var(--kol-radius-4)] pointer-coarse:p-[3px]',
 }
 
 /**
@@ -22,7 +25,8 @@ const SIZE = {
  * that fires align actions and holds no value; this holds one.
  *
  * ON THE CONTROL RAMP. The square is exactly a field's height at the same `size`, so it sits beside
- * an `Input` without a step: xs 22 · sm 26 · md 32 (touch 32 · 32 · 36, as the fields grow). The
+ * an `Input` without a step: xs 22 · sm 26 · md 32 (touch 32 · 32 · 36, as the fields grow). Below the ramp, `2xs` is
+ * the 16 icon slot (kolbox's rail row, 2026-11-18): nine 4 dots 2 apart on no ground. The
  * ground is the control's (`--kol-tone-bg`, else surface-secondary), so `tone` and a toned wrapper
  * reach it as they reach an Input. No border — the field family has none.
  *
@@ -36,7 +40,7 @@ const SIZE = {
  *
  * @param {[number, number]} value - The selected point `[x, y]`, each 0 · 0.5 · 1 (0 = left / top)
  * @param {(value:[number, number]) => void} onChange - Fired with the new `[x, y]` on click or arrow key
- * @param {'xs'|'sm'|'md'} [size='sm'] - The control rung — the square matches a field of this size
+ * @param {'2xs'|'xs'|'sm'|'md'} [size='sm'] - The control rung — the square matches a field of this size; `2xs` is the 16 icon slot
  * @param {string} [tone='default'] - The control set's tone (the ground); default inherits a wrapper's
  * @param {string} [ariaLabel='Origin'] - The group's accessible name
  * @param {string} [className] - Extra classes on the square

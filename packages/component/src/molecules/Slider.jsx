@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react'
-import Input from '../atoms/Input.jsx'
+import Input, { selectOnFirstPress } from '../atoms/Input.jsx'
 import SliderPanel from './SliderPanel.jsx'
+import LabeledControl from './LabeledControl.jsx'
 
 /**
  * Slider — range slider with label and a value readout. The LINEAR VARIANT of
@@ -45,8 +46,10 @@ import SliderPanel from './SliderPanel.jsx'
  * @param {string} props.fontSize - Font size for label/value (e.g., '11px')
  * @param {Object} props.style - forwarded to the wrapper; the seam for `--kol-slider-track` / `--kol-slider-playhead`
  * @param {number} props.defaultValue - alt-click the control resets to this (falls back to `min`). Same contract on Knob
- * @param {'input'|'value'|'none'} props.readout - `input` (default) an editable Input · `value` a plain right-aligned span, Knob's own display-only readout · `none`
- * @param {'minimal'|'dual'|'scrub'|'panel'|'float'} props.variant - `dual` = two thumbs on one rail · `scrub` = a media scrubber: the thin track with the 4 × 28 pill knob (`.kol-playback-scrub`; `PlaybackBar`'s, 2026-10-02) · `panel` = the rack slider (was kol-hardware `Fader`, merged 2026-10-01): a drawn 2px track for a hardware panel; takes `value · onChange · min · max · step · label` plus `onHold` · `float` (float-everything W2 row 23, 2026-11-04): the label and a mono readout on one line, the 3px capsule track under them — the run fg-64 to a 12 thumb (`.kol-slider-float`); `readout` is `value` there, `formatValue` its words (`65%`)
+ * @param {'input'|'value'|'none'} props.readout - `input` (default) an editable Input · `value` a plain right-aligned span, Knob's own display-only readout · `none`. On `float` unset is `none`; `input` puts the value as an `Input variant="float"` pill at the track's right, sized in `ch` to the widest value (plan-2026-11-12-one-header W6.1 — the settings window's rows; typed values commit on Enter or blur, clamped, Escape reverts)
+ * @param {'minimal'|'dual'|'scrub'|'panel'|'float'|'kolbox'} props.variant - `kolbox` (W31.2 batch 3): kolbox's track (2px oq-24, the run in the ink to the value, a 12 ink thumb) in a 24 row (`--kol-kolbox-ctl`); `readout` `value` (its default) the mono 12 value beside it, 40 wide, or `input` the track in an oq-16 field and the value in a text field 2 apart; no visible label (`aria-label` names it), `formatValue` defaults to the raw value · `dual` = two thumbs on one rail · `scrub` = a media scrubber: the thin track with the 4 × 28 pill knob (`.kol-playback-scrub`; `PlaybackBar`'s, 2026-10-02) · `panel` = the rack slider (was kol-hardware `Fader`, merged 2026-10-01): a drawn 2px track for a hardware panel; takes `value · onChange · min · max · step · label` plus `onHold` · `float` (float-everything W2 row 23, 2026-11-04; track only since 2026-11-12): the 3px capsule track at the float sm height — the run fg-64 to a 12 thumb (`.kol-slider-float`); a `label` is drawn by `LabeledControl variant="float"`, a `value` readout as its hint, `formatValue` its words (`65%`)
+ * @param {'folio'} props.variant - also `folio` (Folio migration batch A, 2026-11-22): Folio's slider, a 24 row, the 2px track in the rule with the run in the accent to a 12 accent thumb, the value (JetBrains Mono 12 / 16, `formatValue` its words, raw by default) 32 wide at the right, 12 off; no visible label (`aria-label`). Chrome in kol-theme `.kol-slider--folio`
+ * @param {number[]} props.stops - kolbox only: values marked on the track, a 2 mark each under the thumb's centre (a variable font's named weights)
  * @param {'horizontal'|'vertical'} props.direction - `vertical` stands the track upright at `height`, label above and readout below (2026-10-02 — the volume ranges were hand-drawn for want of it). On `panel`, horizontal takes the row and shows a readout
  * @param {number} props.height - vertical only — the track's length in px (default 96; panel 60)
  * @param {string} props['aria-label'] - names the range when there is no visible `label`
@@ -58,6 +61,84 @@ import SliderPanel from './SliderPanel.jsx'
  * @param {number|null} props.playhead - dual only — marker position in min…max; null renders nothing and attaches no listeners
  * @param {Function} props.onPlayheadChange - dual only — (next: number) => void; omit and the marker is not draggable and the rail does not seek
  */
+/* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's Slider carried class for
+ * class, its own component so its draft is its own state. `readout` value (its default): the bare track, the value
+ * beside it, 12 apart; `input`: the track in its own field, then 2 apart the number in a field as wide as its value
+ * and at least 48. The number is a text field, not type="number": Chrome draws a number field's value in the OS
+ * region's format ("0,08" on an Icelandic Mac) whatever the page's lang. A draft holds what is typed until it reads
+ * as a number; kolbox's field keys: one press selects it, the arrows step it (Shift ten steps), Escape restores the value
+ * from before the edit. Chrome in kol-theme `.kol-slider--kolbox`. */
+function SliderKolbox({ value, min, max, step, onChange, formatValue, readout = 'value', ariaLabel, stops, className = '' }) {
+  const [draft, setDraft] = useState(null)
+  const before = useRef(value)
+  const format = formatValue ?? ((v) => v)
+  const p = Math.min(100, Math.max(0, ((value - min) / (max - min)) * 100))
+  /* a stop: a 2 mark on the track, under the thumb's centre at that value (the thumb is 12, so its centre runs 6 to
+     the width less 6) */
+  const marks = stops?.length > 0 && stops.map((v) => (
+    <span key={v} data-slider-stop={v} className="pointer-events-none absolute top-1/2 size-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-oq-64"
+      style={{ left: `calc(6px + (100% - 12px) * ${(v - min) / (max - min)})` }} />
+  ))
+  const input = (
+    <input
+      type="range"
+      className="kol-slider-input min-w-0 flex-1"
+      style={{ '--p': `${p}%` }}
+      aria-label={ariaLabel}
+      value={value}
+      min={min}
+      max={max}
+      step={step}
+      onChange={(e) => onChange?.(Number(e.target.value))}
+    />
+  )
+  const range = marks ? <span className="relative flex min-w-0 flex-1 items-center">{input}{marks}</span> : input
+  if (readout === 'input') {
+    return (
+      <div className={`kol-slider--kolbox flex h-(--kol-kolbox-ctl) min-w-0 items-center gap-0.5 ${className}`}>
+        <div className="kol-slider-field flex h-(--kol-kolbox-ctl) min-w-0 flex-1 items-center px-2">{range}</div>
+        <input
+          type="text"
+          inputMode="decimal"
+          aria-label={ariaLabel}
+          className="kol-slider-number field-sizing-content h-(--kol-kolbox-ctl) min-w-12 shrink-0 px-2 text-left outline-none focus-visible:outline-1 focus-visible:-outline-offset-1"
+          value={draft ?? String(format(value))}
+          onChange={(e) => {
+            /* parseFloat: a formatted value keeps its unit while it is typed ("45°") */
+            const s = e.target.value, n = parseFloat(s)
+            setDraft(s)
+            if (s.trim() !== '' && Number.isFinite(n)) onChange?.(n)
+          }}
+          onMouseDown={selectOnFirstPress}
+          onFocus={() => { before.current = value }}
+          onBlur={() => setDraft(null)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') { e.preventDefault(); e.currentTarget.blur(); return }
+            /* Escape puts back the value from before the edit and leaves the field (kolbox's field, useKolboxField) */
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); setDraft(null); if (before.current !== value) onChange?.(before.current); e.currentTarget.blur(); return }
+            if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return
+            e.preventDefault()
+            const dec = String(step).split('.')[1]?.length ?? 0
+            const by = (e.shiftKey ? 10 : 1) * (e.key === 'ArrowUp' ? step : -step)
+            const n = Math.min(max, Math.max(min, value + by))
+            setDraft(null)
+            before.current = Number(n.toFixed(dec))
+            onChange?.(before.current)
+            const el = e.currentTarget
+            requestAnimationFrame(() => { if (document.activeElement === el) el.select() })
+          }}
+        />
+      </div>
+    )
+  }
+  return (
+    <div className={`kol-slider--kolbox flex h-(--kol-kolbox-ctl) min-w-0 items-center gap-3 ${className}`}>
+      {range}
+      <span className="kol-slider-value w-10 shrink-0 text-right">{format(value)}</span>
+    </div>
+  )
+}
+
 const Slider = ({
   label,
   min = 0,
@@ -73,7 +154,7 @@ const Slider = ({
   readoutPreset,
   fontSize,
   defaultValue,
-  readout = 'input',
+  readout,
   variant = 'minimal',
   value2,
   onChange2,
@@ -85,6 +166,7 @@ const Slider = ({
   direction,
   height,
   onHold,
+  stops,
   'aria-label': ariaLabel,
 }) => {
   /* Label ↔ input pairing — the <label> is a sibling of the range input, so
@@ -158,7 +240,8 @@ const Slider = ({
 
   const commit = () => {
     setEditing(false)
-    const parsed = Number(draft)
+    /* parseFloat, so a formatted value typed back (`45°`, `0,5`) still reads; an empty field reverts */
+    const parsed = parseFloat(String(draft).replace(',', '.'))
     if (!Number.isFinite(parsed) || onChange == null) {
       setDraft(displayValue)
       return
@@ -182,26 +265,57 @@ const Slider = ({
     onChange(defaultValue ?? min)
   }
 
+  if (variant === 'kolbox') {
+    return <SliderKolbox value={value} min={min} max={max} step={step} onChange={onChange} formatValue={formatValue} readout={readout} ariaLabel={ariaLabel} stops={stops} className={className} />
+  }
+
+  /* folio (Folio migration batch A, 2026-11-22): Folio's Slider carried class for class (apps/folio Chrome.jsx): a 24
+   * row, the native range (its track and thumb in kol-theme `.kol-slider--folio`), the value beside it, 32 wide */
+  if (variant === 'folio') {
+    const format = formatValue ?? ((n) => n)
+    const run = `${((value - min) / (max - min)) * 100}%`
+    return (
+      <div className={`kol-slider--folio flex h-[24px] w-full items-center gap-[12px] ${className}`}>
+        <input type="range" min={min} max={max} step={step} value={value} onChange={handleChange} aria-label={ariaLabel} style={{ '--run': run }}
+          className="kol-slider-input h-[24px] min-w-0 flex-1 cursor-pointer appearance-none bg-transparent" />
+        <span className="kol-slider-value w-[32px] shrink-0 text-right tabular-nums">{format(value)}</span>
+      </div>
+    )
+  }
+
   if (variant === 'panel') {
     return <SliderPanel value={value} onChange={onChange} min={min} max={max} step={step} label={label} direction={direction} height={height} onHold={onHold} />
   }
 
+  /* A NAMED SLIDER IS A LabeledControl (plan-2026-11-12-float-rails-figma W12.1, the law: every label beside a control
+   * is one): the label slot carries the slider's own label look (kol-helper-12 at fg-80, hugging), the control slot the
+   * `.control-slider` row (track and readout) exactly as it drew before. Unlabelled, the row is the whole slider. Called as functions, never as components: a component defined in render
+   * remounts the range on every value and drops the drag. */
+  const labelEl = label && (
+    <label htmlFor={sliderId} style={fontSize ? { fontSize } : undefined}>{label}</label>
+  )
+  const labelClass = `kol-helper-12 text-fg-80 ${disabled ? 'opacity-50' : ''}`.trim()
+  const row = ({ className: cls, style: st, onClick, children }) => {
+    if (!label) return <div className={cls} style={st} onClick={onClick}>{children}</div>
+    const outer = cls.split(/\s+/).filter((c) => !/^(control-slider|shadow-none|h-7)$/.test(c)).join(' ')
+    return (
+      <LabeledControl horizontal label={labelEl} labelWidth="fit-content" labelClass={labelClass}
+        className={`${/(^|\s)(hidden|block|flex|inline-flex|grid)(?=\s|$)/.test(outer) ? '' : 'inline-flex'} ${outer}`} style={st} onClick={onClick}>
+        <div className={`flex w-full ${cls.split(/\s+/).filter((c) => /^(control-slider|shadow-none|h-7|gap-3)$/.test(c)).join(' ')}`}>{children}</div>
+      </LabeledControl>
+    )
+  }
+  const column = ({ className: cls, style: st, onClick, children }) => (label
+    ? <LabeledControl label={labelEl} labelClass={labelClass} className={cls} style={st} onClick={onClick}>{children}</LabeledControl>
+    : <div className={cls} style={st} onClick={onClick}>{children}</div>)
+
   if (variant === 'dual') {
     const v1 = value ?? min
     const v2 = value2 ?? max
-    /* an empty label is no label: `label1="" label2=""` (SettingsRange, GeneratorRail) drew an empty 16px row that pushed the rail low */
+    /* an empty label is no label: `label1="" label2=""` (SettingsRange, RailSettings) drew an empty 16px row that pushed the rail low */
     const showLabels = !!(label1 || label2)
     const ratio = max > min ? (playhead - min) / (max - min) : 0
-    return (
-      <div className={`control-slider gap-3 shadow-none ${className}`} style={style}>
-        {label && (
-          <label
-            className={`kol-helper-12 whitespace-nowrap shrink-0 w-fit ${disabled ? 'opacity-50' : ''}`}
-            style={fontSize ? { fontSize } : undefined}
-          >
-            {label}
-          </label>
-        )}
+    return row({ className: `control-slider gap-3 shadow-none ${className}`, style, children: <>
         <div className="flex-1">
           {showLabels && (
             <div
@@ -250,48 +364,63 @@ const Slider = ({
             />
           </div>
         </div>
-      </div>
-    )
+      </> })
   }
 
   const vertical = direction === 'vertical'
   const scrub = variant === 'scrub'
   const length = vertical ? height ?? 96 : size
 
-  /* the float slider: label · readout above, the capsule track below; the run is the value as a percent on the track */
+  /* the float slider: track and thumb only, at the float sm height (plan-2026-11-12-float-system W2.1 — the label head it
+   * carried went; the user: "SOME IDIOT tried to put label on the slider instead of using a fucking LABELEDCONTROL").
+   * Its name is a LabeledControl's: a `label` passed here is drawn by `LabeledControl variant="float"`, the `value`
+   * readout as its hint. The run is the value as a percent on the track. */
   if (variant === 'float') {
     const pct = max > min ? ((value - min) / (max - min)) * 100 : 0
+    const track = (
+      <input
+        id={sliderId}
+        type="range"
+        min={min} max={max} step={step} value={value}
+        onChange={handleChange}
+        onClick={onAltReset}
+        disabled={disabled}
+        aria-label={ariaLabel ?? (typeof label === 'string' ? label : undefined)}
+        className={`kol-slider-float block min-w-0 ${readout === 'input' ? 'flex-1 w-full' : label ? 'w-full' : className || 'w-full'}`.trim()}
+        style={{ '--kol-slider-pct': `${pct}%`, ...(length ? { width: length } : null), ...(label || readout === 'input' ? null : style) }}
+      />
+    )
+    /* the value pill: the float Input, its width the widest value in `ch` (never a fixed px — validate:float F4) */
+    const box = readout === 'input' && (
+      <Input
+        type="text"
+        inputMode="decimal"
+        variant="float"
+        size="sm"
+        chars={Math.max(2, fmt(min).length, fmt(max).length)}
+        value={draft}
+        disabled={disabled}
+        aria-label={`${ariaLabel ?? (typeof label === 'string' ? label : 'Value')} value`}
+        /* editing shows the raw number (a `50%` reading is typed as 0.5, the engine's unit) */
+        onFocus={(e) => { const el = e.target; setEditing(true); setDraft(String(value)); requestAnimationFrame(() => el.select()) }}
+        onChange={(e) => setDraft(e.target.value)}
+        onBlur={commit}
+        onKeyDown={onKeyDown}
+        className="shrink-0"
+        inputClassName="text-center"
+      />
+    )
+    const control = box
+      ? <div className={`flex min-w-0 items-center gap-3 ${label ? 'w-full' : className || 'w-full'}`.trim()} style={label ? undefined : style}>{track}{box}</div>
+      : track
+    if (!label) return control
     return (
-      <div className={`flex flex-col gap-1 ${disabled ? 'opacity-40' : ''} ${className}`.trim()} style={{ ...(length ? { width: length } : null), ...style }} onClick={onAltReset}>
-        {(label || readout !== 'none') && (
-          <div className="flex items-center justify-between gap-3">
-            {label && <label htmlFor={sliderId} className="kol-float-hint text-fg-emphasis whitespace-nowrap">{label}</label>}
-            {readout !== 'none' && <span className="kol-float-timecode text-fg-emphasis">{displayValue}</span>}
-          </div>
-        )}
-        <input
-          id={sliderId}
-          type="range"
-          min={min} max={max} step={step} value={value}
-          onChange={handleChange}
-          disabled={disabled}
-          aria-label={ariaLabel}
-          className="kol-slider-float w-full min-w-0"
-          style={{ '--kol-slider-pct': `${pct}%` }}
-        />
-      </div>
+      <LabeledControl variant="float" label={label} hint={readout === 'value' ? displayValue : undefined} className={`${disabled ? 'opacity-40' : ''} ${className}`.trim()}>
+        {control}
+      </LabeledControl>
     )
   }
 
-  const labelNode = label && (
-    <label
-      htmlFor={sliderId}
-      className={`kol-helper-12 whitespace-nowrap shrink-0 w-fit ${disabled ? 'opacity-50' : ''}`}
-      style={fontSize ? { fontSize } : undefined}
-    >
-      {label}
-    </label>
-  )
 
   const range = (
     <input
@@ -310,7 +439,7 @@ const Slider = ({
     />
   )
 
-  const readoutNode = readout === 'input' ? (
+  const readoutNode = (readout ?? 'input') === 'input' ? (
     <Input
       type="text"
       inputMode="decimal"
@@ -339,23 +468,17 @@ const Slider = ({
   ) : null
 
   if (vertical) {
-    return (
-      <div className={`inline-flex flex-col items-center gap-2 ${className}`} style={style} onClick={onAltReset}>
-        {labelNode}
+    return column({ className: `inline-flex flex-col items-center gap-2 ${className}`, style, onClick: onAltReset, children: <>
         {/* a native range turned upright: the box is the track's length tall, the input that long */}
         <div className="w-6 flex items-center justify-center" style={{ height: length }}>{range}</div>
         {readoutNode}
-      </div>
-    )
+      </> })
   }
 
-  return (
-    <div className={`control-slider gap-3 shadow-none ${scrub ? 'h-7' : ''} ${className}`} style={style} onClick={onAltReset}>
-      {labelNode}
+  return row({ className: `control-slider gap-3 shadow-none ${scrub ? 'h-7' : ''} ${className}`, style, onClick: onAltReset, children: <>
       {range}
       {readoutNode}
-    </div>
-  )
+    </> })
 }
 
 export default Slider

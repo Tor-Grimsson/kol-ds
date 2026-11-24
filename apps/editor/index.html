@@ -16,7 +16,19 @@
           localStorage.setItem('kol-theme-v', '3')
         }
         var t = localStorage.getItem('kol-theme')
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+        var v = localStorage.getItem('kolbox-theme-variant')
+        var kolbox = false
+        try { kolbox = JSON.parse(localStorage.getItem('kol-editor-settings') || '{}').style === 'kolbox' } catch (e) {}
+        if (kolbox) {
+          // the kolbox style boots as apps/kolbox does (R1): the variant its Settings › Theme row picked, kolbox when
+          // none (and for the retired mono), and dark unless a theme was chosen
+          document.documentElement.dataset.themeVariant = !v || v === 'mono' ? 'kolbox' : v
+          if (t !== 'system') document.documentElement.dataset.theme = t === 'light' ? 'light' : 'dark'
+        } else {
+          if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t
+          // the theme variant the kolbox style's Settings › Theme row picks (C3); unset, none, as before
+          if (v) document.documentElement.dataset.themeVariant = v
+        }
       } catch (e) {}
     </script>
   </head>

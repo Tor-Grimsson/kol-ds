@@ -20,8 +20,9 @@ export { default as AppFloatNav, APP_FLOAT_NAV_VARIANTS } from './AppFloatNav.js
 export { default as Timecode } from './Timecode.jsx'
 // THE FLOAT CHROME (float-everything W5 · W9, 2026-11-04 — the gap map's rows 63–81 and 129–144): the editor's and the
 // workspace's chrome on the float tokens, every boxed part on its `surface`. Composed from kol-component's float controls.
-export { default as ToolRail } from './ToolRail.jsx'
+export { default as ToolRail, ToolRailSlot } from './ToolRail.jsx'
 export { default as PropertyRail } from './PropertyRail.jsx'
+export { RailFloat, RailHeader, FloatModule, FloatModuleHeader } from '@kolkrabbi/kol-component' // the float Rail shell and its header live in kol-component (NavRail float draws on it)
 export { default as DocumentCapsule } from './DocumentCapsule.jsx'
 export { default as GlobalActions } from './GlobalActions.jsx'
 export { ZoomReadout, SceneBreadcrumb, CanvasHint, SelectionMeasure } from './CanvasReadouts.jsx'
@@ -29,6 +30,8 @@ export { default as TopControlsBar, PanelsRestore } from './TopControlsBar.jsx'
 export { default as ReaderBar, ProgressDock } from './ReaderBar.jsx'
 export { default as RailTrigger } from './RailTrigger.jsx'
 export { default as FloatActionMenu } from './FloatActionMenu.jsx'
+/* the float menu card and its rows live in kol-component since 2026-11-12 (ButtonSplit's float menu is the same one) */
+export { MenuFloat, MenuFloatRows } from '@kolkrabbi/kol-component'
 // the app's menu bar inside the browser, menus as data (plan-2026-11-05-float-editor W1.1)
 export { default as MenuBar } from './MenuBar.jsx'
 export { default as RailFlyout } from './RailFlyout.jsx'

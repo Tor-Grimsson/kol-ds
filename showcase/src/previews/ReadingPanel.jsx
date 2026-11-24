@@ -20,7 +20,7 @@ export default function ReadingPanelPreview() {
   const [s, setS] = useState({ theme: 'night', font: 'literata', size: 22, leading: '1.6', width: '760', flow: 'scroll' })
   const set = (k) => (v) => setS((o) => ({ ...o, [k]: v }))
   return (
-    <ReadingPanel tab={tab} onTab={setTab} onFold={() => {}}>
+    <ReadingPanel tab={tab} onTab={setTab} onCollapseV={() => {}}>
       {tab === 'notes' ? (
         <ReadingNotes quote="Attention is not always a matter of looking harder. Sometimes it is simply a willingness to remain."
           location="Third interlude · Page 125" note={note} onNoteChange={setNote} status="All changes saved"

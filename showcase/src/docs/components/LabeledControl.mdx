@@ -4,7 +4,7 @@ export const meta = {
   title: "LabeledControl",
   type: "reference",
   status: "active",
-  updated: "2026-07-30",
+  updated: "2026-11-12",
   tags: [
     "domain/components",
     "domain/components/molecules",
@@ -37,8 +37,10 @@ import { LabeledControl } from '@kolkrabbi/kol-component'
 
 ## Behavior
 
-The generic label + control slot: label on top by default, `inline` for
-label-left / control-right (label fixed-width, control flex-1). Compose any
+The generic label + control slot: label on top by default, `horizontal` for
+label-left / control-right (label fixed-width, control flex-1). `inline` is the
+deprecated name of `horizontal` and renders the same. The label takes any node,
+text or an icon with text. Compose any
 control as children — a Slider, an Input, a Dropdown. `hint` appends a
 secondary lower-weight readout after the label — useful for current-value
 displays like `Columns · 4`.
@@ -46,9 +48,10 @@ displays like `Columns · 4`.
 ## Props
 
 <Api name="LabeledControl" rows={[
-  {"prop":"label","type":"string","def":"—","desc":"Control label."},
+  {"prop":"label","type":"ReactNode","def":"—","desc":"Control label: text, or an icon with text."},
   {"prop":"hint","type":"string","def":"—","desc":"Secondary hint text."},
-  {"prop":"inline","type":"boolean","def":"false","desc":"Lay out label + control on one row."},
-  {"prop":"labelWidth","type":"number","def":"48","desc":"Label column width (inline)."},
+  {"prop":"horizontal","type":"boolean","def":"false","desc":"The label beside the control; false, the label above it."},
+  {"prop":"inline","type":"boolean","def":"—","desc":"Deprecated 2026-11-12: the old name of horizontal."},
+  {"prop":"labelWidth","type":"number","def":"48","desc":"Label column width (horizontal)."},
   {"prop":"children","type":"ReactNode","def":"—","desc":"The wrapped control."}
 ]} />

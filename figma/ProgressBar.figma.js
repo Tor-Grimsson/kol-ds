@@ -4,12 +4,11 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const tone = instance.getEnum('tone', { "default": "default", "success": "success" })
+const float = instance.getEnum('float', { "false": false, "true": true })
+const tone = instance.getEnum('tone', { "default": "default", "success": "success", "warning": "warning", "error": "error", "info": "info" })
 
 export default {
-  example: tone === 'default'
-    ? figma.code`<ProgressBar value={64} caption />`
-    : figma.code`<ProgressBar value={64} caption tone="success" />`,
+  example: figma.code`<ProgressBar value={64} caption${float ? ' variant="float"' : ''}${tone === 'default' ? '' : ` tone="${tone}"`} />`,
   imports: ["import { ProgressBar } from \"@kolkrabbi/kol-component\""],
   id: 'ProgressBar',
 }

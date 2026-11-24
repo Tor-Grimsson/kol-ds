@@ -4,10 +4,8 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const surface = instance.getEnum('surface', { "solid": "solid", "glass-dark": "glass-dark", "glass-light": "glass-light" })
-const sf = surface !== 'solid' ? ` surface="${surface}"` : ''
 export default {
-  example: figma.code`<RailTrigger title="Studio" items={nav} currentPath={path} onNavigate={navigate} breadcrumb={['Dashboard', 'Tasks']}${sf} />`,
+  example: figma.code`<RailTrigger title="Studio" items={nav} currentPath={path} onNavigate={navigate} breadcrumb={['Dashboard', 'Tasks']} />`,
   imports: ["import { RailTrigger } from \"@kolkrabbi/kol-shell\""],
   id: 'RailTrigger',
 }

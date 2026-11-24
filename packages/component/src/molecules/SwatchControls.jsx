@@ -68,6 +68,11 @@ function PaintChip({ id, label, color, slot, onSwap }) {
  * @param {'fill'|'stroke'} activePaint  which chip paints on top. Default 'fill'
  * @param {Function} onSwap       () => void — either chip or the swap arrow
  * @param {Function} onClear      () => void — the "set to none" marker
+ * @param {'default'|'kolbox'} variant  `kolbox` (kolbox's SwatchStack, plan-2026-11-18-kolbox-system W31.2, 2026-11-18,
+ *   carried class for class): the stack scaled into the 32 dock cell, 16 chips at 4 / 4 and 12 / 11, each with a halo of
+ *   the ground then the oq-24 line; the swap arrow (your icons' `swap`, 12) top right in oq-64, the ink on hover; the
+ *   none marker an 8 disc of the ink with the error slash. Chrome in kol-theme `.kol-swatch-stack--kolbox`.
+ * @param {string}   className    kolbox: extra classes on the stack
  */
 export function SwatchStack({
   fillColor = '#FFFFFF',
@@ -75,7 +80,30 @@ export function SwatchStack({
   activePaint = 'fill',
   onSwap,
   onClear,
+  variant = 'default',
+  className = '',
 }) {
+  if (variant === 'kolbox') {
+    const chip = (key, label, pos) => (
+      <button key={key} type="button" aria-label={label} onClick={onSwap} data-paint={label}
+        className={`kol-swatch-stack-chip absolute size-4 rounded-full outline-none focus-visible:outline-solid focus-visible:outline-1 ${pos}`}
+        style={{ background: key === 'fill' ? fillColor : strokeColor }} />
+    )
+    const fill = chip('fill', 'Fill color', 'top-1 left-1')
+    const stroke = chip('stroke', 'Stroke color', 'top-3 left-[11px]')
+    return (
+      <div className={`kol-swatch-stack--kolbox relative size-8 shrink-0 ${className}`.trim()} data-swatch-stack={activePaint}>
+        {activePaint === 'fill' ? [stroke, fill] : [fill, stroke]}
+        <button type="button" aria-label="Swap colors" onClick={onSwap}
+          className="kol-swatch-stack-swap absolute top-0 right-0 inline-flex outline-none focus-visible:outline-solid focus-visible:outline-1">
+          <IconLoader name="swap" size={12} className="kol-kolbox-icon shrink-0" />
+        </button>
+        <button type="button" aria-label="Clear color" onClick={onClear}
+          className="kol-swatch-stack-none absolute bottom-0 left-0 size-2 overflow-hidden rounded-full" />
+      </div>
+    )
+  }
+
   const fill   = <PaintChip key="fill"   id="fill"   label="Fill color"   color={fillColor}   slot={FILL_SLOT}   onSwap={onSwap} />
   const stroke = <PaintChip key="stroke" id="stroke" label="Stroke color" color={strokeColor} slot={STROKE_SLOT} onSwap={onSwap} />
 

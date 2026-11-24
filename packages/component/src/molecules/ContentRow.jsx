@@ -93,7 +93,7 @@ const BOX = {
    * (136 thumb + 2×16 pad), so this is a change of KIND, not of value; the
    * text has 136 to live in and the tags line goes single-row below md
    * (ContentText's showcase ramp) so the cut lands on the chips, not mid-row. */
-  showcase: { thumb: 'fill', ratio: '1 / 1', pad: S4, gap: S4, frame: 'transparent', frameHover: 'var(--kol-fg-08)', bg: 'var(--kol-surface-secondary)', minH: 168, heightSm: 168, align: 'items-stretch', thumbRadius: 'var(--kol-radius-xs)', thumbBorder: false },
+  showcase: { thumb: 'fill', ratio: '1 / 1', pad: S4, gap: S4, frame: 'transparent', frameHover: 'var(--kol-fg-08)', bg: 'var(--kol-surface-secondary)', minH: 168, heightSm: 168, align: 'items-stretch', thumbRadius: 'var(--kol-radius-2)', thumbBorder: false },
   /* ROSTER — a PICKABLE row (ContentRowRosterVariant, kol-chess 2026-08-31):
    * filled tile, no border, no divider, fixed height, square thumb, two
    * truncated lines that FILL the row rather than setting it.
@@ -334,7 +334,7 @@ export default function ContentRow({
             radius={!box.clip}
             border={box.thumbBorder ?? false}
             bg={box.thumbBg}
-            className={box.thumbRadius ? 'rounded-[var(--kol-radius-xs)]' : ''}
+            className={box.thumbRadius ? 'rounded-[var(--kol-radius-2)]' : ''}
           >
             {media}
           </ContentMedia>
@@ -380,7 +380,7 @@ export default function ContentRow({
   )
 
   const common = {
-    className: `kol-row group flex ${toneClass(tone)} ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-sm)] border' : ''} ${box.clip ? 'overflow-hidden rounded-[var(--kol-radius-sm)]' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
+    className: `kol-row group flex ${toneClass(tone)} ${box.column ? 'flex-col' : ''} ${box.align} ${box.height != null ? 'kol-row--fixed' : ''} ${box.heightSm != null ? 'kol-row--fixed-sm' : ''} ${box.divider ? 'kol-row--divided' : ''} ${box.frame ? 'rounded-[var(--kol-radius-4)] border' : ''} ${box.clip ? 'overflow-hidden rounded-[var(--kol-radius-4)]' : ''} ${interactive ? 'cursor-pointer select-none' : ''} ${interactive && hover ? 'kol-content-hover' : ''} ${interactive && box.frameHover ? 'kol-content-hover-frame' : ''} ${className}`.trim(),
     style: vars,
   }
 

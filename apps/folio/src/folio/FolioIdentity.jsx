@@ -1,5 +1,6 @@
 /* Folio — A visual identity (Figma 228:12991) */
-import { FolioFrame, Mark, Action, Jacket, ContinueCard, BOOKS, IN_PROGRESS, LABEL } from './parts'
+import { Button } from '@kolkrabbi/kol-component'
+import { FolioFrame, Mark, Jacket, ContinueCard, BOOKS, IN_PROGRESS, LABEL } from './parts'
 import mark64 from './assets/mark-64.svg'
 import fieldPoster from './assets/field-poster.svg'
 import spineBlue from './assets/spine-blue.svg'
@@ -136,8 +137,8 @@ function InUse() {
           </div>
           <ContinueCard {...IN_PROGRESS[0]} className="w-full" />
           <div className="flex gap-[12px]">
-            <Action glyph="+" primary>Add a book</Action>
-            <Action glyph="⌄">All collections</Action>
+            <Button variant="folio" size="lg" tone="primary" glyph="+">Add a book</Button>
+            <Button variant="folio" size="lg" glyph="⌄">All collections</Button>
           </div>
           <p className={SPEC}>LIBRARY FRAGMENT, measured type, color and control recipes from the UI</p>
         </div>

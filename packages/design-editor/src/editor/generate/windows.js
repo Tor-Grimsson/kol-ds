@@ -13,9 +13,10 @@
  *
  * A section is `{ key, label, state(params), groups: [{ title?, note?, kind?: 'grid'|'ramps'|'more', controls }] }`.
  */
-import { paramsFor, presetsOf, styleById } from '../../generate/index.js'
+import { paramsFor, presetsOf, schemaFor, styleById } from '../../generate/index.js'
 import { REPEAT_DEFAULTS } from '../../generate/repeat.js'
-import { RAMPS } from '../../generate/styles/ascii.js'
+import { RAMPS, ASCII_FONTS, asciiFamily } from '../../generate/styles/ascii.js'
+import { letterFamily, OUTLINE_FAMILY_OPTIONS, FIELD_SCHEMA, MASK_SCHEMA, WARP_SCHEMA } from '../../generate/field.js'
 
 const opts = (...xs) => xs.map((x) => (typeof x === 'string' ? { value: x.toLowerCase(), label: x } : x))
 const c = (type) => (name, a = {}, b = {}) => ({ type, name, id: (b.id ?? a.id ?? name).toLowerCase().replace(/[^a-z0-9]+/g, '-'), ...a, ...b })
@@ -34,6 +35,13 @@ export const CURVES = opts('Linear', 'Ease', 'In', 'Out', 'Hump', 'Dip', 'Wave',
 /* Radial array's engine has its own curve set */
 const RADIAL_CURVES = opts('Linear', 'Ease', 'In', 'Out', 'Hump', { value: 'alt', label: 'Alternate' })
 const ramp = (name, min, max, o = {}) => c('ramp')(name, { min, max, def: o.def ?? { a: min, b: max, curve: 'linear' } }, o)
+
+/* ONLY WHAT IS READ (plan-2026-11-18-kolbox-system W23.9, 2026-11-18): a control or group carries `when(params)`, the
+ * engine's own rule for when its param changes the picture (the schema rows' `when`, read here by key, never retyped);
+ * the window shows it only then. */
+const SCHEMA_ROWS = [...FIELD_SCHEMA, ...MASK_SCHEMA, ...WARP_SCHEMA]
+const reads = (key) => SCHEMA_ROWS.find((r) => r.key === key)?.when
+const kindIs = (key, ...kinds) => (p) => kinds.includes(p[key] ?? 'none')
 
 const pct = (v) => `${Math.round(v * 100)}%`
 const fixed = (n) => (v) => Number(v).toFixed(n)
@@ -66,6 +74,7 @@ export const STYLES = [
   { value: 'stripe array', label: 'Stripe Array' }, { value: 'radial array', label: 'Radial Array' }, { value: 'tiling', label: 'Tiling' },
   { value: 'stipple', label: 'Stipple / Mosaic' },
 ]
+
 export const FIELD_TYPES = opts('Linear', 'Radial', 'Conic', 'Diamond', 'Ellipse', 'Blob', 'Lights', 'Sine', 'Ridge', 'Waves', 'Noise', 'Ribbon', 'Image')
 
 /* the lights list ↔ fLightN + fL{i}x · y · r · i (the engine holds up to 8) */
@@ -81,22 +90,22 @@ const FIELD = {
   groups: [
     { title: 'Source', note: 'The gradient the style reads', controls: [
       select('Type', FIELD_TYPES, { def: 'radial', bind: k('fKind') }),
-      point('Centre', -0.5, 1.5, { bind: kk('fX', 'fY') }), slider('Radius X', 0.02, 2, { def: 0.6, bind: k('fRx') }), slider('Radius Y', 0.02, 2, { def: 0.6, bind: k('fRy') }),
-      slider('Angle', -180, 180, { def: 0, format: deg, id: 'field-angle', bind: k('fAngle') }),
-      slider('Frequency X', 0.1, 24, { def: 4, step: 0.1, bind: k('fFreq') }), slider('Frequency Y', 0.1, 24, { def: 4, step: 0.1, bind: k('fFreq2') }),
-      slider('Phase', -180, 180, { def: 0, format: deg, bind: k('fPhase') }), slider('Bend', -2, 2, { def: 0, bind: k('fBend') }),
-      slider('Span', 0.2, 6, { def: 1, step: 0.1, bind: k('fSpan') }),
-      slider('Offset', -1, 1, { def: 0, id: 'field-offset', bind: k('fOffset') }), slider('Seed', 1, 99, { def: 7, id: 'field-seed', bind: k('fSeed') }),
+      point('Centre', -0.5, 1.5, { bind: kk('fX', 'fY'), when: reads('fX') }), slider('Radius X', 0.02, 2, { def: 0.6, bind: k('fRx'), when: reads('fRx') }), slider('Radius Y', 0.02, 2, { def: 0.6, bind: k('fRy'), when: reads('fRy') }),
+      slider('Angle', -180, 180, { def: 0, format: deg, id: 'field-angle', bind: k('fAngle'), when: reads('fAngle') }),
+      slider('Frequency X', 0.1, 24, { def: 4, step: 0.1, bind: k('fFreq'), when: reads('fFreq') }), slider('Frequency Y', 0.1, 24, { def: 4, step: 0.1, bind: k('fFreq2'), when: reads('fFreq2') }),
+      slider('Phase', -180, 180, { def: 0, format: deg, bind: k('fPhase'), when: reads('fPhase') }), slider('Bend', -2, 2, { def: 0, bind: k('fBend'), when: reads('fBend') }),
+      slider('Span', 0.2, 6, { def: 1, step: 0.1, bind: k('fSpan'), when: reads('fSpan') }),
+      slider('Offset', -1, 1, { def: 0, id: 'field-offset', bind: k('fOffset'), when: reads('fOffset') }), slider('Seed', 1, 99, { def: 7, id: 'field-seed', bind: k('fSeed'), when: reads('fSeed') }),
     ] },
-    { title: 'Lights', note: 'Points of light', controls: [lights('Lights', { bind: LIGHTS })] },
-    { title: 'Image', note: 'A photo layer as the field', controls: [
+    { title: 'Lights', note: 'Points of light', when: kindIs('fKind', 'lights'), controls: [lights('Lights', { bind: LIGHTS })] },
+    { title: 'Image', note: 'A photo layer as the field', when: kindIs('fKind', 'image'), controls: [
       picker('Photo layer', { bind: k('fImgLayer', (v) => v || null), kinds: ['photo'] }),
       range('Levels', 0, 1, { def: [0, 1], format: fixed(2), bind: { get: (p) => [p.fLo ?? 0, p.fHi ?? 1], set: (v) => ({ fLo: v[0], fHi: v[1] }) } }),
     ] },
     { kind: 'more', title: 'Second source', note: 'Combined with the first', controls: [
       select('Type', ['None', ...FIELD_TYPES], { id: 'second-type', def: 'none', bind: k('gKind') }),
-      select('Combine', ['Max', 'Min', 'Add', 'Multiply', 'Screen', 'Difference'], { bind: kmap('fOp', [['difference', 'diff']]) }),
-      slider('Weight', 0, 1, { def: 0.5, format: pct, bind: { get: (p) => p.gWeight ?? 1, set: (v) => ({ gWeight: v }) } }),
+      select('Combine', ['Max', 'Min', 'Add', 'Multiply', 'Screen', 'Difference'], { bind: kmap('fOp', [['difference', 'diff']]), when: reads('fOp') }),
+      slider('Weight', 0, 1, { def: 0.5, format: pct, bind: { get: (p) => p.gWeight ?? 1, set: (v) => ({ gWeight: v }) }, when: reads('fOp') }),
     ] },
   ],
 }
@@ -113,25 +122,24 @@ const RAMP = {
   ],
 }
 
-/* his seven widths ↔ the engine's Right Grotesk cuts; his seven weights ↔ the cut's weights (Fine and Thin both the thinnest) */
-const CUTS = [['compressed', 'Tight'], ['condensed', 'Compact'], ['narrow', 'Narrow'], ['normal', 'base'], ['wide', 'Wide'], ['extended', 'Spatial'], ['expanded', 'Tall']]
-const WEIGHTS = [['fine', 100], ['thin', 100], ['light', 300], ['regular', 400], ['medium', 500], ['bold', 700], ['black', 900]]
+/* the letter's font (variable fonts since 2026-11-18): an outline family and a weight on its axis. A layer stored on the
+ * old width cuts (`mCut`) has no `mFamily` and reads as Inter at its weight (generate/field.js, letterFamily) */
+const LETTER_FAMILIES = OUTLINE_FAMILY_OPTIONS
 const MASK = {
   key: 'mask', label: 'Mask', state: (p) => (MASK_SHAPES.find((s) => s.value === (p.mKind === 'layer' ? 'linked' : p.mKind))?.label ?? 'None'),
   groups: [
     { title: 'Shape', note: 'Where the style draws', controls: [
-      select('Shape', MASK_SHAPES_LIST(), { def: 'none', bind: kmap('mKind', [['linked', 'layer']]) }), slider('Size', 0.2, 1.5, { def: 1, bind: k('mSize') }),
-      point('Rect position', 0, 1, { bind: kk('mX', 'mY') }), point('Rect size', 0, 1, { def: [1, 1], bind: kk('mW', 'mH') }),
-      slider('Waist', 0, 0.5, { def: 0.2, bind: k('mWaist') }),
+      select('Shape', MASK_SHAPES_LIST(), { def: 'none', bind: kmap('mKind', [['linked', 'layer']]) }), slider('Size', 0.2, 1.5, { def: 1, bind: k('mSize'), when: reads('mSize') }),
+      point('Rect position', 0, 1, { bind: kk('mX', 'mY'), when: reads('mX') }), point('Rect size', 0, 1, { def: [1, 1], bind: kk('mW', 'mH'), when: reads('mW') }),
+      slider('Waist', 0, 0.5, { def: 0.2, bind: k('mWaist'), when: reads('mWaist') }),
     ] },
-    { title: 'Letter', note: 'One character as the mask', controls: [
+    { title: 'Letter', note: 'One character as the mask', when: reads('mChar'), controls: [
       text('Letter', { def: 'A', bind: k('mChar', (v) => [...String(v ?? '')].slice(-1).join('') || 'A') }),
-      select('Cut', ['Compressed', 'Condensed', 'Narrow', 'Normal', 'Wide', 'Extended', 'Expanded'], { def: 'normal', bind: kmap('mCut', CUTS) }),
-      select('Weight', ['Fine', 'Thin', 'Light', 'Regular', 'Medium', 'Bold', 'Black'], { def: 'regular', id: 'letter-weight',
-        bind: { get: (p) => (p.mWeight === undefined ? undefined : (WEIGHTS.find(([, w]) => w === Number(p.mWeight)) ?? ['bold'])[0]), set: (v) => ({ mWeight: (WEIGHTS.find(([a]) => a === v) ?? [0, 700])[1] }) } }),
+      select('Font', LETTER_FAMILIES, { def: 'inter', id: 'letter-font', bind: { get: (p) => letterFamily(p), set: (v) => ({ mFamily: v }) } }),
+      slider('Weight', 100, 900, { def: 700, step: 1, id: 'letter-weight', bind: k('mWeight') }),
       slider('Fit', 0.2, 1.2, { def: 0.8, format: pct, bind: k('mFit') }),
     ] },
-    { title: 'Linked layer', controls: [picker('Linked layer', { bind: k('mLayer', (v) => v || null), kinds: ['shape', 'path', 'misc'] }), button('Letter…', { id: 'open-type-window', act: 'open-type' })] },
+    { title: 'Linked layer', when: kindIs('mKind', 'layer'), controls: [picker('Linked layer', { bind: k('mLayer', (v) => v || null), kinds: ['shape', 'path', 'misc'] }), button('Letter…', { id: 'open-type-window', act: 'open-type' })] },
   ],
 }
 function MASK_SHAPES_LIST() { return ['None', 'Rect', 'Ellipse', 'Circle', 'Hourglass', 'Diamond', 'Octagon', 'Arch', 'Letter', { value: 'linked', label: 'Linked layer' }] }
@@ -142,10 +150,10 @@ const WARP = {
   key: 'warp', label: 'Warp', state: (p) => (!p.wKind || p.wKind === 'none' ? 'Off' : WARP_KINDS.find((x) => x.value === p.wKind)?.label ?? p.wKind),
   groups: [
     { title: 'Warp', note: 'Bends the grid or the field', controls: [
-      select('Kind', ['None', 'Pinch', 'Bulge', 'Wave', 'Swirl', 'Noise', 'Flow'], { def: 'none', bind: k('wKind') }), seg('Bends', ['Grid', 'Field'], { bind: k('wTarget') }),
-      toggle('Pin edges', { bind: k('wPin') }), slider('Amount', -1, 1, { def: 0.2, id: 'warp-amount', bind: k('wAmt') }),
-      slider('Frequency', 0.2, 8, { def: 1, id: 'warp-frequency', step: 0.05, bind: k('wFreq') }),
-      point('Centre', 0, 1, { id: 'warp-centre', bind: { get: (p) => [p.wX ?? 0.5, p.wY ?? 0.5], set: (v) => ({ wX: v[0], wY: v[1] }) } }),
+      select('Kind', ['None', 'Pinch', 'Bulge', 'Wave', 'Swirl', 'Noise', 'Flow'], { def: 'none', bind: k('wKind') }), seg('Bends', ['Grid', 'Field'], { bind: k('wTarget'), when: reads('wTarget') }),
+      toggle('Pin edges', { bind: k('wPin'), when: reads('wPin') }), slider('Amount', -1, 1, { def: 0.2, id: 'warp-amount', bind: k('wAmt'), when: reads('wAmt') }),
+      slider('Frequency', 0.2, 8, { def: 1, id: 'warp-frequency', step: 0.05, bind: k('wFreq'), when: (p) => reads('wFreq')(p) && p.wKind !== 'pinch' }),
+      point('Centre', 0, 1, { id: 'warp-centre', when: reads('wX'), bind: { get: (p) => [p.wX ?? 0.5, p.wY ?? 0.5], set: (v) => ({ wX: v[0], wY: v[1] }) } }),
     ] },
   ],
 }
@@ -155,7 +163,7 @@ const RANDOMNESS = {
   groups: [
     { title: 'Randomness', note: 'Per mark', controls: [
       slider('Jitter position', 0, 40, { def: 0, step: 0.5, format: px, bind: k('jPos') }), slider('Jitter size', 0, 1, { def: 0, format: pct, bind: k('jSize') }),
-      slider('Drop-out', 0, 1, { def: 0, format: pct, bind: k('jDrop') }), slider('Seed', 1, 99, { def: 1, id: 'random-seed', bind: k('jSeed') }),
+      slider('Drop-out', 0, 1, { def: 0, format: pct, bind: k('jDrop') }), slider('Seed', 1, 99, { def: 1, id: 'random-seed', bind: k('jSeed'), when: (p) => !!(p.jPos || p.jSize || p.jDrop) }),
     ] },
   ],
 }
@@ -166,7 +174,9 @@ const FRAME_SECTION = {
     { title: 'Frame', note: 'Inset and paint', controls: [
       slider('Inset', 0, 400, { def: 0, format: px, bind: k('inset') }),
       color('Ink', { def: '#FFFFFF', bind: k('color') }),
-      color('Ground', { def: '#000000', bind: k('bg', (v) => (v ? v : null), (v) => v ?? '') }),
+      color('Ground', { def: '', bind: { get: (p) => p.bg ?? '', set: (v) => ({ bg: v || null }) } }),
+      select('Fit', [{ value: 'fit', label: 'Fit' }, { value: 'fill', label: 'Fill' }, { value: 'actual', label: 'Actual size' }],
+        { def: 'fit', bind: { get: (p) => p.genFit ?? 'actual', set: (v) => ({ genFit: v }) } }),
     ] },
   ],
 }
@@ -217,9 +227,10 @@ const STYLE_SECTIONS = {
     { title: 'Cells', note: 'A glyph per cell', controls: [
       slider('Cell size', 4, 64, { def: 12, format: px, bind: k('cols', (v) => Math.max(4, Math.min(240, Math.round(BASE_W / v))), (n) => Math.round(BASE_W / Math.max(1, n))) }),
       slider('Cell aspect', 0.3, 2, { def: 0.6, bind: k('cell', (v) => Math.max(0.5, Math.min(3, 1 / v)), (h) => 1 / h) }),
-      select('Font', [{ value: 'grotesk', label: 'Right Grotesk cut' }, 'Mono', 'Pixel'], { bind: kmap('font', [['grotesk', 'rg-base-900'], ['pixel', 'pixel']]),
-        /* the engine draws a registered opentype cut or its pixel font — it has no mono, so Mono draws the pixel font */
+      select('Font', [...ASCII_FONTS.filter((f) => f.value !== 'pixel'), 'Mono', 'Pixel'], { bind: { get: (p) => (p.font === undefined ? undefined : asciiFamily(p)), set: (v) => ({ font: v }) },
+        /* the engine draws a registered outline family or its pixel font — it has no mono, so Mono draws the pixel font */
       }),
+      slider('Weight', 100, 900, { def: 900, step: 1, id: 'font-weight', bind: k('fontWeight') }),
       slider('Glyph scale', 0.2, 2, { def: 1, bind: k('scale') }),
     ] },
     { title: 'Ramp', note: 'Dark to light', controls: [
@@ -244,8 +255,8 @@ const STYLE_SECTIONS = {
     ] },
     { kind: 'more', title: 'More geometry', note: 'Waves, dash & offsets', controls: [
       ramp('Wave height', 0, 0.3, { def: { a: 0, b: 0, curve: 'linear' }, bind: kr('a') }),
-      ramp('Wave phase', -1, 1, { def: { a: 0, b: 0, curve: 'linear' }, bind: kr('ph') }), ramp('Bend', -0.6, 0.6, { def: { a: 0, b: 0, curve: 'linear' }, id: 'stripe-bend', bind: kr('b') }),
-      slider('Waves', 0, 12, { def: 3, step: 0.1, bind: k('freq') }), slider('Dash', 0, 1, { def: 0, format: (v) => (v ? pct(v) : 'Off'), bind: k('dash') }),
+      ramp('Wave phase', -1, 1, { def: { a: 0, b: 0, curve: 'linear' }, bind: kr('ph'), when: (p) => !!(p.aA || p.aB) }), ramp('Bend', -0.6, 0.6, { def: { a: 0, b: 0, curve: 'linear' }, id: 'stripe-bend', bind: kr('b') }),
+      slider('Waves', 0, 12, { def: 3, step: 0.1, bind: k('freq'), when: (p) => !!(p.aA || p.aB) }), slider('Dash', 0, 1, { def: 0, format: (v) => (v ? pct(v) : 'Off'), bind: k('dash') }),
       slider('Dash gap', 0, 1, { def: 0.05, format: pct, bind: k('gap') }),
       slider('Link hairline', 0, 8, { def: 0, step: 0.1, format: px, bind: k('link') }),
       slider('Offset', -1, 1, { def: 0, id: 'stripe-offset', bind: k('offset') }),
@@ -257,6 +268,9 @@ const STYLE_SECTIONS = {
       point('Centre', -2, 3, { id: 'radial-centre', bind: kk('cx', 'cy') }),
       slider('Start', -180, 180, { def: -90, format: deg, id: 'radial-start', bind: k('start') }), slider('Span', 1, 360, { def: 360, format: deg, id: 'radial-span', bind: k('span') }),
       seg('Ray shape', ['Bar', 'Wedge', 'Spike'], { bind: k('shape') }),
+      /* W23.9: the engine's Width by field, which the window had no control for; on, Field, Ramp and Mask are read */
+      toggle('Width by field', { bind: k('byField'), when: (p) => p.mode !== 'rings' }),
+      slider('Ray sample', 1, 40, { def: 4, step: 0.5, format: px, bind: k('raySample'), when: (p) => p.mode !== 'rings' && !!p.byField }),
     ] },
     { kind: 'ramps', title: 'Shape ramps', note: 'Interpolate from A to B', controls: [
       ramp('Inner radius', 0, 4, { def: { a: 0.2, b: 0.2, curve: 'linear' }, bind: kr('r0'), curves: RADIAL_CURVES }),
@@ -300,10 +314,20 @@ export const GENERATE = {
     text('Description', { def: ABOUT.stripeArray, bind: { get: (p) => ABOUT[p.genStyle] ?? styleById(p.genStyle).about, set: () => ({}) } }),
     button('Expand', { act: 'expand' }),
   ],
-  sections: (p) => [FIELD, RAMP, { key: 'style', ...STYLE_SECTIONS[windowStyle(p.genStyle)] }, MASK, WARP, RANDOMNESS, FRAME_SECTION],
-  allSections: () => [FIELD, RAMP, ...Object.entries(STYLE_SECTIONS).map(([key, s]) => ({ key: `style:${key}`, ...s })), MASK, WARP, RANDOMNESS, FRAME_SECTION],
+  /* W23.9: only the steps the style reads, from the engine's own flags: an unsampled style (Stripe Array, Tiling) reads
+     no Field, Ramp, Mask or Warp; `warp: false` (Line Screen, Radial Array) no Warp; Radial Array reads the field and
+     the mask only with Width by field on */
+  sections: (p) => {
+    const s = styleById(p.genStyle)
+    const field = readsField(p)
+    return [...(field ? [FIELD, RAMP] : []), { key: 'style', ...STYLE_SECTIONS[windowStyle(p.genStyle)] },
+      ...(field ? [MASK] : []), ...(field && s.warp !== false ? [WARP] : []), RANDOMNESS, FRAME_SECTION]
+  },
+  allSections: () => [FIELD, RAMP, ...Object.entries(STYLE_SECTIONS).map(([key, s]) => ({ key: `style:${key}`, ...s })),
+    MASK, WARP, RANDOMNESS, FRAME_SECTION],
   /* the field map strip under the preview — the field type drawn as a CSS gradient */
   fieldMap: (p) => {
+    if (!readsField(p)) return null /* a style that reads no field has no field map (W23.9) */
     const cx = p.fX ?? 0.5, cy = p.fY ?? 0.5
     const type = p.fKind
     const stops = 'var(--kol-oq-16), var(--kol-fg-96), var(--kol-oq-16)'
@@ -313,6 +337,59 @@ export const GENERATE = {
       : `linear-gradient(90deg, var(--kol-oq-16) 0%, var(--kol-fg-96) ${cx * 100}%, var(--kol-oq-16) 100%)`
     return { background, left: FIELD_TYPES.find((t) => t.value === type)?.label, right: `Centre ${Number(cx).toFixed(2)} / ${Number(cy).toFixed(2)}` }
   },
+}
+
+/* the style reads the field (and so the ramp and the mask): sampled, and Radial Array only with Width by field */
+function readsField(p) { const s = styleById(p.genStyle); return !!s.sampled && (p.genStyle !== 'radialArray' || !!p.byField) }
+
+/* ── FAMILIES (W23.0): one window frame, a window per family, each listing only its own styles (window values) ── */
+export const FAMILIES = [
+  { id: 'screens', label: 'Screens', styles: ['line screen', 'dot screen', 'ascii', 'stipple'] },
+  { id: 'arrays', label: 'Arrays', styles: ['stripe array', 'radial array', 'tiling'] },
+]
+export const familyOf = (p) => FAMILIES.find((f) => f.styles.includes(windowStyle(p.genStyle))) ?? FAMILIES[1]
+export const familyStyles = (p) => { const f = familyOf(p); return STYLES.filter((x) => f.styles.includes(x.value)) }
+/* the style each family's window last showed, while the app is open; first, the family's first style */
+const LAST = new Map()
+export const rememberStyle = (p) => LAST.set(familyOf(p).id, windowStyle(p.genStyle))
+export const styleForFamily = (id) => LAST.get(id) ?? FAMILIES.find((f) => f.id === id)?.styles[0] ?? 'stripe array'
+export const paramsForFamily = (id) => pickStyle(engineStyle(styleForFamily(id)))
+
+/* ── SIMPLE FIRST (W23.7): per step, the controls shown with Advanced closed, by id; the rest fold under Advanced. A step
+ * with no list shows its first six visible controls; a closed `more` group is always under Advanced. */
+export const SIMPLE = {
+  /* the field's kinds show different controls; each kind's main ones (Lights, the Photo layer) are simple */
+  field: ['type', 'centre', 'radius-x', 'radius-y', 'field-angle', 'frequency-x', 'lights', 'photo-layer', 'levels'],
+  'style:stripe array': ['direction', 'count', 'angle', 'width', 'gap', 'end'],
+  'style:radial array': ['draw', 'radial-count', 'ray-shape', 'outer-radius', 'radial-width', 'width-by-field'],
+  'style:ascii': ['cell-size', 'font', 'glyph-scale', 'ramp-presets', 'ramp-text', 'reverse-ramp'],
+  'style:tiling': ['layout', 'tile-columns', 'tile-rows', 'tile-gap', 'fill-a', 'fill-b'],
+  'style:line screen': ['orientation', 'line-count', 'fill', 'hairline', 'edge', 'round-ends'],
+}
+export const SIMPLE_MAX = 6
+
+/* ── PRESETS (W23.8): six at least per style. The engine's own come first; where a style has fewer, these window
+ * presets fill it, each a patch over the style's defaults, named for what it looks like (decided for review) */
+const WF = { inset: 128, color: '#FFFFFF' }
+export const WINDOW_PRESETS = [
+  { id: 'w-stipple-dusk', style: 'stipple', label: 'Dusk', params: { ...WF, spacing: 6, dot: 0.4, fKind: 'linear', fAngle: 90, fSpan: 1.2 } },
+  { id: 'w-stipple-moon', style: 'stipple', label: 'Moon', params: { ...WF, spacing: 5, dot: 0.45, sizeBy: true, fKind: 'radial', fX: 0.42, fY: 0.4, fRx: 0.45, mKind: 'circle' } },
+  { id: 'w-stipple-dunes', style: 'stipple', label: 'Dunes', params: { ...WF, spacing: 7, dot: 0.35, fKind: 'sine', fAngle: 80, fFreq: 3, gamma: 0.7 } },
+  { id: 'w-stipple-smoke', style: 'stipple', label: 'Smoke', params: { ...WF, spacing: 5, dot: 0.3, fKind: 'noise', fFreq: 2.5, fFreq2: 3, fSeed: 11, fFrom: 0.3, fTo: 0.9 } },
+  { id: 'w-stipple-twin', style: 'stipple', label: 'Twin lights', params: { ...WF, spacing: 6, dot: 0.4, fKind: 'lights', fLightN: 2, fL1x: 0.32, fL1y: 0.38, fL1r: 0.28, fL1i: 1, fL2x: 0.7, fL2y: 0.64, fL2r: 0.24, fL2i: 1 } },
+  { id: 'w-mosaic-tiles', style: 'mosaic', label: 'Tiles', params: { ...WF, tile: 'square', cols: 24, gap: 0.12, min: 0.1, fKind: 'radial', fX: 0.5, fY: 0.5, fRx: 0.7 } },
+  { id: 'w-mosaic-comb', style: 'mosaic', label: 'Comb', params: { ...WF, tile: 'hex', cols: 18, gap: 0.16, min: 0.2, fKind: 'blob', fX: 0.5, fY: 0.5, fRx: 0.45, fRy: 0.5 } },
+  { id: 'w-mosaic-pixels', style: 'mosaic', label: 'Pixels', params: { ...WF, tile: 'square', cols: 60, gap: 0.04, min: 0, fKind: 'noise', fFreq: 2, fFreq2: 2, fSeed: 5 } },
+  { id: 'w-mosaic-ripple', style: 'mosaic', label: 'Ripple', params: { ...WF, tile: 'hex', cols: 40, gap: 0.08, min: 0.05, fKind: 'sine', fAngle: 0, fFreq: 4 } },
+  { id: 'w-mosaic-dawn', style: 'mosaic', label: 'Dawn', params: { ...WF, tile: 'square', cols: 32, gap: 0.1, min: 0.05, fKind: 'linear', fAngle: -90, fSpan: 1 } },
+  { id: 'w-tiling-weave', style: 'tiling', label: 'Weave', params: { ...WF, layout: 'checker', cols: 6, rows: 6, gap: 0.04, fillA: 'lines', fillB: 'hlines', alt: 'checker', tex: 8, texSize: 0.45 } },
+  { id: 'w-tiling-scatter', style: 'tiling', label: 'Scatter', params: { ...WF, layout: 'bricks', cols: 6, rows: 10, gap: 0.08, vary: 0.8, fillA: 'solid', fillB: 'dots', alt: 'random', tex: 10, texSize: 0.5, seed: 17 } },
+]
+export const presetList = (styleId) => [...presetsOf(styleId), ...WINDOW_PRESETS.filter((x) => x.style === styleId)]
+export const pickPreset = (styleId, presetId) => {
+  const w = WINDOW_PRESETS.find((x) => x.id === presetId)
+  if (!w) return pickStyle(styleId, presetId)
+  return { ...paramsFor(styleId, null), ...w.params, genStyle: styleId, genPreset: w.id, genLabel: w.label }
 }
 
 /* ── REPEAT ───────────────────────────────────────────────────────────────────────────────────────────────────────── */
@@ -395,3 +472,35 @@ const OWN = new Set(['preset'])
 export const disabledControls = (win) => controlsOf(win).filter((x) => !OWN.has(x.id) && !isLive(x)).map((x) => x.name)
 /* kept for the W7.5 hand-off script */
 export const fxrControls = disabledControls
+
+/* ── what a step shows (W23.9, W23.7) ── */
+/* a step with only what these params read: a group or control whose `when` says no is not shown; an empty group goes */
+/* a control with no rule of its own takes the engine's: the params it writes (its bind's patch) are rows in the style's
+   schema, and when every such row says it is not read now, the control is not shown (Waves without a wave height,
+   Shift odd columns outside Columns, Segment gap with one segment) */
+const SCHEMA = new Map()
+const schemaOf = (id) => { if (!SCHEMA.has(id)) { try { SCHEMA.set(id, schemaFor(id)) } catch { SCHEMA.set(id, []) } } return SCHEMA.get(id) }
+function engineReads(x, p) {
+  if (!p.genStyle || !x.bind) return true
+  let keys
+  try { keys = Object.keys(x.bind.set(x.def, p) ?? {}) } catch { return true }
+  const rows = schemaOf(p.genStyle).filter((r) => keys.includes(r.key))
+  return !rows.length || rows.some((r) => !r.when || r.when(p))
+}
+export const visibleGroups = (sec, p) => sec.groups
+  .filter((g) => !g.when || g.when(p))
+  .map((g) => ({ ...g, controls: g.controls.filter((x) => (x.when ? x.when(p) : engineReads(x, p))) }))
+  .filter((g) => g.controls.length > 0)
+/* the step split in two: what shows with Advanced closed, and the rest. `id` names the step for SIMPLE (the style step
+   is `style:<window style>`) */
+export function splitSection(sec, p, id = sec.key) {
+  const groups = visibleGroups(sec, p)
+  const list = SIMPLE[id]
+  const open = groups.filter((g) => g.kind !== 'more').flatMap((g) => g.controls)
+  const keep = new Set(list ? open.filter((x) => list.includes(x.id)).map((x) => x.id) : open.slice(0, SIMPLE_MAX).map((x) => x.id))
+  const part = (inSimple) => groups
+    .map((g) => ({ ...g, kind: g.kind === 'more' ? undefined : g.kind, controls: g.controls.filter((x) => g.kind !== 'more' && keep.has(x.id) === inSimple || (g.kind === 'more' && !inSimple)) }))
+    .filter((g) => g.controls.length > 0)
+  return { simple: part(true), advanced: part(false) }
+}
+export const stepId = (sec, p) => (sec.key === 'style' ? `style:${windowStyle(p.genStyle)}` : sec.key)

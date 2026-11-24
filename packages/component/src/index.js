@@ -23,6 +23,10 @@ export { default as Avatar } from './atoms/Avatar.jsx'
 export { default as Badge } from './atoms/Badge.jsx'
 export { default as Button } from './atoms/Button.jsx'
 export { default as CloseButton } from './molecules/CloseButton.jsx'
+/* the shared parts of the type-ramp plan (6.3, 6.8): a tile with a leading slot, and a section's head and foot */
+export { default as Chip } from './molecules/Chip.jsx'
+export { default as SectionHeader } from './atoms/SectionHeader.jsx'
+export { default as SectionFooter } from './atoms/SectionFooter.jsx'
 export { default as ActionButton } from './molecules/ActionButton.jsx'
 export { default as FileIcon } from './atoms/FileIcon.jsx'
 export { default as SizeOrDownload } from './atoms/SizeOrDownload.jsx'
@@ -31,6 +35,8 @@ export { default as SortControls } from './molecules/SortControls.jsx'
 export { default as CopyButton } from './molecules/CopyButton.jsx'
 export { default as CurveOverlay } from './utilities/CurveOverlay.jsx'
 export { default as Divider } from './atoms/Divider.jsx'
+/* a label then a rule to the row's end (kolbox's GroupLabel, plan-2026-11-18-kolbox-system W31.2, 2026-11-18) */
+export { default as DividerLabel } from './molecules/DividerLabel.jsx'
 export { default as DocsToc } from './molecules/DocsToc.jsx'
 export { default as DropdownTagFilter } from './molecules/DropdownTagFilter.jsx'
 export { default as EmptyState } from './molecules/EmptyState.jsx'
@@ -51,9 +57,11 @@ export { default as BackgroundVideo, default as HlsVideo } from './utilities/Bac
 export { default as Input } from './atoms/Input.jsx'
 export { default as Label } from './atoms/Label.jsx'
 export { default as LabeledControl } from './molecules/LabeledControl.jsx'
+export { default as RailFloat, default as FloatModule } from './molecules/RailFloat.jsx'
+export { default as FloatModuleHeader } from './molecules/FloatModuleHeader.jsx'
 export { default as OverlayGlassPanel } from './utilities/OverlayGlassPanel.jsx'
 export { default as Pill } from './atoms/Pill.jsx'
-export { usePopover, PopoverPanel, Tooltip } from './utilities/Popover.jsx'
+export { usePopover, PopoverPanel, PopoverLayer, Tooltip } from './utilities/Popover.jsx'
 export { floatSurfaceClass, FLOAT_SURFACES } from './utilities/tone.js'
 export { floatMotion, FLOAT_MOTION } from './utilities/motion.js'
 /* armLongPress — the touch hold the panel value controls report (moved from kol-hardware 2026-10-01) */
@@ -72,7 +80,9 @@ export { default as SegmentedToggle } from './molecules/SegmentedToggle.jsx'
 /* a page's variants — the pinned slider button and its panel of segmented rows (OneVariantsControl, 2026-10-29; catalog's) */
 export { default as VariantsControl } from './molecules/VariantsControl.jsx'
 export { default as Stepper } from './molecules/Stepper.jsx'
-export { default as Kbd } from './atoms/Kbd.jsx'
+export { default as Kbd, KbdKeys } from './atoms/Kbd.jsx'
+/* a text action in the link color (kolbox's Link, plan-2026-11-18-kolbox-system W31.2, 2026-11-18) */
+export { default as Link } from './atoms/Link.jsx'
 /* the float parts (float-everything W2 · W3 · W4, 2026-11-04) */
 export { default as Delta } from './atoms/Delta.jsx'
 export { default as LiveDot } from './atoms/LiveDot.jsx'
@@ -139,6 +149,9 @@ export { default as LayerStack, AddLayerButton, BLEND_MODES } from './organisms/
 export { default as StepList } from './molecules/StepList.jsx'
 export { TYPE_LABELS, BOOL_OP_LABELS, SHAPE_KIND_LABELS, labelForLayer, rowLabelForLayer, findLayerDeep } from './hooks/layerTree.js'
 export { default as TimelineDock, sampleTrack, TIMELINE_EASINGS } from './organisms/TimelineDock.jsx'
+/* a document's find bar and status bar, new 2026-11-22 (Folio on kolbox) */
+export { default as FindBar } from './organisms/FindBar.jsx'
+export { default as StatusBar } from './organisms/StatusBar.jsx'
 export { default as CurveEditor, CURVE_KINDS, defaultCurveFor } from './organisms/CurveEditor.jsx'
 export { default as KeyframeEditor, KEYFRAME_EASES, DEFAULT_KEYFRAMES } from './organisms/KeyframeEditor.jsx'
 export { pathD, pathBounds, shiftNode, normalizePath, scalePathNodes, normalizePathRings, rotatePathNodes, dist, nearestSegmentT, splitSegment, smoothNode } from './hooks/pathMath.js'
@@ -161,6 +174,10 @@ export { default as ColorSwatch } from './molecules/ColorSwatch.jsx'
 export { default as SwatchTile } from './molecules/SwatchTile.jsx'
 export { default as SwatchCaption } from './molecules/SwatchCaption.jsx'
 export { default as Dropdown } from './molecules/Dropdown.jsx'
+/* kolbox's DropdownStepper, Toast and SwatchGrid, new 2026-11-18 (plan-2026-11-18-kolbox-system W31.2 batch 4) */
+export { default as DropdownStepper } from './molecules/DropdownStepper.jsx'
+export { default as Toast, toast, ToastHost } from './molecules/Toast.jsx'
+export { default as SwatchGrid } from './molecules/SwatchGrid.jsx'
 /* MultiSelect — several pick-one settings in one dropdown, a column each (2026-10-01, first cut) */
 export { default as MultiSelect } from './molecules/MultiSelect.jsx'
 export { default as FieldRow, StatusChip } from './molecules/FieldRow.jsx'
@@ -176,20 +193,24 @@ export { default as ContentRow } from './molecules/ContentRow.jsx'
 export { default as ContentItem } from './molecules/ContentItem.jsx'
 export { default as ContentCollection } from './organisms/ContentCollection.jsx'
 export { MenuItem, MenuRow, MenuDivider, MenuFlyout, MenuDropdownItem, MenuDropdownDivider, MenuDropdownNest } from './molecules/MenuItem.jsx'
-export { Menu, MenuTrigger, MenuPanel, MenuLabel, MenuFilter, MenuDatePicker, MenuMore } from './molecules/Menu.jsx'
+export { Menu, MenuTrigger, MenuPanel, MenuLabel, MenuFilter, MenuDatePicker, MenuMore, MenuScroll } from './molecules/Menu.jsx'
 export { MenuList } from './molecules/MenuList.jsx'
-export { ModalProvider, useModal, Dialog } from './molecules/Modal.jsx'
+export { ModalProvider, useModal, ModalDialog, ModalDialog as Dialog } from './molecules/Modal.jsx'
 export { default as ModalShell } from './molecules/ModalShell.jsx'
-/* the generator settings window's controls (plan-2026-11-05-float-editor W7.2) — `Dialog variant="settings"`'s rows */
+/* the generator settings window's composite parts (plan-2026-11-05-float-editor W7.2); SettingsCell · SettingsSlider · SettingsRange ·
+ * SettingsSelect · SettingsSegmented · SettingsToggle · SettingsText are deprecated aliases of their bases (plan-2026-11-12-one-header W6.1) */
 export {
-  SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle,
-  SettingsText, SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
+  SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle,
+  SettingsText, SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap,
 } from './molecules/SettingsControls.jsx'
+/* the window's groups sit beside the section they draw (W13.1); SettingsGroup is deprecated for it */
+export { SettingsGroup, SettingsDisclosure } from './organisms/SettingsPanel.jsx'
 export { default as Combobox } from './molecules/Combobox.jsx'
 export { default as PaletteHarmonyWheel } from './molecules/PaletteHarmonyWheel.jsx'
 export { default as PropertyInput } from './molecules/PropertyInput.jsx'
 export { default as ShapeDropdown } from './molecules/ShapeDropdown.jsx'
 export { default as Rail, RAIL_ROLES, useRailKey } from './organisms/Rail.jsx'
+export { default as RailSwitcher } from './organisms/RailSwitcher.jsx'
 /** @deprecated 2026-10-17 — alias of Rail */
 export { default as ShellDrawer } from './organisms/ShellDrawer.jsx'
 export { default as CommandOverlay } from './organisms/CommandOverlay.jsx'
@@ -207,6 +228,8 @@ export { default as SplitToolButton } from './molecules/SplitToolButton.jsx'
 export { default as ToolPalette } from './organisms/ToolPalette.jsx'
 export { default as DocumentEditor } from './organisms/DocumentEditor.jsx'
 export { default as SwatchControls, SwatchStack, EyedropPick } from './molecules/SwatchControls.jsx'
+/* the open documents' strip: a tab per document, close, unsaved, a plus (Figma's tab strip in kolbox, 2026-11-22) */
+export { default as TabsDocument } from './molecules/TabsDocument.jsx'
 export { default as TabsRow, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, TABBAR_PILL_TAB, TABBAR_PILL_GAP, TABBAR_PILL_LABEL_TAB, TABBAR_PILL_SPLIT_GAP, tabbarPillWidth, tabbarPillSlot } from './molecules/TabsRow.jsx'
 /** @deprecated 2026-10-17 — alias of `TabsRow variant="chip"` */
 export { default as TabChips } from './molecules/TabChips.jsx'
@@ -255,6 +278,11 @@ export { default as FeaturedCarousel } from './organisms/FeaturedCarousel.jsx'
 export { default as FeaturesCardSection } from './organisms/FeaturesCardSection.jsx'
 /* the growing line on @kolkrabbi/kol-growth (GrowthLineStage, kol-atlas 2026-10-30) */
 export { default as GrowthLineStage } from './organisms/GrowthLineStage.jsx'
+/* the form tuner's two boards on @kolkrabbi/kol-tuner (W27.4, 2026-11-19) */
+export { default as LogoSystem } from './organisms/LogoSystem.jsx'
+export { default as LogoTuner } from './organisms/LogoTuner.jsx'
+/* the boards' palettes, for a host drawing beside them (a sheet of rolls) */
+export { inksOf as logoInks } from './organisms/logoBoard.jsx'
 /* the app loader's runtime half and its intro claim (LoaderAppIntro, kol-fxr 2026-11-01) — here because GrowthLineStage
  * claims it; kol-framework re-exports it, which stays its documented home */
 export { hideLoaderApp, claimIntro, introClaimed, endIntro, releaseIntro } from './utilities/loaderApp.js'
@@ -282,7 +310,15 @@ export { default as SettingsSections } from './organisms/SettingsSections.jsx'
 /* the rail kit (RailKit, kol-monitor 2026-10-24): the parts a Rail's content is built from. Its sections and rows are
  * LabeledControlSection and SettingsRow. @deprecated 2026-11-08: the RailSection / RailRow aliases below are retired by
  * the user's ruling ("I always called it labeledControl and LabeledControlSection… I never approved the rename") */
-export { RailHeader, RailTabs, RailHint, RailActions, RailFoot, RailNav } from './organisms/RailKit.jsx'
+export { default as RailHeader } from './molecules/RailHeader.jsx'
+/* Header — the one header, variant nav · property · modal · settings (plan-2026-11-12-one-header W1.1) */
+export { default as Header } from './molecules/Header.jsx'
+/* ButtonSplit — the main action, a divider and a ⌄ menu (plan-2026-11-12-one-header W4.1) */
+export { default as ButtonSplit } from './molecules/ButtonSplit.jsx'
+/* MenuFloat + MenuFloatRows — the float menu card and its rows, moved from kol-shell 2026-11-12 so ButtonSplit's float menu
+ * is the same menu (plan-2026-11-12-one-header W6.1); kol-shell re-exports both */
+export { default as MenuFloatRows, MenuFloat } from './molecules/MenuFloat.jsx'
+export { RailTabs, RailHint, RailActions, RailFoot, RailNav } from './organisms/RailKit.jsx'
 export { LabeledControlSection as RailSection, SettingsRow as RailRow } from './organisms/SettingsPanel.jsx'
 export { default as SectionNewsletter } from './organisms/SectionNewsletter.jsx'
 export { default as NewsletterBand } from './organisms/NewsletterBand.jsx'

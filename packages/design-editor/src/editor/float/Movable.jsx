@@ -13,7 +13,7 @@ export default function Movable({ id, start = { right: 24, bottom: 24 }, onMoved
   /* a kept place carries the `start` it was dragged from: when the default moves, an old drag no longer pins the float */
   const startKey = JSON.stringify(start)
   const [pos, setPos] = useState(() => {
-    try { const v = JSON.parse(localStorage.getItem(key)); return v?.start === startKey ? { left: v.left, top: v.top } : null } catch { return null }
+    try { const v = JSON.parse(localStorage.getItem(key)); return v?.start !== startKey ? null : v.right != null ? { right: v.right, bottom: v.bottom } : { left: v.left, top: v.top } } catch { return null }
   })
   const ref = useRef(null)
   useEffect(() => { onMoved?.(!!pos) }, [!!pos]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -29,7 +29,9 @@ export default function Movable({ id, start = { right: 24, bottom: 24 }, onMoved
     const move = (ev) => {
       /* a press is not a drag: under 4px of travel nothing moves and nothing is kept */
       if (!last && Math.hypot(ev.clientX - e.clientX, ev.clientY - e.clientY) < 4) return
-      last = { left: clamp(ev.clientX - room.left - dx, room.width - box.width), top: clamp(ev.clientY - room.top - dy, room.height - box.height) }
+      /* kept from the right and bottom edges: a float that grows or shrinks (the transport's collapse-h) holds its right edge */
+      const left = clamp(ev.clientX - room.left - dx, room.width - box.width), top = clamp(ev.clientY - room.top - dy, room.height - box.height)
+      last = { right: room.width - left - box.width, bottom: room.height - top - box.height }
       setPos(last)
     }
     const up = () => {

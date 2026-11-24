@@ -22,11 +22,10 @@
  */
 
 /* IconLoader (2026-11-08, user: "rename icon to iconloader that is the fucking name"). `Icon` is its deprecated alias on the retirement ledger. */
-export { default as IconLoader, default as Icon, registerIcons, RENAMED_ICONS } from './IconLoader.jsx';
-import { RENAMED_ICONS } from './IconLoader.jsx';
+export { default as IconLoader, default as Icon, registerIcons, RENAMED_ICONS, ALIASES as KOL_ICON_ALIASES } from './IconLoader.jsx';
+import { RENAMED_ICONS, ALIASES } from './IconLoader.jsx';
 import CUTS from './cuts.json';
 import TAGS from './tags.json';
-
 /* SEARCH TAGS (2026-11-05) — `{ name: tags[] }` for every glyph in all four sets (identity: every file in its
  * folders, not only the icon). Synonyms and uses a person types — "lab" for the flasks — not the name split again.
  * `node scripts/validate-icon-tags.mjs` (gate `icon-tags`) fails when a glyph has none. */
@@ -48,6 +47,22 @@ export const KOL_ICON_SET_INTERFACE = (() => {
 })()
 
 export const KOL_ICON_SET_INTERFACE_NAMES = Object.values(KOL_ICON_SET_INTERFACE).flat().sort()
+
+/* kol-icon-set-editor (2026-11-22) — the design-tool set, split out of interface: its `design` and `typography`
+ * groups moved here whole, names unchanged, so every <IconLoader name> still resolves. Same shape, same rules. */
+export const KOL_ICON_SET_EDITOR = (() => {
+  const idx = {}
+  for (const p of Object.keys(import.meta.glob('./kol-icon-set-editor/**/*.svg'))) {
+    const parts = p.split('/')
+    const name = (parts.pop() || '').replace('.svg', '')
+    const group = parts.pop() || 'misc'
+    ;(idx[group] ||= []).push(name)
+  }
+  for (const g of Object.values(idx)) g.sort()
+  return idx
+})()
+
+export const KOL_ICON_SET_EDITOR_NAMES = Object.values(KOL_ICON_SET_EDITOR).flat().sort()
 
 /* kol-icon-set-signal — same shape, same rules, its own folder. */
 export const KOL_ICON_SET_SIGNAL = (() => {
@@ -117,19 +132,20 @@ const metaOf = (index, set) => Object.fromEntries(
   Object.entries(index).flatMap(([group, names]) => names.map((name) => [name, { group, set, cut: CUTS[name] ?? 'stroke' }])),
 )
 export const KOL_ICON_SET_INTERFACE_META = metaOf(KOL_ICON_SET_INTERFACE, 'interface')
+export const KOL_ICON_SET_EDITOR_META = metaOf(KOL_ICON_SET_EDITOR, 'editor')
 export const KOL_ICON_SET_SIGNAL_META = metaOf(KOL_ICON_SET_SIGNAL, 'signal')
 export const KOL_ICON_SET_IDENTITY_META = metaOf(KOL_ICON_SET_IDENTITY, 'identity')
 export const KOL_ICON_SET_EXTERNAL_META = metaOf(KOL_ICON_SET_EXTERNAL, 'external')
 /* every glyph the package ships, any set — `{ name: { group, set, cut } }` */
-export const KOL_ICON_META = { ...KOL_ICON_SET_EXTERNAL_META, ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_IDENTITY_META, ...KOL_ICON_SET_INTERFACE_META }
+export const KOL_ICON_META = { ...KOL_ICON_SET_EXTERNAL_META, ...KOL_ICON_SET_SIGNAL_META, ...KOL_ICON_SET_IDENTITY_META, ...KOL_ICON_SET_EDITOR_META, ...KOL_ICON_SET_INTERFACE_META }
 export const getCut = (name) => KOL_ICON_META[name]?.cut ?? null
 export const getSet = (name) => KOL_ICON_META[name]?.set ?? null
 
 /* Canonical grouped registry — alias of the interface index (legacy inventories
  * ICON_ENTRIES / SOLID_ICON_ENTRIES / ICON_INDEX died with the legacy sets). */
 export const ICONS = KOL_ICON_SET_INTERFACE;
-// Flat array of all icon names — BOTH sets, since <IconLoader> resolves either.
-export const ALL_ICONS = [...new Set([...KOL_ICON_SET_INTERFACE_NAMES, ...KOL_ICON_SET_SIGNAL_NAMES])].sort();
+// Flat array of all icon names — interface, editor and signal, since <IconLoader> resolves either.
+export const ALL_ICONS = [...new Set([...KOL_ICON_SET_INTERFACE_NAMES, ...KOL_ICON_SET_EDITOR_NAMES, ...KOL_ICON_SET_SIGNAL_NAMES])].sort();
 
 /** @deprecated 2026-09-30 → KOL_ICON_SET_INTERFACE — the set was renamed; the icon names did not change */
 export const KOL_ICON_SET_V1 = KOL_ICON_SET_INTERFACE
@@ -139,11 +155,11 @@ export const KOL_ICON_SET_V1_NAMES = KOL_ICON_SET_INTERFACE_NAMES
 export const KOL_ICON_SET_V1_META = KOL_ICON_SET_INTERFACE_META
 
 // Helper to check if an icon exists
-export const hasIcon = (name) => ALL_ICONS.includes(RENAMED_ICONS[name] ?? name);
+export const hasIcon = (name) => ALL_ICONS.includes(RENAMED_ICONS[name] ?? ALIASES[name] ?? name);
 
 // Get category for an icon
 export const getCategory = (name) => {
-  for (const [category, icons] of Object.entries(ICONS)) {
+  for (const [category, icons] of Object.entries({ ...KOL_ICON_SET_INTERFACE, ...KOL_ICON_SET_EDITOR })) {
     if (icons.includes(name)) {
       return category;
     }

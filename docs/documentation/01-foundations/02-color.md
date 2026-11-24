@@ -36,6 +36,10 @@ Semantic identity tokens — consume these, not raw stops, for brand-tinted UI:
 | `--kol-accent-secondary` | `red-200` | `#AD5038` | Secondary identity color |
 | `--kol-accent-on-secondary` | `cream-100` | `#FAF7F0` | Ink on top of accent-secondary |
 
+### Accent tints
+
+`--kol-accent-tint` (accent at 25%, the selected wash) and `--kol-accent-tint-soft` (accent at 15%, the soft selected wash) are `color-mix` of `--kol-accent-primary` into transparent, in `kol-color.css` beside `--kol-accent-primary-strong`, defined in every theme and variant; the `folio` variant sets `--kol-accent-tint` to folio's solid mint instead ([[01-tokens|tokens]], Theme variants). Library names: `accent/tint`, `accent/tint-soft`.
+
 ## The ramps
 
 Seven hue families × 5 stops (100–500) + cream + a 10-stop grey. **Anchor positions vary per ramp** (yellow at 300, red at 200, blue at 400 — marked •). Tokens: `--kol-color-<ramp>-<stop>` (grey: `--grey-<stop>`).

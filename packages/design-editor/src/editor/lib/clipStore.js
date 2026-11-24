@@ -104,7 +104,9 @@ export async function gcClips(layers) {
 /* Images ride the same store since 2026-10-09 (audit F1): a dropped or uploaded image was an
  * objectURL in the draft and nothing else, so it died with the window — the one data-loss bug the
  * user hit. Same guard, same key: a blob: src on a photo layer, video or image. */
-const storable = (l) => (l?.srcType === 'video' || l?.srcType === 'image') && typeof l?.src === 'string' && l.src.startsWith('blob:')
+/* a layer's image fill holds what its photo layer held (layer model 2, compose/layerModel.js) */
+const holder = (l) => (l?.fill && typeof l.fill === 'object' && l.fill.src !== undefined ? l.fill : l)
+const storable = (l) => { const h = holder(l); return (h?.srcType === 'video' || h?.srcType === 'image') && typeof h?.src === 'string' && h.src.startsWith('blob:') }
 function deadClipIds(layers, out = []) {
   for (const l of layers) {
     if (storable(l) && l?.id) out.push(l.id)
@@ -120,7 +122,7 @@ function swapClipSrc(layers, urls) {
   const next = layers.map((l) => {
     let nl = l
     if (storable(l) && urls[l.id]) {
-      nl = { ...l, src: urls[l.id] }
+      nl = holder(l) === l ? { ...l, src: urls[l.id] } : { ...l, fill: { ...l.fill, src: urls[l.id] } }
       changed = true
     }
     if (Array.isArray(l?.children)) {

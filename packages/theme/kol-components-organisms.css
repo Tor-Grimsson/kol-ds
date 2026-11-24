@@ -82,9 +82,9 @@
 .kol-table-cell-title {
   padding: 12px 16px;
   font-family: var(--kol-font-family-mono);
-  font-size: 0.75rem;
+  font-size: var(--kol-ramp-size-l6);
   font-weight: 400;
-  line-height: 1.3;
+  line-height: var(--kol-ramp-line-height-l6);
   color: var(--kol-surface-on-primary);
   white-space: nowrap;
 }
@@ -92,9 +92,9 @@
 .kol-table-cell-text {
   padding: 12px 16px;
   font-family: var(--kol-font-family-mono);
-  font-size: 0.75rem;
+  font-size: var(--kol-ramp-size-l6);
   font-weight: 400;
-  line-height: 1.4;
+  line-height: var(--kol-ramp-line-height-l6);
   color: var(--kol-fg-64);
   white-space: nowrap;
 }
@@ -612,7 +612,7 @@
   gap: var(--kol-spacing-3);
   padding: var(--kol-spacing-2) var(--kol-spacing-1);
   border-bottom: 1px solid var(--kol-fg-08);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   cursor: pointer;
   transition: background-color var(--kol-transition-fast);
 }
@@ -807,14 +807,18 @@
   background: var(--kol-fg-04);
   color: var(--kol-surface-on-primary);
 }
-/* Selected = accent highlight; a selected container also tints its expanded
-   children block one shade lighter (Figma model). Hover stays grey. */
+/* Selected = fg-12 (white 12% in dark, ink 12% in light), its name at full
+   emphasis — the user's pick from the selected-row board, 2026-11-12 (it was
+   an accent mix at 26%). Fill only, no stroke; the glyph on oq-96 (icons take oq:
+   translucent fg strokes show their overlaps). A selected container tints its expanded children block
+   one step down the ladder (fg-08; was accent 11%). Hover stays fg-04. */
 .kol-layer-stack-row.is-active {
-  background: color-mix(in srgb, var(--kol-accent-primary) 26%, transparent);
+  background: var(--kol-fg-12);
   color: var(--kol-fg-emphasis);
 }
+.kol-layer-stack-row.is-active .kol-layer-stack-icon { color: var(--kol-oq-96); }
 .kol-layer-stack-row.is-tinted {
-  background: color-mix(in srgb, var(--kol-accent-primary) 11%, transparent);
+  background: var(--kol-fg-08);
 }
 /* Hidden layer — dim the icon + name only; the slashed eye stays legible. */
 .kol-layer-stack-row.is-hidden .kol-layer-stack-main { opacity: 0.4; }
@@ -1040,3 +1044,227 @@
 .kol-sortable-item.is-drop-target { outline: 2px dashed currentColor; outline-offset: 3px; border-radius: 4px; }
 .kol-sortable-handle { cursor: grab; }
 .kol-sortable-handle:active { cursor: grabbing; }
+
+/* =============================================================================
+ * KOLBOX (plan-2026-11-18-kolbox-system W31.2, 2026-11-18). `variant="kolbox"`, carried class for class from
+ * apps/kolbox/src/ui; every rule hangs off the variant's own root class.
+ * ============================================================================= */
+
+/* WheelTriangle kolbox: the handles a ring in the ink over a hairline of the ground; the focus ring the accent */
+.kol-wheel-triangle--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-wheel-triangle--kolbox .kol-wheel-triangle-halo { stroke: var(--kol-surface-primary); }
+.kol-wheel-triangle--kolbox .kol-wheel-triangle-ring { stroke: var(--kol-surface-on-primary); }
+
+/* batch 5 (W31.2, 2026-11-18): kolbox's editor chrome and color parts, carried class for class from apps/kolbox/src/ui.
+   Every rule hangs off the variant's own root class; only what kolbox's own classes set, nothing kolbox inherits. */
+
+/* Rail kolbox: the panel fill, 240 wide (49 collapsed), its edge line the kolbox line (`--kol-kolbox-line`, W16.4) drawn
+   over its own edge (the `before` box is Tailwind's); under 768 the full width, as tall as its content */
+.kol-rail--kolbox { width: var(--kol-kolbox-rail-w); background-color: var(--kol-surface-secondary); }
+.kol-rail--kolbox.is-collapsed { width: var(--kol-kolbox-rail-w-collapsed); }
+.kol-rail--kolbox::before { background-color: var(--kol-kolbox-line); }
+@media (max-width: 767px) { .kol-rail--kolbox, .kol-rail--kolbox.is-collapsed { width: 100%; } }
+
+/* LabeledControlSection kolbox (kolbox's RailSection): the kolbox line (W16.4) over its top pixel, the title the UI text (11 / 16) in
+   the ink, open or closed, and the head's action glyphs in the same ink (closed is not empty, his "I thought text were
+   white", plan-2026-11-19-kolbox-whats-left R3.2); a lit action keeps its accent */
+.kol-section--kolbox::before { background-color: var(--kol-kolbox-line); }
+.kol-section-title--kolbox { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-section--kolbox > header .kol-icon-btn--kolbox:not(.is-pressed) { color: var(--kol-surface-on-primary); }
+/* the head's actions are 24 boxes (`--kol-kolbox-ctl`) whatever box a caller set (a 16 `size-4!`), as Figma's 24 header buttons
+   (plan-2026-11-23-editor-measured-against-figma W3); important here out-ranks the caller's important utility (layer order) */
+.kol-section--kolbox > header .kol-icon-btn--kolbox { width: var(--kol-kolbox-ctl) !important; height: var(--kol-kolbox-ctl) !important; }
+
+/* SBSquare, HueStrip, AlphaStrip kolbox (kolbox's ColorField, HueSlider, OpacitySlider): the handle a 2px ring in the
+   ink; the opacity run over the oq-24 / oq-16 checker */
+.kol-spectrum-handle--kolbox { box-shadow: 0 0 0 2px var(--kol-surface-on-primary); }
+.kol-alpha-strip--kolbox { background: repeating-conic-gradient(var(--kol-kolbox-field-strong) 0 25%, var(--kol-kolbox-field) 0 50%) 0 0 / 8px 8px; }
+
+/* ColorPickerPopover kolbox (kolbox's PopoverColor): the rule between the picker and the page's swatches */
+.kol-color-popover-rule--kolbox { background-color: var(--kol-kolbox-line); }
+
+/* TimelineDock kolbox (kolbox's MotionTimeline): 200 high (480 expanded), the panel fill, every line oq-24; the name
+   column the rail's width; the lanes on the ground; clips oq-16 (lit oq-24); keys in the ink; the head the accent */
+.kol-timeline--kolbox { height: var(--kol-kolbox-timeline-h); border-color: var(--kol-kolbox-line); background-color: var(--kol-surface-secondary); }
+.kol-timeline--kolbox.is-expanded { height: var(--kol-kolbox-timeline-h-expanded); }
+.kol-timeline--kolbox .kol-timeline-line { border-color: var(--kol-kolbox-line); }
+.kol-timeline--kolbox .kol-timeline-names { width: var(--kol-kolbox-rail-w); }
+.kol-timeline--kolbox .kol-timeline-tick { background-color: var(--kol-kolbox-line); }
+.kol-timeline--kolbox .kol-timeline-ground { background-color: var(--kol-surface-primary); }
+.kol-timeline--kolbox .kol-timeline-head { background-color: var(--kol-accent-primary); }
+.kol-timeline--kolbox .kol-timeline-key { background-color: var(--kol-surface-on-primary); }
+.kol-timeline--kolbox .kol-timeline-clip { background-color: var(--kol-kolbox-field); }
+.kol-timeline--kolbox .kol-timeline-clip.is-selected,
+.kol-timeline--kolbox .kol-timeline-row.is-selected { background-color: var(--kol-kolbox-field); }
+.kol-timeline--kolbox .kol-timeline-clip.is-selected { background-color: var(--kol-kolbox-field-strong); }
+.kol-timeline--kolbox .kol-timeline-title { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-timeline--kolbox .kol-timeline-label { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-oq-64); }
+.kol-timeline--kolbox .kol-timeline-name { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-timeline--kolbox .kol-timeline-name.is-sub { color: var(--kol-oq-64); }
+.kol-timeline--kolbox .kol-timeline-meta { font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+.kol-timeline--kolbox .kol-timeline-mono { font-family: var(--kol-font-family-mono); }
+.kol-timeline--kolbox .kol-timeline-muted { color: var(--kol-oq-64); }
+
+/* TimelineDock folio (Folio's Timeline, batch D 2026-11-22): the rule over it, the lanes in the surface, the keys in the
+   ink, the head green; the time mono 12 / 16 and the names mono 10 / 14, both muted */
+.kol-timeline--folio { border-color: var(--kol-folio-rule); }
+.kol-timeline--folio .kol-timeline-lane { background-color: var(--kol-folio-surface); }
+.kol-timeline--folio .kol-timeline-key { background-color: var(--kol-folio-ink); }
+.kol-timeline--folio .kol-timeline-head { background-color: var(--kol-folio-green); }
+.kol-timeline--folio .kol-timeline-time { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-folio-muted); }
+.kol-timeline--folio .kol-timeline-name { font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-folio-muted); }
+.kol-timeline--kolbox .kol-timeline-keylabel:hover { color: var(--kol-surface-on-primary); }
+.kol-timeline--kolbox .kol-timeline-zoom { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-surface-on-primary); border-radius: var(--kol-radius-4); }
+.kol-timeline--kolbox .kol-timeline-zoom:hover { background-color: var(--kol-kolbox-field); }
+.kol-timeline--kolbox .kol-timeline-zoom:focus-visible,
+.kol-timeline--kolbox .kol-timeline-toggle:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-timeline--kolbox .kol-timeline-time { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-field); }
+.kol-timeline--kolbox .kol-timeline-time:focus-within { outline-color: var(--kol-accent-primary); }
+.kol-timeline--kolbox .kol-timeline-time-rule { background-color: var(--kol-kolbox-line); }
+.kol-timeline--kolbox .kol-timeline-time-cell { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+.kol-timeline--kolbox .kol-timeline-time-cell input { color: var(--kol-surface-on-primary); }
+.kol-timeline--kolbox .kol-timeline-time-cell span { color: var(--kol-oq-64); }
+.kol-timeline--kolbox .kol-timeline-toggle { border-radius: var(--kol-radius-4); color: var(--kol-oq-64); }
+.kol-timeline--kolbox .kol-timeline-toggle.is-on { color: var(--kol-accent-primary); }
+.kol-timeline--kolbox .kol-timeline-toggle:hover { background-color: var(--kol-kolbox-field); color: var(--kol-surface-on-primary); }
+
+/* CommandOverlay kolbox (kolbox's ModalSearch): 576 wide, radius 16, the panel fill; the group titles 11 / 15 in spaced
+   capitals, the foot's hints 11 / 15, both in the muted ink; the hint at a row's end mono 10 / 14 */
+.kol-command--kolbox { width: var(--kol-kolbox-search-w); border-radius: var(--kol-radius-12); background-color: var(--kol-surface-secondary); }
+.kol-command--kolbox .kol-command-group { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+.kol-command--kolbox .kol-command-rule { background-color: var(--kol-kolbox-line); }
+.kol-command--kolbox .kol-command-foot { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+.kol-command--kolbox .kol-command-foot button:hover { color: var(--kol-surface-on-primary); }
+.kol-command--kolbox .kol-command-hint { font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+/* a row's second line, `body` (Folio on kolbox, 2026-11-22): the matched text under a search result, kolbox's help step
+   (11 / 15) in the muted ink; drawn only when a row has one */
+.kol-command--kolbox .kol-command-body { font-family: var(--kol-font-family-sans); font-size: 11px; font-weight: 400; line-height: 15px; color: var(--kol-oq-64); }
+
+/* CommandOverlay folio (Folio batch B, 2026-11-22): the search modal (search) and the command list (commands) in the ink,
+   each with its own shadow; rules Folio's; the field's text Folio's nav (13 / 500), the list's rows and field Folio's
+   meta; the lit row on the surface; hints, the kind and the empty line muted. ShortcutsOverlay folio: the list's shadow,
+   the title muted, a rule over each key, the combo green. */
+.kol-command--folio-search { color: var(--kol-folio-ink); box-shadow: 0 24px 64px rgb(0 0 0 / 0.18); }
+.kol-command--folio-commands { color: var(--kol-folio-ink); box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.4); }
+.kol-command-head--folio,
+.kol-command-result--folio { border-color: var(--kol-folio-rule); }
+.kol-command-search--folio { font-family: var(--kol-font-family-float); font-size: 13px; font-weight: 500; line-height: 1.21; }
+.kol-command-search--folio::placeholder,
+.kol-command-hint--folio,
+.kol-command-empty--folio { color: var(--kol-folio-muted); }
+.kol-command-result--folio.is-active,
+.kol-command-row--folio.is-active { background-color: var(--kol-folio-surface); }
+.kol-command-field--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; border-color: var(--kol-folio-rule); }
+.kol-command-row--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-shortcuts--folio { box-shadow: 0 24px 64px rgb(0 0 0 / 0.18); }
+.kol-shortcuts-title--folio { color: var(--kol-folio-muted); }
+.kol-shortcuts-row--folio { border-color: var(--kol-folio-rule); }
+.kol-shortcuts-combo--folio { color: var(--kol-folio-green); }
+
+/* Table kolbox (kolbox's FileList with its head and rows): the head Inter 11 / 16 at 450 in the muted ink, the sorted
+   column the ink; a row 11 / 16 at 450 in the ink, the name 550 (Figma's list, measured: plan-2026-11-23 W6); hover and keyboard focus the fg-04 lift; the size mono 10 / 14 muted */
+.kol-table--kolbox .kol-table-head { font-size: 11px; line-height: 16px; font-weight: 450; letter-spacing: 0.005em; color: var(--kol-oq-64); }
+.kol-table--kolbox .kol-table-head .is-sorted { color: var(--kol-surface-on-primary); }
+.kol-table--kolbox .kol-table-row { border-bottom: none; font-size: 11px; line-height: 16px; font-weight: 450; letter-spacing: 0.005em; color: var(--kol-surface-on-primary); } /* no rule between rows: Figma's list draws none (W4b, 2026-11-23) */
+.kol-table--kolbox .kol-table-row:hover,
+.kol-table--kolbox .kol-table-row:focus-visible { background-color: var(--kol-fg-04); }
+.kol-table--kolbox .kol-table-name { font-weight: 550; }
+.kol-table--kolbox .kol-table-icon { color: var(--kol-oq-64); }
+.kol-table--kolbox .kol-table-size { font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+
+/* Table folio (Folio's table of books, Folio batch E): the head muted over the 2px ink rule, rows on Folio's hairline,
+   the surface under the pointer, the arrow muted until its row is hovered. Folio's own colors (kol-color.css) */
+.kol-table--folio .kol-table-head { color: var(--kol-folio-muted); border-color: var(--kol-folio-ink); }
+.kol-table--folio .kol-table-row { border-color: var(--kol-folio-rule); }
+.kol-table--folio .kol-table-row:hover { background-color: var(--kol-folio-surface); }
+.kol-table--folio .kol-table-arrow { color: var(--kol-folio-muted); }
+.kol-table--folio .kol-table-row:hover .kol-table-arrow { color: var(--kol-folio-ink); }
+
+/* ReadingContents folio (Folio's contents in the reader's left Rail, Folio batch E): the head over the ink rule; the
+   current chapter on mint in the green, the others the surface under the pointer; a chapter's headings on a hairline,
+   quiet until hovered; the progress figure green over the rule-colored track */
+.kol-reading-contents--folio .kol-reading-contents-muted { color: var(--kol-folio-muted); }
+.kol-reading-contents--folio .kol-reading-contents-head { border-color: var(--kol-folio-ink); }
+.kol-reading-contents--folio .kol-reading-contents-row:hover { background-color: var(--kol-folio-surface); }
+.kol-reading-contents--folio .kol-reading-contents-row:not(.is-current) .kol-reading-contents-number { color: var(--kol-folio-muted); }
+.kol-reading-contents--folio .kol-reading-contents-row.is-current { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+.kol-reading-contents--folio .kol-reading-contents-sections { border-color: var(--kol-folio-rule); }
+.kol-reading-contents--folio .kol-reading-contents-quiet { color: var(--kol-folio-muted); }
+.kol-reading-contents--folio .kol-reading-contents-quiet:hover { color: var(--kol-folio-ink); }
+.kol-reading-contents--folio .kol-reading-contents-heading:hover { background-color: var(--kol-folio-surface); }
+.kol-reading-contents--folio .kol-reading-contents-progress { border-color: var(--kol-folio-rule); }
+.kol-reading-contents--folio .kol-reading-contents-figure { color: var(--kol-folio-green); }
+.kol-reading-contents--folio .kol-reading-contents-track { background-color: var(--kol-folio-rule); }
+.kol-reading-contents--folio .kol-reading-contents-fill { background-color: var(--kol-folio-green); }
+
+/* EditorShell kolbox (kolbox's Shell): square, every junction with RailSwitcher and the rails square as Figma's (W16.2,
+   the 12 radius of the old rounded window went), the ground, the label voice in the ink; the canvas oq-08 */
+.kol-editor-shell--kolbox { background-color: var(--kol-surface-primary); font-family: var(--kol-font-family-sans); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: 500; color: var(--kol-surface-on-primary); }
+.kol-editor-shell--kolbox .kol-editor-canvas--kolbox { background-color: var(--kol-kolbox-canvas); }
+
+/* LogoSystem and LogoTuner (W27.4, 2026-11-19): the tuner boards' inks as KOL tokens. The form the ink, grey oq-32 (the
+   wedges too); construction and math 1-wide ink lines (their opacity is the board's); the grid fg-24; the traced line
+   red; the curvature comb yellow, orange and red at 0.8; the handles the accent; the labels mono 15 in board units;
+   a reference image at 0.28 */
+.kol-logo-board .kol-logo-form { fill: var(--kol-fg-96); }
+.kol-logo-board .kol-logo-form.is-grey,
+.kol-logo-board .kol-logo-wedges { fill: var(--kol-oq-32); }
+.kol-logo-board .kol-logo-lines { fill: none; stroke: var(--kol-fg-96); stroke-width: 1; }
+.kol-logo-board .kol-logo-grid { fill: none; stroke: var(--kol-fg-24); stroke-width: 1; }
+.kol-logo-board .kol-logo-trace { fill: none; stroke: var(--kol-palette-red); stroke-width: 1; }
+.kol-logo-board .kol-logo-dots { fill: var(--kol-fg-96); }
+.kol-logo-board .kol-logo-comb { opacity: 0.8; }
+.kol-logo-board .kol-logo-comb.is-0 { fill: var(--kol-palette-yellow); }
+.kol-logo-board .kol-logo-comb.is-1 { fill: var(--kol-palette-orange); }
+.kol-logo-board .kol-logo-comb.is-2 { fill: var(--kol-palette-red); }
+.kol-logo-board .kol-logo-handle { fill: var(--kol-accent-primary); stroke: var(--kol-accent-on-primary); cursor: grab; }
+.kol-logo-board .kol-logo-label { font-family: var(--kol-font-family-mono); font-size: 15px; fill: var(--kol-fg-96); }
+.kol-logo-board .kol-logo-ref { opacity: 0.28; }
+/* a board given its settings' palette (logoBoard inksOf, R9 2026-11-19): the canvas's ground behind it, its ink on the
+   form, lines, dots and labels, the grid that ink at 0.22, the grey form the canvas's #b3b3b3 */
+.kol-logo-board.is-inked { background-color: var(--kol-logo-ground); }
+.kol-logo-board.is-inked .kol-logo-form,
+.kol-logo-board.is-inked .kol-logo-dots,
+.kol-logo-board.is-inked .kol-logo-label { fill: var(--kol-logo-ink); }
+.kol-logo-board.is-inked .kol-logo-lines { stroke: var(--kol-logo-ink); }
+.kol-logo-board.is-inked .kol-logo-grid { stroke: var(--kol-logo-ink); opacity: 0.22; }
+.kol-logo-board.is-inked .kol-logo-form.is-grey,
+.kol-logo-board.is-inked .kol-logo-wedges { fill: #b3b3b3; }
+
+/* =============================================================================
+ * FOLIO, batch C (Folio batch C, 2026-11-22). `variant="folio"`, carried class for class from
+ * apps/folio/src/folio/Chrome.jsx. Every rule hangs off the variant's own root class.
+ * ============================================================================= */
+
+/* LabeledControlSection folio (Folio's SettingGroup): the heading 12 / 17 medium in the ink */
+.kol-section--folio > .kol-section-title--folio { font-size: 12px; font-weight: 500; line-height: 17px; color: var(--kol-folio-ink); }
+
+/* ColorPickerPopover folio (Folio's SwatchMenu): the panel on paper in the hairline, Folio's lift (its own two shadows) */
+.kol-color-picker--folio > .kol-color-picker-panel { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.4); }
+
+/* =============================================================================
+ * FindBar and StatusBar (Folio on kolbox, 2026-11-22): the document's find bar and status bar, new parts. kolbox on the
+ * rail ground with the one kolbox line against the canvas; folio carried class for class from apps/folio EditorChrome.jsx.
+ * ============================================================================= */
+
+/* FindBar kolbox: the rail ground, the kolbox line under it, the count in oq-64, the rule between find and replace */
+.kol-find-bar--kolbox { background-color: var(--kol-surface-secondary); border-color: var(--kol-kolbox-line); color: var(--kol-surface-on-primary); }
+.kol-find-bar--kolbox .kol-find-bar-count { color: var(--kol-oq-64); }
+.kol-find-bar--kolbox .kol-find-bar-rule { background-color: var(--kol-kolbox-line); }
+
+/* StatusBar kolbox: the rail ground, the kolbox line over it, the ink; the counts in oq-64 */
+.kol-status-bar--kolbox { background-color: var(--kol-surface-secondary); border-color: var(--kol-kolbox-line); color: var(--kol-surface-on-primary); }
+.kol-status-bar--kolbox .kol-status-bar-left { color: var(--kol-oq-64); }
+
+/* FindBar folio: its surface under the rule; the count and Aa Folio's meta in the muted ink, Aa lit mint with green */
+.kol-find-bar--folio { background-color: var(--kol-folio-surface); border-color: var(--kol-folio-rule); }
+.kol-find-bar--folio .kol-find-bar-count,
+.kol-find-bar--folio .kol-find-bar-case { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; color: var(--kol-folio-muted); }
+.kol-find-bar--folio .kol-find-bar-case:hover { background-color: var(--kol-folio-paper); }
+.kol-find-bar--folio .kol-find-bar-case.is-on { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+.kol-find-bar--folio .kol-find-bar-rule { background-color: var(--kol-folio-rule); }
+.kol-find-bar--folio .kol-find-bar-close { color: var(--kol-folio-muted); }
+
+/* StatusBar folio: Folio's meta over its rule, the counts muted */
+.kol-status-bar--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; border-color: var(--kol-folio-rule); }
+.kol-status-bar--folio .kol-status-bar-left { color: var(--kol-folio-muted); }

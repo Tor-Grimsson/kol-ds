@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import {
-  Button, Dialog, Dropdown, EmptyState, Input, LabeledControl, MediaLibrary, ModalProvider, NavDrawer, NoticeBanner,
-  QuickLookFrame, ModalHeader, SummaryLine, TabsRow, ToggleSwitch, useModal,
-  SettingsGroup, SettingsGrid, SettingsCell, SettingsSlider, SettingsRange, SettingsSelect, SettingsSegmented, SettingsToggle, SettingsText,
-  SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
+  Button, ButtonGroup, ModalDialog, Dropdown, EmptyState, Input, LabeledControl, MediaLibrary, ModalProvider, NavDrawer, NoticeBanner,
+  QuickLookFrame, ModalHeader, Slider, SummaryLine, TabsRow, ToggleSwitch, useModal,
+  LabeledControlSection, SettingsGrid, SettingsPoint, SettingsRamp, SettingsRampHead, SettingsLights, SettingsFieldMap, SettingsDisclosure,
 } from '@kolkrabbi/kol-component'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
 
@@ -32,24 +31,31 @@ const NAV = [
 function ExportWindow({ blocking }) {
   const [box, setBox] = useState(null)
   const [open, setOpen] = useState(true)
+  const [loop, setLoop] = useState(true)
   const [v, setV] = useState({ format: 'MP4 · H.264', res: '1920 × 1080' })
   const set = (k) => (x) => setV((o) => ({ ...o, [k]: x }))
   return (
-    <div ref={setBox} className="relative h-[480px] w-[466px] max-w-full">
+    <div ref={setBox} className="relative h-[520px] w-[626px] max-w-full">
       <Button variant="float" tone="secondary" size="md" onClick={() => setOpen(true)}>{blocking ? 'Export scene' : 'Export scene · no scrim'}</Button>
-      <Dialog container={box} variant="float" blocking={blocking} open={open && !!box} onClose={() => setOpen(false)} onMinimise={() => setOpen(false)} icon="share" title="Export scene" width={418}>
+      <ModalDialog container={box} variant="float" blocking={blocking} open={open && !!box} onClose={() => setOpen(false)} onMinimise={() => setOpen(false)} icon="share" title="Export scene">
         <p className="kol-float-body text-fg-64">Still in motion · Scene 01 · 12 seconds</p>
-        <LabeledControl variant="float" label="File name"><Input variant="float" value="still-in-motion_01" onChange={noop} width="100%" /></LabeledControl>
-        <div className="grid grid-cols-2 gap-3">
-          <LabeledControl variant="float" label="Format"><Dropdown variant="float" size="md" value={v.format} onChange={set('format')} options={opt('MP4 · H.264', 'WebM · VP9', 'GIF')} /></LabeledControl>
-          <LabeledControl variant="float" label="Resolution"><Dropdown variant="float" size="md" value={v.res} onChange={set('res')} options={opt('1920 × 1080', '1280 × 720')} /></LabeledControl>
-        </div>
+        {/* the fields: File name first, then the pickers, then Loop playback (a LabeledControl, the switch bare) */}
+        <LabeledControlSection variant="float">
+          <LabeledControl variant="float" label="File name"><Input variant="float" value="still-in-motion_01" onChange={noop} width="100%" /></LabeledControl>
+          <div className="grid grid-cols-2 gap-3">
+            <LabeledControl variant="float" label="Format"><Dropdown variant="float" size="md" value={v.format} onChange={set('format')} options={opt('MP4 · H.264', 'WebM · VP9', 'GIF')} /></LabeledControl>
+            <LabeledControl variant="float" label="Resolution"><Dropdown variant="float" size="md" value={v.res} onChange={set('res')} options={opt('1920 × 1080', '1280 × 720')} /></LabeledControl>
+          </div>
+          <LabeledControl variant="float" horizontal label="Loop playback" labelWidth="auto">
+            <ToggleSwitch variant="float" checked={loop} onChange={setLoop} aria-label="Loop playback" />
+          </LabeledControl>
+        </LabeledControlSection>
         <SummaryLine label="Estimated size" value="18.4 MB" />
-        <div className="flex items-center justify-between">
+        <ButtonGroup align="between">
           <Button variant="float" tone="ghost" size="md" onClick={() => setOpen(false)}>Cancel</Button>
           <Button variant="float" tone="inverted" size="md" onClick={() => setOpen(false)}>Export video</Button>
-        </div>
-      </Dialog>
+        </ButtonGroup>
+      </ModalDialog>
     </div>
   )
 }
@@ -78,6 +84,8 @@ function ConfirmBox() {
 /* the generator settings window (plan-2026-11-05-float-editor W7.1 · 7.2; his 12:2282) — Dialog variant="settings", in its
  * box, and every Settings control on its rows */
 const CURVES = ['Linear', 'Ease', 'Hump', 'Wave'].map((l) => ({ value: l.toLowerCase(), label: l }))
+/* a float Dropdown filling its cell */
+const FILL = 'w-full [&_.kol-dd-trigger]:w-full [&_.kol-dd-trigger]:justify-between'
 function SettingsWindowBox() {
   const [box, setBox] = useState(null)
   const [open, setOpen] = useState(true)
@@ -91,30 +99,30 @@ function SettingsWindowBox() {
   return (
     <div ref={setBox} className="relative h-[700px] w-[912px] max-w-full">
       <Button variant="float" tone="secondary" size="md" onClick={() => setOpen(true)}>Stripe Array settings</Button>
-      <Dialog container={box} variant="settings" blocking={false} open={open && !!box} onClose={() => setOpen(false)} title="Stripe Array" kind="Generate"
-        headerEnd={<div className="w-[158px]"><SettingsSelect value="custom" onChange={noop} options={[{ value: 'custom', label: 'Custom' }]} ariaLabel="Preset" /></div>}
+      <ModalDialog container={box} variant="settings" blocking={false} open={open && !!box} onClose={() => setOpen(false)} title="Stripe Array" kind="Generate"
+        headerEnd={<div className="w-[158px]"><Dropdown variant="float" size="sm" value="custom" onChange={noop} options={[{ value: 'custom', label: 'Custom' }]} ariaLabel="Preset" className={FILL} /></div>}
         sections={sections} section={section} onSection={setSection}
         aside={<SettingsFieldMap background="linear-gradient(90deg, var(--kol-oq-16), var(--kol-fg-96) 50%, var(--kol-oq-16))" left="Radial" right="Centre 0.50 / 0.50" />}
-        footer={<><span className="flex-1" /><Button size="sm" onClick={() => setOpen(false)}>Apply</Button></>}>
-        <SettingsGroup title="Layout" note="Placement and rhythm">
+        footer={<ButtonGroup align="right" className="flex-1"><Button variant="float" tone="inverted" size="sm" onClick={() => setOpen(false)}>Apply</Button></ButtonGroup>}>
+        <LabeledControlSection variant="settings" label="Layout" end="Placement and rhythm" divided>
           <SettingsGrid>
-            <SettingsCell label="Direction"><SettingsSegmented value={v.dir} onChange={set('dir')} options={opt('rows', 'columns').map((o) => ({ ...o, label: o.label[0].toUpperCase() + o.label.slice(1) }))} ariaLabel="Direction" /></SettingsCell>
-            <SettingsCell label="Count"><SettingsSlider value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></SettingsCell>
-            <SettingsCell label="Angle"><SettingsSlider value={v.angle} onChange={set('angle')} min={-90} max={90} step={1} format={(n) => `${n}°`} aria-label="Angle" /></SettingsCell>
-            <SettingsCell label="Spacing"><SettingsSelect value={v.spacing} onChange={set('spacing')} options={[{ value: 'even', label: 'Even' }, { value: 'packed', label: 'Packed' }, { value: 'units', label: 'Units' }]} ariaLabel="Spacing" /></SettingsCell>
+            <LabeledControl variant="float" label="Direction"><TabsRow variant="float" size="xs" tabs={opt('rows', 'columns').map((o) => ({ ...o, label: o.label[0].toUpperCase() + o.label.slice(1) }))} value={v.dir} onChange={set('dir')} ariaLabel="Direction" className="w-full [&>*]:flex-1" /></LabeledControl>
+            <LabeledControl variant="float" label="Count"><Slider variant="float" readout="input" value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></LabeledControl>
+            <LabeledControl variant="float" label="Angle"><Slider variant="float" readout="input" value={v.angle} onChange={set('angle')} min={-90} max={90} step={1} formatValue={(n) => `${n}°`} aria-label="Angle" /></LabeledControl>
+            <LabeledControl variant="float" label="Spacing"><Dropdown variant="float" size="sm" value={v.spacing} onChange={set('spacing')} options={[{ value: 'even', label: 'Even' }, { value: 'packed', label: 'Packed' }, { value: 'units', label: 'Units' }]} ariaLabel="Spacing" className={FILL} /></LabeledControl>
           </SettingsGrid>
-        </SettingsGroup>
-        <SettingsGroup title="Shape ramps" note="Interpolate from A to B">
+        </LabeledControlSection>
+        <LabeledControlSection variant="settings" label="Shape ramps" end="Interpolate from A to B" divided>
           <div className="flex flex-col gap-1">
             <SettingsRampHead />
             <SettingsRamp label="Width" value={v.w} onChange={set('w')} curves={CURVES} />
             <SettingsRamp label="Gap" value={v.g} onChange={set('g')} curves={CURVES} />
           </div>
-        </SettingsGroup>
+        </LabeledControlSection>
         <SettingsDisclosure label="More geometry" note="Waves, dash & offsets" open={v.more} onToggle={set('more')}>
-          <SettingsGrid><SettingsCell label="Waves"><SettingsSlider value={0} onChange={noop} min={0} max={12} step={1} disabled aria-label="Waves" /></SettingsCell></SettingsGrid>
+          <SettingsGrid><LabeledControl variant="float" label="Waves" className="opacity-40"><Slider variant="float" readout="input" value={0} onChange={noop} min={0} max={12} step={1} disabled aria-label="Waves" /></LabeledControl></SettingsGrid>
         </SettingsDisclosure>
-      </Dialog>
+      </ModalDialog>
     </div>
   )
 }
@@ -125,11 +133,12 @@ function SettingsControlsBox() {
   return (
     <div className="w-[408px] max-w-full flex flex-col gap-4 rounded-2xl bg-surface-secondary p-5" data-part-controls>
       <SettingsGrid>
-        <SettingsCell label="Count"><SettingsSlider value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></SettingsCell>
-        <SettingsCell label="From / To"><SettingsRange value={v.range} onChange={set('range')} min={0} max={1} format={(n) => n.toFixed(2)} aria-label="From / To" /></SettingsCell>
-        <SettingsCell label="Centre"><SettingsPoint value={v.point} onChange={set('point')} min={-0.5} max={1.5} aria-label="Centre" /></SettingsCell>
-        <SettingsCell label="Letter"><SettingsText value={v.letter} onChange={set('letter')} aria-label="Letter" /></SettingsCell>
-        <SettingsCell><SettingsToggle label="Invert" checked={v.invert} onChange={set('invert')} /></SettingsCell>
+        <LabeledControl variant="float" label="Count"><Slider variant="float" readout="input" value={v.count} onChange={set('count')} min={1} max={120} step={1} aria-label="Count" /></LabeledControl>
+        <LabeledControl variant="float" label="From / To"><Slider variant="dual" value={v.range[0]} value2={v.range[1]} min={0} max={1} step={0.01} aria-label="From / To" label1={v.range[0].toFixed(2)} label2={v.range[1].toFixed(2)}
+          onChange={(n) => set('range')([Math.min(n, v.range[1]), v.range[1]])} onChange2={(n) => set('range')([v.range[0], Math.max(n, v.range[0])])} /></LabeledControl>
+        <LabeledControl variant="float" label="Centre"><SettingsPoint value={v.point} onChange={set('point')} min={-0.5} max={1.5} aria-label="Centre" /></LabeledControl>
+        <LabeledControl variant="float" label="Letter"><Input variant="float" size="sm" value={v.letter} onChange={(e) => set('letter')(e.target.value)} aria-label="Letter" width="100%" /></LabeledControl>
+        <LabeledControl variant="float" horizontal label="Invert" labelWidth="auto"><ToggleSwitch variant="float" checked={v.invert} onChange={set('invert')} aria-label="Invert" /></LabeledControl>
       </SettingsGrid>
       <div className="flex flex-col gap-1"><SettingsRampHead /><SettingsRamp label="Width" value={v.ramp} onChange={set('ramp')} curves={CURVES} /></div>
       <SettingsLights value={v.lights} onChange={set('lights')} />
@@ -163,7 +172,9 @@ export default function Windows() {
                 <LabeledControl variant="float" label="Width"><Input variant="float" value="1920 px" onChange={noop} width="100%" /></LabeledControl>
                 <LabeledControl variant="float" label="Height"><Input variant="float" value="1080 px" onChange={noop} width="100%" /></LabeledControl>
               </div>
-              <ToggleSwitch variant="float" label="Show safe area" checked={safe} onChange={setSafe} className="w-full justify-between" />
+              <LabeledControl variant="float" horizontal label="Show safe area" labelWidth="auto">
+                <ToggleSwitch variant="float" checked={safe} onChange={setSafe} aria-label="Show safe area" />
+              </LabeledControl>
             </QuickLookFrame>
           </Part>
           <Part name="MediaLibrary float" slug="media-library">

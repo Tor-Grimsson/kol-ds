@@ -1,7 +1,8 @@
 /* Folio — My library on the real Library (/demo-4). The look is /demo-3 (Figma 228:13254); the books are the catalogue's
    (shelf.js · catalogue.js): documents folded into books, titled by shelf, duplicates once. */
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Button, ContentCard, Dropdown, Input, SectionText, Table } from '@kolkrabbi/kol-component'
 import { Icon, Jacket } from './parts'
 import { VOLUMES, SHELVES, SUBSHELVES, DOCS } from './shelf'
 import { fmtDate } from '../lib/catalogue'
@@ -19,25 +20,39 @@ const SORT = {
 }
 const DOC_BY_KEY = Object.fromEntries(DOCS.map((d) => [d.key, d]))
 
+/* the table of books' columns (KOL's Table variant="folio", Folio batch E): each cell drawn whole, its width with it */
+const COLUMNS = (terms) => [
+  { header: 'Title', render: (book) => (
+    <div className="flex min-w-0 flex-1 items-center gap-[16px]">
+      <Cover book={book} width={28} />
+      <p className="kol-folio-row min-w-0 flex-1 truncate group-hover:underline"><Marked text={book.title} terms={terms} /></p>
+      {book.chapters.length > 1 && <span className="kol-folio-meta-sm shrink-0 rounded-[3px] bg-folio-surface px-[8px] py-[5px] text-folio-muted group-hover:bg-folio-paper">{book.chapters.length} chapters</span>}
+    </div>
+  ) },
+  { header: 'Call number', width: 195, render: (book) => <p className="kol-folio-meta w-[195px] shrink-0 truncate tabular-nums">{book.call}</p> },
+  { header: 'Shelf', width: 110, render: (book) => <p className="kol-folio-meta w-[110px] shrink-0 truncate text-folio-muted">{book.subLabel ?? book.shelfLabel}</p> },
+  { header: 'Language', width: 76, render: (book) => <p className="w-[76px] shrink-0"><Flags langs={book.langs} /></p> },
+  { header: 'Origin', width: 142, render: (book) => (
+    <div className="flex w-[142px] shrink-0">
+      {book.origin
+        ? <p className="kol-folio-meta-sm rounded-[3px] bg-folio-mint px-[8px] py-[6px] font-semibold text-folio-green">{book.origin}</p>
+        : <p className="kol-folio-meta-sm text-folio-muted">—</p>}
+    </div>
+  ) },
+  { header: 'Date', width: 104, render: (book) => <p className="kol-folio-meta-sm w-[104px] shrink-0 tabular-nums text-folio-muted">{book.date ? (book.first && book.first.slice(0, 4) !== book.date.slice(0, 4) ? `${book.first.slice(0, 4)}–${book.date.slice(0, 4)}` : fmtDate(book.date)) : 'n.d.'}</p> },
+]
+
 /* every cover is a generated jacket — scans and media thumbnails are never covers (user, 2026-11-04) */
 export function Cover({ book, width }) {
   return <Jacket book={book} width={width} />
 }
 
-function Heading({ n, title, sub }) {
-  return (
-    <div className="flex items-baseline gap-[18px] whitespace-nowrap">
-      <p className="kol-reader-label text-folio-muted">{n}</p>
-      <h2 className="kol-reader-section">{title}</h2>
-      {sub && <p className="kol-reader-meta text-folio-muted">{sub}</p>}
-    </div>
-  )
-}
+/* a numbered section head: KOL's SectionText variant="folio", inline (Folio batch E) */
+const Heading = ({ n, title, sub }) => <SectionText variant="folio" inline eyebrow={n} headline={title} headlineSize="section" headlineAs="h2" meta={sub} gap="gap-[18px]" />
 
+/* the pager's arrow: Button kolbox (plan-2026-11-23 W8.2) */
 const SquareButton = ({ label, icon, onClick, disabled }) => (
-  <button type="button" aria-label={label} onClick={onClick} disabled={disabled} className="flex size-[32px] items-center justify-center border border-folio-rule hover:bg-folio-surface disabled:opacity-40">
-    <Icon name={icon} />
-  </button>
+  <Button variant="kolbox" iconOnly={icon} aria-label={label} onClick={onClick} disabled={disabled} />
 )
 
 /* W10 — the two most recent unfinished documents, from what this browser has read */
@@ -56,19 +71,19 @@ function ContinueCard({ doc, pct, at }) {
     <div className="flex min-w-0 flex-1 items-center gap-[24px] border-t border-folio-rule bg-folio-surface px-[20px] pb-[20px] pt-[19px]">
       <Link to={doc.href} aria-hidden tabIndex={-1}><Cover book={book} width={94} /></Link>
       <div className="flex min-w-0 flex-1 flex-col gap-[9px]">
-        <p className="kol-reader-label truncate text-folio-muted">{book.chapters.length > 1 ? doc.chapter : book.shelfLabel}</p>
-        <p className="kol-reader-book truncate">{book.title}</p>
-        <p className="kol-reader-meta text-folio-muted">{book.chapters.length > 1 ? `Chapter ${book.chapters.indexOf(doc) + 1} of ${book.chapters.length}` : doc.call}</p>
-        <div className="kol-reader-meta flex justify-between">
+        <p className="kol-folio-label truncate text-folio-muted">{book.chapters.length > 1 ? doc.chapter : book.shelfLabel}</p>
+        <p className="kol-folio-book truncate">{book.title}</p>
+        <p className="kol-folio-meta text-folio-muted">{book.chapters.length > 1 ? `Chapter ${book.chapters.indexOf(doc) + 1} of ${book.chapters.length}` : doc.call}</p>
+        <div className="kol-folio-meta flex justify-between">
           <p className="text-folio-muted">{Math.round(pct)}% read</p>
           <p className="font-bold text-folio-green">{Math.round(pct)}%</p>
         </div>
         <div className="h-[4px] w-full bg-folio-rule"><div className="h-full bg-folio-green" style={{ width: `${pct}%` }} /></div>
         <div className="flex items-center justify-between whitespace-nowrap">
-          <Link to={`${doc.href}#resume`} className="kol-reader-control flex gap-[12px] rounded-[3px] bg-folio-mint px-[11px] py-[7px] text-folio-green">
+          <Link to={`${doc.href}#resume`} className="kol-folio-control flex gap-[12px] rounded-[3px] bg-folio-mint px-[11px] py-[7px] text-folio-green">
             <span>Resume reading</span><span aria-hidden>→</span>
           </Link>
-          <p className="kol-reader-meta-sm text-folio-muted">Last read {ago(at)}</p>
+          <p className="kol-folio-meta-sm text-folio-muted">Last read {ago(at)}</p>
         </div>
       </div>
     </div>
@@ -77,6 +92,7 @@ function ContinueCard({ doc, pct, at }) {
 
 export default function FolioShelf() {
   const [params, setParams] = useSearchParams()
+  const navigate = useNavigate()
   const shelf = SHELVES.some((s) => s.id === params.get('shelf')) ? params.get('shelf') : 'all'
   const subs = SUBSHELVES[shelf] ?? null
   const sub = subs?.some((x) => x.id === params.get('sub')) ? params.get('sub') : 'all'
@@ -132,11 +148,7 @@ export default function FolioShelf() {
       <SearchOverlay open={searching} onClose={() => setSearching(false)} />
 
       <div className="flex items-end gap-[32px] px-[56px] pb-[32px] pt-[36px]">
-        <div className="flex min-w-0 flex-1 flex-col gap-[12px]">
-          <p className="kol-reader-label text-folio-muted">{here ? here.note : 'Your own little world'}</p>
-          <h1 className="kol-reader-title">{here ? here.label : 'My library'}</h1>
-          <p className="kol-reader-body text-folio-muted">Old favorites, new discoveries, and the next good chapter.</p>
-        </div>
+        <SectionText variant="folio" eyebrow={here ? here.note : 'Your own little world'} headline={here ? here.label : 'My library'} body="Old favorites, new discoveries, and the next good chapter." className="min-w-0 flex-1" />
         <div className="flex w-[360px] items-end gap-[28px] pb-[4px]">
           <div className="flex h-[79px] w-[170px] items-end gap-[8px]" aria-hidden>
             {VOLUMES_ART.map(([bg, h]) => (
@@ -147,45 +159,39 @@ export default function FolioShelf() {
             ))}
           </div>
           <div className="flex flex-col gap-[6px] whitespace-nowrap">
-            <p className="kol-reader-figure">{onShelf.length}</p>
-            <p className="kol-reader-meta text-folio-muted">books &amp; counting</p>
+            <p className="kol-folio-figure">{onShelf.length}</p>
+            <p className="kol-folio-meta text-folio-muted">books &amp; counting</p>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-[22px] px-[56px]">
         <div className="flex items-center gap-[12px]">
-          <label className="flex h-[44px] min-w-0 flex-1 items-center gap-[12px] rounded-[3px] border border-folio-rule bg-folio-paper px-[14px]">
-            <Icon name="search" size={18} />
-            <input value={q} onChange={(e) => { setQ(e.target.value); setPage(0); setFresh(0) }} placeholder="Search titles, call numbers and the text itself" className="kol-reader-body min-w-0 flex-1 bg-transparent outline-none placeholder:text-folio-muted" />
-            {q ? <button type="button" onClick={() => setQ('')} className="kol-reader-meta text-folio-muted hover:text-folio-ink">Clear</button> : <button type="button" onClick={() => setSearching(true)} className="kol-reader-meta text-folio-muted hover:text-folio-ink">⌘ K</button>}
-          </label>
+          <Input variant="kolbox" size="md" iconLeft="search" aria-label="Search" placeholder="Search titles, call numbers and the text itself" value={q}
+            onChange={(e) => { setQ(e.target.value); setPage(0); setFresh(0) }} className="min-w-0 flex-1"
+            slotRight={q
+              ? <button type="button" onClick={() => setQ('')} className="kol-kolbox-meta shrink-0 text-(--kol-oq-64) hover:text-(--kol-surface-on-primary)">Clear</button>
+              : <button type="button" onClick={() => setSearching(true)} className="kol-kolbox-meta shrink-0 text-(--kol-oq-64) hover:text-(--kol-surface-on-primary)">⌘ K</button>} />
           {import.meta.env.DEV && (
-            <Link to="/new" className="kol-reader-control flex h-[42px] shrink-0 items-center gap-[12px] rounded-[3px] border border-folio-green bg-folio-green px-[16px] text-folio-paper">
-              New document<span aria-hidden className="kol-reader-glyph">+</span>
-            </Link>
+            <Button variant="kolbox" tone="primary" onClick={() => navigate('/new')} className="shrink-0">
+              New document<span aria-hidden>+</span>
+            </Button>
           )}
-          <label className="relative flex h-[42px] shrink-0 items-center gap-[12px] rounded-[3px] border border-folio-rule bg-folio-paper px-[16px] hover:bg-folio-surface">
-            <span className="kol-reader-control">{hits ? 'Best match' : SORTS[sort]}</span>
-            <span aria-hidden className="kol-reader-glyph">⌄</span>
-            <select aria-label="Sort" value={sort} disabled={Boolean(hits)} onChange={(e) => { setSort(e.target.value); setPage(0) }} className="absolute inset-0 cursor-pointer opacity-0">
-              {Object.entries(SORTS).map(([id, label]) => <option key={id} value={id}>{label}</option>)}
-            </select>
-          </label>
+          <Dropdown variant="kolbox" ariaLabel="Sort" value={hits ? 'Best match' : sort} disabled={Boolean(hits)} onChange={(v) => { setSort(v); setPage(0) }} options={Object.entries(SORTS).map(([value, label]) => ({ value, label }))} className="shrink-0" />
         </div>
         <div className="flex items-center justify-between whitespace-nowrap border-b border-folio-rule">
           <div className="flex gap-[32px]">
             {[{ id: 'all', label: 'All books' }, ...SHELVES].map((s) => {
               const on = shelf === s.id
               return (
-                <button key={s.id} type="button" onClick={() => pick(s.id)} className={`-mb-px flex items-start gap-[10px] pb-[16px] ${on ? 'shadow-[inset_0_-3px_0_var(--color-folio-ink)]' : 'text-folio-muted hover:text-folio-ink'}`}>
-                  <span className={`kol-reader-control ${on ? 'font-bold' : 'font-medium'}`}>{s.label}</span>
-                  <span className="kol-reader-meta-sm">{s.id === 'all' ? matched.length : count(s.id)}</span>
+                <button key={s.id} type="button" onClick={() => pick(s.id)} className={`-mb-px flex items-start gap-[10px] pb-[16px] ${on ? 'shadow-[inset_0_-3px_0_var(--kol-folio-ink)]' : 'text-folio-muted hover:text-folio-ink'}`}>
+                  <span className={`kol-folio-control ${on ? 'font-bold' : 'font-medium'}`}>{s.label}</span>
+                  <span className="kol-folio-meta-sm">{s.id === 'all' ? matched.length : count(s.id)}</span>
                 </button>
               )
             })}
           </div>
-          <p className="kol-reader-meta text-folio-muted">A shelf that’s entirely yours.</p>
+          <p className="kol-folio-meta text-folio-muted">A shelf that’s entirely yours.</p>
         </div>
         {subs && (
           <div className="flex flex-wrap gap-[8px]" aria-label={`${here.label} sub-shelves`}>
@@ -193,9 +199,9 @@ export default function FolioShelf() {
               const on = sub === x.id
               const n = x.id === 'all' ? inShelf.length : inShelf.filter((b) => b.sub === x.id).length
               return (
-                <button key={x.id} type="button" onClick={() => { setParams(x.id === 'all' ? { shelf } : { shelf, sub: x.id }); setPage(0); setFresh(0) }} className={`kol-reader-control flex items-center gap-[8px] rounded-[3px] border px-[12px] py-[8px] ${on ? 'border-folio-mint bg-folio-mint text-folio-green' : 'border-folio-rule text-folio-muted hover:text-folio-ink'}`}>
-                  {x.label}<span className="kol-reader-meta-sm">{n}</span>
-                </button>
+                <Button variant="kolbox" key={x.id} pressed={on} aria-pressed={on} onClick={() => { setParams(x.id === 'all' ? { shelf } : { shelf, sub: x.id }); setPage(0); setFresh(0) }}>
+                  {x.label}<span className="kol-folio-meta-sm">{n}</span>
+                </Button>
               )
             })}
           </div>
@@ -207,7 +213,7 @@ export default function FolioShelf() {
           <div className="flex flex-col gap-[18px]">
             <div className="flex items-baseline justify-between whitespace-nowrap">
               <Heading n={num()} title="Pick up where you left off" />
-              <p className="kol-reader-meta text-folio-muted">{reading.length} in progress</p>
+              <p className="kol-folio-meta text-folio-muted">{reading.length} in progress</p>
             </div>
             <div className="flex gap-[24px]">
               {reading.map((r) => <ContinueCard key={r.doc.key} {...r} />)}
@@ -221,21 +227,15 @@ export default function FolioShelf() {
             <div className="flex items-center justify-between">
               <Heading n={num()} title="Fresh on your shelf" sub={shelf === 'all' ? 'The newest from each shelf.' : 'The newest on this shelf, by date.'} />
               <div className="flex items-center gap-[12px]">
-                <p className="kol-reader-meta text-folio-muted">{String(fresh + 1).padStart(2, '0')} / {String(freshPages).padStart(2, '0')}</p>
+                <p className="kol-folio-meta text-folio-muted">{String(fresh + 1).padStart(2, '0')} / {String(freshPages).padStart(2, '0')}</p>
                 <SquareButton label="Previous" icon="arrow-left" disabled={fresh === 0} onClick={() => setFresh(fresh - 1)} />
                 <SquareButton label="Next" icon="arrow-right" disabled={fresh >= freshPages - 1} onClick={() => setFresh(fresh + 1)} />
               </div>
             </div>
             <div ref={freshRow} className="flex gap-[24px]">
               {freshBooks.map((book) => (
-                <Link key={book.id} to={book.href} className="group flex min-w-0 flex-1 flex-col gap-[12px]" style={{ maxWidth: coverW }}>
-                  <Cover book={book} width={coverW} />
-                  <span className="flex flex-col gap-[6px]">
-                    <span className="kol-reader-shelf line-clamp-2 min-h-[38px] group-hover:underline">{book.title}</span>
-                    <span className="kol-reader-meta text-folio-muted">{book.chapters.length > 1 ? `${book.chapters.length} chapters` : book.call}</span>
-                    <span className="kol-reader-meta-sm flex items-center gap-[6px] text-folio-muted">{book.shelfLabel}<Flags langs={book.langs} size={12} /></span>
-                  </span>
-                </Link>
+                <ContentCard key={book.id} variant="folio" href={book.href} linkComponent={Link} style={{ maxWidth: coverW }} media={<Cover book={book} width={coverW} />}
+                  title={book.title} meta={book.chapters.length > 1 ? `${book.chapters.length} chapters` : book.call} label={<>{book.shelfLabel}<Flags langs={book.langs} size={12} /></>} />
               ))}
             </div>
           </div>
@@ -245,55 +245,26 @@ export default function FolioShelf() {
       <div className="flex flex-col gap-[22px] px-[56px] pb-[30px] pt-[8px]">
         <div className="flex items-center justify-between border-t border-folio-ink pt-[27px]">
           <Heading n={num()} title={hits ? 'Found' : 'All books'} sub={`${sorted.length} ${sorted.length === 1 ? 'book' : 'books'}`} />
-          <p className="kol-reader-label text-folio-muted">{hits ? `Matching “${q}”` : `Sorted by ${SORTS[sort]}`}</p>
+          <p className="kol-folio-label text-folio-muted">{hits ? `Matching “${q}”` : `Sorted by ${SORTS[sort]}`}</p>
         </div>
-        <div className="flex flex-col">
-          <div className="kol-reader-label flex h-[34px] items-center gap-[20px] border-b-2 border-folio-ink text-folio-muted">
-            <p className="min-w-0 flex-1">Title</p>
-            <p className="w-[195px] shrink-0">Call number</p>
-            <p className="w-[110px] shrink-0">Shelf</p>
-            <p className="w-[76px] shrink-0">Language</p>
-            <p className="w-[142px] shrink-0">Origin</p>
-            <p className="w-[104px] shrink-0">Date</p>
-            <span className="w-[18px] shrink-0" />
-          </div>
-          {rows.map((book) => (
-            <Link key={book.id} to={book.href} className="group flex h-[70px] items-center gap-[20px] border-b border-folio-rule hover:bg-folio-surface">
-              <div className="flex min-w-0 flex-1 items-center gap-[16px]">
-                <Cover book={book} width={28} />
-                <p className="kol-reader-row min-w-0 flex-1 truncate group-hover:underline"><Marked text={book.title} terms={terms} /></p>
-                {book.chapters.length > 1 && <span className="kol-reader-meta-sm shrink-0 rounded-[3px] bg-folio-surface px-[8px] py-[5px] text-folio-muted group-hover:bg-folio-paper">{book.chapters.length} chapters</span>}
-              </div>
-              <p className="kol-reader-meta w-[195px] shrink-0 truncate tabular-nums">{book.call}</p>
-              <p className="kol-reader-meta w-[110px] shrink-0 truncate text-folio-muted">{book.subLabel ?? book.shelfLabel}</p>
-              <p className="w-[76px] shrink-0"><Flags langs={book.langs} /></p>
-              <div className="flex w-[142px] shrink-0">
-                {book.origin
-                  ? <p className="kol-reader-meta-sm rounded-[3px] bg-folio-mint px-[8px] py-[6px] font-semibold text-folio-green">{book.origin}</p>
-                  : <p className="kol-reader-meta-sm text-folio-muted">—</p>}
-              </div>
-              <p className="kol-reader-meta-sm w-[104px] shrink-0 tabular-nums text-folio-muted">{book.date ? (book.first && book.first.slice(0, 4) !== book.date.slice(0, 4) ? `${book.first.slice(0, 4)}–${book.date.slice(0, 4)}` : fmtDate(book.date)) : 'n.d.'}</p>
-              <span className="shrink-0 text-folio-muted group-hover:text-folio-ink"><Icon name="arrow-right" size={18} /></span>
-            </Link>
-          ))}
-          {rows.length === 0 && <p className="kol-reader-body py-[24px] text-folio-muted">Nothing on this shelf matches “{q}”.</p>}
-        </div>
+        <Table variant="folio" rows={rows} rowHref={(book) => book.href} linkComponent={Link} columns={COLUMNS(terms)}
+          empty={<p className="kol-folio-body py-[24px] text-folio-muted">Nothing on this shelf matches “{q}”.</p>} />
         <div className="flex items-center justify-between">
-          <p className="kol-reader-meta text-folio-muted">Showing {sorted.length ? page * PER_PAGE + 1 : 0}–{page * PER_PAGE + rows.length} of {sorted.length} books</p>
-          <div className="kol-reader-meta flex items-center gap-[18px]">
-            <button type="button" disabled={page === 0} onClick={() => setPage(page - 1)} className="text-folio-muted hover:text-folio-ink disabled:opacity-40">← Previous</button>
+          <p className="kol-folio-meta text-folio-muted">Showing {sorted.length ? page * PER_PAGE + 1 : 0}–{page * PER_PAGE + rows.length} of {sorted.length} books</p>
+          <div className="kol-folio-meta flex items-center gap-[18px]">
+            <Button variant="kolbox" disabled={page === 0} onClick={() => setPage(page - 1)}>← Previous</Button>
             {pageList.map((p, i) => (
               <span key={p} className="flex items-center gap-[18px]">
                 {i > 0 && p - pageList[i - 1] > 1 && <span className="flex size-[30px] items-center justify-center">…</span>}
-                <button type="button" onClick={() => setPage(p)} className={`flex size-[30px] items-center justify-center ${p === page ? 'bg-folio-mint font-bold' : 'hover:bg-folio-surface'}`}>{p + 1}</button>
+                <Button variant="kolbox" pressed={p === page} aria-current={p === page ? 'page' : undefined} onClick={() => setPage(p)}>{p + 1}</Button>
               </span>
             ))}
-            <button type="button" disabled={page >= pages - 1} onClick={() => setPage(page + 1)} className="font-semibold disabled:opacity-40">Next →</button>
+            <Button variant="kolbox" disabled={page >= pages - 1} onClick={() => setPage(page + 1)}>Next →</Button>
           </div>
         </div>
         <footer className="flex items-start justify-between whitespace-nowrap border-t border-folio-rule pt-[23px] text-folio-muted">
-          <p className="kol-reader-nav">A good book is a place to begin again.</p>
-          <p className="kol-reader-label">Your library. Your pace.</p>
+          <p className="kol-folio-nav">A good book is a place to begin again.</p>
+          <p className="kol-folio-label">Your library. Your pace.</p>
         </footer>
       </div>
     </Frame>

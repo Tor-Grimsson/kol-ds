@@ -56,8 +56,10 @@ const CSS = readdirSync(themeDir)
   .map((f) => readFileSync(join(themeDir, f), 'utf8'))
   .join('\n')
 
-const definesClass = (cls) => new RegExp(`\\.${cls}(?![\\w-])`).test(CSS)
-const hasHover = (cls) => new RegExp(`\\.${cls}(?![\\w-])[^{,]*:hover`).test(CSS)
+/* the class is escaped: a token in it (`rounded-[var(--kol-radius-4)]`) is not regex syntax */
+const esc = (cls) => cls.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const definesClass = (cls) => new RegExp(`\\.${esc(cls)}(?![\\w-])`).test(CSS)
+const hasHover = (cls) => new RegExp(`\\.${esc(cls)}(?![\\w-])[^{,]*:hover`).test(CSS)
 
 const walk = (dir, out = []) => {
   for (const name of readdirSync(dir)) {

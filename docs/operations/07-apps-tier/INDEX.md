@@ -3,7 +3,7 @@ title: Apps tier
 type: index
 status: active
 created: 2026-09-21
-updated: 2026-11-05
+updated: 2026-11-20
 description: Products proved as real apps before publishing
 tags:
   - domain/workflow
@@ -13,6 +13,7 @@ related:
   - "[[../INDEX|Operations]]"
   - "[[04-stationery-desk|Stationery desk]]"
   - "[[10-save-to-home-screen|Save to home screen]]"
+  - "[[11-kolbox-audit|Kolbox audit]]"
 ---
 
 # Apps tier
@@ -32,6 +33,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | [[08-site-adoption\|Site adoption]] | The playbook a site on the site rail runs to take the frame as shipped — SiteLayout for its BrandLayout, the tree's foldernotes and groups, the pages on the parts, site-hub's walks as the check |
 | [[09-app-adoption\|App adoption]] | The playbook a tool on the app rail runs to take the frame as shipped — AppShell for its hand-rolled layout, the rows and the enter/expand rule, the pages on PageShell, `apps/shell` as the walk's reference. A consumer picks a frame, never a rail |
 | [[10-save-to-home-screen\|Save to home screen]] | What an app ships to open from the iPhone home screen — head tags, manifest, icon — and what kol-theme does for it (the ground and the top inset, 0.191.0) |
+| [[11-kolbox-audit\|Kolbox audit]] | Every control of `pnpm editor` in the kolbox style driven once (2026-11-19): what it should do, where that comes from, its state; the effects by seven steps, the tools by six, the behaviour set |
 | [[02-media-app-plan\|Media app plan]] | The first app — phases, acceptance, and the one decision still held |
 | [[03-candidate-apps\|Candidate apps]] | The roster the tier will absorb, one at a time. Only media is committed |
 | [[04-stationery-desk\|Stationery desk]] | `apps/stationery` — every kol-branding stationery layout on a pan-and-zoom desk, on VOYAGER (2026-10-27): documents, quote, header, letterhead set, letter styles, cards, invoices and agreements, the research template, and the Brand comparison paper as the long document |
@@ -46,6 +48,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/metric` | `pnpm metric` · `/apps/metric` | kol-website metric's analytics dashboard (`/demo-11`) as the reference page, on static fixture data (`src/fixtures.json`, captured 2026-10-31; `fixtures.js` answers every `/api/*` call) — MetricDashboardUpstream |
 | `apps/float` | `pnpm float` (5216) · `/apps/float` | the float views on kol-shell's `FloatLayout` — Home lists them, one route each: `visual-editor` (full screen, its own chrome, no layout) · `record-tabs` · `record-float` · `rails` · `workspace` · `metrics`; layout, not function (plan-2026-11-04-float-views; Folio parked for `apps/folio`) |
 | `apps/folio` | `pnpm folio` (5217) · `/apps/folio` | **Folio** (2026-11-05, plan-2026-11-05-folio W1) — kol-website record's ebook library, reader and editor (`apps/record/src/folio` + the catalogue in `src/lib`), copied verbatim: `/` the shelf, `/:collection/*` the reader, `/new` and `/edit/…` the editor (Markdown, code, rich text), `/mockups/*` the static Figma mockups (record's `/demo-3`). Every read and write goes through one client (`src/folio/client.js`: list · read · save · create · convert · meta · upload · assetUrl); `src/fixture` implements it on a dozen public-domain texts in four books, saves kept in localStorage. Its look is its own until his evaluation ruling (W2) |
+| `apps/kolbox` | retired 2026-11-19 | **kolbox** is now a style of the editor: `pnpm editor`, Settings › Display › Style set to Kolbox (`#/home`, `#/editor`, `#/labs`, `#/morph`, `#/randomiser`). The old app is in `_tmp/2026-11-19-kolbox-app-retired/`. |
 | `apps/media-hub` | `pnpm media-hub` (5175) · `/apps/media-hub` | the same tool on kol-shell's `AppHub` — Browse at `/` and Settings, nothing else (2026-09-29: Library, Notes, Decks and Brand left — notes/decks/brand are their own apps). No Home; one settings place (the tool's gear hands over through `onOpenSettings`); the phone bar |
 | `apps/note` | `pnpm note` (5177) · `/apps/note` | the notes tool alone — kol-notes over the fixture's fake D1 `notes` table, through media-fixture's `useNotesTool`. Opens on a blank note (`NEW_NOTE`); the list is `#list` |
 | `apps/note-hub` | `pnpm note-hub` (5187) · `/apps/note-hub` | Shell + Hub + notes — Write (a blank note, `/`) and Notes (`/notes`) on one rail |
@@ -79,6 +82,7 @@ What lives here is this repo's depth: which app is being built, in what order, a
 | `apps/markdown` | `pnpm markdown` (5184) · `/apps/markdown` | kol-markdown alone — a fixture doc or your own text beside what the engine reads: rendered · frontmatter and its round-trip · structure · tags · inventory · corpus counts |
 | `apps/search` | `pnpm search-app` (5185) · `/apps/search` | every search surface — the ⌘K search modal, the results page (the query, how it was read, results with their reasons, facets), `/` focus, and RESULTS · GRAPH (the index's tags as a network, kol-search `tagGraph`). `pnpm search` is pnpm's own registry search, hence the name |
 | `apps/growth` | `pnpm growth` (5215) · `/apps/growth` | kol-growth alone (2026-10-30) — kol-component's `GrowthLineStage` full-bleed on AppHub: Orb (kol-fxr's signed-out stage) · Path (a hexagon `d` at gaps 8 · 32) · Outline (kol-atlas's solid hexagon, `seed="outline"`, fills inward); the pointer pushes, a press blasts |
+| `apps/tuner` | `pnpm tuner` (5220) | kol-tuner alone (2026-11-18), on AppHub: System (the mark from measures, six handles that move their sliders and are kept), Rolls (24 rolls, each a whole board) and Tuner (drop or pick an SVG or a black and white image; the simple settings, the rest under Advanced); the boards are the Line Swell canvas's, in KOL tokens; H shows the form alone |
 | `apps/workshop-fixture` | — (private package) | the invented corpus the three apps above share: 19 markdown docs with frontmatter across documentation · operations · development, 24 components, 3 blocks, 2 sets, the showcase's spaces — built into the vault tree, the component tree and kol-search items |
 | `apps/media-fixture` | — (private package) | the imagined olina setup both apps run on: a fake bucket (`bucket.js`) and a fake D1 (`d1.js`), the client over them, and `useFixtureMedia` — the wiring both apps share so neither grows a copy |
 | `apps/stationery` | `pnpm stationery` (5202) · `/apps/stationery` | **the stationery desk** (2026-10-20) — Kolkrabbi's printed set on a pan-and-zoom canvas (kol-component's `PanZoomViewport` over rack's dot grid): the brand sheets and the real invoices as references, the brand book's card · envelope · letterhead · signature at print size wearing kol-brand's marks and facts, and the quote and invoice layouts being designed on A4. See [[04-stationery-desk\|Stationery desk]] |

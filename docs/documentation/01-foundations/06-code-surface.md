@@ -38,7 +38,7 @@ There are **four** things, not eleven. The class names below are the parts they 
 
 ## Shared values
 
-**One answer, everywhere:** `font-family: var(--kol-font-family-mono)` · `font-weight: 400` · fill `--kol-fg-08` · radius `var(--kol-radius-sm)` · color `--kol-fg-80`. The two inline chips had drifted on every one of these (`fg-04` against `fg-08`, `radius-sm` against a bare literal, no color against `fg-80`) — one concept with two spellings, the `.text-fg-*` / `--kol-fg-*` lesson again.
+**One answer, everywhere:** `font-family: var(--kol-font-family-mono)` · `font-weight: 400` · fill `--kol-fg-08` · radius `var(--kol-radius-4)` · color `--kol-fg-80`. The two inline chips had drifted on every one of these (`fg-04` against `fg-08`, `radius-sm` (now `--kol-radius-4`) against a bare literal, no color against `fg-80`) — one concept with two spellings, the `.text-fg-*` / `--kol-fg-*` lesson again.
 
 **Deliberately different, by role:**
 

@@ -62,7 +62,7 @@ export default function Chrome() {
               more={[{ label: 'Hand', icon: 'hand', kbd: 'H', onClick: noop }, { label: 'Reset colours', icon: 'refresh', kbd: 'D', onClick: noop }]} />
           </Part>
           <Part name="PropertyRail" slug="property-rail">
-            <PropertyRail surface={surface} title="Properties" onCollapse={noop}
+            <PropertyRail surface={surface} title="Properties" onCollapseH={noop}
               tabs={[{ value: 'design', label: 'Design' }, { value: 'animate', label: 'Animate' }]} tab={tab} onTab={setTab}
               selected={{ icon: 'clr-mono', name: 'Orbit field', visible: v.visible, onVisible: set('visible') }}
               sections={[

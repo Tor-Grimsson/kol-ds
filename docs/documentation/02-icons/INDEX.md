@@ -3,7 +3,7 @@ title: Icons
 type: reference
 status: active
 created: 2026-07-08
-updated: 2026-11-08
+updated: 2026-11-21
 description: The icon loader and the shipped sets
 aliases:
   - icons
@@ -18,24 +18,26 @@ related:
   - "[[../00-overview/INDEX|overview]]"
   - "[[01-inventory|icon inventory]]"
   - "[[05-app-icons|app icons]]"
+  - "[[06-survey|icon survey]]"
   - "[[../03-components/01-inventory|components]]"
 ---
 
 # Icons — the loader, the set, and bring-your-own
 
-`@kolkrabbi/kol-icons` ships one component (`IconLoader`; `Icon` is its deprecated alias since 2026-11-08) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-interface`, the general set for app chrome, `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces, `kol-icon-set-identity` (≥0.49.0), the marks, and `kol-icon-set-external` (2026-10-31), flags and brands drawn by others, colour, never recoloured. `<IconLoader>` resolves interface → signal → identity → external → consumer; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-interface, grouped).
+`@kolkrabbi/kol-icons` ships one component (`IconLoader`; `Icon` is its deprecated alias since 2026-11-08) plus the inventories and the loader around it. It is its **own architectural tier** (`theme ← icons ← component ← framework`, ARCHITECTURE §3), not part of the component library. Two things live here: the **loader** (how a name resolves and streams) and the **sets** — `kol-icon-set-interface`, the general set for app chrome, `kol-icon-set-editor` (2026-11-22), the design-tool and type icons for the editor and folio, `kol-icon-set-signal` (≥0.25.0), the signal-flow vocabulary for instrument surfaces, `kol-icon-set-identity` (≥0.49.0), the marks, and `kol-icon-set-external` (2026-10-31), flags and brands drawn by others, colour, never recoloured. `<IconLoader>` resolves interface → editor → signal → identity → external → consumer; the name map is flat across both, so one name is one glyph. Browse live: showcase `/icons` (kol-icon-set-interface, grouped).
 
 ## The chapter
 
 | Page | What it holds |
 |---|---|
-| [[01-inventory\|Icon inventory]] | Every name in the four sets, by group |
+| [[01-inventory\|Icon inventory]] | Every name in the five sets, by group |
 | [[02-loader\|Icon loader]] | The `<IconLoader>` component and the packaged set |
 | [[03-custom\|Custom icons]] | `registerIcons`, the retired legacy trees, the promotion loop |
 | [[04-authoring\|Authoring an icon]] | The keyline guide and `<Graphic>` |
 | [[05-app-icons\|App icons]] | The touch / home-screen icon — mark at 60 %, ground, 180×180 export |
+| [[06-survey\|Icon survey]] | Every repeating shape, the bases the workshop builds, the duplicates decided |
 
-**Five pages beside the index** (2026-08-01; app icons 2026-10-09) — the chapter minimum is three.
+**Six pages beside the index** (2026-08-01; app icons 2026-10-09; the survey 2026-11-21) — the chapter minimum is three.
 
 ## Glyph cut
 

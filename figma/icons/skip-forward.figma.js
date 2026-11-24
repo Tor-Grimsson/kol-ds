@@ -1,10 +1,12 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=31-171
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1859-633
 // source=packages/icons/src
 // component=Icon
 import figma from 'figma'
 
+const suffix = figma.selectedInstance.getEnum('solid', { "true": "-solid", "false": "" })
+
 export default {
-  example: figma.code`<IconLoader name="skip-forward" />`,
+  example: figma.code`<IconLoader name="skip-forward${suffix}" />`,
   imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'skip-forward',
 }

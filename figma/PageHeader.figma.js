@@ -4,7 +4,7 @@
 import figma from 'figma'
 // rebuilt 2026-11-07: PageHeader renders SectionText at its level (page · app); phone is the app level below md
 const instance = figma.selectedInstance
-const level = instance.getEnum('level', { "page": "page", "app": "app" })
+const level = instance.getEnum('app', { "false": "page", "true": "app" })
 export default {
   example: figma.code`<PageHeader${level === 'app' ? ' level="app"' : ''} eyebrow={eyebrow} title={title} subtitle={subtitle} />`,
   imports: ["import { PageHeader } from \"@kolkrabbi/kol-component\""],

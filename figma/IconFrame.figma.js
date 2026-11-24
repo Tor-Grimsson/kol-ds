@@ -4,9 +4,9 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const role = instance.getEnum('role', { "default": "default", "nav": "nav" })
+const role = instance.getEnum('nav', { "false": "default", "true": "nav" })
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
-const shape = instance.getEnum('shape', { "square": "square", "round": "round" })
+const shape = instance.getEnum('round', { "false": "square", "true": "round" })
 const xv = role === 'nav' ? ' variant="nav"' : ''
 const xs = size === 'md' ? '' : ` size="${size}"`
 const xr = shape === 'round' ? ' radius="full"' : ''

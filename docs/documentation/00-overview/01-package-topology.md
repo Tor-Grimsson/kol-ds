@@ -3,7 +3,7 @@ title: Package topology
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-09-03
+updated: 2026-11-18
 verified: 2026-07-09
 description: UI, engine and clients tiers
 aliases:
@@ -26,6 +26,7 @@ related:
   - "[[../04-compositions/08-chess-system|chess system]]"
   - "[[../04-compositions/09-dashboards-system|dashboards system]]"
   - "[[../04-compositions/10-styleguide-system|styleguide system]]"
+  - "[[../04-compositions/27-tuner|tuner]]"
 ---
 
 # Package topology
@@ -47,10 +48,11 @@ UI packages, an engine tier and a clients tier. Every content/domain system that
 | | `@kolkrabbi/kol-content` | CMS — `/stack` (blog) + `/work` (portfolio) |
 | | `@kolkrabbi/kol-foundry` | type-specimen apparatus — see [[05-foundry-system]] |
 | | `@kolkrabbi/kol-store` | commerce — see [[06-store-system]] |
-| | `@kolkrabbi/kol-styleguide` | brand guide — color anatomy + combo lab, logo construction, mood tiles, type blocks — see [[10-styleguide-system]] |
+| | `@kolkrabbi/kol-styleguide` | brand guide — color anatomy + combo lab, logo construction, mood tiles, type blocks, and the Specimen kit (`Specimen*`, type-ramp plan 7.5; kol-foundry depends on it for `SpecimenHeader` and keeps the old type-specimen names as aliases) — see [[10-styleguide-system]] |
 | **Engines** (plain JS) | `@kolkrabbi/kol-markdown` | markdown parser, frontmatter read + round-trip, inventory, tag counts — proved in `apps/markdown` |
 | | `@kolkrabbi/kol-search` | query language, ranking with reasons, disjunctive facets — proved in `apps/search` |
 | | `@kolkrabbi/kol-growth` | the growing line (differential growth into any shape), its seeded rng and shape sources; kol-component's `GrowthLineStage` draws it — proved in `apps/growth` |
+| | `@kolkrabbi/kol-tuner` | the form tuner: harmonies, grids and keylines, Construct, System (a mark from measures) and the Tuner (a form rebuilt on one ladder), carried from kol-branding's Line Swell canvas — proved in `apps/tuner`; see [[../04-compositions/27-tuner\|Tuner]] |
 | **Clients** | `@kolkrabbi/kol-*-client` | headless service SDKs (one per contract) |
 
 **Static assets (ARCHITECTURE §7, 2026-07-15):** ONE `public/` at the repo root (fonts, images, favicons) — every app points at it via Vite `publicDir: '../public'`; symlink only for tools that can't be configured. Never a second per-app `public/`.
@@ -74,7 +76,7 @@ Per-package READMEs carry the authoritative tables; the dedicated docs are linke
 | **chess** | `ChessAnalysisLayout`, `ChessBoard`(+WithControls/WithSidebar/Fullscreen), `ChessSidebar`, `GameSelector`, `NotationPanel`, `PlaybackControls`, `VariationTree`, `ChessPiece`, `ChessHero`, `ChessControlsProvider`, `buildMoveTree`; data adapter at `@kolkrabbi/kol-chess/data` |
 | **dashboards** | `DashMetricCard`/`DashChartCard`/`DashListCard`/`DashFeaturedCard`/`DashTableCard`/`DashStackedBarCard`/`DashAlertCard`/`DashSlotCard`, `LineChart`/`DonutChart`/`Sparkline`/`Heatmap`/`Histogram`/`ScatterPlot`/`Candlestick`, `DashboardGrid`, `MetricsDashboard` |
 | **content** | Stack: `StackHero`, `ArticleHeader`, `AuthorLine`, `ArticleCard`, `PortableTextRenderer`, `ShareButtons`, `SourcesReferences`. Work: `WorkCard`, `WorkListItem`, `WorkViewToggle`, `ParallaxShelf`, `ScrollDriftGallery` |
-| **foundry** | see [[05-foundry-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture. Moved in from `kol-component` 2026-07-09 (they pass the live-font membership test): `TypeSample`, `TypeSpecCard`, `TextPressure`, `ColorLoader` |
+| **foundry** | see [[05-foundry-system]] — specimen tools (hero, axes, glyph metrics, character sets, preview) + typeface-catalog grid + `TypefaceSpecimenPage` composition + glyph data & `typefaceConfig` fixture. Moved in from `kol-component` 2026-07-09 (they pass the live-font membership test): `TypeSample`, `TypeSpecCard`, `TextPressure`, `ColorLoader`. The type-specimen kit moved on to kol-styleguide 2026-11-14 (`SpecimenSample`, `SpecimenSpec`, `SpecimenLive`, `SpecimenHeader`); the old names stay here as aliases |
 | **store** | see [[06-store-system]] — `ProductDetailLayout`, `PriceDisplay`, `DiagonalMarqueeRiver`, `PrintsGrid`, `PrintGridCard`, `PrintGridCardGsap`, `PrintBuyButton`; `./data` demo catalog subpath. (The "Drift" gallery reuses content's `ScrollDriftGallery` — not duplicated here.) |
 
 ## Dependencies

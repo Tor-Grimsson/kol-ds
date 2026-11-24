@@ -1,11 +1,16 @@
 import React from 'react'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* `variant="media"` (ContentFiltersCollection, kol-r2b2 2026-08-27): inside a
  * media frame the unchecked hairline vanished over a photo; this variant's
  * UNCHECKED box carries the media control's solid plate (`--kol-oq-12`) so it
  * reads over any image. Checked stays the white plate + black check.
  * `variant="float"` (float-everything W2 row 22, 2026-11-04): an 18 plate on oq-08 with no hairline; checked is the
- * bare check glyph on nothing; the label is the float panel role (Inter 13/500); focus ring on the plate, disabled 40%. */
+ * bare check glyph on nothing; the label is the float panel role (Inter 13/500); focus ring on the plate, disabled 40%.
+ * `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2, 2026-11-18), carried class for class: a 16 box at radius 4 in a
+ * 28 hit box, unchecked the field's oq-16 fill with an oq-24 line, checked the accent fill and line with your icons'
+ * `check` at 12 in the on-accent ink; no label of its own (name it with `aria-label`; a row labels it), a role="checkbox"
+ * button with aria-checked, the focus ring the accent's. Chrome in kol-theme `.kol-toggle-checkbox--kolbox`. */
 const VARIANT_CLASS = { media: 'toggle-checkbox--media', float: 'toggle-checkbox--float' }
 const ToggleCheckbox = ({
   label,
@@ -16,6 +21,23 @@ const ToggleCheckbox = ({
   hint,
   ...props
 }) => {
+  if (variant === 'kolbox') {
+    return (
+      <button
+        type="button"
+        role="checkbox"
+        aria-checked={checked}
+        onClick={() => onChange?.(!checked)}
+        className={`kol-toggle-checkbox--kolbox${checked ? ' is-active' : ''} inline-flex size-(--kol-kolbox-ctl) shrink-0 items-center justify-center outline-none focus-visible:outline-solid focus-visible:outline-1 ${className}`}
+        {...props}
+      >
+        <span className="kol-toggle-checkbox-box flex size-4 items-center justify-center border">
+          {checked && <IconLoader name="check" size={12} className="kol-kolbox-icon shrink-0" />}
+        </span>
+      </button>
+    )
+  }
+
   const handleChange = (event) => {
     const next = event.target.checked
     if (onChange) onChange(next)

@@ -3,7 +3,7 @@ title: Sizes
 type: reference
 status: canonical
 created: 2026-09-03
-updated: 2026-09-29
+updated: 2026-11-19
 verified: 2026-09-03
 description: One height per size, every family
 aliases:
@@ -13,10 +13,12 @@ aliases:
   - control-sizes
 covers:
   - the four sizes and their pixel heights
+  - the seven numbered heights
   - which families are padding-driven and which are pinned
   - the two glyph ladders and why they do not follow the box
   - what is deliberately exempt
 sources:
+  - packages/theme/kol-base-tokens.css
   - packages/theme/kol-components-atoms.css
   - packages/theme/kol-components-molecules.css
   - packages/component/src/hooks/glyphLadders.js
@@ -27,6 +29,7 @@ related:
   - "[[01-tokens|tokens]]"
   - "[[03-typography|type classes]]"
   - "[[../03-components/05-control-chrome|control chrome law]]"
+  - "[[../04-compositions/26-kolbox-system|kolbox system]]"
 ---
 
 # Sizes — the lookup
@@ -50,9 +53,51 @@ one box.
 | **Height** | **22** | **26** | **32** | **40** |
 | Padding | `4px 8px` | `4px 12px` | `6px 16px` | `8px 20px` |
 | Type | `kol-mono-8` | `kol-mono-12` | `kol-mono-14` | `kol-mono-16` |
-| Radius | `--kol-radius-xs` (2px) | `--kol-radius-sm` (4px) | `sm` | `sm` |
+| Radius | `--kol-radius-2` | `--kol-radius-4` | `4` | `4` |
 | Solo glyph | 12 | 16 | 20 | 24 |
 | Adjacent glyph | 10 | 14 | 16 | 18 |
+
+## By number
+
+**Seven heights, each named by its px** (plan-2026-11-18-kolbox-system W1.3: KOL had no step at 24 or 28, where
+tool UIs sit). `--kol-ctl-22`, `-24`, `-26`, `-28`, `-32`, `-40` and `-44` in `kol-base-tokens.css`. A number
+is the same on every pointer; the size names are what move to the touch rung.
+
+| Token | px | Size name |
+|---|---|---|
+| `--kol-ctl-22` | 22 | `xs` |
+| `--kol-ctl-24` | 24 | — |
+| `--kol-ctl-26` | 26 | `sm` |
+| `--kol-ctl-28` | 28 | — |
+| `--kol-ctl-32` | 32 | `md` |
+| `--kol-ctl-40` | 40 | `lg` |
+| `--kol-ctl-44` | 44 | — (the touch size) |
+
+`--kol-ctl-xs`, `-sm`, `-md` and `-lg` read the number they equal (`var(--kol-ctl-22)` …), so a size's px is unchanged.
+
+## Kolbox widths
+
+The kolbox variant's own widths (his ruling 2026-11-18, plan-2026-11-18-kolbox-system 31.1b: kolbox's widths are kept and
+written as the variant's). `kol-design-tokens.css`, beside float's window width.
+
+| Token | px | What takes it |
+|---|---|---|
+| `--kol-kolbox-popover-w` | 240 | `ModalShell variant="kolbox"`, so every kolbox popover (`PopoverPanel variant="kolbox"`): the color, stroke and effect popovers beside the 240 rail |
+| `--kol-kolbox-modal-w` | 480 | `ModalDialog variant="kolbox"`: a confirm, a prompt, the restore prompt |
+| `--kol-kolbox-rail-w` | 240 | `Rail variant="kolbox"` (every kolbox rail: the editor's, Labs', Morph's, Home's and the file rail), and the names column of `TimelineDock variant="kolbox"` |
+| `--kol-kolbox-rail-w-collapsed` | 49 | `Rail variant="kolbox" collapsed`: the left rail's strip of layer glyphs |
+| `--kol-kolbox-search-w` | 576 | `CommandOverlay variant="kolbox"`: the search modal and the shortcuts sheet |
+| `--kol-kolbox-timeline-h` | 200 | `TimelineDock variant="kolbox"`, floated over the canvas's foot |
+| `--kol-kolbox-timeline-h-expanded` | 480 | the same timeline expanded (the real dock's most) |
+| `--kol-kolbox-ctl` | 24 (`var(--kol-ctl-24)`) | the kolbox control height, one place: `Button variant="kolbox"` (every tone, `iconOnly` and its hover frame), `ButtonSplit`, `ButtonGroup layout="joined"`, `Input` sm, `Dropdown`, `DropdownStepper`, `TabsRow` sm, `Slider`, `ToggleSwitch`, `ToggleCheckbox`, `ColorInputRow`, `LabeledControl`'s inline row, `TimelineDock`'s time and zoom fields; apps/kolbox's `h-control` and apps/style's `--kolbox-control` read it. Was 28 (his ruling 2026-11-19: "they should all be 24 not 28") |
+
+Kolbox heights that are not the control: menu and tree rows 24 (`xs`), the Home rail's rows 28 (`TreeRow` sm), the
+tooltip 28, the top rail's mode track 36 (`TabsRow` md), the tool dock's cells 32, `Input` md 32 and lg 44, the
+timeline's track rows 28.
+
+Float's rails are 264 and 360 by law; these are the kolbox variant's, beside them, not a change to float. What stays an app
+size in kolbox: the top rail (56), the tab windows (320), the Layer Effects window (820) and the generator window
+(880 by 656, equal to ModalSettings'), each on a part that stays in kolbox.
 
 ## Mechanisms
 
@@ -137,6 +182,14 @@ without moving the drawn size, as `ToggleSwitch` and `Slider` got in theme
 0.51.0 — but nothing ships that today and no consumer needs it.
 
 ## History
+
+- **2026-11-18** — the kolbox variant's popover (240) and window (480) widths written as tokens (W31.2 batch 4).
+- **2026-11-18** — the kolbox variant's rail (240, collapsed 49), search (576) and timeline (200, expanded 480) sizes written as tokens (W31.2 batch 5).
+- **2026-11-19** — `--kol-kolbox-ctl`, the kolbox control height, 28 to 24 in one token; every kolbox control reads it.
+
+- **2026-11-18** — the ladder named by number: `--kol-ctl-22` to `-44`, with 24 and 28 added and 44 the touch size
+  (plan-2026-11-18-kolbox-system W1.3). xs, sm, md and lg keep their px. The radius row reads the numbered radius
+  (`--kol-radius-2`, `-4`), the same 2 and 4.
 
 - **2026-09-03** — the ladder conformed. Only `md` had lined up: icon squares
   and `IconFrame` read 20/28/32/36 and the Dropdown trigger 28/32/36, against

@@ -98,7 +98,7 @@ function FileImages({ images, cover, back, editing, onImages, onCover, onBack })
           return (
             <figure key={img.id} className="flex min-w-0 flex-col gap-1.5">
               <div className="relative">
-                <button type="button" className="block aspect-square w-full overflow-hidden rounded-[var(--kol-radius-sm)] bg-fg-04" onClick={() => setLook(i)} aria-label={`Open ${label}`}>
+                <button type="button" className="block aspect-square w-full overflow-hidden rounded-[var(--kol-radius-4)] bg-fg-04" onClick={() => setLook(i)} aria-label={`Open ${label}`}>
                   <img src={img.src} alt="" className="size-full object-cover" style={{ objectPosition: 'var(--kol-media-focus, center)' }} />
                 </button>
                 {/* the × in the card's own media-corner chrome (the download's plate), so it reads on a dark picture —
@@ -124,7 +124,7 @@ function FileImages({ images, cover, back, editing, onImages, onCover, onBack })
         {canEdit && (
           <figure className="flex min-w-0 flex-col gap-1.5">
             <button type="button" onClick={add} aria-label="Upload image"
-              className="flex aspect-square w-full items-center justify-center rounded-[var(--kol-radius-sm)] border border-dashed border-[var(--kol-fg-24)] bg-[var(--kol-fg-02)] text-fg-48">
+              className="flex aspect-square w-full items-center justify-center rounded-[var(--kol-radius-4)] border border-dashed border-[var(--kol-fg-24)] bg-[var(--kol-fg-02)] text-fg-48">
               <IconLoader name="plus" size={20} />
             </button>
             <figcaption className="kol-mono-12 text-meta">Upload image</figcaption>

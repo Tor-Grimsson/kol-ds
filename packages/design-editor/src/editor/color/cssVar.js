@@ -43,6 +43,29 @@ export function resolveCssVar(name) {
 }
 
 /**
+ * Any CSS color (a `var()`, `color-mix()`, `color(srgb …)`, a name) → its uppercase hex as drawn inside `scope`
+ * (default <body>, so a theme scope on an ancestor applies). The computed color goes through a 1px canvas, which
+ * reads every syntax the browser draws as sRGB bytes; a regex on the computed string misses `color(srgb …)` and
+ * `color-mix(…)`, which a field then showed raw (plan-2026-11-19-kolbox-whats-left R1). '' when nothing resolves.
+ */
+export function cssColorHex(value, scope) {
+  if (typeof document === 'undefined' || !value) return ''
+  const host = scope ?? document.body
+  const probe = document.createElement('div')
+  probe.style.cssText = 'position:absolute;visibility:hidden'
+  probe.style.color = value
+  host.appendChild(probe)
+  const computed = getComputedStyle(probe).color
+  probe.remove()
+  const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true })
+  if (!ctx || !computed) return ''
+  ctx.fillStyle = computed
+  ctx.fillRect(0, 0, 1, 1)
+  const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data
+  return rgbToHex(r, g, b)
+}
+
+/**
  * RGB components (0–255) → uppercase hex ('#FFCF33'). Shared with the canvas
  * eyedropper.
  */

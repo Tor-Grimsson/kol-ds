@@ -1,7 +1,7 @@
 /* THE ICON-SET REGISTRY (2026-11-05) — one source for every surface that lists the sets: the gallery, the rail
  * (ShellChrome), the Styles index and ⌘K (shell-nav). It lived in pages/IconsGallery.jsx, and ⌘K hard-coded
  * interface + signal beside it, so identity and external never indexed. A new set is added HERE and nowhere else. */
-import { KOL_ICON_SET_INTERFACE, KOL_ICON_SET_SIGNAL, KOL_ICON_SET_IDENTITY, KOL_ICON_SET_EXTERNAL } from '@kolkrabbi/kol-icons'
+import { KOL_ICON_SET_INTERFACE, KOL_ICON_SET_EDITOR, KOL_ICON_SET_SIGNAL, KOL_ICON_SET_IDENTITY, KOL_ICON_SET_EXTERNAL } from '@kolkrabbi/kol-icons'
 import { ICON_CATEGORIES } from './icon-categories.js'
 
 /* Icon-set registry — the shipped sets: interface is app chrome (kol-icons ≥0.25.0), signal is the instrument
@@ -16,6 +16,12 @@ export const ICON_SETS = {
     label: 'kol-icon-set-interface',
     title: 'Interface',
     groups: KOL_ICON_SET_INTERFACE,
+  },
+  /* editor (2026-11-22): design and typography, split out of interface for the editor and folio surfaces */
+  'kol-icon-set-editor': {
+    label: 'kol-icon-set-editor',
+    title: 'Editor',
+    groups: KOL_ICON_SET_EDITOR,
   },
   'kol-icon-set-signal': {
     label: 'kol-icon-set-signal',

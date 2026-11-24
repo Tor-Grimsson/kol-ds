@@ -99,8 +99,8 @@ His read: *"I could go on, but I think you can just log this for now."* The comm
 | 55 | LiveCard | Needs fixing: the badge row is offset outside the card, and its parts are loose frames, not components. |
 | 56 | Print kit | Does it belong in the library? Why not in brand? |
 | 57 | Tier | How are Timecode, ZoomReadout, SceneBreadcrumb, FooterStrip, Breadcrumb, CanvasHint, DataStatus, SummaryLine, NoticeBanner, EmptyState (and more) not atoms? |
-| 58 | Dialog (float) | The two dropdowns with titles are a LabeledControl, which isn't used. QuickLookHeader doesn't read as a header (Figma's does): too much padding and no clear split. The header should have its own padding, the content its own, then auto-layout them together, not one auto-layout for everything. |
-| 59 | Dialog (settings) | The header is not a component; there's a weird border and a new 16 radius. The main content is weird: inputs with sliders broken. The primary button is primary on primary, so invisible. It should be float but uses regular buttons. "Live preview" toggle with text is a LabeledControl. Needs work. |
+| 58 | ModalDialog (float) | The two dropdowns with titles are a LabeledControl, which isn't used. QuickLookHeader doesn't read as a header (Figma's does): too much padding and no clear split. The header should have its own padding, the content its own, then auto-layout them together, not one auto-layout for everything. |
+| 59 | ModalDialog (settings) | The header is not a component; there's a weird border and a new 16 radius. The main content is weird: inputs with sliders broken. The primary button is primary on primary, so invisible. It should be float but uses regular buttons. "Live preview" toggle with text is a LabeledControl. Needs work. |
 | 60 | SettingsGroup | Should use LabeledControl and doesn't. All SettingsSliders are broken; no Input shown, just raw text. |
 | 61 | SettingsGrid | Broken. Its SettingsToggle is a component here and should have been used in the Dialog. None use LabeledControl. The outline style is wrong. |
 | 62 | SettingsSlider · SettingsToggle · SettingsCell | Same problems as SettingsGrid. |

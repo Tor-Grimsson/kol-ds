@@ -77,7 +77,7 @@ export function AddLayerButton() {
 export function LayerStackBody() {
   const {
     selectedIds, select, selectCanvas, toggleSelection, groupLayers,
-    layers, toggleLayer, toggleLayerLock, updateLayer, reparentLayer,
+    layers, toggleLayer, toggleLayerLock, updateLayer, reparentLayer, canvasName, setCanvasName,
   } = useComposeState()
   return (
     <BaseLayerStack
@@ -90,6 +90,8 @@ export function LayerStackBody() {
       onToggleVisible={toggleLayer}
       onToggleLocked={toggleLayerLock}
       onRename={(id, name) => updateLayer(id, { name })}
+      canvasName={canvasName}
+      onRenameCanvas={setCanvasName}
       onReorder={reparentLayer}
       onGroup={groupLayers}
       labelFor={rowLabelForLayer}

@@ -1,5 +1,12 @@
 # @kolkrabbi/kol-content
 
+## 0.18.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W12.1 — needs kol-component ≥0.370.0:
+
+- **ShareButtons** — the `label` and its buttons are one `LabeledControl` (`horizontal`, the label hugging, its
+  kol-helper-12 fg-48 look kept); the buttons wrap in their own cell.
+
 ## 0.17.0 — 2026-11-08
 
 - Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peer `@kolkrabbi/kol-icons` >=0.68.0.

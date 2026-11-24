@@ -20,7 +20,7 @@ export default function TocRow({ number, label, current = false, href, onClick, 
       {...(href ? { href } : { type: 'button' })}
       onClick={onClick}
       aria-current={current ? 'location' : undefined}
-      className={`group flex h-8 w-full items-center gap-4 rounded-[var(--kol-float-list-r)] px-3 text-left no-underline cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${current ? 'bg-fg-16' : 'hover:bg-fg-08'} ${className}`.trim()}
+      className={`group flex h-8 w-full items-center gap-4 rounded-[var(--kol-float-list-r)] px-3 text-left no-underline cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)] ${current ? 'bg-fg-12' : 'hover:bg-fg-04'} ${className}`.trim()}
     >
       {n != null && <span className="kol-float-ruler w-4 shrink-0 tabular-nums text-fg-64">{n}</span>}
       <span className={`kol-float-hint min-w-0 flex-1 truncate ${current ? 'text-fg-emphasis' : 'text-fg-64 group-hover:text-fg-emphasis'}`}>{label}</span>

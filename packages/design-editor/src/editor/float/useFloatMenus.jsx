@@ -1,5 +1,5 @@
 import { useModal } from '@kolkrabbi/kol-component'
-import { openColorModes } from '../color/ColorModesWindow'
+import { openColorModes } from '../color/ModalColorModes'
 import { ASPECTS } from '../shell/aspects'
 import { useComposeState, COVER_TYPES } from '../compose/state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
@@ -19,7 +19,7 @@ import { CASES } from '../modes/type/cuts'
 import { toggleDots, useBindDots } from '../params/dotVisibility'
 import { toggleTimelinePinned, useTimelinePinned } from '../params/timelinePinned'
 import { useEffectTarget } from '../shell/LiveFilterRows'
-import { useZoom } from '../shell/zoomStore'
+import { useZoomSettled } from '../shell/zoomStore'
 import { applyWorkspace, currentWorkspaceName, resetWorkspace, saveWorkspace, useWorkspace } from '../state/workspace'
 
 /**
@@ -81,7 +81,7 @@ export function useFloatMenus({ cards, toggleRail, tools } = {}) {
   const modal = useModal()
   const dots = useBindDots()
   const timelinePinned = useTimelinePinned()
-  const zoom = useZoom()
+  const zoom = useZoomSettled() /* menu data: the settled zoom (W18), not one render per pinch step */
   const workspace = useWorkspace()
   const workspaceName = currentWorkspaceName(workspace)
   const fxTarget = useEffectTarget()

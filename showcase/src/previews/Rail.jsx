@@ -1,11 +1,33 @@
 import { useState } from 'react'
-import { Button, Dropdown, IconFrame, Rail, RailActions, RailFoot, RailHeader, RailHint, RailRow, RailSection, RailTabs, SegmentedToggle } from '@kolkrabbi/kol-component'
+import { Button, Dropdown, IconFrame, Rail, RailActions, RailFoot, RailHeader, RailHint, RailRow, RailSection, RailTabs, SegmentedToggle, LabeledControlSection, TreeRow } from '@kolkrabbi/kol-component'
 
 /* a rail on every edge, over the page — and one pushing the layout, resizable from its inner edge */
 export const stage = 'md'
 const LINKS = ['Overview', 'Fleet', 'Journal', 'Contact']
 
-export default function RailPreview() {
+export const variants = ['default', 'kolbox', 'folio']
+
+export default function RailPreview({ variant = 'default' }) {
+  /* folio (Folio migration batch D): the bare aside, its edge and width the caller's */
+  if (variant === 'folio') return (
+    <div className="flex h-[240px] w-[260px]" style={{ background: 'var(--kol-folio-paper)', color: 'var(--kol-folio-ink)' }}>
+      <Rail variant="folio" aria-label="Library" className="min-h-0 w-full border-r border-[var(--kol-folio-rule)]">
+        <TreeRow variant="folio" label="Studio" count={2} expanded onToggle={() => {}} />
+        <TreeRow variant="folio" href="#" label="A Markdown sampler" active />
+        <TreeRow variant="folio" href="#" label="Laying Plans" />
+      </Rail>
+    </div>
+  )
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <div className="flex h-[320px] w-full justify-center gap-6">
+      <Rail variant="kolbox" side="left" aria-label="Rail" header={<RailHeader variant="kolbox" title="Pages" />}>
+        <LabeledControlSection variant="kolbox" label="Layers"><TreeRow variant="kolbox" label="Page 1" active /><TreeRow variant="kolbox" label="Page 2" /></LabeledControlSection>
+        <LabeledControlSection variant="kolbox" label="Styles" />
+      </Rail>
+      <Rail variant="kolbox" side="left" aria-label="Collapsed rail" collapsed />
+    </div>
+  )
   const [open, setOpen] = useState(false)
   const [side, setSide] = useState('left')
   const [docked, setDocked] = useState(true)

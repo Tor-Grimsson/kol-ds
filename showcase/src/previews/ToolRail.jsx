@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { ToolRail } from '@kolkrabbi/kol-shell'
+import { ToolRail, ToolRailSlot } from '@kolkrabbi/kol-shell'
+import { Button } from '@kolkrabbi/kol-component'
 
 /* the editor's tool column, one per surface (the gap map's row 63 — eight 40 slots, 4 apart, the armed tool lit) */
 const TOOLS = [
@@ -13,7 +14,21 @@ const TOOLS = [
   { id: 'effect', icon: 'radial-star', label: 'Effect', kbd: 'E' },
 ]
 
-export default function ToolRailPreview() {
+export const variants = ['default', 'kolbox', 'folio']
+
+export default function ToolRailPreview({ variant = 'default' }) {
+  /* folio (Folio migration batch D): the toolbar row under the menus, the format's tools as children */
+  if (variant === 'folio') return (
+    <div className="w-full" style={{ background: 'var(--kol-folio-paper)', color: 'var(--kol-folio-ink)' }}>
+      <ToolRail variant="folio"><Button variant="folio" iconLeft="image">Image</Button><Button variant="folio" iconLeft="download">Export</Button><Button variant="folio" iconLeft="search" pressed>Find</Button></ToolRail>
+    </div>
+  )
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <ToolRail variant="kolbox" value="select" onVariants={() => {}}
+      tools={[{ id: 'select', icon: 'pointer', label: 'Select', kbd: 'V', more: [{ id: 'select', icon: 'pointer', label: 'Select' }] }, { id: 'pen', icon: 'pen', label: 'Pen', kbd: 'P' }, { divider: true }, { id: 'hand', icon: 'hand', label: 'Hand', kbd: 'H' }]}
+      end={<ToolRailSlot icon="panel-bottom" label="Timeline" lit />} />
+  )
   const [tool, setTool] = useState('select')
   return (
     <div className="flex flex-wrap items-start gap-8">

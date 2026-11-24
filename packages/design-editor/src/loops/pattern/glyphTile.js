@@ -1,7 +1,7 @@
-// Glyph tile — a Right Grotesk letterform (or short run) as pattern-tile
-// geometry. Restores the labs 'glyph' shape (kol-labs-single lib/glyphPath.js)
-// on this repo's EXISTING font machinery: editor/modes/type/fontLoader.js
-// (opentype.js over /public/fonts/right-grotesk-ttf, promise-cached per cut) —
+// Glyph tile — a letterform (or short run) as pattern-tile geometry. Restores
+// the labs 'glyph' shape (kol-labs-single lib/glyphPath.js) on this repo's
+// EXISTING font machinery: editor/modes/type/fontLoader.js (opentype.js over
+// the outline families' variable fonts, promise-cached per weight) —
 // no second loader, no new dependency.
 //
 // Sync by contract, async by nature: `glyphShape` answers from the warm cache
@@ -22,8 +22,8 @@ const shapes = new Map()  // shapeKey → { viewBox, paths }
 const cutKey = (width, weight) => `${width}-${weight}`
 
 // → { viewBox:[x,y,w,h], paths:[d] } | null (font still cold / no text).
-// `width` is a fontLoader cut id ('base','Compact','Tall','Wide','Narrow',
-// 'Spatial','Tight'), `weight` one of its numeric weights (100…900).
+// `width` is an outline family id ('inter', 'malromur'), `weight` a value on
+// its axis (clamped by the loader).
 export function glyphShape(width, weight, text) {
   if (!text) return null
   const ck = cutKey(width, weight)

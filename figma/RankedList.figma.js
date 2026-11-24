@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 
 export default {
   example: variant === 'float'

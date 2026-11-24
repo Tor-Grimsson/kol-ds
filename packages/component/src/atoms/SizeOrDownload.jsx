@@ -54,7 +54,7 @@ export default function SizeOrDownload({
       href={href ?? '#'}
       onClick={click}
       aria-label={done ? confirmLabel : label}
-      className="group/size -mx-1 inline-grid items-end justify-items-start rounded-[var(--kol-radius-sm)] px-1 transition-colors duration-500 ease-[var(--kol-ease-house)] hover:bg-oq-04 active:bg-oq-08"
+      className="group/size -mx-1 inline-grid items-end justify-items-start rounded-[var(--kol-radius-4)] px-1 transition-colors duration-500 ease-[var(--kol-ease-house)] hover:bg-oq-04 active:bg-oq-08"
     >
       <span
         className="kol-mono-12 text-oq-80 group-hover/size:opacity-0"

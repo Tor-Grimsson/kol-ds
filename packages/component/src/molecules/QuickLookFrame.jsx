@@ -1,9 +1,10 @@
 import { useRef, useState } from 'react'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import ModalHeader from './ModalHeader.jsx'
+import Header from './Header.jsx'
 import ModalShell from './ModalShell.jsx'
 
-/* taxonomy-ok: molecule — ModalHeader (molecule) on ModalShell (molecule) + kol-icons's IconLoader. */
+/* taxonomy-ok: molecule — Header · ModalHeader (molecules) on ModalShell (molecule) + kol-icons's IconLoader. */
 
 /**
  * QuickLookFrame — The preview window. the Finder Quick Look window (user 2026-09-23: *"put them in a container LIKE
@@ -34,7 +35,7 @@ import ModalShell from './ModalShell.jsx'
  *
  * THE UTILITY WINDOW (`variant="float"`, float-everything W6 rows 86 · 88, 2026-11-04 — kol-float--style 46:2840): a
  * non-modal float window — no scrim, the scene stays live under it. `kol-float-solid` on `--kol-float-window-r`, 20 in,
- * 18 between its parts; the header is `ModalHeader variant="float"` (`icon` · title · `onMinimise` · `onClose`); the
+ * 18 between its parts; the header is `Header variant="modal"` (`icon` · title · `onMinimise` · `onClose`); the
  * body is the caller's (chip tabs, float fields); `status` is the footer line (`Changes saved automatically`, the
  * `kol-float-label` role on fg-64) with the resize corner as its glyph at the right — the same drag as the default grip.
  * @param {'float'}  [variant]
@@ -71,7 +72,7 @@ export default function QuickLookFrame({ variant, icon, onMinimise, status, titl
     return (
       <ModalShell ref={ref} variant="float" style={size ? { width: size.w, height: size.h } : undefined}
         className={`w-full max-w-[562px] gap-[18px] p-5 ${className}`.trim()}
-        header={header && <ModalHeader variant="float" icon={icon} title={title} actions={actions} onMinimise={onMinimise} onClose={onClose} />}
+        header={header && <Header variant="modal" icon={icon} title={title} end={actions} onMinimise={onMinimise} onClose={onClose} />}
         footer={(
           <>
             {footer}

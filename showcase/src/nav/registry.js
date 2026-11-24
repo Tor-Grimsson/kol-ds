@@ -97,8 +97,9 @@ const DESCRIPTIONS = {
   PriceDisplay: 'A baseline-aligned price line formatted via Intl.NumberFormat with an optional muted note.',
   ProsePreview: 'A full rich-text specimen exercising the whole kol-prose stylesheet in one view.',
   Knob: 'A drag-to-set rotary knob numeric input with a 270° sweep and arrow-key stepping.',
-  TypeSample: 'A single labeled type-specimen block driven by family/weight/size/line-height props.',
-  TypeSpecCard: 'A two-column type-spec row — font metrics beside a live sample slot.',
+  SpecimenSample: 'One caption and one sample, driven by family/weight/size/line-height props; caption above or beside.',
+  SpecimenSampleGroup: 'A stack of SpecimenSample with the hairline between them.',
+  SpecimenSpec: 'A two-column type-spec row: font metrics beside a live sample slot.',
   ShapeDropdown: 'A split icon-button + variant-menu — act on the current variant or pick another.',
   SplitToolButton: 'A single-trigger split tool button — one click arms the last-picked variant and opens the variant menu.',
   SpecList: 'A compact label/value definition list with Divider-separated rows.',
@@ -160,7 +161,7 @@ const DESCRIPTIONS = {
   ParamBindDot: 'The dot beside a param row — hollow at rest, the accent when bound, a click opens its menu.',
 
   /* P9 foundry (subpath @kolkrabbi/kol-component/foundry) */
-  SpecimenSectionHeader: 'A shared specimen section header — eyebrow, title, and a controls slot the foundry sections mount under.',
+  SpecimenHeader: 'The Specimen section head on SectionHeader: icon, title and, with controls, the weight and style dropdowns.',
   GlyphMetricsGrid: 'A glyph grid with opentype-parsed metric overlays — baseline, x-height, cap, ascender, descender.',
   VariableFontSection: 'A variable-font axis playground — sliders drive font-variation-settings live.',
   TypefaceHero: 'A typeface specimen hero — a large live type render with a category pill.',
@@ -194,7 +195,7 @@ const DESCRIPTIONS = {
   SubPageHero: 'A compact hero for subpages.',
 
   /* loaders */
-  Icon: 'An SVG icon by name, from a 341-icon set across 14 categories.',
+  Icon: 'An SVG icon by name, from the 1008 icons of the interface set, across 20 categories.',
 }
 
 /* Display order + labels for category groupings. `primitives` is dead —

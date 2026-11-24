@@ -1,10 +1,12 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=31-131
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1853-619
 // source=packages/icons/src
 // component=Icon
 import figma from 'figma'
 
+const suffix = figma.selectedInstance.getEnum('solid', { "true": "-solid", "false": "" })
+
 export default {
-  example: figma.code`<IconLoader name="pause" />`,
+  example: figma.code`<IconLoader name="pause${suffix}" />`,
   imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'pause',
 }

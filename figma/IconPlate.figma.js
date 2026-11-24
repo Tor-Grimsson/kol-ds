@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const ground = instance.getEnum('ground', { "light": "light", "dark": "dark" })
+const ground = instance.getEnum('dark', { "false": "light", "true": "dark" })
 const guide = instance.getBoolean('guide') ? ' guide' : ''
 
 export default {

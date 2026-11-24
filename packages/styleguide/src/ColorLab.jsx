@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Button, ColorPickerPopover, Dropdown, IconLoader, IconFrame, PaletteHarmonyWheel, SettingsSections, Slider, Tooltip, hexToHsl, hslToHex } from '@kolkrabbi/kol-component'
 import { COLOR_RELATIONS, CVD_TYPES, DEFAULT_COLOR_LAB, colorLab, colorLabCss, contrastGrade, contrastRatio, hexToOklch, inkOn, midColor, oklchToHex, paletteFromPixels, rollColorLab, simulateCvd, tintLadder } from './colorLab.js'
-import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.jsx'
+import ModalLab, { CopyAction, LabHistory, useLabValue } from './lab/ModalLab.jsx'
 
 /* taxonomy-ok: organism — the colour generator in the lab window: sources and harmonies in the rail, the colours on the stage, the two accessibility views */
 
@@ -513,7 +513,7 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
     { id: 'vision', icon: 'eye-on', label: 'Color blindness simulator' },
   ]
   return (
-    <LabWindow
+    <ModalLab
       className={className}
       title={view === 'palette' ? 'Color Lab' : VIEWS.find((v) => v.id === view).label}
       tabs={view === 'contrast' ? contrastRail : view === 'vision' ? visionRail : sources}
@@ -542,6 +542,6 @@ export default function ColorLab({ value: valueProp, onChange, samples = [], lib
       }}
     >
       {view === 'contrast' ? contrastStage : view === 'vision' ? visionStage : paletteStage}
-    </LabWindow>
+    </ModalLab>
   )
 }

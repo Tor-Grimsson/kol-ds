@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "secondary": "secondary", "outline": "outline" })
+const variant = instance.getEnum('variant', { "default": "default", "secondary": "secondary", "outline": "outline", "float": "float" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
 const label = instance.getString('label')
 const iconOn = instance.getBoolean('icon')

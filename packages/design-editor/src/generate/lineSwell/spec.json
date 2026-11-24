@@ -1,0 +1,7712 @@
+{
+ "source": "https://claude.ai/artifact/4Npm9zbKAg753Cz4TMPSKw",
+ "forms": {
+  "master": {
+   "board": "swell-00-master",
+   "title": "Line Swell master",
+   "call": {
+    "fn": "master"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Source",
+     "controls": [
+      {
+       "name": "source",
+       "editor": "enum",
+       "options": [
+        "shape",
+        "image",
+        "wave"
+       ],
+       "default": "shape"
+      },
+      {
+       "name": "preset",
+       "editor": "enum",
+       "options": [
+        "sun",
+        "blinds",
+        "steps",
+        "keys",
+        "hex",
+        "ridge",
+        "glyph",
+        "pulse",
+        "lines",
+        "relief",
+        "inverted",
+        "telescope",
+        "taper",
+        "dash",
+        "half",
+        "piano"
+       ],
+       "default": "half"
+      },
+      {
+       "name": "variant",
+       "editor": "int",
+       "min": 0,
+       "max": 24,
+       "default": 1
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Shape source",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "circle",
+        "hexagon",
+        "diamond",
+        "triangle",
+        "ring",
+        "peak",
+        "split"
+       ],
+       "default": "preset"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 1.5,
+       "step": 0.01,
+       "default": 0.93
+      },
+      {
+       "name": "depth",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.17
+      },
+      {
+       "name": "breakUp",
+       "editor": "range",
+       "min": -0.8,
+       "max": 0.8,
+       "step": 0.01,
+       "default": -0.26
+      },
+      {
+       "name": "pattern",
+       "editor": "int",
+       "min": 0,
+       "max": 99,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Letter",
+     "controls": [
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": ""
+      },
+      {
+       "name": "letterFont",
+       "editor": "text",
+       "default": ""
+      },
+      {
+       "name": "letterWeight",
+       "editor": "range",
+       "min": 100,
+       "max": 900,
+       "step": 100,
+       "default": 900
+      },
+      {
+       "name": "letterStretch",
+       "editor": "range",
+       "min": 0.5,
+       "max": 1.6,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "letterLean",
+       "editor": "range",
+       "min": -30,
+       "max": 30,
+       "step": 1,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "letterX",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "letterY",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Image source",
+     "controls": [
+      {
+       "name": "contrast",
+       "editor": "range",
+       "min": 0.5,
+       "max": 3,
+       "step": 0.05,
+       "default": 1.4
+      }
+     ]
+    },
+    {
+     "title": "Wave source: oscillator A",
+     "controls": [
+      {
+       "name": "waveAmp",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "waveLength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "waveSpeed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "waveDir",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "waveFill",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "waveInvert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Wave source: oscillator B",
+     "controls": [
+      {
+       "name": "waveAmp2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.25
+      },
+      {
+       "name": "waveLength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 0.9
+      },
+      {
+       "name": "waveSpeed2",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "waveDir2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "waveOffset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "waveFill2",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "waveInvert2",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Wave source",
+     "controls": [
+      {
+       "name": "waveSync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "waveHarmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "2:1"
+      },
+      {
+       "name": "waveCombine",
+       "editor": "enum",
+       "options": [
+        "between",
+        "union",
+        "intersect",
+        "subtract",
+        "exclude"
+       ],
+       "default": "between"
+      },
+      {
+       "name": "waveBand",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.45
+      },
+      {
+       "name": "waveTurn",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Field",
+     "controls": [
+      {
+       "name": "levels",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "smooth",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "8"
+       ],
+       "default": "preset"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "density",
+       "editor": "range",
+       "min": 0.25,
+       "max": 3,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": -90,
+       "max": 90,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "dash",
+       "editor": "int",
+       "min": -60,
+       "max": 120,
+       "unit": "px",
+       "default": 0
+      },
+      {
+       "name": "length",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "frame",
+        "shape"
+       ],
+       "default": "preset"
+      },
+      {
+       "name": "overhang",
+       "editor": "int",
+       "min": -120,
+       "max": 120,
+       "unit": "px",
+       "default": 12
+      },
+      {
+       "name": "ends",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "square",
+        "round"
+       ],
+       "default": "square"
+      }
+     ]
+    },
+    {
+     "title": "Solid part",
+     "controls": [
+      {
+       "name": "solid",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.02
+      },
+      {
+       "name": "solidTurn",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "solidGap",
+       "editor": "int",
+       "min": 0,
+       "max": 120,
+       "unit": "px",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Piano keys",
+     "controls": [
+      {
+       "name": "keys",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "keysFrom",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "start",
+        "end",
+        "alternate",
+        "middle"
+       ],
+       "default": "middle"
+      }
+     ]
+    },
+    {
+     "title": "Transition",
+     "controls": [
+      {
+       "name": "transition",
+       "editor": "range",
+       "min": -240,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 0
+      },
+      {
+       "name": "curve",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "bevel",
+        "swell"
+       ],
+       "default": "preset"
+      },
+      {
+       "name": "shift",
+       "editor": "range",
+       "min": -1.5,
+       "max": 1.5,
+       "step": 0.05,
+       "default": 0
+      },
+      {
+       "name": "growFrom",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "center",
+        "base"
+       ],
+       "default": "preset"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "preset",
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "preset"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "view",
+     "section": "Source",
+     "why": "shows the source picture in place of the lines; the port reads the source as numbers and has no picture of it"
+    },
+    {
+     "name": "handles",
+     "section": "Solid part",
+     "why": "the board's drag handles on its own picture; the editor has none"
+    },
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 13,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "thin",
+       "thick",
+       "shift",
+       "transition",
+       "angle",
+       "taper",
+       "dash",
+       "solid",
+       "solidTurn",
+       "solidGap",
+       "keys",
+       "density",
+       "overhang"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 0.2
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "blinds": {
+   "board": "swell-02-blinds",
+   "title": "Blinds line mark",
+   "call": {
+    "fn": "vals",
+    "name": "Blinds"
+   },
+   "sections": [
+    {
+     "title": "Shape",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "circle",
+        "hexagon",
+        "ring",
+        "peak",
+        "split",
+        "letter"
+       ],
+       "default": "circle"
+      },
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": "R"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 1.3,
+       "step": 0.01,
+       "default": 0.9
+      },
+      {
+       "name": "breakUp",
+       "editor": "range",
+       "min": 0,
+       "max": 0.8,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "pattern",
+       "editor": "int",
+       "min": 1,
+       "max": 99,
+       "default": 1
+      },
+      {
+       "name": "thickPart",
+       "editor": "enum",
+       "options": [
+        "inside",
+        "outside"
+       ],
+       "default": "inside"
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 60,
+       "default": 14
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 175,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.58
+      },
+      {
+       "name": "length",
+       "editor": "enum",
+       "options": [
+        "frame",
+        "shape"
+       ],
+       "default": "shape"
+      },
+      {
+       "name": "overhang",
+       "editor": "int",
+       "min": 0,
+       "max": 120,
+       "unit": "px",
+       "default": 0
+      },
+      {
+       "name": "ends",
+       "editor": "enum",
+       "options": [
+        "square",
+        "round"
+       ],
+       "default": "square"
+      }
+     ]
+    },
+    {
+     "title": "Transition",
+     "controls": [
+      {
+       "name": "transition",
+       "editor": "range",
+       "min": 0,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 0
+      },
+      {
+       "name": "curve",
+       "editor": "enum",
+       "options": [
+        "bevel",
+        "swell"
+       ],
+       "default": "bevel"
+      },
+      {
+       "name": "shift",
+       "editor": "range",
+       "min": -1.5,
+       "max": 1.5,
+       "step": 0.05,
+       "default": 0
+      },
+      {
+       "name": "growFrom",
+       "editor": "enum",
+       "options": [
+        "center",
+        "base"
+       ],
+       "default": "center"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#000000",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#111111"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": []
+  },
+  "warp": {
+   "board": "fx-01-warp",
+   "title": "Warp line effect",
+   "call": {
+    "fn": "warp"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Source",
+     "controls": [
+      {
+       "name": "source",
+       "editor": "enum",
+       "options": [
+        "shape",
+        "image"
+       ],
+       "default": "shape"
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Shape source",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "circle",
+        "hexagon",
+        "ring",
+        "peak",
+        "split",
+        "letter"
+       ],
+       "default": "circle"
+      },
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": "R"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 1.5,
+       "step": 0.01,
+       "default": 1.04
+      },
+      {
+       "name": "depth",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.7
+      }
+     ]
+    },
+    {
+     "title": "Image source",
+     "controls": [
+      {
+       "name": "contrast",
+       "editor": "range",
+       "min": 0.5,
+       "max": 3,
+       "step": 0.05,
+       "default": 1.6
+      }
+     ]
+    },
+    {
+     "title": "Field",
+     "controls": [
+      {
+       "name": "levels",
+       "editor": "enum",
+       "options": [
+        "smooth",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "8"
+       ],
+       "default": "8"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Warp",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 120,
+       "default": 12
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 175,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "weight",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.46
+      },
+      {
+       "name": "bend",
+       "editor": "range",
+       "min": -4,
+       "max": 4,
+       "step": 0.05,
+       "default": 2
+      },
+      {
+       "name": "softness",
+       "editor": "int",
+       "min": 1,
+       "max": 10,
+       "default": 4
+      },
+      {
+       "name": "swell",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.63
+      },
+      {
+       "name": "wave",
+       "editor": "range",
+       "min": 0,
+       "max": 3,
+       "step": 0.05,
+       "default": 1.8
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 40,
+       "max": 1200,
+       "step": 10,
+       "unit": "px",
+       "default": 590
+      },
+      {
+       "name": "phase",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "view",
+     "section": "Source",
+     "why": "shows the source picture in place of the lines; the port reads the source as numbers and has no picture of it"
+    },
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 6,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "bend",
+       "phase",
+       "wave",
+       "wavelength",
+       "weight",
+       "swell",
+       "angle"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 1
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "radial": {
+   "board": "fx-02-radial",
+   "title": "Radial line effect",
+   "call": {
+    "fn": "radial"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Source",
+     "controls": [
+      {
+       "name": "source",
+       "editor": "enum",
+       "options": [
+        "shape",
+        "image"
+       ],
+       "default": "shape"
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Shape source",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "circle",
+        "hexagon",
+        "ring",
+        "peak",
+        "split",
+        "letter"
+       ],
+       "default": "split"
+      },
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": "R"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 1.5,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "depth",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Image source",
+     "controls": [
+      {
+       "name": "contrast",
+       "editor": "range",
+       "min": 0.5,
+       "max": 3,
+       "step": 0.05,
+       "default": 1.4
+      }
+     ]
+    },
+    {
+     "title": "Field",
+     "controls": [
+      {
+       "name": "levels",
+       "editor": "enum",
+       "options": [
+        "smooth",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "8"
+       ],
+       "default": "smooth"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Radial",
+     "controls": [
+      {
+       "name": "mode",
+       "editor": "enum",
+       "options": [
+        "rings",
+        "spokes"
+       ],
+       "default": "rings"
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 14
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 360,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "hole",
+       "editor": "range",
+       "min": 0,
+       "max": 0.9,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.08
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.7
+      },
+      {
+       "name": "transition",
+       "editor": "range",
+       "min": 0,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 40
+      },
+      {
+       "name": "curve",
+       "editor": "enum",
+       "options": [
+        "bevel",
+        "swell"
+       ],
+       "default": "swell"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "paper on ink"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#000000",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "view",
+     "section": "Source",
+     "why": "shows the source picture in place of the lines; the port reads the source as numbers and has no picture of it"
+    },
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 6,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "angle",
+       "thin",
+       "thick",
+       "transition",
+       "hole"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 0.3
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "moire": {
+   "board": "fx-03-moire",
+   "title": "Moire line effect",
+   "call": {
+    "fn": "moire"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Source",
+     "controls": [
+      {
+       "name": "source",
+       "editor": "enum",
+       "options": [
+        "shape",
+        "image"
+       ],
+       "default": "shape"
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Shape source",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "circle",
+        "hexagon",
+        "ring",
+        "peak",
+        "split",
+        "letter"
+       ],
+       "default": "circle"
+      },
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": "R"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 1.5,
+       "step": 0.01,
+       "default": 0.8
+      },
+      {
+       "name": "depth",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Image source",
+     "controls": [
+      {
+       "name": "contrast",
+       "editor": "range",
+       "min": 0.5,
+       "max": 3,
+       "step": 0.05,
+       "default": 1.4
+      }
+     ]
+    },
+    {
+     "title": "Field",
+     "controls": [
+      {
+       "name": "levels",
+       "editor": "enum",
+       "options": [
+        "smooth",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "8"
+       ],
+       "default": "smooth"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Moire",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 120,
+       "default": 48
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 175,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "weight",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.3
+      },
+      {
+       "name": "spread",
+       "editor": "range",
+       "min": -45,
+       "max": 45,
+       "step": 0.5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "ratio",
+       "editor": "range",
+       "min": 0.7,
+       "max": 1.4,
+       "step": 0.01,
+       "default": 1.06
+      },
+      {
+       "name": "push",
+       "editor": "range",
+       "min": -1.5,
+       "max": 1.5,
+       "step": 0.05,
+       "default": 0.6
+      },
+      {
+       "name": "transition",
+       "editor": "range",
+       "min": 0,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 60
+      },
+      {
+       "name": "curve",
+       "editor": "enum",
+       "options": [
+        "bevel",
+        "swell"
+       ],
+       "default": "swell"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "white on blue"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#0a1fff",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "view",
+     "section": "Source",
+     "why": "shows the source picture in place of the lines; the port reads the source as numbers and has no picture of it"
+    },
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 6,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "push",
+       "spread",
+       "angle",
+       "ratio",
+       "weight"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 0.5
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "pinch": {
+   "board": "fx-04-pinch",
+   "title": "Pinch line effect",
+   "call": {
+    "fn": "pinch"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Pinch",
+     "controls": [
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 120,
+       "default": 17
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "weight",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.2
+      }
+     ]
+    },
+    {
+     "title": "Poles",
+     "controls": [
+      {
+       "name": "poles",
+       "editor": "int",
+       "min": 1,
+       "max": 4,
+       "default": 4
+      },
+      {
+       "name": "position",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.3
+      },
+      {
+       "name": "strength",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "gather",
+       "editor": "range",
+       "min": 0.02,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.18
+      },
+      {
+       "name": "release",
+       "editor": "range",
+       "min": 0.02,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.34
+      },
+      {
+       "name": "fan",
+       "editor": "range",
+       "min": 0,
+       "max": 4,
+       "step": 0.05,
+       "default": 3.4
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "paper on ink"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#000000",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "handles",
+     "section": "Poles",
+     "why": "the board's drag handles on its own picture; the editor has none"
+    },
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 3,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "position",
+       "strength",
+       "fan",
+       "gather",
+       "release",
+       "weight",
+       "angle"
+      ],
+      "default": "position"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 62.36
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 5
+     }
+    ]
+   }
+  },
+  "flow": {
+   "board": "fx-05-flow",
+   "title": "Flow line effect",
+   "call": {
+    "fn": "flow"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Flow",
+     "controls": [
+      {
+       "name": "path",
+       "editor": "enum",
+       "options": [
+        "wave",
+        "step",
+        "bulge",
+        "cross"
+       ],
+       "default": "wave"
+      },
+      {
+       "name": "bands",
+       "editor": "int",
+       "min": 1,
+       "max": 8,
+       "default": 3
+      },
+      {
+       "name": "weight",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.6
+      },
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -2,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.35
+      },
+      {
+       "name": "stretch",
+       "editor": "range",
+       "min": 40,
+       "max": 1200,
+       "step": 10,
+       "unit": "px",
+       "default": 480
+      },
+      {
+       "name": "drift",
+       "editor": "range",
+       "min": -2,
+       "max": 2,
+       "step": 0.05,
+       "default": 0
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "phase",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Ends",
+     "controls": [
+      {
+       "name": "stagger",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "seed",
+       "editor": "int",
+       "min": 0,
+       "max": 99,
+       "default": 0
+      },
+      {
+       "name": "ends",
+       "editor": "enum",
+       "options": [
+        "square",
+        "slant",
+        "round"
+       ],
+       "default": "square"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "light on grey"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#fafafa",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#35363a",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 3,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "phase",
+       "amplitude",
+       "stretch",
+       "drift",
+       "weight",
+       "stagger",
+       "angle"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 1
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "rotor": {
+   "board": "fx-06-rotor",
+   "title": "Rotor effect",
+   "call": {
+    "fn": "rotor"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Rotor",
+     "controls": [
+      {
+       "name": "unit",
+       "editor": "enum",
+       "options": [
+        "sector",
+        "petal",
+        "bar",
+        "dot"
+       ],
+       "default": "petal"
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 1,
+       "max": 96,
+       "default": 8
+      },
+      {
+       "name": "width",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.6
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "twist",
+       "editor": "range",
+       "min": -180,
+       "max": 180,
+       "step": 5,
+       "unit": "°",
+       "default": 40
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Rings",
+     "controls": [
+      {
+       "name": "inner",
+       "editor": "range",
+       "min": 0,
+       "max": 0.98,
+       "step": 0.01,
+       "default": 0.39
+      },
+      {
+       "name": "outer",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.97
+      },
+      {
+       "name": "rings",
+       "editor": "int",
+       "min": 1,
+       "max": 6,
+       "default": 1
+      },
+      {
+       "name": "gap",
+       "editor": "range",
+       "min": 0,
+       "max": 0.9,
+       "step": 0.01,
+       "default": 0.15
+      },
+      {
+       "name": "shift",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.05,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Second layer",
+     "controls": [
+      {
+       "name": "count2",
+       "editor": "int",
+       "min": 0,
+       "max": 96,
+       "default": 0
+      },
+      {
+       "name": "unit2",
+       "editor": "enum",
+       "options": [
+        "sector",
+        "petal",
+        "bar",
+        "dot"
+       ],
+       "default": "petal"
+      },
+      {
+       "name": "width2",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "twist2",
+       "editor": "range",
+       "min": -180,
+       "max": 180,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "inner2",
+       "editor": "range",
+       "min": 0,
+       "max": 0.98,
+       "step": 0.01,
+       "default": 0.05
+      },
+      {
+       "name": "outer2",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.35
+      },
+      {
+       "name": "angle2",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Ring",
+     "controls": [
+      {
+       "name": "ring",
+       "editor": "enum",
+       "options": [
+        "off",
+        "plain",
+        "zigzag",
+        "wave"
+       ],
+       "default": "off"
+      },
+      {
+       "name": "ringRadius",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1.4,
+       "step": 0.01,
+       "default": 0.25
+      },
+      {
+       "name": "ringWeight",
+       "editor": "range",
+       "min": 0.01,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "ringCount",
+       "editor": "int",
+       "min": 2,
+       "max": 96,
+       "default": 12
+      },
+      {
+       "name": "ringDepth",
+       "editor": "range",
+       "min": 0,
+       "max": 0.6,
+       "step": 0.01,
+       "default": 0.15
+      },
+      {
+       "name": "ringColor",
+       "editor": "enum",
+       "options": [
+        "ink",
+        "ground"
+       ],
+       "default": "ink"
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "light on grey"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#fafafa",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#35363a",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 5,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "angle",
+       "twist",
+       "width",
+       "taper",
+       "inner",
+       "gap",
+       "shift",
+       "twist2",
+       "angle2",
+       "ringRadius",
+       "ringDepth"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 40
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 4
+     }
+    ]
+   }
+  },
+  "vortex": {
+   "board": "fx-07-vortex",
+   "title": "Vortex line effect",
+   "call": {
+    "fn": "vortex"
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Vortex",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 80,
+       "default": 21
+      },
+      {
+       "name": "weight",
+       "editor": "range",
+       "min": 0.02,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.19
+      },
+      {
+       "name": "well",
+       "editor": "enum",
+       "options": [
+        "bowl",
+        "funnel"
+       ],
+       "default": "bowl"
+      },
+      {
+       "name": "depth",
+       "editor": "range",
+       "min": -3,
+       "max": 3,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "radius",
+       "editor": "range",
+       "min": 0.03,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.17
+      },
+      {
+       "name": "hole",
+       "editor": "range",
+       "min": 0,
+       "max": 0.9,
+       "step": 0.01,
+       "default": 0.06
+      },
+      {
+       "name": "twist",
+       "editor": "range",
+       "min": -720,
+       "max": 720,
+       "step": 5,
+       "unit": "°",
+       "default": 120
+      },
+      {
+       "name": "fade",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.6
+      },
+      {
+       "name": "effect",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Sheet",
+     "controls": [
+      {
+       "name": "frame",
+       "editor": "enum",
+       "options": [
+        "square",
+        "circle"
+       ],
+       "default": "square"
+      },
+      {
+       "name": "tilt",
+       "editor": "range",
+       "min": 0,
+       "max": 85,
+       "step": 1,
+       "unit": "°",
+       "default": 62
+      },
+      {
+       "name": "turn",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "x",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.16
+      },
+      {
+       "name": "y",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.2
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "paper on ink"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#000000",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ],
+   "left": [
+    {
+     "name": "motion",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionKind",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "motionAmount",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    },
+    {
+     "name": "loop",
+     "section": "Motion",
+     "why": "the layer does not animate here; motion is Labs (R8.4)"
+    }
+   ],
+   "motion": {
+    "at": 3,
+    "controls": [
+     {
+      "name": "motion",
+      "editor": "enum",
+      "options": [
+       "off",
+       "twist",
+       "depth",
+       "tilt",
+       "turn",
+       "radius",
+       "hole",
+       "x",
+       "y"
+      ],
+      "default": "off"
+     },
+     {
+      "name": "motionKind",
+      "editor": "enum",
+      "options": [
+       "swing",
+       "run"
+      ],
+      "default": "swing"
+     },
+     {
+      "name": "motionAmount",
+      "editor": "range",
+      "min": -360,
+      "max": 360,
+      "step": 0.01,
+      "default": 99.21
+     },
+     {
+      "name": "loop",
+      "editor": "range",
+      "min": 0.5,
+      "max": 20,
+      "step": 0.5,
+      "unit": "s",
+      "default": 5.5
+     }
+    ]
+   }
+  }
+ },
+ "presets": {
+  "master": [
+   {
+    "id": "ref-02",
+    "label": "ref-02, Swell, keys",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "keys",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-03",
+    "label": "ref-03, Swell, steps",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "steps",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 0.75,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-04",
+    "label": "ref-04, Swell, steps on a peak",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "steps",
+     "variant": 0,
+     "effect": 1,
+     "shape": "peak",
+     "size": 0.8,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1.5,
+     "angle": 0,
+     "thin": -0.05,
+     "thick": -0.05,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": -130,
+     "curve": "preset",
+     "shift": 0.6,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#e5303f",
+     "ground": "#111111"
+    }
+   },
+   {
+    "id": "ref-05",
+    "label": "ref-05, Swell, glyph",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "glyph",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-06",
+    "label": "ref-06, Swell, hex",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "hex",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-07",
+    "label": "ref-07, Swell, taper",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "taper",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1.285714,
+     "angle": 15,
+     "thin": 0,
+     "thick": -0.05,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-09",
+    "label": "ref-09, Swell, sun",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "sun",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-11",
+    "label": "ref-11, Swell, sun full width",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "sun",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 0.869565,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 4,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 0.529412,
+     "angle": 0,
+     "thin": -0.01,
+     "thick": -0.06,
+     "taper": 0,
+     "dash": 0,
+     "length": "frame",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#e30613",
+     "ground": "#f6f6f6"
+    }
+   },
+   {
+    "id": "ref-16",
+    "label": "ref-16, Swell, telescope on a diamond",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "telescope",
+     "variant": 0,
+     "effect": 1,
+     "shape": "diamond",
+     "size": 0.842105,
+     "depth": -0.2,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "2",
+     "invert": false,
+     "density": 0.46875,
+     "angle": 90,
+     "thin": 0.2,
+     "thick": 0.25,
+     "taper": 0,
+     "dash": 0,
+     "length": "shape",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#111111",
+     "ground": "#ffffff"
+    }
+   },
+   {
+    "id": "ref-17",
+    "label": "ref-17, Swell, ridge with soft bumps",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "ridge",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0.1,
+     "pattern": -3,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1.2,
+     "angle": 0,
+     "thin": 0.06,
+     "thick": -0.2,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": -8,
+     "curve": "swell",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#ffffff",
+     "ground": "#0a1fff"
+    }
+   },
+   {
+    "id": "ref-19",
+    "label": "ref-19, Swell, ridge",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "ridge",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 1,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-20",
+    "label": "ref-20, Swell, sun reversed",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "sun",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 6,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 0.470588,
+     "angle": 0,
+     "thin": -0.01,
+     "thick": -0.06,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#ffffff",
+     "ground": "#000000"
+    }
+   },
+   {
+    "id": "ref-21",
+    "label": "ref-21, Swell, telescope on a peak",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "telescope",
+     "variant": 0,
+     "effect": 1,
+     "shape": "peak",
+     "size": 0.842105,
+     "depth": -0.25,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "3",
+     "invert": false,
+     "density": 0.34375,
+     "angle": 90,
+     "thin": 0.02,
+     "thick": 0.1,
+     "taper": 0,
+     "dash": 0,
+     "length": "shape",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-22",
+    "label": "ref-22, Swell, steps, two bars",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "steps",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 0.5,
+     "angle": 160,
+     "thin": 0,
+     "thick": 0,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 40,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-23",
+    "label": "ref-23, Swell, ridge in a circle",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "ridge",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 0.72,
+     "depth": 0,
+     "breakUp": -0.5,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "preset",
+     "invert": false,
+     "density": 0.7,
+     "angle": 0,
+     "thin": -0.03,
+     "thick": -0.05,
+     "taper": 0,
+     "dash": 0,
+     "length": "shape",
+     "overhang": 70,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": -4,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#111111",
+     "ground": "#e8e0d6"
+    }
+   },
+   {
+    "id": "ref-24",
+    "label": "ref-24, Swell, blinds with a shifted core",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "blinds",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1,
+     "depth": 0.45,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "2",
+     "invert": false,
+     "density": 0.642857,
+     "angle": 0,
+     "thin": 0.5,
+     "thick": -0.08,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 22,
+     "curve": "preset",
+     "shift": 0.9,
+     "growFrom": "preset",
+     "palette": "preset",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-27",
+    "label": "ref-27, Swell, telescope upright",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "telescope",
+     "variant": 0,
+     "effect": 1,
+     "shape": "preset",
+     "size": 1.052632,
+     "depth": 0.05,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "4",
+     "invert": false,
+     "density": 0.625,
+     "angle": 90,
+     "thin": 0.02,
+     "thick": 0.35,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#f4f1e8",
+     "ground": "#000000"
+    }
+   },
+   {
+    "id": "ref-28",
+    "label": "ref-28, Swell, telescope on a diamond, dark on light",
+    "values": {
+     "view": "effect",
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 0.2,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "preset": "telescope",
+     "variant": 0,
+     "effect": 1,
+     "shape": "diamond",
+     "size": 1.052632,
+     "depth": -0.05,
+     "breakUp": 0,
+     "pattern": 0,
+     "letter": "",
+     "letterFont": "",
+     "letterWeight": 900,
+     "letterStretch": 1,
+     "letterLean": 0,
+     "letterX": 0,
+     "letterY": 0,
+     "contrast": 1.4,
+     "waveAmp": 0.5,
+     "waveLength": 1,
+     "waveSpeed": 1,
+     "waveDir": "right",
+     "waveFill": "center",
+     "waveInvert": false,
+     "waveAmp2": 0.25,
+     "waveLength2": 0.9,
+     "waveSpeed2": 1,
+     "waveDir2": "right",
+     "waveOffset": 0,
+     "waveFill2": "center",
+     "waveInvert2": false,
+     "waveSync": false,
+     "waveHarmonic": "2:1",
+     "waveCombine": "between",
+     "waveBand": 0.45,
+     "waveTurn": 0,
+     "levels": "3",
+     "invert": false,
+     "density": 0.625,
+     "angle": 90,
+     "thin": 0.15,
+     "thick": 0.3,
+     "taper": 0,
+     "dash": 0,
+     "length": "preset",
+     "overhang": 0,
+     "ends": "preset",
+     "solid": 0,
+     "solidTurn": 0,
+     "solidGap": 0,
+     "keys": 0,
+     "keysFrom": "preset",
+     "transition": 0,
+     "curve": "preset",
+     "shift": 0,
+     "growFrom": "preset",
+     "palette": "custom",
+     "ink": "#111111",
+     "ground": "#f1ede2"
+    }
+   }
+  ],
+  "blinds": [
+   {
+    "id": "ref-01",
+    "label": "ref-01, Swell, blinds broken up",
+    "values": {
+     "shape": "circle",
+     "letter": "R",
+     "size": 0.95,
+     "breakUp": 0.4,
+     "pattern": 3,
+     "thickPart": "inside",
+     "count": 15,
+     "angle": 90,
+     "thin": 0,
+     "thick": 0.4,
+     "length": "shape",
+     "overhang": 0,
+     "ends": "round",
+     "transition": 0,
+     "curve": "bevel",
+     "shift": 0,
+     "growFrom": "center",
+     "ink": "#ffffff",
+     "ground": "#000000"
+    }
+   },
+   {
+    "id": "ref-14",
+    "label": "ref-14, Swell, blinds",
+    "values": {
+     "shape": "circle",
+     "letter": "R",
+     "size": 0.9,
+     "breakUp": 0,
+     "pattern": 1,
+     "thickPart": "inside",
+     "count": 14,
+     "angle": 0,
+     "thin": 0,
+     "thick": 0.58,
+     "length": "shape",
+     "overhang": 0,
+     "ends": "square",
+     "transition": 0,
+     "curve": "bevel",
+     "shift": 0,
+     "growFrom": "center",
+     "ink": "#ffffff",
+     "ground": "#000000"
+    }
+   },
+   {
+    "id": "ref-25",
+    "label": "ref-25, Swell, bars with hairlines",
+    "values": {
+     "shape": "hexagon",
+     "letter": "R",
+     "size": 0.8,
+     "breakUp": 0,
+     "pattern": 1,
+     "thickPart": "inside",
+     "count": 14,
+     "angle": 0,
+     "thin": 0.1,
+     "thick": 0.78,
+     "length": "frame",
+     "overhang": 0,
+     "ends": "square",
+     "transition": 14,
+     "curve": "bevel",
+     "shift": 0,
+     "growFrom": "center",
+     "ink": "#0a1fff",
+     "ground": "#f1f1f1"
+    }
+   }
+  ],
+  "warp": [
+   {
+    "id": "ref-12",
+    "label": "ref-12, Warp, wave with swell",
+    "values": {
+     "view": "effect",
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 1,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "effect": 1,
+     "shape": "split",
+     "letter": "R",
+     "size": 0.8,
+     "depth": 0,
+     "contrast": 1.4,
+     "levels": "smooth",
+     "invert": false,
+     "count": 4,
+     "angle": 0,
+     "weight": 0.5,
+     "bend": 0,
+     "softness": 6,
+     "swell": 0.5,
+     "wave": 0.7,
+     "wavelength": 620,
+     "phase": 0,
+     "palette": "paper on ink",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   },
+   {
+    "id": "ref-18",
+    "label": "ref-18, Warp, wave",
+    "values": {
+     "view": "effect",
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 1,
+     "loop": 4,
+     "random": 0,
+     "randomSpread": 0.5,
+     "source": "shape",
+     "effect": 1,
+     "shape": "circle",
+     "letter": "R",
+     "size": 0.8,
+     "depth": 0,
+     "contrast": 1.4,
+     "levels": "smooth",
+     "invert": false,
+     "count": 3,
+     "angle": 0,
+     "weight": 0.5,
+     "bend": 0,
+     "softness": 4,
+     "swell": 0,
+     "wave": 0.3,
+     "wavelength": 560,
+     "phase": 0,
+     "palette": "ink on paper",
+     "ink": "#111111",
+     "ground": "#f4f4f4"
+    }
+   }
+  ],
+  "radial": [],
+  "moire": [],
+  "pinch": [
+   {
+    "id": "ref-13",
+    "label": "ref-13, Pinch",
+    "values": {
+     "handles": true,
+     "motion": "off",
+     "motionKind": "swing",
+     "motionAmount": 62.36,
+     "loop": 5,
+     "random": 0,
+     "randomSpread": 0.5,
+     "effect": 1,
+     "count": 17,
+     "angle": 0,
+     "weight": 0.3,
+     "poles": 2,
+     "position": -0.3,
+     "strength": 1,
+     "gather": 0.3,
+     "release": 0.9,
+     "fan": 1.8,
+     "palette": "paper on ink",
+     "ink": "#ffffff",
+     "ground": "#000000"
+    }
+   }
+  ],
+  "flow": [],
+  "rotor": [],
+  "vortex": []
+ },
+ "tiles": [
+  {
+   "group": "Swell",
+   "items": [
+    {
+     "id": "piano-circle",
+     "label": "Piano",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "piano",
+      "variant": 0,
+      "effect": 1,
+      "shape": "circle",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "piano-hexagon",
+     "label": "Piano hexagon",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "piano",
+      "variant": 0,
+      "effect": 1,
+      "shape": "hexagon",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "piano-letter",
+     "label": "Piano letter",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "piano",
+      "variant": 0,
+      "effect": 1,
+      "shape": "preset",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "S",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "blinds",
+     "label": "Blinds",
+     "form": "blinds",
+     "values": {
+      "shape": "circle",
+      "letter": "R",
+      "size": 0.9,
+      "breakUp": 0,
+      "pattern": 1,
+      "thickPart": "inside",
+      "count": 14,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0.58,
+      "length": "shape",
+      "overhang": 0,
+      "ends": "square",
+      "transition": 0,
+      "curve": "bevel",
+      "shift": 0,
+      "growFrom": "center",
+      "ink": "#ffffff",
+      "ground": "#000000"
+     }
+    }
+   ]
+  },
+  {
+   "group": "Half",
+   "items": [
+    {
+     "id": "half-2",
+     "label": "Half 2",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "half",
+      "variant": 2,
+      "effect": 1,
+      "shape": "preset",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "half-9",
+     "label": "Half 9",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "half",
+      "variant": 9,
+      "effect": 1,
+      "shape": "preset",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "half-22",
+     "label": "Half 22",
+     "form": "master",
+     "values": {
+      "view": "effect",
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.2,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "preset": "half",
+      "variant": 22,
+      "effect": 1,
+      "shape": "preset",
+      "size": 1,
+      "depth": 0,
+      "breakUp": 0,
+      "pattern": 0,
+      "letter": "",
+      "letterFont": "",
+      "letterWeight": 900,
+      "letterStretch": 1,
+      "letterLean": 0,
+      "letterX": 0,
+      "letterY": 0,
+      "contrast": 1.4,
+      "waveAmp": 0.5,
+      "waveLength": 1,
+      "waveSpeed": 1,
+      "waveDir": "right",
+      "waveFill": "center",
+      "waveInvert": false,
+      "waveAmp2": 0.25,
+      "waveLength2": 0.9,
+      "waveSpeed2": 1,
+      "waveDir2": "right",
+      "waveOffset": 0,
+      "waveFill2": "center",
+      "waveInvert2": false,
+      "waveSync": false,
+      "waveHarmonic": "2:1",
+      "waveCombine": "between",
+      "waveBand": 0.45,
+      "waveTurn": 0,
+      "levels": "preset",
+      "invert": false,
+      "density": 1,
+      "angle": 0,
+      "thin": 0,
+      "thick": 0,
+      "taper": 0,
+      "dash": 0,
+      "length": "preset",
+      "overhang": 0,
+      "ends": "preset",
+      "solid": 0,
+      "solidTurn": 0,
+      "solidGap": 0,
+      "keys": 0,
+      "keysFrom": "preset",
+      "transition": 0,
+      "curve": "preset",
+      "shift": 0,
+      "growFrom": "preset",
+      "palette": "preset",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    }
+   ]
+  },
+  {
+   "group": "Line effects",
+   "items": [
+    {
+     "id": "warp",
+     "label": "Warp",
+     "form": "warp",
+     "values": {
+      "view": "effect",
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 1,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "effect": 1,
+      "shape": "circle",
+      "letter": "R",
+      "size": 1.04,
+      "depth": 0.7,
+      "contrast": 1.6,
+      "levels": "8",
+      "invert": false,
+      "count": 12,
+      "angle": 0,
+      "weight": 0.46,
+      "bend": 2,
+      "softness": 4,
+      "swell": 0.63,
+      "wave": 1.8,
+      "wavelength": 590,
+      "phase": 0,
+      "palette": "ink on paper",
+      "ink": "#111111",
+      "ground": "#f4f4f4"
+     }
+    },
+    {
+     "id": "radial",
+     "label": "Radial",
+     "form": "radial",
+     "values": {
+      "view": "effect",
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.3,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "effect": 1,
+      "shape": "split",
+      "letter": "R",
+      "size": 1,
+      "depth": 0,
+      "contrast": 1.4,
+      "levels": "smooth",
+      "invert": false,
+      "mode": "rings",
+      "count": 14,
+      "angle": 0,
+      "hole": 0.1,
+      "thin": 0.08,
+      "thick": 0.7,
+      "transition": 40,
+      "curve": "swell",
+      "palette": "paper on ink",
+      "ink": "#ffffff",
+      "ground": "#000000"
+     }
+    },
+    {
+     "id": "moire",
+     "label": "Moire",
+     "form": "moire",
+     "values": {
+      "view": "effect",
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 0.5,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "source": "shape",
+      "effect": 1,
+      "shape": "circle",
+      "letter": "R",
+      "size": 0.8,
+      "depth": 0,
+      "contrast": 1.4,
+      "levels": "smooth",
+      "invert": false,
+      "count": 48,
+      "angle": 0,
+      "weight": 0.3,
+      "spread": 0,
+      "ratio": 1.06,
+      "push": 0.6,
+      "transition": 60,
+      "curve": "swell",
+      "palette": "white on blue",
+      "ink": "#ffffff",
+      "ground": "#0a1fff"
+     }
+    },
+    {
+     "id": "pinch",
+     "label": "Pinch",
+     "form": "pinch",
+     "values": {
+      "handles": true,
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 62.36,
+      "loop": 5,
+      "random": 0,
+      "randomSpread": 0.5,
+      "effect": 1,
+      "count": 17,
+      "angle": 0,
+      "weight": 0.2,
+      "poles": 4,
+      "position": -0.3,
+      "strength": 1,
+      "gather": 0.18,
+      "release": 0.34,
+      "fan": 3.4,
+      "palette": "paper on ink",
+      "ink": "#ffffff",
+      "ground": "#000000"
+     }
+    },
+    {
+     "id": "flow",
+     "label": "Flow",
+     "form": "flow",
+     "values": {
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 1,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "path": "wave",
+      "bands": 3,
+      "weight": 0.6,
+      "amplitude": 0.35,
+      "stretch": 480,
+      "drift": 0,
+      "angle": 0,
+      "effect": 1,
+      "phase": 0,
+      "stagger": 0,
+      "seed": 0,
+      "ends": "square",
+      "palette": "light on grey",
+      "ink": "#fafafa",
+      "ground": "#35363a"
+     }
+    },
+    {
+     "id": "rotor",
+     "label": "Rotor",
+     "form": "rotor",
+     "values": {
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 40,
+      "loop": 4,
+      "random": 0,
+      "randomSpread": 0.5,
+      "unit": "petal",
+      "count": 8,
+      "width": 0.6,
+      "taper": 0,
+      "twist": 40,
+      "angle": 0,
+      "effect": 1,
+      "inner": 0.39,
+      "outer": 0.97,
+      "rings": 1,
+      "gap": 0.15,
+      "shift": 0,
+      "count2": 0,
+      "unit2": "petal",
+      "width2": 0.5,
+      "twist2": 0,
+      "inner2": 0.05,
+      "outer2": 0.35,
+      "angle2": 0,
+      "ring": "off",
+      "ringRadius": 0.25,
+      "ringWeight": 1,
+      "ringCount": 12,
+      "ringDepth": 0.15,
+      "ringColor": "ink",
+      "palette": "light on grey",
+      "ink": "#fafafa",
+      "ground": "#35363a"
+     }
+    },
+    {
+     "id": "vortex",
+     "label": "Vortex",
+     "form": "vortex",
+     "values": {
+      "motion": "off",
+      "motionKind": "swing",
+      "motionAmount": 99.21,
+      "loop": 5.5,
+      "random": 0,
+      "randomSpread": 0.5,
+      "count": 21,
+      "weight": 0.19,
+      "well": "bowl",
+      "depth": 1,
+      "radius": 0.17,
+      "hole": 0.06,
+      "twist": 120,
+      "fade": 0.6,
+      "effect": 1,
+      "frame": "square",
+      "tilt": 62,
+      "turn": 0,
+      "x": -0.16,
+      "y": 0.2,
+      "palette": "paper on ink",
+      "ink": "#ffffff",
+      "ground": "#000000"
+     }
+    }
+   ]
+  }
+ ],
+ "loops": {
+  "wave": {
+   "board": "motion-01-wave",
+   "title": "Wave loop",
+   "page": "Motion",
+   "call": {
+    "fn": "wave"
+   },
+   "clock": "cycle",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 0
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 20,
+       "step": 0.5,
+       "unit": "s",
+       "default": 3
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.13
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.55
+      },
+      {
+       "name": "speed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "fill",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.24
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "speed2",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": -0.37
+      },
+      {
+       "name": "fill2",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "invert2",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "2:1"
+      }
+     ]
+    },
+    {
+     "title": "Overlap",
+     "controls": [
+      {
+       "name": "combine",
+       "editor": "enum",
+       "options": [
+        "between",
+        "union",
+        "intersect",
+        "subtract",
+        "exclude"
+       ],
+       "default": "between"
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "band",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.76
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 40
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.62
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.33
+      },
+      {
+       "name": "round",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Filter",
+     "controls": [
+      {
+       "name": "filter",
+       "editor": "enum",
+       "options": [
+        "none",
+        "piano",
+        "warp",
+        "dash"
+       ],
+       "default": "none"
+      },
+      {
+       "name": "filterAmount",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: piano",
+     "controls": [
+      {
+       "name": "pianoWidth",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: dash",
+     "controls": [
+      {
+       "name": "dashLength",
+       "editor": "range",
+       "min": 6,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 40
+      },
+      {
+       "name": "dashSpeed",
+       "editor": "int",
+       "min": -8,
+       "max": 8,
+       "default": 2
+      }
+     ]
+    },
+    {
+     "title": "Filter: warp",
+     "controls": [
+      {
+       "name": "warpScale",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "warpSpeed",
+       "editor": "int",
+       "min": -6,
+       "max": 6,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "keys": {
+   "board": "motion-02-keys",
+   "title": "Keys loop",
+   "page": "Motion",
+   "call": {
+    "fn": "keys"
+   },
+   "clock": "cycle",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Randomise",
+     "controls": [
+      {
+       "name": "random",
+       "editor": "int",
+       "min": 0,
+       "max": 999,
+       "default": 14
+      },
+      {
+       "name": "randomSpread",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.05,
+       "default": 0.9
+      }
+     ]
+    },
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 20,
+       "step": 0.5,
+       "unit": "s",
+       "default": 2
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Bars",
+     "controls": [
+      {
+       "name": "rows",
+       "editor": "int",
+       "min": 1,
+       "max": 6,
+       "default": 6
+      },
+      {
+       "name": "bars",
+       "editor": "int",
+       "min": 1,
+       "max": 24,
+       "default": 6
+      },
+      {
+       "name": "min",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.11
+      },
+      {
+       "name": "max",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.55
+      },
+      {
+       "name": "anchor",
+       "editor": "enum",
+       "options": [
+        "left",
+        "center",
+        "right"
+       ],
+       "default": "left"
+      },
+      {
+       "name": "gap",
+       "editor": "range",
+       "min": 0,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0.16
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": -60,
+       "max": 60,
+       "step": 1,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Shape",
+     "controls": [
+      {
+       "name": "shape",
+       "editor": "enum",
+       "options": [
+        "rectangle",
+        "circle",
+        "hexagon",
+        "triangle",
+        "diamond"
+       ],
+       "default": "hexagon"
+      },
+      {
+       "name": "size",
+       "editor": "range",
+       "min": 0.3,
+       "max": 2,
+       "step": 0.01,
+       "default": 1.35
+      }
+     ]
+    },
+    {
+     "title": "Letter",
+     "controls": [
+      {
+       "name": "letter",
+       "editor": "text",
+       "default": "A"
+      },
+      {
+       "name": "letterFont",
+       "editor": "text",
+       "default": ""
+      },
+      {
+       "name": "letterWeight",
+       "editor": "range",
+       "min": 100,
+       "max": 900,
+       "step": 100,
+       "default": 900
+      },
+      {
+       "name": "letterStretch",
+       "editor": "range",
+       "min": 0.5,
+       "max": 1.6,
+       "step": 0.01,
+       "default": 1
+      },
+      {
+       "name": "letterLean",
+       "editor": "range",
+       "min": -30,
+       "max": 30,
+       "step": 1,
+       "unit": "°",
+       "default": 0
+      },
+      {
+       "name": "letterX",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "letterY",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Wave",
+     "controls": [
+      {
+       "name": "spread",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": -0.19
+      },
+      {
+       "name": "rowPhase",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.06
+      },
+      {
+       "name": "stagger",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.8
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "paper on ink"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#ffffff",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#000000",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "spikes": {
+   "board": "wave-ref-01-spikes",
+   "title": "Spikes, after the first reference",
+   "page": "Motion",
+   "call": {
+    "fn": "wave"
+   },
+   "clock": "cycle",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 20,
+       "step": 0.5,
+       "unit": "s",
+       "default": 6
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.96
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.4
+      },
+      {
+       "name": "speed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "fill",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "above"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.39
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.15
+      },
+      {
+       "name": "speed2",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "left"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": -0.16
+      },
+      {
+       "name": "fill2",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "above"
+      },
+      {
+       "name": "invert2",
+       "editor": "boolean",
+       "default": true
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": true
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "1:1"
+      }
+     ]
+    },
+    {
+     "title": "Overlap",
+     "controls": [
+      {
+       "name": "combine",
+       "editor": "enum",
+       "options": [
+        "between",
+        "union",
+        "intersect",
+        "subtract",
+        "exclude"
+       ],
+       "default": "exclude"
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "band",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.01,
+       "default": 0.66
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 46
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.28
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.9
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.55
+      },
+      {
+       "name": "round",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Filter",
+     "controls": [
+      {
+       "name": "filter",
+       "editor": "enum",
+       "options": [
+        "none",
+        "piano",
+        "warp",
+        "dash"
+       ],
+       "default": "piano"
+      },
+      {
+       "name": "filterAmount",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.15
+      }
+     ]
+    },
+    {
+     "title": "Filter: piano",
+     "controls": [
+      {
+       "name": "pianoWidth",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Filter: dash",
+     "controls": [
+      {
+       "name": "dashLength",
+       "editor": "range",
+       "min": 6,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 40
+      },
+      {
+       "name": "dashSpeed",
+       "editor": "int",
+       "min": -8,
+       "max": 8,
+       "default": 2
+      }
+     ]
+    },
+    {
+     "title": "Filter: warp",
+     "controls": [
+      {
+       "name": "warpScale",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "warpSpeed",
+       "editor": "int",
+       "min": -6,
+       "max": 6,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "ribbon": {
+   "board": "wave-ref-02-ribbon",
+   "title": "Ribbon, after the second reference",
+   "page": "Motion",
+   "call": {
+    "fn": "wave"
+   },
+   "clock": "cycle",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 20,
+       "step": 0.5,
+       "unit": "s",
+       "default": 6
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.85
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 0.78
+      },
+      {
+       "name": "speed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "fill",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "speed2",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 0
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "fill2",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "off"
+      },
+      {
+       "name": "invert2",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "2:1"
+      }
+     ]
+    },
+    {
+     "title": "Overlap",
+     "controls": [
+      {
+       "name": "combine",
+       "editor": "enum",
+       "options": [
+        "between",
+        "union",
+        "intersect",
+        "subtract",
+        "exclude"
+       ],
+       "default": "union"
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "band",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 44
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.46
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "round",
+       "editor": "boolean",
+       "default": true
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 90
+      }
+     ]
+    },
+    {
+     "title": "Filter",
+     "controls": [
+      {
+       "name": "filter",
+       "editor": "enum",
+       "options": [
+        "none",
+        "piano",
+        "warp",
+        "dash"
+       ],
+       "default": "none"
+      },
+      {
+       "name": "filterAmount",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: piano",
+     "controls": [
+      {
+       "name": "pianoWidth",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: dash",
+     "controls": [
+      {
+       "name": "dashLength",
+       "editor": "range",
+       "min": 6,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 40
+      },
+      {
+       "name": "dashSpeed",
+       "editor": "int",
+       "min": -8,
+       "max": 8,
+       "default": 2
+      }
+     ]
+    },
+    {
+     "title": "Filter: warp",
+     "controls": [
+      {
+       "name": "warpScale",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "warpSpeed",
+       "editor": "int",
+       "min": -6,
+       "max": 6,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "blue on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "center": {
+   "board": "wave-ref-03-center",
+   "title": "Center bars, after the third reference",
+   "page": "Motion",
+   "call": {
+    "fn": "wave"
+   },
+   "clock": "cycle",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 20,
+       "step": 0.5,
+       "unit": "s",
+       "default": 6
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.7
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "speed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "fill",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "center"
+      },
+      {
+       "name": "invert",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "speed2",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 0
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "fill2",
+       "editor": "enum",
+       "options": [
+        "center",
+        "above",
+        "below",
+        "off"
+       ],
+       "default": "off"
+      },
+      {
+       "name": "invert2",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "2:1"
+      }
+     ]
+    },
+    {
+     "title": "Overlap",
+     "controls": [
+      {
+       "name": "combine",
+       "editor": "enum",
+       "options": [
+        "between",
+        "union",
+        "intersect",
+        "subtract",
+        "exclude"
+       ],
+       "default": "union"
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "band",
+       "editor": "range",
+       "min": 0,
+       "max": 2,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 34
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "taper",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0
+      },
+      {
+       "name": "round",
+       "editor": "boolean",
+       "default": true
+      },
+      {
+       "name": "angle",
+       "editor": "range",
+       "min": 0,
+       "max": 355,
+       "step": 5,
+       "unit": "°",
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Filter",
+     "controls": [
+      {
+       "name": "filter",
+       "editor": "enum",
+       "options": [
+        "none",
+        "piano",
+        "warp",
+        "dash"
+       ],
+       "default": "none"
+      },
+      {
+       "name": "filterAmount",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: piano",
+     "controls": [
+      {
+       "name": "pianoWidth",
+       "editor": "range",
+       "min": 0.05,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      }
+     ]
+    },
+    {
+     "title": "Filter: dash",
+     "controls": [
+      {
+       "name": "dashLength",
+       "editor": "range",
+       "min": 6,
+       "max": 240,
+       "step": 1,
+       "unit": "px",
+       "default": 40
+      },
+      {
+       "name": "dashSpeed",
+       "editor": "int",
+       "min": -8,
+       "max": 8,
+       "default": 2
+      }
+     ]
+    },
+    {
+     "title": "Filter: warp",
+     "controls": [
+      {
+       "name": "warpScale",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1
+      },
+      {
+       "name": "warpSpeed",
+       "editor": "int",
+       "min": -6,
+       "max": 6,
+       "default": 1
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "white on blue",
+        "blue on paper",
+        "red on ink",
+        "light on grey",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111",
+       "options": [
+        "#111111",
+        "#ffffff",
+        "#0a1fff",
+        "#e5303f"
+       ]
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4",
+       "options": [
+        "#f4f4f4",
+        "#000000",
+        "#0a1fff",
+        "#35363a"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "capsules": {
+   "board": "shape-05-capsules",
+   "title": "Capsules: heads from above and feet from below, meeting in a band",
+   "page": "Wave shapes",
+   "call": {
+    "fn": "needles",
+    "engine": "organism"
+   },
+   "clock": "run",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": true
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 30,
+       "step": 0.5,
+       "unit": "s",
+       "default": 12
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.61
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.31
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.4
+      },
+      {
+       "name": "speed",
+       "editor": "range",
+       "min": 0,
+       "max": 3,
+       "step": 0.01,
+       "default": 0.9
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "lift",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.05
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.48
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.5
+      },
+      {
+       "name": "speed2",
+       "editor": "range",
+       "min": 0,
+       "max": 3,
+       "step": 0.01,
+       "default": 1.05
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "left"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": -0.15
+      },
+      {
+       "name": "lift2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.18
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "1:1"
+      }
+     ]
+    },
+    {
+     "title": "Body",
+     "controls": [
+      {
+       "name": "width",
+       "editor": "range",
+       "min": 200,
+       "max": 1100,
+       "step": 10,
+       "default": 1100,
+       "unit": "px"
+      },
+      {
+       "name": "height",
+       "editor": "range",
+       "min": 100,
+       "max": 760,
+       "step": 10,
+       "default": 630,
+       "unit": "px"
+      },
+      {
+       "name": "lying",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 40
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.44
+      },
+      {
+       "name": "capsule",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "hang",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "foot",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.95
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.05
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "mist on basalt",
+        "basalt on mist",
+        "sulphur on basalt",
+        "oxide on mist",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111"
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4"
+      }
+     ]
+    }
+   ]
+  },
+  "band": {
+   "board": "shape-03-band",
+   "title": "Band: upright lines crossing a band",
+   "page": "Wave shapes",
+   "call": {
+    "fn": "body",
+    "engine": "organism"
+   },
+   "clock": "from",
+   "frame": {
+    "w": 1200,
+    "h": 800
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 30,
+       "step": 0.5,
+       "unit": "s",
+       "default": 8
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.04
+      },
+      {
+       "name": "speed",
+       "editor": "int",
+       "min": 0,
+       "max": 8,
+       "default": 1
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      }
+     ]
+    },
+    {
+     "title": "Wave A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.62
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.2,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.2
+      }
+     ]
+    },
+    {
+     "title": "Wave B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.58
+      },
+      {
+       "name": "overlap",
+       "editor": "range",
+       "min": 0,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0
+      }
+     ]
+    },
+    {
+     "title": "Body",
+     "controls": [
+      {
+       "name": "band",
+       "editor": "range",
+       "min": 0,
+       "max": 0.6,
+       "step": 0.01,
+       "default": 0.3
+      },
+      {
+       "name": "length",
+       "editor": "range",
+       "min": 200,
+       "max": 1100,
+       "step": 10,
+       "default": 750,
+       "unit": "px"
+      },
+      {
+       "name": "lying",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "flip",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 30
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.42
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "wedge",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.55
+      },
+      {
+       "name": "ramp",
+       "editor": "range",
+       "min": 0,
+       "max": 0.5,
+       "step": 0.01,
+       "default": 0.22
+      },
+      {
+       "name": "round",
+       "editor": "boolean",
+       "default": true
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "mist on basalt",
+        "basalt on mist",
+        "sulphur on basalt",
+        "oxide on mist",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111"
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4"
+      }
+     ]
+    }
+   ]
+  },
+  "landing": {
+   "board": "landing-01-wave",
+   "title": "Manual home: the shape-05-capsules frame, as it is, on the home page",
+   "page": "Wave shapes",
+   "call": {
+    "fn": "needles",
+    "engine": "organism",
+    "fit": true
+   },
+   "clock": "run",
+   "frame": {
+    "w": 1920,
+    "h": 1080,
+    "rot": "translate(960 540)"
+   },
+   "sections": [
+    {
+     "title": "Time",
+     "controls": [
+      {
+       "name": "play",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "loop",
+       "editor": "range",
+       "min": 0.5,
+       "max": 30,
+       "step": 0.5,
+       "unit": "s",
+       "default": 12
+      },
+      {
+       "name": "frame",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.61
+      }
+     ]
+    },
+    {
+     "title": "Oscillator A",
+     "controls": [
+      {
+       "name": "amplitude",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.31
+      },
+      {
+       "name": "wavelength",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.4
+      },
+      {
+       "name": "speed",
+       "editor": "range",
+       "min": 0,
+       "max": 3,
+       "step": 0.01,
+       "default": 0.9
+      },
+      {
+       "name": "direction",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "right"
+      },
+      {
+       "name": "lift",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": -0.05
+      }
+     ]
+    },
+    {
+     "title": "Oscillator B",
+     "controls": [
+      {
+       "name": "amplitude2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.48
+      },
+      {
+       "name": "wavelength2",
+       "editor": "range",
+       "min": 0.1,
+       "max": 4,
+       "step": 0.05,
+       "default": 1.5
+      },
+      {
+       "name": "speed2",
+       "editor": "range",
+       "min": 0,
+       "max": 3,
+       "step": 0.01,
+       "default": 1.05
+      },
+      {
+       "name": "direction2",
+       "editor": "enum",
+       "options": [
+        "right",
+        "left"
+       ],
+       "default": "left"
+      },
+      {
+       "name": "offset",
+       "editor": "range",
+       "min": -0.5,
+       "max": 0.5,
+       "step": 0.01,
+       "default": -0.15
+      },
+      {
+       "name": "lift2",
+       "editor": "range",
+       "min": -1,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.18
+      }
+     ]
+    },
+    {
+     "title": "Sync",
+     "controls": [
+      {
+       "name": "sync",
+       "editor": "boolean",
+       "default": false
+      },
+      {
+       "name": "harmonic",
+       "editor": "enum",
+       "options": [
+        "1:1",
+        "2:1",
+        "3:1",
+        "3:2",
+        "4:3",
+        "1:2"
+       ],
+       "default": "1:1"
+      }
+     ]
+    },
+    {
+     "title": "Body",
+     "controls": [
+      {
+       "name": "width",
+       "editor": "range",
+       "min": 200,
+       "max": 1100,
+       "step": 10,
+       "default": 1100,
+       "unit": "px"
+      },
+      {
+       "name": "height",
+       "editor": "range",
+       "min": 100,
+       "max": 760,
+       "step": 10,
+       "default": 630,
+       "unit": "px"
+      },
+      {
+       "name": "lying",
+       "editor": "boolean",
+       "default": false
+      }
+     ]
+    },
+    {
+     "title": "Lines",
+     "controls": [
+      {
+       "name": "count",
+       "editor": "int",
+       "min": 2,
+       "max": 160,
+       "default": 40
+      },
+      {
+       "name": "thick",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.44
+      },
+      {
+       "name": "capsule",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.1
+      },
+      {
+       "name": "hang",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.5
+      },
+      {
+       "name": "foot",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.95
+      },
+      {
+       "name": "thin",
+       "editor": "range",
+       "min": 0,
+       "max": 1,
+       "step": 0.01,
+       "default": 0.05
+      }
+     ]
+    },
+    {
+     "title": "Color",
+     "controls": [
+      {
+       "name": "palette",
+       "editor": "enum",
+       "options": [
+        "ink on paper",
+        "paper on ink",
+        "mist on basalt",
+        "basalt on mist",
+        "sulphur on basalt",
+        "oxide on mist",
+        "custom"
+       ],
+       "default": "ink on paper"
+      },
+      {
+       "name": "ink",
+       "editor": "color",
+       "default": "#111111"
+      },
+      {
+       "name": "ground",
+       "editor": "color",
+       "default": "#f4f4f4"
+      }
+     ]
+    }
+   ]
+  }
+ }
+}

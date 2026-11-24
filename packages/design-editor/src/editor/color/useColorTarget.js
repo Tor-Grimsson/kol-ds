@@ -88,12 +88,13 @@ export function useColorTarget({ history = 'discrete', coalesceMs = 250 } = {}) 
     if (coalesce) schedule()
     setPaintFill(v)
     if (isCanvas)          setCanvasFill(v)
-    else if (colorLayerId) updateLayer(colorLayerId, { color: v })
+    /* a direct edit detaches the fill's style (W7, Figma's): the row then shows the plain value */
+    else if (colorLayerId) updateLayer(colorLayerId, { color: v, fillStyle: undefined })
   }, [coalesce, schedule, setPaintFill, isCanvas, setCanvasFill, colorLayerId, updateLayer])
   const setStroke = useCallback((v) => {
     if (coalesce) schedule()
     setPaintStroke(v)
-    if (colorLayerId) updateLayer(colorLayerId, { stroke: v })
+    if (colorLayerId) updateLayer(colorLayerId, { stroke: v, strokeStyle: undefined })
     /* canvas has no stroke; skipped */
   }, [coalesce, schedule, setPaintStroke, colorLayerId, updateLayer])
 

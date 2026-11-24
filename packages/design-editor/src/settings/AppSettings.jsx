@@ -12,6 +12,7 @@ import { pack } from '../editor/packs'
 import { useAppSettings, setAppSetting } from '../editor/lib/appSettings'
 import { useBindDots, toggleDots } from '../editor/params/dotVisibility'
 import { transport } from '../editor/params/transport'
+import { STYLE_OPTIONS } from '../editor/variant'
 
 /**
  * AppSettings — the app's settings sections, defined ONCE and rendered in two
@@ -66,6 +67,21 @@ const sectionsFor = (s) => [
            `ThemeToggle` writes, so the header's toggle and this row stay in
            step. `system` is still reachable from the header control. */
         render: () => <ThemeDarkSwitch />,
+      },
+      {
+        label: 'Style',
+        align: 'fill',
+        /* the editor's style (C3), separate from the theme: Kolbox mounts the kolbox screens; the host reloads on a
+           change, since the kolbox sheet stays in the page once loaded */
+        render: () => (
+          <SettingsChoice
+            options={STYLE_OPTIONS}
+            value={s.style ?? 'default'}
+            onChange={(v) => setAppSetting('style', v)}
+            className="w-full max-w-24"
+            ariaLabel="Style"
+          />
+        ),
       },
       {
         label: 'Preview resolution',
@@ -186,7 +202,7 @@ export function useSettingsSections() {
 
 /**
  * The sections, rendered — an eyebrow-headed `LabeledControlSection` per
- * section, a `SettingsRow` (`LabeledControl inline`) per row. Nothing else:
+ * section, a `SettingsRow` (`LabeledControl horizontal`) per row. Nothing else:
  * this is a loop over the data above, not a component of its own.
  *
  * The drawer passes nothing and gets every section; the page passes the ones

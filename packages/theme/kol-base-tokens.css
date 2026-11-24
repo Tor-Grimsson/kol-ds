@@ -239,11 +239,22 @@
  * 16 / 22 type and every box grows with it: xs 32 · sm 32 · md 36 · lg 40. One row, one height,
  * on a phone as at a desk. The type rule lives with the controls (kol-components-atoms.css).
  * ═══════════════════════════════════════════════════════════════ */
+/* THE LADDER BY NUMBER (plan-2026-11-18-kolbox-system W1.3): 22, 24, 26, 28, 32, 40 and 44, each named by its px
+ * and the same on every pointer. 24 and 28 are where tool UIs sit; 44 is the touch size. The size names stay, and they
+ * are what moves to the touch rung below; a number never does. */
 :root {
-  --kol-ctl-xs: 22px;
-  --kol-ctl-sm: 26px;
-  --kol-ctl-md: 32px;
-  --kol-ctl-lg: 40px;
+  --kol-ctl-22: 22px;
+  --kol-ctl-24: 24px;
+  --kol-ctl-26: 26px;
+  --kol-ctl-28: 28px;
+  --kol-ctl-32: 32px;
+  --kol-ctl-40: 40px;
+  --kol-ctl-44: 44px;
+
+  --kol-ctl-xs: var(--kol-ctl-22);
+  --kol-ctl-sm: var(--kol-ctl-26);
+  --kol-ctl-md: var(--kol-ctl-32);
+  --kol-ctl-lg: var(--kol-ctl-40);
 }
 @media (pointer: coarse) {
   :root {

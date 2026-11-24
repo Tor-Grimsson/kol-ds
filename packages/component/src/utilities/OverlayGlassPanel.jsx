@@ -31,7 +31,7 @@ export default function OverlayGlassPanel({
 
   return (
     <div
-      className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-xs)] ${padding} ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
+      className={`flex flex-col ${alignCls} ${gap} rounded-[var(--kol-radius-2)] ${padding} ${maxWidth ? `${maxWidth} mx-auto` : ''} ${className}`.trim()}
       style={{
         backgroundColor: `color-mix(in srgb, var(--kol-surface-primary) ${surfaceOpacity}%, transparent)`,
         /* a PANEL, not a scrim: the blur is this surface's whole point and the

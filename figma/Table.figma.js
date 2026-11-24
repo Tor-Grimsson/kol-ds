@@ -3,10 +3,10 @@
 // component=Table
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "simple": "simple", "float": "float" })
+const variant = instance.getEnum('variant', { "default": "default", "simple": "simple", "float": "float", "kolbox": "kolbox" })
 
 export default {
-  example: variant === 'float' ? figma.code`<Table variant="float" columns={[{ accessor: 'referrer', header: 'Referrer' }, { accessor: 'visitors', header: 'Visitors', align: 'right' }, { accessor: 'share', header: 'Share', align: 'right' }]} rows={rows} />` : figma.code`<Table variant="${variant}" columns={columns} rows={rows} />`,
+  example: variant === 'kolbox' ? figma.code`<Table variant="kolbox" rows={files} onOpen={onOpen} />` : variant === 'float' ? figma.code`<Table variant="float" columns={[{ accessor: 'referrer', header: 'Referrer' }, { accessor: 'visitors', header: 'Visitors', align: 'right' }, { accessor: 'share', header: 'Share', align: 'right' }]} rows={rows} />` : figma.code`<Table variant="${variant}" columns={columns} rows={rows} />`,
   imports: ["import { Table } from \"@kolkrabbi/kol-component\""],
   id: 'Table',
 }

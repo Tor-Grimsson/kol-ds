@@ -34,7 +34,7 @@ export default function FloatLayoutPreview() {
       nav={NAV} currentPath={path} onNavigate={setPath} title="Studio" onSearch={() => {}}
       breadcrumb={['Dashboard', 'Tasks']}
       eyebrow={<span className="kol-float-ruler text-fg-64 whitespace-pre">WORKSPACE  /  TASKS</span>}
-      bottom={<Card variant="float" title="Task index" count="5 tasks" folded={folded} onFold={() => setFolded(!folded)}><span className="kol-float-label text-oq-64">The bottom Rail — under the content and the inspector.</span></Card>}
+      bottom={<Card variant="float" title="Task index" count="5 tasks" collapsedV={folded} onCollapseV={() => setFolded(!folded)}><span className="kol-float-label text-oq-64">The bottom Rail — under the content and the inspector.</span></Card>}
       bar={{ document: { name: 'Studio / Dashboard' }, tabs: TABS, tab, onTab: setTab, onSearch: () => {}, action: { label: 'New task', onPress: () => {} } }}
       inspector={({ hide }) => (
         <PropertyRail title="Inspector" onCollapse={hide} tabs={[{ value: 'layers', label: 'Layers' }, { value: 'properties', label: 'Properties' }]} tab={mode} onTab={setMode}

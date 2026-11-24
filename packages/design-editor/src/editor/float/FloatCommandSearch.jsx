@@ -86,6 +86,7 @@ export default function FloatCommandSearch({ open, onOpenChange, menus = [], too
 
   return (
     <CommandOverlay
+      variant="float"
       open={open}
       onClose={() => onOpenChange(false)}
       query={query}

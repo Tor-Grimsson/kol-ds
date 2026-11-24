@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "md": "md", "sm": "sm" })
+const size = instance.getEnum('sm', { "false": "md", "true": "sm" })
 const bare = instance.getEnum('bare', { "false": "false", "true": "true" })
 const filename = instance.getString('filename')
 const showFilename = instance.getBoolean('showFilename')

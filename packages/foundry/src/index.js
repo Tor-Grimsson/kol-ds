@@ -4,8 +4,10 @@
  * test). Data is consumer-injected; shared primitives stay in @kolkrabbi/kol-component.
  */
 
-// section scaffold
-export { default as SpecimenSectionHeader } from './SpecimenSectionHeader.jsx'
+// the type-specimen kit moved to @kolkrabbi/kol-styleguide (2026-11-14, type-ramp plan 7.5); the old names are
+// aliases on the retirement ledger: SpecimenSectionHeader, TypeSample, TypeSpecCard, TypeSpecimenLive
+export { SpecimenSectionHeader, TypeSample, TypeSpecCard, TypeSpecimenLive } from './specimenAliases.js'
+export { readMeta } from '@kolkrabbi/kol-styleguide'
 
 // specimen tools — one typeface, inspected
 export { default as TypefaceHero } from './TypefaceHero.jsx'
@@ -26,11 +28,6 @@ export { default as TypefaceLibraryGrid } from './TypefaceLibraryGrid.jsx'
 export { default as TypefaceLibraryGridWithVariables } from './TypefaceLibraryGridWithVariables.jsx'
 export { default as TypefaceVariablePreview } from './TypefaceVariablePreview.jsx'
 export { default as TypefaceAlphabet } from './TypefaceAlphabet.jsx'
-
-// type-specimen kit — prop-driven specimen blocks (moved from @kolkrabbi/kol-component 2026-07-09)
-export { default as TypeSample } from './TypeSample.jsx'
-export { default as TypeSpecCard } from './TypeSpecCard.jsx'
-export { default as TypeSpecimenLive, readMeta } from './TypeSpecimenLive.jsx'
 
 // font-metric hook — opentype.js parsing (optional peer, degrades gracefully)
 export { default as useFontMetrics, extractFaceMetrics, buildOutlinePaths, glyphMetricsOf } from './useFontMetrics.js'

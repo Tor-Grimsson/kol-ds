@@ -4,7 +4,7 @@
 import figma from 'figma'
 // media empty = no children → AssetPlaceholder; image = children is the media (the slot)
 const instance = figma.selectedInstance
-const media = instance.getEnum('media', { "image": "image", "empty": "empty" })
+const media = instance.getEnum('empty', { "false": "image", "true": "empty" })
 const children = instance.getSlot('children')
 export default {
   example: media === 'empty'

@@ -1,3 +1,4 @@
+import KolboxGlyph from '../utilities/kolboxGlyph.jsx'
 /**
  * SectionText — The label, headline and body block. the ruled text block of the SECTION family (SectionSet,
  * kol-website 2026-08-26): label · headline · body · actions, every slot
@@ -85,7 +86,7 @@ export const SECTION_TEXT_LEVELS = {
   float: { title: 'kol-float-sheet', lede: 'kol-float-body text-fg-64', eyebrow: 'kol-float-ruler text-fg-64', gap: 'gap-2', mb: '24px' },
 }
 
-export default function SectionText({
+function SectionTextDefault({
   eyebrow,
   label,
   headline,
@@ -218,4 +219,56 @@ export default function SectionText({
       {block}
     </div>
   )
+}
+
+/* kolbox's title row (W31.2 batch 5), below */
+function SectionTextKolbox({ headline, menu, actions, className = '' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): kolbox's BrowserTitleRow (Figma `BrowserTitleRow`),
+   * carried from apps/kolbox/src/home/BrowserTitleRow.jsx: 64 high, 12 under the top bar, inset 32; the 40 folder glyph,
+   * the `headline` (22 / 28, read off the Figma build) and its `menu` (the chevron node) at the left; `actions` (the
+   * filters and the view switch) at the right. Under 768 it wraps. */
+    return (
+      <div className={`kol-section-text--kolbox mt-3 flex h-16 shrink-0 items-center gap-4 px-8 max-md:h-auto max-md:flex-wrap max-md:gap-y-2 max-md:px-4 ${className}`.trim()} data-browser-title-row>
+        <KolboxGlyph name="folder" size={40} className="kol-section-text-glyph" />
+        <div className="flex min-w-0 flex-1 items-center gap-1 max-md:flex-wrap">
+          <h1 className="kol-section-text-title truncate">{headline}</h1>
+          {menu}
+        </div>
+        <div className="flex shrink-0 items-center gap-2 max-md:w-full max-md:flex-wrap">{actions}</div>
+      </div>
+    )
+}
+
+/* folio (Folio batch E, 2026-11-22): Folio's page titles and section heads, carried from apps/folio's FolioShelf (the
+ * shelf's title block and its numbered `Heading`) and FolioDocument (a chapter's and an article's head). The `eyebrow`
+ * in Folio's label over the `headline` over the `body`, muted; `children` (the document's date row) after the body.
+ * `headlineSize` is Folio's type step: `title` (the default, a page's), `chapter` or `section`; `headlineAs` h1 by
+ * default. `inline` (Folio's, no twin) sets the three on one baseline row, the numbered section head: the eyebrow its
+ * number, `meta` the quiet fact after the headline. `gap` is the rhythm and `slotClass.headline` the headline's extra
+ * classes (a title that carries the language flags lays them in a row), as in the default. */
+const FOLIO_HEADLINE = { title: 'kol-folio-title', chapter: 'kol-folio-chapter', section: 'kol-folio-section' }
+function SectionTextFolio({ eyebrow, label, headline, headlineSize = 'title', headlineAs: H = 'h1', body, meta, inline = false, gap = 'gap-[12px]', slotClass = {}, className = '', children }) {
+  const eb = eyebrow ?? label
+  if (inline) {
+    return (
+      <div className={`kol-section-text--folio flex items-baseline whitespace-nowrap ${gap} ${className}`.trim()}>
+        {eb != null && <p className="kol-folio-label kol-section-text-muted">{eb}</p>}
+        <H className={FOLIO_HEADLINE[headlineSize]}>{headline}</H>
+        {meta && <p className="kol-folio-meta kol-section-text-muted">{meta}</p>}
+      </div>
+    )
+  }
+  return (
+    <div className={`kol-section-text--folio flex flex-col ${gap} ${className}`.trim()}>
+      {eb != null && <p className="kol-folio-label kol-section-text-muted">{eb}</p>}
+      <H className={`${FOLIO_HEADLINE[headlineSize]} ${slotClass.headline ?? ''}`.trim()}>{headline}</H>
+      {body && <p className="kol-folio-body kol-section-text-muted">{body}</p>}
+      {children}
+    </div>
+  )
+}
+
+export default function SectionText(props) {
+  if (props.variant === 'folio') return <SectionTextFolio {...props} />
+  return props.variant === 'kolbox' ? <SectionTextKolbox {...props} /> : <SectionTextDefault {...props} />
 }

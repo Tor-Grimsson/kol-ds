@@ -23,21 +23,21 @@ const LANG = {
   json: () => json(), css: () => css(), py: () => python(), yaml: () => yaml(), sh: () => StreamLanguage.define(shell),
 }
 const look = (zoom) => EditorView.theme({
-  '&': { height: '100%', color: 'var(--color-folio-ink)', backgroundColor: 'transparent', fontSize: `${(14 * zoom) / 100}px` },
+  '&': { height: '100%', color: 'var(--kol-folio-ink)', backgroundColor: 'transparent', fontSize: `${(14 * zoom) / 100}px` },
   '&.cm-focused': { outline: 'none' },
   '.cm-scroller': { fontFamily: 'var(--kol-font-family-mono), ui-monospace, monospace', lineHeight: '1.72' },
-  '.cm-content': { caretColor: 'var(--color-folio-ink)', paddingBottom: '40px' },
-  '.cm-cursor': { borderLeftColor: 'var(--color-folio-ink)' },
-  '.cm-gutters': { backgroundColor: 'transparent', border: 'none', color: 'var(--color-folio-muted)', paddingLeft: '40px' },
-  '.cm-activeLine, .cm-activeLineGutter': { backgroundColor: 'color-mix(in oklab, var(--color-folio-ink) 4%, transparent)' },
-  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground, .cm-content ::selection': { backgroundColor: 'color-mix(in oklab, var(--color-folio-green) 24%, transparent) !important' },
-  '.cm-matchingBracket': { backgroundColor: 'color-mix(in oklab, var(--color-folio-green) 22%, transparent)', outline: 'none' },
+  '.cm-content': { caretColor: 'var(--kol-folio-ink)', paddingBottom: '40px' },
+  '.cm-cursor': { borderLeftColor: 'var(--kol-folio-ink)' },
+  '.cm-gutters': { backgroundColor: 'transparent', border: 'none', color: 'var(--kol-folio-muted)', paddingLeft: '40px' },
+  '.cm-activeLine, .cm-activeLineGutter': { backgroundColor: 'color-mix(in oklab, var(--kol-folio-ink) 4%, transparent)' },
+  '.cm-selectionBackground, &.cm-focused .cm-selectionBackground, .cm-content ::selection': { backgroundColor: 'color-mix(in oklab, var(--kol-folio-green) 24%, transparent) !important' },
+  '.cm-matchingBracket': { backgroundColor: 'color-mix(in oklab, var(--kol-folio-green) 22%, transparent)', outline: 'none' },
   '.cm-foldGutter span': { padding: '0 6px', cursor: 'pointer' },
-  '.cm-foldPlaceholder': { backgroundColor: 'var(--color-folio-surface)', border: '1px solid var(--color-folio-rule)', color: 'var(--color-folio-muted)', padding: '0 6px' },
-  '.cm-tooltip': { backgroundColor: 'var(--color-folio-paper)', border: '1px solid var(--color-folio-rule)', color: 'var(--color-folio-ink)' },
+  '.cm-foldPlaceholder': { backgroundColor: 'var(--kol-folio-surface)', border: '1px solid var(--kol-folio-rule)', color: 'var(--kol-folio-muted)', padding: '0 6px' },
+  '.cm-tooltip': { backgroundColor: 'var(--kol-folio-paper)', border: '1px solid var(--kol-folio-rule)', color: 'var(--kol-folio-ink)' },
   '.cm-diagnostic': { fontFamily: 'var(--kol-font-family-mono), monospace', fontSize: '12px' },
-  '.cm-minimap-gutter': { borderLeft: '1px solid var(--color-folio-rule)' },
-  '.cm-minimap-overlay': { backgroundColor: 'var(--color-folio-ink) !important' },
+  '.cm-minimap-gutter': { borderLeft: '1px solid var(--kol-folio-rule)' },
+  '.cm-minimap-overlay': { backgroundColor: 'var(--kol-folio-ink) !important' },
 })
 const MAP = showMinimap.compute(['doc'], () => ({ create: () => ({ dom: document.createElement('div') }), displayText: 'blocks', showOverlay: 'always' }))
 

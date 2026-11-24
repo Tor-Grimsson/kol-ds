@@ -1,5 +1,76 @@
 # @kolkrabbi/kol-shell
 
+## 0.131.0 — 2026-11-13
+
+Needs kol-component ≥0.378.0 (plan-2026-11-12-one-header W10.1 · W11):
+
+- **`PropertyRail` `windows`** — `[{ id, title, kind, sections, children, footer, defaultCollapsedV, … }]`: the Rail as a stack of separate RailFloat windows, 24 apart, each its own Header with collapse-v collapsing alone; the stack scrolls only when they outgrow it. Unset, one Rail as before. **`kind`** — the title's quiet second text.
+- **PropertyRail sections** — a collapsible section is LabeledControlSection's own `collapsible` (the 12 chevron at the head's RIGHT end, was left); no section pads itself (the compact `pt-4` / `pt-3` / `pt-1` gone) — the body's gap spaces them.
+- **`AppFloatNav variant="transport"` collapse-h** — `collapsibleH` · `collapsedH` · `defaultCollapsedH` (true) · `onCollapseH`; `foldable` · `folded` · `onFoldChange` their deprecated aliases. The inline capsule collapses to its last item (the play/pause) + the timecode + any lit item (Loop on); one 12 chevron (oq-64) directly left of the play/pause, ‹ collapsed, › expanded; the extras open to its left, so the play/pause and the right edge never move. Remembers the choice (`kol-float-transport:collapsed-h`). The phone pill keeps its edge fold.
+
+## 0.130.0 — 2026-11-12
+
+Needs kol-component ≥0.377.0:
+
+- **`MenuFloat` · `MenuFloatRows`** live in kol-component now (ButtonSplit's float menu is the same one); kol-shell re-exports both, same names. AppFloatNav, FloatActionMenu, DocumentCapsule, RailTrigger and TopControlsBar import them from there.
+
+## 0.129.0 — 2026-11-12
+
+Needs kol-component ≥0.376.0 (plan-2026-11-12-one-header W1.1 · W2.1):
+
+- **PropertyRail** — expand and collapse-h are the `Header`'s (`onCollapseH`; `onCollapse` still accepted, deprecated); collapse-v is `collapsibleV` · `collapsedV` · `defaultCollapsedV` · `onCollapseV` (`foldable` · `folded` · `defaultFolded` · `onFold` deprecated aliases).
+- **MenuFloat**'s card header is `Header variant="property"` (was `RailHeader variant="float"`, the same row).
+
+## 0.128.0 — 2026-11-12
+
+- **`MenuFloat title`** — the card opens on `RailHeader variant="float"`, the header every float Rail wears (`titleActions` its actions slot). Each opener passes the label of the button that opened it: AppFloatNav (the tab, More), DocumentCapsule (the name), FloatActionMenu (`title`, default Actions; float variant), RailTrigger (the app title, its × in `titleActions` — the hand-rolled head row is gone), TopControlsBar Panels (the label).
+
+## 0.127.0 — 2026-11-12
+
+Family-prefix renames — needs kol-component ≥0.373.0:
+
+- Re-exports **`RailFloat`** and **`RailHeader`** (kol-component's renames of FloatModule / FloatModuleHeader; the old names still re-exported). PropertyRail draws on RailFloat.
+- The float menu joins the Menu family: `MoreSheet.jsx` → `MenuFloat.jsx`, `FloatMenu` → **`MenuFloat`**, `MoreRows` → **`MenuFloatRows`** (internal to kol-shell, not exported, so no aliases). It stays its own component, not `MenuMore variant="float"`: MenuMore owns its ⋮ trigger and Menu's flyouts, MenuFloat is a trigger-less card wrapper whose levels replace or hang beside rows — merging changes behaviour.
+
+## 0.126.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W11.1 — needs kol-theme ≥0.222.0:
+- **RailFlyout's current row shows its dot, no fill** (it was lit fg-16); hover is the only fill. Rows stay 2px apart.
+
+
+## 0.125.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W8.1 and W10.1 — needs kol-component ≥0.367.0:
+- **PropertyRail's selected line is kol-component's `LayerRow variant="head"`**, the same look.
+- **Every PropertyRail section is a float `LabeledControlSection`**, collapsible ones included (the chevron is in its head), and a `subhead` with the rows under it is one of its own; the generator Rails' group heads draw it. Same look.
+- The fold chevron is the 12 chevron token (FloatModuleHeader); the footer renders only when given. `FloatModuleHeader` is re-exported beside `FloatModule`.
+- Rows read `LabeledControl horizontal` (was `inline`).
+
+## 0.124.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma 2.1 — needs kol-theme ≥0.221.0, kol-component ≥0.366.0:
+- **The float Rails are 264 and 360**: PropertyRail is 264 (`wide` 360) and FloatLayout's nav footprint and inspector slot 264, all from kol-theme's tokens (were 272 · 352 · 280). No API change.
+
+## 0.123.0 — 2026-11-12
+
+plan-2026-11-12-float-system W4.1 — needs kol-component ≥0.365.0:
+- **`PropertyRail` draws on kol-component's `FloatModule`** — same props; the header's actions now sit before the fold (was fold first), and the body scrolls under a fixed header when the Rail is height-capped. Re-exports `FloatModule`.
+
+## 0.122.0 — 2026-11-12
+
+plan-2026-11-12-float-system W3:
+- `ZoomReadout`'s chevron and `MenuBar variant="capsule"`'s trigger chevrons read `--kol-float-chev-sm` (12; were 16 and 10).
+
+## 0.121.0 — 2026-11-12
+
+plan-2026-11-12-float-system W2 — needs kol-component ≥0.363.0, kol-theme ≥0.219.0:
+- **`PropertyRail` is a float-spec module**: `wide` takes `--kol-float-module-w-wide` (352), the default is `--kol-float-module-w` (272); `width` still overrides (a phone's `100%`). Regular rows sit `--kol-float-module-gap` apart; a collapsible section's chevron reads `--kol-float-chev-sm`.
+- **Changed: every labelled row is `LabeledControl variant="float"`** — `labeled` (inline, the label column token, was a 110 literal), `select` (stacked), `slider` (the label and its formatted value over a bare Slider float), `switch` (inline, the switch at the end; its label is now the float hint role, was the panel role).
+
+## 0.120.0 — 2026-11-12
+
+- **`PropertyRail` states: open and folded** (`foldable`, `folded` / `defaultFolded`, `onFold`). The fold ⌃ in the header folds the Rail to its header pill; every float panel is a module. A `children` body slot after the sections takes a panel that is not rows (ReadingContents `bare`, Labs' params). Peer `@kolkrabbi/kol-component` >=0.362.0.
+
 ## 0.119.1 — 2026-11-12
 
 - `PropertyRail`'s collapse button draws `panel-right` (the right-hand twin of RailDisplayControls' `panel-left`). It borrowed `skip-end`, which kol-icons 0.69.0 redrew as the transport's triangle-and-bar.

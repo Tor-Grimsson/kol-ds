@@ -10,7 +10,8 @@ import { copyMatrices } from '../../generate/repeat.js'
 
 export default function RepeatLayer({ layer, palette, layerStyle }) {
   const { layers } = useComposeState()
-  const src = layer.sourceId ? findLayerDeep(layers, layer.sourceId) : null
+  /* a layer's Repeat row (compose/layerModel.js) carries the layer it copies */
+  const src = layer._source ?? (layer.sourceId ? findLayerDeep(layers, layer.sourceId) : null)
   if (!src || src.w == null) return null
   const mats = copyMatrices(layer, { x: src.x ?? 0, y: src.y ?? 0, w: src.w, h: src.h })
   const copy = { ...src, id: layer.id, visible: true }

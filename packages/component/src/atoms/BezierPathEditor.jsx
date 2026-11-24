@@ -140,7 +140,7 @@ export default function BezierPathEditor({
       ref={ref}
       role="group"
       aria-label={ariaLabel}
-      className={`kol-bezier-path-editor relative w-full overflow-hidden touch-none select-none rounded-[var(--kol-radius-sm)] bg-[var(--kol-tone-bg,var(--kol-surface-secondary))] ${className}`.trim()}
+      className={`kol-bezier-path-editor relative w-full overflow-hidden touch-none select-none rounded-[var(--kol-radius-4)] bg-[var(--kol-tone-bg,var(--kol-surface-secondary))] ${className}`.trim()}
       style={{ aspectRatio: String(aspect) }}
       onPointerMove={onMove}
       onPointerUp={onUp}

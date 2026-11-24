@@ -119,7 +119,7 @@ function TaskInspector({ hide }) {
   const [tab, setTab] = useState('details')
   const [group, setGroup] = useState('Briefs')
   return (
-    <PropertyRail title="Task details" onCollapse={hide} width={340}
+    <PropertyRail title="Task details" onCollapseH={hide} width={340}
       tabs={[{ value: 'details', label: 'Details' }, { value: 'notes', label: 'Notes' }]} tab={tab} onTab={setTab}
       sections={[{ rows: [
         { id: 'brief', render: () => (

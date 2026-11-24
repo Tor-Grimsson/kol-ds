@@ -76,7 +76,7 @@ export default function FunctionPlot({
       ref={ref}
       role="img"
       aria-label={ariaLabel}
-      className={`kol-function-plot relative w-full overflow-hidden rounded-[var(--kol-radius-xs)] bg-[var(--kol-oq-04)] ${className}`.trim()}
+      className={`kol-function-plot relative w-full overflow-hidden rounded-[var(--kol-radius-2)] bg-[var(--kol-oq-04)] ${className}`.trim()}
       style={{ height }}
     >
       {w > 0 && (

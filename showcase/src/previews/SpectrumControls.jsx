@@ -1,7 +1,9 @@
 import { useState } from 'react'
-import { SpectrumControls, WheelTriangle } from '@kolkrabbi/kol-component'
+import { AlphaStrip, HueStrip, SBSquare, SpectrumControls, WheelTriangle } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
+/* kolbox (W31.2): WheelTriangle's kolbox handles and focus ring; batch 5: SBSquare, HueStrip and AlphaStrip kolbox (kolbox's color field and its two runs) */
+export const variants = ['default', 'kolbox']
 
 /* HSV → CSS rgb() for the live preview swatch. HSV isn't a CSS color space,
  * so the spectrum's { hue, sat, val } is converted here at the call site
@@ -23,13 +25,20 @@ function hsvCss(h, s, v) {
   return `rgb(${to255(r)}, ${to255(g)}, ${to255(b)})`
 }
 
-export default function SpectrumControlsPreview() {
+export default function SpectrumControlsPreview({ variant = 'default' }) {
   const [hsv, setHsv] = useState({ hue: 210, sat: 72, val: 90 })
   const { hue, sat, val } = hsv
   const preview = hsvCss(hue, sat, val)
 
   return (
     <div className="flex flex-wrap items-start gap-8">
+      {variant === 'kolbox' && (
+        <div className="flex w-52 flex-col gap-3">
+          <SBSquare variant="kolbox" hue={hue} sat={sat} val={val} onChange={(s2, v2) => setHsv({ ...hsv, sat: s2, val: v2 })} className="rounded-sm" />
+          <HueStrip variant="kolbox" hue={hue} onChange={(h) => setHsv({ ...hsv, hue: h })} />
+          <AlphaStrip variant="kolbox" alpha={1} color={preview} />
+        </div>
+      )}
       {/* Composed classic picker — HueStrip over a fill-height SBSquare. */}
       <div style={{ width: 240, height: 240 }}>
         <SpectrumControls value={hsv} onChange={setHsv} />
@@ -38,6 +47,7 @@ export default function SpectrumControlsPreview() {
       {/* Ring picker — the same HSV state driven by WheelTriangle. */}
       <div style={{ width: 220, height: 220 }}>
         <WheelTriangle
+          variant={variant}
           hue={hue}
           sat={sat}
           val={val}

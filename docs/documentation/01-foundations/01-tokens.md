@@ -3,7 +3,7 @@ title: Tokens
 type: reference
 status: active
 created: 2026-07-29
-updated: 2026-11-04
+updated: 2026-11-22
 description: The token foundation under every KOL component
 aliases:
   - foundations
@@ -11,6 +11,7 @@ aliases:
 sources:
   - packages/theme/kol-opacity.css
   - packages/theme/kol-color.css
+  - packages/theme/kol-design-tokens.css
   - showcase/src/lib/tokens.js
 tags:
   - domain/tokens
@@ -79,6 +80,72 @@ Light takes the **pole** because a page wash moves the page 250 → 245 and the 
 
 Each tier pairs with an `--kol-surface-on-*` ink. Theme switching is `data-theme` on `<html>` under the standing law **explicit choice > system/auto > light** (corrected 2026-07-28): a stamped `data-theme` or saved toggle choice wins; an un-stamped page follows `prefers-color-scheme` live via the `:root:not([data-theme])` mirror blocks in `kol-base-tokens.css`/`kol-theme.css`; light is the last-resort fallback. The same stamp on any **element** themes that subtree (theme ≥0.52.0): surfaces, fg ramp, roles, `oq` and borders all re-resolve on the stamped element; the **accent family deliberately does not** — `kol-brand-color.css` rebinds it at `:root`, so a nested pane keeps the app's accent. The showcase boots un-stamped (system-follow) unless a saved choice exists; ThemeToggle (framework ≥0.6.0) cycles light → dark → system.
 
+## Theme variants
+
+A theme variant re-points the color **bases** and the two font families and leaves every derived step to KOL's own formulas, so it is a mode of the color and type collections, not a second system. Four ship (plan-2026-11-18-kolbox-system W6, phase 8.2 and W15): `kolcore`, `kolbox`, `minimal` and `folio`. `kolcore` is KOL's default look under a name. Each is equal value for value to the library `theme` and `type` modes of the same name (`_tmp/2026-11-18-kolbox-system/themes.json`).
+
+| `data-theme-variant` | Modes | Sets |
+|---|---|---|
+| `kolcore` | kolcore light, kolcore dark | nothing: every color and family is KOL's default, the same as no variant |
+| `kolbox` | kolbox light, kolbox dark | the bases, status, palette, six pinned oq steps (08, 16, 24, 32, 48, 64) |
+| `minimal` | minimal light, minimal dark | the bases, six pinned oq steps (08, 16, 24, 32, 48, 64) and status; light is the plain inverse of dark, with status darkened to the least that holds 4.5:1 on its white ground |
+| `folio` | folio light, folio dark | the bases, `--kol-accent-tint` (folio's mint), two pinned oq steps (16, 64); status and palette stay KOL's |
+
+| Stamp on `<html>` | Result |
+|---|---|
+| `data-theme-variant="<name>"` | its light, or its dark when the OS is dark |
+| `data-theme-variant="<name>" data-theme="light"` | its light |
+| `data-theme-variant="<name>" data-theme="dark"` | its dark |
+
+**What a variant may set:** colors and the two families, `--kol-font-family-sans` and `--kol-font-family-mono` (`kol-typography.css`, `kol-typography-mono.css`), nothing else. No radius, spacing, size or layout: those are one value in every theme. A value equal to KOL's default is not set. Where a variant needs a step its bases cannot derive (a pinned oq step, a solid accent tint), it sets that variable directly. The float style's family, `--kol-font-family-float`, is not one of the two.
+
+**A user theme** is a CSS file loaded after `kol-theme.css` that sets the same variables under its own `data-theme-variant` value, in the same three blocks as `kol-color.css`:
+
+```css
+[data-theme-variant="mine"]:is(:root, [data-theme="light"], .light) {
+  --kol-surface-primary: #ffffff;  --kol-surface-on-primary: #111111;
+  --kol-surface-secondary: #f4f4f4; --kol-surface-on-secondary: #111111;
+  --kol-surface-inverse: #111111;  --kol-surface-on-inverse: #ffffff;
+  --kol-accent-primary: #0055ff;   --kol-accent-on-primary: #ffffff;
+}
+[data-theme-variant="mine"]:is([data-theme="dark"], .dark) { /* the dark values */ }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])[data-theme-variant="mine"] { /* the same dark values */ }
+}
+```
+
+The two-attribute selectors outrank KOL's light and dark blocks, and the system mirror follows the OS only when no `data-theme` is stamped: explicit choice beats system beats light.
+
+**Kolbox in detail.** It sets `--kol-surface-primary`, `-on-primary`, `-secondary`, `-on-secondary`, `-inverse`, `-on-inverse`, `--kol-accent-primary`, `-on-primary`, the four `--ui-*` and the seven `--kol-palette-*` (`kol-color.css`), and pins six oq steps (08, 16, 24, 32, 48, 64) to the exact Gruvbox grounds in both modes (the other oq steps stay derived; `kol-opaque.css` is untouched, the kolbox selector's higher specificity wins). fg, the other oq steps, border, focus, accent-strong and the accent tints follow from those; absolutes, glass, the float well, sunken and tertiary stay the DS's dark and light. The same law as the themes: explicit choice beats system beats light. Stamp it on `<html>` or on an element that also carries `data-theme`, since the ramps re-resolve only on the theme selectors. Kolbox light keeps the Gruvbox light inks, accent, status and palette; its grounds are near-neutral warm whites (W17, 2026-11-18, decided for his review): each Gruvbox light ground mixed 24% toward white, then cut to 30% of its chroma in Oklab at the same lightness, so surface primary `#f7f6f0`, secondary `#f6f4ea`, oq 08 `#eeebe2`, 16 `#e8e4db`, 24 `#d7d3cb`, 32 `#c6c2bc` (oq 48 and 64 are inks and stay `#a89984` and `#7c6f64`). Kolbox dark is unchanged. What a theme cannot carry (heights, paddings, type, structure) is the look `variant="kolbox"` on the components; its type is the eleven `kol-kolbox-*` roles in `kol-type-kolbox-classes.css`, see [[03-typography|typography § Kolbox roles]]. Its floating parts share one surface, `.kol-kolbox-surface` (`kol-components-atoms.css`: the file's `shadow/dock`, the float well as its second drop, and the oq-24 line where a part keeps a border), and two widths, `--kol-kolbox-popover-w` 240 and `--kol-kolbox-modal-w` 480 (`kol-design-tokens.css`, see [[09-sizes|sizes § Kolbox widths]]) (W31.2 batch 4, 2026-11-18).
+
+**Folio's own tokens** (Folio migration batch 0, 2026-11-22). Apart from the `folio` variant above, which re-points KOL's bases, Folio's look reads its own seven colors, moved value for value out of apps/folio into `kol-color.css`: `--kol-folio-paper`, `-ink`, `-muted`, `-rule`, `-surface`, `-mint` and `-green`, with Folio's day set at `:root`. Folio's switches are attributes on its frame, nearest wins: `data-folio-theme="light|dark"` (Folio's day or night set, and `--kol-folio-page`, `--kol-folio-page-ink` for a Text document's page), `data-folio-palette="kol"` (paper and ink from the KOL neutrals the frame passes as `--kol-folio-kol-light`, `--kol-folio-kol-dark` and optionally `--kol-folio-kol-surface`; muted, rule and surface mixed from those two) and `data-folio-accent="green|teal|blue|orange|red|purple"` (`--kol-folio-accent` and `--kol-folio-accent-soft`, which become green and mint; on dark the ink lifts toward white and the ground sinks into the paper). A Tailwind host registers them `@theme inline` (`--color-folio-paper: var(--kol-folio-paper)` and so on), so a utility resolves at its own element and every switch reaches it. Its type is the `kol-folio-*` roles, see [[03-typography|typography § Folio roles]].
+
+## Spacing
+
+`--kol-spacing-*` in `kol-design-tokens.css`, named px ÷ 4 with a dash for a decimal.
+
+| Token | px |
+|---|---|
+| `--kol-spacing-0-25` | 1 |
+| `--kol-spacing-0-5` | 2 |
+| `--kol-spacing-1` | 4 |
+| `--kol-spacing-1-5` | 6 |
+| `--kol-spacing-2` | 8 |
+| `--kol-spacing-2-5` | 10 |
+| `--kol-spacing-3` | 12 |
+| `--kol-spacing-3-5` | 14 |
+| `--kol-spacing-4` | 16 |
+| `--kol-spacing-5` | 20 |
+| `--kol-spacing-6` | 24 |
+| `--kol-spacing-8` | 32 |
+| `--kol-spacing-10` | 40 |
+| `--kol-spacing-12` | 48 |
+| `--kol-spacing-16` | 64 |
+| `--kol-spacing-20` | 80 |
+| `--kol-spacing-24` | 96 |
+
+1, 6, 10 and 14 were added 2026-11-18 (plan-2026-11-18-kolbox-system W1.1); no other stop moved. Tailwind reads them through `@theme`: `p-4` is `--kol-spacing-4`, and `gap-px`, `p-1.5`, `p-2.5` and `p-3.5` the new stops.
+
 ## Content widths
 
 `--kol-content-{shell,column,measure}` — 1800/768/65ch: ONE frame per page, two
@@ -86,7 +153,7 @@ inner caps, width is never a page identity. Detail: [[04-layout-breakpoints|layo
 
 ## Radius & shadows
 
-- Radii: `--kol-radius-{none,sm,md,lg,xl,2xl,full}` — components reference these, never hardcoded corners.
+- Radii: `--kol-radius-{0,2,4,6,8,12,13,16,full}`, named by the number (plan-2026-11-18-kolbox-system W1.2) — components reference these, never hardcoded corners. One value in every theme. **4 is the container** (ruling 2026-08-09: "change 8px radius to 4px in containers. everywhere."); 2 is the hairline rung; 6, 8, 12 and 16 are there for tool UIs, not a re-widening. 13 is Figma's file card and toolbar corner, measured (plan-2026-11-23-editor-measured-against-figma W7), read only by kolbox's `ContentCard` and tool rail. The old names `none`, `xs`, `sm`, `md`, `lg`, `xl` and `2xl` are aliases on the [[../../operations/01-release/04-retirements|retirement ledger]], each the px it was: none 0, xs 2, the rest 4.
 - Shadows: `--kol-shadow-{sm,md,lg,xl,inner}`; `--kol-shadow-float` lifts a float (the solid surface; the float motion and state tokens `--kol-float-hover-opacity` · `-press-scale` · `-enter-scale` · `-enter-shift` · `-duration` · `-duration-rail` · `-ease` sit beside the float sizes, see [[08-motion|motion]]); `--kol-shadow-rail-up` lifts a Rail rising from the bottom edge (no top rule with it, kol-theme 0.207.0).
 - Glass (W16, round 3 — 2026-10-31): `--kol-glass-dark-*` · `--kol-glass-light-*` — `fill`, `blur-s` · `blur-m`, `rim`, `shadow-s` · `shadow-m`; worn through `.kol-float-glass-dark` · `.kol-float-glass-light` (`.kol-float-m` for a menu or a box), never inline. glass-dark: rgb 26 at 62%, blur 6 / 16 with saturate 1.8; glass-light: rgb 236 236 232 at 10%, blur 6 / 6. Reduced transparency → solid.
 - Float sizes: `--kol-float-h-{sm,md,lg}` 28 · 36 · 44 (touch 36 · 44 · 52), `--kol-float-t-{sm,md,lg}` 12 · 13 · 14 (13 · 15 · 16), `--kol-float-ic` 18 (20), `--kol-float-row` 40 (48), `--kol-float-inset` 6, `--kol-float-tip-h` · `-tip-t` 24 · 11 (28 · 12), `--kol-float-well` (the field's well, per theme). Touch = `pointer: coarse`.

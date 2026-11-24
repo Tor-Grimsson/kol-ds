@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { IconBrowser } from '@kolkrabbi/kol-styleguide'
 import { PageHeader } from '@kolkrabbi/kol-component'
 import { DocHeader } from '@kolkrabbi/kol-workshop'
@@ -15,6 +15,38 @@ const DEFAULT_SET = 'kol-icon-set-interface'
  * 2026-08-27 — user: "TYPE (stroke solid)? then TAGS"). Chip labels are cased here. */
 const CUT_LABEL = { stroke: 'Stroke', solid: 'Solid', color: 'Color' }
 const TYPES = ['Stroke', 'Solid', 'Color']
+/* TAG (W18.4, 2026-11-20 — user: "we need something to group with filter, so editor icons can be seen together"): the
+ * tags that name an app, set on the icons that app draws by a script (`editor`: scripts/extract-editor-icons.mjs), and
+ * `atlas`, his atlas set's icons (W19.2) */
+const APP_TAGS = ['editor', 'atlas']
+const TAG_FILTER = { label: 'Tag', key: 'tags', values: APP_TAGS }
+
+/* ONE NAME, SOLID IS ITS VARIANT (W20.3, 2026-11-20 — his rule of 2026-11-01, "ONE cloud storm component with said
+ * variants"): an icon with both cuts is one tile; its `-solid` twin rides on it (shown on the tile's meta line, found by
+ * its name through the tags, counted under both Types). `-solid` is storage, never a second tile. */
+const pairUp = (items) => {
+  const byName = new Map(items.map((i) => [i.name, i]))
+  return items.flatMap((i) => {
+    const stroke = i.name.endsWith('-solid') && byName.get(i.name.slice(0, -6))
+    if (stroke) return []
+    const solid = byName.get(`${i.name}-solid`)
+    return solid ? [{ ...i, solid: solid.name, type: ['Stroke', 'Solid'], tags: [...(i.tags ?? []), solid.name], meta: [...(i.meta ?? []), ['Solid', solid.name]] }] : [i]
+  })
+}
+
+/* `?q=` opens the catalog with the word typed (W18.1 — the search modal links here); typing writes it back */
+function useQuery() {
+  const [params, setParams] = useSearchParams()
+  const onSearchChange = (q) => setParams((p) => { const n = new URLSearchParams(p); if (q) n.set('q', q); else n.delete('q'); return n }, { replace: true })
+  return { searchValue: params.get('q') ?? '', onSearchChange }
+}
+
+/* THE PARENT'S CATALOG (W18.1, 2026-11-20 — user: "often Im searching both signal and interface so Icons parent should
+ * catalog every group"): every set in one IconBrowser, each tile's detail naming its set, the set and the category as
+ * filters. A name lives in one set (iconNames `setOf`), so no tile repeats. */
+const ALL_ITEMS = pairUp(Object.values(ICON_SETS).flatMap((x) => Object.keys(x.groups).sort(byOrder).flatMap((folder) =>
+  x.groups[folder].map((name) => ({ name, set: x.title, category: label(folder), group: `${x.title} / ${label(folder)}`, type: CUT_LABEL[getCut(name)] ?? 'Stroke', tags: getTags(name) })))))
+const ALL_CATEGORIES = [...new Set(ALL_ITEMS.map((i) => i.category))]
 
 /* the browser — filter row, controls, plates — is kol-styleguide's IconBrowser since 2026-10-31 (LayoutGroup: kol-atlas's
  * icon view was a second copy of it); this page keeps the set's routing, home and groups */
@@ -50,6 +82,7 @@ const TYPES = ['Stroke', 'Solid', 'Color']
  */
 export default function IconsGallery() {
   const { set, group } = useParams()
+  const query = useQuery()
   const meta = ICON_SETS[set ?? DEFAULT_SET]
 
   /* the URL's last segment is a category first (Round 15), then a group */
@@ -63,14 +96,27 @@ export default function IconsGallery() {
   /* `group` carries the DISPLAY label so the chips read as the gallery always
    * labelled them ("Add / remove", not "add-remove"). */
   const items = useMemo(
-    () => orderedFolders.flatMap((folder) =>
-      meta.groups[folder].map((name) => ({ name, group: label(folder), folder, type: CUT_LABEL[getCut(name)] ?? 'Stroke', tags: getTags(name) }))),
+    () => pairUp(orderedFolders.flatMap((folder) =>
+      meta.groups[folder].map((name) => ({ name, group: label(folder), folder, type: CUT_LABEL[getCut(name)] ?? 'Stroke', tags: getTags(name) })))),
     [orderedFolders, meta],
   )
 
   /* /icons IS THE ICONS HOME (2026-09-30): it rendered the default set a second time */
   if (!set) {
-    return <ChapterHome home="icons" title="Sets" noteHeader="Holds" items={Object.entries(ICON_SETS).map(([k, x]) => ({ to: `/icons/${k}`, label: x.title, note: `${Object.keys(x.groups).length} groups · ${Object.values(x.groups).flat().length} icons` }))} />
+    return (
+      <ChapterHome home="icons" title="Sets" noteHeader="Holds" items={Object.entries(ICON_SETS).map(([k, x]) => ({ to: `/icons/${k}`, label: x.title, note: `${Object.keys(x.groups).length} groups · ${Object.values(x.groups).flat().length} icons` }))}>
+        <IconBrowser
+          {...query}
+          items={ALL_ITEMS}
+          filterGroups={[
+            { label: 'Set', key: 'set', values: Object.values(ICON_SETS).map((x) => x.title) },
+            { label: 'Type', key: 'type', values: TYPES },
+            TAG_FILTER,
+            { label: 'Category', key: 'category', values: ALL_CATEGORIES },
+          ]}
+        />
+      </ChapterHome>
+    )
   }
 
   if (!meta || (group && !meta.groups[group] && !category)) {
@@ -96,10 +142,12 @@ export default function IconsGallery() {
         : <HomeDoc key={set ?? DEFAULT_SET} id={set ?? DEFAULT_SET} />}
 
       <IconBrowser
+        {...query}
         items={items}
         /* TYPE first — the short group takes the first column; TAGS flows after it */
         filterGroups={[
           { label: 'Type', key: 'type', values: TYPES },
+          TAG_FILTER,
           /* a category's page keeps the Tags chips — its groups */
           ...(group && !category ? [] : [{ label: 'Tags', key: 'group', values: orderedFolders.map(label) }]),
         ]}

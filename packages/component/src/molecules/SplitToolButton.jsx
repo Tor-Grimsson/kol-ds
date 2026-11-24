@@ -66,14 +66,12 @@ import { glyphSize } from '../hooks/glyphLadders.js'
  * @param {string} props.className - Additional classes on the trigger
  */
 
-/* Corner fold marker — `fold-indicator`, promoted into kol-icon-set-interface
- * 2026-09-03 from kol-fxr's own drawing (editor-set-is-behind-its-source); the
- * comment that stood here said it did not exist yet and should be promoted, so
- * this is that. Lives inside the button so it dims with kol-btn-quiet and
- * inverts with kol-btn-pressed (currentColor). */
+/* Corner fold marker — drawn here, not an icon: it belongs to this button only
+ * (out of the icon set 2026-11-23, his ruling). Lives inside the button so it dims
+ * with kol-btn-quiet and inverts with kol-btn-pressed (currentColor). */
 const FoldIndicator = () => (
   <span aria-hidden="true" className="pointer-events-none absolute right-0.5 bottom-0.5 opacity-70 inline-flex">
-    <IconLoader name="fold-indicator" size={4} />
+    <svg width="4" height="4" viewBox="0 0 4 4" fill="none"><path d="M0 4L4 4L4 0Z" fill="currentColor" /></svg>
   </span>
 )
 

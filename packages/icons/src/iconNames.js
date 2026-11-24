@@ -12,10 +12,12 @@ const names = (mods, keep = () => true) => {
   return s
 }
 export const INTERFACE_NAMES = names(import.meta.glob('./kol-icon-set-interface/**/*.svg'))
+export const EDITOR_NAMES = names(import.meta.glob('./kol-icon-set-editor/**/*.svg'))
 export const SIGNAL_NAMES = names(import.meta.glob('./kol-icon-set-signal/**/*.svg'))
 export const IDENTITY_NAMES = names(import.meta.glob('./kol-icon-set-identity/*/*.svg'), (name, folder) => name === folder)
 export const EXTERNAL_NAMES = names(import.meta.glob('./kol-icon-set-external/**/*.svg'))
 
 /* interface decides a name both sets drew (2026-08-28: `chevron-*`, `nav-*`, `dith-flow`, `ptrn-checker`, `ptrn-dot`
  * were left out of signal rather than shipped to collide); identity, then external last */
-export const setOf = (name) => (INTERFACE_NAMES.has(name) ? 'interface' : SIGNAL_NAMES.has(name) ? 'signal' : IDENTITY_NAMES.has(name) ? 'identity' : EXTERNAL_NAMES.has(name) ? 'external' : null)
+export const setOf = (name) => (INTERFACE_NAMES.has(name) ? 'interface' : EDITOR_NAMES.has(name) ? 'editor' : SIGNAL_NAMES.has(name) ? 'signal' : IDENTITY_NAMES.has(name) ? 'identity' : EXTERNAL_NAMES.has(name) ? 'external' : null)
+

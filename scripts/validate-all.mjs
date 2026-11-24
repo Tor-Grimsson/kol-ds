@@ -50,13 +50,15 @@ const GATES = [
   ['dd-trigger', 'validate-dd-trigger.mjs'],
   ['consumption', 'validate-consumption.mjs'],
   ['icon-ink', 'validate-icon-ink.mjs'],
+  ['icon-duplicates', 'validate-icon-duplicates.mjs'],
+  ['icon-fills', 'validate-icon-fills.mjs'],
   ['native-title', 'validate-native-title.mjs'],
   ['no-middots', 'validate-no-middots.mjs'],
-,
   ['variants', 'validate-variants.mjs'],
   ['control-type', 'validate-control-type.mjs'],
   ['views', 'validate-views.mjs'],
   ['helper-text', 'validate-helper-text.mjs'],
+  ['float', 'validate-float.mjs'],
 ]
 
 /* the frontmatter gate is the sync script in --check mode */

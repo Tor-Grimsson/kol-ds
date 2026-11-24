@@ -1,6 +1,6 @@
 # @kolkrabbi/kol-icons
 
-The KOL icon loader — `<IconLoader/>` plus the 341-icon registry and raw SVG entries.
+The KOL icon loader — `<IconLoader/>` plus the icon registry (the interface set holds 1008 icons in 20 groups) and raw SVG entries.
 
 > **Vite-only.** Uses `import.meta.glob` to load the SVG set, so it requires a Vite-based build.
 

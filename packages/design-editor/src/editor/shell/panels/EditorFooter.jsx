@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, ButtonGroup, Dropdown, LabeledControlSection } from '../../float/controls'
 import { useChrome } from '../../float/chrome'
-import { FullscreenOverlay, ModalShell, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
+import { ButtonSplit, FullscreenOverlay, ModalShell, Tooltip, glyphSize } from '@kolkrabbi/kol-component'
 import { proxied, isVideoType } from '../../library/mediaLibrary'
 import { useTransport } from '../../params/transport'
 import { pack } from '../../packs'
@@ -192,7 +192,9 @@ function SettingsFileTab({ onSaveSettings, onLoadSettings, onSave, currentPreset
   )
 }
 
-export default function EditorFooter() {
+/* `part` — 'output' | 'file' (plan-2026-11-12-one-header W10.1): that tab's content alone, no strip and no rule, for a
+ * window of its own (FloatLabs' Output and File windows). The batch modal and the bake overlay ride with 'output'. */
+export default function EditorFooter({ part } = {}) {
   const cs = useControlSize()
   /* every rung above the desktop's 'sm' is the touch rail */
   const touch = cs !== 'sm'
@@ -216,9 +218,9 @@ export default function EditorFooter() {
   /* ON TOUCH THE FOOTER IS ONE ROW UNTIL A TAB IS OPENED (2026-10-05): the rail is a sheet half
    * the display high there, and Output's eight controls standing open took all of it. No tab is
    * lit at rest; a tap opens one and the same tap closes it. */
-  const [tab, setTab] = useState(touch ? null : (showTransport || currentView() === 'editor' ? 'transport' : 'output'))
+  const [tab, setTab] = useState(part ?? (touch ? null : (showTransport || currentView() === 'editor' ? 'transport' : 'output')))
   /* the dock went away under an open Transport tab — fall back to Output */
-  useEffect(() => { if (tab === 'transport' && !showTransport && !touch && !footerDown) setTab('output') }, [tab, showTransport, touch, footerDown])
+  useEffect(() => { if (!part && tab === 'transport' && !showTransport && !touch && !footerDown) setTab('output') }, [tab, showTransport, touch, footerDown])
   const [pngScale, setPngScale] = useState(1)
   const [batchOpen, setBatchOpen] = useState(false)
   const [recording, setRecording] = useState(false)
@@ -239,7 +241,7 @@ export default function EditorFooter() {
 
   /* Window › Transport · Output · File and File › Batch export… (plan 28) */
   /* on touch the phone nav's More opens a tab and the same row closes it (plan 41 W4) */
-  useOpenTab(FOOTER_TABS, useCallback((t) => setTab((cur) => (touch && cur === t.toLowerCase() ? null : t.toLowerCase())), [touch]))
+  useOpenTab(FOOTER_TABS, useCallback((t) => { if (!part) setTab((cur) => (touch && cur === t.toLowerCase() ? null : t.toLowerCase())) }, [touch, part]))
   useEffect(() => {
     const on = () => setBatchOpen(true)
     window.addEventListener('kol:open-batch-export', on)
@@ -305,7 +307,56 @@ export default function EditorFooter() {
       />
     </>
   )
+  const outputBody = (
+    <div className="flex flex-col gap-3">
+      {/* LabeledControlSection, not Section — the rail's one section
+          organism (eyebrow + 8px rows); Section's label was the
+          sentence-case helper the estate stopped writing */}
+      <LabeledControlSection label="Aspect">
+        <Dropdown size={cs} variant="subtle" className="w-full" options={aspectOptions} value={aspect} onChange={setAspect} />
+      </LabeledControlSection>
+      <LabeledControlSection label="Export">
+        <Dropdown size={cs} variant="subtle" className="w-full" options={scaleOptions} value={pngScale} onChange={setPngScale} />
+        {/* TWO BUTTONS, NOT FIVE (plan-2026-11-12-one-header W4.1; the user: *"its basically 4 exports and 1 open"*): the
+            exports are one ButtonSplit — Export PNG, its ⌄ the loop bake, the live Record and the Batch .zip — and the
+            chromeless output tab is its own Button beside it */}
+        <div className="flex items-center gap-2">
+          <ButtonSplit variant={float ? 'float' : 'default'} tone={float ? 'grey' : 'primary'} size={cs} icon="download" className="flex-1 min-w-0"
+            onClick={() => onExportPng(pngScale)}
+            items={[
+              { label: 'Export PNG', icon: 'download', onPress: () => onExportPng(pngScale) },
+              { label: 'Export loop (webm)', icon: 'download', onPress: exportWebm },
+              { label: recording ? 'Stop recording' : 'Record', icon: recording ? 'eye-on' : 'download', onPress: toggleRecord },
+              { label: 'Batch export', icon: 'layers', onPress: () => setBatchOpen(true) },
+            ]}>
+            Export PNG
+          </ButtonSplit>
+          <Button tone="primary" size={cs} iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
+            Open output window
+          </Button>
+        </div>
+      </LabeledControlSection>
+    </div>
+  )
+  const fileBody = (
+    <>
+      {photoLayer
+        ? <PhotoFileTab layer={photoLayer} />
+        : (
+          <SettingsFileTab
+            onSaveSettings={onSaveSettings}
+            onLoadSettings={onLoadSettings}
+            onSave={onSave}
+            currentPresetId={currentPresetId}
+          />
+        )}
+      {/* Audio analyser input for the audio-band modulation sources —
+          File tab per labs (source: Off / Mic / File). */}
+      <AudioInputRow />
+    </>
+  )
   if (footerDown) return modals
+  if (part) return <div className="flex flex-col gap-3">{part === 'output' ? outputBody : fileBody}{part === 'output' && modals}</div>
 
   /* THE COLLAPSED DOCK — the left rail's pinned row, mirrored. The rule runs
      the full rail width out past the padding (`-mx-2`, as NavRail's does), and
@@ -358,58 +409,8 @@ export default function EditorFooter() {
           <TransportBar size={cs} />
         </div>
       )}
-      {tab === 'output' && (
-        <div className="flex flex-col gap-3">
-          {/* LabeledControlSection, not Section — the rail's one section
-              organism (eyebrow + 8px rows); Section's label was the
-              sentence-case helper the estate stopped writing */}
-          <LabeledControlSection label="Aspect">
-            <Dropdown size={cs} variant="subtle" className="w-full" options={aspectOptions} value={aspect} onChange={setAspect} />
-          </LabeledControlSection>
-          <LabeledControlSection label="Export">
-            <Dropdown size={cs} variant="subtle" className="w-full" options={scaleOptions} value={pngScale} onChange={setPngScale} />
-            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={() => onExportPng(pngScale)}>
-              Export PNG
-            </Button>
-            <Button tone="primary" size={cs} className="w-full" iconLeft="download" iconSize={12} onClick={exportWebm}>
-              Export loop (webm)
-            </Button>
-            {/* Live capture — records the composed frame in real time (transport
-                running, params being tweaked), complementing the deterministic
-                loop bake above. */}
-            <Button tone={recording ? 'inverted' : 'primary'} size={cs} className="w-full" iconLeft={recording ? 'eye-on' : 'download'} iconSize={12} onClick={toggleRecord}>
-              {recording ? 'Stop recording' : 'Record'}
-            </Button>
-            {/* Chromeless output in its own tab — a clean surface to screen-
-                record with OS / tab capture (bypasses the in-app Record path). */}
-            <Button tone="primary" size={cs} className="w-full" iconLeft="maximize" iconSize={12} onClick={openOutputWindow}>
-              Open output window
-            </Button>
-            {/* Multi-size matrix — tick aspects × scales, bundle every PNG into
-                one .zip. */}
-            <Button tone="primary" size={cs} className="w-full" iconLeft="layers" iconSize={12} onClick={() => setBatchOpen(true)}>
-              Batch export
-            </Button>
-          </LabeledControlSection>
-        </div>
-      )}
-      {tab === 'file' && (
-        <>
-          {photoLayer
-            ? <PhotoFileTab layer={photoLayer} />
-            : (
-              <SettingsFileTab
-                onSaveSettings={onSaveSettings}
-                onLoadSettings={onLoadSettings}
-                onSave={onSave}
-                currentPresetId={currentPresetId}
-              />
-            )}
-          {/* Audio analyser input for the audio-band modulation sources —
-              File tab per labs (source: Off / Mic / File). */}
-          <AudioInputRow />
-        </>
-      )}
+      {tab === 'output' && outputBody}
+      {tab === 'file' && fileBody}
       {modals}
     </div>
   )

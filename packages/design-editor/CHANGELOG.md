@@ -1,5 +1,81 @@
 # @kolkrabbi/design-editor
 
+## 0.46.0 — 2026-11-13
+
+Needs kol-component ≥0.378.0, kol-shell ≥0.131.0 (plan-2026-11-12-one-header W8.1 · W10.1 · W11):
+
+- **ModalSettings to his mock** — rows `LabeledControl variant="settings"` (10/12 label, 6 over the control; slider rows 44, the value pill 26 tall, run bright); the Source group's 12 rows fit 301; the footer on one centre line: Live preview + the small (bare) switch, Reset and Cancel on the grey tone, Apply inverted, all float sm 28; both header Dropdowns 140.
+- **FloatLabs as windows** — the right side is three RailFloat windows (PropertyRail `windows`): the effect's parameters (title the effect, the preset its `kind`), Output, File (`EditorFooter part="output" | "file"`), each collapsing alone. No effect picked: "Labs" with its Parameters head, no empty block. `sheetLabels` returns `{ title, kind, pill }` — no middot.
+- **Float sections** never pad or rule themselves (no `divided` in the float chrome): the gap spaces them.
+- **Transport** — one play/pause button (play outline at rest, pause solid while playing), last, beside the timecode; FloatLabs' transport is `collapsibleH`. `Movable` keeps a dragged float from its right and bottom edges, so a growing float holds its right edge.
+
+## 0.45.1 — 2026-11-12
+
+- The float Output section's Export `ButtonSplit` takes the grey tone (the float well), so the main action and its ⌄ read as one button with the divider between.
+
+## 0.45.0 — 2026-11-12
+
+Needs kol-component ≥0.377.0, kol-shell ≥0.130.0, kol-theme ≥0.225.0 (plan-2026-11-12-one-header W6.1):
+
+- **ModalSettings** renders base float parts only: every row a `LabeledControl variant="float"` (label above) around `Slider variant="float" readout="input"`, `Dropdown`/`Input`/`TabsRow` float or a bare float `ToggleSwitch` (beside its label); the header's Expand a float Button and its Style / Preset float Dropdowns; the footer's Live preview a `LabeledControl` + bare ToggleSwitch, Reset a float Button, Cancel + Apply a `ButtonGroup` of float Buttons. No bordered 28 boxes, no 6-round buttons.
+- **RailSettings**' slider values are Slider's own float Input pill (the local number box is gone).
+- The lib CSS also scans the workspace's kol-component source, so the DS's responsive utilities survive this sheet.
+
+## 0.44.0 — 2026-11-12
+
+Needs kol-component ≥0.376.0 and kol-shell ≥0.129.0 (plan-2026-11-12-one-header W2.1 · W4.1):
+
+- **EditorFooter Output** — two buttons, not five: `ButtonSplit` "Export PNG" whose ⌄ lists Export PNG · Export loop (webm) · Record · Batch export (the same handlers and labels), and `Button` "Open output window" beside it. Float under the float chrome.
+- Labs' nav and params Rails take `collapsibleV` · `collapsedV` · `defaultCollapsedV` · `onCollapseV`; RailSettings' panel button is `onCollapseH`.
+
+## 0.43.0 — 2026-11-12
+
+Family-prefix renames — needs kol-component ≥0.373.0 (`ModalDialog`, `RailFloat`):
+
+- `GeneratorWindow` → **`ModalSettings`** (`editor/generate/ModalSettings.jsx`), on kol-component's `ModalDialog`.
+- `GeneratorRail` → **`RailSettings`** (`editor/generate/RailSettings.jsx`); the `/generators` pack ships it as `RailSettings`, `GeneratorRail` kept as a deprecated key.
+- `LayerEffectsWindow` → **`ModalLayerEffects`** (`editor/shell/`), `ColorModesWindow` → **`ModalColorModes`** (`editor/color/`).
+- RailSettings and Labs draw on kol-component's `RailFloat` (was FloatModule).
+
+## 0.42.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W13.1 — needs kol-component ≥0.370.0, kol-theme ≥0.223.0:
+
+- **GeneratorWindow** (the dialog form of Generate, Repeat and Type): every group is `LabeledControlSection
+  variant="settings"` (the Preview too), every row a LabeledControl (the footer's Live preview: its words, then the switch);
+  the footer's spacer span is gone.
+- **GeneratorRail** (the Rail form, a 360 FloatModule): the footer's Live update is a float LabeledControl row like every
+  other (it drew switch + words itself).
+- **Timeline** — a lit layer label is fg-12 (was fg-16), LayerStack's selected row.
+
+## 0.41.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W7.1 and W10.1 — needs kol-component ≥0.367.0, kol-shell ≥0.125.0:
+- Under the float chrome a params section (Parameters, Lines, Effect stack) is kol-component's float `LabeledControlSection`; same look.
+- Every `LabeledControl inline` reads `horizontal`.
+- The float Rails' fold chevron is 12 (kol-component's FloatModuleHeader).
+
+## 0.40.0 — 2026-11-12
+
+plan-2026-11-12-float-system W4.1 — needs kol-component ≥0.365.0, kol-shell ≥0.123.0:
+- Float Labs: the nav Rail folds to its pill like the params Rail (both on `FloatModule`); the params Rail's body scrolls under its header.
+
+## 0.39.0 — 2026-11-12
+
+plan-2026-11-12-float-system W3:
+- The float text toolbar's chevrons read `--kol-float-chev-sm` (12, were 16); the layer inspector's blend Dropdown drops its 10px caret override and takes the spec's.
+
+## 0.38.0 — 2026-11-12
+
+plan-2026-11-12-float-system W2 — needs kol-shell ≥0.121.0, kol-component ≥0.363.0:
+- Float Labs' params Rail and the generator Rails are the wide module (`PropertyRail wide`, 352); the generator Rails were 384.
+- Generator Rails: number boxes size in `ch` of their longest value (were 66, 64 and 48 px); the ramp's curve dropdown fills between its A and B boxes; the Lights rows are one grid under their head and fit the wide module with no clipped value.
+- Under the float chrome: a two-option off / on choice (Invert, Background, Orbit, an Off / On segmented param) is a ToggleSwitch float — a pair of named states stays a choice; every row and section head is `LabeledControl variant="float"` on the spec's label column; a range row fills its cell. The app chromes (LabsView, EditorShell) are untouched.
+
+## 0.37.0 — 2026-11-12
+
+- Float Labs: the params Rail folds (`PropertyRail foldable`, kol-shell 0.120.0); on a phone the nav starts behind RailTrigger and the params start folded, spanning the screen under it, so nothing stacks on the collapsed nav. The Rail stays 352, the narrowest the labs controls fit. Peer `@kolkrabbi/kol-shell` >=0.120.0.
+
 ## 0.36.0 — 2026-11-12
 
 - **The float transport uses the transport set:** stop draws `stop` (was `square`), back to start draws `skip-start` (was `skip-back`); the lit slot draws the `-solid` cut through AppFloatNav (kol-shell 0.119.0).

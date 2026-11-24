@@ -3,7 +3,7 @@
  * nothing else imports it. */
 import { useEffect, useMemo, useState } from 'react'
 import { Button, Dropdown, Tooltip, Input, SettingsPanel, SettingsRow, SettingsChoice, ToggleCheckbox, SettingsMulti, ShortcutsOverlay, CommandOverlay, IconFrame, SettingsSections, MenuFilter, MenuDatePicker, MenuMore } from '@kolkrabbi/kol-component'
-import { Dialog } from '@kolkrabbi/kol-component'
+import { ModalDialog } from '@kolkrabbi/kol-component'
 import MetricStats, { seriesFor, METRICS } from './TopStats.jsx'
 import { SourcesCard, PagesCard, LocationsCard, DevicesCard } from './Cards.jsx'
 import BehavioursCard from './Behaviours.jsx'
@@ -355,7 +355,7 @@ function FilterDialog({ open, period, filters, onClose, onApply }) {
   const pickable = (r, i) => (r.op === 'eq' || r.op === 'neq') && listOf(i).length > 0
   const valueOf = (r, i) => (pickable(r, i) ? (listOf(i).includes(r.value) ? r.value : listOf(i)[0]) : r.value)
   return (
-    <Dialog open={!!g} onClose={onClose} title={g ? `Filter by ${g.label}` : ''}>
+    <ModalDialog open={!!g} onClose={onClose} title={g ? `Filter by ${g.label}` : ''}>
       {g && (
         <form className="flex flex-col gap-4 p-5"
           onSubmit={(e) => { e.preventDefault(); onApply(rows.map((r, i) => ({ ...r, value: String(valueOf(r, i)).trim() })).filter((r) => r.value)) }}>
@@ -381,7 +381,7 @@ function FilterDialog({ open, period, filters, onClose, onApply }) {
           </div>
         </form>
       )}
-    </Dialog>
+    </ModalDialog>
   )
 }
 
@@ -397,7 +397,7 @@ function DatesDialog({ open, title, initial, onClose, onApply }) {
     setTo(iso(initial?.end ?? now))
   }, [open])
   return (
-    <Dialog open={open} onClose={onClose} title={title} width={420}>
+    <ModalDialog open={open} onClose={onClose} title={title} width={420}>
       <form className="flex flex-col gap-4" style={{ padding: 'var(--kol-pad-card-lg)' }}
         onSubmit={(e) => {
           e.preventDefault()
@@ -415,7 +415,7 @@ function DatesDialog({ open, title, initial, onClose, onApply }) {
           <Button tone="ghost" size="sm" onClick={onClose}>Cancel</Button>
         </div>
       </form>
-    </Dialog>
+    </ModalDialog>
   )
 }
 

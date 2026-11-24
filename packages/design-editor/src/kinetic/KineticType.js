@@ -287,9 +287,11 @@ export default class KineticType {
     // back to the live <text> render so nothing blanks while it streams in.
     // Radial/rings arrangements are <text>-only (no morph), so they skip this.
     if (p.morph?.on && !isRadial(type) && !isRings(type)) {
-      const urlA = font.url
+      /* an italic draws from the family's italic file (Malromur) or its slant axis (Inter, _renderMorph) */
+      const urlOf = (f) => (p.italic && f.italicUrl ? f.italicUrl : f.url)
+      const urlA = urlOf(font)
       const face2 = p.morph.face2 ? fontByKey(p.morph.face2) : null
-      const urlB = face2 ? face2.url : urlA
+      const urlB = face2 ? urlOf(face2) : urlA
       const fa = resolvedFont(urlA)
       const fb = resolvedFont(urlB)
       if (fa && fb) {
@@ -343,7 +345,7 @@ export default class KineticType {
   _styleGlyph(el2, p, font, a) {
     el2.style.fontFamily = `'${font.family}'`
     el2.style.fontSize = `${p.fontSize}px`
-    el2.style.fontStyle = p.italic ? 'italic' : 'normal'
+    el2.style.fontStyle = p.italic ? (font.italicStyle || 'italic') : 'normal'
     el2.style.fontVariationSettings = vfString(a.vf ? { ...p.vf, ...a.vf } : p.vf)
     el2.style.fontFeatureSettings = featureString(p.opentype)
     el2.setAttribute('fill', p.fill || '#e8e4dc')
@@ -570,6 +572,7 @@ export default class KineticType {
     const cross = !!p.morph.face2
     const coordsB = {}
     if (!cross) for (const a of axes) coordsB[a.tag] = p.morph.vf2?.[a.tag] ?? a.max
+    if (p.italic && font.slnt != null) { coordsA.slnt = font.slnt; if (!cross) coordsB.slnt = font.slnt }
     const gap = size * 0.12 + (p.letterSpacing || 0)
     const mode = p.morph.mode || 'morph'
     const blend = p.morph.blend ?? 0.5
@@ -579,7 +582,7 @@ export default class KineticType {
     const fill = p.fill || '#e8e4dc'
 
     // rebuild the glyph outlines only when something that changes geometry moves
-    const mk = JSON.stringify([text, p.font, p.morph.face2 || '', size, coordsA, coordsB, mode, blend, curve, cp1, cp2, p.letterSpacing || 0, fill])
+    const mk = JSON.stringify([text, p.font, p.morph.face2 || '', !!p.italic, size, coordsA, coordsB, mode, blend, curve, cp1, cp2, p.letterSpacing || 0, fill])
     const rebuilt = mk !== rt.morphKey
     if (rebuilt) {
       rt.morphKey = mk

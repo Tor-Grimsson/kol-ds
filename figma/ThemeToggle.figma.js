@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const variant = instance.getEnum('variant', { "button": "button", "flush": "flush", "row": "row" })
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 
 export default {
   example: variant === 'button'

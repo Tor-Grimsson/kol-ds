@@ -4,7 +4,7 @@
 import figma from 'figma'
 // variant default (square control) · float (the capsule); outline is a tone mode
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 const size = instance.getEnum('size', { sm: 'sm', md: 'md', lg: 'lg' })
 const placeholder = instance.getString('placeholder')
 const hint = instance.getBoolean('kbd') ? ' shortcutHint="⌘K"' : ''

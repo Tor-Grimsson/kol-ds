@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const icon = instance.getEnum('icon', { "plus": "plus", "more": "more" })
+const icon = instance.getEnum('more', { "true": "more", "false": "plus" })
 
 export default {
   example: figma.code`<FloatActionMenu actions={actions} icon="${icon}" variant="float" />`,

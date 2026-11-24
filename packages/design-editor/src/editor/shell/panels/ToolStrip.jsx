@@ -25,7 +25,7 @@ export default function ToolStrip() {
       variant('select'),
       /* Node select = A (edit the selection's nodes); a one-shot row until it is a tool. The glyph is
          a stand-in — a `node-select` cut is owed (plan 17). */
-      { id: 'node', label: 'Node select', icon: 'arrow-upleft', shortcut: key('node-edit'), action: true },
+      { id: 'node', label: 'Node select', icon: 'pointer-node', shortcut: key('node-edit'), action: true },
     ] },
     /* Line rides the pen's fold (R9.3): both draw a stroke between points */
     { kind: 'split', id: 'pen-fold', label: 'Pen', variants: [variant('pen'), variant('line')] },

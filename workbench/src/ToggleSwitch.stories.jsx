@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ToggleSwitch } from '@kolkrabbi/kol-component'
+import { LabeledControl, ToggleSwitch } from '@kolkrabbi/kol-component'
 
 const Row = ({ children }) => (
   <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>{children}</div>
@@ -9,7 +9,7 @@ export const Default = () => {
   const [on, setOn] = useState(false)
   return (
     <Row>
-      <ToggleSwitch label="Dark mode" checked={on} onChange={setOn} />
+      <LabeledControl horizontal label="Dark mode" labelWidth="fit-content"><ToggleSwitch checked={on} onChange={setOn} aria-label="Dark mode" /></LabeledControl>
     </Row>
   )
 }
@@ -19,8 +19,8 @@ export const States = () => {
   const [b, setB] = useState(true)
   return (
     <Row>
-      <ToggleSwitch label="Off" checked={a} onChange={setA} />
-      <ToggleSwitch label="On" checked={b} onChange={setB} />
+      <LabeledControl horizontal label="Off" labelWidth="fit-content"><ToggleSwitch checked={a} onChange={setA} aria-label="Off" /></LabeledControl>
+      <LabeledControl horizontal label="On" labelWidth="fit-content"><ToggleSwitch checked={b} onChange={setB} aria-label="On" /></LabeledControl>
     </Row>
   )
 }
@@ -30,8 +30,8 @@ export const Variants = () => {
   const [b, setB] = useState(true)
   return (
     <Row>
-      <ToggleSwitch variant="default" label="Default" checked={a} onChange={setA} />
-      <ToggleSwitch variant="plain" label="Plain" checked={b} onChange={setB} />
+      <LabeledControl horizontal label="Default" labelWidth="fit-content"><ToggleSwitch variant="default" checked={a} onChange={setA} aria-label="Default" /></LabeledControl>
+      <LabeledControl horizontal label="Plain" labelWidth="fit-content"><ToggleSwitch variant="plain" checked={b} onChange={setB} aria-label="Plain" /></LabeledControl>
     </Row>
   )
 }
@@ -40,7 +40,7 @@ export const WithHint = () => {
   const [on, setOn] = useState(false)
   return (
     <Row>
-      <ToggleSwitch label="Invert" hint="flips output" checked={on} onChange={setOn} />
+      <LabeledControl horizontal label="Invert" hint="flips output" labelWidth="fit-content"><ToggleSwitch checked={on} onChange={setOn} aria-label="Invert" /></LabeledControl>
     </Row>
   )
 }

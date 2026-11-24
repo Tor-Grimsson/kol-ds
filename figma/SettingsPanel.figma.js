@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "rail": "rail", "overlay": "overlay" })
+const variant = instance.getEnum('overlay', { "true": "overlay", "false": "rail" })
 const v = variant === 'overlay' ? ' variant="overlay"' : ''
 
 export default {

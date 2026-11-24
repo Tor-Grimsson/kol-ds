@@ -7,6 +7,8 @@ import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
 import { PopoverPanel, usePopover } from '@kolkrabbi/kol-component'
 import AlignmentPanel from '../AlignmentPanel'
 import { ButtonGroup, OriginPicker } from '@kolkrabbi/kol-component'
+/* the Background on / off: under the float chrome, binary is a toggle (float/controls) */
+import { ButtonGroup as OnOffGroup } from '../../float/controls'
 import StrokePanel from '../../color/StrokePanel'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useComposeState, COVER_TYPES, resolveColor } from '../state'
@@ -172,7 +174,7 @@ export default function LayerInspector({ layer }) {
           <gen.LoopPicker layer={layer} tree={layer.type === 'misc' ? gen.MISC_TREE : undefined} />
           {gen.loopBgToggleable(gen.loopById(layer.loopId)) && (
             <SettingsRow label="Background" align="fill" labelWidth={RAIL_LABEL_W}>
-              <ButtonGroup layout="joined"
+              <OnOffGroup layout="joined"
                 size={cs} className="w-full"
                 options={[{ value: 'off', label: 'Off' }, { value: 'on', label: 'On' }]}
                 value={layer.bgOn === false ? 'off' : 'on'}
@@ -663,13 +665,15 @@ export function FloatAppearanceFields({ layer }) {
   const paints = 'color' in layer
   return (
     <div className="flex flex-col gap-2">
-      {/* his "Normal ⌄": the float label role, the 10 chevron right after the name (not at the far edge) */}
+      {/* his "Normal ⌄": the float label role, the spec chevron right after the name (not at the far edge) */}
       <Dropdown variant="float" size="md" ariaLabel="Blend mode"
-        className="w-full [&_.kol-dd-trigger]:w-full [&_.kol-dd-trigger]:justify-start [&_.kol-dd-trigger]:px-4 [&_.kol-dd-trigger]:gap-2 [&_.kol-dd-trigger]:text-[11px] [&_.kol-dd-trigger]:!font-normal [&_.kol-dd-caret]:!size-2.5"
+        className="w-full [&_.kol-dd-trigger]:w-full [&_.kol-dd-trigger]:justify-start [&_.kol-dd-trigger]:px-4 [&_.kol-dd-trigger]:gap-2 [&_.kol-dd-trigger]:text-[11px] [&_.kol-dd-trigger]:!font-normal"
         options={BLEND_MODES} value={layer.blend ?? 'normal'} onChange={(v) => edit.setProp('blend', v)} />
-      <Slider variant="float" label="Opacity" min={0} max={100} step={1} className="w-full [&_.kol-slider-float]:h-4"
-        value={Math.round((layer.opacity ?? 1) * 100)} formatValue={(v) => `${v}%`}
-        onChange={(v) => edit.setProp('opacity', Math.min(1, Math.max(0, v / 100)))} />
+      <LabeledControl variant="float" label="Opacity" hint={`${Math.round((layer.opacity ?? 1) * 100)}%`}>
+        <Slider variant="float" aria-label="Opacity" min={0} max={100} step={1} className="w-full"
+          value={Math.round((layer.opacity ?? 1) * 100)}
+          onChange={(v) => edit.setProp('opacity', Math.min(1, Math.max(0, v / 100)))} />
+      </LabeledControl>
       {paints && (
         <div className="flex items-center gap-2">
           <PaintPopover bare layer={layer} palette={palette} paint="fill" label="Fill" hex={resolveColor(layer.color, palette)} none={!layer.color} />

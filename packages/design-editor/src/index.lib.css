@@ -40,6 +40,10 @@
    kol-framework.css below is for. A manifest only tells Tailwind where to
    LOOK; it emits no rules of its own. */
 @import "@kolkrabbi/kol-theme/kol-sources.css";
+/* …and in THIS workspace, where kol-theme resolves to packages/theme and kol-sources.css's `../kol-component/src`
+   finds nothing: without it this sheet's utilities (`.flex-col`) land after the app's and beat the DS's responsive
+   ones (`sm:flex-row` — ButtonGroup's row stacked in ModalSettings' footer, 2026-11-12). Absent in an install, inert. */
+@source "../../component/src";
 
 /* Brand layer — Kolkrabbi identity (hue ramps, brand-primary/secondary roles,
  * accent rebind). Binds the neutral DS theme above to the Kolkrabbi brand. */
@@ -171,6 +175,23 @@
   /* read by kol-component's guide line, which falls back to the accent when a
      consumer binds nothing */
   --kol-canvas-guide: #D3869B;
+}
+
+/* THE CANVAS TAKES THE PAGE'S ACCENT, NOT THE TEAL ABOVE (plan-2026-11-18-kolbox-system 28.2, his "why is there blue
+   accent around the canvas?"). Captured on :root, where the theme (and a host's theme variant) sets it, so the value
+   inherits past the teal and past a host's fixed dark scope around the canvas (kolbox's): selection, hover, marquee,
+   pen and every other outline inside the frame follow the theme in all four variants, dark and light. The frame's
+   label ink and its quiet 1px line come from :root too, so they read on the page the canvas sits on. */
+:root {
+  --kol-canvas-accent: var(--kol-accent-primary);
+  --kol-canvas-on-accent: var(--kol-accent-on-primary);
+  --kol-canvas-label: var(--kol-oq-64);
+  --kol-canvas-line: var(--kol-oq-16);
+}
+.kol-design-editor [data-canvas-frame] {
+  --kol-accent-primary: var(--kol-canvas-accent);
+  --kol-accent-on-primary: var(--kol-canvas-on-accent);
+  --kol-accent-primary-strong: var(--kol-canvas-accent);
 }
 
 /* THE RANDOMISER'S GROUND IS BLACK IN EITHER THEME, and a host's drawer trigger floats over it

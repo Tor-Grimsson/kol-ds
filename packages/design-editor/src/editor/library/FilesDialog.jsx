@@ -1,5 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
-import { Button, FullscreenOverlay, Input, ModalShell, useModal } from '@kolkrabbi/kol-component'
+import { Button, FullscreenOverlay, Input, ModalShell, Tooltip, useModal } from '@kolkrabbi/kol-component'
 import MediaLibrary from '@kolkrabbi/kol-component/organisms/MediaLibrary'
 import { SETTINGS_BASE } from '@kolkrabbi/kol-component/organisms/MediaLibraryPages'
 import { useGeneratorLibrary } from './LibraryProvider'
@@ -150,11 +150,11 @@ export default function FilesDialog({
               <span ref={saveRef} className="inline-flex">
                 <Input size="sm" chars={18} placeholder="Name" value={saveName} onChange={(e) => setSaveName(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') save() }} />
               </span>
-              <Button tone="grey" size="sm" disabled={!saveName.trim()} onClick={save}>Save current</Button>
+              <Tooltip label={saveName.trim() ? null : 'Name it first'}><Button tone="grey" size="sm" disabled={!saveName.trim()} onClick={save}>Save current</Button></Tooltip>
             </>
           )}
           <span className="kol-mono-12 text-fg-48 truncate ms-auto">{pickedItem ? labelOf(pickedItem) : 'Select a file'}</span>
-          <Button size="sm" disabled={!pickedItem} onClick={openPicked}>Open</Button>
+          <Tooltip label={pickedItem ? null : 'Select a file first'}><Button size="sm" disabled={!pickedItem} onClick={openPicked}>Open</Button></Tooltip>
         </div>
       </ModalShell>
     </FullscreenOverlay>

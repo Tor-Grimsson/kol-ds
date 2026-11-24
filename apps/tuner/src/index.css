@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+/* kolbox's sheet, as the editor wears it (R7.4, 2026-11-19): KOL's token layers, the kolbox parts and type, the fonts.
+   The theme variant is kolbox (index.html). */
+@import "../../../packages/design-editor/src/editor/kolbox/kolbox.css";
+
+html,
+body {
+  overscroll-behavior: none;
+}

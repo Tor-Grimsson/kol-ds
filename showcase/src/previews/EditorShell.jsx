@@ -1,4 +1,4 @@
-import { EditorShell, Button } from '@kolkrabbi/kol-component'
+import { EditorShell, Button, Rail } from '@kolkrabbi/kol-component'
 
 export const stage = 'full'
 
@@ -10,7 +10,17 @@ const RailSection = ({ title, children }) => (
 )
 
 /* Bounded height so the shell embeds in the gallery instead of filling 100dvh. */
-export default function EditorShellPreview() {
+export const variants = ['default', 'kolbox']
+
+export default function EditorShellPreview({ variant = 'default' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <div className="h-[360px] w-full"><EditorShell variant="kolbox"
+      topbar={<div className="h-14 shrink-0" />}
+      left={<Rail variant="kolbox" side="left" aria-label="Layers" />}
+      right={<Rail variant="kolbox" side="right" aria-label="Properties" />}
+    /></div>
+  )
   return (
     <div className="overflow-hidden rounded border border-fg-16">
       <EditorShell

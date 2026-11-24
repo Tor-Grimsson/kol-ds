@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Pill } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import { useAxisAnimation } from '@kolkrabbi/kol-component'
 
-/* taxonomy-ok: organism — nests Pill, Slider, SpecimenSectionHeader (relative
+/* taxonomy-ok: organism — nests Pill, Slider, SpecimenHeader (kol-styleguide
  * imports) plus a same-file PlayPauseButton; owns the axis-animation state. */
 
 /**
@@ -50,7 +50,7 @@ function PlayPauseButton({ isPlaying = false, onToggle, size = 28 }) {
  * VariableFontSection — the animated variable-axis playground. A big specimen
  * word whose weight auto-oscillates between `minWeight` and `maxWeight` via
  * `useAxisAnimation` (ping-pong rAF, reduced-motion gated), pausing the instant
- * the user scrubs the weight slider. A SpecimenSectionHeader sits above with a
+ * the user scrubs the weight slider. A SpecimenHeader sits above with a
  * Roman/Italic dropdown. "Watch the weight breathe, then grab the slider."
  *
  * The weight is applied as CSS `font-weight` (→ the font's wght axis), so it
@@ -123,7 +123,7 @@ const VariableFontSection = ({
   return (
     <section className="w-full py-12 lg:py-16">
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader
+        <SpecimenHeader
           selectedStyle={selectedStyle}
           onStyleChange={setSelectedStyle}
           showDropdown={showDropdown}

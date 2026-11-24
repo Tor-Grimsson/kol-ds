@@ -1,0 +1,57 @@
+export const meta = {
+  id: "2.65.0",
+  slug: "specimen-spec",
+  title: "SpecimenSpec",
+  type: "reference",
+  status: "active",
+  updated: "2026-11-14",
+  tags: [
+    "domain/cards",
+    "domain/components",
+    "domain/components/atoms",
+    "domain/dashboards",
+    "domain/brand",
+    "domain/layout",
+    "domain/typography",
+    "pattern/display",
+  ],
+  description: "Font metrics beside a live sample.",
+  aliases: [
+    "specimenspec",
+    "TypeSpecCard",
+  ],
+  reuses: [
+    "kol-type-spec-sample 1★",
+  ],
+}
+
+<Preview name="SpecimenSpec" />
+
+## Installation
+
+<Install name="SpecimenSpec" />
+
+## Usage
+
+```jsx
+import { SpecimenSpec, SpecimenSample } from '@kolkrabbi/kol-styleguide'
+
+<SpecimenSpec label='Heading 01' meta={[['Family', 'Sans'], ['Size', '48px']]}><SpecimenSample … /></SpecimenSpec>
+```
+
+## Behavior
+
+The library master `SpecimenSpec` (Styleguide page; it was kol-foundry's `TypeSpecCard`, now an alias on the retirement ledger). The "data-sheet" member of the Specimen kit: a two-column row pairing a
+left meta panel of key/value pairs (font metrics) with a live sample slot on
+the right, plus an optional corner label. Single column on mobile,
+`240px + fluid` at lg. `meta` is arbitrary tuples — no fixed metric schema;
+the sample is usually a [SpecimenSample](/components/specimen-sample) composed at the
+call site.
+
+## Props
+
+<Api name="SpecimenSpec" rows={[
+  {"prop":"label","type":"string","def":"—","desc":"Corner caption, absolute top-left."},
+  {"prop":"meta","type":"[key, value][]","def":"[]","desc":"Key/value metric rows."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The live sample, Figma slot `sample` (a SpecimenSample)."}
+]} />

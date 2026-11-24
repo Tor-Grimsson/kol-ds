@@ -2,7 +2,7 @@ import { Menu } from '@kolkrabbi/kol-component'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { useLayerEdit } from '../compose/useLayerEdit'
 import { familyPatch, SIZE_PRESETS } from '../compose/inspectors/TextPanel'
-import { FAMILY_OPTIONS, layerFamily, stylesFor, styleValueFor, ensureFamilyLoaded } from '../modes/type/families'
+import { FAMILY_OPTIONS, layerFamily, layerWeight, weightLabel, stylesFor, styleValueFor, ensureFamilyLoaded } from '../modes/type/families'
 
 /**
  * FloatTextToolbar — the text tool's options over the canvas (plan-2026-11-05-float-editor W2.4; his Context toolbar
@@ -21,7 +21,7 @@ function Pick({ label, items, ariaLabel, search }) {
       trigger={({ open, props }) => (
         <button {...props} type="button" aria-label={ariaLabel} aria-expanded={open} className={TRIGGER}>
           {label}
-          <IconLoader name="chevron-down" size={16} className="text-oq-64" />
+          <IconLoader name="chevron-down" size="var(--kol-float-chev-sm)" className="text-oq-64" />
         </button>
       )} />
   )
@@ -43,7 +43,7 @@ export default function FloatTextToolbar({ layer, className = '' }) {
       </span>
       <Pick label={famLabel} ariaLabel="Font family" search
         items={FAMILY_OPTIONS.map((f) => ({ key: f.value, label: f.label, checked: f.value === family, onClick: () => { ensureFamilyLoaded(f.value); edit.patch(familyPatch(layer, f.value)) } }))} />
-      <Pick label={styles.find((s) => s.value === style)?.label ?? 'Style'} ariaLabel="Font style"
+      <Pick label={styles.find((s) => s.value === style)?.label ?? weightLabel(layerWeight(layer))} ariaLabel="Font style"
         items={styles.map((s) => ({ key: s.value, label: s.label, checked: s.value === style, onClick: () => edit.patch(s.patch) }))} />
       <Pick label={size != null ? `${size} px` : 'Size'} ariaLabel="Font size"
         items={SIZE_PRESETS.map((v) => ({ key: v, label: `${v} px`, checked: v === size, onClick: () => edit.setProp('size', v) }))} />

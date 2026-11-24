@@ -24,7 +24,7 @@ export default function IndexRow({ title, cells = [], checked = false, onCheck, 
       onClick={onClick}
       onKeyDown={onClick ? (e) => { if (e.key === 'Enter') onClick(e) } : undefined}
       aria-selected={onClick ? selected : undefined}
-      className={`flex h-7 w-full items-center gap-3 rounded-[var(--kol-float-list-r)] px-2.5 ${onClick ? 'cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]' : ''} ${selected ? 'bg-fg-16' : 'hover:bg-fg-08'} ${className}`.trim()}
+      className={`flex h-7 w-full items-center gap-3 rounded-[var(--kol-float-list-r)] px-2.5 ${onClick ? 'cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]' : ''} ${selected ? 'bg-fg-12' : 'hover:bg-fg-04'} ${className}`.trim()}
     >
       {onCheck && <span onClick={(e) => e.stopPropagation()} className="inline-flex shrink-0"><ToggleCheckbox variant="float" checked={checked} onChange={onCheck} aria-label="Done" /></span>}
       <span className={`kol-float-hint min-w-0 flex-1 truncate ${checked ? 'text-fg-48' : 'text-fg-emphasis'}`}>{title}</span>

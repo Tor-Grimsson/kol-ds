@@ -11,8 +11,9 @@
  *
  * `variant="float"` (float-everything W7 rows 98 · 99 · 101 · 107, 2026-11-04) is the float sheet: a 20 round on the
  * secondary surface, Inter, no rim, 20 inset. Its head is a `SectionHead` — `title` with a mono `count` ("1 open"),
- * `meta` or `description` under it, `value` at the right, `controls` and the fold chevron (`onFold`; `folded` keeps
- * only the head — the collapsed group). `addLabel` + `onAdd` draw the add row under the body: a sunken float pill with
+ * `meta` or `description` under it, `value` at the right, `controls` and the collapse-v chevron (`onCollapseV`; `collapsedV`
+ * keeps only the head — the collapsed group; `folded` / `onFold` / `defaultFolded` are deprecated aliases of `collapsedV` /
+ * `onCollapseV` / `defaultCollapsedV`, plan-2026-11-12-one-header W2.1). `addLabel` + `onAdd` draw the add row under the body: a sunken float pill with
  * a + and the ↵ hint. Rows inside are `TaskCard size="sm"`.
  *
  * THE EDITOR CARD (plan-2026-11-05-float-editor W1.2; his frame 20:14470 — Typography · Colour/Swatches ·
@@ -20,7 +21,7 @@
  * a tab row — the lit tab in the float panel role with its 2px rule, the rest in the label role at fg-48 — and the
  * chevron flush right. `tab` / `onTab` control it; unset, the card keeps its own (the first). `children` may be a
  * function of the lit tab's key. `foot` is the slot under the rows (the Layers actions), 16 below them.
- * `defaultFolded` (a boolean) makes the fold the card's own — the chevron toggles it with no `onFold`. `radius="window"`
+ * `defaultCollapsedV` (a boolean) makes collapse-v the card's own — the chevron toggles it with no `onCollapseV`. `radius="window"`
  * is the editor's round (`--kol-float-window-r`, 28) in place of the sheet's 20. A stack is data: map it.
  *
  * Phone (kol-website metric, 2026-11-03): tabs 12 apart and the header gap 8 below md; the active underline sits
@@ -43,11 +44,11 @@ const TabButton = ({ active, open, children, ...rest }) => (
   </Button>
 )
 
-export default function Card({ variant, title, count, meta, description, value, tabs, tab, onTab, controls, onExpand, folded, onFold, defaultFolded, addLabel, onAdd, foot, radius, footLeft, footRight, footPad = 'pt-4', className = '', children }) {
+export default function Card({ variant, title, count, meta, description, value, tabs, tab, onTab, controls, onExpand, collapsedV, onCollapseV, defaultCollapsedV, folded, onFold, defaultFolded, addLabel, onAdd, foot, radius, footLeft, footRight, footPad = 'pt-4', className = '', children }) {
   if (variant === 'float') {
     return (
       <FloatSheet title={title} count={count} meta={meta} description={description} value={value} controls={controls}
-        tabs={tabs} tab={tab} onTab={onTab} folded={folded} onFold={onFold} defaultFolded={defaultFolded} addLabel={addLabel} onAdd={onAdd}
+        tabs={tabs} tab={tab} onTab={onTab} collapsedV={collapsedV ?? folded} onCollapseV={onCollapseV ?? onFold} defaultCollapsedV={defaultCollapsedV ?? defaultFolded} addLabel={addLabel} onAdd={onAdd}
         foot={foot} radius={radius} className={className}>{children}</FloatSheet>
     )
   }
@@ -89,13 +90,13 @@ export default function Card({ variant, title, count, meta, description, value, 
   )
 }
 
-/* the float sheet: SectionHead, the body, the add row, the foot; `folded` keeps the head alone (row 107). The fold and
- * the tab are the caller's when it passes them, the card's own when it does not (`defaultFolded`, the first tab). */
-function FloatSheet({ title, count, meta, description, value, controls, tabs, tab, onTab, folded, onFold, defaultFolded, addLabel, onAdd, foot, radius, className = '', children }) {
-  const [ownFolded, setOwnFolded] = useState(!!defaultFolded)
+/* the float sheet: SectionHead, the body, the add row, the foot; `collapsedV` keeps the head alone (row 107). Collapse-v and
+ * the tab are the caller's when it passes them, the card's own when it does not (`defaultCollapsedV`, the first tab). */
+function FloatSheet({ title, count, meta, description, value, controls, tabs, tab, onTab, collapsedV, onCollapseV, defaultCollapsedV, addLabel, onAdd, foot, radius, className = '', children }) {
+  const [ownCollapsed, setOwnCollapsed] = useState(!!defaultCollapsedV)
   const [ownTab, setOwnTab] = useState(tabs?.[0]?.key)
-  const isFolded = folded ?? ownFolded
-  const fold = onFold ?? (defaultFolded !== undefined ? () => setOwnFolded((v) => !v) : undefined)
+  const isCollapsed = collapsedV ?? ownCollapsed
+  const collapse = onCollapseV ?? (defaultCollapsedV !== undefined ? () => setOwnCollapsed((v) => !v) : undefined)
   const current = tab ?? ownTab
   const pick = (k) => { if (tab === undefined) setOwnTab(k); onTab?.(k) }
   const body = typeof children === 'function' ? children(current) : children
@@ -103,10 +104,10 @@ function FloatSheet({ title, count, meta, description, value, controls, tabs, ta
   return (
     <section className={`${sheet} flex flex-col p-5 ${className}`.trim()}>
       <SectionHead title={title} count={count} meta={meta} description={description} value={value} controls={controls}
-        tabs={tabs} tab={current} onTab={pick} folded={isFolded} onFold={fold} />
-      {!isFolded && body && <div className="flex-1 min-h-0 flex flex-col pt-4">{body}</div>}
-      {!isFolded && foot && <div className="flex items-center gap-2 pt-4">{foot}</div>}
-      {!isFolded && addLabel && (
+        tabs={tabs} tab={current} onTab={pick} collapsedV={isCollapsed} onCollapseV={collapse} />
+      {!isCollapsed && body && <div className="flex-1 min-h-0 flex flex-col pt-4">{body}</div>}
+      {!isCollapsed && foot && <div className="flex items-center gap-2 pt-4">{foot}</div>}
+      {!isCollapsed && addLabel && (
         <button type="button" onClick={onAdd} style={WELL}
           className={`flex items-center gap-2.5 w-full h-[var(--kol-float-h-md)] px-3.5 mt-4 rounded-full text-left ${PRESS}`}>
           <IconLoader name="plus" size={16} className="text-oq-64 shrink-0" />

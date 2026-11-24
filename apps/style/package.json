@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "description": "The two styles side by side — A, today's square controls, and B, the floating style (FloatingStyle): Button, Input, menu rows, the nav, the tooltip, the float shadow. Never published.",
+  "description": "The styles board: every part in each UI style side by side (default, float, Folio, minimal, kolbox), with the gaps each style has. The earlier default-beside-float page stays at #/pair. Never published.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,10 +19,12 @@
     "@tailwindcss/vite": "^4.2.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-router-dom": "^7.14.2",
     "tailwindcss": "^4.2.4"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^6.0.1",
-    "vite": "^8.0.10"
+    "vite": "^8.0.10",
+    "vite-plugin-svgr": "^5.2.0"
   }
 }

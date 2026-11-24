@@ -3,8 +3,11 @@ import ColorSwatch from '../molecules/ColorSwatch.jsx'
 import Input from '../atoms/Input.jsx'
 import Slider from '../molecules/Slider.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
+import Button from '../atoms/Button.jsx'
+import TabsRow from '../molecules/TabsRow.jsx'
+import SwatchGrid from '../molecules/SwatchGrid.jsx'
 import { IconLoader } from '@kolkrabbi/kol-icons'
-import { usePopover, PopoverPanel } from '../utilities/Popover.jsx'
+import { usePopover, PopoverPanel, Tooltip } from '../utilities/Popover.jsx'
 import { HueStrip, SBSquare, AlphaStrip } from './SpectrumControls.jsx'
 import { hexToHsva, hsvaToHex } from '../hooks/colorMath.js'
 import { resolveCssColor } from '../hooks/cssVar.js'
@@ -121,7 +124,7 @@ function cssToHex(css) {
  *                                 or `({ close }) => node` so a pick can close the panel (lobby ColorPickerPopoverExtras,
  *                                 kol-fxr 2026-10-31). Inline, it sits last and `close` does nothing
  */
-export default function ColorPickerPopover({ color, onChange, defaultValue, size = 'xs', label = 'Color', trigger, placement = 'bottom-end', alpha = true, brightness = false, inline = false, hexEnd, modes = false, title, footer, className = '' }) {
+function ColorPickerPopoverDefault({ color, onChange, defaultValue, size = 'xs', label = 'Color', trigger, placement = 'bottom-end', alpha = true, brightness = false, inline = false, hexEnd, modes = false, title, footer, className = '' }) {
   const [mode, setMode] = useState('hex')
   const isNone = !color || color === 'transparent'
   const [open, setOpen] = useState(false)
@@ -185,7 +188,7 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
   )
   const strips = hsva && (
     <>
-      <div className="rounded-[var(--kol-radius-xs)] overflow-hidden" style={{ width: inline || modes ? '100%' : PANEL_W, height: inline || modes ? 160 : 140 }}>
+      <div className="rounded-[var(--kol-radius-2)] overflow-hidden" style={{ width: inline || modes ? '100%' : PANEL_W, height: inline || modes ? 160 : 140 }}>
         <SBSquare hue={hsva.hue} sat={hsva.sat} val={hsva.val} onChange={(sat, val) => commit({ ...hsva, sat, val })} />
       </div>
       <HueStrip hue={hsva.hue} onChange={(hue) => commit({ ...hsva, hue })} />
@@ -220,7 +223,7 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
           {modes && <Dropdown size="sm" value={mode} onChange={setMode} options={PICKER_MODES} ariaLabel={`${label} mode`} />}
         </div>
         {hexField}
-        <div className="w-full overflow-hidden rounded-[var(--kol-radius-xs)]" style={{ height: 200 }}>
+        <div className="w-full overflow-hidden rounded-[var(--kol-radius-2)]" style={{ height: 200 }}>
           <SBSquare hue={hsva.hue} sat={hsva.sat} val={hsva.val} onChange={(sat, val) => commit({ ...hsva, sat, val })} />
         </div>
         <HueStrip hue={hsva.hue} onChange={(hue) => commit({ ...hsva, hue })} />
@@ -268,4 +271,130 @@ export default function ColorPickerPopover({ color, onChange, defaultValue, size
       )}
     </>
   )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's PopoverColor, carried from apps/kolbox/src/ui/PopoverColor.jsx (W13 state 4): beside the rail; tabs Custom
+ * and Libraries with the plus; the paint type row; the square with its handle; the eyedropper, hue and opacity; the
+ * format dropdown with the hex and the opacity; "On this page" and the page's swatches. It opens at an `anchor` it does
+ * not own (PopoverPanel kolbox's words: `anchor`, `open`, `onClose`, `placement`). `color` a hex, `opacity` 0 to 100,
+ * `paint`; `swatches` (default: the page's own colors, read from the tokens at run time); onChange({ value, opacity,
+ * paint }). */
+
+/* the page's own colors, read from the theme's tokens when it opens, so no color is written here */
+const PAGE_TOKENS = ['--kol-surface-primary', '--kol-surface-secondary', '--kol-oq-08', '--kol-oq-16', '--kol-oq-24', '--kol-surface-on-primary', '--kol-oq-64', '--kol-accent-primary', '--ui-info', '--ui-success', '--ui-error', '--color-link']
+const pageColor = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim().toUpperCase()
+/* Paint types: Figma's row (guessed in kolbox); Gradient borrows contrast, Pattern ptrn-dot from your icons */
+const PAINTS = [
+  { value: 'Solid', icon: 'square' },
+  { value: 'Gradient', icon: 'contrast' },
+  { value: 'Pattern', icon: 'ptrn-dot' },
+  { value: 'Image', icon: 'image' },
+  { value: 'Video', icon: 'video' },
+]
+const toHsv = (hex) => hexToHsva(hex) ?? { hue: 0, sat: 0, val: 0 }
+
+function ColorPickerPopoverKolbox({ anchor, open, onClose, placement, color, opacity: opacityIn = 100, paint: paintIn = 'Solid', swatches, onChange }) {
+  const [hsv, setHsv] = useState(() => toHsv(color ?? pageColor('--kol-accent-primary')))
+  const [opacity, setOpacity] = useState(opacityIn)
+  const [paint, setPaint] = useState(paintIn)
+  useEffect(() => setOpacity(opacityIn), [opacityIn])
+  useEffect(() => setPaint(paintIn), [paintIn])
+  const [tab, setTab] = useState('Custom')
+  const [format, setFormat] = useState('Hex')
+  const hex = hsvaToHex({ ...hsv, alpha: 1 })
+  useEffect(() => { if (color && color.toUpperCase() !== hsvaToHex({ ...hsv, alpha: 1 })) setHsv(toHsv(color)) }, [color]) // eslint-disable-line react-hooks/exhaustive-deps
+  const colors = swatches ?? PAGE_TOKENS.map(pageColor)
+
+  const set = (next = hsv, o = opacity, p = paint) => { setHsv(next); setOpacity(o); setPaint(p); onChange?.({ value: hsvaToHex({ ...next, alpha: 1 }), opacity: o, paint: p }) }
+  const eyedrop = async () => {
+    if (!window.EyeDropper) return
+    try { const { sRGBHex } = await new window.EyeDropper().open(); set(toHsv(sRGBHex)) } catch { /* cancelled */ }
+  }
+
+  return (
+    <PopoverPanel variant="kolbox"
+      anchor={anchor}
+      open={open}
+      onClose={onClose}
+      placement={placement}
+      aria-label="Color"
+      leading={<TabsRow variant="kolbox" tabs={['Custom', 'Libraries']} value={tab} onChange={setTab} className="mr-auto" />}
+      actions={<Tooltip variant="kolbox" label="No styles yet"><Button variant="kolbox" iconOnly="plus" aria-label="Add style" disabled /></Tooltip>}
+    >
+      <div className="flex flex-col gap-3 px-4 pb-4">
+        <div className="flex gap-1">
+          {PAINTS.map((p) => (
+            <Button variant="kolbox" key={p.value} iconOnly={p.icon} aria-label={p.value} pressed={p.value === paint} onClick={() => set(hsv, opacity, p.value)} />
+          ))}
+        </div>
+        <SBSquare variant="kolbox" hue={hsv.hue} sat={hsv.sat} val={hsv.val} onChange={(sat, val) => set({ ...hsv, sat, val })} className="rounded-sm" />
+        <div className="flex items-center gap-2">
+          <Button variant="kolbox" iconOnly="eyedropper" aria-label="Eyedropper" onClick={eyedrop} />
+          <div className="flex flex-1 flex-col gap-2">
+            <HueStrip variant="kolbox" hue={hsv.hue} onChange={(h) => set({ ...hsv, hue: h })} />
+            <AlphaStrip variant="kolbox" alpha={opacity / 100} color={hex} onChange={(a) => set(hsv, Math.round(a * 100))} />
+          </div>
+        </div>
+        <div className="flex gap-1">
+          <Dropdown variant="kolbox" value={format} onChange={setFormat} options={['Hex', 'RGB', 'HSL', 'HSB']} className="w-16 shrink-0" />
+          <Input variant="kolbox"
+            key={hex}
+            aria-label="Hex"
+            defaultValue={hex.slice(1)}
+            onBlur={(e) => /^[0-9a-f]{6}$/i.test(e.target.value) && set(toHsv(e.target.value))}
+            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+            className="flex-1"
+          />
+          <Input variant="kolbox"
+            key={`o${opacity}`}
+            aria-label="Opacity"
+            defaultValue={`${opacity}%`}
+            onBlur={(e) => { const o = parseInt(e.target.value, 10); if (o >= 0 && o <= 100) set(hsv, o) }}
+            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+            className="w-16 shrink-0"
+          />
+        </div>
+      </div>
+      <div role="separator" className="kol-color-popover-rule--kolbox h-px shrink-0" />
+      <div className="flex flex-col gap-3 px-4 py-3">
+        <Dropdown variant="kolbox" value="On this page" options={['On this page']} className="w-full" />
+        <SwatchGrid colors={colors} value={hex} onChange={(c) => set(toHsv(c))} />
+      </div>
+    </PopoverPanel>
+  )
+}
+
+/* ── folio (Folio batch C, 2026-11-22): Folio's SwatchMenu, carried class for class. The 24 swatch (ColorSwatch folio)
+ * opens, 6 under it, a panel padded 8 of the `swatches` ([name, hex]) as a row (SwatchGrid folio); a pick closes it.
+ * Folio picks from a set: no spectrum. Esc or a press outside closes. It renders in place, never in a portal, so it keeps
+ * the frame's `data-folio-*`. `color` the current hex, `onChange(hex)`, `label` names the swatch and the panel. Chrome
+ * in kol-theme `.kol-color-picker--folio`. ── */
+function ColorPickerPopoverFolio({ color, swatches = [], onChange, label }) {
+  const [open, setOpen] = useState(false)
+  const box = useRef(null)
+  useEffect(() => {
+    if (!open) return
+    const off = (e) => { if (!box.current?.contains(e.target)) setOpen(false) }
+    const esc = (e) => e.key === 'Escape' && setOpen(false)
+    addEventListener('mousedown', off); addEventListener('keydown', esc)
+    return () => { removeEventListener('mousedown', off); removeEventListener('keydown', esc) }
+  }, [open])
+  return (
+    <span ref={box} className="kol-color-picker--folio relative inline-flex">
+      <ColorSwatch variant="folio" hex={color} aria-label={`${label} ${color}`} aria-pressed={undefined} aria-haspopup="dialog" aria-expanded={open} onClick={() => setOpen(!open)} />
+      {open && (
+        <span role="dialog" aria-label={label} className="kol-color-picker-panel absolute left-0 top-[calc(100%+6px)] z-50 flex rounded-[4px] border p-[8px]">
+          <SwatchGrid variant="folio" aria-label={label}>
+            {swatches.map(([name, hex]) => <ColorSwatch variant="folio" key={name} hex={hex} title={`${name} ${hex}`} aria-label={`${name} ${hex}`} selected={color === hex} onClick={() => { setOpen(false); onChange?.(hex) }} />)}
+          </SwatchGrid>
+        </span>
+      )}
+    </span>
+  )
+}
+
+export default function ColorPickerPopover(props) {
+  if (props.variant === 'folio') return <ColorPickerPopoverFolio {...props} />
+  return props.variant === 'kolbox' ? <ColorPickerPopoverKolbox {...props} /> : <ColorPickerPopoverDefault {...props} />
 }

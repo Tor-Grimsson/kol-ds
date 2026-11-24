@@ -29,7 +29,7 @@ export const TIERS = {
   /* the brand-book set both brand apps were maintaining locally
    * (brand-book-mocks-two-consumers, 2026-09-03). The mocks are molecules: a
    * frame plus a mark plus a text block, nesting nothing. */
-  AssetCard: 'atoms', DocumentIndex: 'organisms', DocumentLibrary: 'organisms', DocumentView: 'organisms', LabWindow: 'organisms', LabOutput: 'molecules', BrandLockup: 'molecules', DocumentFiles: 'molecules', DocumentMarkdown: 'atoms',
+  AssetCard: 'atoms', DocumentIndex: 'organisms', DocumentLibrary: 'organisms', DocumentView: 'organisms', ModalLab: 'organisms', LabOutput: 'molecules', BrandLockup: 'molecules', DocumentFiles: 'molecules', DocumentMarkdown: 'atoms',
   /* print (2026-10-28) */
   A4Pages: 'molecules', PrintStudio: 'organisms',
   PostPhoto: 'molecules', PostType: 'molecules', PostProduct: 'molecules',
@@ -130,14 +130,14 @@ export const TIERS = {
   /* DocKit — the Doc* composer family over kol-doc-* roles (0.1.8) */
   DocHeader: 'molecules', DocSection: 'molecules', DocTable: 'molecules', DocFigure: 'molecules',
   /* kol-foundry */
-  TypeSample: 'atoms', TypeSpecCard: 'atoms', TextPressure: 'atoms',
+  TextPressure: 'atoms',
   GlyphItem: 'atoms', FontViewerComponent: 'organisms', FontViewerSection: 'organisms',
-  SpecimenSectionHeader: 'molecules', TypefaceVariablePreview: 'molecules', LoaderIntro: 'organisms', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
+  TypefaceVariablePreview: 'molecules', LoaderIntro: 'organisms', TypefaceAlphabet: 'molecules', PairingCard: 'molecules',
   FoundryOpentypeFeatures: 'organisms', FoundryTypefaceDetails: 'organisms', FoundryTypefacePairing: 'organisms',
   TypefaceHero: 'organisms', TypefaceStyleSection: 'organisms', FontPreviewSection: 'organisms',
   VariableFontSection: 'organisms', GlyphMetricsGrid: 'organisms', GlyphMetricsSection: 'organisms',
   FoundryCharacterSets: 'organisms', TypefaceLibraryGrid: 'organisms',
-  TypefaceLibraryGridWithVariables: 'organisms', TypeSpecimenLive: 'organisms',
+  TypefaceLibraryGridWithVariables: 'organisms',
   TypefaceSpecimenPage: 'organisms',
   /* ── Atomic tiers for the packages that had none (2026-09-30 — the user's ruling on the
    *    names audit: every component sits on the atomic ladder; ownership is the Package view).
@@ -158,7 +158,7 @@ export const TIERS = {
   NavRail: 'organisms', AppFloatNav: 'organisms', AccountForm: 'molecules', WalkthroughPanel: 'organisms',
   /* the float chrome (float-everything W5 · W9, 2026-11-04) */
   Timecode: 'atoms', ZoomReadout: 'atoms', SceneBreadcrumb: 'atoms', CanvasHint: 'atoms', SelectionMeasure: 'atoms', StatusStrip: 'atoms',
-  ToolRail: 'molecules', DocumentCapsule: 'molecules', GlobalActions: 'molecules', PanelsRestore: 'molecules', ReaderBar: 'molecules', ProgressDock: 'molecules',
+  ToolRail: 'molecules', ToolRailSlot: 'molecules', DocumentCapsule: 'molecules', GlobalActions: 'molecules', PanelsRestore: 'molecules', ReaderBar: 'molecules', ProgressDock: 'molecules',
   RailTrigger: 'molecules', RailFlyout: 'molecules', RailDisplayControls: 'molecules', AccountFooter: 'molecules', Breadcrumb: 'molecules', FooterStrip: 'molecules', PeriodNav: 'molecules', DataStatus: 'molecules',
   PropertyRail: 'organisms', TopControlsBar: 'organisms', FloatActionMenu: 'molecules',
   /* the app's menu bar (plan-2026-11-05-float-editor W1.1) */
@@ -202,6 +202,11 @@ export const TIERS = {
   /* the layouts (LayoutGroup, 2026-10-31): the identity lab's views, and their blocks named group-word-first */
   LayoutType: 'organisms', LayoutColor: 'organisms', LayoutLogo: 'organisms', LayoutText: 'organisms', LayoutGuide: 'organisms',
   BlockType: 'atoms', BlockSwatch: 'molecules', CardLogo: 'molecules', IconBrowser: 'organisms',
+  /* the Specimen kit (type-ramp plan 7.5, 2026-11-14): the four from kol-foundry under the Specimen names, then the Figma family */
+  SpecimenSample: 'atoms', SpecimenSampleGroup: 'molecules', SpecimenSpec: 'molecules', SpecimenLive: 'organisms', SpecimenHeader: 'molecules',
+  SpecimenSheet: 'organisms', SpecimenFooterGroup: 'molecules', SpecimenNote: 'atoms', SpecimenDisplay: 'molecules', SpecimenFontCard: 'atoms',
+  SpecimenFontSheet: 'organisms', SpecimenFontFace: 'atoms', SpecimenRamp: 'organisms', SpecimenRampSection: 'molecules',
+  SpecimenRampRow: 'atoms', SpecimenWeights: 'organisms', SpecimenWeightsSection: 'molecules', SpecimenWeightsRow: 'atoms',
 }
 
 /* ── Function: closed set — action, input, display, feedback, navigation,
@@ -217,14 +222,24 @@ export const FUNCTIONS_BY_NAME = {
   ToggleSwitch: 'input', ToggleCheckbox: 'input', ToggleBracket: 'input', IconToggle: 'input', IconPlate: 'display', CompareGrid: 'display',
   SegmentedToggle: 'input', ViewToggle: 'input', Dropdown: 'input',
   LabeledControl: 'input', Label: 'input',
+  /* kolbox's Link and GroupLabel, new 2026-11-18 (plan-2026-11-18-kolbox-system W31.2) */
+  Link: 'action', DividerLabel: 'structure',
+  /* the open documents' strip (Figma's tab strip in kolbox, 2026-11-22) */
+  TabsDocument: 'navigation',
+  /* a document's find bar and status bar, new 2026-11-22 (Folio on kolbox) */
+  FindBar: 'input', StatusBar: 'display',
+  /* kolbox's DropdownStepper, Toast and SwatchGrid, new 2026-11-18 (W31.2 batch 4) */
+  DropdownStepper: 'input', Toast: 'feedback', SwatchGrid: 'input', toast: 'utility',
   Badge: 'display', Kbd: 'display', Tag: 'display', Pill: 'display', Avatar: 'display',
   /* the float parts (float-everything W2 · W3 · W4, 2026-11-04) */
+  /* type-ramp plan 6.3, 6.8 */
+  Chip: 'display', SectionHeader: 'structure', SectionFooter: 'structure',
   Delta: 'display', LiveDot: 'display', SizeChip: 'display', ValueField: 'display', ThemeTile: 'input',
   FieldPair: 'input', PasswordInput: 'input', InlineAddRow: 'input', LinkAddRow: 'input', ColorField: 'input',
   PanelsMenu: 'overlay', ModalHeader: 'overlay', WorkspaceSwitcher: 'input', AccountMenu: 'overlay',
   /* float-everything W6 · W8 (0.335.0) */
   /* the generator settings window's new controls (plan-2026-11-05-float-editor W7.2) */
-  SettingsRamp: 'input', SettingsRange: 'input', SettingsPoint: 'input', SettingsLights: 'input', SettingsFieldMap: 'display',
+  SettingsRamp: 'input', SettingsPoint: 'input', SettingsLights: 'input', SettingsFieldMap: 'display',
   SummaryLine: 'display', NoticeBanner: 'display', NavDrawer: 'navigation',
   TreeRow: 'navigation', FlyoutRow: 'navigation', TocRow: 'navigation', LayerRow: 'input', IndexRow: 'display', TaskRow: 'input',
   /* float-everything W11 — calendar + reader (0.336.0) */
@@ -259,15 +274,15 @@ export const FUNCTIONS_BY_NAME = {
   CommandOverlay: 'wayfinding', Rail: 'wayfinding',
   DocsToc: 'wayfinding', AsciiCursor: 'wayfinding',
   WorkViewToggle: 'wayfinding', ShellHeader: 'wayfinding', PortalFooter: 'wayfinding',
-  PriceDisplay: 'display', ProsePreview: 'display', TypeSample: 'display',
-  TypeSpecCard: 'display', SpecList: 'display',
+  PriceDisplay: 'display', ProsePreview: 'display',
+  SpecList: 'display',
   ShapeDropdown: 'action', SplitToolButton: 'action', ToolPalette: 'action', ErrorBoundary: 'feedback',
   SearchInput: 'input',
-  Combobox: 'input', Dialog: 'overlay', ModalShell: 'overlay', ResizeHandle: 'action', CalendarHeatmap: 'display', CalendarScale: 'display',
+  Combobox: 'input', ModalDialog: 'overlay', ModalShell: 'overlay', ResizeHandle: 'action', CalendarHeatmap: 'display', CalendarScale: 'display',
   FramedMediaBand: 'media', FullBleedHero: 'structure', CardFeatureItem: 'structure', SectionCardItem: 'structure',
   SectionText: 'display', SectionHero: 'structure', SectionSplit: 'structure', SectionCards: 'structure', SectionCta: 'structure', SectionFaq: 'structure', InspectorSection: 'structure',
   FeaturesCardSection: 'structure', CtaGlobal: 'structure', NewsletterBand: 'input', SectionNewsletter: 'structure',
-  BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media', GrowthLineStage: 'display',
+  BentoCard: 'display', TiltBento: 'display', ProfileCard: 'display', FeaturedCarousel: 'media', GrowthLineStage: 'display', LogoSystem: 'display', LogoTuner: 'display',
   TiltCard: 'display', AnimatedTitle: 'display', TextPressure: 'display',
   GlyphItem: 'display', FontViewerComponent: 'display', FontViewerSection: 'structure',
   LoaderIntro: 'display', LoaderOverlay: 'overlay',
@@ -280,7 +295,7 @@ export const FUNCTIONS_BY_NAME = {
   ProductDetailLayout: 'structure', DiagonalMarqueeRiver: 'media', ScrollDriftGallery: 'media',
   /* the canvas family (2026-10-23): the artboard and the dotted surface, one engine under both */
   CanvasEditor: 'structure', CanvasStudio: 'structure', Canvas: 'structure', SelectionOverlay: 'overlay', EditorShell: 'structure', AlignmentGrid: 'input',
-  SpecimenSectionHeader: 'structure', GlyphMetricsGrid: 'display', VariableFontSection: 'input',
+  GlyphMetricsGrid: 'display', VariableFontSection: 'input',
   TypefaceHero: 'display', TypefaceStyleSection: 'display', FontPreviewSection: 'display',
   FoundryCharacterSets: 'display',
   Divider: 'structure', Section: 'structure', Accordion: 'structure', ButtonGroup: 'structure',
@@ -300,10 +315,14 @@ export const FUNCTIONS_BY_NAME = {
   useNavHidden: 'utility', useRailSlot: 'utility', RailSlotProvider: 'utility', useMasthead: 'utility', AppFloatNav: 'navigation', AccountForm: 'input', useSettingsToggle: 'utility', useGrabEdge: 'utility', useTagMode: 'utility', usePageMeta: 'utility', usePageMetaValue: 'utility',
   /* the float chrome (float-everything W5 · W9, 2026-11-04) */
   Timecode: 'display', ZoomReadout: 'display', SceneBreadcrumb: 'wayfinding', CanvasHint: 'display', SelectionMeasure: 'display', StatusStrip: 'feedback',
-  ToolRail: 'input', PropertyRail: 'input', DocumentCapsule: 'navigation', GlobalActions: 'action', TopControlsBar: 'navigation', PanelsRestore: 'action',
+  ToolRail: 'input', ToolRailSlot: 'action', PropertyRail: 'input', DocumentCapsule: 'navigation', GlobalActions: 'action', TopControlsBar: 'navigation', PanelsRestore: 'action',
   ReaderBar: 'navigation', ProgressDock: 'navigation', RailTrigger: 'navigation', RailFlyout: 'navigation', RailDisplayControls: 'action',
   AccountFooter: 'display', Breadcrumb: 'wayfinding', FooterStrip: 'display', PeriodNav: 'navigation', DataStatus: 'feedback',
   FloatLayout: 'structure', FloatActionMenu: 'overlay',
+  /* the one float Rail shell (plan-2026-11-12-float-system W4.1) — kol-component, re-exported by kol-shell */
+  RailFloat: 'structure', RailHeader: 'structure', // its header (plan-2026-11-12-float-rails-figma W4.1)
+  RailSwitcher: 'navigation', // the narrow rail that switches spaces (plan-2026-11-20-kolbox-everything-left W1.1)
+  Header: 'structure', ButtonSplit: 'action', MenuFloat: 'overlay', MenuFloatRows: 'navigation', // the one header · the split action (plan-2026-11-12-one-header W1.1 · W4.1)
   MenuBar: 'navigation',
 
   /* component gaps closed 2026-07-15 (Modal/Popover keys removed — they were
@@ -351,7 +370,7 @@ export const FUNCTIONS_BY_NAME = {
   FileQuickLook: 'overlay', Kanban: 'display', SortableGrid: 'display', ProgressBar: 'feedback',
   DocumentView: 'display', DocumentFiles: 'action', DocumentMarkdown: 'action', useFileQuickLook: 'overlay',
   /* the lab window (BrandLabToolWindow, 2026-10-29) */
-  LabWindow: 'display', LabOutput: 'display', BrandLockup: 'display', useLabValue: 'utility',
+  ModalLab: 'display', LabOutput: 'display', BrandLockup: 'display', useLabValue: 'utility',
   A4Pages: 'structure', PrintStudio: 'utility',
   /* kol-resume (2026-10-28) */
   ContactLine: 'display', LangToggle: 'input', ExportButtons: 'action', KitOptions: 'input',
@@ -421,7 +440,7 @@ export const FUNCTIONS_BY_NAME = {
   ExhibitOverview: 'structure', ExhibitPage: 'structure',
   /* foundry additions */
   GlyphMetricsSection: 'display', TypefaceLibraryGrid: 'wayfinding',
-  TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypeSpecimenLive: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
+  TypefaceLibraryGridWithVariables: 'wayfinding', TypefaceVariablePreview: 'display', TypefaceAlphabet: 'display', TypefaceSpecimenPage: 'structure', PairingCard: 'display', FoundryOpentypeFeatures: 'structure', FoundryTypefaceDetails: 'structure', FoundryTypefacePairing: 'structure',
   /* shell — the app-shell set (2026-08-14) */
   NavRail: 'navigation', TabStrip: 'navigation',
   PageShell: 'structure', SettingsScaffold: 'structure', AppHub: 'structure', AppStudio: 'structure', StudioCreate: 'structure', StudioDetail: 'display', StudioCreateAction: 'action', CatalogGrid: 'structure', HubHome: 'structure', HubSettings: 'structure', HubSettingsRail: 'overlay', HubDev: 'structure',
@@ -440,6 +459,10 @@ export const FUNCTIONS_BY_NAME = {
   /* the layouts (LayoutGroup, 2026-10-31) */
   LayoutType: 'display', LayoutColor: 'display', LayoutLogo: 'display', LayoutText: 'display', LayoutGuide: 'structure',
   BlockType: 'display', BlockSwatch: 'display', CardLogo: 'display', IconBrowser: 'wayfinding',
+  SpecimenSample: 'display', SpecimenSampleGroup: 'display', SpecimenSpec: 'display', SpecimenLive: 'display', SpecimenHeader: 'structure',
+  SpecimenSheet: 'structure', SpecimenFooterGroup: 'structure', SpecimenNote: 'display', SpecimenDisplay: 'display', SpecimenFontCard: 'display',
+  SpecimenFontSheet: 'display', SpecimenFontFace: 'display', SpecimenRamp: 'display', SpecimenRampSection: 'display',
+  SpecimenRampRow: 'display', SpecimenWeights: 'display', SpecimenWeightsSection: 'display', SpecimenWeightsRow: 'display',
 }
 
 /* ── Exempt: exports that are deliberately NOT roster rows ─────────────────
@@ -461,7 +484,6 @@ export const EXEMPT = {
   ShortcutsOverlay: 're-export:@kolkrabbi/kol-component',
   /* the one nav rail moved to kol-component 2026-10-22; kol-shell re-exports these */
   NavRail: 're-export:@kolkrabbi/kol-component', Logomark: 're-export:@kolkrabbi/kol-component', VectorLoader: 're-export:@kolkrabbi/kol-component', useRailSlot: 're-export:@kolkrabbi/kol-component',
-  TypeSample: 're-export:@kolkrabbi/kol-foundry', TypeSpecCard: 're-export:@kolkrabbi/kol-foundry',
   /* growth — the engine's sim class, plain JS; its stage is kol-component's GrowthLineStage */
   Growth: 'non-component',
   /* chess */
@@ -487,17 +509,18 @@ export const EXEMPT = {
   SettingsChipRow: 'member-of:SettingsPanel', SettingsFooter: 'member-of:SettingsPanel',
   /* the generator settings window's rows (plan-2026-11-05-float-editor W7.2) — shown on Dialog's settings variant; the five
      controls that are new shapes (ramp, range, point, lights, field map) have their own pages */
-  SettingsGroup: 'member-of:Dialog', SettingsGrid: 'member-of:Dialog', SettingsCell: 'member-of:Dialog', SettingsSlider: 'member-of:Dialog',
-  SettingsSelect: 'member-of:Dialog', SettingsSegmented: 'member-of:Dialog', SettingsToggle: 'member-of:Dialog', SettingsText: 'member-of:Dialog',
-  SettingsRampHead: 'member-of:SettingsRamp', SettingsDisclosure: 'member-of:Dialog',
+  SettingsGroup: 'member-of:ModalDialog', SettingsGrid: 'member-of:ModalDialog',
+  SettingsRampHead: 'member-of:SettingsRamp', SettingsDisclosure: 'member-of:ModalDialog',
   /* the rail kit (RailKit 2026-10-24): the parts of a Rail's content; RailSection · RailRow are aliases of the two above */
-  RailHeader: 'member-of:Rail', RailTabs: 'member-of:Rail', RailHint: 'member-of:Rail', RailActions: 'member-of:Rail', RailFoot: 'member-of:Rail', RailNav: 'member-of:Rail', RailSection: 'member-of:Rail', RailRow: 'member-of:Rail',
+  RailTabs: 'member-of:Rail', RailHint: 'member-of:Rail', RailActions: 'member-of:Rail', RailFoot: 'member-of:Rail', RailNav: 'member-of:Rail', RailSection: 'member-of:Rail', RailRow: 'member-of:Rail',
   AudioTile: 'member-of:KindPreview', VideoTile: 'member-of:KindPreview', DocFrontmatter: 'member-of:DocPage',
   /* component — headless system parts + single-parent sub-parts */
   ModalProvider: 'non-component',
   HueStrip: 'member-of:SpectrumControls', SBSquare: 'member-of:SpectrumControls',
   WheelTriangle: 'member-of:SpectrumControls', AlphaStrip: 'member-of:SpectrumControls',
   KeylineGuide: 'member-of:IconPlate',
+  KbdKeys: 'member-of:Kbd',
+  MenuScroll: 'member-of:Menu', ToastHost: 'member-of:Toast', PopoverLayer: 'member-of:PopoverPanel',
   SwatchStack: 'member-of:SwatchControls', EyedropPick: 'member-of:SwatchControls',
   CanvasFrame: 'member-of:CanvasEditor',
   StudioCreateAction: 'member-of:StudioCreate',
@@ -521,7 +544,14 @@ export const DOCS_ONLY = [
 /* Deprecated aliases / merged-away exports. Story lives on the survivor's page. */
 export const DEPRECATED = [
   'QuantityStepper',
+  /* the settings window's pass-through wrappers, each now rendering its base (2026-11-12, plan-2026-11-12-one-header W6.1, LAW 17:
+     "whats the point of taking a base, and wrapping it and adding nothing") */
+  'SettingsCell', 'SettingsSlider', 'SettingsRange', 'SettingsSelect', 'SettingsSegmented', 'SettingsToggle', 'SettingsText',
   /* ShellSidebar = ShellRail, WorkshopSidebar = WorkshopRail, WorkshopDefaultSidebar = WorkshopDefaultRail (2026-11-08, user: "if it comes to view form the sides ITS RAIL") */
+  /* Dialog = ModalDialog, LabWindow = ModalLab (2026-11-12, the family word leads) */
+  'Dialog', 'LabWindow',
+  /* FloatModule = RailFloat, FloatModuleHeader = RailHeader variant="float" (2026-11-12, the family word leads) */
+  'FloatModule', 'FloatModuleHeader',
   'ShellSidebar', 'WorkshopSidebar', 'WorkshopDefaultSidebar',
   /* Icon = IconLoader (2026-11-08, user: "rename icon to iconloader that is the fucking name") */
   'Icon',
@@ -590,6 +620,9 @@ export const DEPRECATED = [
   'LetterheadB',
   /* group-word-first names (LayoutGroup, 2026-10-31): TypeBlock = BlockType, Swatch = BlockSwatch, LogoCard = CardLogo, BrandGuide = LayoutGuide */
   'TypeBlock', 'Swatch', 'LogoCard', 'BrandGuide',
+  /* the Specimen kit moved to kol-styleguide (2026-11-14, type-ramp plan 7.5): TypeSample = SpecimenSample, TypeSpecCard = SpecimenSpec,
+     TypeSpecimenLive = SpecimenLive, SpecimenSectionHeader = SpecimenHeader; kol-foundry keeps the old names */
+  'TypeSample', 'TypeSpecCard', 'TypeSpecimenLive', 'SpecimenSectionHeader',
 ]
 
 /* Components that ship without a preview file ON PURPOSE (pnpm validate:preview-files).
@@ -610,7 +643,7 @@ export const NO_PREVIEW = (() => {
      * the explorer dispatch are shown inside it (SHOWN_IN) */
     /* DocumentLibrary's parts (2026-10-29): drawn by its preview — the cells in every row — and DocumentView is
      * apps/document's /library/<file> */
-    LabWindow: "the lab's window — every lab draws in it; TypeLab, ColorLab, ComboLab and LockupLab's previews are its preview",
+    ModalLab: "the lab's window — every lab draws in it; TypeLab, ColorLab, ComboLab and LockupLab's previews are its preview",
     LabOutput: "the table and CSS every lab ends on; drawn under each lab's preview",
     DocumentView: 'the open document — MarkdownPage under the library buttons; live in apps/document /library',
     DocumentFiles: "DocumentLibrary's Assets cell; drawn in every row of its preview",
@@ -667,6 +700,7 @@ export const NO_PREVIEW = (() => {
      * one drag. `packages/design-editor` in THIS repo runs both on real layers
      * and is built under the same gates — that is the exercise. */
     ...Object.fromEntries([
+      ['ToolRailSlot', 'a member of ToolRail kolbox, drawn in ToolRail\'s kolbox preview (W31.2 batch 5)'],
       ['PathNodeOverlay', 'editing chrome over a consumer path layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
       ['CropOverlay', 'editing chrome over a consumer photo layer — packages/design-editor runs it on real layers (2026-09-03 ruling)'],
     ]),

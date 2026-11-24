@@ -7,8 +7,9 @@
  * --kol-font-family-mono supplies the actual font — fonts are per-app:
  * apps/brand = JetBrains Mono, apps/web = RightGroteskMono.
  *
- * Classes reference --kol-font-family-mono + literal px values only; nothing
- * else from the canonical typography files.
+ * Classes reference --kol-font-family-mono and the --kol-ramp-* step tokens
+ * (kol-typography.css, since 2026-11-15); nothing else from the canonical
+ * typography files.
  *
  * Architecture: docs/kol-migration/locked/typography-system.md
  */
@@ -19,43 +20,43 @@
 
 .kol-mono-8 {
   font-family: var(--kol-font-family-mono);
-  font-size: 8px;
-  line-height: 12px;
+  font-size: var(--kol-ramp-size-t10);
+  line-height: var(--kol-ramp-line-height-t10);
   font-weight: 400;
 }
 
 .kol-mono-10 {
   font-family: var(--kol-font-family-mono);
-  font-size: 10px;
-  line-height: 14px;
+  font-size: var(--kol-ramp-size-l8);
+  line-height: var(--kol-ramp-line-height-l8);
   font-weight: 400;
 }
 
 .kol-mono-12 {
   font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  line-height: 16px;
+  font-size: var(--kol-ramp-size-l6);
+  line-height: var(--kol-ramp-line-height-l6);
   font-weight: 400;
 }
 
 .kol-mono-14 {
   font-family: var(--kol-font-family-mono);
-  font-size: 14px;
-  line-height: 18px;
+  font-size: var(--kol-ramp-size-l5);
+  line-height: var(--kol-ramp-line-height-l5);
   font-weight: 400;
 }
 
 .kol-mono-16 {
   font-family: var(--kol-font-family-mono);
-  font-size: 16px;
-  line-height: 22px;
+  font-size: var(--kol-ramp-size-l4);
+  line-height: var(--kol-ramp-line-height-l4);
   font-weight: 400;
 }
 
 .kol-mono-20 {
   font-family: var(--kol-font-family-mono);
-  font-size: 20px;
-  line-height: 26px;
+  font-size: var(--kol-ramp-size-l2);
+  line-height: var(--kol-ramp-line-height-l2);
   font-weight: 400;
 }
 
@@ -97,48 +98,48 @@
 
 .kol-helper-8 {
   font-family: var(--kol-font-family-mono);
-  font-size: 8px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u10);
+  line-height: var(--kol-ramp-line-height-u10);
   font-weight: 500;
   letter-spacing: 0.10em;
 }
 
 .kol-helper-10 {
   font-family: var(--kol-font-family-mono);
-  font-size: 10px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u8);
+  line-height: var(--kol-ramp-line-height-u8);
   font-weight: 500;
   letter-spacing: 0.10em;
 }
 
 .kol-helper-12 {
   font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u6);
+  line-height: var(--kol-ramp-line-height-u6);
   font-weight: 500;
   letter-spacing: 0.06em;
 }
 
 .kol-helper-14 {
   font-family: var(--kol-font-family-mono);
-  font-size: 14px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u5);
+  line-height: var(--kol-ramp-line-height-u5);
   font-weight: 500;
   letter-spacing: 0.06em;
 }
 
 .kol-helper-16 {
   font-family: var(--kol-font-family-mono);
-  font-size: 16px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u4);
+  line-height: var(--kol-ramp-line-height-u4);
   font-weight: 500;
   letter-spacing: 0.06em;
 }
 
 .kol-helper-20 {
   font-family: var(--kol-font-family-mono);
-  font-size: 20px;
-  line-height: 1;
+  font-size: var(--kol-ramp-size-u2);
+  line-height: var(--kol-ramp-line-height-u2);
   font-weight: 500;
   letter-spacing: 0.06em;
 }

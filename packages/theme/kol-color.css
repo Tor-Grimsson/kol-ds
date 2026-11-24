@@ -33,6 +33,8 @@
   --kol-accent-primary:        var(--kol-surface-on-primary);
   --kol-accent-on-primary:     var(--kol-surface-primary);
   --kol-accent-primary-strong: color-mix(in srgb, var(--kol-accent-primary) 80%, var(--kol-surface-primary));
+  --kol-accent-tint:           color-mix(in srgb, var(--kol-accent-primary) 25%, transparent);
+  --kol-accent-tint-soft:      color-mix(in srgb, var(--kol-accent-primary) 15%, transparent);
 
   /* ---------------------------------------------------------------------------
    * HYPERLINKS — the one text role with its own color (2026-07-15, chess
@@ -126,6 +128,357 @@
   --ui-warning:  #CA8A04;
   --ui-info:     #2563EB;
   --ui-success:  #16A34A;
+}
+
+/* =============================================================================
+ * THEME VARIANT: KOLBOX (plan-2026-11-18-kolbox-system W2.2) — the library's `theme` collection modes `kolbox dark` and
+ * `kolbox light`, value for value (_tmp/2026-11-18-kolbox-system/color-map.md, table 2).
+ *
+ *   <html data-theme-variant="kolbox">                    light, or the OS's choice when no data-theme is stamped
+ *   <html data-theme-variant="kolbox" data-theme="dark">  dark
+ *
+ * The same law as light and dark: explicit choice > system > light. It sets the BASES only. Every fg, oq, border,
+ * focus and accent-strong value is derived from them by the DS's own formulas, which re-resolve on `:root` and on the
+ * theme selectors; so stamp it on `<html>`, or on an element that also carries `data-theme`. Absolutes, glass, the
+ * float well, sunken and tertiary keep the DS's dark and light values. Light keeps the Gruvbox light inks, accent, status
+ * and palette; its grounds (surface primary and secondary, oq 08 16 24 32) are the Gruvbox light grounds mixed 24% toward
+ * white, then cut to 30% of their chroma in Oklab at the same lightness: near-neutral warm white (W17, 2026-11-18,
+ * decided for his review). Specificity is two attributes so it beats `:root[data-theme="light"]` above and the dark blocks in
+ * kol-base-tokens.css; the system mirror is three.
+ * ============================================================================= */
+[data-theme-variant="kolbox"]:is(:root, [data-theme="light"], .light) {
+  --kol-surface-primary:      #f7f6f0;
+  --kol-surface-on-primary:   #3c3836;
+  --kol-surface-secondary:    #f6f4ea;
+  --kol-surface-on-secondary: #3c3836;
+  --kol-surface-inverse:      #3c3836;
+  --kol-surface-on-inverse:   #f9f5d7;
+  --kol-accent-primary:       #9c4a1e;
+  --kol-accent-on-primary:    #f9f5d7;
+  /* the top rail's mode track: in light the grounds sit too close to carry it, so the track takes the next grey down
+     and the current tab the ground (his ruling 2026-11-18). Dark sets neither and keeps the component's own values. */
+  --kol-kolbox-track:        var(--kol-kolbox-canvas);
+  --kol-kolbox-track-active: var(--kol-surface-primary);
+  /* the editor's canvas (and the plates that share its grey): its own surface, out of the oq ladder */
+  --kol-kolbox-canvas:       #eeebe2;
+  /* the look's fills, hovers and lines are fg washes, the oq ladder is ink (W16.7). Light keeps the drawn tones within
+     0.05 of the oq steps they replace, against the rail ground: field and hover fg-08 1.15 (was 1.15), the strong fill
+     and line fg-16 1.32 (1.35), the rails' and sections' line fg-08 1.15 (1.15) */
+  --kol-kolbox-field:        var(--kol-fg-08);
+  --kol-kolbox-field-strong: var(--kol-fg-16);
+  /* THE ONE EDGE (plan-2026-11-23-editor-measured-against-figma W4b): every kolbox border, outline, ring and rule reads
+     it, 1px. Figma draws one edge, its dark #444444 (measured 2026-11-23, _tmp/2026-11-23-editor-diff); light takes
+     Figma light's #e6e6e6 (decided for his review). Was two lines, fg-08 and the strong fg-16 */
+  --kol-kolbox-line:         #e6e6e6;
+  /* the rulers' numbers, the text ink at this share over the rail ground (W15.1): 54 reads 2.94 on the light ground, the
+     32 dark keeps read 1.81 here */
+  --kol-kolbox-ruler-ink:    54%;
+  --ui-info:    #076678;
+  --ui-success: #79740e;
+  --ui-warning: #af3a03;
+  --ui-error:   #9d0006;
+  --kol-palette-blue:   #076678;
+  --kol-palette-teal:   #427b58;
+  --kol-palette-green:  #79740e;
+  --kol-palette-yellow: #b57614;
+  --kol-palette-red:    #9d0006;
+  --kol-palette-orange: #af3a03;
+  --kol-palette-purple: #8f3f71;
+  /* the oq ladder rises from the rail ground; ink only (W16.7) */
+  --kol-oq-08: #e8e4db;
+  --kol-oq-16: #e0dcd3;
+  --kol-oq-24: #d7d3cb;
+  --kol-oq-32: #c6c2bc;
+  --kol-oq-48: #a89984;
+  --kol-oq-64: #7c6f64;
+}
+
+[data-theme-variant="kolbox"]:is([data-theme="dark"], .dark) {
+  /* dark weights as Figma's own dark UI measures them (plan-2026-11-23-editor-measured-against-figma W2): labels and rows 450, headings and the selected row 550. Were 300 / 400 (his test 2026-11-18, by eye) */
+  --kol-kolbox-label-weight: 450; --kol-kolbox-row-weight: 450; --kol-kolbox-title-weight: 550;
+  --kol-kolbox-track: initial;
+  --kol-kolbox-track-active: initial;
+  --kol-surface-primary:      #1d2021;
+  --kol-surface-on-primary:   #ffffff;
+  --kol-surface-secondary:    #282828;
+  --kol-surface-on-secondary: #ffffff;
+  --kol-surface-inverse:      #ebdbb2;
+  --kol-surface-on-inverse:   #1d2021;
+  --kol-accent-primary:       #fabd2f;
+  --kol-accent-on-primary:    #1d2021;
+  --ui-info:    #83a598;
+  --ui-success: #b8bb26;
+  --ui-warning: #fe8019;
+  --ui-error:   #fb4934;
+  --kol-palette-blue:   #83a598;
+  --kol-palette-teal:   #8ec07c;
+  --kol-palette-green:  #b8bb26;
+  --kol-palette-yellow: #fabd2f;
+  --kol-palette-red:    #fb4934;
+  --kol-palette-orange: #fe8019;
+  --kol-palette-purple: #d3869b;
+  /* W16.4 and W16.7, measured on Figma's own UI 2026-11-20 (_tmp/2026-11-20-w16/figma-measures.md): its field, hover
+     and selected fills read 1.19 against its rail ground, its lines 1.43. Ours are fg washes over our rail ground
+     #282828 (the oq ladder is ink): field and hover fg-06 1.20, line fg-12 1.47, the strong fill and line fg-24 2.21
+     (the oq-24 step it replaces, 2.21). The canvas grey is its own surface */
+  --kol-kolbox-field: var(--kol-fg-06);
+  --kol-kolbox-field-strong: var(--kol-fg-24);
+  --kol-oq-08: #343434;
+  --kol-oq-16: #414141;
+  --kol-kolbox-canvas: #393939;
+  --kol-kolbox-line: #444444; /* THE ONE EDGE, Figma's measured edge (W4b, 2026-11-23); was fg-12 */
+  --kol-kolbox-ruler-ink: 32%;
+  --kol-accent-tint: color-mix(in srgb, var(--kol-accent-primary) 16%, transparent);
+  --kol-oq-24: #5c5c5c;
+  --kol-oq-32: #6d6d6d;
+  --kol-oq-48: #8f8f8f;
+  --kol-oq-64: #b2b2b2;
+}
+
+/* System-follow kolbox dark — only when no data-theme is stamped. MIRROR of the block above, edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])[data-theme-variant="kolbox"] {
+    /* dark weights as Figma's own dark UI measures them (plan-2026-11-23-editor-measured-against-figma W2): labels and rows 450, headings and the selected row 550. Were 300 / 400 (his test 2026-11-18, by eye) */
+    --kol-kolbox-label-weight: 450; --kol-kolbox-row-weight: 450; --kol-kolbox-title-weight: 550;
+    --kol-kolbox-track: initial;
+    --kol-kolbox-track-active: initial;
+    --kol-surface-primary:      #1d2021;
+    --kol-surface-on-primary:   #ffffff;
+    --kol-surface-secondary:    #282828;
+    --kol-surface-on-secondary: #ffffff;
+    --kol-surface-inverse:      #ebdbb2;
+    --kol-surface-on-inverse:   #1d2021;
+    --kol-accent-primary:       #fabd2f;
+    --kol-accent-on-primary:    #1d2021;
+    --ui-info:    #83a598;
+    --ui-success: #b8bb26;
+    --ui-warning: #fe8019;
+    --ui-error:   #fb4934;
+    --kol-palette-blue:   #83a598;
+    --kol-palette-teal:   #8ec07c;
+    --kol-palette-green:  #b8bb26;
+    --kol-palette-yellow: #fabd2f;
+    --kol-palette-red:    #fb4934;
+    --kol-palette-orange: #fe8019;
+    --kol-palette-purple: #d3869b;
+    /* W16.4 and W16.7, measured on Figma's own UI 2026-11-20 (_tmp/2026-11-20-w16/figma-measures.md): its field, hover
+       and selected fills read 1.19 against its rail ground, its lines 1.43. Ours are fg washes over our rail ground
+       #282828 (the oq ladder is ink): field and hover fg-06 1.20, line fg-12 1.47, the strong fill and line fg-24 2.21
+       (the oq-24 step it replaces, 2.21). The canvas grey is its own surface */
+    --kol-kolbox-field: var(--kol-fg-06);
+    --kol-kolbox-field-strong: var(--kol-fg-24);
+    --kol-oq-08: #343434;
+    --kol-oq-16: #414141;
+    --kol-kolbox-canvas: #393939;
+    --kol-kolbox-line: #444444; /* THE ONE EDGE, Figma's measured edge (W4b, 2026-11-23); was fg-12 */
+    --kol-kolbox-ruler-ink: 32%;
+    --kol-accent-tint: color-mix(in srgb, var(--kol-accent-primary) 16%, transparent);
+    --kol-oq-24: #5c5c5c;
+    --kol-oq-32: #6d6d6d;
+    --kol-oq-48: #8f8f8f;
+    --kol-oq-64: #b2b2b2;
+  }
+}
+
+/* =============================================================================
+ * THEME VARIANTS: KOLCORE, MINIMAL, FOLIO (plan-2026-11-18-kolbox-system W6, 8.2, W15) — the library's `theme` and
+ * `type` modes, value for value (_tmp/2026-11-18-kolbox-system/themes.json). Same pattern and precedence as kolbox
+ * above: a variant sets colors and the two families, nothing else, and only where it differs from KOL's default.
+ *
+ * KOLCORE is KOL's default look under a name: `data-theme-variant="kolcore"` has no block here, so every value is the
+ * default's, in every theme state.
+ * ============================================================================= */
+
+/* MINIMAL — dark is apps/minimal's; light is its plain inverse (W15.3, decided for his review): every base and pinned
+ * oq step channel-inverted, status kept where it holds 4.5:1 on the white ground, else scaled toward black to the least
+ * that does. Everything else is KOL's own dark or light. */
+[data-theme-variant="minimal"]:is(:root, [data-theme="light"], .light) {
+  --kol-surface-primary:      #ffffff;
+  --kol-surface-on-primary:   #030407;
+  --kol-surface-secondary:    #f5f5f5;
+  --kol-surface-on-secondary: #030407;
+  --kol-surface-inverse:      #030407;
+  --kol-surface-on-inverse:   #ffffff;
+  --kol-accent-primary:       #030407;
+  --kol-accent-on-primary:    #f1f1ee;
+  --kol-oq-08: #e8e8e8;
+  --kol-oq-16: #e0e0e0;
+  --kol-oq-24: #d5d5d5;
+  --kol-oq-32: #c2c2c2;
+  --kol-oq-48: #949494;
+  --kol-oq-64: #5e5e5e;
+  --ui-error:   #be5656;
+  --ui-warning: #8e740c;
+  --ui-info:    #4678b6;
+  --ui-success: #268657;
+}
+
+[data-theme-variant="minimal"]:is([data-theme="dark"], .dark) {
+  --kol-surface-primary:      #000000;
+  --kol-surface-on-primary:   #fcfbf8;
+  --kol-surface-secondary:    #0a0a0a;
+  --kol-surface-on-secondary: #fcfbf8;
+  --kol-surface-inverse:      #fcfbf8;
+  --kol-surface-on-inverse:   #000000;
+  --kol-accent-primary:       #fcfbf8;
+  --kol-accent-on-primary:    #0e0e11;
+  --kol-oq-08: #171717;
+  --kol-oq-16: #1f1f1f;
+  --kol-oq-24: #2a2a2a;
+  --kol-oq-32: #3d3d3d;
+  --kol-oq-48: #6b6b6b;
+  --kol-oq-64: #a1a1a1;
+  --ui-error:   #F87171;
+  --ui-warning: #FACC15;
+  --ui-info:    #60A5FA;
+  --ui-success: #3DD68C;
+}
+
+/* System-follow minimal dark — only when no data-theme is stamped. MIRROR of the block above, edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])[data-theme-variant="minimal"] {
+    --kol-surface-primary:      #000000;
+    --kol-surface-on-primary:   #fcfbf8;
+    --kol-surface-secondary:    #0a0a0a;
+    --kol-surface-on-secondary: #fcfbf8;
+    --kol-surface-inverse:      #fcfbf8;
+    --kol-surface-on-inverse:   #000000;
+    --kol-accent-primary:       #fcfbf8;
+    --kol-accent-on-primary:    #0e0e11;
+    --kol-oq-08: #171717;
+    --kol-oq-16: #1f1f1f;
+    --kol-oq-24: #2a2a2a;
+    --kol-oq-32: #3d3d3d;
+    --kol-oq-48: #6b6b6b;
+    --kol-oq-64: #a1a1a1;
+    --ui-error:   #F87171;
+    --ui-warning: #FACC15;
+    --ui-info:    #60A5FA;
+    --ui-success: #3DD68C;
+  }
+}
+
+/* FOLIO — apps/folio's paper, ink, green and mint; status and palette stay KOL's. */
+[data-theme-variant="folio"]:is(:root, [data-theme="light"], .light) {
+  --kol-surface-primary:      #faf9f5;
+  --kol-surface-on-primary:   #262922;
+  --kol-surface-secondary:    #f0f0e9;
+  --kol-surface-on-secondary: #262922;
+  --kol-surface-inverse:      #262922;
+  --kol-surface-on-inverse:   #faf9f5;
+  --kol-accent-primary:       #365f49;
+  --kol-accent-on-primary:    #faf9f5;
+  --kol-accent-tint:          #e0eee2;
+  --kol-oq-16: #d4d6cc;
+  --kol-oq-64: #73766d;
+}
+
+[data-theme-variant="folio"]:is([data-theme="dark"], .dark) {
+  --kol-surface-primary:      #1b1d19;
+  --kol-surface-on-primary:   #ecebe3;
+  --kol-surface-secondary:    #24271f;
+  --kol-surface-on-secondary: #ecebe3;
+  --kol-surface-inverse:      #ecebe3;
+  --kol-surface-on-inverse:   #1b1d19;
+  --kol-accent-primary:       #a1b4a8;
+  --kol-accent-on-primary:    #1b1d19;
+  --kol-accent-tint:          #243128;
+  --kol-oq-16: #3b3f35;
+  --kol-oq-64: #a4a79c;
+}
+
+/* System-follow folio dark — only when no data-theme is stamped. MIRROR of the block above, edit both. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme])[data-theme-variant="folio"] {
+    --kol-surface-primary:      #1b1d19;
+    --kol-surface-on-primary:   #ecebe3;
+    --kol-surface-secondary:    #24271f;
+    --kol-surface-on-secondary: #ecebe3;
+    --kol-surface-inverse:      #ecebe3;
+    --kol-surface-on-inverse:   #1b1d19;
+    --kol-accent-primary:       #a1b4a8;
+    --kol-accent-on-primary:    #1b1d19;
+    --kol-accent-tint:          #243128;
+    --kol-oq-16: #3b3f35;
+    --kol-oq-64: #a4a79c;
+  }
+}
+
+/* =============================================================================
+ * FOLIO'S OWN TOKENS (Folio migration batch 0, 2026-11-22) — apps/folio's color block, moved in value for value from
+ * apps/folio/src/index.css (where they were Tailwind's `--color-folio-*`, and `--folio-*` for the switches' inputs).
+ * They are not the `folio` theme variant above: that one re-points KOL's bases; these are Folio's own paper, ink and
+ * accents, read by the `variant="folio"` parts and by apps/folio.
+ *
+ *   :root                          Folio's day set, as Tailwind's @theme put it (every consumer has the names)
+ *   [data-folio-theme="light|dark"]  Folio's day or night set; on the nearest element, so a canvas can flip it
+ *   [data-folio-palette="kol"]     paper and ink from the KOL neutrals the frame passes as --kol-folio-kol-light,
+ *                                  --kol-folio-kol-dark (and --kol-folio-kol-surface); muted, rule, surface mixed
+ *   [data-folio-accent="<name>"]   green, teal, blue, orange, red, purple: the strong ink and its soft ground
+ *
+ * Order is load-bearing (the accent before dark, so dark lifts the accent's ink). A host reading these through Tailwind
+ * registers them `@theme inline`, so a utility resolves at the element and every switch reaches it.
+ * ============================================================================= */
+:root {
+  --kol-folio-paper: #faf9f5;
+  --kol-folio-ink: #262922;
+  --kol-folio-muted: #73766d;
+  --kol-folio-rule: #d4d6cc;
+  --kol-folio-surface: #f0f0e9;
+  --kol-folio-mint: #e0eee2;
+  --kol-folio-green: #365f49;
+}
+
+/* the accent: each is a strong ink (action, progress) and its soft ground (selection), both 4.5:1 or more for their text */
+[data-folio-accent] { --kol-folio-green: var(--kol-folio-accent); --kol-folio-mint: var(--kol-folio-accent-soft); }
+[data-folio-accent="green"]  { --kol-folio-accent: #365f49; --kol-folio-accent-soft: #e0eee2; }
+[data-folio-accent="teal"]   { --kol-folio-accent: #2b6668; --kol-folio-accent-soft: #d6eaea; }
+[data-folio-accent="blue"]   { --kol-folio-accent: #3740d3; --kol-folio-accent-soft: #e1e2fa; }
+[data-folio-accent="orange"] { --kol-folio-accent: #9a5600; --kol-folio-accent-soft: #f7e6c8; }
+[data-folio-accent="red"]    { --kol-folio-accent: #ad3434; --kol-folio-accent-soft: #f5dcdc; }
+[data-folio-accent="purple"] { --kol-folio-accent: #7029cc; --kol-folio-accent-soft: #ece0fd; }
+
+/* the palette on the KOL neutrals: the off-white and the dark are picked from the KOL neutral ramp; the rest is mixed
+   from those two. Light: off-white paper, dark ink; dark: the reverse. */
+[data-folio-palette="kol"] {
+  --kol-folio-paper: var(--kol-folio-kol-light, #fafafa);
+  --kol-folio-ink: var(--kol-folio-kol-dark, #121215);
+}
+[data-folio-palette="kol"][data-folio-theme="dark"] {
+  --kol-folio-paper: var(--kol-folio-kol-dark, #121215);
+  --kol-folio-ink: var(--kol-folio-kol-light, #fafafa);
+}
+[data-folio-palette="kol"] {
+  --kol-folio-muted: color-mix(in oklab, var(--kol-folio-ink) 62%, var(--kol-folio-paper));
+  --kol-folio-rule: color-mix(in oklab, var(--kol-folio-ink) 16%, var(--kol-folio-paper));
+  --kol-folio-surface: color-mix(in oklab, var(--kol-folio-ink) 5%, var(--kol-folio-paper));
+}
+/* an off-white that brings its own highlight (the cream's #F0F0E9) uses it on light paper */
+[data-folio-palette="kol"]:not([data-folio-theme="dark"]) { --kol-folio-surface: var(--kol-folio-kol-surface, color-mix(in oklab, var(--kol-folio-ink) 5%, var(--kol-folio-paper))); }
+
+/* dark: Folio's own night set; on the KOL palette the blocks above flip paper and ink instead. The accent's ink lifts
+   toward white and its ground sinks into the paper, so both keep their contrast. */
+[data-folio-theme="dark"]:not([data-folio-palette="kol"]) {
+  --kol-folio-paper: #1b1d19;
+  --kol-folio-surface: #24271f;
+  --kol-folio-ink: #ecebe3;
+  --kol-folio-muted: #a4a79c;
+  --kol-folio-rule: #3b3f35;
+}
+/* a canvas set light inside a dark frame (the editor's View, Canvas): Folio's own day set again */
+[data-folio-theme="light"]:not([data-folio-palette="kol"]) {
+  --kol-folio-paper: #faf9f5;
+  --kol-folio-surface: #f0f0e9;
+  --kol-folio-ink: #262922;
+  --kol-folio-muted: #73766d;
+  --kol-folio-rule: #d4d6cc;
+}
+/* a Text document's page: white on light, the paper on dark; the nearest theme attribute wins, so the canvas can flip it */
+[data-folio-theme] { --kol-folio-page: #fff; --kol-folio-page-ink: #262922; }
+[data-folio-theme="dark"] { --kol-folio-page: var(--kol-folio-paper); --kol-folio-page-ink: var(--kol-folio-ink); }
+[data-folio-theme="dark"] {
+  --kol-folio-green: color-mix(in oklab, var(--kol-folio-accent, #365f49) 45%, white);
+  --kol-folio-mint: color-mix(in oklab, var(--kol-folio-accent, #365f49) 32%, var(--kol-folio-paper));
 }
 
 /* =============================================================================

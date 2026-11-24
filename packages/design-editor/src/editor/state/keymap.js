@@ -42,8 +42,8 @@ export const SHORTCUTS = [
   { id: 'ungroup',     combo: 'Mod+Shift+G', label: 'Ungroup',                  section: 'Selection', views: ['editor'] },
 
   /* Layer */
-  { id: 'toggle-lock',       combo: 'L',                  label: 'Toggle lock',          section: 'Layer', views: ['editor'] },
-  { id: 'toggle-visibility', combo: 'H',                  label: 'Toggle visibility',    section: 'Layer', views: ['editor'] },
+  { id: 'toggle-lock',       combo: 'Mod+Shift+L',        label: 'Toggle lock',          section: 'Layer', views: ['editor'] },
+  { id: 'toggle-visibility', combo: 'Mod+Shift+H',        label: 'Toggle visibility',    section: 'Layer', views: ['editor'] },
   { id: 'flip-h',            combo: 'Shift+H',            label: 'Flip horizontal',      section: 'Layer', views: ['editor'] },
   { id: 'flip-v',            combo: 'Shift+V',            label: 'Flip vertical',        section: 'Layer', views: ['editor'] },
   /* Illustrator's Create Outlines chord (the user's 6): a shape (or a boolean) becomes an editable path */
@@ -56,21 +56,42 @@ export const SHORTCUTS = [
   { id: 'nudge-right-10',    combo: 'Shift+ArrowRight',   label: 'Nudge → 10px',         section: 'Layer', hidden: true, views: ['editor'] },
   { id: 'nudge-up-10',       combo: 'Shift+ArrowUp',      label: 'Nudge ↑ 10px',         section: 'Layer', hidden: true, views: ['editor'] },
   { id: 'nudge-down-10',     combo: 'Shift+ArrowDown',    label: 'Nudge ↓ 10px',         section: 'Layer', hidden: true, views: ['editor'] },
+  /* Figma's arrange keys (plan-2026-11-20 W10), the selected layer's row in Layers; bound in kolbox/ui/listMoves.js,
+     which also takes the Swedish-Finnish Ä and Ö Figma lists for them */
+  { id: 'bring-forward',     combo: 'Mod+]',              label: 'Bring forward',        section: 'Layer', passive: true, views: ['editor'] },
+  { id: 'send-backward',     combo: 'Mod+[',              label: 'Send backward',        section: 'Layer', passive: true, views: ['editor'] },
+  { id: 'bring-to-front',    combo: ']',                  label: 'Bring to front',       section: 'Layer', passive: true, views: ['editor'] },
+  { id: 'send-to-back',      combo: '[',                  label: 'Send to back',         section: 'Layer', passive: true, views: ['editor'] },
+  /* find and replace in the left rail (W12), bound in kolbox/ui/Find.jsx */
+  { id: 'find',              combo: 'Mod+F',              label: 'Find and replace',     section: 'Edit', passive: true, views: ['editor'] },
 
   /* Tools — the compositor's, so EDITOR ONLY. Labs has no canvas tools, and
      `R` in particular is reset there (see the Labs block below). */
   { id: 'tool-select',  combo: 'V', label: 'Select tool',       section: 'Tools', views: ['editor'] },
   { id: 'node-edit',    combo: 'A', label: 'Edit path nodes',   section: 'Tools', views: ['editor'] },
+  { id: 'tool-frame',   combo: 'F', label: 'Frame tool',        section: 'Tools', views: ['editor'] },
   { id: 'tool-text',    combo: 'T', label: 'Text tool',         section: 'Tools', views: ['editor'] },
   { id: 'tool-pen',     combo: 'P', label: 'Pen tool',          section: 'Tools', views: ['editor'] },
   { id: 'tool-rect',    combo: 'R', label: 'Rectangle tool',    section: 'Tools', views: ['editor'] },
   { id: 'tool-ellipse', combo: 'O', label: 'Ellipse tool',      section: 'Tools', views: ['editor'] },
+  { id: 'tool-line',    combo: 'L', label: 'Line tool',         section: 'Tools', views: ['editor'] },
+  { id: 'tool-hand',    combo: 'H', label: 'Hand tool',         section: 'Tools', views: ['editor'] },
+  { id: 'insert-image', combo: 'Mod+Shift+K', label: 'Insert image', section: 'Tools', views: ['editor'] },
   { id: 'tool-zoom',    combo: 'Z', label: 'Zoom tool',         section: 'Tools', views: ['editor'] },
   { id: 'tool-orbit',   combo: 'C', label: 'Grab / orbit (Settings › Canvas › Grab in Labs)', section: 'Tools', views: ['editor', 'labs'] },
 
   /* View */
   { id: 'toggle-grid',  combo: 'G', label: 'Show/hide grid',    section: 'View' },
   { id: 'toggle-rail',  combo: '\\', label: 'Show / hide rail',  section: 'View' },
+  /* the kolbox shell's states (plan-2026-11-20 W2.1), Figma's keys on his keyboard; bound in kolbox/app/chrome.js on the
+     § key's place, which Shift rewrites, so passive here */
+  { id: 'minimize-ui',  combo: 'Mod+Shift+§', label: 'Minimize UI',  section: 'View', passive: true, hidden: true, views: ['editor'] },
+  { id: 'show-hide-ui', combo: '§',           label: 'Show/Hide UI', section: 'View', passive: true, hidden: true, views: ['editor'] },
+  /* the kolbox style's `\` (plan-2026-11-20 W1.3, his key): RailSwitcher on every screen (kolbox/KolboxView.jsx); the left
+     rail's toggle moves to ⇧\ there (kolbox/pages/Editor.jsx). The default and float styles keep `toggle-rail` on `\`.
+     Hidden from the shared cheat sheet, which the default style also reads */
+  { id: 'kolbox-switcher',    combo: '\\',       label: 'Minimize left navigation bar', section: 'View', passive: true, hidden: true },
+  { id: 'kolbox-toggle-rail', combo: 'Shift+\\', label: 'Show / hide rail',             section: 'View', passive: true, hidden: true },
 
   /* Color */
   { id: 'paint-default', combo: 'D',       label: 'Default fill + stroke (white / black)', section: 'Color', views: ['editor'] },
@@ -118,7 +139,7 @@ export const SHORTCUTS = [
   { id: 'pan',            combo: 'Space', label: 'Play / pause · hold + drag to pan', section: 'View', passive: true },
   /* Handled inside the canvas viewport (window keydown, input-guarded) —
    * documented here for the cheat sheet only. */
-  { id: 'fps',            combo: 'F',     label: 'Toggle fps readout',      section: 'View', passive: true },
+  { id: 'fps',            combo: 'Shift+F', label: 'Toggle fps readout',      section: 'View', passive: true },
   /* VIEW › ZOOM (plan 33; Affinity's rows and keys). ⌘= ⌘- ⌘0 are the DS viewport's own window keys
      (PanZoomViewport) — passive here so they are listed and run from the menu, never bound twice.
      ⌘1–⌘4 are real percentages (100% = one frame px per screen px). In a Chrome / Firefox TAB the

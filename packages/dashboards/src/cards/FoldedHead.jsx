@@ -2,7 +2,7 @@
  * 2026-11-04; the exploration's "Briefs · 1 · ⌄" at 40 high).
  *
  * A button: `onClick` expands the card it stands for. `title` in Inter panel, `count` in mono. Where a folded card
- * keeps its sheet (row 107), use `Card variant="float" folded`; this is the compact form for a stack of folded groups. */
+ * keeps its sheet (row 107), use `Card variant="float" collapsedV`; its ⌄ is 12 (`--kol-float-chev-sm`, plan-2026-11-12-one-header W1.1); this is the compact form for a stack of folded groups. */
 import { Button } from '@kolkrabbi/kol-component'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { PRESS } from './_shared/float.js'
@@ -13,7 +13,7 @@ export default function FoldedHead({ title, count, onClick, className = '' }) {
       className={`inline-flex items-center gap-3 h-10 pl-4 pr-3 rounded-full bg-surface-secondary text-left min-w-0 ${PRESS} ${className}`.trim()}>
       <span className="kol-float-panel text-fg-96 truncate">{title}</span>
       {count != null && <span className="kol-float-timecode text-fg-64 ml-auto tabular-nums">{count}</span>}
-      <IconLoader name="chevron-down" size={16} className="text-oq-64 shrink-0" />
+      <IconLoader name="chevron-down" size="var(--kol-float-chev-sm)" className="text-oq-64 shrink-0" />
     </Button>
   )
 }

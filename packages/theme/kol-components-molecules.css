@@ -136,7 +136,7 @@
 .kol-menu-panel.kol-menu-panel--fused,
 .kol-dd-panel {
   padding: 0;
-  border-radius: 0 0 var(--kol-radius-sm) var(--kol-radius-sm);
+  border-radius: 0 0 var(--kol-radius-4) var(--kol-radius-4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -169,7 +169,8 @@
   padding-inline: calc(var(--kol-spacing-1) + 1px - var(--kol-tone-panel-border-w, 0px));
   overflow-y: auto;
   min-height: 0;
-  max-height: calc(var(--kol-dd-max-rows, 10) * var(--kol-dd-row-h, 2rem) + var(--kol-spacing-1) * 2);
+  /* the rows sit `--kol-spacing-0-5` apart (Dropdown.jsx, 2026-11-12), so the ceiling counts the gaps between them */
+  max-height: calc(var(--kol-dd-max-rows, 10) * var(--kol-dd-row-h, 2rem) + (var(--kol-dd-max-rows, 10) - 1) * var(--kol-spacing-0-5) + var(--kol-spacing-1) * 2);
 }
 
 /* THE MENU PANEL (the Menu* family, metric Round 4, 2026-10-31) — `Menu`'s panel: it floats under the caller's
@@ -191,19 +192,23 @@
   padding: var(--kol-spacing-1);
   box-shadow: var(--kol-shadow-float);
 }
-/* the row: tall (38), inset by the panel's 4, ink one step down until hovered; the current row and an
- * open flyout's row are filled. Two classes so it outranks the row's own `text-body` utility. */
+/* the row: tall (38), inset by the panel's 4, ink one step down until hovered. HOVER IS THE ONLY FILL (plan-2026-11-12
+ * W11.1 — *"what did I also say now 5 times about hover states and gaps?"*): hovered, keyboard-focused or opened it fills;
+ * the current row takes the ink and its dot, no fill. Rows sit `--kol-spacing-0-5` apart (the containers' gap), so two
+ * fills never touch. Two classes so it outranks the row's own `text-body` utility. */
 .kol-menu-panel .kol-menu-row {
   height: 38px;
   padding-inline: var(--kol-spacing-3);
   border-radius: 6px;
   color: var(--kol-fg-88);
 }
+.kol-menu-panel .kol-menu-row--current { color: var(--kol-fg-96); }
 .kol-menu-panel .kol-menu-row:hover,
-.kol-menu-panel .kol-menu-row--current,
+.kol-menu-panel .kol-menu-row:focus-visible,
 .kol-menu-panel .kol-menu-row[aria-expanded="true"] {
   color: var(--kol-fg-96);
   background-color: var(--kol-oq-16);
+  outline: none;
 }
 /* a rule runs edge to edge — through the panel's 4px inset. MenuDivider is the Divider atom (2026-11-07): the ink is
  * its inner line's */
@@ -236,7 +241,7 @@
    * composites twice at every overlap — the same law the icons follow. */
   background: var(--kol-tone-bg, var(--kol-surface-secondary));
   border: 1px solid var(--kol-oq-04);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.4),
               0 2px 6px -2px rgba(0, 0, 0, 0.3);
   z-index: calc(var(--kol-z-tooltip, 300) + var(--kol-float-depth, 0) * 100); /* the ladder's float tier, not nav's 1000 (EditorOverlaysOnFullscreenOverlay, user ruling 2026-08-27); + its nesting depth */
@@ -269,7 +274,7 @@
   /* the hairline IS the edge (user, 2026-09-26): a same-toned surface over the page reads only by
    * its border — oq-04 did not, and the drop shadow is gone (black on a dark page showed nothing) */
   border: 1px solid var(--kol-oq-08);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   padding: 4px 8px;
   font-family: var(--kol-font-family-mono);
   font-size: 11px;
@@ -667,7 +672,7 @@
   /* oq-08, opaque — the one outline border every control wears (user ruling
    * 2026-08-26); was fg-04, which doubled wherever two strips touched. */
   border: 1px solid var(--kol-oq-08);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   overflow: hidden;
   /* The button-height LAW (2026-08-12): the strip's OUTER height is PINNED
    * to the .kol-btn ladder — 26 / 32 / 40 — regardless of what a cell holds
@@ -762,7 +767,7 @@
 .kol-seg--filled .kol-seg-cell {
   background: transparent;
   /* the dark tile rounds itself (SegBar reference geometry) */
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
 
 .kol-seg--filled .kol-seg-cell + .kol-seg-cell { border-left: none; }
@@ -878,7 +883,7 @@
   font-family: var(--kol-font-family-mono);
   white-space: pre-wrap;
   overflow-wrap: break-word;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   line-height: 1.6;
   position: relative;
   overflow-x: auto;
@@ -985,7 +990,7 @@
  * OVERLAY CHROME — the ONE floating surface (user ruling 2026-08-01).
  *
  * There was none. `.kol-modal` is an unstyled hook, and ShellSearchOverlay
- * hand-wrote its own look at the call site: `rounded-[var(--kol-radius-2xl)]`,
+ * hand-wrote its own look at the call site: `rounded-[var(--kol-radius-4)]`,
  * `shadow-[0_20px_60px_rgba(0,0,0,0.4)]`, `bg-black/60`, `backdrop-blur-[1px]`
  * — four arbitrary values, none of them referenced anywhere else. The 20px
  * radius in particular appears NOWHERE else in this repo's chrome (which uses
@@ -1037,7 +1042,7 @@
    * is the separation — a 60% tint is already a stronger edge than an
    * 8%-opacity line. */
   /* `sm` — the radius this repo's chrome actually uses. */
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   /* NO SHADOW (user ruling 2026-08-01). The border and the scrim already
    * separate the panel; a drop-shadow on top is the floating-card idiom from
    * another product. --kol-shadow-overlay was added for this an hour earlier
@@ -1413,7 +1418,7 @@
   /* OPAQUE (user 2026-09-23: *"this is not correct bg, its transparent should be opaque so not
    * fg-* but oq-*"*) — a page is paper, and the list behind it read through it in Quick Look. */
   background: var(--kol-oq-04);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   padding: 24px;
   min-width: 0;
   overflow-wrap: anywhere;
@@ -1565,7 +1570,7 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
 .kol-pdf-document-rail button {
   display: block;
   padding: 4px;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   background: transparent;
 }
 .kol-pdf-document-rail button[aria-current] { background: var(--kol-oq-16); }
@@ -1591,19 +1596,19 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--kol-radius-md);
+  border-radius: var(--kol-radius-4);
   overflow: hidden;
 }
 /* A PREVIEW FITS THE BOX, it is not merely capped by it (user 2026-09-24: a 24px favicon.svg drew
  * at 24px in a 190px tile). `max-*` only ever shrank; Finder fits every preview to the tile, large
  * or small, keeping its proportions. */
 .kol-media-tile-thumb > img,
-.kol-media-tile-thumb > video { width: 100%; height: 100%; object-fit: contain; border-radius: var(--kol-radius-sm); }
-.kol-media-tile-thumb > .kol-media-thumb { border-radius: var(--kol-radius-sm); }
+.kol-media-tile-thumb > video { width: 100%; height: 100%; object-fit: contain; border-radius: var(--kol-radius-4); }
+.kol-media-tile-thumb > .kol-media-thumb { border-radius: var(--kol-radius-4); }
 .kol-media-tile-name {
   max-width: 100%;
   padding: 1px 6px;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   /* type: `.kol-item-name` on the element — one name style in every view */
   text-align: center;
   overflow-wrap: anywhere;
@@ -1661,7 +1666,7 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   overflow: hidden;
   background: var(--kol-oq-08);
   border: 1px solid var(--kol-oq-16);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
 /* the straight card is the first item and sits ON TOP; the turned ones sit behind it — stated in
  * z-index, not left to DOM order (user 2026-09-23: *"you had it reversed"*) */
@@ -1709,7 +1714,7 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
   overflow-y: auto;
   overflow-x: hidden;
   padding: 16px;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
 .kol-column-browser-preview .kol-doc-page > * { zoom: 0.8; }
 /* documents start at the top of the column frame, and scroll */
@@ -1818,7 +1823,7 @@ img.kol-quicklook-media--fill { width: var(--kol-ql-max-w); height: auto; max-he
 }
 .kol-column-browser-column { padding-block: 4px; }
 .kol-column-browser-row.is-selected,
-.kol-column-browser-row.is-cursor { border-radius: var(--kol-radius-sm); }
+.kol-column-browser-row.is-cursor { border-radius: var(--kol-radius-4); }
 
 /* ColumnBrowser resize handles (ColumnBrowserResize, kol-r2b2 2026-08-27 —
  * Finder's edge handles, user ruling "that should be a set in ds"; native CSS
@@ -2612,7 +2617,7 @@ article[role="button"]:focus-visible {
   pointer-events: none;
   border: 1px solid var(--kol-fg-32);
   background-color: var(--kol-fg-08);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   z-index: 2;
 }
 
@@ -2624,7 +2629,7 @@ article[role="button"]:focus-visible {
  * top to bottom with nothing to the right of a name. */
 .kol-row-browser > li:nth-child(even):not(.is-selected):not([data-drop-over]) {
   background-color: var(--kol-fg-02);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2666,15 +2671,19 @@ article[role="button"]:focus-visible {
   font-family: var(--kol-font-family-float);
 }
 .kol-menu-panel.kol-menu-panel--float.kol-menu-panel--sheet { border-radius: var(--kol-float-menu-r); padding: var(--kol-float-inset); }
-/* the row: 34 tall, 12 in, radius 6, Inter 12 at fg-88; hovered, current or opened it lifts on fg-16 */
+/* the row: `--kol-float-list-row` tall, 12 in, radius 6, Inter 12 at fg-88. HOVER IS THE ONLY FILL (plan-2026-11-12-float-system
+ * W3.1, P2 — *"figma … dosnt highlight selected, only hover"*): hovered, keyboard-focused or opened it lifts on
+ * `--kol-float-row-hover`; the current row takes the ink and its dot, on `--kol-float-row-selected` (none). The two state
+ * tokens are set here, on the panel, so the fg ladder resolves for the panel's theme. */
+.kol-menu-panel--float { --kol-float-row-hover: var(--kol-fg-16); --kol-float-row-selected: transparent; }
 .kol-menu-panel--float .kol-menu-row {
-  height: 34px; padding-inline: 12px; border-radius: 6px; gap: 8px; color: var(--kol-fg-88);
+  height: var(--kol-float-list-row); padding-inline: 12px; border-radius: 6px; gap: 8px; color: var(--kol-fg-88);
   font-family: var(--kol-font-family-float); font-size: 12px; font-weight: 500; line-height: 1; letter-spacing: normal; text-transform: none;
 }
+.kol-menu-panel--float .kol-menu-row--current { background-color: var(--kol-float-row-selected); color: var(--kol-fg-emphasis); }
 .kol-menu-panel--float .kol-menu-row:hover,
-.kol-menu-panel--float .kol-menu-row--current,
-.kol-menu-panel--float .kol-menu-row[aria-expanded="true"] { background-color: var(--kol-fg-16); color: var(--kol-fg-emphasis); }
-.kol-menu-panel--float .kol-menu-row:focus-visible { outline: none; box-shadow: var(--kol-float-focus); }
+.kol-menu-panel--float .kol-menu-row:focus-visible,
+.kol-menu-panel--float .kol-menu-row[aria-expanded="true"] { background-color: var(--kol-float-row-hover); color: var(--kol-fg-emphasis); outline: none; }
 .kol-menu-panel--float .kol-menu-row:disabled { opacity: 0.4; }
 /* the destructive row (row 50): `MenuRow tone="danger"` — the error ink, the same lift */
 .kol-menu-panel .kol-menu-row.kol-menu-row--danger { color: var(--ui-error); }
@@ -2701,3 +2710,378 @@ article[role="button"]:focus-visible {
 .kol-btn.kol-btn-float.kol-menu-trigger--float.kol-menu-trigger--mono { font-family: var(--kol-font-family-mono); font-weight: 400; }
 /* the open trigger keeps its lift under the pointer (the tab's rule): the press that opened it leaves the pointer there */
 .kol-btn.kol-btn-float.kol-menu-trigger--float.kol-btn-pressed:not(.kol-dd-trigger):hover { background-color: var(--kol-tone-pressed-bg); color: var(--kol-tone-pressed-fg); }
+
+/* =============================================================================
+ * KOLBOX (plan-2026-11-18-kolbox-system W31.2, 2026-11-18). `variant="kolbox"`, the look a theme cannot carry, carried
+ * class for class from apps/kolbox/src/ui. Every rule hangs off the variant's own root class, so the default and float
+ * looks cannot change. Only what kolbox's own classes set; nothing kolbox inherits.
+ * ============================================================================= */
+
+/* LabeledControl kolbox: the label Inter 12 / 16 medium in oq-64; the controlFirst label 11 / 15 at the row's weight */
+.kol-labeled-control--kolbox .kol-labeled-control-label { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-oq-64); }
+.kol-labeled-control--kolbox .kol-labeled-control-help { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+
+/* DividerLabel: the label 11 / 15 in oq-64 at the row's family and weight, the rule oq-24 */
+.kol-divider-label .kol-divider-label-text { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+.kol-divider-label .kol-divider-label-rule { background-color: var(--kol-oq-24); }
+
+/* SwatchStack kolbox: each chip and the none marker ringed by the ground then the oq-24 line; the swap arrow oq-64, the
+   ink on hover; the none marker the ink with the error slash; focus rings the accent */
+.kol-swatch-stack--kolbox .kol-swatch-stack-chip,
+.kol-swatch-stack--kolbox .kol-swatch-stack-none { box-shadow: 0 0 0 1px var(--kol-surface-primary), 0 0 0 2px var(--kol-kolbox-line); }
+.kol-swatch-stack--kolbox .kol-swatch-stack-chip:focus-visible,
+.kol-swatch-stack--kolbox .kol-swatch-stack-swap:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-swatch-stack--kolbox .kol-swatch-stack-swap { color: var(--kol-oq-64); }
+.kol-swatch-stack--kolbox .kol-swatch-stack-swap:hover { color: var(--kol-surface-on-primary); }
+.kol-swatch-stack--kolbox .kol-swatch-stack-none { background-color: var(--kol-surface-on-primary); background-image: linear-gradient(135deg, transparent 42%, var(--ui-error) 42%, var(--ui-error) 58%, transparent 58%); }
+
+/* batch 3 (W31.2, 2026-11-18): kolbox's Slider, Tabs, SplitButton and IconGroup looks, carried class for class. */
+
+/* Slider kolbox: the 16-high range, a 2px oq-24 track with the run in the ink up to --p (set inline), a 12 ink thumb, the
+   accent's focus line 2 off; the value mono 12 / 16 in the ink; the input readout's track in an oq-16 field at radius 4
+   and the number in another, the accent line inside it focused. Pseudo-elements, so these are rules (moved from
+   apps/kolbox's .kol-kolbox-range) */
+.kol-slider--kolbox { border-radius: var(--kol-radius-4); }
+.kol-slider--kolbox .kol-slider-input { appearance: none; background: transparent; height: var(--kol-spacing-4); cursor: pointer; }
+.kol-slider--kolbox .kol-slider-input::-webkit-slider-runnable-track { height: 2px; border-radius: 1px; background: linear-gradient(to right, var(--kol-surface-on-primary) var(--p), var(--kol-kolbox-field-strong) var(--p)); }
+.kol-slider--kolbox .kol-slider-input::-moz-range-track { height: 2px; border-radius: 1px; background: linear-gradient(to right, var(--kol-surface-on-primary) var(--p), var(--kol-kolbox-field-strong) var(--p)); }
+.kol-slider--kolbox .kol-slider-input::-webkit-slider-thumb { appearance: none; width: var(--kol-spacing-3); height: var(--kol-spacing-3); margin-top: -5px; border-radius: 9999px; background: var(--kol-surface-on-primary); border: 0; }
+.kol-slider--kolbox .kol-slider-input::-moz-range-thumb { width: var(--kol-spacing-3); height: var(--kol-spacing-3); border-radius: 9999px; background: var(--kol-surface-on-primary); border: 0; }
+.kol-slider--kolbox .kol-slider-input:focus-visible { outline: 1px solid var(--kol-accent-primary); outline-offset: 2px; }
+.kol-slider--kolbox .kol-slider-value,
+.kol-slider--kolbox .kol-slider-number { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-surface-on-primary); }
+.kol-slider--kolbox .kol-slider-field,
+.kol-slider--kolbox .kol-slider-number { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-field); }
+.kol-slider--kolbox .kol-slider-number:focus-visible { outline-color: var(--kol-accent-primary); }
+
+/* TabsRow kolbox: sm the track (oq-16, radius 6, the current tab oq-24 in the ink), md the top rail's mode track (the
+   ground, radius 8, the current tab oq-16 with the accent label); tabs radius 4, Inter 12 / 16 / 500, the rest oq-64 and
+   the ink on hover while enabled */
+.kol-tabs--kolbox-sm { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-field); }
+.kol-tabs--kolbox-md { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-track, var(--kol-surface-primary)); }
+.kol-tabs--kolbox .kol-tabs-tab { border-radius: var(--kol-radius-4); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-oq-64); }
+.kol-tabs--kolbox .kol-tabs-tab:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-tabs--kolbox .kol-tabs-tab:not(.is-active):enabled:hover { color: var(--kol-surface-on-primary); }
+.kol-tabs--kolbox-sm .kol-tabs-tab.is-active { background-color: var(--kol-kolbox-field-strong); color: var(--kol-surface-on-primary); }
+.kol-tabs--kolbox-md .kol-tabs-tab.is-active { background-color: var(--kol-kolbox-track-active, var(--kol-kolbox-field)); color: var(--kol-surface-on-primary); } /* (plan-2026-11-23-editor-measured-against-figma W4), was the accent label */
+
+/* TabsDocument kolbox (the document strip, after Figma's tab strip, 2026-11-22): the panel ground and the top rail's field
+   line under it; light takes the mode track's pair (the canvas strip, the ground tab), as the grounds sit too close. A tab
+   12 / 16 at the label weight in oq-64, the ink on hover; the current (and a paired) tab on the field wash (light: the
+   ground) in the ink. The unsaved dot is the ink */
+.kol-tabs-document--kolbox { background-color: var(--kol-kolbox-track, var(--kol-surface-secondary)); }
+.kol-tabs-document--kolbox::after { background-color: var(--kol-kolbox-field); }
+.kol-tabs-document--kolbox .kol-tabs-document-tab { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-oq-64); }
+.kol-tabs-document--kolbox .kol-tabs-document-tab:hover,
+.kol-tabs-document--kolbox .kol-tabs-document-tab.is-active { color: var(--kol-surface-on-primary); }
+.kol-tabs-document--kolbox .kol-tabs-document-tab.is-active { background-color: var(--kol-kolbox-track-active, var(--kol-kolbox-field)); }
+.kol-tabs-document--kolbox .kol-tabs-document-label:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-tabs-document--kolbox .kol-tabs-document-dot { background-color: var(--kol-surface-on-primary); }
+
+/* TabsDocument folio (Folio's strip, FolioWrite 13.3 and W18, carried): the surface; a tab on the paper when current or
+   paired, the ink 5% over the surface on hover; a chained pair's green line on top; the current name the ink, the rest
+   and the buttons muted, the buttons' hover the surface; the text buttons the ink on hover */
+.kol-tabs-document--folio { background-color: var(--kol-folio-surface); }
+.kol-tabs-document--folio .kol-tabs-document-tab.is-active { background-color: var(--kol-folio-paper); }
+.kol-tabs-document--folio .kol-tabs-document-tab:not(.is-active):hover { background-color: color-mix(in oklab, var(--kol-folio-ink) 5%, var(--kol-folio-surface)); }
+.kol-tabs-document--folio .kol-tabs-document-tab.is-chained { box-shadow: inset 0 2px 0 var(--kol-folio-green); }
+.kol-tabs-document--folio .kol-tabs-document-label { color: var(--kol-folio-muted); }
+.kol-tabs-document--folio .kol-tabs-document-label.is-current { color: var(--kol-folio-ink); }
+.kol-tabs-document--folio .kol-tabs-document-dot { background-color: var(--kol-folio-ink); }
+.kol-tabs-document--folio .kol-tabs-document-btn,
+.kol-tabs-document--folio .kol-tabs-document-text { color: var(--kol-folio-muted); }
+.kol-tabs-document--folio .kol-tabs-document-btn:hover { background-color: var(--kol-folio-surface); }
+.kol-tabs-document--folio .kol-tabs-document-text:hover { color: var(--kol-folio-ink); }
+
+/* ButtonSplit kolbox: a hovered half lays the fg-04 hover over its own fill, so it reads on either tone */
+.kol-btn-split--kolbox .kol-btn--kolbox:enabled:hover { background-image: linear-gradient(var(--kol-fg-04), var(--kol-fg-04)); }
+/* the ghost tone (the rail's file title, his reference 2026-11-19): in the ink, no fill at rest; hovering either half,
+   or `is-open`, fills BOTH with the field, and the hovered half takes the lighter step above */
+.kol-btn-split--kolbox .kol-btn--kolbox-ghost { color: var(--kol-surface-on-primary); }
+.kol-btn-split--kolbox:hover .kol-btn--kolbox-ghost,
+.kol-btn-split--kolbox.is-open .kol-btn--kolbox-ghost { background-color: var(--kol-kolbox-field); }
+/* the icon-only form (the tool dock's slot with a fold), Figma's dock (W16.3, 2026-11-20): two boxes 1 apart, each
+   radius 6 on all four corners (Figma's 5 on KOL's track stop), in the ink. The tool takes the field fill on hover and,
+   pressed, the solid accent on the accent's ink. The ⌄ is never tinted: no fill at rest, the field fill on hover and
+   while its menu is open (`is-open`) */
+.kol-btn-split--kolbox-icon .kol-btn-split-main,
+.kol-btn-split--kolbox-icon .kol-btn-split-menu { border-radius: var(--kol-radius-4); color: var(--kol-surface-on-primary); }
+.kol-btn-split--kolbox-icon .kol-btn-split-main:focus-visible,
+.kol-btn-split--kolbox-icon .kol-btn-split-menu:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-btn-split--kolbox-icon:not(.is-pressed) .kol-btn-split-main:enabled:hover,
+.kol-btn-split--kolbox-icon .kol-btn-split-menu:hover,
+.kol-btn-split--kolbox-icon .kol-btn-split-menu.is-open { background-color: var(--kol-kolbox-field); }
+.kol-btn-split--kolbox-icon.is-pressed .kol-btn-split-main { background-color: var(--kol-accent-primary); color: var(--kol-accent-on-primary); }
+.kol-rail-header-title--sm .kol-btn-split--kolbox .kol-btn--kolbox { font-size: inherit; line-height: inherit; letter-spacing: inherit; font-weight: inherit; min-width: 0; }
+
+/* ButtonGroup joined kolbox: radius 4 on the outer corners; the cells' unpressed fill oq-16; sunken, the ground track
+   with its pressed cell oq-16 in the ink */
+.kol-btn-group--kolbox { border-radius: var(--kol-radius-4); }
+.kol-btn-group--kolbox:not(.kol-btn-group--kolbox-sunken) > .kol-icon-btn--kolbox:not(.is-pressed) { background-color: var(--kol-kolbox-field); }
+/* sunken (Figma's grid / list toggle, 2026-11-23): the track is the field; the pressed cell the page ground inside the
+   kolbox line, the glyph the ink */
+.kol-btn-group--kolbox-sunken { background-color: var(--kol-kolbox-field); }
+.kol-btn-group--kolbox-sunken > .kol-icon-btn--kolbox[aria-pressed="true"] { background-color: var(--kol-surface-primary); box-shadow: inset 0 0 0 1px var(--kol-kolbox-line); border-radius: var(--kol-radius-4); color: var(--kol-surface-on-primary); }
+
+/* batch 4 (W31.2, 2026-11-18): kolbox's floating parts, carried class for class: Menu with MenuScroll, Dropdown, Tooltip,
+   the panel shell (ModalShell, for PopoverPanel and ModalDialog), the confirm's message, Toast and SwatchGrid. Each on
+   `.kol-kolbox-surface` (kol-components-atoms.css) where it floats. Only what kolbox's own classes set. */
+
+/* the layer behind a kolbox ModalDialog: the dim, fg-ab-24 */
+.kol-popover-layer--kolbox-dim { background-color: var(--kol-fg-ab-24); }
+
+/* Menu kolbox: the darker list (the ground), radius 12, 8 in, never taller than the window less 16; rows 24, touching,
+   radius 6, Inter 12 / 16 / 500 in the ink, the lit row solid accent with the on-accent ink, a disabled row oq-64; a
+   group's title 11 / 15 in oq-64; the rule between groups oq-24; a row's tag mono 10 / 14 on oq-16 in oq-64 (on the
+   on-accent in the accent when lit); the submenu chevron oq-64 unless lit; MenuScroll on the menu's fill in oq-64 */
+.kol-menu--kolbox { max-height: calc(100vh - var(--kol-spacing-4)); border-radius: var(--kol-radius-12); background-color: var(--kol-surface-primary); }
+.kol-menu-row--kolbox { border-radius: var(--kol-radius-4); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-menu-row--kolbox.is-disabled { color: var(--kol-oq-64); }
+.kol-menu-row--kolbox.is-active { background-color: var(--kol-accent-primary); color: var(--kol-accent-on-primary); }
+.kol-menu-heading--kolbox { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+.kol-menu-rule--kolbox { background-color: var(--kol-kolbox-line); }
+.kol-menu-tag--kolbox { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-field); font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+.kol-menu-tag--kolbox.is-active { background-color: var(--kol-accent-on-primary); color: var(--kol-accent-primary); }
+.kol-menu-sub--kolbox { color: var(--kol-oq-64); }
+.kol-menu-scroll--kolbox { background-color: var(--kol-surface-primary); color: var(--kol-oq-64); }
+
+/* Folio batch B (2026-11-22): Folio's menus, dropdown, split button and dialogs, carried class for class from apps/folio.
+   Every rule hangs off the part's `--folio` class, so the other looks cannot move; only what Folio's own classes set.
+   The colors are Folio's (`--kol-folio-*`); the shadows and the dim are Folio's literals (no token carries them). */
+
+/* Menu folio: the paper list on the rule, the two-step shadow; rows Folio's meta (11 / 1.21), the surface on hover, a
+   disabled row muted; the ✓ green, the keys muted */
+.kol-menu--folio { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.4); }
+.kol-menu-rule--folio { background-color: var(--kol-folio-rule); }
+.kol-menu-row--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-menu-row--folio:enabled:hover { background-color: var(--kol-folio-surface); }
+.kol-menu-row--folio:disabled { color: var(--kol-folio-muted); }
+.kol-menu-check--folio { color: var(--kol-folio-green); }
+.kol-menu-kbd--folio { color: var(--kol-folio-muted); }
+
+/* Dropdown folio: the button in the ink, green on hover (the ink while disabled), its ⌄ muted; the list on the paper with
+   the soft shadow, rows Folio's meta, the surface on hover, the current one green */
+.kol-dd--folio { color: var(--kol-folio-ink); }
+.kol-dd--folio:enabled:hover { color: var(--kol-folio-green); }
+.kol-dd-caret--folio { color: var(--kol-folio-muted); }
+.kol-dd-list--folio { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); box-shadow: 0 16px 48px rgb(0 0 0 / 0.14); }
+.kol-dd-option--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; color: var(--kol-folio-ink); }
+.kol-dd-option--folio:hover { background-color: var(--kol-folio-surface); }
+.kol-dd-option--folio.is-current,
+.kol-dd-check--folio { color: var(--kol-folio-green); }
+
+/* ButtonSplit folio: the paper on the rule in the ink, `primary` all green with the paper's ink; the label 12 / 16 / 500 */
+.kol-btn-split--folio .kol-btn-split-box { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); }
+.kol-btn-split--folio-primary .kol-btn-split-box { border-color: var(--kol-folio-green); background-color: var(--kol-folio-green); color: var(--kol-folio-paper); }
+.kol-btn-split--folio .kol-btn-split-main { font-size: 12px; font-weight: 500; line-height: 16px; }
+
+/* ModalShell folio: the paper behind the rule. ModalDialog folio: the dim, the two-step shadow, the header's rule, the
+   title 18 / 22 / 600, the × muted on the surface when hovered. The dim is shared by Folio's overlays */
+.kol-modal--folio { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); }
+.kol-modal-dim--folio { background-color: rgb(38 41 34 / 0.32); }
+.kol-modal-dialog--folio { box-shadow: 0 2px 6px -2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.4); }
+.kol-modal-head--folio { border-color: var(--kol-folio-rule); }
+.kol-modal-title--folio { font-size: 18px; font-weight: 600; line-height: 22px; }
+.kol-modal-close--folio { color: var(--kol-folio-muted); }
+.kol-modal-close--folio:hover { background-color: var(--kol-folio-surface); }
+
+/* Dropdown kolbox: radius 4, Inter 12 / 16 / 400 in the ink, the chevron oq-64; outlined (unset tone) the oq-24 line,
+   the accent while open or focused; `grey` at sm the oq-16 field, its focus line the accent */
+.kol-dd--kolbox { border-radius: var(--kol-radius-4); font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 400); color: var(--kol-surface-on-primary); }
+.kol-dd--kolbox-outlined { border-color: var(--kol-kolbox-line); }
+.kol-dd--kolbox-outlined.is-open { border-color: var(--kol-kolbox-line); } /* (plan-2026-11-23-editor-measured-against-figma W4) */
+.kol-dd--kolbox-outlined:focus-visible { border-color: var(--kol-accent-primary); }
+.kol-dd--kolbox:not(.kol-dd--kolbox-outlined):focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-dd--kolbox-filled { background-color: var(--kol-kolbox-field); }
+.kol-dd--kolbox .kol-dd-caret--kolbox { color: var(--kol-oq-64); }
+
+/* Tooltip kolbox: 28 high, radius 4, the ground, Inter 11 / 15 in the ink */
+.kol-tooltip--kolbox { border-radius: var(--kol-radius-4); background-color: var(--kol-surface-primary); font-size: 11px; line-height: 15px; color: var(--kol-surface-on-primary); }
+
+/* ModalShell kolbox (kolbox's PopoverShell): radius 16, the secondary surface, 240 wide (a ModalDialog 480), never
+   taller than the window less 16 nor wider than it less 32; the title Inter 12 / 17 / 500 in the ink; a confirm's message
+   11 / 15 in oq-64 */
+.kol-modal--kolbox { width: var(--kol-kolbox-popover-w); max-width: calc(100vw - var(--kol-spacing-8)); max-height: calc(100vh - var(--kol-spacing-4)); border-radius: var(--kol-radius-12); background-color: var(--kol-surface-secondary); }
+.kol-modal-title--kolbox { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-modal-body--kolbox { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+
+/* Toast: radius 12, the secondary surface; the message Inter 11 / 15 / 500 in the ink */
+.kol-toast { border-radius: var(--kol-radius-12); background-color: var(--kol-surface-secondary); }
+.kol-toast-message { font-size: 11px; line-height: 15px; font-weight: 500; color: var(--kol-surface-on-primary); }
+
+/* SwatchGrid: radius 2, the oq-24 ring inside; the current one the accent ring, 1 off the secondary surface */
+.kol-swatch-grid-cell { border-radius: var(--kol-radius-2); --tw-ring-color: var(--kol-oq-24); }
+.kol-swatch-grid-cell.is-current { --tw-ring-color: var(--kol-accent-primary); --tw-ring-offset-color: var(--kol-surface-secondary); }
+
+/* AccountMenu kolbox (kolbox's AccountChip): the Avatar on oq-16, the chevron oq-64, the accent's focus line */
+.kol-account-chip--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+/* important: the Avatar's own ground is a utility (`bg-surface-secondary`), a later layer; kolbox's was `bg-field!` too */
+.kol-account-chip--kolbox > .kol-avatar { background-color: var(--kol-kolbox-field) !important; }
+.kol-account-chip--kolbox .kol-account-chip-caret { color: var(--kol-oq-64); }
+
+/* batch 5 (W31.2, 2026-11-18): kolbox's rail rows and headers, the fill row, the file card and the title row, carried
+   class for class. Only what kolbox's own classes set. */
+
+/* RailHeader kolbox: md the plain header (title the UI text, 11 / 16), sm the document header (13 / 22, Figma's file name), both in the
+   ink; the meta line at the right mono 10 / 14 in the muted ink */
+.kol-rail-header--kolbox .kol-rail-header-title--md { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-rail-header--kolbox .kol-rail-header-title--sm { font-size: 13px; line-height: 22px; letter-spacing: -0.0025em; font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+.kol-rail-header--kolbox .kol-rail-header-sub { margin-top: 5px; margin-left: -4px; padding: 0 4px; font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-label-weight, 400); color: var(--kol-oq-64); }
+.kol-rail-header--kolbox .kol-rail-header-meta { font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+
+/* TreeRow kolbox (kolbox's ListRow): radius 4, the accent's focus line. Type by size: xs (and any tree row) 11 / 16
+   regular, sm 11 / 16, md 11 / 16 regular (the UI text tokens), lg 16 / 22 medium. xs and sm: the ink, hover the field fill, active the
+   field fill and the accent ink with the 2 by 14 accent bar; md the ink, hover and active the field fill; lg the muted
+   ink, hover and active the field fill and the ink */
+.kol-tree-row--kolbox { border-radius: var(--kol-radius-4); color: var(--kol-surface-on-primary); }
+.kol-tree-row--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-tree-row--kolbox.kol-tree-row--type-xs { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); font-weight: var(--kol-kolbox-row-weight, 400); }
+.kol-tree-row--kolbox.kol-tree-row--type-sm,
+.kol-tree-row--kolbox.kol-tree-row--type-md { font-size: var(--kol-kolbox-text); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-tree-row--kolbox.kol-tree-row--type-sm,
+.kol-tree-row--kolbox.kol-tree-row--type-md { font-weight: var(--kol-kolbox-row-weight, 400); }
+/* the selected row reads in the heading weight, as Figma's selected page (W2) */
+.kol-tree-row--kolbox-xs.is-active { font-weight: var(--kol-kolbox-title-weight, 500); }
+.kol-tree-row--kolbox.kol-tree-row--type-lg { font-size: 16px; line-height: 22px; font-weight: var(--kol-kolbox-label-weight, 500); }
+.kol-tree-row--kolbox-xs:enabled:hover,
+.kol-tree-row--kolbox-sm:enabled:hover,
+.kol-tree-row--kolbox-md:hover,
+.kol-tree-row--kolbox-lg:hover,
+.kol-tree-row--kolbox.is-active { background-color: var(--kol-kolbox-field); }
+/* the selected row is the field wash and the plain ink, no accent and no bar: Figma's selected row
+   (plan-2026-11-23-editor-measured-against-figma W4, decided for his review; was the accent ink and a 2 by 14 accent bar) */
+.kol-tree-row--kolbox-xs.is-active::before,
+.kol-tree-row--kolbox-sm.is-active::before { background-color: transparent; }
+.kol-tree-row--kolbox-lg:not(.is-active) { color: var(--kol-oq-64); }
+.kol-tree-row--kolbox-lg:hover { color: var(--kol-surface-on-primary); }
+/* Folio on kolbox (2026-11-22): a link row takes the xs hover (an anchor is never :enabled); a count the meta role in
+   the muted ink */
+a.kol-tree-row--kolbox-xs:hover { background-color: var(--kol-kolbox-field); }
+.kol-tree-row-count--kolbox { font-family: var(--kol-font-family-mono); font-size: 10px; line-height: 14px; color: var(--kol-oq-64); }
+.kol-tree-row--kolbox .kol-tree-row-icon--muted { color: var(--kol-oq-64); }
+/* the tree's type glyph (a layer's kind) at oq-48, the ladder's nearest opaque step to Figma's 40% (plan-2026-11-23-editor-
+   measured-against-figma W7); the selected row's in the ink */
+.kol-tree-row--kolbox:not(.is-active) .kol-tree-row-type { color: var(--kol-oq-48); }
+.kol-tree-row--kolbox .kol-tree-row-toggle { border-radius: var(--kol-radius-4); }
+.kol-tree-row--kolbox .kol-tree-row-toggle:hover { color: var(--kol-surface-on-primary); }
+
+/* TreeRow folio (Folio's library tree rows, batch D 2026-11-22): the type 11 / 400 (`kol-folio-meta`). A shelf takes the
+   ink it sits in and the surface on hover, its count muted; a document the muted ink, on hover the surface and the ink,
+   `is-active` the mint and the green */
+.kol-tree-row--folio { font-family: var(--kol-font-family-float); font-size: 11px; font-weight: 400; line-height: 1.21; }
+.kol-tree-row--folio .kol-tree-row-count,
+.kol-tree-row--folio:not(.kol-tree-row--folio-shelf) { color: var(--kol-folio-muted); }
+@media (hover: hover) {
+  .kol-tree-row--folio:not(.is-active):hover { background-color: var(--kol-folio-surface); }
+  .kol-tree-row--folio:not(.kol-tree-row--folio-shelf):not(.is-active):hover { color: var(--kol-folio-ink); }
+}
+.kol-tree-row--folio.is-active { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+
+/* ColorInputRow kolbox (kolbox's FillRow): one joined field, oq-16, radius 4; the accent line while focused or while its
+   color overlay is open; the hex Inter 11 / 15 in capitals, the opacity mono 11 / 15 and its % muted; between them a
+   1 by 22 gap in the rail's ground, as Figma's (W16.5: its divider is the ground showing through, not a light line) */
+.kol-color-row--kolbox .kol-color-row-field { border-radius: var(--kol-radius-4); background-color: var(--kol-kolbox-field); }
+/* a hidden paint (its eye is off): the opacity value drops to the muted ink, the color stays (his reference 2026-11-19) */
+.kol-color-row--kolbox.is-hidden .kol-color-row-opacity { color: var(--kol-oq-48); }
+/* no accent line on the field while its picker is open or a value is being typed (his ruling 2026-11-19: "remove this
+   accent focus its stupid"); a keyboard user still gets the focus line on the swatch itself, below */
+.kol-color-row--kolbox .kol-color-row-field:focus-within,
+.kol-color-row--kolbox .kol-color-row-field.is-lit { outline: none; }
+.kol-color-row--kolbox .kol-color-row-swatch { border-radius: var(--kol-radius-2); } /* 14 square, radius 2: his frame 2386:62548 */
+.kol-color-row--kolbox .kol-color-row-swatch:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-color-row--kolbox .kol-color-row-hex { font-size: 11px; line-height: 15px; color: var(--kol-surface-on-primary); }
+.kol-color-row--kolbox .kol-color-row-rule { background-color: var(--kol-surface-secondary); }
+.kol-color-row--kolbox .kol-color-row-opacity { font-family: var(--kol-font-family-mono); font-size: 11px; line-height: 15px; color: var(--kol-surface-on-primary); }
+.kol-color-row--kolbox .kol-color-row-unit { font-size: 11px; line-height: 15px; color: var(--kol-oq-64); }
+
+/* ContentCard kolbox (kolbox's FileCard): radius 13 (Figma's file card, measured: plan-2026-11-23 W6), the line, the
+   panel fill, the accent line on keyboard focus; the cover oq-08; the mark and the cover's buttons on the panel; the
+   foot's name Inter 11 / 16 at 550 in the ink, its meta muted Inter 11 / 16 at 450 (both Figma's, tracked 0.005em) */
+.kol-content-card--kolbox { border-radius: var(--kol-radius-13); border-color: var(--kol-kolbox-line); background-color: var(--kol-surface-secondary); }
+.kol-content-card--kolbox:focus-visible { border-color: var(--kol-accent-primary); }
+.kol-content-card--kolbox .kol-content-card-cover { background-color: var(--kol-kolbox-canvas); }
+.kol-content-card--kolbox .kol-content-card-on-panel { background-color: var(--kol-surface-secondary); }
+.kol-content-card--kolbox .kol-content-card-mark { border-radius: var(--kol-radius-4); color: var(--kol-oq-64); }
+.kol-content-card--kolbox .kol-content-card-foot { border-color: var(--kol-kolbox-line); }
+.kol-content-card--kolbox .kol-content-card-icon { color: var(--kol-oq-64); }
+.kol-content-card--kolbox .kol-content-card-name { font-size: 11px; line-height: 16px; font-weight: 550; letter-spacing: 0.005em; color: var(--kol-surface-on-primary); }
+.kol-content-card--kolbox .kol-content-card-meta { font-size: 11px; line-height: 16px; font-weight: 450; letter-spacing: 0.005em; color: var(--kol-oq-64); }
+.kol-content-card--kolbox .kol-content-card-edited { font-size: 11px; line-height: 16px; font-weight: 450; letter-spacing: 0.005em; color: var(--kol-oq-64); }
+
+/* SectionText kolbox (kolbox's BrowserTitleRow): the folder glyph muted, the title 24 / 32 at the heading weight, tracked
+   -0.017em, 4 in, as Figma's folder title (measured W7; was 22 / 28 regular, flush) */
+.kol-section-text--kolbox .kol-section-text-glyph { color: var(--kol-oq-64); }
+.kol-section-text--kolbox .kol-section-text-title { padding-inline: 4px; font-size: 24px; line-height: 32px; letter-spacing: -0.017em; font-weight: var(--kol-kolbox-title-weight, 500); color: var(--kol-surface-on-primary); }
+
+/* SectionText folio (Folio's page titles and section heads, Folio batch E): the eyebrow, body and meta in Folio's muted
+   ink; the headline keeps the ink it inherits */
+.kol-section-text--folio .kol-section-text-muted { color: var(--kol-folio-muted); }
+
+/* ContentCard folio (Folio's cover card, Folio batch E): the two lines under the title in Folio's muted ink */
+.kol-content-card--folio .kol-content-card-muted { color: var(--kol-folio-muted); }
+
+/* CodeBlock folio (Folio's fenced code, Folio batch E): Folio's hairline frame on its code ground (the ink at 4% on the
+   paper); the language in mono 11 / 500 capitals, muted; Copy muted, the surface and the ink under the pointer */
+.kol-codeblock--folio { border-color: var(--kol-folio-rule); background-color: color-mix(in oklab, var(--kol-folio-ink) 4%, var(--kol-folio-paper)); }
+.kol-codeblock--folio .kol-codeblock-head { border-color: var(--kol-folio-rule); }
+.kol-codeblock--folio .kol-codeblock-language { font-family: var(--kol-font-family-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.72px; color: var(--kol-folio-muted); }
+.kol-codeblock--folio .kol-codeblock-action { color: var(--kol-folio-muted); }
+.kol-codeblock--folio .kol-codeblock-action:hover { background-color: var(--kol-folio-surface); color: var(--kol-folio-ink); }
+
+/* ParamBindDot kolbox (kolbox's BindDot): a 6 dot, hollow on the muted ring, filled in the accent once bound */
+.kol-bind-dot--kolbox:focus-visible { outline-color: var(--kol-accent-primary); }
+.kol-bind-dot--kolbox .kol-bind-dot-mark { box-shadow: 0 0 0 1px var(--kol-oq-64); }
+.kol-bind-dot--kolbox .kol-bind-dot-mark.is-bound { box-shadow: none; background-color: var(--kol-accent-primary); }
+
+/* =============================================================================
+ * FOLIO, batch C (Folio batch C, 2026-11-22). `variant="folio"`, Folio's settings rows and color parts carried class for
+ * class from apps/folio/src/folio/Chrome.jsx. Every rule hangs off the variant's own root class; only what Folio's own
+ * classes set, nothing Folio inherits (the family is the frame's).
+ * ============================================================================= */
+
+/* LabeledControl folio (Folio's Setting): stacked, Folio's label (10 semibold, tracked, capitals); horizontal, 12 / 16
+   medium; both in the muted ink */
+.kol-labeled-control--folio > .kol-labeled-control-title { font-family: var(--kol-font-family-float); font-size: 10px; font-weight: 600; line-height: 1.21; letter-spacing: 1.1px; text-transform: uppercase; color: var(--kol-folio-muted); }
+.kol-labeled-control--folio > .kol-labeled-control-label { font-size: 12px; font-weight: 500; line-height: 16px; color: var(--kol-folio-muted); }
+
+/* FieldPair folio (Folio's SettingPair): each field on paper in the hairline, green while it has focus; the value mono
+   12 / 16 in the ink, the prefix muted */
+.kol-field-pair--folio .kol-field-pair-field { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); }
+.kol-field-pair--folio .kol-field-pair-field:focus-within { border-color: var(--kol-folio-green); }
+.kol-field-pair--folio .kol-field-pair-prefix { color: var(--kol-folio-muted); }
+
+/* ColorSwatch folio (Folio's Swatch): the hairline when framed, the ink's outline when selected */
+.kol-color-swatch--folio { border-color: var(--kol-folio-rule); }
+.kol-color-swatch--folio.is-selected { outline-color: var(--kol-folio-ink); }
+
+/* ColorInputRow folio (Folio's SwatchRow): the label 12 / 16 medium, the hex mono 12 / 16 muted */
+.kol-color-row--folio > .kol-color-row-label { font-size: 12px; font-weight: 500; line-height: 16px; }
+.kol-color-row--folio > .kol-color-row-value { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; color: var(--kol-folio-muted); }
+
+/* FOLIO batch A (Folio migration, 2026-11-22): `variant="folio"` on ButtonGroup joined (Folio's Seg), Slider,
+   QuantityInput (Folio's Stepper) and Tooltip, carried class for class from apps/folio (Chrome.jsx, EditorChrome.jsx).
+   Colors are Folio's own (`--kol-folio-*`); the family a part inherits from Folio's frame is not set here. */
+
+/* ButtonGroup joined folio (Folio's Seg): the rule line round the cells, each 12 / 16 / 500; muted, the ink on hover, the
+   picked one the accent's soft ground and strong ink */
+.kol-btn-group--folio { border-color: var(--kol-folio-rule); }
+.kol-btn-group--folio .kol-btn-group-cell { font-size: 12px; font-weight: 500; line-height: 16px; color: var(--kol-folio-muted); }
+@media (hover: hover) { .kol-btn-group--folio .kol-btn-group-cell:not([aria-pressed="true"]):hover { color: var(--kol-folio-ink); } }
+.kol-btn-group--folio .kol-btn-group-cell[aria-pressed="true"] { background-color: var(--kol-folio-mint); color: var(--kol-folio-green); }
+
+/* Slider folio: the 2px track in the rule, the run in the accent to `--run`, a 12 accent thumb; the value JetBrains Mono
+   12 / 16 */
+.kol-slider--folio .kol-slider-input::-webkit-slider-runnable-track { height: 2px; background: linear-gradient(to right, var(--kol-folio-green) var(--run), var(--kol-folio-rule) var(--run)); }
+.kol-slider--folio .kol-slider-input::-webkit-slider-thumb { margin-top: -5px; width: 12px; height: 12px; appearance: none; border-radius: 9999px; background-color: var(--kol-folio-green); }
+.kol-slider--folio .kol-slider-input::-moz-range-track { height: 2px; background-color: var(--kol-folio-rule); }
+.kol-slider--folio .kol-slider-input::-moz-range-progress { height: 2px; background-color: var(--kol-folio-green); }
+.kol-slider--folio .kol-slider-input::-moz-range-thumb { width: 12px; height: 12px; border-radius: 9999px; border: 0; background-color: var(--kol-folio-green); }
+.kol-slider--folio .kol-slider-value { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+
+/* QuantityInput folio (Folio's Stepper): the squares on the rule line, their glyphs 12 / 16 / 500; the value JetBrains
+   Mono 12 / 16 */
+.kol-quantity-input--folio .kol-quantity-input-step { border-color: var(--kol-folio-rule); font-size: 12px; font-weight: 500; line-height: 16px; }
+.kol-quantity-input--folio .kol-quantity-input-value { font-family: var(--kol-font-family-mono); font-size: 12px; line-height: 16px; }
+
+/* Tooltip folio: the rule line on the paper, the ink at 11 / 15 */
+.kol-tooltip--folio { border-color: var(--kol-folio-rule); background-color: var(--kol-folio-paper); color: var(--kol-folio-ink); font-size: 11px; line-height: 15px; }

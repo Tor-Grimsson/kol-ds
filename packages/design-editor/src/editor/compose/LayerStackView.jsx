@@ -191,18 +191,51 @@ function LayerRow({
 /* CanvasRow — the container row at the top of the stack (Figma frame model:
  * everything nests one step inside it). Always present, can't be deleted;
  * its chevron collapses the contents. */
-function CanvasRow({ IconC, active, collapsed, onToggleCollapse, onSelect }) {
+function CanvasRow({ IconC, active, collapsed, onToggleCollapse, onSelect, name, onRename }) {
+  /* the frame renames here as on its canvas label (plan-2026-11-18-kolbox-system 28.1), as a layer row does */
+  const [renaming, setRenaming] = useState(false)
+  const [draft, setDraft] = useState('')
+  const cancelRef = useRef(false)
+  const commitRename = () => {
+    if (!cancelRef.current) onRename?.(draft.trim() || null)
+    cancelRef.current = false
+    setRenaming(false)
+  }
   return (
     <div className="kol-layer-stack-line group">
       <Chevron IconC={IconC} collapsed={collapsed} onToggle={onToggleCollapse} title={collapsed ? 'Expand layers' : 'Collapse layers'} />
       <div className={`kol-layer-stack-row${active ? ' is-active' : ''}`} data-layer-id="canvas">
-        <button type="button" onClick={onSelect} className="kol-layer-stack-main">
-          <span className="kol-layer-stack-icon" aria-hidden="true">
-            <IconC name="maximize" size={14} />
+        {renaming ? (
+          <span className="kol-layer-stack-main">
+            <span className="kol-layer-stack-icon" aria-hidden="true">
+              <IconC name="maximize" size={14} />
+            </span>
+            <Input
+              variant="ghost"
+              size="sm"
+              width="100%"
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              onBlur={commitRename}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') e.currentTarget.blur()
+                else if (e.key === 'Escape') { cancelRef.current = true; e.currentTarget.blur() }
+              }}
+              autoFocus
+              placeholder="Canvas"
+              inputClassName="kol-helper-12 text-emphasis"
+            />
           </span>
-          {/* helper-12 like every layer row — mono-12 read heavier than the stack */}
-          <span className="kol-helper-12 truncate flex-1 text-left">Canvas</span>
-        </button>
+        ) : (
+          <button type="button" onClick={onSelect} onDoubleClick={onRename ? () => { setDraft(name ?? ''); setRenaming(true) } : undefined} className="kol-layer-stack-main">
+            <span className="kol-layer-stack-icon" aria-hidden="true">
+              <IconC name="maximize" size={14} />
+            </span>
+            {/* helper-12 like every layer row — mono-12 read heavier than the stack */}
+            <span className="kol-helper-12 truncate flex-1 text-left">{name || 'Canvas'}</span>
+          </button>
+        )}
       </div>
     </div>
   )
@@ -252,6 +285,8 @@ function CanvasRow({ IconC, active, collapsed, onToggleCollapse, onSelect }) {
  * @param {Function} onToggleVisible - `(id) => void`
  * @param {Function} onToggleLocked - `(id) => void`
  * @param {Function} onRename - `(id, name|null) => void` — null clears the name
+ * @param {string} [canvasName] - The frame's name on the root row (default "Canvas")
+ * @param {Function} [onRenameCanvas] - `(name|null) => void` — double-click on the root row renames the frame; omit and it does not rename
  * @param {Function} onReorder - `(id, parentId|null, index) => void` — see THE DRAG
  * @param {Function} onGroup - `(ids) => void` — the footer's Group action over a multi-selection; omit to hide it
  * @param {Function} [labelFor] - `(layer) => string` (default: the engine's `rowLabelForLayer`)
@@ -270,6 +305,8 @@ export default function LayerStack({
   onToggleVisible,
   onToggleLocked,
   onRename,
+  canvasName,
+  onRenameCanvas,
   onReorder,
   onGroup,
   labelFor = rowLabelForLayer,
@@ -423,6 +460,8 @@ export default function LayerStack({
             collapsed={canvasCollapsed}
             onToggleCollapse={() => setCanvasCollapsed((v) => !v)}
             onSelect={() => onSelectCanvas?.()}
+            name={canvasName}
+            onRename={onRenameCanvas}
           />
         </li>
         {!canvasCollapsed && [...layers].reverse().map((layer) => (

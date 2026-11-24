@@ -29,6 +29,8 @@ export const GENERATIVE_TREE = [
   /* the effects intake (plan 37 W6): the field-core loops, and the letter-gap type study */
   { label: 'Flow',          groups: ['flow'] },
   { label: 'Letter Gap',    groups: ['lettergap'] },
+  /* the generator's Line Swell family, still (W29.2) */
+  { label: 'Line Swell',    groups: ['lineswell'] },
   { label: 'Drift',         groups: ['drift'] },
   { label: 'Gradients',     groups: ['gradients'] },
   { label: 'Soft Forms',    groups: ['softforms'] },

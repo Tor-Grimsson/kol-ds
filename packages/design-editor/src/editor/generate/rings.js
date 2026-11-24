@@ -1,6 +1,6 @@
 /* The outline a generate layer borrows as its mask (plan 52 W4), in ART-BOX units ([0,1]², y down):
  *
- *  - LETTER (4.1): a character in a Right Grotesk cut, its opentype outline fitted into the art box.
+ *  - LETTER (4.1): a character in an outline family at a weight, its opentype outline fitted into the art box.
  *  - LINKED LAYER (4.2, and Tools › Generate applied to a selection): another layer's outline — a shape,
  *    a path, a Paratype letter — read LIVE: the memo keys on the source layer object, and the compose
  *    store replaces that object on every edit, so the mask re-renders in the same commit as the source.
@@ -16,6 +16,7 @@ import { pathD } from '../compose/path-math'
 import { loadFont } from '../modes/type/fontLoader'
 import { flattenD, ringsBounds } from '../../generate/path.js'
 import { artBox } from '../../generate/index.js'
+import { letterFamily } from '../../generate/field.js'
 import { glyphPlacements } from '../../loops/paratype/specimen.js'
 import { PARATYPE_DEFAULTS } from '../../generate/glyphs.js'
 
@@ -59,18 +60,18 @@ export function fitRings(rings, gen, fit = 0.9) {
   return rings.map((r) => r.map(([x, y]) => [(b.w / 2 + (x - g.x - g.w / 2) * s) / b.w, (b.h / 2 + (y - g.y - g.h / 2) * s) / b.h]))
 }
 
-/* a letter's outline in font px (y down), or null while the cut loads */
-export async function letterRings(ch, cut = 'base', weight = 700) {
-  const font = await loadFont(cut, weight, false)
+/* a letter's outline in font px (y down), or null while the font loads: an outline family at a weight on its axis */
+export async function letterRings(ch, family = 'inter', weight = 700) {
+  const font = await loadFont(family, weight, false)
   return flattenD(font.getPath(ch || 'A', 0, 0, 1000).toPathData(2), 8)
 }
 
 export function useGenerateRings(layer) {
   const { layers } = useComposeState()
   const kind = layer.mKind
-  /* LETTER — async: the cut loads once (fontLoader caches the promise) */
+  /* LETTER — async: the font loads once (fontLoader caches the promise); an old layer's `mCut` reads as Inter */
   const [glyph, setGlyph] = useState(null)
-  const ch = layer.mChar, cut = layer.mCut, wt = layer.mWeight
+  const ch = layer.mChar, cut = letterFamily(layer), wt = layer.mWeight
   useEffect(() => {
     if (kind !== 'letter') return undefined
     let live = true

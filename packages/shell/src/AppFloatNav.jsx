@@ -1,10 +1,12 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Button, TabsRow, Tooltip, TABBAR_H, TABBAR_PILL_H, TABBAR_PILL_INSET, tabbarPillWidth, tabbarPillSlot, floatSurfaceClass, usePopover, PopoverPanel, useMediaQuery } from '@kolkrabbi/kol-component'
-import { hasIcon } from '@kolkrabbi/kol-icons'
-import MoreRows, { FloatMenu } from './MoreSheet.jsx'
+import { hasIcon, IconLoader } from '@kolkrabbi/kol-icons'
+import { MenuFloatRows, MenuFloat } from '@kolkrabbi/kol-component'
 import Timecode from './Timecode.jsx'
+import ToolRail, { ToolRailSlot } from './ToolRail.jsx'
+import { Input, Menu } from '@kolkrabbi/kol-component'
 
-/* taxonomy-ok: molecule — TabsRow's pill + MoreRows sheets of Buttons */
+/* taxonomy-ok: molecule — TabsRow's pill + MenuFloatRows sheets of Buttons */
 
 /**
  * AppFloatNav — The floating nav, one family. (AppFloatNav, kol-fxr 2026-10-30 — the user's name, canvas Round 3's board:
@@ -78,7 +80,7 @@ import Timecode from './Timecode.jsx'
  *                              routing (fxr: Randomiser → Generate, Effects); lit while they are open. A row without
  *                              `onPress` routes to its `path`
  * NESTED LEVELS (FloatsOwnItems, kol-fxr 2026-10-31): a sub row with its own `sub` opens a level, the same row shape to any
- * depth — `sub`, the More's `actions` and the transport's `sheetFor` rows alike (MoreSheet's `FloatMenu`). On the `dock` a
+ * depth — `sub`, the More's `actions` and the transport's `sheetFor` rows alike (MenuFloat). On the `dock` a
  * level opens BESIDE its row (the + menu's popover); on every phone variant it REPLACES the card's rows under a Back row. A
  * leaf runs and closes every level; Escape and an outside press close all; ↑ ↓ move, → / Enter open a level, ← goes back one.
  * Its menus are the floating style B (`variant="float"` on the rows, `.kol-more-sheet-float`) — the board's.
@@ -112,6 +114,8 @@ const activePath = (items, path) => items
   .sort((a, b) => b.path.length - a.path.length)[0]?.path
 
 export default function AppFloatNav(props) {
+  if (props.variant === 'folio') return <TransportFolio {...props} />
+  if (props.variant === 'kolbox') return props.transport ? <TransportKolbox {...props} /> : <PhoneNavKolbox {...props} />
   return props.variant === 'transport' ? <Transport {...props} /> : <FloatNav {...props} />
 }
 
@@ -130,7 +134,7 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
   const [moreEl, setMoreEl] = useState(null)
   const findMore = useCallback((n) => setMoreEl(n?.querySelector('button[aria-label="More"]') ?? null), [])
   /* offset: 12 off the pill — the slot sits 4 inside it; crossAxis drops the card's bottom to the pill's */
-  /* an outside press closes it — except one on a nested level, which hangs beside it in its own portal (FloatMenu) */
+  /* an outside press closes it — except one on a nested level, which hangs beside it in its own portal (MenuFloat) */
   const morePop = usePopover({ open: dock && open, onOpenChange: setOpen, placement: 'right-end', offset: { mainAxis: 16, crossAxis: 4 }, click: false, referenceElement: moreEl, dismiss: { outsidePress: (e) => !e.target?.closest?.('.kol-float-level') } })
   /* the row whose `sub` rows are open */
   const [sub, setSub] = useState(null)
@@ -216,9 +220,9 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
       )}
       {sub && (
         <div className={`kol-phone-nav-more ${card}`} role="menu" aria-label={inBar.find((i) => key(i) === sub)?.label} style={overSlot(inBar.findIndex((i) => key(i) === sub))}>
-          <FloatMenu beside={dock} cardClass={card} onLeaf={pickSub}>
-            <MoreRows variant="float" actions={inBar.find((i) => key(i) === sub)?.sub} onPick={pickSub} />
-          </FloatMenu>
+          <MenuFloat beside={dock} cardClass={card} onLeaf={pickSub} title={inBar.find((i) => key(i) === sub)?.label}>
+            <MenuFloatRows variant="float" actions={inBar.find((i) => key(i) === sub)?.sub} onPick={pickSub} />
+          </MenuFloat>
         </div>
       )}
       {open && !dock && (
@@ -229,18 +233,18 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
       {open && !dock && (
         <div className={`kol-phone-nav-more ${card}`} role="menu" aria-label="More" style={sheetStyle}>
           {/* the nav, the page's actions, then the pinned foot (frame A2) */}
-          <FloatMenu cardClass={card} onLeaf={pickMoreLeaf}>
-          <MoreRows variant="float" actions={actions} items={before} itemsFirst active={active} onPick={(x) => { setOpen(false); if (x.onPress && !actions.includes(x)) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />
-          {after.length > 0 && <MoreRows variant="float" items={after} active={active} onPick={(x) => { setOpen(false); if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />}
-          </FloatMenu>
+          <MenuFloat cardClass={card} onLeaf={pickMoreLeaf} title="More">
+          <MenuFloatRows variant="float" actions={actions} items={before} itemsFirst active={active} onPick={(x) => { setOpen(false); if (x.onPress && !actions.includes(x)) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />
+          {after.length > 0 && <MenuFloatRows variant="float" items={after} active={active} onPick={(x) => { setOpen(false); if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />}
+          </MenuFloat>
         </div>
       )}
       {dock && (
         <PopoverPanel popover={morePop} panel={false} focus={false} className={card} style={{ minWidth: 220, maxWidth: 'calc(100vw - 24px)' }}>
-          <FloatMenu beside cardClass={card} onLeaf={pickMoreLeaf}>
-          <MoreRows variant="float" actions={actions} items={before} itemsFirst active={active} onPick={(x) => { setOpen(false); if (x.onPress && !actions.includes(x)) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />
-          {after.length > 0 && <MoreRows variant="float" items={after} active={active} onPick={(x) => { setOpen(false); if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />}
-          </FloatMenu>
+          <MenuFloat beside cardClass={card} onLeaf={pickMoreLeaf} title="More">
+          <MenuFloatRows variant="float" actions={actions} items={before} itemsFirst active={active} onPick={(x) => { setOpen(false); if (x.onPress && !actions.includes(x)) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />
+          {after.length > 0 && <MenuFloatRows variant="float" items={after} active={active} onPick={(x) => { setOpen(false); if (x.onPress) { x.onPress(); return } if (x.path) onNavigate?.(x.path) }} />}
+          </MenuFloat>
         </PopoverPanel>
       )}
       {/* `contents` — no box; it only hands the ··· slot to the popover */}
@@ -284,10 +288,17 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
  *
  * @param {Array}  items         `[{ id, icon, label, onPress?, selected? }]` in pill order
  * @param {Object} sheetFor      `{ [id]: [{ label, icon?, onPress, checked?, sub? }] }` — rows for a slot that opens a sheet;
- *                               `checked` marks the current pick with the 22px check (MoreRows); `sub` opens a level in place
+ *                               `checked` marks the current pick with the 22px check (MenuFloatRows); `sub` opens a level in place
  * @param {'bottom'|'top'} placement  the pill's edge (default bottom)
- * @param {boolean} foldable     a sideways swipe folds it into the right edge tab
- * @param {boolean} folded · {Function} onFoldChange  the folded state, controlled (else the pill holds it)
+ * @param {boolean} collapsibleH collapse-h (plan-2026-11-12-one-header W11; was `foldable`, aliased): the pill — a sideways swipe
+ *                              folds it into the right edge tab; the inline capsule — it collapses to its LAST item (the
+ *                              play/pause, one button in both states) + the timecode + any item that is lit (Loop on); ONE
+ *                              regular 12 chevron (`--kol-float-chev-sm`, oq-64) directly left of the play/pause, Figma-style:
+ *                              ‹ collapsed, › expanded; the other items open to its left, so the play/pause and the right
+ *                              edge never move. It starts collapsed (`defaultCollapsedH`, default true) and remembers the
+ *                              choice (localStorage `kol-float-transport:collapsed-h`)
+ * @param {boolean} collapsedH · {Function} onCollapseH  the collapsed state, controlled (else the transport holds it);
+ *                              `folded` · `onFoldChange` are their deprecated aliases
  * @param {Object|string} timecode  THE TIMECODE (float-everything W5 rows 69 · 70, 2026-11-04): `{ current, total? }` (or the
  *                               current alone) drawn by `Timecode` INSIDE the pill, after the slots — TabsRow's `trailing`
  *                               (kol-component ≥0.335.0); the slots stay where a pill without it puts them. Unset, no readout
@@ -298,8 +309,21 @@ function FloatNav({ items = [], currentPath = '/', onNavigate, actions = [], sha
  *                               12 above the slot. Below md it is the phone pill as before. Default false — the pill everywhere
  * @param {string} className     the inline capsule's (ignored by the pill)
  */
-function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable = false, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false, foldSide = 'right', foldTone, timecode, inline = false, className = '' }) {
+const COLLAPSED_H_KEY = 'kol-float-transport:collapsed-h'
+
+function Transport({ items = [], sheetFor = {}, placement = 'bottom', collapsibleH, collapsedH, defaultCollapsedH = true, onCollapseH, foldable, folded, onFoldChange, menuBorder = false, surface = 'solid', labels = false, foldSide = 'right', foldTone, timecode, inline = false, className = '' }) {
   const [sheet, setSheet] = useState(null)
+  const canH = collapsibleH ?? foldable ?? false
+  const ctlH = collapsedH ?? folded
+  const onH = onCollapseH ?? onFoldChange
+  const [ownH, setOwnH] = useState(() => { try { const v = localStorage.getItem(COLLAPSED_H_KEY); return v == null ? defaultCollapsedH : v === '1' } catch { return defaultCollapsedH } })
+  const isH = canH && (ctlH ?? ownH)
+  const toggleH = () => {
+    const next = !isH
+    if (next) setSheet(null)
+    if (ctlH === undefined) { setOwnH(next); try { localStorage.setItem(COLLAPSED_H_KEY, next ? '1' : '0') } catch { /* private window: kept for this visit */ } }
+    onH?.(next)
+  }
   useEffect(() => {
     if (!sheet) return undefined
     const onKey = (e) => { if (e.key === 'Escape') setSheet(null) }
@@ -336,23 +360,37 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
   const phone = useMediaQuery('(max-width: 767px)')
 
   if (inline && !phone) {
-    /* the desktop capsule — ToolRail's slots laid in a row; the sheet sits over its slot (6 in + 40 a slot + 18 its centre) */
-    const capsuleSheet = { position: 'absolute', left: 6 + at * 40 + 18, right: 'auto', transform: 'translateX(-50%)', [top ? 'top' : 'bottom']: 'calc(100% + 12px)', width: 'max-content', minWidth: 160 }
+    /* collapse-h: the extras, the chevron, the play/pause (the last item); collapsed, only a lit extra stays */
+    const main = canH ? tabs[tabs.length - 1] : null
+    const shown = canH ? tabs.slice(0, -1).filter((t) => !isH || t.selected) : tabs
+    const slot = (t) => (
+      <Tooltip key={t.value} variant="float" placement={top ? 'bottom' : 'top'} offset={12} label={t.label}>
+        <Button variant="float" tone="ghost" iconOnly={t.icon} aria-label={t.label} pressed={t.selected} onClick={() => press(t.value)} />
+      </Tooltip>
+    )
+    /* the desktop capsule — ToolRail's slots laid in a row; the sheet sits over its slot (6 in + 40 a slot + 18 its centre,
+       + the chevron's 16 + 4 for the play/pause) */
+    const order = main ? [...shown, main] : shown
+    const slotAt = order.findIndex((t) => t.value === sheet)
+    const capsuleSheet = { position: 'absolute', left: 6 + slotAt * 40 + 18 + (main && sheet === main.value ? 20 : 0), right: 'auto', transform: 'translateX(-50%)', [top ? 'top' : 'bottom']: 'calc(100% + 12px)', width: 'max-content', minWidth: 160 }
     return (
       <div role="toolbar" aria-label="Transport" className={`kol-transport-capsule kol-float-chrome relative inline-flex items-center gap-1 p-1.5 rounded-full ${floatSurfaceClass(surface)} ${className}`.trim()}>
         {sheet && <button type="button" aria-label="Close" className="kol-phone-nav-scrim" onClick={() => setSheet(null)} />}
         {sheet && (
           <div className={`kol-phone-nav-more kol-more-sheet kol-more-sheet-float ${floatSurfaceClass(surface, true)}${menuBorder ? ' kol-more-sheet-bordered' : ''}`} role="menu" aria-label={items[at]?.label} style={capsuleSheet}>
-            <FloatMenu onLeaf={() => setSheet(null)}>
-              <MoreRows variant="float" actions={sheetFor[sheet]} onPick={() => setSheet(null)} />
-            </FloatMenu>
+            <MenuFloat onLeaf={() => setSheet(null)} title={items[at]?.label}>
+              <MenuFloatRows variant="float" actions={sheetFor[sheet]} onPick={() => setSheet(null)} />
+            </MenuFloat>
           </div>
         )}
-        {tabs.map((t) => (
-          <Tooltip key={t.value} variant="float" placement={top ? 'bottom' : 'top'} offset={12} label={t.label}>
-            <Button variant="float" tone="ghost" iconOnly={t.icon} aria-label={t.label} pressed={t.selected} onClick={() => press(t.value)} />
-          </Tooltip>
-        ))}
+        {shown.map(slot)}
+        {main && (
+          <button type="button" aria-label={isH ? 'Show transport controls' : 'Hide transport controls'} aria-expanded={!isH} onClick={toggleH} data-collapse-h=""
+            className="inline-flex h-9 w-4 shrink-0 items-center justify-center rounded-full text-oq-64 hover:text-oq-96 cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
+            <IconLoader name={isH ? 'chevron-left' : 'chevron-right'} size="var(--kol-float-chev-sm)" />
+          </button>
+        )}
+        {main && slot(main)}
         {tc && <Timecode {...tc} className="px-3" />}
       </div>
     )
@@ -366,9 +404,9 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
       )}
       {sheet && (
         <div className={`kol-phone-nav-more kol-more-sheet kol-more-sheet-float ${floatSurfaceClass(surface, true)}${menuBorder ? ' kol-more-sheet-bordered' : ''}`} role="menu" aria-label={items[at]?.label} style={sheetStyle}>
-          <FloatMenu onLeaf={() => setSheet(null)}>
-            <MoreRows variant="float" actions={sheetFor[sheet]} onPick={() => setSheet(null)} />
-          </FloatMenu>
+          <MenuFloat onLeaf={() => setSheet(null)} title={items[at]?.label}>
+            <MenuFloatRows variant="float" actions={sheetFor[sheet]} onPick={() => setSheet(null)} />
+          </MenuFloat>
         </div>
       )}
       <TabsRow
@@ -382,9 +420,9 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
         active={APP_FLOAT_NAV_VARIANTS.transport.active}
         surface={surface}
         labels={labels}
-        foldable={foldable}
-        folded={folded}
-        onFoldChange={(v) => { if (v) setSheet(null); onFoldChange?.(v) }}
+        foldable={canH}
+        folded={ctlH}
+        onFoldChange={(v) => { if (v) setSheet(null); onH?.(v) }}
         foldSide={foldSide}
         foldTone={foldTone}
         ariaLabel="Transport"
@@ -393,5 +431,120 @@ function Transport({ items = [], sheetFor = {}, placement = 'bottom', foldable =
         onChange={press}
       />
     </>
+  )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * `variant="kolbox"`: kolbox's floating nav, both of its members (TransportPill and PhoneNav are this component's
+ * aliases, so both kolbox twins land here). `transport` — kolbox's ToolbarTransport; unset — kolbox's RailPhone. */
+
+/* THE TRANSPORT (Figma plan 19.1, W15, W20.1), carried from apps/kolbox/src/ui/ToolbarTransport.jsx: on ToolRail kolbox's
+ * shell, Play and Pause each a slot with the current state lit, Rewind, Stop and the time; after a rule, Loop and its
+ * length ("Loop / 4 s", the length's words as the field's prefix, on one line, the value hugging its text), the
+ * Timeline slot (`onTimeline`, lit while `timeline` is up) and `more` (further slots). The length commits on Enter or
+ * blur; a unit is part of the value. kolbox's words, no twin in the default transport's props: playing, time, loop,
+ * loopLength, timeline, onPlay(on), onRewind, onStop, onLoop(on), onLoopLength(seconds), onTimeline, more. */
+function TransportKolbox({ playing = false, time = 0, loop = false, loopLength = 4, timeline = false, onPlay, onRewind, onStop, onLoop, onLoopLength, onTimeline, more, className = '' }) {
+  const length = `${loopLength} s`
+  const commit = (e) => {
+    const n = parseFloat(e.target.value)
+    if (n > 0) onLoopLength?.(n)
+    else e.target.value = length
+  }
+  return (
+    <ToolRail
+      variant="kolbox"
+      className={`kol-transport--kolbox ${className}`.trim()}
+      end={
+        <>
+          <ToolRailSlot icon="repeat" label="Loop" lit={loop} onClick={() => onLoop?.(!loop)} />
+          <Input variant="kolbox"
+            key={length}
+            prefix="Loop /"
+            aria-label="Loop length in seconds"
+            defaultValue={length}
+            onBlur={commit}
+            onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+            hug
+            className="[&>span:first-child]:w-auto [&>span:first-child]:whitespace-nowrap"
+          />
+          {onTimeline && <ToolRailSlot icon="panel-bottom" label="Timeline" lit={timeline} onClick={onTimeline} />}
+          {more}
+        </>
+      }
+    >
+      <ToolRailSlot icon="play" label="Play" lit={playing} onClick={() => onPlay?.(true)} />
+      <ToolRailSlot icon="pause" label="Pause" lit={!playing} onClick={() => onPlay?.(false)} />
+      <ToolRailSlot icon="rewind" label="Rewind" onClick={onRewind} />
+      <ToolRailSlot icon="stop" label="Stop" onClick={onStop} />
+      <span className="kol-transport-time w-16 px-2 tabular-nums">{time.toFixed(2)} s</span>
+    </ToolRail>
+  )
+}
+
+/* ── folio (Folio migration batch D, 2026-11-22) ──────────────────────────────────────────────────────────────────────
+ * `variant="folio" transport`: Folio's ToolTransport, carried from apps/folio's EditorChrome.jsx (Folio has no phone
+ * nav, so the transport is the look's one member). Play (Pause while playing, lit), Stop and Loop (lit while on), each a
+ * 32 square with a 20 glyph, 4 apart, then the time and its total. Words: `timecode` `{ current, total }` (the default
+ * transport's; Folio's `time` and `total`); kolbox's `playing`, `onPlay(on)`, `onStop`, `loop`, `onLoop(on)`. The slots
+ * are `Button variant="folio" iconOnly` (Folio's ToolIcon, batch A). */
+function TransportFolio({ playing = false, onPlay, onStop, loop = false, onLoop, timecode, className = '' }) {
+  const tc = timecode == null ? {} : typeof timecode === 'string' ? { current: timecode } : timecode
+  return (
+    <span role="group" aria-label="Transport" className={`kol-transport--folio flex shrink-0 items-center gap-[4px] ${className}`.trim()}>
+      <Button variant="folio" iconOnly={playing ? 'pause' : 'play'} aria-label={playing ? 'Pause' : 'Play'} pressed={playing} onClick={() => onPlay?.(!playing)} />
+      <Button variant="folio" iconOnly="stop" aria-label="Stop" onClick={onStop} />
+      <Button variant="folio" iconOnly="repeat" aria-label="Loop" pressed={loop} onClick={() => onLoop?.(!loop)} />
+      <span className="kol-transport-time whitespace-pre px-[8px] tabular-nums">{tc.current}{tc.total != null && <span className="kol-transport-total">{` / ${tc.total}`}</span>}</span>
+    </span>
+  )
+}
+
+/* THE PHONE NAV (round 4, W15), carried from apps/kolbox/src/ui/RailPhone.jsx: the real hub's phone nav in kolbox's
+ * look. AppFloatNav's words: `items` [{ path, icon, label, onPress }] in rail order (the app's rows; kolbox's `run` is
+ * `onPress`), `currentPath`. More than five, so the first four sit in the pill and the fifth slot is More; More is the
+ * whole nav, titled "More", the current page lit; while it is open the pill gives way (its place kept) and More turns to
+ * its × ("Close"); a pick or a press off it closes it. The active slot is the current page's (a page reached through More
+ * lights More). Geometry: 66 high, 56 slots 4 apart, 28 glyphs, More its own 66 circle 8 off the pill, 16 off the
+ * window's foot. */
+const KOLBOX_IN_BAR = 4
+const kolboxAt = (row, path) => path === row.path || path.startsWith(`${row.path}/`)
+const SlotKolbox = ({ icon, label, lit, onClick, round = false, refEl }) => (
+  <Tooltip variant="kolbox" label={label}>
+    <button
+      ref={refEl}
+      type="button"
+      aria-label={label}
+      aria-current={lit || undefined}
+      onClick={onClick}
+      className={`kol-phone-nav-slot${lit ? ' is-lit' : ''}${round ? ' is-round size-[66px]' : ' size-14'} inline-flex shrink-0 items-center justify-center rounded-full outline-none focus-visible:outline-solid focus-visible:outline-1`}
+    >
+      <IconLoader name={icon} size={28} className="kol-kolbox-icon shrink-0" />
+    </button>
+  </Tooltip>
+)
+
+function PhoneNavKolbox({ items = [], currentPath = '/' }) {
+  const [open, setOpen] = useState(false)
+  const moreRef = useRef(null)
+  const active = items.find((r) => kolboxAt(r, currentPath))
+  const inBar = items.slice(0, KOLBOX_IN_BAR)
+  const litMore = open || (active && !inBar.includes(active))
+  return (
+    <nav aria-label="Pages" className="kol-phone-nav--kolbox pointer-events-none fixed inset-x-0 bottom-4 z-40 flex items-center justify-center gap-2 pb-[env(safe-area-inset-bottom)] *:pointer-events-auto" data-rail-phone>
+      <div className={`kol-phone-nav-pill flex h-[66px] items-center gap-1 rounded-full p-[5px] ${open ? 'invisible' : ''}`} data-rail-phone-pill>
+        {inBar.map((r) => <SlotKolbox key={r.path} icon={r.icon} label={r.label} lit={r === active} onClick={r.onPress} />)}
+      </div>
+      <SlotKolbox round icon={open ? 'x' : 'more'} label={open ? 'Close' : 'More'} lit={litMore} onClick={() => setOpen((o) => !o)} refEl={moreRef} />
+      <Menu variant="kolbox"
+        aria-label="More"
+        anchor={moreRef}
+        open={open}
+        placement="left-start"
+        onClose={() => setOpen(false)}
+        onSelect={(row) => row.run?.()}
+        groups={[{ title: 'More', rows: items.map((r) => ({ label: r.label, icon: r.icon, highlighted: r === active, run: r.onPress })) }]}
+      />
+    </nav>
   )
 }

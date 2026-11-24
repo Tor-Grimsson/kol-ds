@@ -3,7 +3,7 @@ import { SettingsSections } from '@kolkrabbi/kol-component'
 import { LAYOUT_COMPONENTS, COMBO_LAYOUTS } from './comboLayouts.jsx'
 import { COMBO_ROLES, DEFAULT_COMBO_LAB, comboLab, comboLabCss } from './comboLab.js'
 import { colorLab } from './colorLab.js'
-import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.jsx'
+import ModalLab, { CopyAction, LabHistory, useLabValue } from './lab/ModalLab.jsx'
 
 /* taxonomy-ok: organism — the combination lab in the lab window: layout, mark and parts in the rail, the layout on the stage */
 
@@ -56,7 +56,7 @@ export default function ComboLab({ color, value: valueProp, onChange, logo, clas
   ]
 
   return (
-    <LabWindow
+    <ModalLab
       className={className}
       title="Combo Lab"
       tabs={tabs}
@@ -81,6 +81,6 @@ export default function ComboLab({ color, value: valueProp, onChange, logo, clas
           <Layout palette={combo.palette} logo={combo.logo ? (logo ?? PLAIN_MARK) : null} />
         </div>
       </div>
-    </LabWindow>
+    </ModalLab>
   )
 }

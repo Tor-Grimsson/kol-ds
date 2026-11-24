@@ -78,7 +78,7 @@ export default function OptionRow({
   const lead = leading ?? (icon && <IconLoader name={icon} size={glyphSize(size)} />)
   return (
     <Tag
-      className={`flex items-center gap-2 px-4 border border-transparent ${ROW_HEIGHT[size] ?? ROW_HEIGHT.md} rounded-[var(--kol-radius-sm)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} text-left ${type ?? ROW_TYPE[size] ?? ROW_TYPE.md} transition-colors ${state} ${className}`.trim()}
+      className={`flex items-center gap-2 px-4 border border-transparent ${ROW_HEIGHT[size] ?? ROW_HEIGHT.md} rounded-[var(--kol-radius-4)] ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'} text-left ${type ?? ROW_TYPE[size] ?? ROW_TYPE.md} transition-colors ${state} ${className}`.trim()}
       {...rest}
     >
       {/* the glyph takes the row's ink when selected — a grey mark on a white fill reads as a hole */}

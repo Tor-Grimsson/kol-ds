@@ -1,5 +1,5 @@
 // url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1035-26021
-// source=packages/component/src/molecules/SettingsControls.jsx
+// source=packages/component/src/organisms/SettingsPanel.jsx
 // component=SettingsGroup
 import figma from 'figma'
 

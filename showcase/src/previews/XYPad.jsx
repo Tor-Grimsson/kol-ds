@@ -2,15 +2,17 @@ import { useState } from 'react'
 import { XYPad } from '@kolkrabbi/kol-component'
 
 export const stage = 'sm'
+export const variants = ['default', 'kolbox']
 
 /* Two axes, one puck — the variable-font explore pad from fxr's type surface,
  * lifted as-is (editor-panels-the-held-specs A6). Ranges and meaning are the
  * caller's; the pad only maps pointer to values and back. Top is high. */
-export default function XYPadPreview() {
+export default function XYPadPreview({ variant = 'default' }) {
   const [v, setV] = useState({ x: 100, y: 500 })
   return (
     <div className="flex w-56 flex-col gap-2">
       <XYPad
+        variant={variant}
         xValue={v.x} yValue={v.y}
         xMin={50} xMax={200}
         yMin={100} yMax={900}

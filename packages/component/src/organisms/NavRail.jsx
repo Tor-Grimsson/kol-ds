@@ -84,7 +84,7 @@ import NavRailFloat from './NavRailFloat.jsx'
  *
  * @param {'app'|'site'|'workshop'} preset  which rail (default `app`); `variant="site"` is the old spelling of `preset="site"`
  * @param {'top'|'float'} variant  `top` — the horizontal top rail (TopRail): logomark · items · `actions` (the right slot);
- *   `float` — the float sidebar, expanded 280 · collapsed 72 (NavRailFloat.jsx, float-everything W9 rows 127 · 128)
+ *   `float` — the float sidebar, expanded 264 · collapsed 72 (NavRailFloat.jsx, float-everything W9 rows 127 · 128)
  * @param {Array}  items        `{ icon, path, label, sub?: [{ icon?, path, label }] }`
  *   a section (`sub`) with `to` is a FOLDER NOTE: its icon and label open `to`, its chevron expands or enters
  * @param {Array}  bottomItems  pinned below the rule (Settings)

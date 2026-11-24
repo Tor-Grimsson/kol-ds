@@ -141,7 +141,7 @@ const VIEW_OPTIONS = [
 
 const LAYOUT_OPTIONS = [
   { value: 'grid', label: 'Grid', icon: 'grid' },
-  { value: 'list', label: 'List', icon: 'view-list' },
+  { value: 'list', label: 'List', icon: 'list-bullet' },
   { value: 'off', label: 'Off', icon: 'eye-off' },
 ]
 /* the stack view the `···` switches (item 15) — the same two ColumnBrowser

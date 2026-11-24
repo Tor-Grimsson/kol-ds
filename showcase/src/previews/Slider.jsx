@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Slider } from '@kolkrabbi/kol-component'
+import { LabeledControl, Slider } from '@kolkrabbi/kol-component'
 
 export const stage = 'md'
 
@@ -10,7 +10,7 @@ export const stage = 'md'
  * (SliderDualThumbAndPlayhead, kol-mirror) — a mixer running 23 faders in a
  * 24px row is why `readout="value"` exists, and an in/out trim pair is why
  * `variant="dual"` does. */
-export const variants = ['minimal', 'vertical', 'scrub', 'dual', 'panel', 'float']
+export const variants = ['minimal', 'vertical', 'scrub', 'dual', 'panel', 'float', 'kolbox', 'folio']
 
 export default function SliderPreview({ variant = 'minimal' }) {
   const [v, setV] = useState(40)
@@ -81,11 +81,18 @@ export default function SliderPreview({ variant = 'minimal' }) {
         onPlayheadChange={setHead}
       />
       </>)}
+      {/* kolbox (W31.2 batch 3): the bare track with its value, and the track in a field with the number beside it */}
+      {variant === 'kolbox' && (<>
+        <Slider variant="kolbox" aria-label="Scale" value={v} onChange={setV} className="w-48" />
+        <Slider variant="kolbox" readout="input" aria-label="Density" value={v} onChange={setV} className="w-48" />
+      </>)}
+      {/* folio (Folio batch A, 2026-11-22): the track with its value, on Folio's paper */}
+      {variant === 'folio' && <div data-folio-theme="light" className="w-56 rounded bg-[var(--kol-folio-paper)] p-4 text-[var(--kol-folio-ink)]"><Slider variant="folio" aria-label="Radius" value={v} onChange={setV} /></div>}
       {variant === 'float' && (
-        /* float (float-everything W2 row 23) — label and readout above, the 3px capsule track under them */
+        /* float (float-everything W2 row 23) — track and thumb only; the label and readout are LabeledControl's */
         <div className="flex w-56 flex-col gap-6">
-          <Slider variant="float" label="Intensity" value={v} onChange={setV} readout="value" formatValue={(n) => `${Math.round(n)}%`} />
-          <Slider variant="float" label="Disabled" value={65} onChange={() => {}} readout="value" formatValue={(n) => `${n}%`} disabled />
+          <LabeledControl variant="float" label="Intensity" hint={`${Math.round(v)}%`}><Slider variant="float" aria-label="Intensity" value={v} onChange={setV} /></LabeledControl>
+          <LabeledControl variant="float" label="Disabled" hint="65%" className="opacity-40"><Slider variant="float" aria-label="Disabled" value={65} onChange={() => {}} disabled /></LabeledControl>
         </div>
       )}
       {variant === 'panel' && (

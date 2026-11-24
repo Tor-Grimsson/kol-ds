@@ -34,7 +34,7 @@ import { floatSurfaceClass } from '../utilities/tone.js'
  *   keeps one line that scrolls sideways with no scrollbar, `.kol-scroll-fade--x` fading the clipped edge(s), and the
  *   active tab scrolled into view when it changes — arrow keys included; `wrap` breaks the tabs onto a second line.
  *   Every variant but `stacked`, which has its phone bar
- * @param {'underline'|'chip'|'text'|'stacked'|'float'} [variant='underline']  `float` (W16, round 3): `chip`'s row as the floating
+ * @param {'underline'|'chip'|'text'|'stacked'|'float'|'kolbox'} [variant='underline']  `kolbox` (W31.2 batch 3): kolbox's tab track, see `TabsKolbox` below; takes `tabs`, `value`, `onChange`, `size` (sm, md) and `className` only.  `float` (W16, round 3): `chip`'s row as the floating
  *        style's capsules — float heights (28/36/44, touch 36/44/52), 4 apart, the selected one oq-16
  * @param {string} [look]  @deprecated 2026-10-30 — the old spelling of `variant`; `variant` wins when both are passed
  * @param {'mono'|'sans'|'mono-light'} [type='mono']  `underline` only: the tab's type — `mono-light` is `sans`'s row on JetBrains Mono at 300 (his word, 2026-10-30)
@@ -94,6 +94,39 @@ import { floatSurfaceClass } from '../utilities/tone.js'
  * Tabs are `{ id, label }` or `{ value, label }` (either key), plus `icon` for stacked; a stacked tab's `selected`
  * lights it whatever `value` is — action slots (the transport) light more than one.
  */
+/* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's Tabs carried class for class,
+ * chrome in kol-theme `.kol-tabs--kolbox`. `size` sm (its default) the tab track: the kolbox control height (`--kol-kolbox-ctl`, 24) on the oq-16 field, radius 6,
+ * 2 in, the tabs 1 apart at radius 4, 12 in, the current one oq-24 in the ink; md the top rail's mode track: 32 on the
+ * ground (24 tabs, as every control; 36 until 2026-11-19, plan-2026-11-19 C9.1), radius 8, 4 in, the tabs touching, 8 in, the current one oq-16 with the accent label. Inter 12 / 16 / 500, the
+ * rest oq-64, the ink on hover. Tabs are strings or `{ value, label, disabled, tooltip }`: a disabled tab is 40%, takes
+ * no hover or focus and shows its `tooltip` in `Tooltip variant="kolbox"` (batch 4; the `tooltipComponent` seam is gone). In a track narrower than the labels and their padding the tabs share it
+ * equally and the padding gives way. */
+function TabsKolbox({ tabs = [], value, onChange, size = 'sm', className = '' }) {
+  const md = size === 'md'
+  return (
+    <div role="tablist" className={`kol-tabs--kolbox kol-tabs--kolbox-${md ? 'md' : 'sm'} inline-flex items-center ${md ? 'h-8 p-1' : 'h-(--kol-kolbox-ctl) gap-px p-0.5'} ${className}`}>
+      {tabs.map((t) => {
+        const { value: v, label, disabled, tooltip } = typeof t === 'string' ? { value: t, label: t } : t
+        const on = v === value
+        const tab = (
+          <button
+            key={v}
+            type="button"
+            role="tab"
+            aria-selected={on}
+            disabled={disabled}
+            onClick={() => onChange?.(v)}
+            className={`kol-tabs-tab${on ? ' is-active' : ''} flex h-full min-w-0 flex-1 items-center justify-center ${md ? 'px-2' : 'px-3'} whitespace-nowrap outline-none focus-visible:outline-solid focus-visible:outline-1 disabled:opacity-40`}
+          >
+            {label}
+          </button>
+        )
+        return tooltip ? <span key={v} className="flex h-full flex-1 [&>span]:h-full [&>span]:flex-1 [&_button]:w-full">{<Tooltip variant="kolbox" label={tooltip}>{tab}</Tooltip>}</span> : tab
+      })}
+    </div>
+  )
+}
+
 export const TABBAR_H = 56
 /* the pill's height (W16, round 3 — fxr's live nav: was TABBAR_H) — a page under it owes TABBAR_PILL_H + TABBAR_PILL_INSET */
 export const TABBAR_PILL_H = 66
@@ -119,6 +152,7 @@ export const tabbarPillSlot = (at, { count, labels = false, split = false } = {}
 const COLLAPSE_MS = 300
 
 export default function TabsRow({ tabs: raw = [], value, onChange, onClose, onMinimise, variant, look: lookLegacy, type, trailing, filled = false, placement = 'inline', shape = 'bar', collapsed = false, onExpand, edge, border, shadow, dock, active, foldable, folded, onFoldChange, foldSide, foldTone, surface, split, labels, size, tracked = false, overflow = 'scroll', ariaLabel, className, style }) {
+  if (variant === 'kolbox') return <TabsKolbox tabs={raw} value={value} onChange={onChange} size={size} className={className} />
   const tabs = raw.map((t) => ({ ...t, id: t.id ?? t.value }))
   const look = variant ?? lookLegacy ?? 'underline'
   const wrap = overflow === 'wrap'

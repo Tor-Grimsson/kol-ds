@@ -21,22 +21,31 @@ export const RAMPS = {
 /* the glyph a brightness picks: ramp[floor(f · n)], clamped — brighter never picks an earlier glyph */
 export const pickChar = (ramp, f) => ramp[Math.min(ramp.length - 1, Math.max(0, Math.floor(f * ramp.length)))]
 
+/* the pixel font or an outline family (variable fonts since 2026-11-18) at `fontWeight` on its axis */
 export const ASCII_FONTS = [
   { value: 'pixel', label: 'Pixel' },
-  { value: 'rg-base-900', label: 'Right Grotesk Black' },
-  { value: 'rg-Compact-700', label: 'Right Grotesk Compact Bold' },
-  { value: 'rg-Tight-700', label: 'Right Grotesk Tight Bold' },
-  { value: 'rg-Wide-900', label: 'Right Grotesk Wide Black' },
+  { value: 'inter', label: 'Inter' },
+  { value: 'malromur', label: 'Malromur' },
 ]
+/* A layer stored on the old cut keys (`rg-<cut>-<weight>`) reads as Inter at that weight: read-time, nothing rewritten */
+const OLD_CUT = /^rg-[^-]+-(\d+)$/
+export const asciiFamily = (p) => (OLD_CUT.test(p.font ?? '') ? 'inter' : (p.font ?? 'pixel'))
+export const asciiWeight = (p) => p.fontWeight ?? Number(OLD_CUT.exec(p.font ?? '')?.[1] ?? 900)
+/* the font registry's key for a layer: 'pixel', or `<family>-<weight>` (the editor registers it: useGenerateFont) */
+export function asciiFontKey(p) {
+  const fam = asciiFamily(p)
+  return ASCII_FONTS.some((f) => f.value === fam) && fam !== 'pixel' ? `${fam}-${asciiWeight(p)}` : 'pixel'
+}
 
 export default {
   id: 'ascii',
   label: 'ASCII',
   about: 'ASCII — a character grid; each cell’s glyph is picked from a ramp by the field’s brightness',
   sampled: true,
-  hold: ['cols', 'cell', 'font', 'ramp', 'text', 'letters', 'word'],
+  hold: ['cols', 'cell', 'font', 'fontWeight', 'ramp', 'text', 'letters', 'word'],
   schema: [
     { key: 'font', label: 'Font', type: 'select', default: 'pixel', options: ASCII_FONTS, section: 'Characters' },
+    { key: 'fontWeight', label: 'Weight', type: 'range', min: 100, max: 900, step: 1, default: 900, section: 'Characters', when: (l) => asciiFamily(l) !== 'pixel' },
     { key: 'ramp', label: 'Ramp', type: 'text', default: RAMPS.classic, placeholder: 'dark → bright', section: 'Characters' },
     { key: 'rampPreset', label: 'Ramp preset', type: 'select', default: '', section: 'Characters',
       options: [{ value: '', label: 'Custom' }, ...Object.entries(RAMPS).map(([value, r]) => ({ value, label: `${value}  ${r.trim()}` }))] },
@@ -61,7 +70,7 @@ export default {
     const oy = (box.h - rows * ch) / 2
     let ramp = [...(RAMPS[p.rampPreset] ?? p.ramp ?? RAMPS.classic)]
     if (p.reverse) ramp = ramp.reverse()
-    const font = p.font ?? 'pixel'
+    const font = asciiFontKey(p)
     const text = [...(p.text ?? '')], letters = [...(p.letters ?? '')]
     const word = Math.round(p.word ?? 0), tb = p.textBelow ?? 0, seed = p.seed ?? 1
     const scale = p.scale ?? 1

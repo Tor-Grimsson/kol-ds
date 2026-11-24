@@ -3,7 +3,7 @@
 // component=List
 import figma from 'figma'
 
-const kind = figma.selectedInstance.getEnum('kind', { "disc": "ul", "number": "ol" })
+const kind = figma.selectedInstance.getEnum('number', { "false": "ul", "true": "ol" })
 
 export default {
   example: kind === 'ol'

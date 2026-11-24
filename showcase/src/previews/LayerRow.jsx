@@ -3,7 +3,7 @@ import { LayerRow } from '@kolkrabbi/kol-component'
 
 export const stage = 'sm'
 
-/* a layers list — the selected layer lifted; the eye and the lock toggle */
+/* a layers list — the selected layer lifted; the eye and the lock toggle; over it the head, the selected object's line */
 export default function LayerRowPreview() {
   const [layers, setLayers] = useState([
     { id: 'orbit', name: 'Orbit field', icon: 'circles-three', visible: true, locked: false },
@@ -14,6 +14,7 @@ export default function LayerRowPreview() {
   const flip = (id, k) => setLayers((ls) => ls.map((l) => (l.id === id ? { ...l, [k]: !l[k] } : l)))
   return (
     <div className="flex w-[268px] flex-col gap-1">
+      <LayerRow variant="head" icon={layers[0].icon} name={layers[0].name} visible={layers[0].visible} onToggleVisible={() => flip('orbit', 'visible')} />
       {layers.map((l) => (
         <LayerRow key={l.id} icon={l.icon} name={l.name} selected={sel === l.id} onClick={() => setSel(l.id)}
           visible={l.visible} onToggleVisible={() => flip(l.id, 'visible')} locked={l.locked} onToggleLock={() => flip(l.id, 'locked')} />

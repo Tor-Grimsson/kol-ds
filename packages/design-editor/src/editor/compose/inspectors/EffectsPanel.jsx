@@ -403,7 +403,7 @@ export function SweepStack({ sweeps, onChange, inline = false }) {
                 {/* origin — a pad over the frame (top-left = 0,0), in the control column like any row */}
                 {(sw.shape ?? 'linear') !== 'noise' && (
                   /* a block box — SettingsRow's inline-flex wrapper left the square pad no width (a lone puck) */
-                  <LabeledControl inline label="ORIGIN" labelWidth={RAIL_LABEL_W}>
+                  <LabeledControl horizontal label="ORIGIN" labelWidth={RAIL_LABEL_W}>
                     <div className="w-full min-w-0">
                       <XYPad
                         xValue={sw.cx ?? 0.5} yValue={sw.cy ?? 0.5} xMin={0} xMax={1} yMin={1} yMax={0}

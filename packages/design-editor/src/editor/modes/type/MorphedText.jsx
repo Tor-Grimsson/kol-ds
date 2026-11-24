@@ -3,12 +3,11 @@ import { loadFont } from './fontLoader'
 import { curveBlend } from './curveMath'
 
 /**
- * Real glyph morphing — extracts outlines from two ttf cuts via opentype.js,
- * then interpolates the path commands directly. Ported byte-faithful from the
- * brand editor (kol-client-kolkrabbi TypeFrame's morph branch): for most
- * letter pairs across Right Grotesk cuts the command sequences match exactly
- * (same glyph design, different proportions), so control points lerp
- * one-for-one and Béziers stay smooth.
+ * Real glyph morphing — extracts outlines from one variable font at two
+ * weights via opentype.js, then interpolates the path commands directly.
+ * Ported from the brand editor (kol-client-kolkrabbi TypeFrame's morph
+ * branch). Both ends come from the same file (since 2026-11-18), so the
+ * command sequences match and control points lerp one-for-one.
  *
  * When the command sequences differ (different curve counts), we pop to the
  * closer cut at blend=0.5. flubber-style resampling tangled compound glyphs
@@ -39,7 +38,7 @@ function commandsToPath(cmds) {
 
 /**
  * Two command arrays match structurally if they have the same length and
- * the same type at every index. Same-letter glyphs across Right Grotesk
+ * the same type at every index. Same-letter glyphs across one variable font's
  * cuts almost always satisfy this; different fonts often don't.
  */
 function commandsMatch(a, b) {
@@ -97,8 +96,7 @@ function buildGlyphData(fonts, text, blend, size, curve, cp1, cp2) {
 
 export default function MorphedText({
   text,
-  width1, weight1, italic1 = false,
-  width2, weight2, italic2 = false,
+  family, weight1, weight2, italic = false,
   blend = 0.5,
   curve = 'flat',
   cp1   = { x: 0.33, y: 0.33 },
@@ -114,8 +112,8 @@ export default function MorphedText({
     let cancelled = false
     setError(null)
     Promise.all([
-      loadFont(width1, weight1, italic1),
-      loadFont(width2, weight2, italic2),
+      loadFont(family, weight1, italic),
+      loadFont(family, weight2, italic),
     ]).then(([a, b]) => {
       if (cancelled) return
       setFonts({ a, b })
@@ -124,7 +122,7 @@ export default function MorphedText({
       setError(e?.message ?? String(e))
     })
     return () => { cancelled = true }
-  }, [width1, weight1, italic1, width2, weight2, italic2])
+  }, [family, weight1, weight2, italic])
 
   if (error || !fonts || !text) {
     return <span style={fallbackStyle}>{text}</span>

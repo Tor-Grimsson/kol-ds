@@ -123,7 +123,7 @@ export default function VisualEditor() {
       {/* the property rail */}
       <PropertyRail
         className="absolute right-6 top-32"
-        title="Properties" onCollapse={noop}
+        title="Properties" onCollapseH={noop}
         tabs={[{ value: 'design', label: 'Design' }, { value: 'animate', label: 'Animate' }]} tab={tab} onTab={setTab}
         selected={{ icon: 'clr-mono', name: 'Orbit field', visible, onVisible: setVisible }}
         sections={[

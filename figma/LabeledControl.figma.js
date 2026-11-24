@@ -2,19 +2,20 @@
 // source=packages/component/src/molecules/LabeledControl.jsx
 // component=LabeledControl
 import figma from 'figma'
-// label (+ hint) and a `control` slot — nothing baked (W4R 4.8, 2026-11-07); the slot holds the real control instance
+// two slots, nothing baked (plan-2026-11-12-float-rails-figma W7): `label` (default: the label text, any node fits) and `control`
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "panel": "panel", "float": "float" })
-const inline = instance.getEnum('inline', { "true": true, "false": false })
-const labelWidth = instance.getEnum('labelWidth', { "48": "48", "74": "74", "160": "160", "auto": "auto" })
-const label = instance.getString('label')
-const hint = instance.getBoolean('hint') ? ` hint="${instance.getString('hintText')}"` : ''
+const variant = instance.getEnum('variant', { "default": "default", "panel": "panel", "float": "float", "settings": "settings" })
+const horizontal = instance.getEnum('horizontal', { "true": true, "false": false })
+const labelWidth = instance.getEnum('labelWidth', { "48": "48", "74": "74", "110": "110", "160": "160", "auto": "auto" })
+const label = instance.getSlot('label')
 const control = instance.getSlot('control')
 const v = variant === 'default' ? '' : ` variant="${variant}"`
-const w = !inline || labelWidth === '48' ? '' : labelWidth === 'auto' ? ' labelWidth="auto"' : ` labelWidth={${labelWidth}}`
+// float's column is --kol-float-label-w (110) by default; default's is 48
+const defaultW = variant === 'float' ? '110' : variant === 'settings' ? 'auto' : '48'
+const w = !horizontal || labelWidth === defaultW ? '' : labelWidth === 'auto' ? ' labelWidth="auto"' : ` labelWidth={${labelWidth}}`
 
 export default {
-  example: figma.code`<LabeledControl${v}${inline ? ' inline' : ''} label="${label}"${hint}${w}>
+  example: figma.code`<LabeledControl${v}${horizontal ? ' horizontal' : ''} label={${label}}${w}>
   ${control}
 </LabeledControl>`,
   imports: ["import { LabeledControl } from \"@kolkrabbi/kol-component\""],

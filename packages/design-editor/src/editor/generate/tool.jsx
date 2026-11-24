@@ -1,14 +1,15 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useComposeState, resolveColor, CANVAS_W } from '../compose/state'
 import { findLayerDeep } from '../compose/helpers'
+import { photoOf, contentOf } from '../compose/layerModel'
 import { pack } from '../packs'
-import { renderGenerate, presetsOf } from '../../generate/index.js'
+import { renderGenerate } from '../../generate/index.js'
 import { marksD } from '../../generate/geom.js'
 import { copyMatrices } from '../../generate/repeat.js'
 import { useGenerateRings } from './rings'
 import { useGenerateFont } from './useGenerateFont'
 import { useGenerateImage } from './useGenerateImage'
-import { WINDOWS, valueOf, patchOf, isLive, pickStyle } from './windows'
+import { WINDOWS, valueOf, patchOf, isLive, presetList, pickPreset, visibleGroups } from './windows'
 import { useTool, setTool, openTool } from './store'
 
 /**
@@ -18,7 +19,7 @@ import { useTool, setTool, openTool } from './store'
  * Expand its flattenGenerate · flattenRepeat (Paratype: flattenParatype).
  */
 const flat = (ls) => ls.flatMap((l) => [l, ...(l.children ? flat(l.children) : [])])
-const LINKABLE = { photo: (l) => l.type === 'photo', shape: (l) => l.type === 'shape', path: (l) => l.type === 'path', misc: (l) => l.type === 'misc' && l.loopId === 'paratype-glyph' }
+const LINKABLE = { photo: (l) => !!photoOf(l), shape: (l) => l.type === 'shape', path: (l) => l.type === 'path', misc: (l) => l.type === 'misc' && l.loopId === 'paratype-glyph' }
 
 export function useGeneratorTool(id) {
   const win = WINDOWS[id]
@@ -26,7 +27,7 @@ export function useGeneratorTool(id) {
   const state = useComposeState()
   const typeInit = () => (gen ? gen.presetParams({ id: 'type', loop: win.loop, params: {} }) : {})
   const tool = useTool(id, win.init ?? typeInit)
-  const { params, layerId, live } = tool
+  const { params, layerId, live, contentKey } = tool
   const setParams = (fn) => setTool(id, (s) => ({ params: fn(s.params) }))
   const set = (x) => (v) => setParams((p) => ({ ...p, ...patchOf(win, x, v, p) }))
   const sections = win.sections(params)
@@ -44,9 +45,42 @@ export function useGeneratorTool(id) {
   }, [id, params.sourceId, state.selectedId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const presets = id === 'generate'
-    ? [...(params.genPreset ? [] : [{ value: 'custom', label: 'Custom' }]), ...presetsOf(params.genStyle).map((p) => ({ value: p.id, label: p.label }))]
+    ? [...(params.genPreset ? [] : [{ value: 'custom', label: 'Custom' }]), ...presetList(params.genStyle).map((p) => ({ value: p.id, label: p.label }))]
     : null
-  const setPreset = (pid) => { if (pid !== 'custom') setParams(() => pickStyle(params.genStyle, pid)) }
+  const setPreset = (pid) => { if (pid !== 'custom') setParams(() => pickPreset(params.genStyle, pid)) }
+
+  /* RANDOMISE (W23.8, decided for review): Generate starts from one of the style's presets at random, a picture known
+     to work, then rolls every visible slider of every step but Frame within a quarter of its range around that value;
+     the frame (inset, ink, ground) is kept. Repeat and Type roll their sliders the same way around the values they hold. */
+  const randomise = () => setParams((p) => {
+    /* a roll that draws nothing is rolled again (eight tries at most) */
+    for (let i = 0; i < 8; i++) {
+      const next = rollOnce(p)
+      if (id !== 'generate') return next
+      let d = ''
+      try { d = marksD(renderGenerate({ ...next, x: 0, y: 0, w: CANVAS_W, h: CANVAS_W }, CANVAS_W, CANVAS_W, {})) } catch { d = '' }
+      if (d && d.length > 40) return next
+    }
+    return p
+  })
+  const rollOnce = (p) => {
+    const list = id === 'generate' ? presetList(p.genStyle) : []
+    const base = list.length ? { ...pickPreset(p.genStyle, list[Math.floor(Math.random() * list.length)].id) } : { ...p }
+    if (id === 'generate') Object.assign(base, { inset: p.inset, color: p.color, bg: p.bg, genFit: p.genFit })
+    let next = base
+    for (const sec of win.sections(base)) {
+      if (sec.key === 'frame') continue
+      for (const g of visibleGroups(sec, base)) for (const x of g.controls) {
+        if (x.type !== 'slider' || !x.bind) continue
+        const v = Number(valueOf(x, next)), span = (x.max - x.min) * 0.25
+        const step = x.step ?? 1
+        let r = Math.min(x.max, Math.max(x.min, v + (Math.random() * 2 - 1) * span))
+        r = Math.round(r / step) * step
+        next = { ...next, ...x.bind.set(Number(r.toFixed(4)), next) }
+      }
+    }
+    return { ...next, ...(id === 'generate' ? { genPreset: null } : {}) }
+  }
 
   /* the layer this tool drew last, if it is still there */
   const target = layerId ? findLayerDeep(state.layers ?? [], layerId) : null
@@ -59,6 +93,8 @@ export function useGeneratorTool(id) {
       setTool(id, { layerId: nid }); return nid
     }
     const type = id === 'generate' ? 'generate' : 'repeat'
+    /* a Generate or Repeat effect row on a layer (W22): the window edits that row */
+    if (contentKey && contentOf(target).some((c) => c.key === contentKey)) { state.updateContent(target.id, contentKey, params); return target.id }
     if (target?.type === type) { state.updateLayer(target.id, params); return target.id }
     const nid = state.addLayer(type, { ...params, ...(id === 'repeat' ? { name: 'Repeat' } : {}) })
     setTool(id, { layerId: nid }); return nid
@@ -78,9 +114,9 @@ export function useGeneratorTool(id) {
     if (act === 'expand') expand()
     else if (act === 'open-type') openTool('type')
   }
-  const reset = () => setTool(id, { params: (win.init ?? typeInit)(), layerId: null })
+  const reset = () => setTool(id, { params: (win.init ?? typeInit)(), layerId: null, contentKey: null })
   const setLive = (v) => setTool(id, { live: v })
-  return { id, win, gen, state, params, setParams, set, sections, presets, setPreset, layersFor, apply, expand, run, reset, live, setLive, canApply, target,
+  return { id, win, gen, state, params, setParams, set, sections, presets, setPreset, randomise, layersFor, apply, expand, run, reset, live, setLive, canApply, target, contentKey,
     valueOf: (x) => valueOf(x, params), isLive }
 }
 

@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import { useModal } from '@kolkrabbi/kol-component'
 import { currentView } from '../mode'
-import { useComposeState } from './state'
+import { useComposeState, resolveColor } from './state'
 import { useGeneratorLibrary } from '../library/LibraryProvider'
 import { buildLayersSvg as buildLayersSvgRaw, downloadComposeSvg, downloadComposePng, svgToPngBlob } from './build'
 import { warmTextFonts } from '../modes/type/textOutline'
@@ -13,6 +13,10 @@ import { PRESET_SIZES } from '../shell/aspects'
 import { markSaved, docOf } from './savedMark'
 import { makeZip } from '../lib/zipStore'
 import { atFullRes } from '../lib/previewScale'
+import { resolveCssVar } from '../color/cssVar'
+import { frameSpec, FRAME_MODEL, membersOf } from './frame'
+import { hasStyles } from './styles'
+import { expandLayersDeep, LAYER_MODEL } from './layerModel'
 
 /**
  * useComposeFile — the compose frame's save / save-as / export actions,
@@ -89,7 +93,9 @@ const hasKineticLayer = (ls) => (ls ?? []).some((l) => l.type === 'kinetic' || (
 export function useComposeFile() {
   const composeState = useComposeState()
   const {
-    layers, palette, aspect, canvasW, canvasH,
+    layers: docLayers, palette, aspect,
+    canvasFill, canvasFillOpacity,
+    frameMode, activeFrame,
     colors, poolId, modeId, locks,
     currentPresetId, currentPresetName,
     setCurrentPresetId, setCurrentPresetName,
@@ -97,6 +103,30 @@ export function useComposeFile() {
   } = composeState
   const { addItem, updateItem } = useGeneratorLibrary()
   const modal = useModal()
+
+  /* WHAT AN EXPORT IS (frames as objects, plan-2026-11-19-kolbox-whats-left C1): the selected frame, else the first,
+     its layers moved to its origin and its fill under them, at its own px (`density` per page unit); with no frame,
+     the page's layers in their bounds, on nothing; with nothing on the page, null (the export says so, never a blank
+     file). Without frames (Labs, Morph, apps/editor) the one stage, as always. */
+  const region = (() => {
+    if (!frameMode) return { layers: docLayers, canvasW: composeState.canvasW, canvasH: composeState.canvasH, fill: canvasFill, fillOpacity: canvasFillOpacity, viewW: null }
+    const f = activeFrame
+    if (f) {
+      const k = f.density > 0 ? f.density : 1
+      const ls = membersOf(docLayers, f.id).map((l) => (typeof l.x === 'number' ? { ...l, x: l.x - f.x, y: l.y - f.y } : l))
+      return { layers: ls, canvasW: Math.max(1, Math.round(f.w * k)), canvasH: Math.max(1, Math.round(f.h * k)), fill: f.color ?? null, fillOpacity: f.fillOpacity ?? 1, viewW: f.w, edge: f }
+    }
+    const ls = docLayers.filter((l) => l.type !== 'frame' && l.visible !== false && typeof l.x === 'number' && l.w > 0 && l.h > 0)
+    if (!ls.length) return null
+    const x = Math.min(...ls.map((l) => l.x)), y = Math.min(...ls.map((l) => l.y))
+    const w = Math.max(...ls.map((l) => l.x + l.w)) - x, h = Math.max(...ls.map((l) => l.y + l.h)) - y
+    return { layers: ls.map((l) => ({ ...l, x: l.x - x, y: l.y - y })), canvasW: Math.max(1, Math.round(w)), canvasH: Math.max(1, Math.round(h)), fill: null, fillOpacity: 1, viewW: w }
+  })()
+  const layers = region?.layers ?? []
+  const canvasW = region?.canvasW ?? composeState.canvasW
+  const canvasH = region?.canvasH ?? composeState.canvasH
+  /* an export with nothing to export says so */
+  const nothing = () => { if (region) return false; modal.alert('Nothing to export: draw a frame or add a layer first.'); return true }
 
   /* Live-record handle (rAF pump + MediaRecorder) — a ref so it survives the
    * hook's re-renders across a recording session. */
@@ -115,9 +145,27 @@ export function useComposeFile() {
     name:    name ?? null,
     aspect,
     canvasW, canvasH,
-    layers,
+    /* the frame's place, fill and page color travel with the file (11.3) */
+    ...frameSpec(composeState),
+    /* the layer model's mark (W22): a file saved where the model is on is never converted again */
+    ...(composeState.layerModel ? { layerModel: LAYER_MODEL } : {}),
+    layers: docLayers,
+    /* frames as objects (C1): a file saved with frames is never converted again; with them, every page (C4.4): `pages`
+       and each layer stamped with its `pageId` */
+    ...(frameMode ? { ...composeState.pagesDoc(), frameModel: FRAME_MODEL } : {}),
     palette: { poolId, modeId, colors, locks },
+    /* the file's styles travel with it (W7) */
+    ...(hasStyles(composeState.styles) ? { styles: composeState.styles } : {}),
   })
+
+  /* every export paints the frame fill (11.3): a themed `var(--kol-*)` resolves to the color on screen, None paints
+     nothing. The module-level buildLayersSvg (inlined srcs) is wrapped, so every call below goes through this. */
+  const frameSvg = (args) => {
+    const ref = resolveColor(region?.fill ?? null, palette)
+    const token = typeof ref === 'string' && ref.match(/^var\((--[^),\s]+)/)
+    const fill = token ? (resolveCssVar(token[1]) || null) : ref
+    return buildLayersSvg({ ...args, fill, fillOpacity: region?.fillOpacity ?? 1, viewW: region?.viewW ?? null, edge: region?.edge ?? null })
+  }
 
   /* THE FILE'S THUMBNAIL (2026-10-09 — Files showed a glyph for every file): the frame at save
    * time, rasterized small onto the item. A failed capture saves without one. */
@@ -129,7 +177,7 @@ export function useComposeFile() {
       const w = Math.round(canvasW * k), h = Math.round(canvasH * k)
       const c = document.createElement('canvas')
       c.width = w; c.height = h
-      await drawSvgToCanvas(c.getContext('2d'), buildLayersSvg(args), w, h)
+      await drawSvgToCanvas(c.getContext('2d'), frameSvg(args), w, h)
       return c.toDataURL('image/webp', 0.8)
     } catch (e) { console.warn('cover: the frame could not be captured —', e?.message || e); return null }
   }
@@ -171,7 +219,7 @@ export function useComposeFile() {
    * the caller's last render (export buttons don't re-render on transport
    * ticks) while loop layers sample transport live — one export would mix
    * two times. */
-  const buildArgs = () => ({ layers: resolveLayersDeep(layers, transport.getCtx()), palette, aspect, canvasW, canvasH })
+  const buildArgs = () => ({ layers: resolveLayersDeep(expandLayersDeep(layers), transport.getCtx()), palette, aspect, canvasW, canvasH })
   /* Text layers export as glyph outlines — parse the cut TTFs (async,
    * promise-cached) BEFORE the sync buildLayersSvg call; a cold cut falls
    * back to foreignObject inside build.js. Kinetic layers embed their fonts
@@ -184,22 +232,22 @@ export function useComposeFile() {
   }
   /* every export renders at full resolution, whatever Settings › Preview resolution says — the live
      canvases it snapshots are lifted first (lib/previewScale.js) */
-  const onExportSvg = () => atFullRes(async () => {
+  const onExportSvg = () => !nothing() && atFullRes(async () => {
     const args = buildArgs()
     await warmExportFonts(args.layers)
-    downloadComposeSvg(buildLayersSvg(args), `compose-${canvasW}x${canvasH}-${Date.now().toString(36)}.svg`)
+    downloadComposeSvg(frameSvg(args), `compose-${canvasW}x${canvasH}-${Date.now().toString(36)}.svg`)
   })
   /* PNG takes the footer's 1×/2×/3× scale on top of the set W×H (the canvas
    * carries real output pixels; scale is a resolution bump). Guarded so
    * event-object callers (topbar menu onClick) fall back to 1×. SVG is
    * vector — scale doesn't apply. */
-  const onExportPng = (scale) => atFullRes(async () => {
+  const onExportPng = (scale) => !nothing() && atFullRes(async () => {
     const k = [1, 2, 3].includes(scale) ? scale : 1
     const args = buildArgs()
     await warmExportFonts(args.layers)
     /* rasterScale bakes snapshot/redraw rasters (2d loops, video frames)
      * inside the SVG at k× so they stay crisp when the whole SVG scales. */
-    downloadComposePng(buildLayersSvg({ ...args, rasterScale: k }), `compose-${canvasW * k}x${canvasH * k}-${Date.now().toString(36)}.png`, k)
+    downloadComposePng(frameSvg({ ...args, rasterScale: k }), `compose-${canvasW * k}x${canvasH * k}-${Date.now().toString(36)}.png`, k)
   })
 
   /* Render the current frame at an ARBITRARY aspect preset + @Nx scale to a
@@ -213,7 +261,7 @@ export function useComposeFile() {
     const sz = PRESET_SIZES[aspectId] ?? { w: canvasW, h: canvasH }
     const args = buildArgs()
     await warmExportFonts(args.layers)
-    const svg = buildLayersSvg({
+    const svg = frameSvg({
       layers: args.layers, palette,
       aspect: aspectId, canvasW: sz.w, canvasH: sz.h,
       rasterScale: k,
@@ -261,7 +309,7 @@ export function useComposeFile() {
    * transport t + play state are restored after the bake.
    * ponytail: Mediabunny (dynamic import, code-split) — supersedes webm-muxer.
    * WebCodecs-gated — Safari no-ops until it ships VideoEncoder. */
-  const onExportWebm = (scale, onProgress) => atFullRes(async () => {
+  const onExportWebm = (scale, onProgress) => !nothing() && atFullRes(async () => {
     if (typeof VideoEncoder === 'undefined') return
     const k = [1, 2, 3].includes(scale) ? scale : 1
     /* Warm text + kinetic fonts once — every baked frame builds sync from
@@ -279,7 +327,7 @@ export function useComposeFile() {
      * toward its looping steady state; an exact frame N-1 → 0 seam is
      * inherently impossible with an EMA. */
     const smoothState = makeSmoothingState()
-    for (let i = 0; i < N; i++) resolveLayersDeep(layers, { ...transport.getCtx(), t: i / N, smoothState })
+    for (let i = 0; i < N; i++) resolveLayersDeep(expandLayersDeep(layers), { ...transport.getCtx(), t: i / N, smoothState })
 
     const w = canvasW * k
     const h = canvasH * k
@@ -305,8 +353,8 @@ export function useComposeFile() {
          * PREVIOUS frame's pixels under load. */
         await nextFrame()
         await nextFrame()
-        const svg = buildLayersSvg({
-          layers: resolveLayersDeep(layers, { ...transport.getCtx(), smoothState }),
+        const svg = frameSvg({
+          layers: resolveLayersDeep(expandLayersDeep(layers), { ...transport.getCtx(), smoothState }),
           palette, aspect, canvasW, canvasH,
           rasterScale: k,
         })
@@ -337,7 +385,7 @@ export function useComposeFile() {
   const onRecordStart = async (scale) => {
     if (typeof MediaRecorder === 'undefined' || recorderRef.current) return false
     const k = [1, 2, 3].includes(scale) ? scale : 1
-    await warmExportFonts(resolveLayersDeep(layers, transport.getCtx()))
+    await warmExportFonts(resolveLayersDeep(expandLayersDeep(layers), transport.getCtx()))
     const aspectId = aspect
     const baseW = canvasW
     const baseH = canvasH
@@ -359,8 +407,8 @@ export function useComposeFile() {
     const pump = async () => {
       while (alive) {
         const { layers: liveLayers, palette: livePalette } = liveRef.current
-        const svg = buildLayersSvg({
-          layers: resolveLayersDeep(liveLayers, transport.getCtx()),
+        const svg = frameSvg({
+          layers: resolveLayersDeep(expandLayersDeep(liveLayers), transport.getCtx()),
           palette: livePalette, aspect: aspectId, canvasW: baseW, canvasH: baseH,
           rasterScale: k,
         })

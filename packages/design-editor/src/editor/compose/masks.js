@@ -1,6 +1,7 @@
 import { shapeToPathNodes } from './shape-math'
 import { pathD, shiftNode } from './path-math'
 import { applyVectorFx } from './vectorEffects'
+import { frameOutline } from './frame'
 
 /**
  * MASKS (G8 — Figma / Affinity / Illustrator): a shape or path set as a mask clips the layer
@@ -13,6 +14,8 @@ import { applyVectorFx } from './vectorEffects'
 
 /* the layer's outline in CANVAS coords (vector effects applied), or null */
 export function canvasOutline(layer) {
+  /* a frame masks with its box (W5: Figma's frame menu has Use as mask) */
+  if (layer.type === 'frame' && layer.w > 0 && layer.h > 0) return frameOutline(layer)
   if (layer.type === 'path' && Array.isArray(layer.nodes)) {
     return pathD(applyVectorFx(layer, layer.nodes, !!layer.closed).map((n) => shiftNode(n, layer.x ?? 0, layer.y ?? 0)), !!layer.closed)
   }
@@ -33,6 +36,10 @@ export function resolveMasks(layers) {
   return layers.filter((l) => !l.isMask).map((l) => {
     const mask = l.maskedBy && byId.get(l.maskedBy)
     if (!mask) return l
+    if (mask.type === 'frame') {
+      const d = canvasOutline({ ...mask, x: (mask.x ?? 0) - (l.x ?? 0), y: (mask.y ?? 0) - (l.y ?? 0) })
+      return d ? { ...l, _clipD: d } : l
+    }
     const geo = mask.type === 'path'
       ? { nodes: applyVectorFx(mask, mask.nodes, !!mask.closed), closed: !!mask.closed }
       : (() => { const g = shapeToPathNodes(mask); return g && { nodes: applyVectorFx(mask, g.nodes, true), closed: true } })()

@@ -13,7 +13,19 @@ const SEED = [
   { id: 'circle:opacity', label: 'Circle · opacity', keys: [{ t: 0.2, v: 0.2, easing: 'in-out' }, { t: 0.8, v: 1, easing: 'hold' }] },
 ]
 
-export default function TimelineDockPreview() {
+export const variants = ['default', 'kolbox', 'folio']
+
+export default function TimelineDockPreview({ variant = 'default' }) {
+  /* folio (Folio migration batch D): display only, Folio's keys plain positions 0..1 */
+  if (variant === 'folio') return (
+    <div className="w-full" style={{ background: 'var(--kol-folio-paper)', color: 'var(--kol-folio-ink)' }}><TimelineDock variant="folio" t={0.34} onSeek={() => {}}
+      tracks={[{ id: 'flow', label: 'Obstacle flow', keys: [0, 0.33, 0.66] }, { id: 'opacity', label: 'Opacity', keys: [0.16, 0.5, 0.83] }]} /></div>
+  )
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <div className="w-full"><TimelineDock variant="kolbox" title="Untitled" count={2} time={3} duration={12}
+      tracks={[{ id: 'a', name: 'Rectangle', icon: 'rectangle', keyframes: [0, 4, 8], visible: true, locked: false, selected: true }, { id: 'b', name: 'Ellipse', icon: 'circle', keyframes: [] }]} /></div>
+  )
   const [tracks, setTracks] = useState(SEED)
   const [t, setT] = useState(0)
   const [playing, setPlaying] = useState(true)

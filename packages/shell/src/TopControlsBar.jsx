@@ -2,7 +2,7 @@ import { useState } from 'react'
 import FloatActionMenu from './FloatActionMenu.jsx'
 import { Button, TabsRow, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import DocumentCapsule from './DocumentCapsule.jsx'
-import MoreRows, { FloatMenu } from './MoreSheet.jsx'
+import { MenuFloatRows, MenuFloat } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: organism — the top bar: DocumentCapsule · TabsRow float · float Buttons · PanelsRestore */
 
@@ -28,9 +28,9 @@ export function PanelsRestore({ label = 'Panels', children, items, surface = 'so
       </span>
       <PopoverPanel popover={popover} panel={false} focus={false} className={card} style={{ minWidth: 220, maxWidth: 'calc(100vw - 24px)' }}>
         {children ?? (
-          <FloatMenu beside cardClass={card} onLeaf={() => setOpen(false)}>
-            <MoreRows variant="float" actions={items ?? []} onPick={() => setOpen(false)} />
-          </FloatMenu>
+          <MenuFloat beside cardClass={card} onLeaf={() => setOpen(false)} title={label}>
+            <MenuFloatRows variant="float" actions={items ?? []} onPick={() => setOpen(false)} />
+          </MenuFloat>
         )}
       </PopoverPanel>
     </>

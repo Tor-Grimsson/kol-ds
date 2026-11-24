@@ -24,7 +24,7 @@ const PRIMITIVES = [
   { id: 'prim:star', label: 'star', d: 'M12 2 L14.9 9.2 L22.5 9.6 L16.6 14.5 L18.6 21.9 L12 17.7 L5.4 21.9 L7.4 14.5 L1.5 9.6 L9.1 9.2 Z' },
 ]
 
-// 'glyph' resolves in patternLoop's shapeFor via glyphTile.js (Right Grotesk
+// 'glyph' resolves in patternLoop's shapeFor via glyphTile.js (outline-family
 // outlines through the type mode's fontLoader — opentype.js is already a dep).
 export const SHAPE_OPTIONS = [
   { value: 'glyph', label: 'Glyph (type)' },

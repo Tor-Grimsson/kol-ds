@@ -12,10 +12,10 @@
  *   combo    ComboLab · comboLab · comboLabCss · DEFAULT_COMBO_LAB
  *   lockup   LockupLab · lockupLab · DEFAULT_LOCKUP_LAB (a branded house's parts and lockup types; BrandLockup draws one)
  *
- * ONE WINDOW (BrandLabToolWindow, 2026-10-29): every lab draws in LabWindow — QuickLookFrame, a tabbed rail of
+ * ONE WINDOW (BrandLabToolWindow, 2026-10-29): every lab draws in ModalLab — QuickLookFrame, a tabbed rail of
  * LabeledControls, the stage, and the output (a table, then the CSS) under it. ONE COLOUR ENGINE: Color Lab and Combo
  * Lab both run on colorLab.js (kol-fxr's — OKLCH, base is colour 1, 2–8 colours, jobs by look, lock and roll). */
-export { default as LabWindow, LabOutput, useLabValue } from './LabWindow.jsx'
+export { default as ModalLab, default as LabWindow, LabOutput, useLabValue } from './ModalLab.jsx'
 export { default as TypeLab } from '../TypeLab.jsx'
 export { typeLab, typeLabCss, DEFAULT_TYPE_LAB, TYPE_RATIOS, TYPE_STEPS, TYPE_ROLES, TYPE_FACES, TYPE_CASES, TYPE_INKS } from '../typeLab.js'
 export { default as ColorLab } from '../ColorLab.jsx'

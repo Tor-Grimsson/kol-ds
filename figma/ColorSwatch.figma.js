@@ -4,8 +4,8 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "halo": "halo" })
-const size = instance.getEnum('size', { "24": "24", "32": "32" })
+const variant = instance.getEnum('halo', { "false": "default", "true": "halo" })
+const size = instance.getEnum('lg', { "false": "24", "true": "32" })
 // one chip per state (2026-11-07): transparent nests TransparentX
 const state = instance.getEnum('state', { "rest": "", "selected": " selected", "transparent": " transparent" })
 

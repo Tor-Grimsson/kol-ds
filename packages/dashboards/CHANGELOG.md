@@ -1,5 +1,16 @@
 # @kolkrabbi/kol-dashboards
 
+## 0.17.0 — 2026-11-12
+
+plan-2026-11-12-one-header W2.1 leftovers:
+- **`Card` · `SectionHead`** — `collapsedV` · `onCollapseV` · `defaultCollapsedV` (collapse-v, as the Rails); `folded` · `onFold` · `defaultFolded` still accepted, deprecated.
+- **`FoldedHead`**'s ⌄ is 12 (`--kol-float-chev-sm`, was the lg 16).
+
+## 0.16.0 — 2026-11-12
+
+plan-2026-11-12-float-system W3 — needs kol-theme ≥0.218.0:
+- `FoldedHead`'s chevron reads `--kol-float-chev-lg` (16, unchanged in size).
+
 ## 0.15.0 — 2026-11-08
 
 - **`DetailsOverlay` draws its panel through `ModalShell`** (plan-2026-11-08-modal-system 1.1): the lift surface and the one modal radius (4px), where it drew `kol-overlay-panel` itself. Content and copy unchanged. Peer `@kolkrabbi/kol-component` >=0.356.0.

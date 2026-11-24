@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import GlyphMetricsGrid from './GlyphMetricsGrid.jsx'
 
 /**
@@ -8,7 +8,7 @@ import GlyphMetricsGrid from './GlyphMetricsGrid.jsx'
  * GlyphMetricsGrid. Owns the style/axis selection state and feeds the grid the
  * chosen font URL + `variationSettings`.
  *
- * Composes the package's existing canonical leaves — SpecimenSectionHeader
+ * Composes the package's existing canonical leaves — SpecimenHeader
  * (promoted from the monorepo's `FoundrySection`) and GlyphMetricsGrid (which
  * already handles font I/O with opentype.js as an optional peer).
  *
@@ -83,7 +83,7 @@ const GlyphMetricsSection = ({
           * slot is roman / italic and renders only when the face has an italic;
           * the axis rides the weight slot alone — feeding it into both drew
           * "Light / Light" twice on a roman-only variable face */}
-        <SpecimenSectionHeader
+        <SpecimenHeader
           selectedStyle={showDropdown ? selectedStyleVariant : undefined}
           onStyleChange={showDropdown ? setSelectedStyleVariant : undefined}
           showDropdown={showDropdown}

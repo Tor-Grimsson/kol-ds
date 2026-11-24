@@ -4,7 +4,8 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+// size is the `kbd` variable mode on the instance (md · sm), which Code Connect cannot read; md is the default (2026-11-12)
+const size = 'md'
 const icon = instance.getEnum('icon', { "true": "true", "false": "false" })
 
 export default {

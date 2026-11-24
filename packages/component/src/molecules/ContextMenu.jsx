@@ -54,7 +54,7 @@ export default function ContextMenu({ menu, children, variant, className = '' })
     <Menu anchor={{ x: menu.x, y: menu.y }} open onOpenChange={(v) => { if (!v) menu.close() }} variant={variant} panelClassName={`min-w-44 ${className}`.trim()}>
       {/* Any click inside closes — a menu item that leaves the menu open after acting is the one interaction people
         * report as broken. Items keep their own onClick; this runs after it on the way up. */}
-      <div onClick={menu.close} role="none" className="flex flex-col">
+      <div onClick={menu.close} role="none" className="flex flex-col gap-[var(--kol-spacing-0-5)]">
         {typeof children === 'function' ? children(menu.payload) : children}
       </div>
     </Menu>

@@ -24,7 +24,7 @@ const RANDOM_GROUPS = GENERATIVE_TREE.flatMap((t) => t.groups)
 import { wildExpression, fitBounds } from '../../../loops/math/expression'
 import { mulberry32, randomSeed } from '../../lib/rng'
 import { useAppSettings, setAppSetting } from '../../lib/appSettings'
-import { openColorModes } from '../../color/ColorModesWindow'
+import { openColorModes } from '../../color/ModalColorModes'
 import { RELATIONS, rollPalette, resolvePalette } from '../../color/palette'
 import { LoopPicker } from './LoopPicker'
 import AboutLine from './AboutLine'
@@ -88,8 +88,8 @@ export function LoopFields({ layer, setProp, patch, updateLayer, palette, render
    * loops theme module. Non-roled params and user edits survive. */
   const themeId = layer.themeId ?? DEFAULT_THEME
   const invert = !!layer.themeInvert
-  const onTheme  = (id) => updateLayer(layer.id, { themeId: id, ...themeParams(layer, loop?.params, id, invert) })
-  const onInvert = (v)  => updateLayer(layer.id, { themeInvert: v, ...themeParams(layer, loop?.params, themeId, v) })
+  const onTheme  = (id) => updateLayer(layer.id, { ...themeParams(layer, loop?.params, id, invert), themeId: id })
+  const onInvert = (v)  => updateLayer(layer.id, { ...themeParams(layer, loop?.params, themeId, v), themeInvert: v })
   /* PALETTE (plan 37 § 5.4, Labs' colour section in the settings rail): pick a relationship, roll one
      palette and recolour every colour param from it — roles by role, the rest in turn */
   const relation = layer._paletteRelation ?? 'analogous'

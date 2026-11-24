@@ -23,7 +23,7 @@ const HERE = dirname(fileURLToPath(import.meta.url))
 const ICONS_SRC = join(HERE, '..', 'packages', 'icons', 'src')
 /* both sets — a glyph classifies itself wherever it lives (2026-08-28); external (2026-10-31) too, where a glyph that
  * keeps its own fills is COLOR, never recoloured */
-const SETS = ['kol-icon-set-interface', 'kol-icon-set-signal', 'kol-icon-set-external'].map((s) => join(ICONS_SRC, s))
+const SETS = ['kol-icon-set-interface', 'kol-icon-set-editor', 'kol-icon-set-signal', 'kol-icon-set-external'].map((s) => join(ICONS_SRC, s))
 const EXTERNAL = join(ICONS_SRC, 'kol-icon-set-external')
 const OUT = join(HERE, '..', 'packages', 'icons', 'src', 'cuts.json')
 const CHECK = process.argv.includes('--check')

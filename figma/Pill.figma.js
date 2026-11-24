@@ -4,8 +4,8 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "primary": "primary", "inverse": "inverse" })
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const variant = instance.getEnum('variant', { "primary": "primary", "inverse": "inverse", "float": "float" })
+const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 const label = instance.getString('label')
 
 export default {

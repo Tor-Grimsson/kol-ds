@@ -46,10 +46,6 @@
       "destination": "/apps/style/index.html"
     },
     {
-      "source": "/apps/stylesheet/(.*)",
-      "destination": "/apps/stylesheet/index.html"
-    },
-    {
       "source": "/apps/stationery/(.*)",
       "destination": "/apps/stationery/index.html"
     },

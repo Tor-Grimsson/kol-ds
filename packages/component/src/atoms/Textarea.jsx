@@ -11,6 +11,11 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
  *   variant="float"            — the note field (float-everything W3 row 42, 2026-11-04): the float well on the
  *                                sheet radius (`--kol-float-menu-r`), Inter 500 at the md float type, 12 / 16 in;
  *                                the grip stays, the focus ring is the float's
+ *   variant="kolbox"           — kolbox's field (plan-2026-11-18-kolbox-system W31.2, 2026-11-18), carried class for
+ *                                class: a bare <textarea> filling its row (flex-1), the field's oq-16 fill, an oq-24 line,
+ *                                radius 4, 8 by 4 in, JetBrains Mono 12 / 16 in the ink, the accent line while focused,
+ *                                native vertical resize, the browser's own rows unless `rows` is given. No size, no grip.
+ *                                Chrome in kol-theme `.kol-textarea--kolbox`.
  *
  *   size="sm" / "md" (default) / "lg" — padding + type class
  *
@@ -41,13 +46,17 @@ export default function Textarea({
   onChange,
   variant = 'filled',
   size = 'md',
-  rows = 3,
+  rows,
   axis = 'both',
   placeholder,
   disabled = false,
   className = '',
   ...props
 }) {
+  if (variant === 'kolbox') {
+    return <textarea value={value} onChange={onChange} rows={rows} placeholder={placeholder} disabled={disabled} className={`kol-textarea--kolbox min-w-0 flex-1 resize-y border px-2 py-1 outline-none ${className}`} {...props} />
+  }
+
   // ghost folds into outline (2026-07-08 chrome law): one secondary treatment.
   const resolvedVariant = variant === 'ghost' ? 'outline' : variant
 
@@ -72,7 +81,7 @@ export default function Textarea({
     <label className={wrapperCls} aria-disabled={disabled || undefined}>
       <textarea
         {...valueProps}
-        rows={rows}
+        rows={rows ?? 3}
         placeholder={placeholder}
         disabled={disabled}
         spellCheck={false}

@@ -1,0 +1,31 @@
+/* tuner-w11.html from the Line Swell canvas checks, its script carried verbatim. One change: the flow test form is drawn from
+ * fixtures/flow.d.txt (the reference engine's flow({}).d) since the line effects are not this package's. */
+const L = LineSwell, out = document.getElementById('out');
+const drawn = (fn) => new Promise((res) => { const c = document.createElement('canvas'); c.width = c.height = 1200; const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, 1200, 1200); x.fillStyle = '#000'; fn(x); const i = new Image(); i.onload = () => res(i); i.src = c.toDataURL(); });
+const file = (u) => new Promise((res) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => res(null); i.src = u; });
+let seed = 7; const rnd = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }, pick = (a) => a[Math.floor(rnd() * a.length)];
+const combo = () => ({ preset: pick(['custom', 'faithful', 'golden', 'fifth', 'bold', 'smooth']), effect: pick([0, 20, 50, 100]), read: pick(['outline', 'outline', 'strokes', 'auto']), view: pick(['tuned', 'tuned', 'fitted', 'original']), reset: rnd() < 0.05,
+  detail: Math.round(rnd() * 100) / 100, corners: 10 + Math.round(rnd() * 110), harmony: pick(['preset'].concat(L.harmonies)), unit: pick([0, 0, 0.02, 0.2, 0.6, 1]), strength: Math.round(rnd() * 100) / 100, curves: pick(['preset', 'circles', 'bezier']), harmonize: rnd() < 0.7, drift: pick([0, 0.5, 2.8, 5]),
+  corner: pick(['preset', 'sharp', 'round']), cornerSize: Math.round(-8 + rnd() * 14), ends: pick(['auto', 'butt', 'round']), comb: rnd() < 0.3, combScale: 0.1 + rnd() * 7, grid: pick(['off', 'auto', 'square', 'isometric', 'hexagonal', 'diagonal']), gridStep: pick([0.25, 1, 4]), gridTurn: Math.round(rnd() * 90), keylines: rnd() < 0.5, help: rnd() < 0.3 });
+(async () => {
+  let t = '';
+  const forms = [['circle', await drawn((x) => { x.beginPath(); x.arc(600, 600, 440, 0, 7); x.fill(); }), {}], ['ring', await drawn((x) => { x.beginPath(); x.arc(600, 600, 480, 0, Math.PI * 2); x.fill(); x.fillStyle = '#fff'; x.beginPath(); x.arc(600, 600, 300, 0, Math.PI * 2); x.fill(); }), {}],
+    ['crescent', null, {}], ['letter S', null, { sample: 'letter', letter: 'S' }], ['letter R', null, { sample: 'letter', letter: 'R' }], ['ref-01', await file('refs/ref-01.png'), {}], ['ref-05', await file('refs/ref-05.png'), {}], ['ref-12', await file('refs/ref-12.png'), {}]];
+  let runs = 0, bad = 0, msgs = 0, worstMs = 0, nan = 0; const errs = {};
+  for (let i = 0; i < 500; i++) { const [name, img, p] = forms[i % forms.length], c = { ...p, ...combo() }; const t0 = performance.now(); const v = L.tuner(c, img); const ms = performance.now() - t0; runs++;
+    if (v.failed) { msgs++; const m = (v.labels.find((l) => /could not draw/.test(l.t)) || {}).t || '?'; errs[m] = (errs[m] || 0) + 1; }
+    if (!v.failed && !(v.d && v.d.length > 10)) bad++; if (/NaN/.test(v.d + v.circles + v.gridD)) nan++; }
+  t += '11.4 500 random combinations: ' + bad + ' left the board with neither a form nor a message, ' + msgs + ' showed the error line, ' + nan + ' drew a broken path\n' + Object.keys(errs).map((m) => '   ' + errs[m] + 'x ' + m).join('\n') + (Object.keys(errs).length ? '\n' : '');
+  let slow = 0, steps = 0, worst = 0; for (const [name, img, p] of forms) { L.tuner({ ...p }, img); for (const read of ['outline', 'strokes']) { L.tuner({ ...p, read }, img); for (let i = 0; i < 6; i++) { const c = { ...p, read, detail: 0.2 + i * 0.12, corners: 20 + i * 15, strength: i / 6, effect: 40 + i * 10, curves: i % 2 ? 'bezier' : 'circles', corner: i % 3 ? 'round' : 'sharp' }; const t0 = performance.now(); L.tuner(c, img); const ms = performance.now() - t0; steps++; if (ms > 100) slow++; worst = Math.max(worst, ms); } } }
+  t += '11.4 slider steps after the first draw: ' + steps + ' steps, ' + slow + ' over 100 ms, slowest ' + Math.round(worst) + ' ms\n';
+  t += '11.2 corners rounded on the ladder (golden, full strength): form: rounded / too tight / worst joint into a corner arc\n';
+  for (const [name, img, p] of forms) { const s = L.tuner({ ...p, strength: 1, corner: 'round', cornerSize: -2 }, img).stats; t += '   ' + name.padEnd(10) + s.rounded + ' / ' + s.unrounded + ' / ' + s.roundJoin.toFixed(2) + '°\n'; }
+  t += '11.3 effect, letters and ribbons, corner round, bezier: how far the form sits from the traced one at 0, 25, 50, 75, 100%\n';
+  for (const [name, img, p] of forms.filter((f) => /letter|ref-12|crescent/.test(f[0]))) { const o = { ...p, strength: 1, curves: 'bezier', corner: 'round' }; const zero = L.tuner({ ...o, effect: 0 }, img), allOff = L.tuner({ ...p, strength: 0, curves: 'bezier', harmonize: false, corner: 'sharp' }, img), full = L.tuner({ ...o, effect: 100 }, img), none = L.tuner(o, img);
+    t += '   ' + name.padEnd(10) + [0, 25, 50, 75, 100].map((e) => (L.tuner({ ...p, strength: 1, effect: e }, img).stats.tunedDev * 100).toFixed(2) + '%').join('  ') + ' | 0% equals all off: ' + (zero.d === allOff.d) + ' | 100% equals no effect setting: ' + (full.d === none.d) + '\n'; }
+  // 11.1: his settings on the built-in form, the grey form's real ink box against the 20-unit keyline square
+  { const v = L.tuner({ preset: 'custom', unit: 1, corners: 10, detail: 0.69, strength: 1 }), c = document.createElement('canvas'); c.width = 1200; c.height = 800; const x = c.getContext('2d'); x.translate(600, 400); x.fill(new Path2D(v.d), 'evenodd'); const px = x.getImageData(0, 0, 1200, 800).data; let x0 = 1e9, x1 = -1, y0 = 1e9, y1 = -1;
+    for (let i = 3; i < px.length; i += 4) if (px[i] > 127) { const q = (i - 3) / 4, xx = q % 1200, yy = (q - xx) / 1200; if (xx < x0) x0 = xx; if (xx > x1) x1 = xx; if (yy < y0) y0 = yy; if (yy > y1) y1 = yy; }
+    const long = Math.max(x1 - x0 + 1, y1 - y0 + 1), u = v.box * 1.2 / 24; t += '11.1 his earlier settings: grey ink is ' + (x1 - x0 + 1) + ' by ' + (y1 - y0 + 1) + ' px, centered ' + ((x0 + x1 + 1) / 2 - 600).toFixed(1) + ', ' + ((y0 + y1 + 1) / 2 - 400).toFixed(1) + ' | 20-unit square is ' + (20 * u).toFixed(1) + ' px, centered ' + v.boxX + ', ' + v.boxY + ' | long side differs by ' + (Math.abs(long - 20 * u) / long * 100).toFixed(2) + '%\n'; }
+  out.textContent = t; window.done = 1;
+})();

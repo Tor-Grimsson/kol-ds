@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 const active = instance.getEnum('active', { "true": "true", "false": "false" })
-const dir = instance.getEnum('dir', { "asc": "asc", "desc": "desc" })
+const dir = instance.getEnum('desc', { "false": "asc", "true": "desc" })
 
 export default {
   example: figma.code`<SortHeader label="Name" active={${active}} dir="${dir}" onClick={toggleSort} />`,

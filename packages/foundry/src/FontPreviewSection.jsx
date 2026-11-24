@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 import { Dropdown } from '@kolkrabbi/kol-component'
 import { Slider } from '@kolkrabbi/kol-component'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import { FOUNDRY_SAMPLE_TEXT } from './glyphData.js'
 
 /** Web-owned specimen passage — the Icelandic sample the engine's neutral
  * SPECIMEN_SAMPLE_TEXT replaced when the section went font-agnostic. */
 /* the passage lives in glyphData as FOUNDRY_SAMPLE_TEXT (TypefaceCardRevealText, 2026-08-27) — one export, read here and by the library grid's reveal */
 
-/* taxonomy-ok: organism — nests Dropdown, Slider, SpecimenSectionHeader
+/* taxonomy-ok: organism — nests Dropdown, Slider, SpecimenHeader
  * (relative imports) plus a same-file FontPreviewItem. */
 
 const WEIGHT_VALUES = {
@@ -167,7 +167,7 @@ const FontPreviewSection = ({
   return (
     <section className="w-full py-12 lg:py-16">
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader
+        <SpecimenHeader
           selectedStyle={selectedStyleVariant}
           onStyleChange={setSelectedStyleVariant}
           showDropdown={showDropdown}

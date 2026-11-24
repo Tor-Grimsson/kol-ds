@@ -39,11 +39,11 @@ export default function Workspace() {
       </div>
 
       <div className="mt-7 flex flex-col gap-[26px]">
-        <Card variant="float" title="Briefs" count={1} controls={more('Briefs options')} folded={fold.briefs} onFold={flip('briefs')} addLabel="New brief">
+        <Card variant="float" title="Briefs" count={1} controls={more('Briefs options')} collapsedV={fold.briefs} onCollapseV={flip('briefs')} addLabel="New brief">
           <TaskCard title="Design the Tasks tab (Briefs / Todos / Other)" date="2026-07-01" className="px-0! py-2.5!" />
         </Card>
 
-        <Card variant="float" title="Todos" count={3} controls={more('Todo options')} folded={fold.todos} onFold={flip('todos')}>
+        <Card variant="float" title="Todos" count={3} controls={more('Todo options')} collapsedV={fold.todos} onCollapseV={flip('todos')}>
           <div className="mt-1.5 grid grid-cols-3 gap-4 max-md:grid-cols-1">
             {TODOS.map((t) => (
               <KanbanColumn key={t.size} title={t.size} count={<SizeChip>{t.chip}</SizeChip>} className="min-h-[154px]">
@@ -69,7 +69,7 @@ function WorkspaceInspector({ hide }) {
   const [open, setOpen] = useState(true)
   const label = (t) => <span className="kol-float-ruler text-fg-64">{t}</span>
   return (
-    <PropertyRail title="Inspector" width={340} onCollapse={hide}
+    <PropertyRail title="Inspector" width={340} onCollapseH={hide}
       tabs={[{ value: 'layers', label: 'Layers' }, { value: 'properties', label: 'Properties' }]} tab={tab} onTab={setTab}
       sections={[{ rows: [
         { id: 'selected', render: () => (
@@ -78,7 +78,7 @@ function WorkspaceInspector({ hide }) {
             <span className="kol-float-section text-fg-96">Rename a card</span>
           </div>
         ) },
-        { id: 'task', render: () => <SectionHead title="Task" folded={!open} onFold={() => setOpen(!open)} className="pt-4" /> },
+        { id: 'task', render: () => <SectionHead title="Task" collapsedV={!open} onCollapseV={() => setOpen(!open)} className="pt-4" /> },
         ...(open ? [
           { id: 'status', render: () => (
             <div className="grid grid-cols-2 gap-5">

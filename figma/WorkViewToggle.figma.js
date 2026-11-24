@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const view = instance.getEnum('view', { shelf: 'shelf', list: 'list' })
+const view = instance.getEnum('list', { "true": 'list', "false": 'shelf' })
 
 export default {
   example: figma.code`<WorkViewToggle view="${view}" onView={setView} query={query} onQuery={setQuery} listIcon="view-list" />`,

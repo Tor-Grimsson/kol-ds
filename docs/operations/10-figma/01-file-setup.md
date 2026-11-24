@@ -33,6 +33,7 @@ Fourteen files, in the folder's order (checked against the folder 2026-11-08; `c
 | File | Key | Type | Holds | Published |
 |---|---|---|---|---|
 | `❖ library--kol-ds-ui` | n48kE2bJtrFjl7wxst30xH | library | foundations, icon masters, shared atoms, molecules and organisms, layout modules, the identity system | yes |
+| `❖ library--util` | l0tvnukIzRz2TzVCfmJhav | library | doc-frame parts (header, footer, annotation, track) and keyline guides; switched on in every file, so no file keeps a `_util` page of its own (2026-11-18) | yes |
 | `◇ foundry--kol-ds-ui` | uKJdSFNoAJkYqqpiSXETFR | instances | the foundry page template and its screens — built by the kol-website agent (kol-website owns the foundry code) | no |
 | `◇ website--kol-ds-ui` | 7YxebZmHy7slweU5E1gt7p | family | what kolkrabbi.io uses — website and article screens | yes |
 | `media--kol-ds-ui` | GqMIvP0T7WKfH8QjFCl98c | family | media, media-hub — screens only | no |
@@ -40,7 +41,7 @@ Fourteen files, in the folder's order (checked against the folder 2026-11-08; `c
 | `document--kol-ds-ui` | iYvYkjaQ1JGxGGhh1HO4hk | family | the document screens | no |
 | `layout--kol-ds-ui` | EMdyp9gS3UiMT9tYMZHF5T | instances | layout reference screens — shell, hub, the workshop layout | no |
 | `iconset--kol-ds-ui` | Lud0oSRKPTyHvT9MDVIczN | instances | icon review work — Icons WIP, review sheets, keyline boards | no |
-| `◇ float--kol-ds-ui` | 879P1yBsBPqpdGI5a5v2Y5 | instances | the float system's development file — the float parts' home on one `↳ Parts` page (a section per family), then one page per apps/float view route, each opened by a `SectionText` float header | no |
+| `◇ float--kol-ds-ui` | 879P1yBsBPqpdGI5a5v2Y5 | instances | the float system's development file — the float parts' home on one `↳ Parts` page (a section per family), then one page per apps/float view route, each opened by a `SectionText` float header; the Float labs page is rebuilt from library instances (14 states) | no |
 | `print--kol-ds-ui` | jQABZz0smdlw5UqbfMd6I4 | family | empty — Print kit is shared, so it stays in the library | no |
 | `modular--kol-ds-ui` | fqkq6IOFPPMFDRYWNwEDBR | family | rack, rack-hub, mixer, mixer-hub | yes |
 | `presentation--kol-ds-ui` | 265LaCcBZ2rPxdtWr2fEn2 | family | presentation, presentation-hub — screens only | no |
@@ -60,6 +61,8 @@ No showcase file: the showcase is the code rendering the library.
 | ➤ Collection | ↳ Sets |
 | ➤ Apps | ↳ Studio (held), ↳ Catalog--note--need--work (held) and ↳ Other apps |
 | after the divider | ↳ Not yet drawn and _trash |
+
+**The library's float parts (2026-11-12, plan-2026-11-12-one-header):** one `Header` set (variants nav · property · modal · settings, the toggles as properties) that RailFloat, NavRail's switcher row, the float window and the settings window all instance; RailFloat's `collapse-v` variant is the same tree with body and footer hidden, never removed; the `float/window-w` variable (562) sizes the float window. A `　　↳　Wrappers` review page lists every component that only wraps one base, each with a verdict; nothing leaves until the user strikes through. In the float file the theme is set once per page (or section), never per frame.
 
 Each page: one section per family, one column from x 0, 200 between sections. The page law lives in the kol-figma skill.
 

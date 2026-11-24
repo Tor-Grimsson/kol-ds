@@ -17,6 +17,8 @@ export const TYPE_LABELS = {
   loop:       'Loop',
   kinetic:    'Kinetic type',
   misc:       'Misc',
+  /* frames as objects (plan-2026-11-19-kolbox-whats-left C1) */
+  frame:      'Frame',
 }
 
 export const BOOL_OP_LABELS = {

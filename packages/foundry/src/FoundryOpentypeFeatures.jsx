@@ -1,7 +1,7 @@
 import { SectionCardItem } from '@kolkrabbi/kol-component'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 
-/* taxonomy-ok: organism — nests SpecimenSectionHeader (relative) + kol-component's SectionCardItem */
+/* taxonomy-ok: organism — nests SpecimenHeader (kol-styleguide) + kol-component's SectionCardItem */
 
 const DEFAULT_FEATURES = [
   { title: 'Stylistic Alternates', description: 'Alternative character forms for enhanced typographic expression' },
@@ -25,7 +25,7 @@ export default function FoundryOpentypeFeatures({ features = DEFAULT_FEATURES, l
   return (
     <section className={`w-full py-12 lg:py-16 ${className}`.trim()}>
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader label={label} icon={icon} size="md" showDropdown={false} />
+        <SpecimenHeader label={label} icon={icon} size="md" showDropdown={false} />
         <div className="flex flex-col md:flex-row gap-8 w-full">
           {features.map((f, i) => (
             <SectionCardItem key={i} title={f.title} description={f.description} icon={f.icon} className="flex-1" />

@@ -1,0 +1,379 @@
+/* KOLBOX'S SHEET, the kolbox style's (plan-2026-11-19-kolbox-whats-left C3): moved in from apps/kolbox/src/index.css
+   whole, its @source paths re-pointed from here. A host's own sheet imports Tailwind first, then this file:
+   apps/editor/src/kolbox.css (loaded only under the kolbox style). */
+
+/* KOL's TOKEN LAYERS, and nothing of its look (plan-2026-11-18-kolbox-system 8.1): no component CSS but the parts kolbox takes from kol-component (W31.2, below), no type classes,
+   no element styles beyond the two base-tokens carries for every KOL app (html's overscroll and ground, the standalone
+   top inset). Same files and order as kol-theme.css (ARCHITECTURE §5), same layer. The colors are the theme variant
+   `data-theme-variant` on <html> (kolbox by default, index.html), so a variant or theme re-points every role below.
+   kol-opacity.css also ships its text-role classes (`.text-meta` among them, a color); kolbox's `text-meta` is a size
+   and every use carries its own color utility, which out-ranks the components layer.
+   By the package specifier, from kolbox's own kol-theme workspace dependency. */
+@import "@kolkrabbi/kol-theme/kol-base-tokens.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-color.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-opacity.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-opaque.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-design-tokens.css" layer(components);
+/* kolbox's parts that are now kol-component's (plan-2026-11-18-kolbox-system W31.2): their chrome, in the components
+   layer after the tokens (ARCHITECTURE §5). Batch 1: XYPad's kolbox look. Batch 2: ToggleSwitch, ToggleCheckbox, Textarea,
+   Kbd, Link and the icon lift (atoms), LabeledControl and DividerLabel (molecules), WheelTriangle (organisms). Batch 3:
+   Button (with its icon button) and Input (atoms), Slider, TabsRow, ButtonSplit, ButtonGroup joined, AlignmentGrid (molecules).
+   Batch 4: the one floating surface and the chevron (atoms), Menu, Dropdown, Tooltip, the panel shell, Toast, SwatchGrid
+   and AccountMenu (molecules). */
+@import "@kolkrabbi/kol-theme/kol-components-atoms.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-components-molecules.css" layer(components);
+@import "@kolkrabbi/kol-theme/kol-components-organisms.css" layer(components);
+/* batch 5: the tool dock, the transport, the phone nav, the file browser frame and the document title are kol-shell's */
+@import "@kolkrabbi/kol-theme/kol-components-shell.css" layer(components);
+
+/* the package parts kolbox renders, one line each, so only their utilities land here (the whole package would also
+   generate utilities for the engine's KOL components, under kolbox's own theme names) */
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Avatar.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/XYPad.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ButtonGroup.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Kbd.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Link.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Textarea.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/ToggleCheckbox.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/ToggleSwitch.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/DividerLabel.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/FieldPair.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/LabeledControl.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/SpectrumControls.jsx";
+/* batch 3 */
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Button.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/atoms/Input.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/AlignmentGrid.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ButtonSplit.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/Slider.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/TabsRow.jsx";
+/* batch 4 */
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/Menu.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/Dropdown.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/DropdownStepper.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/Modal.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ModalShell.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/Toast.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/SwatchGrid.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/AccountMenu.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/utilities/Popover.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/utilities/kolboxGlyph.jsx";
+
+/* batch 5 */
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/Rail.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/RailSwitcher.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/RailHeader.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/SettingsPanel.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/TreeRow.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ColorInputRow.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/ColorPickerPopover.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/TimelineDock.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/CommandOverlay.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/utilities/EditorShell.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ContentCard.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/organisms/Table.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/SectionText.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-component/src/molecules/ParamBindDot.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-shell/src/ToolRail.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-shell/src/AppFloatNav.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-shell/src/CatalogGrid.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-shell/src/CatalogPage.jsx";
+@source "../../../node_modules/@kolkrabbi/kol-shell/src/DocumentCapsule.jsx";
+
+/* IconLoader's own wrapper classes */
+@source "../../../node_modules/@kolkrabbi/kol-icons/src";
+/* the editor engine's own layout utilities (its canvas and timeline): read from its source, which no other sheet scans */
+@source "../../";
+
+/* The two faces point at the root public/fonts. */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono/JetBrainsMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* The families read the theme's family variables, so a variant can change them; kolbox's own are set in its variant's
+   scope below, and a variant that sets none (kolcore) gets KOL's default, Inter and JetBrains Mono, the same two. */
+@theme static {
+  --font-sans: var(--kol-font-family-sans, 'Inter', system-ui, sans-serif);
+  --font-mono: var(--kol-font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
+
+  /* the roles, each its DS variable (_tmp/2026-11-18-kolbox-system/color-map.md, table 1): bg-ground, text-text,
+     border-border, ... In kolbox dark every one resolves to the hex it was. */
+  --color-ground: var(--kol-surface-primary);
+  --color-panel: var(--kol-surface-secondary);
+  --color-canvas: var(--kol-kolbox-canvas);
+  --color-field: var(--kol-kolbox-field);
+  --color-border: var(--kol-kolbox-line); /* THE ONE EDGE (W4b, 2026-11-23) */
+  --color-text: var(--kol-surface-on-primary);
+  --color-muted: var(--kol-oq-64);
+  --color-accent: var(--kol-accent-primary);
+  --color-on-accent: var(--kol-accent-on-primary);
+  --color-info: var(--ui-info);
+  --color-success: var(--ui-success);
+  --color-error: var(--ui-error);
+  /* the darker menu surface (13.1), the lit tint (13.5) and the selected-tile tint (13.5) */
+  --color-menu: var(--kol-surface-primary);
+  --color-accent-tint: var(--kol-accent-tint);
+  --color-accent-tint-soft: var(--kol-accent-tint-soft);
+  /* the hover fill: fg/04 (the map's color/hover, was the text at 5%). bg-hover */
+  --color-hover: var(--kol-fg-04);
+  /* the dim behind a Modal: fg-ab/24 (the map's color/dim, was black at 50%). bg-dim */
+  --color-dim: var(--kol-fg-ab-24);
+
+  /* space: KOL's scale, registered by kol-design-tokens.css (p-1 4, p-2 8, p-3 12, p-4 16, p-6 24, p-8 32 and the rest) */
+
+  /* sizes: h-control, h-row and size-cell are KOL control heights (control: kol-theme's `--kol-kolbox-ctl`, 24 since 2026-11-19, was 28; row 24, cell 32); the rail,
+     bar and window sizes are kolbox's own (the table's "kept as kolbox" and layout results) */
+  --spacing-control: var(--kol-kolbox-ctl);
+  --spacing-top-rail: 56px;
+  --spacing-rail: 240px;
+  /* the collapsed left rail, a strip of icons: Figma plan 7.1's collapsed strip, 49 wide (round 3, 4.1). w-rail-collapsed */
+  --spacing-rail-collapsed: 49px;
+  /* the real rail tabs' own panel width (StrokePanel, SwatchesPanel, ColourPanel: width 320), the tab windows (round 3, 4.1). w-pane */
+  --spacing-pane: 320px;
+  --spacing-timeline: 200px;
+  /* the timeline expanded: the real dock's most, Timeline.jsx DOCK_MAX 480 (round 4, W4). h-timeline-expanded */
+  --spacing-timeline-expanded: 480px;
+  /* size-cell: the tool dock's cell (Figma plan 19.1) */
+  --spacing-cell: var(--kol-ctl-32);
+  /* the menu row, 24 high (Figma plan W9, 13.1): h-row */
+  --spacing-row: var(--kol-ctl-24);
+  /* a panel's width beside the rail: not written in either plan, taken as the rail's 240 (decided for review) */
+  --spacing-popover: 240px;
+  /* a Modal's width (plan-2026-11-18-kolbox-round-2 1.2): w-modal */
+  --spacing-modal: 480px;
+  /* the Layer Effects window's width: the real one's 820, its list 280 beside the controls (round 2, 2.2) */
+  --spacing-modal-wide: 820px;
+  /* the generator window: float's ModalDialog variant="settings", 880 by 656 (round 3, 1.1): w-modal-generator, h-modal-generator-height */
+  --spacing-modal-generator: 880px;
+  --spacing-modal-generator-height: 656px;
+  /* the search modal: float's CommandOverlay card, max-w-xl, 576 (round 3, 9.1): w-modal-search */
+  --spacing-modal-search: 576px;
+
+  /* RADII CUT TO FIGMA'S (plan-2026-11-23-editor-measured-against-figma W4b): Figma draws 2, 5, 13 and full, so kolbox
+     reads the scale's nearest stops, 2, 4, 12 and full; track 6, well 8 and modal 16 were cut to 4, 4 and 12.
+     Was: radius, by the stylesheet's own roles, on KOL's numbered stops (rebind table: field 4, tab-track 5 to 6, well 8,
+     search 12, modal 14 to 16, menu 13 to 12); xs and sm, Tailwind's 2 and 4, read the same stops */
+  --radius-xs: var(--kol-radius-2);
+  --radius-sm: var(--kol-radius-4);
+  --radius-control: var(--kol-radius-4);
+  --radius-track: var(--kol-radius-4);
+  --radius-well: var(--kol-radius-4);
+  --radius-search: var(--kol-radius-12);
+  --radius-modal: var(--kol-radius-12);
+  /* the menu panel (Figma plan W9, 13.5): rounded-menu */
+  --radius-menu: var(--kol-radius-12);
+
+  /* 13.5's edge recipe for the menu and the panel: no solid outline, two drop shadows and two inset hairlines, colored
+     as the map's menu rows: shadow float/well, inset fg/32, inset-soft fg/08. shadow-menu */
+  --shadow-menu: 0 2px 5px var(--kol-float-well), 0 10px 24px var(--kol-float-well), inset 0 0 0 0.5px var(--kol-fg-32), inset 0 0.5px 0 var(--kol-fg-08);
+
+  /* type: Inter steps text-title, text-section, text-label, text-help; mono steps text-meta, text-value (with font-mono) */
+  --text-title: 16px;
+  --text-title--line-height: 22px;
+  --text-title--font-weight: var(--kol-kolbox-title-weight, 500);
+  --text-section: var(--kol-kolbox-text);
+  --text-section--line-height: var(--kol-kolbox-text-lh);
+  --text-section--letter-spacing: var(--kol-kolbox-text-ls);
+  --text-section--font-weight: var(--kol-kolbox-title-weight, 500);
+  --text-label: var(--kol-kolbox-text);
+  --text-label--line-height: var(--kol-kolbox-text-lh);
+  --text-label--letter-spacing: var(--kol-kolbox-text-ls);
+  --text-label--font-weight: var(--kol-kolbox-label-weight, 500);
+  --text-help: 11px;
+  --text-help--line-height: 15px;
+  --text-meta: 10px;
+  --text-meta--line-height: 14px;
+  --text-value: 12px;
+  --text-value--line-height: 16px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overscroll-behavior: none;
+}
+
+body {
+  background-color: var(--color-ground);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+}
+
+/* The engine's sheet (Editor, Labs) declares these two again on :root in its layers; unlayered, the theme's win. */
+:root {
+  --font-sans: var(--kol-font-family-sans, 'Inter', system-ui, sans-serif);
+  --font-mono: var(--kol-font-family-mono, 'JetBrains Mono', ui-monospace, monospace);
+}
+/* THE VARIANT'S ACCENT AND PALETTE, NOT THE BRAND'S. The engine's sheet (design-editor index.lib.css, loaded on every
+   screen) imports kol-brand-color.css unlayered, which rebinds the accent and the palette on :root and so out-ranks the
+   layered theme variant: accent, on-accent and link came out the brand's yellow, blue and teal. `revert-layer` in this unlayered
+   rule hands each back to the layered cascade, the variant's value or KOL's default. */
+:root[data-theme-variant] {
+  --kol-accent-primary: revert-layer;
+  --kol-accent-on-primary: revert-layer;
+  --kol-accent-primary-strong: revert-layer;
+  --kol-palette-blue: revert-layer;
+  --kol-palette-teal: revert-layer;
+  --kol-palette-green: revert-layer;
+  --kol-palette-yellow: revert-layer;
+  --kol-palette-red: revert-layer;
+  --kol-palette-orange: revert-layer;
+  --kol-palette-purple: revert-layer;
+}
+/* kolbox's own families: Inter and JetBrains Mono (the theme package's kolbox variant sets colors only) */
+[data-theme-variant="kolbox"] {
+  --kol-font-family-sans: 'Inter', system-ui, sans-serif;
+  --kol-font-family-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* The editor's canvas ground (round 2, 3.1): the engine paints the area round the artboard with its infinite fill,
+   which defaults to var(--kol-surface-secondary) (state.jsx, set inline by CanvasArea). Inside the kolbox canvas that
+   token is kolbox's canvas color, as Labs and Morph sit on it. Unlayered, so it beats the engine's layered theme. */
+[data-canvas] > .kol-design-editor {
+  --kol-surface-secondary: var(--color-canvas);
+}
+
+/* Icons: the stroke lift (.kol-kolbox-icon) is kol-theme's now (kol-components-atoms.css, W31.2 batch 2), since the
+   package's kolbox parts draw your icons with it too. */
+
+/* Slider: the range's track and thumb are kol-theme's now (kol-components-molecules.css `.kol-slider--kolbox`, W31.2
+   batch 3). */
+/* The transparency checker behind OpacitySlider's run and a swatch with alpha: a pattern utilities cannot say. */
+.kol-kolbox-checker {
+  background: repeating-conic-gradient(var(--color-border) 0 25%, var(--color-field) 0 50%) 0 0 / 8px 8px;
+}
+
+
+/* chrome (plan-2026-11-18-kolbox-system 10.8, 13.1, 8.4): the editor chrome on the Figma `editor` screen 39:9644. */
+@theme {
+  /* the file's inter/document (rail and top rail file name), inter/brand (KOL), inter/row (list rows), inter/body (the
+     title's slash): text-document, text-brand, text-row, text-body */
+  --text-document: 13px;
+  --text-document--line-height: 22px;
+  --text-document--font-weight: var(--kol-kolbox-title-weight, 500);
+  --text-brand: 15px;
+  --text-brand--line-height: 21px;
+  --text-brand--font-weight: 600;
+  --text-row: var(--kol-kolbox-text);
+  --text-row--line-height: var(--kol-kolbox-text-lh);
+  --text-row--letter-spacing: var(--kol-kolbox-text-ls);
+  --text-row--font-weight: var(--kol-kolbox-row-weight, 400);
+  --text-body: 14px;
+  --text-body--line-height: 20px;
+  /* the file's effect style shadow/dock, value for value (it binds no variable): two drops, two inset hairlines.
+     shadow-dock */
+  --shadow-dock: 0 1px 3px rgb(0 0 0 / 0.5), 0 3px 8px var(--kol-float-well), inset 0 0 0.5px rgb(255 255 255 / 0.3), inset 0 0.5px 0 rgb(255 255 255 / 0.08);
+}
+
+/* Chrome text does not select (W19.7): set once, on body so the portalled menus and windows are in it too; what the
+   user types or edits opts back in (fields, rename fields, the canvas's text editing, contenteditable). */
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+input,
+textarea,
+[contenteditable]:not([contenteditable="false"]),
+[contenteditable]:not([contenteditable="false"]) * {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* The engine's ratio tag inside the frame ("4:5", CanvasView.jsx CanvasFrame's label span) is not in the design
+   (W19.3): hidden here, the engine not edited; its box stays, so a press on that corner still selects the frame. The
+   frame's name and size are on kolbox's own label above it (pages/Editor.jsx FrameLabel). */
+[data-canvas] .kol-design-editor [data-canvas-frame] > span {
+  visibility: hidden;
+}
+
+/* The rulers take the UI's ground (his "rulers same color as UI in figma"): the engine draws them as transparent bars
+   (CanvasView.jsx CanvasRuler, 18 thick, no class), so the pasteboard showed through as a lighter strip. Here they
+   take the rail's panel and the rails' edge line (field), from kolbox's side; the engine is not edited. */
+[data-canvas] .kol-design-editor svg[height="18"][style*="row-resize"],
+[data-canvas] .kol-design-editor svg[width="18"][style*="col-resize"] {
+  background-color: var(--color-panel);
+  font-weight: 300; /* the engine sets none, so the numbers took the canvas wrapper's 500; his 300, 2026-11-18 */
+  letter-spacing: 0.2px; /* his 2 percent of the numbers' 10px, 2026-11-18 (an em here would resolve on the svg's 12) */
+  /* the ticks and labels ride the fg ramp of the engine's fixed dark scope; on the panel band the numbers are the text ink
+     at 32 percent (his ruling 2026-11-18: "its 32% white on top of the background so like we would put fg-32"), the
+     ticks at 24 and 12; light raises the numbers to the theme's `--kol-kolbox-ruler-ink` (W15.1, 54) */
+  --kol-fg-24: color-mix(in srgb, var(--color-text) 12%, transparent);
+  --kol-fg-48: color-mix(in srgb, var(--color-text) 24%, transparent);
+  --kol-fg-64: color-mix(in srgb, var(--color-text) var(--kol-kolbox-ruler-ink, 32%), transparent);
+}
+/* no ticks, and each number centred on its position, as Figma's ruler (his ruling 2026-11-18: "figma doesnt use ticks
+   and centers text on"). The engine draws a tick and a number 3 to the side of it in one group per step: the tick is
+   hidden, the number anchors on its middle, and the group shifts the 3 back. */
+[data-canvas] .kol-design-editor svg[height="18"][style*="row-resize"] g > line,
+[data-canvas] .kol-design-editor svg[width="18"][style*="col-resize"] g > line { display: none; }
+[data-canvas] .kol-design-editor svg[height="18"][style*="row-resize"] g > text,
+[data-canvas] .kol-design-editor svg[width="18"][style*="col-resize"] g > text { text-anchor: middle; }
+[data-canvas] .kol-design-editor svg[height="18"][style*="row-resize"] g { transform: translateX(-3px); }
+[data-canvas] .kol-design-editor svg[width="18"][style*="col-resize"] g { transform: translateY(3px); }
+[data-canvas] .kol-design-editor svg[height="18"][style*="row-resize"] > line[x2="100%"],
+[data-canvas] .kol-design-editor svg[width="18"][style*="col-resize"] > line[y2="100%"] {
+  stroke: var(--kol-kolbox-line); /* THE ONE EDGE (plan-2026-11-23-editor-measured-against-figma W4b); was the field wash */
+}
+/* the rulers' corner square: the engine draws its two sides in oq-16 inline; kolbox's edge instead (W4b) */
+[data-canvas] .kol-design-editor div[style*="width: 18px"][style*="height: 18px"][style*="border-right"] {
+  border-color: var(--kol-kolbox-line) !important;
+}
+
+/* The left rail's sections are the right rail's (one head for both, plan-2026-11-23-editor-measured-against-figma W3:
+   the 40 head, its label 16 in, so Pages and Layers line up), with only the rows' inset their own, as Figma's rails
+   measure: Pages rows 8 in (224 of the 240), Layer rows the full width with 8 inside. Pages holds its 165 once it lists
+   pages; closed (the one page a file starts with) it is its head and a plus, like any closed section (his ruling
+   2026-11-19). */
+[data-rail="left"] [data-rail-section="Pages"] > div { padding-inline: var(--kol-spacing-2); }
+[data-rail="left"] [data-rail-section="Pages"]:has(.kol-tree-row--kolbox) { min-height: 165px; }
+[data-rail="left"] [data-rail-section="Layers"] > div { padding-inline: 0; }
+
+/* THE SIZES A DRAG SETS (plan-2026-11-20 W2.3, app/RailResize.jsx on the kit's useDragResize): each rail's width and the
+   Pages list's height, their default, their floor (`-snap`: Figma's rails stop at 240, its default) and the keyboard
+   step. The drag writes the size inline on the root; these are what it starts from and goes back to. */
+:root {
+  --kol-kolbox-rail-left-w: var(--kol-kolbox-rail-w);
+  --kol-kolbox-rail-left-snap: var(--kol-kolbox-rail-w);
+  --kol-kolbox-rail-left-step: var(--kol-spacing-4);
+  --kol-kolbox-rail-right-w: var(--kol-kolbox-rail-w);
+  --kol-kolbox-rail-right-snap: var(--kol-kolbox-rail-w);
+  --kol-kolbox-rail-right-step: var(--kol-spacing-4);
+  --kol-kolbox-pages-h: 165px;
+  --kol-kolbox-pages-snap: 96px;
+  --kol-kolbox-pages-step: var(--kol-spacing-4);
+}
+/* Pages, once it lists pages, is the dragged height; Layers takes the rest */
+[data-rail="left"] [data-pages-size] > [data-rail-section="Pages"] { height: var(--kol-kolbox-pages-h); min-height: 0; overflow-y: auto; }
+[data-rail="left"] [data-rail-body]:has(> [data-pages-size]) { display: flex; flex-direction: column; }
+[data-rail="left"] [data-rail-body]:has(> [data-pages-size]) > [data-rail-section="Layers"] { flex: 1 0 auto; }
+
+/* right rail */
+/* The selection's name in the right rail's header (Figma RightRail 147:21543, W11.1): Inter Medium 14 on a 20 line,
+   the one type step the rail draws that kolbox's steps lack. text-rail-title */
+@theme static {
+  --text-rail-title: 14px;
+  --text-rail-title--line-height: 20px;
+  --text-rail-title--font-weight: var(--kol-kolbox-title-weight, 500);
+}
+
+/* the engine's zoom chip (bottom right of the canvas) is not in the file, and it counts from "fit = 100%" while the
+   top rail's zoom shows the real scale: two different numbers on one screen. The top rail's is the one drawn, so the
+   chip is off in kolbox (its reset lives in the zoom menu). The fps chip beside it stays. */
+[data-canvas] .kol-design-editor .bottom-3.right-3 > button:first-of-type { display: none; }
+
+
+/* surface */
+/* THE ONE FLOATING SURFACE (plan-2026-11-18-kolbox-system 28.3, 24.1) is kol-theme's `.kol-kolbox-surface` now
+   (kol-components-atoms.css, W31.2 batch 4), on every floating part kolbox takes from kol-component and on the dock. */

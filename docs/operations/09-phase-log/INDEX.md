@@ -3,7 +3,7 @@ title: Phase log
 type: index
 status: active
 created: 2026-09-30
-updated: 2026-10-31
+updated: 2026-11-13
 description: Every run of work, newest first
 tags:
   - domain/workflow
@@ -27,6 +27,7 @@ here in the same pass that closes it.
 
 | Date | Run | What was done | State |
 |---|---|---|---|
+| 2026-11-13 | [[2026-11-13-float-file-screens\|Float file screens]] | float Figma file: Labs, Randomiser, Record and Metric dashboards (tabs/standard + float with a main view, desktop + phone), the Ebook system in two styles; Figma LAW 18–20 + audit checks | built · nothing published; library masters open |
 | 2026-10-31 | [[2026-10-31-icon-batch-scan\|Icon batch scan]] | the 252-icon ClaudeListIconSet batch scanned before import — 19 batch clusters, 11 duplicates of shipped glyphs, 8 name collisions, a group and a name per icon; four new groups proposed (`time` · `chart` · `data` · `place`) | scanned · import is his session; nothing landed |
 | 2026-10-31 | [[2026-10-31-metric-rebuild\|apps/metric rebuilt on KOL parts]] | scan of 71 local components; raw `<button>` 11 → 0; six hand-made menus → one new kol-component `Menu`; `Button variant="bare"`; `Dialog` on the overlay panel; filter chips in the toolbar, Deploys tab on `SettingsSections` | built + verified locally · his review; nothing published |
 | 2026-10-31 | [[2026-10-31-figma-library\|The KOL Figma library]] | the code-built Figma mirror — tokens, 441 icons, atoms → organisms, layouts, app pages, breakpoints, Code Connect; kol-theme 0.202.0's neutral ramp | built W1–W15 · W16–W19 running · the library publish is his |

@@ -20,6 +20,8 @@ import lockupVertRaw  from '../../brand/logos/svg/kol-lockup-vert.svg?raw'
 import { ASPECTS }    from '../shell/aspects'
 import { resolveColor, CANVAS_W } from './state'
 import { copyMatrices } from '../../generate/repeat.js'
+import { expandLayer, hasVehicles, paintStack } from './layerModel'
+import { strokeOutset, strokeRing, strokeRingSvg } from './stroke'
 
 /* the document's layers for this build — a repeat layer exports its SOURCE's copies, so it needs the rest */
 let buildLayers = []
@@ -29,6 +31,7 @@ import { hasPaintFill, patternSvg } from './paintFill'
 import { applyCase } from '../modes/type/cuts'
 import { familyCssFor } from '../modes/type/families'
 import { paintAlphaExport } from './paint'
+import { resolveCssVar } from '../color/cssVar.js'
 import { textLayerFont, textOutlinePaths, axisTextGlyphs } from '../modes/type/textOutline'
 import { buildPatternSvg } from '../modes/pattern/render'
 import { getShapeSvg }     from '../modes/pattern/shapes'
@@ -319,6 +322,15 @@ function shapeLayerSvg(layer, palette) {
     if (drawsAsOutline(layer)) {
       return `<path transform="translate(${lx.toFixed(2)} ${ly.toFixed(2)})" d="${shapeOutlineD(layer)}" fill="${fill}"${strokeAttrs}/>`
     }
+    /* W6.1: a stroke centred, outside or per side: the fill at the box, then the stroke's own shape */
+    const ring = (kind === 'rect' || kind === 'ellipse') && stroke ? strokeRing(layer, lw, lh) : null
+    if (ring) {
+      const rest = (layer.strokeDasharray ? ` stroke-dasharray="${layer.strokeDasharray}"` : '') + (layer.strokeLinecap ? ` stroke-linecap="${layer.strokeLinecap}"` : '') + (layer.strokeLinejoin ? ` stroke-linejoin="${layer.strokeLinejoin}"` : '')
+      const body = kind === 'rect'
+        ? `<rect width="${lw.toFixed(2)}" height="${lh.toFixed(2)}"${layer.radius > 0 ? ` rx="${Number(layer.radius).toFixed(2)}"` : ''} fill="${fill}"/>`
+        : `<ellipse cx="${(lw / 2).toFixed(2)}" cy="${(lh / 2).toFixed(2)}" rx="${(lw / 2).toFixed(2)}" ry="${(lh / 2).toFixed(2)}" fill="${fill}"/>`
+      return `<g transform="translate(${lx.toFixed(2)} ${ly.toFixed(2)})">${fill === 'none' ? '' : body}${strokeRingSvg(ring, stroke, rest)}</g>`
+    }
     if (kind === 'rect') {
       const x = lx + half
       const y = ly + half
@@ -445,7 +457,9 @@ function textLayerSvg(layer, palette) {
     const strokeAttrs = strokeColor && sw > 0
       ? ` stroke="${strokeColor}" stroke-width="${sw}" paint-order="stroke fill"`
       : ''
-    return `<g transform="translate(${layer.x.toFixed(2)} ${layer.y.toFixed(2)})" fill="${color}"${strokeAttrs}>${paths.map((d) => `<path d="${d}"/>`).join('')}</g>`
+    /* an underline's own color fills its lines (textOutline marks them `decoration`) */
+    const decoFill = layer.decoration === 'underline' && layer.underlineColor ? ` fill="${resolveColor(layer.underlineColor, palette) ?? layer.underlineColor}"` : ''
+    return `<g transform="translate(${layer.x.toFixed(2)} ${layer.y.toFixed(2)})" fill="${color}"${strokeAttrs}>${paths.map((p) => (typeof p === 'string' ? `<path d="${p}"/>` : `<path d="${p.d}"${decoFill}/>`)).join('')}</g>`
   }
   return textLayerForeignObject(layer, color, strokeColor, sw)
 }
@@ -552,6 +566,16 @@ function groupLayerSvg(layer, palette, w, h, idx, defs, snapScale) {
  * universal-effects source seam) builds a single-layer SVG from it. */
 export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
   if (layer.visible === false) return ''  /* undefined ⇒ visible, like the DOM renderer */
+  /* the layer model (W22, ./layerModel.js): an image fill and content rows export as the old layers they draw as */
+  if (hasVehicles(layer)) return expandLayer(layer).map((v, i) => layerToSvg(v, palette, w, h, `${idx}v${i}`, defs, snapScale)).join('')
+  const out = layerToSvgBody(layer, palette, w, h, idx, defs, snapScale)
+  /* a vehicle is clipped to its layer's outline (a shape that is not a plain box) */
+  if (!out || !layer._clipOutline) return out
+  defs.push(`<clipPath id="kol-vclip-${idx}"><path d="${layer._clipOutline}"/></clipPath>`)
+  return `<g clip-path="url(#kol-vclip-${idx})">${out}</g>`
+}
+
+function layerToSvgBody(layer, palette, w, h, idx, defs, snapScale) {
   /* Effected non-photo layer — snapshot the LIVE effect-chain canvas (photo
    * has its own branch inside photoLayerSvg). Filtered 2d LOOPS route here
    * too now: their live canvas holds the chained pixels, while loopLayerSvg
@@ -569,6 +593,12 @@ export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
   let body = ''
   switch (layer.type) {
     case 'background': body = backgroundLayerSvg(layer, palette, w, h); break
+    /* a frame (frames as objects, C1) where it is drawn as a layer: its fill as a box */
+    case 'frame': {
+      const fill = layer.color == null ? null : paintAlphaExport(resolveColor(layer.color, palette), layer.fillOpacity, layer.fillHidden)
+      body = frameBoxSvg(layer, palette, fill, 1, layer.x ?? 0, layer.y ?? 0, layer.w ?? 0, layer.h ?? 0)
+      break
+    }
     case 'pattern': {
       const out = patternLayerSvg(layer, palette, w, h, idx)
       if (out) { defs.push(out.def); body = out.body }
@@ -585,7 +615,7 @@ export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
     case 'kinetic':    body = kineticLayerSvg(layer); break
     /* Repeat (plan 53 § 3.1) — each copy is the source's own export inside the copy's matrix */
     case 'repeat': {
-      const src = layer.sourceId ? findDeep(buildLayers, layer.sourceId) : null
+      const src = layer._source ?? (layer.sourceId ? findDeep(buildLayers, layer.sourceId) : null)
       if (!src || src.w == null) break
       body = copyMatrices(layer, { x: src.x ?? 0, y: src.y ?? 0, w: src.w, h: src.h })
         .map((m) => `<g transform="matrix(${m.map((v) => v.toFixed(4)).join(' ')})">${layerToSvg({ ...src, visible: true }, palette, w, h, idx, defs, snapScale)}</g>`).join('')
@@ -606,7 +636,35 @@ export function layerToSvg(layer, palette, w, h, idx, defs, snapScale = 2) {
   return wrap(layer, body, defs, w, h)
 }
 
-export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = null, canvasW = null, canvasH = null, rasterScale = 1 }) {
+/* a frame's box as FrameLayer draws it: its fill under its corners (one radius or [TL, TR, BR, BL]) and its one stroke
+ * inside the box, inset by half the width as the rect shape exports */
+function frameBoxSvg(frame, palette, fill, fillOpacity, x, y, w, h) {
+  const ring = frame ? strokeRing(frame, w, h) : null
+  const sw = frame?.stroke && (frame.strokeWidth > 0 || ring) ? frame.strokeWidth : 0
+  const ref = sw || ring ? resolveColor(frame.stroke, palette) : null
+  const token = typeof ref === 'string' && ref.match(/^var\((--[^),\s]+)/)
+  const stroke = ref ? paintAlphaExport(token ? (resolveCssVar(token[1]) || null) : ref, frame.strokeOpacity, frame.strokeHidden) : null
+  if (!fill && !stroke) return ''
+  /* W6.1: a stroke centred, outside or per side: the fill box without it, then the stroke's own shape */
+  if (ring) {
+    const box = fill ? frameBoxSvg({ ...frame, stroke: null, strokeWidth: 0 }, palette, fill, fillOpacity, x, y, w, h) : ''
+    return `${box}${stroke ? `<g transform="translate(${x.toFixed(2)} ${y.toFixed(2)})">${strokeRingSvg(ring, stroke)}</g>` : ''}`
+  }
+  const paint = `fill="${fill || 'none'}"${fill && fillOpacity < 1 ? ` fill-opacity="${fillOpacity}"` : ''}${stroke ? ` stroke="${stroke}" stroke-width="${sw}"` : ''}`
+  const half = stroke ? sw / 2 : 0
+  if (Array.isArray(frame?.radii)) {
+    return `<path transform="translate(${x.toFixed(2)} ${y.toFixed(2)})" d="${shapeOutlineD({ kind: 'rect', w, h, strokeWidth: half * 2, radii: frame.radii })}" ${paint}/>`
+  }
+  const rx = frame?.radius > 0 ? ` rx="${Number(frame.radius).toFixed(2)}"` : ''
+  return `<rect x="${(x + half).toFixed(2)}" y="${(y + half).toFixed(2)}" width="${Math.max(0, w - half * 2).toFixed(2)}" height="${Math.max(0, h - half * 2).toFixed(2)}"${rx} ${paint}/>`
+}
+
+/* `fill` / `fillOpacity` (plan-2026-11-18-kolbox-system 11.3): the frame's own fill, a concrete color, painted as one
+ * rect under the layers. The frame's X and Y never reach here: layers are frame-relative, so the export is the same
+ * wherever the frame sits. */
+/* `viewW` (frames as objects, C1): the exported frame's width in page units, its layers given frame-relative; the
+ * height follows canvasW by canvasH. Unset, the 1080-wide stage as always. */
+export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = null, canvasW = null, canvasH = null, rasterScale = 1, fill = null, fillOpacity = 1, viewW = null, edge = null }) {
   buildLayers = layers
   /* Virtual coordinate space (what layers are positioned in) stays at the
    * 1080-wide baseline; the SVG's width/height carry the real output pixels.
@@ -616,8 +674,8 @@ export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = 
    * rounding would drift the viewBox ratio off the output ratio and the
    * default meet-scaling would paint ~1px transparent gutters in the PNG. */
   const useDims = canvasW > 0 && canvasH > 0
-  const vw = CANVAS_W
-  const vh = useDims ? CANVAS_W * (canvasH / canvasW) : aspectToWH(aspect, customRatio).h
+  const vw = viewW > 0 ? viewW : CANVAS_W
+  const vh = useDims ? vw * (canvasH / canvasW) : aspectToWH(aspect, customRatio).h
   const outW = useDims ? canvasW : vw
   const outH = useDims ? canvasH : vh
   /* Snapshot/redraw rasters (2d loops, video frames) bake INSIDE the SVG at
@@ -629,10 +687,45 @@ export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = 
 
   const defs = []
   const bodies = []
+  /* THE PICTURE'S BOX (W5, W6.1): a turned frame is drawn turned about its centre, in the box that holds it turned; loose
+     layers grow the box by the stroke that reaches past them (centred or outside) */
+  const rot = edge?.rotation ? Number(edge.rotation) : 0
+  let vb = [0, 0, vw, vh]
+  if (rot) {
+    const r = (rot * Math.PI) / 180, c = Math.abs(Math.cos(r)), si = Math.abs(Math.sin(r))
+    const bw = vw * c + vh * si, bh = vw * si + vh * c
+    vb = [(vw - bw) / 2, (vh - bh) / 2, bw, bh]
+  } else if (!edge && viewW > 0) {
+    let [x0, y0, x1, y1] = [0, 0, vw, vh]
+    for (const l of layers) {
+      if (typeof l.x !== 'number' || l.w == null || l.rotation) continue
+      const [t, r, b, lf] = strokeOutset(l)
+      x0 = Math.min(x0, l.x - lf); y0 = Math.min(y0, l.y - t); x1 = Math.max(x1, l.x + l.w + r); y1 = Math.max(y1, l.y + l.h + b)
+    }
+    vb = [x0, y0, x1 - x0, y1 - y0]
+  }
+  const turn = rot ? ` transform="rotate(${rot.toFixed(2)} ${(vw / 2).toFixed(2)} ${(vh / 2).toFixed(2)})"` : ''
+  /* `edge`: the exported frame itself, for its corners and stroke, and each of its fills and strokes (W6.2) */
+  if (edge) {
+    paintStack(edge).forEach((p, i) => {
+      const own = i === 0 ? fill : p.color == null ? null : (() => {
+        const ref = resolveColor(p.color, palette)
+        const token = typeof ref === 'string' && ref.match(/^var\((--[^),\s]+)/)
+        return paintAlphaExport(token ? (resolveCssVar(token[1]) || null) : ref, p.fillOpacity, p.fillHidden)
+      })()
+      const box = frameBoxSvg(p, palette, own, i === 0 ? fillOpacity : 1, 0, 0, vw, vh)
+      if (box) bodies.push(turn ? `<g${turn}>${box}</g>` : box)
+    })
+  }
+  else if (fill) bodies.push(`<rect width="${vw}" height="${vh}" fill="${fill}"${fillOpacity < 1 ? ` fill-opacity="${fillOpacity}"` : ''}/>`)
+  /* a frame that clips (W5) cuts its layers to its outline; its own stroke is not cut */
+  const frameClip = edge && edge.clip !== false
+  const at = bodies.length
 
   /* masks (G8): a mask layer draws nothing; its target is wrapped in a clip of the mask's outline,
      both in canvas coords */
-  const byId = new Map(layers.map((l) => [l.id, l]))
+  /* a mask's outline is its own body's, never one of its vehicles' (they share its id) */
+  const byId = new Map(layers.filter((l) => l._v !== 'fill' && l._v !== 'content').map((l) => [l.id, l]))
   layers.forEach((layer, idx) => {
     if (layer.isMask) return
     const body = layerToSvg(layer, palette, vw, vh, idx, defs, snapScale)
@@ -646,9 +739,18 @@ export function buildLayersSvg({ layers, palette, aspect = '1:1', customRatio = 
     } else bodies.push(body)
   })
 
+  if (frameClip && bodies.length > at) {
+    const rx = edge.radius > 0 ? ` rx="${Number(edge.radius).toFixed(2)}"` : ''
+    defs.push(`<clipPath id="kol-frame-clip"><rect width="${vw}" height="${vh}"${rx}${turn}/></clipPath>`)
+    bodies.splice(at, bodies.length - at, `<g clip-path="url(#kol-frame-clip)">${bodies.slice(at).join('\n')}</g>`)
+  }
   const defsBlock = defs.length ? `<defs>${defs.join('')}</defs>` : ''
+  const k = outW / vw
+  const n = (v) => Number(v.toFixed(3))
+  const [bx, by, bw, bh] = vb
+  const grown = bx !== 0 || by !== 0 || bw !== vw || bh !== vh
 
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${outW}" height="${outH}" viewBox="0 0 ${vw} ${vh}">
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${grown ? n(bw * k) : outW}" height="${grown ? n(bh * (outH / vh)) : outH}" viewBox="${grown ? `${n(bx)} ${n(by)} ${n(bw)} ${n(bh)}` : `0 0 ${vw} ${vh}`}">
 ${defsBlock}
 ${bodies.join('\n')}
 </svg>`

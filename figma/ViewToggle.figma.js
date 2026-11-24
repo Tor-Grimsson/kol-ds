@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 // variant text · icon at sm (2026-11-07); tone="sunken" is the instance's `tone` mode.
-const variant = instance.getEnum('variant', { "text": "text", "icon": "icon" })
+const variant = instance.getEnum('variant', { "text": "text", "icon": "icon", "float": "float" })
 const xv = variant === 'icon' ? ' variant="icon"' : ''
 export default {
   example: figma.code`<ViewToggle${xv} viewMode={view} onViewChange={setView} />`,

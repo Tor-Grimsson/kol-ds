@@ -3,7 +3,8 @@
 // component=QuickLookFrame
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+// float: the header slot holds Header variant=modal
+const variant = instance.getEnum('float', { "false": "default", "true": "float" })
 
 export default {
   example: variant === 'float'

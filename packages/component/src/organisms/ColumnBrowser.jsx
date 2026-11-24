@@ -208,7 +208,7 @@ const COL_ICON = { image: 'image', video: 'video', audio: 'file', playlist: 'vid
  * files?"). `muted` stays a prop for other callers; the file rows no longer pass it.
  * NO ROW DIVIDERS (BrowsePageRulingsAndSeams, kol-r2b2 2026-09-02): the `border-b last:border-b-0
  * only:border-b` utilities and their inline `borderColor` are gone. The row is a PILL now — a
- * constant 4px inset on every row so selecting never shifts the layout, radius-sm on the fill —
+ * constant 4px inset on every row so selecting never shifts the layout, radius-4 on the fill —
  * and a hairline under a rounded pill draws the box the pill is trying not to be. The shape lives
  * in kol-components-molecules.css with the fill, not as utilities racing it (ARCHITECTURE §5);
  * this supersedes the `only:` hairline half of the 08-28 corrections, by the same repo's ruling.

@@ -18,15 +18,18 @@ import { enabledCanvasStages, enabledEngineStage, pixiStages } from './filterCha
 import { rasterizeLayer, sourceKey } from './rasterizeLayer'
 import { ensureWebcam, getWebcamStream, stopWebcam } from '../lib/webcam'
 import MorphedText from '../modes/type/MorphedText'
-import { familyFor, applyCase } from '../modes/type/cuts'
-import { pickCutFor, seedFromBlend } from '../modes/type/axisRandom'
-import { layerFamily, familyCssFor, isOutlineFamily, ensureFamilyLoaded } from '../modes/type/families'
+import { applyCase } from '../modes/type/cuts'
+import { pickWeightFor, seedFromBlend } from '../modes/type/axisRandom'
+import { layerFamily, layerWeight, weightRange, familyCssFor, fontStyleFor, isOutlineFamily, ensureFamilyLoaded } from '../modes/type/families'
+import { appendParagraphs, capTrim, clampLines, hangMarks, paragraphLayout, textCss } from '../modes/type/textSettings'
 import { paintAlpha } from './paint'
 import { usePreviewDpr } from '../lib/previewScale'
 import { hasLayerEffects, effectsFilter, effectsFilterId } from './layerEffects'
 import { hasPaintFill, paintBackground } from './paintFill'
 import { canvasOutline } from './masks'
 import RepeatLayer from '../generate/RepeatLayer'
+import { expandLayer, hasVehicles } from './layerModel'
+import { strokeRing } from './stroke'
 
 /* The seam (editor/packs.js) — loop/misc layers render through the generators pack, kinetic
  * through motion, filter chains through effects. A layer whose pack is absent renders nothing;
@@ -58,7 +61,14 @@ const invalidateSource = (canvas) => fx()?.invalidateSource(canvas)
  * router can identify the target.
  */
 
-export default function LayerRenderer({ layer: rawLayer, palette }) {
+/* THE LAYER MODEL (W22, ./layerModel.js): a layer with an image fill or content rows draws as its vehicles (the old
+ * photo and content layers, built from it) and its own body, each through the renderer below; the rest draw as they are */
+export default function LayerRenderer({ layer, palette }) {
+  if (!hasVehicles(layer)) return <LayerBody layer={layer} palette={palette} />
+  return expandLayer(layer).map((v, i) => <LayerBody key={`${v._v}-${i}`} layer={v} palette={palette} />)
+}
+
+function LayerBody({ layer: rawLayer, palette }) {
   /* Resolve any animated/modulated props to concrete values for this frame.
    * Static layers (the whole editor today) skip the subscription entirely —
    * `useTransportCtx(false)` never re-renders — so there's zero cost until a
@@ -190,6 +200,8 @@ function renderLayerBody(layer, palette, layerStyle) {
       return <TextLayer layer={layer} palette={palette} layerStyle={layerStyle} />
     }
     case 'group':      return <GroupLayer      layer={layer} palette={palette} layerStyle={layerStyle} />
+    /* frames as objects (plan-2026-11-19-kolbox-whats-left C1): its fill and nothing else, under its layers */
+    case 'frame':      return <FrameLayer      layer={layer} palette={palette} layerStyle={layerStyle} />
     /* Repeat (plan 53 W3) — live copies of a source layer */
     case 'repeat': return <RepeatLayer layer={layer} palette={palette} layerStyle={layerStyle} />
     /* Generate (plan 52) — live vector; an effects chain rasterises it like any vector layer */
@@ -681,6 +693,45 @@ function GroupLayer({ layer, palette, layerStyle }) {
       ))}
     </div>
   )
+}
+
+/* A frame (C1): a box painted with its fill. No fill draws nothing, and no edge line ever (his ruling 2026-11-19:
+ * "there should be NO stroke if there is no fill and no stroke"); its outline and name are FrameChrome's. */
+function FrameLayer({ layer, palette, layerStyle }) {
+  const hex = resolveColor(layer.color, palette)
+  /* its corners ([TL, TR, BR, BL] or one radius) and its one stroke, drawn inside its box */
+  const ring = strokeRing(layer, layer.w ?? 0, layer.h ?? 0)
+  const stroke = (layer.stroke && (layer.strokeWidth ?? 0) > 0) || ring ? resolveColor(layer.stroke, palette) : null
+  const ink = stroke ? paintAlpha(stroke, layer.strokeOpacity, layer.strokeHidden) : null
+  return (
+    <div
+      data-layer-id={layer.id}
+      style={{
+        position: 'absolute',
+        left: layer.x ?? 0, top: layer.y ?? 0, width: layer.w ?? 0, height: layer.h ?? 0,
+        borderRadius: Array.isArray(layer.radii) ? layer.radii.map((r) => `${r ?? 0}px`).join(' ') : layer.radius > 0 ? layer.radius : undefined,
+        boxShadow: ink && !ring ? `inset 0 0 0 ${layer.strokeWidth}px ${ink}` : undefined,
+        background: hex ? paintAlpha(hex, layer.fillOpacity, layer.fillHidden) : 'transparent',
+        ...layerStyle,
+      }}
+    >
+      {/* W6.1: a stroke centred, outside or per side draws as its own shape, past the box where it reaches */}
+      {ring && ink && (
+        <svg width="100%" height="100%" viewBox={`0 0 ${Math.max(1, layer.w ?? 1)} ${Math.max(1, layer.h ?? 1)}`} preserveAspectRatio="none"
+          style={{ position: 'absolute', inset: 0, overflow: 'visible', pointerEvents: 'none' }}>
+          <StrokeRing ring={ring} color={ink} layer={layer} />
+        </svg>
+      )}
+    </div>
+  )
+}
+
+/* the stroke's own shape (./stroke.js strokeRing): a band per side, or one line moved out by the position */
+function StrokeRing({ ring, color, layer }) {
+  if (ring.kind === 'ring') return <path data-stroke-ring d={ring.d} fill={color} fillRule="evenodd" />
+  const line = { fill: 'none', stroke: color, strokeWidth: ring.sw, strokeDasharray: layer.strokeDasharray || undefined, strokeLinecap: layer.strokeLinecap ?? undefined, strokeLinejoin: layer.strokeLinejoin ?? undefined }
+  if (ring.kind === 'ellipse') return <ellipse data-stroke-ring cx={ring.cx} cy={ring.cy} rx={ring.rx} ry={ring.ry} {...line} />
+  return <rect data-stroke-ring x={ring.x} y={ring.y} width={ring.w} height={ring.h} rx={ring.rx || undefined} {...line} />
 }
 
 function BackgroundLayer({ layer, palette, layerStyle }) {
@@ -1749,7 +1800,9 @@ function ShapeLayer({ layer, palette, layerStyle }) {
   const renderedSvg = kind === 'flatten' ? applySvgFit(layer.svg, layer.fit ?? 'fill') : null
 
   const strokeColor = paintAlpha(resolveColor(layer.stroke, palette), layer.strokeOpacity, layer.strokeHidden)
-  const sw   = layer.strokeWidth ?? 0
+  const ring = (kind === 'rect' || kind === 'ellipse') ? strokeRing(layer, layer.w ?? 0, layer.h ?? 0) : null
+  /* W6.1: with its own stroke shape, the body is the fill alone, at the box */
+  const sw   = ring ? 0 : layer.strokeWidth ?? 0
   const half = sw > 0 ? sw / 2 : 0
 
   return (
@@ -1763,7 +1816,7 @@ function ShapeLayer({ layer, palette, layerStyle }) {
         cursor: 'move',
         /* a line's box can be ~0px tall; it lets its hit band (below) out — and a vector effect
            (offset, zigzag, distress) grows the outline past the box, so it draws out too */
-        overflow: kind === 'line' || drawsAsOutline(layer) ? 'visible' : 'hidden',
+        overflow: kind === 'line' || drawsAsOutline(layer) || ring ? 'visible' : 'hidden',
         ...layerStyle,
       }}
     >
@@ -1813,6 +1866,7 @@ function ShapeLayer({ layer, palette, layerStyle }) {
             strokeLinecap={layer.strokeLinecap ?? undefined}
             strokeLinejoin={layer.strokeLinejoin ?? undefined}
           />
+          {ring && strokeColor && <StrokeRing ring={ring} color={strokeColor} layer={layer} />}
         </svg>
       )}
       {kind === 'ellipse' && (
@@ -1836,6 +1890,7 @@ function ShapeLayer({ layer, palette, layerStyle }) {
             strokeLinecap={layer.strokeLinecap ?? undefined}
             strokeLinejoin={layer.strokeLinejoin ?? undefined}
           />
+          {ring && strokeColor && <StrokeRing ring={ring} color={strokeColor} layer={layer} />}
         </svg>
       )}
       {kind === 'triangle' && (
@@ -2028,20 +2083,22 @@ function BoolLayer({ layer, palette, layerStyle }) {
  *
  * Variable axis (`layer.axisOn` — the brand editor's basic morph setting,
  * TypeFrame's three branches ported): morph = MorphedText glyph-outline
- * interpolation Cut A→Cut B, random = per-char cut scatter, fade = two-cut
- * cross-fade. Axis branches render display-only (no on-canvas editing —
+ * interpolation weight → weight2 on one variable file, random = per-char
+ * weight scatter, fade = two-weight cross-fade. Axis branches render display-only (no on-canvas editing —
  * the Inspector's Content field owns text edits there); `axisBlend` is a
  * layer prop, so a binding on it resolves per-frame via resolveLayer and
  * the morph ANIMATES like any bound param.
  */
 function TextLayer({ layer, palette, layerStyle }) {
-  const { selectedId, updateLayer } = useComposeState()
+  const { selectedId, updateLayer, removeLayer } = useComposeState()
   const color       = paintAlpha(resolveColor(layer.color, palette) ?? '#FFFFFF', layer.fillOpacity, layer.fillHidden)
   const strokeColor = paintAlpha(resolveColor(layer.stroke, palette), layer.strokeOpacity, layer.strokeHidden)
   const sw          = layer.strokeWidth ?? 0
   const family      = layerFamily(layer)
   const familyCss   = familyCssFor(layer)
-  /* Google families load on first sight (deduped link injection). */
+  const weight      = layerWeight(layer)
+  /* Fonts load on first sight: the outline families' variable FontFaces,
+   * Google families' css2 link (both deduped). */
   useEffect(() => { ensureFamilyLoaded(family) }, [family])
 
   /* Resizing (Figma Layout model, T4): auto modes MEASURE the rendered text
@@ -2055,8 +2112,8 @@ function TextLayer({ layer, palette, layerStyle }) {
     Object.assign(el.style, {
       position: 'absolute', visibility: 'hidden', left: '-99999px', top: '0',
       fontFamily: familyCss,
-      fontWeight: String(layer.weight ?? 600),
-      fontStyle: layer.italic ? 'italic' : 'normal',
+      fontWeight: String(weight),
+      fontStyle: fontStyleFor(layer),
       fontSize: `${layer.size ?? 96}px`,
       letterSpacing: `${layer.tracking ?? -0.01}em`,
       lineHeight: String(layer.lineHeight ?? 1.05),
@@ -2064,11 +2121,19 @@ function TextLayer({ layer, palette, layerStyle }) {
       overflowWrap: resizing === 'auto-w' ? 'normal' : 'break-word',
       width: resizing === 'auto-h' ? `${layer.w}px` : 'max-content',
       minHeight: '1em',
-    })
-    el.textContent = applyCase(layer.text ?? '', layer.case) || ' '
+      textAlign: layer.textAlign ?? 'center',
+    }, textCss(layer))
+    const shown = applyCase(layer.text ?? '', layer.case) || ' '
+    const paras = paragraphLayout(layer, shown)
+    if (paras) appendParagraphs(el, paras)
+    else el.textContent = shown
     document.body.appendChild(el)
-    const r = el.getBoundingClientRect()
+    hangMarks(el)
+    const box = el.getBoundingClientRect()
     el.remove()
+    /* Vertical trim cuts the block as the canvas draws it */
+    const cut = capTrim(layer, familyCss, weight)
+    const r = cut ? { width: box.width, height: box.height - cut.top - cut.bottom } : box
     if (resizing === 'auto-w') {
       const nw = Math.max(8, Math.ceil(r.width) + 2)
       const nh = Math.max(8, Math.ceil(r.height))
@@ -2077,7 +2142,8 @@ function TextLayer({ layer, palette, layerStyle }) {
       const nh = Math.max(8, Math.ceil(r.height))
       if (Math.abs(nh - layer.h) > 1) updateLayer(layer.id, { h: nh })
     }
-  }, [resizing, layer.text, layer.case, familyCss, layer.weight, layer.italic, layer.size, layer.tracking, layer.lineHeight, layer.w, layer.h, layer.axisOn, layer.id, updateLayer])
+  }, [resizing, layer.text, layer.case, familyCss, weight, layer.italic, layer.slant, layer.size, layer.tracking, layer.lineHeight, layer.w, layer.h, layer.axisOn, layer.id, layer.family,
+    layer.textAlign, layer.features, layer.decoration, layer.wrap, layer.trim, layer.listStyle, layer.hangLists, layer.hangPunctuation, layer.paragraphSpacing, layer.paragraphIndent, updateLayer])
   /* Axis branches need parseable outlines — non-outline families render the
    * basic branch regardless of axisOn (the rail says why). */
   const axisActive  = !!layer.axisOn && isOutlineFamily(family)
@@ -2087,8 +2153,9 @@ function TextLayer({ layer, palette, layerStyle }) {
   const vAlign      = layer.verticalAlign === 'top' ? 'flex-start'
     : layer.verticalAlign === 'bottom' ? 'flex-end' : 'center'
   const baseStyle   = {
-    fontWeight:    layer.weight,
-    fontStyle:     layer.italic ? 'italic' : 'normal',
+    fontFamily:    familyCss,
+    fontWeight:    weight,
+    fontStyle:     fontStyleFor(layer),
     fontSize:      `${layer.size}px`,
     letterSpacing: `${layer.tracking}em`,
     lineHeight:    layer.lineHeight,
@@ -2113,10 +2180,12 @@ function TextLayer({ layer, palette, layerStyle }) {
     >
       {!axisActive && (
         <TypeBlock
-          value={{ ...layer, familyCss, color, strokeColor: sw > 0 ? strokeColor : null, strokeWidth: sw }}
+          value={{ ...layer, weight, familyCss, fontStyle: fontStyleFor(layer), color, strokeColor: sw > 0 ? strokeColor : null, strokeWidth: sw,
+            textCss: textCss(layer), paragraphs: paragraphLayout(layer, display), trim: capTrim(layer, familyCss, weight), clamp: clampLines(layer) }}
           selected={selectedId === layer.id}
           editOnMount={!!layer.editOnMount}
           onChange={(patch) => updateLayer(layer.id, { ...patch, editOnMount: undefined })} /* the flag is one-shot: cleared on the first commit */
+          onExit={(text) => { if (!text.trim()) removeLayer(layer.id) }} /* a text left empty is no layer */
           className="w-full"
         />
       )}
@@ -2125,19 +2194,14 @@ function TextLayer({ layer, palette, layerStyle }) {
         <div className="w-full" style={{ textAlign: baseStyle.textAlign }}>
           <MorphedText
             text={display}
-            width1={layer.width}   weight1={layer.weight}  italic1={layer.italic}
-            width2={layer.width2}  weight2={layer.weight2} italic2={layer.italic}
+            family={family}  weight1={weight}  weight2={layerWeight(layer, 'weight2')}  italic={layer.italic}
             blend={layer.axisBlend ?? 0.5}
             curve={layer.axisCurve ?? 'flat'}
             cp1={layer.curveCp1 ?? { x: 0.33, y: 0.33 }}
             cp2={layer.curveCp2 ?? { x: 0.66, y: 0.66 }}
             size={layer.size}
             color={color}
-            fallbackStyle={{
-              ...baseStyle,
-              fontFamily: `'${familyFor(layer.width)}', 'Right Grotesk', sans-serif`,
-              color,
-            }}
+            fallbackStyle={{ ...baseStyle, color }}
           />
         </div>
       )}
@@ -2145,12 +2209,9 @@ function TextLayer({ layer, palette, layerStyle }) {
       {axisActive && mode === 'random' && (
         <div className="w-full" style={{ ...baseStyle, color }}>
           {Array.from(display).map((ch, i) => {
-            const [w, wt] = pickCutFor(i, seedFromBlend(layer.axisBlend ?? 0.5), {
-              widthLock:  layer.randomWidthLock,
-              weightLock: layer.randomWeightLock,
-            })
+            const wt = pickWeightFor(i, seedFromBlend(layer.axisBlend ?? 0.5), weightRange(family).min, weightRange(family).max)
             return (
-              <span key={i} style={{ fontFamily: `'${familyFor(w)}', 'Right Grotesk', sans-serif`, fontWeight: wt }}>
+              <span key={i} style={{ fontWeight: wt }}>
                 {ch}
               </span>
             )
@@ -2164,7 +2225,6 @@ function TextLayer({ layer, palette, layerStyle }) {
             style={{
               ...baseStyle,
               gridArea:   '1 / 1',
-              fontFamily: `'${familyFor(layer.width)}', 'Right Grotesk', sans-serif`,
               color,
               opacity:    1 - (layer.axisBlend ?? 0.5),
             }}
@@ -2175,8 +2235,7 @@ function TextLayer({ layer, palette, layerStyle }) {
             style={{
               ...baseStyle,
               gridArea:   '1 / 1',
-              fontFamily: `'${familyFor(layer.width2)}', 'Right Grotesk', sans-serif`,
-              fontWeight: layer.weight2,
+              fontWeight: layerWeight(layer, 'weight2'),
               color,
               opacity:    layer.axisBlend ?? 0.5,
             }}

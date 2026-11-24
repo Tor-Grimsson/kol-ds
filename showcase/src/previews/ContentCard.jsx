@@ -76,7 +76,7 @@ const slide = (title, i) => (
 /* ONE VARIANT AT A TIME, IN THE PICKER (2026-10-09 — user: "just show default and give options to
  * variants, thats the rule"). The five content KINDS plus canvas (2026-10-22 — the picker listed the old
  * alias names, default · print · work · typeface, and had no slide). */
-export const variants = ['file', 'catalog', 'slide', 'article', 'showcase', 'canvas']
+export const variants = ['file', 'catalog', 'slide', 'article', 'showcase', 'canvas', 'kolbox', 'folio']
 
 /* THE PROPS NO SPECIMEN SHOWED (2026-10-22, "missing properties"), as the third axis: `specimens` is the
  * variant's own set; every other state draws that prop on the picked variant */
@@ -173,5 +173,9 @@ function PropState({ variant, state }) {
 const TALL = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="600" height="1000"><rect width="600" height="1000" fill="#6b7280"/><circle cx="300" cy="500" r="240" fill="#9ca3af"/></svg>')
 
 export default function ContentCardPreview({ variant = 'file', state = 'specimens' }) {
+  /* folio (Folio batch E): Folio's cover card, a plain cover standing in for its generated jacket */
+  if (variant === 'folio') return <div data-folio-theme="light" className="w-full bg-[var(--kol-folio-paper)] p-6 leading-[1.21] text-[var(--kol-folio-ink)] [font-family:var(--kol-font-family-float)]"><div className="flex w-[201px]"><ContentCard variant="folio" href="#" media={<span className="block h-[282px] w-[201px] bg-[#a9c3d9]" />} title="The Waves" meta="3 chapters" label="Work" /></div></div>
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return <div className="w-[356px]"><ContentCard variant="kolbox" file={{ id: 'a', name: 'Composition 01', modified: Date.now() - 2 * 36e5, size: '1.2 MB', mark: { icon: 'desktop', label: 'Editor' } }} onDownload={() => {}} onSettings={() => {}} onRemove={() => {}} /></div>
   return state === 'specimens' ? <Specimens variant={variant} /> : <PropState variant={variant} state={state} />
 }

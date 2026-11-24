@@ -1,3 +1,5 @@
+import { Children, useState } from 'react'
+import { IconLoader } from '@kolkrabbi/kol-icons'
 import Button from '../atoms/Button.jsx'
 import Dropdown from '../molecules/Dropdown.jsx'
 import CloseButton from '../molecules/CloseButton.jsx'
@@ -137,7 +139,7 @@ export default function SettingsPanel({
 }
 
 /**
- * SettingsRow — One labelled setting. a `LabeledControl inline` (SettingsPanelApproved, 2026-08-27):
+ * SettingsRow — One labelled setting. a `LabeledControl horizontal` (SettingsPanelApproved, 2026-08-27):
  * uppercase label (`kol-helper-10` tracked, meta ink) in a 160px column, the
  * control fills the rest. A switch sits at the far right (`align="end"`, the
  * default); a dropdown fills the row (`align="fill"`). No hint sentences on the
@@ -153,7 +155,7 @@ export default function SettingsPanel({
 export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, text = false, stack = false, children }) {
   if (stack) align = 'fill'
   return (
-    <LabeledControl inline={!stack} text={text} label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
+    <LabeledControl horizontal={!stack} text={text} label={typeof label === 'string' ? label.toUpperCase() : label} labelWidth={labelWidth}>
       {hint
         ? <Tooltip label={hint} triggerClassName={`flex min-h-6 items-center w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()}>{children}</Tooltip>
         /* `flex`, not `inline-flex`: an inline box rode the label's text baseline and sat 5px low (2026-10-31) */
@@ -186,8 +188,111 @@ export function SettingsSwitch({ on = false, onChange, disabled = false, disable
  *  Was `SettingsSection` until 2026-08-27 (LabeledControlSection, kol-r2b2 —
  *  user ruling: it named the place it was first used, not what it is; kol-fxr
  *  took it for a params rail the same day). RENAMED, NO ALIAS — the render is
- *  the 0.104.0 locked composition, untouched. */
-export function LabeledControlSection({ label, divided = false, rowGap = 2, children, className = '' }) {
+ *  the 0.104.0 locked composition, untouched.
+ *
+ *  `variant="float"` — the one float section (plan-2026-11-12-float-rails-figma W10.1, the user: *"this should be a
+ *  component with slots that has multiple items?"*): a `head` (the `label`, any node, a string in the float label role,
+ *  and `end`, a + button or a meta, at the far end) over the items (children, any number). PropertyRail's sections and
+ *  subheads, ReadingContents' chapters and NavRail float's groups all draw it. The head renders only when a label or an
+ *  end is given, the items only when there are any. `gap` is head to items, `rowGap` items to items, each a spacing step
+ *  (0.5 · 1 · 1.5 · 2 · 3) or `'module'` (`--kol-float-module-gap`); float defaults 3 (12) and 2 (8). `as` the element
+ *  (`nav` for a list of links), the rest of the props on it. */
+const GAP = { 0.5: 'gap-0.5', 1: 'gap-1', 1.5: 'gap-1.5', 2: 'gap-2', 3: 'gap-3', module: 'gap-[var(--kol-float-module-gap)]' }
+const SETTINGS_GAP = { 3: 'gap-3', 4: 'gap-4', settings: 'gap-[7px]' }
+/* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): kolbox's RailSection (Figma 27:9309),
+ * carried from apps/kolbox/src/ui/RailSection.jsx. A 1px rule at the section's top, then the head: a 40 row, the `label`
+ * 16 in, its `end` actions (24 boxes) 4 apart and 8 off the right edge; 4 to the rows, inset 16, 8 apart; 16 under them.
+ * With no rows it is the rule and the head alone (41 high). Measured on Figma's own rails (plan-2026-11-23-editor-
+ * measured-against-figma W3: Pages, Layers, Page, Styles and Export headers are 40, label 16 in); closed is not empty, so its title and
+ * its actions keep the full ink (his "I thought text were white", R3.2).
+ * THE RAIL'S ONE GRID (plan-2026-11-19-kolbox-whats-left R3.1): in a Rail the rows' tracks are set here, once, as
+ * `--kol-kolbox-row-cols`: two field columns and two 16 icon columns, 8 apart (76, 76, 16, 16 in the 240 rail; his
+ * design's Stroke row, 149:26890). FieldPair and ColorInputRow kolbox lay out on it; the head's actions sit at the right
+ * of the head (above); LabeledControl kolbox's 76 label is the first field column. */
+function LabeledControlSectionKolbox({ label, end, className = '', children }) {
+  const rows = Children.toArray(children)
+  const open = rows.length > 0
+  return (
+    <section
+      className={`kol-section--kolbox relative flex flex-col gap-1 pt-px ${open ? 'pb-4' : ''} before:absolute before:inset-x-0 before:top-0 before:h-px ${className}`}
+      data-rail-section={label ?? ''}
+    >
+      {(label || end) && (
+        <header className="flex h-10 items-center pr-2 pl-4">
+          <h3 className="kol-section-title--kolbox min-w-0 flex-1 truncate">{label}</h3>
+          {end && <span className="flex shrink-0 items-center gap-1">{end}</span>}
+        </header>
+      )}
+      {open && <div className="flex flex-col gap-2 px-4 in-data-rail:[--kol-kolbox-row-cols:minmax(0,1fr)_minmax(0,1fr)_var(--kol-spacing-4)_var(--kol-spacing-4)]">{rows}</div>}
+    </section>
+  )
+}
+
+/* `variant="folio"` (Folio batch C, 2026-11-22): Folio's SettingGroup, carried class for class. The `label` (12 / 17
+ * medium, Folio's ink) 12 over its rows, the rows 8 apart. Chrome in kol-theme `.kol-section--folio`. */
+function LabeledControlSectionFolio({ label, className = '', children }) {
+  return (
+    <div className={`kol-section--folio flex flex-col gap-[12px] ${className}`.trim()}>
+      <p className="kol-section-title--folio">{label}</p>
+      <div className="flex flex-col gap-[8px]">{children}</div>
+    </div>
+  )
+}
+
+export function LabeledControlSection(props) {
+  if (props.variant === 'folio') return <LabeledControlSectionFolio {...props} />
+  return props.variant === 'kolbox' ? <LabeledControlSectionKolbox {...props} /> : <LabeledControlSectionBody {...props} />
+}
+function LabeledControlSectionBody({ label, end, variant, divided = false, gap, rowGap, collapsible = false, open, defaultOpen = true, onToggle, as: Tag = 'div', children, className = '', ...rest }) {
+  const [ownOpen, setOwnOpen] = useState(defaultOpen)
+  /* `variant="settings"` (plan-2026-11-12-float-rails-figma W13.1): the generator settings window's group — the head is
+   * the title (a string in Inter 12 semibold) with `end` (the note) at its right on one baseline, 15 over the items;
+   * `divided` rules it off from the next group (22 under the items, an oq-16 rule, 18 to the next; the last none).
+   * `gap` 3 · 4 replaces the 15; `rowGap` 3 · 4 · 'settings' (7) spaces the items, unset they sit flush. */
+  if (variant === 'settings') {
+    const items = Children.toArray(children)
+    const hasLabel = label != null && label !== false && label !== ''
+    return (
+      <Tag data-labeled-control-section="" className={`flex flex-col ${SETTINGS_GAP[gap] ?? 'gap-[15px]'} ${divided ? 'pb-[22px] mb-[18px] border-b border-oq-16 last:border-b-0 last:mb-0' : ''} ${className}`.replace(/\s+/g, ' ').trim()} {...rest}>
+        {(hasLabel || end) && (
+          <div className="flex items-baseline justify-between gap-4 pr-3">
+            {hasLabel && (typeof label === 'string' ? <h3 className="text-[12px] leading-[15px] font-semibold text-fg-96 font-(family-name:--kol-font-family-float)">{label}</h3> : label)}
+            {end && (typeof end === 'string' ? <span className="text-[10px] leading-[12px] text-oq-64 font-(family-name:--kol-font-family-float)">{end}</span> : end)}
+          </div>
+        )}
+        {items.length > 0 && <div className={`flex flex-col ${SETTINGS_GAP[rowGap] ?? ''}`.trim()}>{items}</div>}
+      </Tag>
+    )
+  }
+  if (variant === 'float') {
+    const items = Children.toArray(children)
+    const hasLabel = label != null && label !== false && label !== ''
+    const head = hasLabel && (typeof label === 'string' ? <span className="kol-float-label text-oq-64">{label}</span> : label)
+    /* `collapsible` (plan-2026-11-12-one-header W10.1): the head is the toggle, ONE indicator — the 12 chevron at its right
+     * end (⌄ open, › closed), the Header's chevron; `open` controlled or `defaultOpen`, `onToggle(open)`. `end` sits before
+     * the chevron and must not be interactive. The items hide while closed. */
+    const isOpen = !collapsible || (open ?? ownOpen)
+    const toggle = () => { const next = !isOpen; if (open === undefined) setOwnOpen(next); onToggle?.(next) }
+    return (
+      <Tag data-labeled-control-section="" data-open={collapsible ? String(isOpen) : undefined} className={`flex flex-col ${GAP[gap ?? 3]} ${className}`.trim()} {...rest}>
+        {collapsible ? (
+          <button type="button" aria-expanded={isOpen} onClick={toggle}
+            className="flex w-full items-center gap-2 text-left rounded-sm cursor-pointer focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
+            <span className="flex min-w-0 flex-1 items-center">{head}</span>
+            {end}
+            <IconLoader name={isOpen ? 'chevron-down' : 'chevron-right'} size="var(--kol-float-chev-sm)" className="shrink-0 text-oq-64" />
+          </button>
+        ) : (hasLabel || end) && (
+          <div className="flex items-center justify-between">
+            {head}
+            {end}
+          </div>
+        )}
+        {isOpen && items.length > 0 && <div className={`flex flex-col ${GAP[rowGap ?? 2]}`}>{items}</div>}
+      </Tag>
+    )
+  }
+  rowGap ??= 2
   return (
     <div className={`flex flex-col gap-3 ${divided ? 'kol-section--divided' : ''} ${className}`.replace(/\s+/g, ' ').trim()}>
       {label && <p className="kol-eyebrow text-fg-80">{label}</p>}
@@ -305,5 +410,30 @@ export function SettingsFooter({ onReset, resetLabel = 'Reset to defaults', rese
           </Tooltip>
         )}
       </div>
+  )
+}
+
+/** @deprecated 2026-11-12 — `LabeledControlSection variant="settings"` (on the retirement ledger) */
+export function SettingsGroup({ title, note, ruled = true, className = '', children }) {
+  return <LabeledControlSection variant="settings" label={title} end={note} divided={ruled} className={className}>{children}</LabeledControlSection>
+}
+
+/** SettingsDisclosure — the settings window's group that starts closed (`Dialog variant="settings"`, W7.2):
+ *  `LabeledControlSection variant="settings"` whose label is the toggle — the 12 chevron, the title, its note right
+ *  (plan-2026-11-12-float-rails-figma W13.1; it typed a 16px › until then). Lives here beside the section it draws. */
+export function SettingsDisclosure({ label, note, open, onToggle, children }) {
+  const head = (
+    <button type="button" aria-expanded={!!open} onClick={() => onToggle?.(!open)}
+      className="flex flex-1 items-center gap-[11px] h-[19px] text-left rounded focus-visible:outline-none focus-visible:shadow-[var(--kol-float-focus)]">
+      {/* the chevron is the 12 token (LAW 9), never a typed › */}
+      <IconLoader name="chevron-right" size="var(--kol-float-chev-sm)" className={`shrink-0 text-oq-64 transition-transform ${open ? 'rotate-90' : ''}`} />
+      <span className={`text-[11px] leading-[13px] text-fg-96 font-(family-name:--kol-font-family-float) font-medium`}>{label}</span>
+      {note && <span className={`text-[10px] leading-[12px] text-oq-64 font-(family-name:--kol-font-family-float) ml-auto`}>{note}</span>}
+    </button>
+  )
+  return (
+    <LabeledControlSection variant="settings" label={head} gap={4} rowGap="settings">
+      {open ? children : null}
+    </LabeledControlSection>
   )
 }

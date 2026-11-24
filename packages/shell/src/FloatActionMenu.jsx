@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, PopoverPanel, usePopover, floatSurfaceClass, floatMotion } from '@kolkrabbi/kol-component'
-import MoreRows from './MoreSheet.jsx'
+import { MenuFloatRows, MenuFloat } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: molecule — a round Button that opens the More sheet's rows */
 
@@ -10,7 +10,7 @@ import MoreRows from './MoreSheet.jsx'
  * beside it to the LEFT, top edges on one line, 12 off (user 2026-10-23), the phone More's rows. The catalog's
  * VariantsButton shape. FloatLayout draws it at the bar's end from `bar.menu`.
  *
- * @param {Array}    actions  `[{ label, icon?, onPress }]` — MoreRows' actions
+ * @param {Array}    actions  `[{ label, icon?, onPress }]` — MenuFloatRows' actions
  * @param {'more'|'plus'|string} [icon='more']  the button's glyph; anything but `more` turns to × while open
  * @param {'float'} [variant]  the sheet in the float look (`kol-more-sheet-float` on `surface`); unset, the plain sheet
  * @param {'solid'|'glass-dark'|'glass-light'} [surface='solid']  what the float sheet is made of — the button never changes
@@ -18,13 +18,14 @@ import MoreRows from './MoreSheet.jsx'
  *                                the one glyph 45° (the + into the ×) and back on close; `swap` exchanges the icon
  * @param {boolean|Object} [motion=true]  the button's states, the turn and the sheet's enter and leave: `true` the
  *                                `--kol-float-*` tokens · `false` none · `{ duration, ease }` per app (floatMotion)
+ * @param {string}   [title='Actions']  the float sheet's header (MenuFloat's Header) — the button's label
  * @param {string}   [className]
  *
  * The button's ladder (FloatActionStatesAndMotion, kol-website 2026-11-04): rest the solid inverted circle with the float
  * shadow · hover the same fill at `--kol-float-hover-opacity` · pressed `--kol-float-press-scale` · open the × on the same
  * fill and shadow (`.kol-float-action`; the shadow with `variant="float"`, so Home's plain masthead button is not lifted).
  */
-export default function FloatActionMenu({ actions, icon = 'more', variant, surface = 'solid', iconMotion = 'rotate', motion = true, className = '' }) {
+export default function FloatActionMenu({ actions, icon = 'more', variant, surface = 'solid', iconMotion = 'rotate', motion = true, title = 'Actions', className = '' }) {
   const [open, setOpen] = useState(false)
   /* the sheet opens to the LEFT of the button, top edges on one line (user 2026-10-23) — as the phone's sits beside its × */
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'left-start', offset: 12 })
@@ -40,7 +41,9 @@ export default function FloatActionMenu({ actions, icon = 'more', variant, surfa
           className={`kol-float-action${variant === 'float' ? ' is-float' : ''}${turn ? ` kol-float-turn${open ? ' is-open' : ''}` : ''}`} />
       </span>
       <PopoverPanel popover={popover} panel={false} motion={motion} className={`kol-more-sheet${variant === 'float' ? ` kol-more-sheet-float ${floatSurfaceClass(surface, true)}` : ''}`} style={{ minWidth: 220 }}>
-        <MoreRows actions={actions} variant={variant} onPick={() => setOpen(false)} />
+        {variant === 'float'
+          ? <MenuFloat title={title} onLeaf={() => setOpen(false)}><MenuFloatRows actions={actions} variant="float" onPick={() => setOpen(false)} /></MenuFloat>
+          : <MenuFloatRows actions={actions} variant={variant} onPick={() => setOpen(false)} />}
       </PopoverPanel>
     </div>
   )

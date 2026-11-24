@@ -20,7 +20,7 @@ import { Tooltip } from '../utilities/Popover.jsx'
  *                      on the emphasis ink, the rest fg-64 with an fg-08 hover; the float focus ring. Pagination and
  *                      the view switch are one shape.
  *
- * Built on the .kol-control shell. Default options use grid / view-list
+ * Built on the .kol-control shell. Default options use grid / list-bullet
  * icons; consumers can pass `options` to override. `iconVariant` picks the
  * icon cut for variant="icon" ('stroke' default; 'solid' reads better at
  * 14px). For `variant="single"`, the FIRST option in `options` is the "off"
@@ -47,7 +47,7 @@ const ViewToggle = ({
   tone = 'default',
   options = [
     { value: 'grid', label: 'Grid view', icon: 'grid' },
-    { value: 'list', label: 'List view', icon: 'view-list' }
+    { value: 'list', label: 'List view', icon: 'list-bullet' }
   ],
   className = ''
 }) => {

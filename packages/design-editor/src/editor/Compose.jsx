@@ -4,7 +4,7 @@ import { composePanes, composeTabs, useTabContext, WorkspaceEffects } from './sh
 import ToolStrip from './shell/panels/ToolStrip'
 import ActionBar from './shell/panels/ActionBar'
 import EditorFooter from './shell/panels/EditorFooter'
-import LayerEffectsWindow from './shell/LayerEffectsWindow'
+import ModalLayerEffects from './shell/ModalLayerEffects'
 import DocTitle from './shell/DocTitle'
 import { pack } from './packs'
 
@@ -44,7 +44,7 @@ export default function Compose() {
   return (
     <>
       <WorkspaceEffects />
-      <LayerEffectsWindow />
+      <ModalLayerEffects />
       <EditorShell registry={(registry ??= composeRegistry())} />
     </>
   )

@@ -8,7 +8,7 @@ import figma from 'figma'
 const instance = figma.selectedInstance
 const variant = instance.getEnum('variant', { "minimal": "minimal", "float": "float", "scrub": "scrub", "panel": "panel", "dual": "dual" })
 const readout = instance.getEnum('readout', { "input": "input", "value": "value", "none": "none" })
-const direction = instance.getEnum('direction', { "horizontal": "horizontal", "vertical": "vertical" })
+const direction = instance.getEnum('vertical', { "false": "horizontal", "true": "vertical" })
 const label = instance.getString('label')
 const xv = variant === 'minimal' ? '' : ` variant="${variant}"`
 const xr = readout === 'input' || variant === 'panel' || variant === 'dual' || variant === 'scrub' ? '' : ` readout="${readout}"`

@@ -3,7 +3,7 @@ title: Operations
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-09-28
+updated: 2026-11-20
 description: Repo machinery for the KOL packages
 tags:
   - domain/workflow
@@ -29,6 +29,7 @@ Repo machinery — how the KOL packages get versioned, published, eyeballed, and
 | [[08-cloud-sessions/INDEX\|08 — Cloud sessions]] | **Working from a claude.ai cloud container** — the user is the only author, the session branch fast-forwards into `main`, the cloud bumps and the user publishes. |
 | [[09-phase-log/INDEX\|09 — Phase log]] | **Every run of work, newest first** — the phases, the decisions, the plan behind each. Shown on the Development space. |
 | [[10-figma/INDEX\|10 — Figma]] | **Which Figma file holds what** — the KOL library, the family files, the rule that splits them, and how a family moves out. |
+| [[11-development-rules/INDEX\|11 — Development rules]] | **How code is written here** — no comments in code, a correction becomes a check that fails, and the rollout that puts both in force. |
 
 ## Folder shape
 

@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
-import { editLayer } from '../generate/store'
+import { editLayer, editContent } from '../generate/store'
+import { contentOf, hasImageFill, photoOf } from './layerModel'
 import Canvas, { CANVAS_VIRTUAL_W } from '../shell/Canvas'
 import { useComposeState, resolveColor, COVER_TYPES, CANVAS_W } from './state'
 import LayerRenderer from './LayerRenderer'
@@ -9,8 +10,9 @@ import { scaleBoolChildren } from './boolean-ops'
 import { findLayerDeep } from './helpers'
 import KineticElementOverlay from './KineticElementOverlay'
 import SoftformsHandleOverlay from './SoftformsHandleOverlay'
+import FrameChrome, { useScreenScale } from './FrameChrome'
 import { matchAny, isTyping } from '../state/keymap'
-import { useTool } from '../state/tools'
+import { useTool, canOrbit } from '../state/tools'
 import { useColorTarget } from '../color/useColorTarget'
 import { useLayerEdit } from './useLayerEdit'
 import { computeSnapTargets, findSnap } from './snap'
@@ -19,8 +21,10 @@ import { toggleDots } from '../params/dotVisibility'
 import { saveClip } from '../lib/clipStore'
 import { CURSORS } from './cursors'
 import { resolveMasks, canMask } from './masks'
+import { clipsContent, frameAt, frameOutline, placeInList } from './frame'
 import { CanvasZoomContext } from '../shell/Canvas'
 import { setZoom } from '../shell/zoomStore'
+import { setHoverLayer, useHoverLayer } from './hoverStore'
 import { stillToDataUrl } from '../lib/stillUpload'
 import { useChrome } from '../float/chrome'
 import { rowLabelForLayer } from './labels'
@@ -115,8 +119,6 @@ export const zoomFit = (to = 'frame') => window.dispatchEvent(new CustomEvent('k
 /* the band outside the frame that selects the canvas, in screen px — 16, not 8 (plan 30 § 7: "make
    the margin of click larger") */
 const FRAME_EDGE = 16
-/* the slop around the frame's ratio label, which selects the canvas too (plan 30 § 7) */
-const LABEL_SLOP = 8
 const NO_GUIDES = { h: [], v: [] }
 
 /* The selected path's segment under a virtual point, within `tol` virtual px — the Pen's
@@ -137,12 +139,37 @@ function segmentHit(layer, vx, vy, tol) {
 
 const CONVERTIBLE_KINDS = new Set(['rect', 'ellipse', 'triangle', 'polygon', 'star', 'line'])
 
+/* A FRAME CLIPS ITS LAYERS (W5): a frame that clips draws its layers right after itself, inside one box at the page's
+   origin cut to the frame's outline (its corners and its turn), so what lies outside it is neither drawn nor pressed.
+   Its own fill and stroke stay outside the cut, as Figma draws a frame's stroke. `loose`: the layers being dragged,
+   drawn whole while they move, so one dragged out of its frame is seen before it is let go. */
+function layerStack(list, palette, loose = null) {
+  const clippers = new Map(list.filter(clipsContent).map((f) => [f.id, f]))
+  const cut = (m) => m.frameId && clippers.has(m.frameId) && !loose?.has(m.id)
+  const out = []
+  for (const l of list) {
+    if (cut(l)) continue
+    out.push(<LayerRenderer key={l.id} layer={l} palette={palette} />)
+    const f = clippers.get(l.id)
+    const members = f ? list.filter((m) => m.frameId === f.id && cut(m)) : []
+    if (members.length) {
+      out.push(
+        <div key={`clip-${f.id}`} data-frame-clip={f.id} style={{ position: 'absolute', left: 0, top: 0, width: 0, height: 0, overflow: 'visible', clipPath: `path('${frameOutline(f)}')` }}>
+          {members.map((m) => <LayerRenderer key={m.id} layer={m} palette={palette} />)}
+        </div>,
+      )
+    }
+  }
+  return out
+}
+
 export default function CanvasArea() {
   const chrome = useChrome()
   const {
     aspect, view, layers, palette,
     canvasRatio, showGrid,
     canvasFill, canvasFillOpacity, infiniteFill,
+    canvasX, canvasY, setCanvasPos, canvasName, setCanvasName,
     selectedId, selectedIds, select, selectCanvas, toggleSelection, selectMany,
     addLayer,
     updateLayer, removeLayer, deleteSelected, duplicateLayer, toggleLayer, toggleLayerLock,
@@ -155,6 +182,7 @@ export default function CanvasArea() {
     guides, setGuides,
     undo, redo, canUndo, canRedo,
     beginTransaction, commitTransaction,
+    frameMode, activeFrame, placeLayer,
   } = useComposeState()
   const { tool, setTool } = useTool()
   /* Paint shortcuts (D / X / Shift+X / N) write through useColorTarget so
@@ -177,8 +205,12 @@ export default function CanvasArea() {
   /* All selected positioned layers — drives multi-wireframe rendering. */
   const selectedPositionedLayers = selectedIds
     .map((id) => layers.find((l) => l.id === id))
-    .filter((l) => l && !COVER_TYPES.includes(l.type))
+    /* a frame's selection is its own chrome (FrameChrome), never the layer box */
+    .filter((l) => l && !COVER_TYPES.includes(l.type) && l.type !== 'frame')
   const isMultiSel = selectedPositionedLayers.length > 1
+  /* THE KOLBOX STYLE (R2): one line around a multi-selection's bounds with the four handles (each member a thin line) */
+  const kolboxSel = chrome === 'kolbox'
+  const groupBox = isMultiSel ? boundsOf(selectedPositionedLayers) : null
 
   /* Canvas fill is now a frame-level property (was: background-typed layer).
    * Falls back to a legacy background layer's color if present, for in-flight
@@ -197,7 +229,11 @@ export default function CanvasArea() {
   const infiniteColor = infiniteFill == null ? 'transparent' : (resolveColor(infiniteFill, palette) ?? 'transparent')
 
   /* masks resolved for drawing (G8): a mask layer hides, its target carries the clip */
-  const visibleLayers = useMemo(() => resolveMasks(layers), [layers])
+  /* frames (C1): a hidden frame hides its layers */
+  const visibleLayers = useMemo(() => {
+    const hidden = frameMode ? new Set(layers.filter((l) => l.type === 'frame' && l.visible === false).map((l) => l.id)) : null
+    return resolveMasks(hidden?.size ? layers.map((l) => (hidden.has(l.frameId) ? { ...l, visible: false } : l)) : layers)
+  }, [layers, frameMode])
 
   /* ─── stage ref + on-demand scale ───────────────────────────────────
    * Scale (screen-px / virtual-px) is computed fresh from the stage rect
@@ -206,6 +242,14 @@ export default function CanvasArea() {
    * `transform: scale()` to a parent), so the cached value went stale on
    * window resize and silently broke drag-create position. */
   const stageRef = useRef(null)
+  /* screen px per virtual px (fit × zoom), the kolbox selection's 1 px (R2) */
+  const screenScale = useScreenScale()
+  /* the live list for gesture ends (the drag effect closes over an older one) */
+  const layersRef = useRef(layers)
+  layersRef.current = layers
+  /* hover (R2, kolbox): the layer under the pointer gets the selection's line, no handles */
+  const hoverId = useHoverLayer()
+  const setHoverId = setHoverLayer
 
   const getScale = useCallback(() => {
     const node = stageRef.current
@@ -237,6 +281,10 @@ export default function CanvasArea() {
 
   /* ─── drag state ─── */
   const [drag, setDrag] = useState(null)
+  /* a frame's layers being moved (not the frame itself, which carries them) are drawn whole until released (W5) */
+  const draggedLoose = drag?.mode === 'move' && layers.find((l) => l.id === drag.layerId)?.type !== 'frame'
+    ? new Set(drag.items ? drag.items.map((it) => it.id) : [drag.layerId])
+    : null
   /* drag = { mode: 'move' | 'resize-NW|N|NE|E|SE|S|SW|W',
               layerId, startX, startY, startBox: {x,y,w,h} }
    *  | { mode: 'create', tool, startVX, startVY, vx, vy, vw, vh }
@@ -250,6 +298,8 @@ export default function CanvasArea() {
    * here whether the pointer actually moved past the dead zone — mouseup
    * without movement is a click, which collapses to single-select. */
   const groupMovedRef = useRef(false)
+  /* A press on the frame arms a frame move (28.1); it becomes one past the same 3px dead zone, else it was a click */
+  const frameMovedRef = useRef(false)
 
   /* Line tool — pen-style placement. First click sets P1; second click
    * commits a line layer between P1 and P2. linePreview tracks the cursor
@@ -299,7 +349,18 @@ export default function CanvasArea() {
    * visually a no-op, it just makes the implicit object-fit rect explicit
    * so pan/crop edits have something to write to. Needs the image's
    * natural size, so the init is async on first crop of a given layer. */
-  const enterCrop = useCallback((layer) => {
+  /* crop works on a photo and on an image fill (W22: an inserted image is a rectangle with an image fill, and Figma
+     crops the fill): the crop window lives in the fill, the box on the layer */
+  const writeCrop = useCallback((id, patch) => {
+    const l = findLayerDeep(layersRef.current, id)
+    if (!l || l.type === 'photo') return updateLayer(id, patch)
+    const { imgX, imgY, imgW, imgH, ...box } = patch
+    const img = Object.fromEntries(Object.entries({ imgX, imgY, imgW, imgH }).filter(([, v]) => v !== undefined))
+    updateLayer(id, { ...box, fill: { ...l.fill, ...img } })
+  }, [updateLayer])
+  const enterCrop = useCallback((host) => {
+    const layer = cropView(host)
+    if (!layer) return
     select(layer.id)
     if (layer.imgW != null) { setCropId(layer.id); return }
     const init = (iw0, ih0) => {
@@ -308,7 +369,7 @@ export default function CanvasArea() {
       const k  = fitK(layer.w / iw0, layer.h / ih0)
       const iw = iw0 * k
       const ih = ih0 * k
-      updateLayer(layer.id, {
+      writeCrop(layer.id, {
         imgX: (layer.w - iw) / 2, imgY: (layer.h - ih) / 2,
         imgW: iw, imgH: ih,
       })
@@ -325,7 +386,7 @@ export default function CanvasArea() {
     const img = new Image()
     img.onload = () => init(img.naturalWidth, img.naturalHeight)
     img.src = layer.src
-  }, [select, updateLayer])
+  }, [select, writeCrop])
 
   /* Virtual canvas height for the active canvas ratio — sizes the pen/node
    * SVG overlays' viewBox so their coords match the layer coord space (no Y
@@ -515,6 +576,21 @@ export default function CanvasArea() {
       layerEl = outer
     }
 
+    /* A MULTI-SELECTION'S HANDLES (R2, kolbox): the group's bounds scale, every unlocked member with them, one undo */
+    if (handleEl && kolboxSel && isMultiSel && handleEl.getAttribute('data-handle') !== 'ROT') {
+      e.preventDefault()
+      beginTransaction()
+      setDrag({
+        mode: 'group-resize', dir: handleEl.getAttribute('data-handle'), startX: e.clientX, startY: e.clientY, box: groupBox,
+        items: selectedPositionedLayers.filter((l) => !l.locked).map((l) => ({
+          id: l.id, x: l.x, y: l.y, w: l.w, h: l.h,
+          nodes: l.type === 'path' ? l.nodes : undefined, holes: l.type === 'path' ? l.holes : undefined,
+          children: l.type === 'bool' ? l.children : undefined,
+        })),
+      })
+      return
+    }
+
     /* Resize / rotate handle wins. Locked layers ignore both. */
     if (handleEl && selectedLayer && !COVER_TYPES.includes(selectedLayer.type) && !selectedLayer.locked) {
       const dir = handleEl.getAttribute('data-handle')
@@ -563,6 +639,24 @@ export default function CanvasArea() {
       return
     }
 
+    /* FRAMES AS OBJECTS (C1): a press on a frame (its empty area or its name) moves it with its layers, as the one
+       frame moved (28.1): one group move, one undo entry; released without a move it selects the frame */
+    const frameHit = frameMode && !e.shiftKey && (() => {
+      const fid = e.target.closest('[data-frame-id]')?.getAttribute('data-frame-id') ?? layerEl?.getAttribute('data-layer-id')
+      const f = fid ? layers.find((l) => l.id === fid && l.type === 'frame') : null
+      return f && !f.locked ? f : null
+    })()
+    if (frameHit) {
+      e.preventDefault()
+      beginTransaction()
+      select(frameHit.id)
+      groupMovedRef.current = false
+      const items = layers.filter((l) => (l.id === frameHit.id || (l.frameId === frameHit.id && !l.locked)) && typeof l.x === 'number')
+        .map((l) => ({ id: l.id, startBox: { x: l.x, y: l.y } }))
+      setDrag({ mode: 'move', layerId: frameHit.id, items, startX: e.clientX, startY: e.clientY })
+      return
+    }
+
     if (layerEl) {
       const id = layerEl.getAttribute('data-layer-id')
       const layer = layers.find((l) => l.id === id)
@@ -579,11 +673,9 @@ export default function CanvasArea() {
          * KEEPS the selection and arms a group move — every selected
          * unlocked positioned layer rides the same delta, one transaction
          * → one undo entry. Collapse-to-single-select happens on mouseup
-         * only when no drag occurred (see onUp). Canvas selection means
-         * "everything" — keep its collapse-to-single click as-is. */
+         * only when no drag occurred (see onUp). */
         const multiIds = selectedIds.filter((sid) => sid !== 'canvas')
         if (
-          !selectedIds.includes('canvas') &&
           multiIds.length > 1 && multiIds.includes(id) &&
           !COVER_TYPES.includes(layer.type)
         ) {
@@ -625,21 +717,21 @@ export default function CanvasArea() {
       }
     }
 
-    /* THE RATIO LABEL IS THE FRAME'S HANDLE (plan 30 § 7, the user: "especially around the aspect
-     * number 4:5"; Figma's frame title): a press on the DS frame's `4:5` label, 8px around it,
-     * selects the canvas. Only here — on empty stage, so a layer under the label still wins. */
-    const label = stageRef.current?.closest('[data-canvas-frame]')?.querySelector(':scope > span')
-    const lr = label?.getBoundingClientRect()
-    if (lr && e.clientX >= lr.left - LABEL_SLOP && e.clientX <= lr.right + LABEL_SLOP
-      && e.clientY >= lr.top - LABEL_SLOP && e.clientY <= lr.bottom + LABEL_SLOP) {
+    /* THE FRAME MOVES FROM ANY PRESS ON IT (plan-2026-11-18-kolbox-system 28.1, his "cant even move frame on canvas",
+     * said three times; 11.3 moved it only once it was selected): a press on the frame's empty area, its ratio tag
+     * or its name label arms a frame move. Past the 3px dead zone it selects the frame and drags its X and Y — one
+     * transaction, one undo entry; layers are frame-relative and travel with it. Released inside the dead zone it was
+     * a click: it selects the frame. A press on a layer never reaches here, so a layer drag still moves the layer. */
+    /* frames as objects: the empty page is the page, a drag on it a marquee (below) */
+    if (!e.shiftKey && !frameMode) {
       e.preventDefault()
-      selectCanvas()
+      frameMovedRef.current = false
+      setDrag({ mode: 'frame', startX: e.clientX, startY: e.clientY, start: { x: canvasX, y: canvasY } })
       return
     }
 
-    /* Empty stage with the Select tool — start a marquee. Tiny drags
-     * (≤ 4 vpx) commit as a click-deselect on pointerup. Shift-marquee
-     * adds to the existing selection. */
+    /* Shift on the empty frame: a marquee that adds to the selection (a plain drag there moves the frame, 28.1).
+     * Tiny drags (≤ 4 vpx) are a click. */
     e.preventDefault()
     const { vx, vy } = clientToVirtual(e.clientX, e.clientY)
     setDrag({
@@ -648,7 +740,7 @@ export default function CanvasArea() {
       startVX: vx, startVY: vy,
       vx, vy, vw: 0, vh: 0,
     })
-  }, [tool, layers, selectedLayer, selectedIds, select, selectCanvas, toggleSelection, beginTransaction, clientToVirtual, getScale, finishPath, linePlacement, addLayer, setTool])
+  }, [tool, layers, selectedLayer, selectedIds, select, selectCanvas, toggleSelection, beginTransaction, clientToVirtual, getScale, finishPath, linePlacement, addLayer, setTool, canvasX, canvasY, frameMode, kolboxSel, isMultiSel, groupBox, selectedPositionedLayers])
 
   /* Window listeners while dragging. */
   useEffect(() => {
@@ -663,6 +755,42 @@ export default function CanvasArea() {
         const w = Math.abs(vx - drag.startVX)
         const h = Math.abs(vy - drag.startVY)
         setDrag((d) => d && (d.mode === 'create' || d.mode === 'marquee') ? { ...d, vx: x, vy: y, vw: w, vh: h } : d)
+        return
+      }
+
+      if (drag.mode === 'frame') {
+        if (!frameMovedRef.current) {
+          if (Math.abs(e.clientX - drag.startX) < 3 && Math.abs(e.clientY - drag.startY) < 3) return
+          frameMovedRef.current = true
+          selectCanvas()
+          beginTransaction()
+        }
+        setCanvasPos(drag.start.x + (e.clientX - drag.startX) / s, drag.start.y + (e.clientY - drag.startY) / s)
+        return
+      }
+
+      if (drag.mode === 'group-resize') {
+        const b = drag.box, d = drag.dir
+        const gx = (e.clientX - drag.startX) / s, gy = (e.clientY - drag.startY) / s
+        let nx = b.x, ny = b.y, nw = b.w, nh = b.h
+        if (d.includes('E')) nw = Math.max(8, b.w + gx)
+        if (d.includes('S')) nh = Math.max(8, b.h + gy)
+        if (d.includes('W')) { nw = Math.max(8, b.w - gx); nx = b.x + b.w - nw }
+        if (d.includes('N')) { nh = Math.max(8, b.h - gy); ny = b.y + b.h - nh }
+        if (e.shiftKey && d.length === 2) {
+          /* Shift keeps the group's ratio, the larger change drives */
+          const k = Math.max(nw / b.w, nh / b.h)
+          nw = b.w * k; nh = b.h * k
+          if (d.includes('W')) nx = b.x + b.w - nw
+          if (d.includes('N')) ny = b.y + b.h - nh
+        }
+        const kx = nw / b.w, ky = nh / b.h
+        for (const it of drag.items) {
+          const patch = { x: nx + (it.x - b.x) * kx, y: ny + (it.y - b.y) * ky, w: it.w * kx, h: it.h * ky }
+          if (it.nodes) { patch.nodes = scalePathNodes(it.nodes, kx, ky); if (it.holes) patch.holes = it.holes.map((r) => scalePathNodes(r, kx, ky)) }
+          if (it.children) patch.children = scaleBoolChildren(it.children, kx, ky)
+          updateLayer(it.id, patch)
+        }
         return
       }
 
@@ -812,6 +940,29 @@ export default function CanvasArea() {
         setDrag(null)
         return
       }
+      if (drag.mode === 'frame' && !frameMovedRef.current) {
+        /* a click on the frame (28.1): it selects the frame, nothing to commit */
+        selectCanvas()
+        setDrag(null)
+        return
+      }
+      /* LAYERS NEST ON THE CANVAS TOO (R5): a moved layer whose centre lands in a frame joins it, one whose centre
+         leaves its frame goes to the page above that frame; inside the move's own undo step. A frame's own move is not
+         this (its members ride with it). */
+      if (frameMode && drag.mode === 'move') {
+        const all = layersRef.current
+        const ids = drag.items ? drag.items.map((it) => it.id) : [drag.layerId]
+        if (all.find((l) => l.id === drag.layerId)?.type !== 'frame') {
+          for (const id of ids) {
+            const l = layersRef.current.find((m) => m.id === id)
+            if (!l || l.type === 'frame' || typeof l.x !== 'number') continue
+            const f = frameAt(layersRef.current, l.x + (l.w ?? 0) / 2, l.y + (l.h ?? 0) / 2)
+            if ((f?.id ?? null) === (l.frameId ?? null)) continue
+            if (f) placeLayer(id, f.id, 'into')
+            else if (layersRef.current.some((m) => m.id === l.frameId)) placeLayer(id, l.frameId, 'above')
+          }
+        }
+      }
       commitTransaction()
       /* Group-move mousedown that never dragged = a plain click on a
        * member — collapse the multi-selection to that layer. After the
@@ -829,7 +980,7 @@ export default function CanvasArea() {
     // commitCreateDrag is closed over below; re-include via deps would force
     // the listener to rebind every render. Stable enough for v1.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [drag, updateLayer, commitTransaction, select, clientToVirtual, getScale])
+  }, [drag, updateLayer, commitTransaction, select, clientToVirtual, getScale, setCanvasPos, selectCanvas, beginTransaction, frameMode, placeLayer])
 
   /* Pen-tool live preview — tracks the cursor between the two clicks so
    * the user sees a dashed preview line snapping with their pointer. */
@@ -921,6 +1072,19 @@ export default function CanvasArea() {
     return () => window.removeEventListener('keydown', onKey, true)
   }, [penActive, finishPath, setTool])
 
+  /* Escape hands back to Select from any tool, the selection kept (Figma). Capture phase, before the editor-level
+   * deselect; a menu or window open takes the key first. */
+  useEffect(() => {
+    if (tool === 'select') return undefined
+    const onKey = (e) => {
+      if (e.key !== 'Escape' || e.defaultPrevented || isTyping(e) || document.querySelector('[data-kolbox-overlay]')) return
+      e.preventDefault(); e.stopPropagation()
+      setTool('select')
+    }
+    window.addEventListener('keydown', onKey, true)
+    return () => window.removeEventListener('keydown', onKey, true)
+  }, [tool, setTool])
+
   /* Switching away from the pen mid-draft commits whatever's drawn. */
   useEffect(() => {
     if (tool !== 'pen' && penRef.current) finishPath(penRef.current.nodes, false)
@@ -991,7 +1155,7 @@ export default function CanvasArea() {
    * kol:show-shortcuts) — CanvasArea owns crop-mode state. */
   useEffect(() => {
     const onCropEvent = (e) => {
-      const layer = layers.find((l) => l.id === e.detail && l.type === 'photo' && !l.locked)
+      const layer = layers.find((l) => l.id === e.detail && cropView(l) && !l.locked)
       if (layer) enterCrop(layer)
     }
     window.addEventListener('kol:enter-crop', onCropEvent)
@@ -1026,6 +1190,7 @@ export default function CanvasArea() {
   /* …except a press on the frame's EDGE, which selects the canvas (the user's 1, Figma's frame
    * title/edge): a band FRAME_EDGE px wide just outside the frame, outlined accent on hover. */
   const [edgeHover, setEdgeHover] = useState(false)
+  const [labelHover, setLabelHover] = useState(false)
   useEffect(() => {
     const onEdge = (e) => {
       const r = stageRef.current?.getBoundingClientRect()
@@ -1035,7 +1200,9 @@ export default function CanvasArea() {
         && e.clientY > r.top - FRAME_EDGE && e.clientY < r.bottom + FRAME_EDGE
     }
     const inPane = (e) => {
-      const pane = e.target.closest?.('main.kol-editor-canvas')
+      /* any canvas pane, not only the real shell's <main>: a host that mounts CanvasArea in its own `.kol-editor-canvas`
+       * (kolbox) deselects off the frame too, now that a click on the frame selects it (11.3) */
+      const pane = e.target.closest?.('.kol-editor-canvas')
       if (!pane || stageRef.current?.contains(e.target)) return false
       return !e.target.closest('[data-kol-ctxmenu], .kol-popover, .kol-overlay-scrim, button, input')
     }
@@ -1207,7 +1374,12 @@ export default function CanvasArea() {
     if (!layerEl) return
     const id = layerEl.getAttribute('data-layer-id')
     const layer = layers.find((l) => l.id === id)
-    if (layer?.type === 'path' || (layer?.type === 'shape' && CONVERTIBLE_KINDS.has(layer.kind))) {
+    /* a layer carrying a Generate or Repeat row (W22) opens that row's tool, as a generate layer opened its own */
+    const genRow = contentOf(layer).find((c) => c.type === 'generate' || c.type === 'repeat')
+    if (genRow && !layer.locked) {
+      e.preventDefault()
+      editContent(genRow.type, layer, genRow)
+    } else if (layer?.type === 'path' || (layer?.type === 'shape' && CONVERTIBLE_KINDS.has(layer.kind))) {
       e.preventDefault()
       directSelect(layer)
     } else if (layer?.type === 'photo' && !layer.locked) {
@@ -1237,9 +1409,10 @@ export default function CanvasArea() {
     ? (layers.find((l) => l.id === nodeEditId && l.type === 'path') ?? null)
     : null
 
-  const cropLayer = cropId
-    ? (layers.find((l) => l.id === cropId && l.type === 'photo' && l.imgW != null) ?? null)
-    : null
+  const cropLayer = (() => {
+    const v = cropId ? cropView(layers.find((l) => l.id === cropId)) : null
+    return v?.imgW != null ? v : null
+  })()
 
   const kineticEditLayer = kineticEdit
     ? (layers.find((l) => l.id === kineticEdit.id && l.type === 'kinetic') ?? null)
@@ -1255,11 +1428,12 @@ export default function CanvasArea() {
   const commitMarqueeDrag = useCallback((d) => {
     if (d.mode !== 'marquee') return
     if (d.vw < 4 && d.vh < 4) {
-      if (!d.additive) select(null)
+      /* frames as objects: a click on the empty page selects nothing (the inspector shows Page) */
+      if (!d.additive) { if (frameMode) select(null); else selectCanvas() }
       return
     }
     const matched = layers
-      .filter((l) => typeof l.x === 'number' && typeof l.y === 'number')
+      .filter((l) => typeof l.x === 'number' && typeof l.y === 'number' && l.type !== 'frame')
       /* Hidden / locked layers can't be marquee-selected — matching what a
        * direct click can reach (invisible layers render nothing; locked
        * layers shouldn't join a bulk move/delete by accident). */
@@ -1271,7 +1445,7 @@ export default function CanvasArea() {
       })
       .map((l) => l.id)
     selectMany(matched, { additive: d.additive })
-  }, [layers, select, selectMany])
+  }, [layers, selectCanvas, selectMany, select, frameMode])
 
   /* Commit a create-drag — instantiate the matching layer at the dragged
    * bounds and revert to the Select tool. Tiny drags (likely a mis-click)
@@ -1279,42 +1453,55 @@ export default function CanvasArea() {
   const commitCreateDrag = useCallback((d) => {
     if (d.mode !== 'create') return
     const tooSmall = d.vw < 8 || d.vh < 8
-    let x = Math.max(0, Math.min(CANVAS_W - 8, d.vx))
-    let y = Math.max(0, Math.min(viewH - 8, d.vy))
+    /* frames as objects: the page has no edge, so nothing clamps to the stage */
+    const clampX = (v, w) => (frameMode ? v : Math.max(0, Math.min(CANVAS_W - w, v)))
+    const clampY = (v, h) => (frameMode ? v : Math.max(0, Math.min(viewH - h, v)))
+    let x = clampX(d.vx, 8)
+    let y = clampY(d.vy, 8)
     let w = d.vw
     let h = d.vh
     if (tooSmall) {
       /* Default sizes per tool when the user just clicks. */
       const defaults = {
-        text:     { w: 600, h: 120 },
         rect:     { w: 240, h: 240 },
         ellipse:  { w: 240, h: 240 },
         triangle: { w: 240, h: 240 },
         polygon:  { w: 240, h: 240 },
         star:     { w: 240, h: 240 },
         pattern:  { w: CANVAS_W, h: viewH },
+        frame:    { w: 400, h: 400 },
+        kinetic:  { w: 640, h: 360 },
       }
       const def = defaults[d.tool] ?? { w: 200, h: 200 }
       w = def.w; h = def.h
-      x = Math.max(0, Math.min(CANVAS_W - w, d.startVX - w / 2))
-      y = Math.max(0, Math.min(viewH - h, d.startVY - h / 2))
+      x = clampX(d.startVX - w / 2, w)
+      y = clampY(d.startVY - h / 2, h)
     }
 
     const extras = { x, y, w, h }
+    const fill = kolboxSel ? { color: '#d9d9d9', fillOpacity: 0.2 } : { color: 'palette:dark' }
     switch (d.tool) {
-      case 'text':     addLayer('text',    { ...extras, editOnMount: true }); break /* opens editing with the caret in it (audit B3) */
-      case 'rect':     addLayer('shape',   { ...extras, kind: 'rect',     color: 'palette:dark' }); break
-      case 'ellipse':  addLayer('shape',   { ...extras, kind: 'ellipse',  color: 'palette:dark' }); break
-      case 'triangle': addLayer('shape',   { ...extras, kind: 'triangle', color: 'palette:dark' }); break
+      /* opens editing with the caret in it (audit B3): a click at the pointer, the box hugging what is typed; a drag, the
+         dragged box */
+      case 'text':     addLayer('text', tooSmall
+        ? { x: d.startVX, y: d.startVY - 6, w: 8, h: 12, resizing: 'auto-w', editOnMount: true }
+        : { ...extras, resizing: 'fixed', editOnMount: true }); break
+      case 'rect':     addLayer('shape',   { ...extras, kind: 'rect',     ...fill }); break
+      case 'ellipse':  addLayer('shape',   { ...extras, kind: 'ellipse',  ...fill }); break
+      case 'triangle': addLayer('shape',   { ...extras, kind: 'triangle', ...fill }); break
       /* line is pen-tool only — never reaches commitCreateDrag (the
        * tool === 'line' branch in onStageMouseDown short-circuits). */
-      case 'polygon':  addLayer('shape',   { ...extras, kind: 'polygon',  sides: 5, color: 'palette:dark' }); break
-      case 'star':     addLayer('shape',   { ...extras, kind: 'star',     points: 5, innerRatio: 0.5, color: 'palette:dark' }); break
+      case 'polygon':  addLayer('shape',   { ...extras, kind: 'polygon',  sides: 5, ...fill }); break
+      case 'star':     addLayer('shape',   { ...extras, kind: 'star',     points: 5, innerRatio: 0.5, ...fill }); break
       case 'pattern':  addLayer('pattern', extras); break
+      case 'kinetic':  addLayer('kinetic', extras); break
+      /* the frame tool (C1): the dragged size, white, no stroke (his ruling 2026-11-19: "default background of a frame
+         should be FFFFFF … and only when drawn") */
+      case 'frame':    if (frameMode) { addLayer('frame', { ...extras, name: null, color: '#ffffff', fillOpacity: 1, stroke: null, density: 1 }); break } return
       default: return
     }
     setTool('select')
-  }, [addLayer, setTool, viewH])
+  }, [addLayer, setTool, viewH, frameMode, kolboxSel])
 
   /* Click-away to deselect.
    *
@@ -1413,10 +1600,6 @@ export default function CanvasArea() {
 
         case 'delete-back':
         case 'delete-fwd': {
-          /* Canvas selection implicitly includes every top-level layer —
-           * deleting here would nuke the whole composition. Same guard as
-           * the inspector's trash button. */
-          if (selectedIds.includes('canvas')) return
           /* Locked layers survive a keyboard delete. Deep lookup so a
            * locked group child is protected too. */
           const ids = layerOnlyIds()
@@ -1444,7 +1627,7 @@ export default function CanvasArea() {
         /* VIEW › ZOOM (plan 33) — in / out / fit also run from the menu; their keys are the DS's */
         case 'zoom-in':           e.preventDefault(); zoomBy(1.2); return
         case 'zoom-out':          e.preventDefault(); zoomBy(1 / 1.2); return
-        case 'zoom-fit':          e.preventDefault(); zoomFit('frame'); return
+        case 'zoom-fit':          e.preventDefault(); zoomFit('frame'); return /* the active frame when there is one (CanvasView reads its chrome) */
         case 'zoom-width':        e.preventDefault(); zoomFit('width'); return
         case 'zoom-selection': {
           e.preventDefault()
@@ -1526,12 +1709,16 @@ export default function CanvasArea() {
           return
         }
         case 'tool-text':    e.preventDefault(); setTool('text');    return
+        case 'tool-frame':   e.preventDefault(); setTool('frame');   return
         case 'tool-pen':     e.preventDefault(); setTool('pen');     return
         case 'tool-rect':    e.preventDefault(); setTool('rect');    return
         case 'tool-ellipse': e.preventDefault(); setTool('ellipse'); return
         case 'tool-pattern': e.preventDefault(); setTool('pattern'); return
         case 'tool-zoom':    e.preventDefault(); setTool('zoom');    return
-        case 'tool-orbit':   e.preventDefault(); setTool('orbit');   return
+        case 'tool-orbit':   if (canOrbit(layers)) { e.preventDefault(); setTool('orbit') }; return
+        case 'tool-line':    e.preventDefault(); setTool('line');    return
+        case 'tool-hand':    e.preventDefault(); setTool('hand');    return
+        case 'insert-image': e.preventDefault(); window.dispatchEvent(new CustomEvent('kol:insert-image')); return
 
         /* Color shortcuts always fire — no selection-dependent gates.
          * SwatchStack is canonical app-level state; writes propagate to
@@ -1616,7 +1803,7 @@ export default function CanvasArea() {
   const penCloses = tool === 'pen' && pen?.nodes?.length >= 2 && pen.cursor
     && dist(pen.cursor.x, pen.cursor.y, pen.nodes[0].x, pen.nodes[0].y) * getScale() < 10
   const wrapperCursor =
-    drag?.mode === 'move' || handDragging ? 'grabbing'
+    drag?.mode === 'move' || drag?.mode === 'frame' || handDragging ? 'grabbing'
       : penCloses ? CURSORS.penClose
       : penAddHover ? CURSORS.penAdd
       : tool === 'zoom' && altHeld ? 'zoom-out'
@@ -1652,6 +1839,7 @@ export default function CanvasArea() {
         aspect={aspect}
         customRatio={canvasRatio}
         bgColor={bgColor ?? undefined}
+        offset={{ x: canvasX, y: canvasY }}
         showGrid={showGrid && !preview}
         showRulers={showRulers && !preview}
         /* Ruler guides render at the viewport level (full-viewport span,
@@ -1669,6 +1857,14 @@ export default function CanvasArea() {
           className="relative w-full h-full"
           onMouseDown={onStageMouseDown}
           onDoubleClick={onStageDoubleClick}
+          onPointerMove={kolboxSel ? (e) => {
+            /* the outermost layer under the pointer, as a press would pick it */
+            let el = e.target.closest?.('[data-layer-id]')
+            while (el?.parentElement?.closest?.('[data-layer-id]')) el = el.parentElement.closest('[data-layer-id]')
+            const id = el?.getAttribute('data-layer-id') ?? e.target.closest?.('[data-frame-label]')?.parentElement?.getAttribute('data-frame-id') ?? null
+            if (id !== hoverId) setHoverId(id)
+          } : undefined}
+          onPointerLeave={kolboxSel ? () => setHoverId(null) : undefined}
           onDragOver={(e) => {
             /* Accept both the app's own library drags AND native OS file drags
              * (types includes 'Files'). */
@@ -1699,15 +1895,30 @@ export default function CanvasArea() {
             addDroppedFile(file, e.clientX, e.clientY)
           }}
         >
-          {visibleLayers.map((layer) => (
+          {/* frames as objects (C1): the page has no edge, so a press anywhere in the viewport is the stage's (a frame
+              drawn, a marquee, a click that selects nothing) */}
+          {frameMode && <div aria-hidden className="absolute" style={{ inset: -100000 }} />}
+          {frameMode ? layerStack(visibleLayers, palette, draggedLoose) : visibleLayers.map((layer) => (
             <LayerRenderer key={layer.id} layer={layer} palette={palette} />
           ))}
+          {kolboxSel && !drag && hoverId && !selectedIds.includes(hoverId) && (() => {
+            const l = layers.find((m) => m.id === hoverId)
+            return l && l.type !== 'frame' && !COVER_TYPES.includes(l.type) && typeof l.x === 'number'
+              ? <SelectionOverlay variant="kolbox" box={l} scale={screenScale} showHandles={false} showRotate={false} showLabel={false} />
+              : null
+          })()}
+          {kolboxSel && groupBox && (
+            <SelectionOverlay variant="kolbox" box={groupBox} scale={screenScale} showRotate={false} />
+          )}
           {selectedPositionedLayers.map((l) => (
             /* The path being node-edited / photo being cropped / kinetic
              * layer in element-edit swaps its box chrome for the mode
              * overlay; paths never get resize handles (edit via nodes). */
             nodeEditId === l.id || cropId === l.id || kineticEdit?.id === l.id || softformsEdit?.id === l.id ? null : (
-              <SelectionOverlay
+              kolboxSel ? (
+                /* R2: the one selection drawing */
+                <SelectionOverlay key={l.id} variant="kolbox" box={l} scale={screenScale} showHandles={!isMultiSel} showRotate={!isMultiSel} showLabel={!isMultiSel} />
+              ) : <SelectionOverlay
                 key={l.id}
                 box={l}
                 showHandles={!isMultiSel}
@@ -1724,7 +1935,7 @@ export default function CanvasArea() {
               <CropOverlay
                 layer={cropLayer}
                 toVirtual={clientToVirtual}
-                updateLayer={updateLayer}
+                updateLayer={writeCrop}
                 beginTransaction={beginTransaction}
                 commitTransaction={commitTransaction}
                 onExit={() => setCropId(null)}
@@ -1768,9 +1979,31 @@ export default function CanvasArea() {
               onExit={() => setNodeEditId(null)}
             />
           )}
-          {/* the frame-edge band is live: the frame outlines accent, a press selects the canvas */}
-          {edgeHover && (
-            <div aria-hidden className="absolute inset-0 pointer-events-none" style={{ outline: '1px solid var(--kol-accent-primary)', zIndex: 5 }} />
+          {/* the frame's outline, corner handles and name label (28.1, 28.2): outlined on the edge band's or the label's
+              hover and while dragged, the design's selection while selected */}
+          {/* frames as objects (C1): each frame's outline, handles and name, at its box; the active one is the rulers'
+              and zoom fit's (data-ruler-origin) */}
+          {!preview && frameMode && layers.filter((f) => f.type === 'frame' && f.visible !== false).map((f) => (
+            <FrameChrome
+              key={f.id}
+              stageRef={stageRef}
+              box={f}
+              origin={f.id === activeFrame?.id}
+              selected={selectedIds.length === 1 && selectedIds[0] === f.id}
+              hover={(drag?.mode === 'move' && drag.layerId === f.id) || (kolboxSel && !drag && hoverId === f.id)}
+              name={f.name}
+              onRename={(n) => updateLayer(f.id, { name: typeof n === 'string' && n.trim() ? n.trim() : null })}
+            />
+          ))}
+          {!preview && !frameMode && (
+            <FrameChrome
+              stageRef={stageRef}
+              selected={selectedIds.length === 1 && selectedIds[0] === 'canvas'}
+              hover={edgeHover || labelHover || drag?.mode === 'frame'}
+              name={canvasName}
+              onRename={setCanvasName}
+              onLabelHover={setLabelHover}
+            />
           )}
           {pen && (
             <svg
@@ -1950,4 +2183,12 @@ function CanvasMenuItems({ layer, onClose, ops }) {
         : <MenuDropdownItem key={it.label} disabled={it.disabled} onClick={it.act}>{it.label}</MenuDropdownItem>)}
     </div>
   )
+}
+
+const cropView = (l) => (l?.type === 'photo' ? l : hasImageFill(l) ? photoOf(l) : null)
+
+/* the axis-aligned bounds of a set of boxes (R2: a multi-selection's line and handles) */
+function boundsOf(list) {
+  const x = Math.min(...list.map((l) => l.x)), y = Math.min(...list.map((l) => l.y))
+  return { x, y, w: Math.max(...list.map((l) => l.x + l.w)) - x, h: Math.max(...list.map((l) => l.y + l.h)) - y }
 }

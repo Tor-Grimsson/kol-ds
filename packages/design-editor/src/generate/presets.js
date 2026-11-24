@@ -1,8 +1,9 @@
+
 /* GENERATE — the presets: his styleset, one per reference file, named by the file (plan 52).
  * `ref` is the reference's path under the styleset folder and `size` its frame; the match script renders
  * each at that size and scores it against the PNG. Every preset is 128px inset on black, his frame. */
 
-const F = { inset: 128, color: '#FFFFFF', bg: '#000000' }
+const F = { inset: 128, color: '#FFFFFF' }
 const SQ = [1056, 1056], WIDE = [1456, 1056], TALL = [1056, 1456]
 
 export const PRESETS = [
@@ -64,7 +65,7 @@ export const PRESETS = [
   { id: 'text', style: 'ascii', label: 'Text', ref: 'patterns/text', size: TALL, params: { ...F,
     font: 'pixel', cols: 52, cell: 1.9, scale: 0.55, letters: 'SWEHTIL', word: 3, textBelow: 0.01, ramp: ' *●', fKind: 'poly', fPoly: '0.2: 0.385,0.225 0.788,0.225 0.788,1 0.385,1; 0.5: 0.385,0.225 0.788,0.225 0.404,0.51 0.788,0.775 0.788,1 0.385,1; 1: 0.788,0.46 0.385,0.78 0.55,1 0.788,1' } },
   { id: 'type', style: 'ascii', label: 'Type', ref: 'patterns/type', size: TALL, params: { ...F,
-    font: 'rg-base-900', ramp: 'a', sizeBy: true, cols: 21, cell: 1.05, scale: 2, sizeMin: 0.12, fKind: 'radial', fX: 0.3, fY: 0.58, fRx: 0.75, fInvert: true } },
+    font: 'inter', fontWeight: 900, ramp: 'a', sizeBy: true, cols: 21, cell: 1.05, scale: 2, sizeMin: 0.12, fKind: 'radial', fX: 0.3, fY: 0.58, fRx: 0.75, fInvert: true } },
   /* ── Stripe array ── */
   { id: 'air', style: 'stripeArray', label: 'Air', ref: 'bands/air', size: WIDE, params: { ...F,
     orient: 'h', count: 11, spread: 'packed', wA: 54.4, wB: 4.1, wC: 'linear', lead: 3.79, gA: 33, gB: 33, gC: 'linear' } },
@@ -132,9 +133,9 @@ export const PRESETS = [
 /* W4 § 4.1 — his styles on a letter (no reference: they are new pictures) */
 const paramsOf = (id) => PRESETS.find((x) => x.id === id).params
 PRESETS.push(
-  { id: 'eclipse-o', style: 'lineScreen', label: 'Eclipse on O', params: { ...paramsOf('eclipse'), mKind: 'letter', mChar: 'O', mCut: 'base', mWeight: 900, mFit: 0.95 } },
-  { id: 'warp-s', style: 'dotScreen', label: 'Warp on S', params: { ...paramsOf('warp'), mKind: 'letter', mChar: 'S', mCut: 'base', mWeight: 900, mFit: 0.95 } },
-  { id: 'confluence-a', style: 'lineScreen', label: 'Confluence on A', params: { ...paramsOf('confluence'), mKind: 'letter', mChar: 'A', mCut: 'Wide', mWeight: 900, mFit: 0.95 } },
+  { id: 'eclipse-o', style: 'lineScreen', label: 'Eclipse on O', params: { ...paramsOf('eclipse'), mKind: 'letter', mChar: 'O', mFamily: 'inter', mWeight: 900, mFit: 0.95 } },
+  { id: 'warp-s', style: 'dotScreen', label: 'Warp on S', params: { ...paramsOf('warp'), mKind: 'letter', mChar: 'S', mFamily: 'inter', mWeight: 900, mFit: 0.95 } },
+  { id: 'confluence-a', style: 'lineScreen', label: 'Confluence on A', params: { ...paramsOf('confluence'), mKind: 'letter', mChar: 'A', mFamily: 'inter', mWeight: 900, mFit: 0.95 } },
 )
 
 /* plan 53 § 4.2 — Half Line's four modes on a field (put a photo under them: Tools › Generate on a photo) */
@@ -142,3 +143,4 @@ PRESETS.push(
   { id: 'stipple-glow', style: 'stipple', label: 'Glow', params: { ...F, spacing: 7, dot: 0.35, fKind: 'radial', fX: 0.5, fY: 0.45, fRx: 0.6 } },
   { id: 'mosaic-hex', style: 'mosaic', label: 'Hex', params: { ...F, tile: 'hex', cols: 36, gap: 0.08, fKind: 'linear', fAngle: 60 } },
 )
+

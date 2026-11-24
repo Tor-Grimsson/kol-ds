@@ -61,6 +61,8 @@ export const PAINT_SCHEMAS = {
 }
 
 export const hasPaintFill = (layer) => {
+  /* a fill row's eye (W22): a hidden paint draws nothing */
+  if (layer?.fill?.hidden) return false
   const t = layer?.fill?.type
   if (t === 'gradient' || t === 'pattern') return true
   return (t === 'image' || t === 'video') && !!layer.fill.src

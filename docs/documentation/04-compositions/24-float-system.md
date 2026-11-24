@@ -3,7 +3,7 @@ title: Float system
 type: reference
 status: active
 created: 2026-11-04
-updated: 2026-11-08
+updated: 2026-11-18
 description: The float style — detached controls, sheets and windows over a scene — its foundations, every part, and where each lives
 aliases:
   - float
@@ -19,11 +19,13 @@ tags:
   - domain/compositions
   - domain/foundations
 related:
+  - "[[25-float-spec|float spec]]"
   - "[[../01-foundations/01-tokens|tokens]]"
   - "[[../01-foundations/03-typography|typography]]"
   - "[[11-shell-system|shell system]]"
   - "[[09-dashboards-system|dashboards system]]"
   - "[[14-design-editor-system|design-editor system]]"
+  - "[[26-kolbox-system|kolbox system]]"
 ---
 
 # Float system
@@ -41,15 +43,16 @@ describes, kept current as each family lands.
 
 ## Foundations
 
+**Every float Rail is one `RailFloat`** (kol-component, re-exported by kol-shell): three slots, the header (a
+`Header`), the body and the footer. PropertyRail and NavRail float draw on it, and ReadingContents is its body
+for the reader's Contents. Every grouped list in a Rail is one float `LabeledControlSection`. **Every size is in [[25-float-spec|the float spec]]**: control heights, type, glyphs and chevrons per size, the module
+widths, rows and label column, the collapsed-v pill, the list and its states, radii and the tooltip, each with its token.
+This page keeps the families.
+
 | What | Token / class | Value |
 |---|---|---|
 | Sans | `--kol-font-family-float` | Inter, self-hosted at `/fonts/inter/` (OFL). JetBrains Mono stays the mono. |
 | Type roles | `kol-float-display` … `kol-float-ruler` | twelve fixed voices — see [[../01-foundations/03-typography|typography § Float roles]] |
-| Control type | `--kol-float-t-{sm,md,lg}` | 12 · 13 · 14 at weight 500 (touch 13 · 15 · 16) |
-| Control height | `--kol-float-h-{sm,md,lg}` | 28 · 36 · 44 (touch 36 · 44 · 52); a control is a pill |
-| Glyph | `--kol-float-ic` | 18 (20) |
-| Radii | `--kol-float-list-r` · `-menu-r` · `-window-r` | a bare list 8 · a sheet or panel 20 · a window 28 (touch 10 · 24 · 32) |
-| Menu row | `--kol-float-row` · `--kol-float-inset` | 40 (48) · 6 |
 | Focus | `--kol-float-focus` | a 2px ring of the ink on `:focus-visible`, every float control |
 | Selection | `--kol-fg-16` | translucent, never `--kol-oq-16`, so glass shows through |
 | States | the tone ladder | hover and pressed come from the control's tone; disabled is 40% |
@@ -59,7 +62,6 @@ describes, kept current as each family lands.
 | Roles | tones | primary = `inverted` · secondary = `secondary` · quiet = `ghost` · destructive = `danger` |
 | Solid ground | `--kol-surface-secondary` + `--kol-shadow-float` | `.kol-float-solid` |
 | Glass | `--kol-glass-dark-*` · `--kol-glass-light-*` | `.kol-float-glass-dark` · `-light` (`-m` for a sheet or box); a skin on the same shapes |
-| Tooltip | `--kol-float-tip-h` · `-tip-t` | 24 · 11 (28 · 12), an inverted pill |
 
 Figma: `radius/float/*`, `type/font/float`, text styles `float/<role>`, effect styles `glass/*` and `shadow/float`.
 
@@ -75,14 +77,14 @@ One row per family of the plan. **Where** names the package that owns it; **stat
 | 3 | Fields | Input states, LabeledControl, Textarea, SearchInput; FieldPair, PasswordInput, InlineAddRow, LinkAddRow, ColorField, ValueField | kol-component 0.334.0 | shipped 2026-11-04 |
 | 4 | Menus | MenuBar (the app bar, kol-shell 0.109.0), the Menu family float, a destructive row, Dropdown fused, ContextMenu + MenuFlyout, ContentFilters; PanelsMenu, WorkspaceSwitcher, AccountMenu | kol-component 0.334.0 · kol-shell 0.109.0 | shipped 2026-11-04 · MenuBar 2026-11-05 |
 | 5 | Chrome | ToolRail (+ `more`, the ⋮ — 0.109.0; the dock — horizontal, a tool's ▾ `more`, `end`, the ⌘K `search` pill — 0.113.0), PropertyRail (xs tabs, the `tab` lit — 0.103.0), transport with Timecode (`inline` the desktop 48 capsule — 0.103.0), DocumentCapsule, GlobalActions, ZoomReadout, SceneBreadcrumb, CanvasHint, SelectionMeasure, TopControlsBar, TabsRow with counts, PanelsRestore, ReaderBar, ProgressDock | kol-shell 0.101.1 · kol-component 0.335.0 (TabsRow counts + `trailing`, inspector tabs, SectionLabel +) | shipped 2026-11-04 |
-| 6 | Windows | ModalHeader float (was QuickLookHeader, 0.357.0), Dialog float (+ `blocking`; `container` opens it inside a box), the useModal float confirm (ModalProvider `container`), QuickLookFrame float (the utility window), MediaLibrary float (the asset window); SummaryLine, EmptyState float, NoticeBanner, NavDrawer | kol-component 0.335.0 | shipped 2026-11-04 |
+| 6 | Windows | Header modal (was ModalHeader float, 0.376.0; QuickLookHeader before it, 0.357.0), ModalDialog float (was Dialog; + `blocking`; `container` opens it inside a box), the useModal float confirm (ModalProvider `container`), QuickLookFrame float (the utility window), MediaLibrary float (the asset window); SummaryLine, EmptyState float, NoticeBanner, NavDrawer | kol-component 0.335.0 | shipped 2026-11-04 |
 | 7 | Cards + tiles | Card float (+ the editor card: `tabs`, `foot`, `defaultFolded`, `radius="window"` — kol-dashboards 0.13.0), StatTiles float (sparkline + delta), the small metric tile; the card kinds (FloatCard, SectionHead, GroupCard, FoldedHead, SourceCard, CaptureCard, KanbanColumn, ProjectCard, LinkCard, CollapsedGroup, CoverTile, ContinueCard, AssetRow, LiveCard, TaskCard, NoteCard, PositionBlock) | kol-dashboards 0.10.0 | shipped 2026-11-04 |
 | 8 | Lists + tables | Table float, DocsToc float + TocRow, ContentRow float (the link row), SpecList float; IndexRow, TaskRow, LayerRow, TreeRow, FlyoutRow (RankedList float is kol-dashboards 0.10.0) | kol-component 0.335.0 | shipped 2026-11-04 |
 | 9 | Navigation + layout | NavRail float (expanded · rail · hidden · flyout), PageHeader float, text tabs, filter row, SectionText meta; AccountFooter, StatusStrip, Breadcrumb, FooterStrip, PeriodNav, DataStatus; footprints 280 · 72 · 0 | kol-component (NavRail expanded · rail, PageHeader, text tabs, filter row, SectionText) · kol-shell 0.101.0 (RailTrigger, RailFlyout, RailDisplayControls, the strips, the footprint tokens in kol-theme 0.211.1) | shipped 2026-11-04 (kol-component 0.335.0: NavRail float, SectionText float + meta, TabsRow mono tabs; the filter row composed) |
 | 10 | Charts | LineChart float (selector, legend, scales, the card form); Sparkline, WeeklyBars, ProportionBar, Legend | kol-dashboards 0.10.0 | shipped 2026-11-04 |
 | 11 | Calendar + reader | CalendarTimeline, CalendarMonth, CalendarWeek, CalendarDay; ReadingColumn, ReadingHighlight, ReadingActions, ReadingChapterNav, ReadingContents, ReadingPanel (+ ReadingNotes, ReadingSettings), ReadingOverview | kol-component 0.336.0 (organisms; the small parts molecules by the placement test) | shipped 2026-11-04 |
 | 12 | Timeline | Timeline (toolbar · ruler · LayerTrack · lane · playhead) on the editor's transport; `TimelineRail` + `timelineView` — the same sheet from data, no engine (layouts: apps/float) | design-editor 0.26.0 (mirror of kol-fxr); TimelineRail 0.27.0 | shipped 2026-11-04 |
-| — | Frame | FloatLayout — NavRail float (280 · 72 · 0 + RailTrigger + RailFlyout on hover), TopControlsBar, the content, one inspector slot, PanelsRestore while a Rail is hidden (plan-2026-11-04-float-views W1.1); `bottom` Rail under content + inspector and `eyebrow` under the bar (float-operational W1.1 · W4.2); `railMode` `push` · `overlay`, the rail keys `\` · `⇧\` (`railKeys`), RailTrigger's Show navigation row, the rail on `--kol-shadow-float` (2026-11-04); `panels={false}` drops Panels ⌄ (the way back is Show navigation and `⇧\`; an app that hides the inspector then controls `inspectorHidden`), `search` draws the search modal (CommandOverlay `surface`: RailTrigger's card, the float SearchInput, float rows lit fg-16) on the frame's `surface`; `bar.menu` draws FloatActionMenu (the inverted round +, × while open, its float sheet to the left) in the top-right corner | kol-shell 0.102.0 → 0.107.0 · kol-component 0.337.0 (`NavRail float onItemHover`) · 0.340.0 (CommandOverlay `surface`) | built 2026-11-04; runs in `apps/float` |
+| — | Frame | FloatLayout — NavRail float (264 · 72 · 0 + RailTrigger + RailFlyout on hover), TopControlsBar, the content, one inspector slot, PanelsRestore while a Rail is hidden (plan-2026-11-04-float-views W1.1); `bottom` Rail under content + inspector and `eyebrow` under the bar (float-operational W1.1 · W4.2); `railMode` `push` · `overlay`, the rail keys `\` · `⇧\` (`railKeys`), RailTrigger's Show navigation row, the rail on `--kol-shadow-float` (2026-11-04); `panels={false}` drops Panels ⌄ (the way back is Show navigation and `⇧\`; an app that hides the inspector then controls `inspectorHidden`), `search` draws the search modal (CommandOverlay `surface`: RailTrigger's card, the float SearchInput, float rows lit fg-16) on the frame's `surface`; `bar.menu` draws FloatActionMenu (the inverted round +, × while open, its float sheet to the left) in the top-right corner | kol-shell 0.102.0 → 0.107.0 · kol-component 0.337.0 (`NavRail float onItemHover`) · 0.340.0 (CommandOverlay `surface`) | built 2026-11-04; runs in `apps/float` |
 | 13 | Icons | 104 glyphs walked; 4 promoted (inbox · highlighter · diamond-plus — since retired, drawn by `ball` · lockup), the rest existing drawings under role names | kol-icons 0.61.0 | shipped 2026-11-04 |
 
 ## Where it is used
@@ -103,7 +105,7 @@ CSS transitions and keyframes only, no gsap (FloatActionStatesAndMotion, kol-com
 | Search modal (CommandOverlay — the float card everywhere since kol-component 0.344.0; `anchor` sits it on the dock) | the card as above over a fading scrim | `.kol-float-motion` · `.kol-float-fade` |
 | NavRail float | expand ↔ collapse eases the width, the new rows fade in; FloatLayout's hide ↔ show opens the width from 0 and closes it to 0, fading | `.kol-float-rail` (`is-entering` · `is-exiting`) |
 | FloatActionMenu | the + turns 45° into the × and back (`iconMotion="rotate"`, default; `"swap"` exchanges the icon) | `.kol-float-turn` |
-| Float buttons and rows | background, color, opacity and scale ease on the float clock | `.kol-btn-float` · the rows of the More sheet, RailFlyout, the rail and the float menu |
+| Float buttons and rows | background, color, opacity and scale ease on the float clock | `.kol-btn-float` · the rows of MenuFloat, RailFlyout, the rail and the float menu |
 
 `motion` on FloatLayout, NavRail float, RailTrigger, RailFlyout, CommandOverlay, TopControlsBar, FloatActionMenu and PopoverPanel: `true` (default) the tokens · `false` none · `{ duration, ease }` per app (ms, a CSS curve or an `EASE` array). `floatMotion(motion)` resolves it; `useFloatPresence(open, ms)` holds a float in the tree while it leaves.
 
@@ -112,10 +114,17 @@ CSS transitions and keyframes only, no gsap (FloatActionStatesAndMotion, kol-com
 - Radii are three, by role: list 8, sheet 20, window 28. Not one float radius.
 - The `kbd` cap draws ⌘ as the `command` icon, never a typed character.
 - A float control's type is Inter 500 at the control's size; its mono stays for digits (timecode, ruler, kbd).
-- Selection on a float is `--kol-fg-16`; an opaque fill reads as a slab on glass.
+- Selection on a float is `--kol-fg-16`; an opaque fill reads as a slab on glass. **List rows are the exception** (kol-component 0.372.0, Figma-style white selection): a selected row (TreeRow, TocRow, IndexRow, MediaLibrary) is the fg-12 wash with the glyph and the label at full ink and no stroke; hover is fg-04.
+- **Every float Rail is a `RailFloat` instance**, RailSettings included. `Header variant="property"` carries expand (`arrow-upright`), collapse-h (`panel-right`) and collapse-v (the 12 chevron). Open and collapsed-v are the same component: collapsed-v is the same tree with the body and footer hidden, not removed. In Figma a preset component may hold exactly one shell instance if it draws nothing itself.
+- **Base components keep their names and nothing wraps them for nothing** (law, plan-2026-11-12-one-header). A component that only passes props to one base is not a component: use the base. The `Settings*` wrappers are retired for it (`SettingsSlider` → `Slider variant="float" readout="input"`, `SettingsCell` → `LabeledControl variant="float"`, and the rest on the ledger); ModalSettings is built from base float parts only, and a float surface never draws a bordered box or a button of its own.
+- **One header.** `Header` (`variant` nav · property · modal · settings) is the header of every float surface: RailFloat's, the NavRail switcher row, the float window (`ModalHeader` float), the settings window. Its toggles are icon, expand, collapse-h (the panel button: the Rail leaves sideways), collapse-v (the chevron: the Rail collapses up to its header bar) and close. The word "fold" is retired; props are `collapsibleV` · `collapsedV` · `onCollapseV` · `onCollapseH`.
+- **Rails as windows, sections by gap** (kol-shell 0.131.0, kol-component 0.378.0, plan-2026-11-12-one-header W10.1): a tool's right side is a stack of separate RailFloat windows (PropertyRail `windows`, 24 apart), each its own Header with collapse-v — FloatLabs: the effect's parameters (title the effect, the preset Header's quiet `kind`; never a middot in a title), Output, File. A section never pads or rules itself; the body's gap spaces sections. `LabeledControlSection collapsible`: one indicator, the 12 chevron at the head's right end.
+- **The transport collapses (collapse-h)** (W11): one play/pause button (play outline at rest, pause solid while playing) beside the timecode; `collapsibleH` keeps it + the timecode + any lit toggle (Loop), one 12 chevron (oq-64) directly left of it, ‹ collapsed › expanded; the extras open to its left, so the play/pause x and the right edge never move. Starts collapsed, remembers the choice.
+- **ModalSettings is his mock** (W8.1, float file 143:35343): 880×656, radius 20, no outer border, header 60 · body 536 · footer 60; rows `LabeledControl variant="settings"`; the footer on one centre line — the small switch, Reset and Cancel grey, Apply inverted, float sm 28.
+- **The float window is `--kol-float-window-w`** (562, kol-theme 0.225.0): ModalDialog float and the useModal float prompts read it. A window's action row is a `ButtonGroup` (`align="between"`); a split action is `ButtonSplit` (main action · divider · 12 ⌄ menu; `variant` default · float, `tone="grey"` on the float well), its menu the same `MenuFloatRows` card (both now in kol-component).
 - A float menu's panel is the theme's float surface, never its trigger's ground — an inverted trigger's tone does not ride onto `Menu variant="float"` (FloatMenuPanelInk, kol-component 0.340.1).
 - An inverted float button never greys on hover: the fill stays, the opacity drops (`--kol-float-hover-opacity`). The square inverted Button keeps its `oq-inverse-40` · `-48` rungs; the label never swaps on either.
-- The scrim is for a blocking task only: `Dialog` and the useModal prompts keep it; a utility window (`QuickLookFrame variant="float"`, `MediaLibrary variant="float"`, `NavDrawer`) leaves the scene live.
+- The scrim is for a blocking task only: `ModalDialog` and the useModal prompts keep it; a utility window (`QuickLookFrame variant="float"`, `MediaLibrary variant="float"`, `NavDrawer`) leaves the scene live.
 - The float's navigation rows are one row at four sizes (`TreeRow` xs · sm · md · lg), so sidebar, flyout and drawer read as one list.
 - A calendar draws no gridlines: columns read by alignment and the weekend's fg-02, events are fg-16 bars; the exploration's 1px grid is the no-borders law's.
 - The reading face is the reader's choice (`font`, default Literata, which the consumer loads — Georgia stands in); everything around the text stays Inter and JetBrains Mono. Reader parts share one family word: `Reading…`.

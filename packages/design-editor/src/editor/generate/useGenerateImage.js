@@ -5,6 +5,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useComposeState } from '../compose/state'
 import { findLayerDeep } from '../compose/helpers'
+import { photoOf } from '../compose/layerModel'
 import { artBox } from '../../generate/index.js'
 
 const lum = new Map() /* src → { w, h, data: Float32Array } */
@@ -48,8 +49,9 @@ export function photoSampler(gen, photo, L) {
 export function useGenerateImage(layer) {
   const { layers } = useComposeState()
   const wants = layer.fKind === 'image' || layer.gKind === 'image'
-  const photo = wants && layer.fImgLayer ? findLayerDeep(layers, layer.fImgLayer) : null
-  const src = photo?.type === 'photo' ? photo.src : null
+  /* a photo layer, or a layer whose fill is an image (W22) */
+  const photo = wants && layer.fImgLayer ? photoOf(findLayerDeep(layers, layer.fImgLayer)) : null
+  const src = photo?.src ?? null
   const [L, setL] = useState(null)
   useEffect(() => {
     if (!src) { setL(null); return undefined }

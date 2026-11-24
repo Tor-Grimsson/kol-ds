@@ -3,7 +3,7 @@ title: Dashboards system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-11-04
+updated: 2026-11-12
 verified: 2026-07-09
 description: Hand-rolled SVG charts and the dashboard grid
 aliases:
@@ -77,11 +77,11 @@ The float look on the card set and the card kinds the exploration added (float-e
 
 | Component | Main props | What it is |
 |-----------|-----------|-----------|
-| `Card variant="float"` | `title` · `count` · `meta` · `description` · `value` · `controls` · `onFold` + `folded` · `addLabel` + `onAdd` · `tabs` + `tab` + `onTab` · `defaultFolded` · `foot` · `radius` | the float sheet: a `SectionHead`, the body, the add row (+ label ↵); `folded` keeps the head alone — the collapsed group. **The editor card** (0.13.0, plan-2026-11-05-float-editor W1.2): `tabs` draws the head as a tab row (the lit tab in the panel role on its 2px rule, the rest label role at fg-48, uppercase) with the chevron flush right at oq-64; `tab`/`onTab` or the card's own; `children` may be `(tab) => …`; `defaultFolded` makes the fold the card's own; `foot` the slot 16 under the rows; `radius="window"` the 28 round. A stack is data — map it |
+| `Card variant="float"` | `title` · `count` · `meta` · `description` · `value` · `controls` · `onCollapseV` + `collapsedV` · `addLabel` + `onAdd` · `tabs` + `tab` + `onTab` · `defaultCollapsedV` · `foot` · `radius` | the float sheet: a `SectionHead`, the body, the add row (+ label ↵); `collapsedV` keeps the head alone (`folded` · `onFold` · `defaultFolded` deprecated aliases, 0.17.0) — the collapsed group. **The editor card** (0.13.0, plan-2026-11-05-float-editor W1.2): `tabs` draws the head as a tab row (the lit tab in the panel role on its 2px rule, the rest label role at fg-48, uppercase) with the chevron flush right at oq-64; `tab`/`onTab` or the card's own; `children` may be `(tab) => …`; `defaultCollapsedV` makes collapse-v the card's own; `foot` the slot 16 under the rows; `radius="window"` the 28 round. A stack is data — map it |
 | `StatTiles variant="float"` | items add `spark` (numbers) · `size` lg \| sm · `selected` + `onSelect` | lg: label · value in mono 32 · `delta` + `note` with a `Sparkline` right; sm: label left, value in Inter 24 right, the window in mono under |
 | `RankedList variant="float"` | as the default | the rows in Inter, the share bar at the 8 list round, fg-16 on hover |
-| `SectionHead` | `title` · `count` · `meta` · `description` · `value` · `controls` · `folded` · `onFold` · `tabs` + `tab` + `onTab` | a float card's head — Card float draws it; exported for a card with its own body; `tabs` is the editor card's tab row |
-| `FoldedHead` | `title` · `count` · `onClick` | a folded card's heading as a 40 pill with ⌄ |
+| `SectionHead` | `title` · `count` · `meta` · `description` · `value` · `controls` · `collapsedV` · `onCollapseV` · `tabs` + `tab` + `onTab` | a float card's head — Card float draws it; exported for a card with its own body; `tabs` is the editor card's tab row |
+| `FoldedHead` | `title` · `count` · `onClick` | a collapsed card's heading as a 40 pill with ⌄ (12) |
 | `FloatCard` | `title` · `support` · `lines` | the glass sheet (`.kol-float-glass-dark`): title, support, a rule, mono lines |
 | `TaskCard` | `title` · `group` · `date` · `chip` · `done` + `onToggle` · `selected` · `onClick` · `size` lg \| sm | a task: checkbox, title, group, the date pill; sm is a group's row with a date or a size chip |
 | `SourceCard` | `code` · `title` · `meta` · `status` · `message` · `detail` · `action` + `onAction` · `children` | a connected source and its state; a healthy one lists its items (`meta` "4 items", rows as `children`) |

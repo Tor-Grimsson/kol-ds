@@ -8575,6 +8575,12 @@
       "desc": ""
     },
     {
+      "prop": "variant",
+      "type": "—",
+      "def": "'default'",
+      "desc": ""
+    },
+    {
       "prop": "surface",
       "type": "—",
       "def": "'solid'",

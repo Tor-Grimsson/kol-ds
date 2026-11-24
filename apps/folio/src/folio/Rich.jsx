@@ -4,8 +4,7 @@
    history. Fonts come from Google Fonts (google-fonts.json, scripts/google-fonts.mjs); the families a document uses are
    saved with it as one <link>, so the reader loads them too. */
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { IconLoader, ModalShell } from '@kolkrabbi/kol-component'
-import { Choice } from './Chrome'
+import { Button, Dropdown, Input, ModalShell, QuantityInput } from '@kolkrabbi/kol-component'
 import { useSettings } from './settings'
 import GOOGLE from './google-fonts.json'
 
@@ -58,29 +57,21 @@ function blocksIn(page) {
   return [...page.children].filter((b) => r.intersectsNode(b))
 }
 
-/* ── small parts (the frame's Button nav md · Dropdown outline md) ── */
+/* ── small parts on kolbox's (plan-2026-11-23 W8.2): Button kolbox ghost, Dropdown kolbox; Folio's toolbar layout ── */
 const Nav = ({ children, className = '', ...rest }) => (
-  <button type="button" onMouseDown={(e) => e.preventDefault()} {...rest} className={`kol-reader-meta flex h-[32px] items-center justify-center rounded-[4px] px-[16px] text-folio-ink hover:bg-folio-surface aria-pressed:bg-folio-mint aria-pressed:text-folio-green disabled:opacity-40 ${className}`}>{children}</button>
+  <Button variant="kolbox" tone="ghost" pressed={rest['aria-pressed']} onMouseDown={(e) => e.preventDefault()} {...rest} className={className}>{children}</Button>
 )
-const Drop = ({ children, w, ...rest }) => (
-  <Choice {...rest} className={`kol-reader-meta h-[32px] justify-between rounded-[4px] border border-folio-rule px-[12px] ${w}`}>{children}</Choice>
+const Drop = ({ w, label, options, ...rest }) => (
+  <Dropdown variant="kolbox" tone="grey" ariaLabel={label} options={options.map(([value, text]) => ({ value, label: text }))} {...rest} className={`justify-between ${w}`} />
 )
 const Rule = () => <span className="mx-[10px] h-[24px] w-px shrink-0 bg-folio-rule" />
-const Align = ({ kind, on, onClick }) => {
-  const w = { left: [17, 12, 17, 12], center: [17, 12, 17, 12], right: [17, 12, 17, 12], justify: [17, 17, 17, 17] }[kind]
-  return (
-    <button type="button" aria-label={`Align ${kind}`} aria-pressed={on} onMouseDown={(e) => e.preventDefault()} onClick={onClick} className={`relative size-[32px] shrink-0 rounded-[4px] ${on ? 'bg-folio-mint text-folio-green' : 'text-folio-ink hover:bg-folio-surface'}`}>
-      {w.map((width, i) => <span key={i} className="absolute h-[1.5px] bg-current" style={{ width, top: 8 + i * 5, left: kind === 'center' ? (32 - width) / 2 : kind === 'right' ? 25 - width : 8 }} />)}
-    </button>
-  )
-}
+const Align = ({ kind, on, onClick }) => (
+  <Button variant="kolbox" iconOnly={`align-${kind}`} aria-label={`Align ${kind}`} pressed={on} onMouseDown={(e) => e.preventDefault()} onClick={onClick} />
+)
+/* a window: kolbox's (ModalShell kolbox draws the title and the close); Folio's scrim and placement */
 const Dialog = ({ title, onClose, children, footer }) => (
   <div className="fixed inset-0 z-50 flex items-start justify-center bg-[rgb(38_41_34/0.32)] px-[16px] pt-[12vh]" onMouseDown={onClose}>
-    <ModalShell variant="bordered" role="dialog" aria-label={title} onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="w-[480px] max-w-full overflow-hidden shadow-[0_2px_6px_-2px_rgb(0_0_0/0.3),0_8px_24px_-8px_rgb(0_0_0/0.4)] !border-folio-rule" style={{ background: 'var(--color-folio-paper)', color: 'inherit' }}>
-      <div className="flex h-[64px] items-center justify-between border-b border-folio-rule pl-[24px] pr-[22px]">
-        <p className="text-[18px] font-semibold leading-[22px]">{title}</p>
-        <Nav aria-label="Close" onClick={onClose} className="w-[42px] px-0">×</Nav>
-      </div>
+    <ModalShell variant="kolbox" title={title} width={480} onClose={onClose} onMouseDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.key === 'Escape' && onClose()} className="max-w-full">
       {children}
       {footer}
     </ModalShell>
@@ -88,14 +79,10 @@ const Dialog = ({ title, onClose, children, footer }) => (
 )
 const Stepper = ({ label, sub, unit, value, onChange, step = 1 }) => (
   <div className="flex h-[52px] items-center px-[24px]">
-    <span className="kol-reader-body w-[170px] text-[14px] leading-[22px]">{label}</span>
-    <span className="kol-reader-body w-[106px] text-[14px] leading-[22px] text-folio-muted">{sub}</span>
-    <input aria-label={`${label || ''} ${sub || ''}`.trim()} inputMode="decimal" value={value} onChange={(e) => onChange(e.target.value)} className="kol-reader-meta h-[32px] w-[68px] rounded-[4px] border border-folio-rule bg-folio-paper px-[12px] outline-none focus:border-folio-green" />
-    <span className="ml-[10px] flex w-[12px] flex-col">
-      <button type="button" aria-label={`More ${label || sub}`} onClick={() => onChange(String(+(+value + step).toFixed(2)))} className="h-[14px] text-folio-ink"><IconLoader name="chevron-up" size={12} /></button>
-      <button type="button" aria-label={`Less ${label || sub}`} onClick={() => onChange(String(Math.max(0, +(+value - step).toFixed(2))))} className="h-[14px] text-folio-ink"><IconLoader name="chevron-down" size={12} /></button>
-    </span>
-    <span className="kol-reader-meta ml-[16px] text-folio-muted">{unit}</span>
+    <span className="kol-folio-body w-[170px] text-[14px] leading-[22px]">{label}</span>
+    <span className="kol-folio-body w-[106px] text-[14px] leading-[22px] text-folio-muted">{sub}</span>
+    <QuantityInput variant="kolbox" ariaLabel={`${label || ''} ${sub || ''}`.trim()} downLabel={`Less ${label || sub}`} upLabel={`More ${label || sub}`}
+      value={+value || 0} min={0} max={999} step={step} unit={unit} onChange={(n) => onChange(String(+n.toFixed(2)))} className="w-40" />
   </div>
 )
 
@@ -111,22 +98,22 @@ function FontChooser({ family, variant, size, onDone, onClose }) {
   return (
     <Dialog title="Fonts" onClose={onClose}>
       <div className="px-[24px] pt-[16px]">
-        <input autoFocus aria-label="Search fonts" placeholder="Search fonts" value={q} onChange={(e) => setQ(e.target.value)} className="kol-reader-meta h-[32px] w-full rounded-[4px] border border-folio-rule bg-folio-paper px-[16px] text-[14px] outline-none placeholder:text-folio-ink/50 focus:border-folio-green" />
+        <Input variant="kolbox" size="md" autoFocus aria-label="Search fonts" placeholder="Search fonts" value={q} onChange={(e) => setQ(e.target.value)} className="w-full" />
       </div>
       <div className="mt-[16px] grid h-[196px] grid-cols-[264px_1fr]">
         <div className="flex min-h-0 flex-col border-r border-folio-rule">
-          <p className="kol-reader-meta px-[24px] pb-[10px] text-folio-muted">Family, {FONTS.length} on Google Fonts</p>
+          <p className="kol-folio-meta px-[24px] pb-[10px] text-folio-muted">Family, {FONTS.length} on Google Fonts</p>
           <div role="listbox" aria-label="Family" className="min-h-0 flex-1 overflow-y-auto pl-[16px] pr-[8px]">
             {list.map(([name, cat]) => (
               <button key={name} type="button" role="option" aria-selected={name === f} onClick={() => pick(name)} className={`flex h-[32px] w-full items-center justify-between px-[12px] text-left text-[14px] leading-[22px] ${name === f ? 'bg-folio-mint text-folio-green' : 'hover:bg-folio-surface'}`}>
-                <span className="truncate">{name}</span><span className="kol-reader-meta-sm shrink-0 text-folio-muted">{SYSTEM_NAMES.has(name) ? '' : cat}</span>
+                <span className="truncate">{name}</span><span className="kol-folio-meta-sm shrink-0 text-folio-muted">{SYSTEM_NAMES.has(name) ? '' : cat}</span>
               </button>
             ))}
-            {!list.length && <p className="kol-reader-meta px-[12px] py-[8px] text-folio-muted">No family matches “{q}”.</p>}
+            {!list.length && <p className="kol-folio-meta px-[12px] py-[8px] text-folio-muted">No family matches “{q}”.</p>}
           </div>
         </div>
         <div className="flex min-h-0 flex-col">
-          <p className="kol-reader-meta px-[16px] pb-[10px] text-folio-muted">Style</p>
+          <p className="kol-folio-meta px-[16px] pb-[10px] text-folio-muted">Style</p>
           <div role="listbox" aria-label="Style" className="min-h-0 flex-1 overflow-y-auto px-[8px]">
             {styles.map((s) => (
               <button key={s} type="button" role="option" aria-selected={s === v} onClick={() => setV(s)} style={{ fontFamily: `"${f}"`, fontWeight: parseInt(s, 10), fontStyle: s.endsWith('i') ? 'italic' : 'normal' }} className={`flex h-[32px] w-full items-center px-[12px] text-left text-[14px] leading-[22px] ${s === v ? 'bg-folio-mint text-folio-green' : 'hover:bg-folio-surface'}`}>{styleName(s)}</button>
@@ -137,9 +124,9 @@ function FontChooser({ family, variant, size, onDone, onClose }) {
       <div className="mt-[12px] flex items-end justify-between border-t border-folio-rule px-[24px] pb-[24px] pt-[16px]">
         <div>
           <p className="text-[20px] leading-[28px]" style={{ fontFamily: `"${f}"`, fontWeight: parseInt(v, 10), fontStyle: v.endsWith('i') ? 'italic' : 'normal' }}>The quick brown fox</p>
-          <p className="kol-reader-meta mt-[8px] text-folio-muted">{`${f} ${styleName(v)}, ${size} pt`}</p>
+          <p className="kol-folio-meta mt-[8px] text-folio-muted">{`${f} ${styleName(v)}, ${size} pt`}</p>
         </div>
-        <button type="button" onClick={() => onDone(f, v)} className="kol-reader-meta h-[32px] rounded-[4px] bg-folio-green px-[16px] text-folio-paper">Done</button>
+        <Button variant="kolbox" tone="primary" onClick={() => onDone(f, v)}>Done</Button>
       </div>
     </Dialog>
   )
@@ -153,7 +140,7 @@ function SpacingDialog({ initial, onApply, onClose }) {
     <Dialog title="Paragraph spacing" onClose={onClose} footer={
       <div className="flex h-[80px] items-center justify-end gap-[28px] border-t border-folio-rule pr-[33px]">
         <Nav onClick={onClose}>Cancel</Nav>
-        <button type="button" onClick={() => onApply(s)} className="kol-reader-meta h-[32px] rounded-[4px] bg-folio-green px-[16px] text-folio-paper">Apply</button>
+        <Button variant="kolbox" tone="primary" onClick={() => onApply(s)}>Apply</Button>
       </div>
     }>
       <div className="py-[16px]">
@@ -185,9 +172,9 @@ const Ruler = ({ width }) => (
   <div className="relative h-[40px] shrink-0 overflow-hidden border-b border-folio-rule bg-folio-surface" aria-hidden>
     <div className="absolute inset-y-0" style={{ left: 'var(--rich-left)', width }}>
       {[[64, 0, 10, 'muted'], [64, 32, 7, 'rule'], [16, 0, 4, 'rule']].map(([every, at, h, c]) => (
-        <div key={`${every}${at}`} className="absolute inset-x-0 top-0" style={{ height: h, left: at, backgroundImage: `repeating-linear-gradient(90deg, var(--color-folio-${c}) 0 1px, transparent 1px ${every}px)` }} />
+        <div key={`${every}${at}`} className="absolute inset-x-0 top-0" style={{ height: h, left: at, backgroundImage: `repeating-linear-gradient(90deg, var(--kol-folio-${c}) 0 1px, transparent 1px ${every}px)` }} />
       ))}
-      {Array.from({ length: Math.floor(width / 64) + 1 }, (_, i) => <span key={i} className="kol-reader-meta absolute top-[15px] -translate-x-1/2 text-folio-muted" style={{ left: i * 64 }}>{i}</span>)}
+      {Array.from({ length: Math.floor(width / 64) + 1 }, (_, i) => <span key={i} className="kol-folio-meta absolute top-[15px] -translate-x-1/2 text-folio-muted" style={{ left: i * 64 }}>{i}</span>)}
       <span className="absolute top-0 -translate-x-1/2 text-[10px] leading-[12px] text-folio-green">▼</span>
       <span className="absolute top-0 -translate-x-1/2 text-[10px] leading-[12px] text-folio-green" style={{ left: width }}>▼</span>
     </div>
@@ -306,7 +293,7 @@ export default function Rich({ source, onInput, find, repl, matchCase, onFind, o
     <Nav aria-label="Underline" aria-pressed={!!st.underline} onClick={cmd('underline')} className="w-[46px] px-0 underline">U</Nav>
     <Nav aria-label="Strikethrough" aria-pressed={!!st.strike} onClick={cmd('strikeThrough')} className="w-[44px] px-0 line-through">S</Nav>
     <label aria-label="Text colour" className="relative flex h-[32px] w-[43px] shrink-0 cursor-pointer items-center justify-center rounded-[4px] hover:bg-folio-surface">
-      <span className="kol-reader-meta -mt-[4px]">A</span>
+      <span className="kol-folio-meta -mt-[4px]">A</span>
       <span className="absolute bottom-[4px] left-[8px] h-[3px] w-[27px]" style={{ background: color }} />
       <input type="color" value={color} onChange={(e) => { setColor(e.target.value); cmd('foreColor', e.target.value)() }} className="absolute inset-0 cursor-pointer opacity-0" />
     </label>
@@ -322,7 +309,7 @@ export default function Rich({ source, onInput, find, repl, matchCase, onFind, o
     : view === 'one' ? 'mx-auto my-[40px] min-h-[1123px] px-[80px] py-[72px] shadow-[0_2px_6px_-2px_rgb(0_0_0/0.18),0_8px_24px_-8px_rgb(0_0_0/0.22)]'
       /* page one fills before page two (column-fill auto on a page's height).
          ponytail: past two pages the text runs on to the right; real pagination when a document gets that long */
-      : 'mx-auto my-[40px] h-[1123px] px-[80px] py-[72px] [column-count:2] [column-fill:auto] [column-gap:160px] [column-rule:1px_solid_var(--color-folio-rule)] shadow-[0_2px_6px_-2px_rgb(0_0_0/0.18),0_8px_24px_-8px_rgb(0_0_0/0.22)]'
+      : 'mx-auto my-[40px] h-[1123px] px-[80px] py-[72px] [column-count:2] [column-fill:auto] [column-gap:160px] [column-rule:1px_solid_var(--kol-folio-rule)] shadow-[0_2px_6px_-2px_rgb(0_0_0/0.18),0_8px_24px_-8px_rgb(0_0_0/0.22)]'
   const pageWidth = view === 'wrap' ? undefined : view === 'one' ? PAGE : PAGE * 2
   /* a page or a spread wider than the window is fitted to it, then zoomed */
   const scale = (zoom / 100) * (pageWidth ? Math.min(1, (room - 80) / pageWidth) : 1)
@@ -330,20 +317,20 @@ export default function Rich({ source, onInput, find, repl, matchCase, onFind, o
   const surface = (
     <div ref={canvas} className="flex min-h-0 flex-1 flex-col overflow-hidden" style={{ '--rich-left': view === 'wrap' ? `${56 * scale}px` : `${Math.max(0, (room - pageWidth * scale) / 2) + 80 * scale}px` }}>
       {!hidden.ruler && <Ruler width={(view === 'wrap' ? width : (pageWidth - 160)) * scale} />}
-      <div className={`min-h-0 flex-1 overflow-auto ${view === 'wrap' ? 'bg-[var(--folio-page)]' : 'bg-folio-surface'}`}>
+      <div className={`min-h-0 flex-1 overflow-auto ${view === 'wrap' ? 'bg-[var(--kol-folio-page)]' : 'bg-folio-surface'}`}>
         <div ref={page} contentEditable suppressContentEditableWarning spellCheck aria-label="Document" role="textbox" aria-multiline
           onInput={changed} onKeyDown={onKey} onBlur={changed}
           style={{ zoom: scale, width: pageWidth }}
-          className={`rich-page bg-[var(--folio-page)] text-[16px] leading-[1.25] text-[var(--folio-page-ink)] caret-folio-ink outline-none [&_a]:text-folio-green [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-folio-rule [&_blockquote]:pl-[16px] [&_h1]:mb-[12px] [&_h1]:text-[32px] [&_h1]:font-bold [&_h1]:leading-[1.15] [&_h2]:mb-[10px] [&_h2]:text-[24px] [&_h2]:font-semibold [&_h3]:mb-[8px] [&_h3]:text-[19px] [&_h3]:font-semibold [&_hr]:my-[16px] [&_hr]:border-folio-rule [&_img]:max-w-full [&_ol]:list-decimal [&_ol]:pl-[24px] [&_p]:mb-[8px] [&_ul]:list-disc [&_ul]:pl-[24px] ${pageClass}`} />
+          className={`rich-page bg-[var(--kol-folio-page)] text-[16px] leading-[1.25] text-[var(--kol-folio-page-ink)] caret-folio-ink outline-none [&_a]:text-folio-green [&_a]:underline [&_blockquote]:border-l-2 [&_blockquote]:border-folio-rule [&_blockquote]:pl-[16px] [&_h1]:mb-[12px] [&_h1]:text-[32px] [&_h1]:font-bold [&_h1]:leading-[1.15] [&_h2]:mb-[10px] [&_h2]:text-[24px] [&_h2]:font-semibold [&_h3]:mb-[8px] [&_h3]:text-[19px] [&_h3]:font-semibold [&_hr]:my-[16px] [&_hr]:border-folio-rule [&_img]:max-w-full [&_ol]:list-decimal [&_ol]:pl-[24px] [&_p]:mb-[8px] [&_ul]:list-disc [&_ul]:pl-[24px] ${pageClass}`} />
       </div>
     </div>
   )
 
   const status = <>
-    <Choice label="Page view" align="bottom-right" value={view} onChange={setView} options={VIEWS} className="kol-reader-meta" />
+    <Dropdown variant="kolbox" tone="grey" size="xs" ariaLabel="Page view" align="bottom-right" value={view} onChange={setView} options={VIEWS.map(([value, label]) => ({ value, label }))} />
     <span className="flex items-center">
       <Nav aria-label="Zoom out" onClick={() => setZoom((z) => Math.max(50, z - 10))} className="w-[32px] px-0">−</Nav>
-      <span className="kol-reader-meta w-[48px] text-center tabular-nums">{zoom}%</span>
+      <span className="kol-folio-meta w-[48px] text-center tabular-nums">{zoom}%</span>
       <Nav aria-label="Zoom in" onClick={() => setZoom((z) => Math.min(200, z + 10))} className="w-[32px] px-0">+</Nav>
     </span>
   </>

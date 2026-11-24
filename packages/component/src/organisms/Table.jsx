@@ -1,6 +1,10 @@
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { INDICATOR } from '../hooks/glyphLadders.js'
+import Button from '../atoms/Button.jsx'
+import { Tooltip } from '../utilities/Popover.jsx'
+import KolboxGlyph from '../utilities/kolboxGlyph.jsx'
+import { fileAgo } from '../molecules/ContentCard.jsx'
 
 /**
  * Table — data table.
@@ -42,7 +46,7 @@ const WIDTHS = {
   column: '',
 }
 
-const Table = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false, lastRule = false, framed = false }) => {
+const TableDefault = ({ caption, columns, rows, variant = 'default', className = '', width = 'panel', rowClassName, compact = false, lastRule = false, framed = false }) => {
   const [sort, setSort] = useState({ key: null, dir: null })
 
   const cycle = (key) =>
@@ -161,5 +165,140 @@ function FloatTable({ caption, columns, rows, sort, cycle, framed, rowClassName,
     </div>
   )
 }
+
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's FileList with its FileListHeader and FileListRow (Figma `FileList`), carried from apps/kolbox/src/home: 20
+ * under the title row, the head row (39), then one row per file, 48 high, touching. Opens on a double click or Enter.
+ * Table's words: `rows` (the files: { id, name, modified, created, size }), `sort` ('modified' | 'created' | 'name'; the
+ * sorted column's name in the ink with its arrow). kolbox's own: `onOpen(file)`; `onSettings(file)`, `onRemove(file)`
+ * (the cog and the trash; with either, the Size column and the actions gutter), `onMenu(file, event)` (right click).
+ * Columns (Figma's file list, measured: plan-2026-11-23 W6): the star's 33, Name at half the row, then Last modified,
+ * Created and Active in file (and Size) sharing the rest; the head 39, the cells full height; the row inset 32 at the
+ * right as a margin, so its hover ends there; under 768 Created and Active in file give way. `onStar(file)`: the star, lit while
+ * `file.starred`; absent, the column is empty. `file.icon` names the name's glyph (default `file`). */
+const FILE_COLS_KOLBOX = 'grid grid-cols-[33px_50%_repeat(3,minmax(0,1fr))] mr-8 max-md:grid-cols-[33px_minmax(0,1fr)_104px] max-md:mr-4'
+const FILE_COLS_ACTIONS_KOLBOX = 'grid grid-cols-[33px_50%_repeat(4,minmax(0,1fr))_64px] mr-8 max-md:grid-cols-[33px_minmax(0,1fr)_104px_64px_64px] max-md:mr-4'
+const PHONE_HIDDEN_KOLBOX = 'max-md:hidden'
+
+function TableHeadKolbox({ sort, actions = false }) {
+  const col = (key, label, pad = 'pl-2', hide = '') => (
+    <span role="columnheader" className={`flex items-center gap-1 whitespace-nowrap ${pad} ${sort === key ? 'is-sorted' : ''} ${hide}`}>
+      {label}{sort === key && <KolboxGlyph name="arrow-down" size={12} />}
+    </span>
+  )
+  return (
+    <div role="row" className={`kol-table-head ${actions ? FILE_COLS_ACTIONS_KOLBOX : FILE_COLS_KOLBOX} h-[39px] shrink-0`} data-file-list-header>
+      <span role="columnheader" aria-label="Star" className="self-center" />
+      {col('name', 'Name', '')}
+      {col('modified', 'Last modified')}
+      {col('created', 'Created', 'pl-2', PHONE_HIDDEN_KOLBOX)}
+      {col('active', 'Active in file', 'pl-2', PHONE_HIDDEN_KOLBOX)}
+      {actions && col('size', 'Size')}
+      {actions && <span role="columnheader" aria-label="Actions" />}
+    </div>
+  )
+}
+
+function TableRowKolbox({ file, onOpen, actions = false, onStar, onSettings, onRemove, onMenu }) {
+  const stop = (fn) => (e) => { e.stopPropagation(); fn(file, e) }
+  return (
+    <div
+      role="row"
+      tabIndex={0}
+      aria-label={file.name}
+      onDoubleClick={() => onOpen?.(file)}
+      onKeyDown={(e) => { if (e.key === 'Enter' && e.target === e.currentTarget) onOpen?.(file) }}
+      onContextMenu={onMenu ? (e) => { e.preventDefault(); onMenu(file, e) } : undefined}
+      className={`kol-table-row ${actions ? FILE_COLS_ACTIONS_KOLBOX : FILE_COLS_KOLBOX} h-12 shrink-0 cursor-default outline-none`}
+      data-file-row={file.id}
+    >
+      <span role="cell" className="flex items-center justify-center">
+        {onStar && <Tooltip variant="kolbox" label={file.starred ? 'Unstar' : 'Star'}><Button variant="kolbox" iconOnly="star" aria-label="Star" pressed={!!file.starred} onClick={stop(onStar)} onDoubleClick={(e) => e.stopPropagation()} /></Tooltip>}
+      </span>
+      <span role="cell" className="flex min-w-0 items-center gap-3 pl-2">
+        <KolboxGlyph name={file.icon ?? 'file'} className="kol-table-icon" />
+        <span className="kol-table-name truncate">{file.name}</span>
+      </span>
+      <span role="cell" className="flex min-w-0 items-center pl-2"><span className="truncate">{fileAgo(file.modified)}</span></span>
+      <span role="cell" className={`flex min-w-0 items-center pl-2 ${PHONE_HIDDEN_KOLBOX}`}><span className="truncate">{fileAgo(file.created)}</span></span>
+      <span role="cell" className={PHONE_HIDDEN_KOLBOX} />
+      {actions && <span role="cell" className="kol-table-size flex items-center pl-2">{file.size}</span>}
+      {actions && (
+        <span role="cell" className="flex items-center justify-end" onDoubleClick={(e) => e.stopPropagation()}>
+          {onSettings && <Tooltip variant="kolbox" label="Settings"><Button variant="kolbox" iconOnly="settings-01" aria-label="Settings" onClick={stop(onSettings)} /></Tooltip>}
+          {onRemove && <Tooltip variant="kolbox" label="Delete"><Button variant="kolbox" iconOnly="trash" aria-label="Delete" onClick={stop(onRemove)} /></Tooltip>}
+        </span>
+      )}
+    </div>
+  )
+}
+
+/* Folio on kolbox (2026-11-22): `columns` ({ header, width?, phone?, render(row) }, Table folio's words) draws the
+   caller's own columns in kolbox's head and rows: the same 40 head and 48 rows, the 33 gutter and the 32 inset, a column
+   with no `width` taking the rest, `phone: false` giving way under 768. `rowKey(row)` keys a row (default `row.id`).
+   Without `columns` the file list draws as before. */
+function TableKolboxColumns({ columns, rows, rowKey = (r) => r.id, onOpen, className }) {
+  const track = (list) => ['33px', ...list.map((c) => (c.width ? `${c.width}px` : 'minmax(0,1fr)'))].join(' ')
+  const phone = columns.filter((c) => c.phone !== false)
+  const grid = 'grid grid-cols-(--kol-table-cols) gap-x-2 pr-8 max-md:grid-cols-(--kol-table-cols-phone) max-md:pr-4'
+  const hide = (c) => (c.phone === false ? 'max-md:hidden' : '')
+  return (
+    <div role="table" className={`kol-table--kolbox min-h-0 flex-1 overflow-y-auto pt-5 max-md:flex-none max-md:overflow-visible ${className}`.trim()} style={{ '--kol-table-cols': track(columns), '--kol-table-cols-phone': track(phone) }} data-file-list>
+      <div role="row" className={`kol-table-head ${grid} h-10 shrink-0 items-center`} data-file-list-header>
+        <span role="columnheader" aria-hidden />
+        {columns.map((c, i) => <span key={i} role="columnheader" className={`truncate ${hide(c)}`}>{c.header}</span>)}
+      </div>
+      {rows.map((row) => (
+        <div key={rowKey(row)} role="row" tabIndex={0} onDoubleClick={() => onOpen?.(row)} onKeyDown={(e) => { if (e.key === 'Enter' && e.target === e.currentTarget) onOpen?.(row) }}
+          className={`kol-table-row ${grid} h-12 shrink-0 cursor-default items-center outline-none`} data-file-row={rowKey(row)}>
+          <span role="cell" aria-hidden />
+          {columns.map((c, i) => <span key={i} role="cell" className={`flex min-w-0 items-center ${hide(c)}`}>{c.render(row)}</span>)}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function TableKolbox({ rows = [], sort, columns, rowKey, onOpen, onStar, onSettings, onRemove, onMenu, className = '' }) {
+  if (columns) return <TableKolboxColumns columns={columns} rows={rows} rowKey={rowKey} onOpen={onOpen} className={className} />
+  const actions = !!(onSettings || onRemove)
+  return (
+    <div role="table" className={`kol-table--kolbox min-h-0 flex-1 overflow-y-auto pt-5 max-md:flex-none max-md:overflow-visible max-md:pb-28 ${className}`.trim()} data-file-list>
+      <TableHeadKolbox sort={sort} actions={actions} />
+      {rows.map((f) => <TableRowKolbox key={f.id} file={f} onOpen={onOpen} actions={actions} onStar={onStar} onSettings={onSettings} onRemove={onRemove} onMenu={onMenu} />)}
+    </div>
+  )
+}
+
+/* ── folio (Folio batch E, 2026-11-22) ─────────────────────────────────────────────────────────────────────────────
+ * Folio's table of books, carried from apps/folio's FolioShelf ("All books"): the head row 34 high in Folio's label
+ * type, muted, over a 2px rule in the ink; one row per book 70 high on a hairline, lit on hover, the whole row a link;
+ * columns 20 apart and a trailing arrow. Table's words: `columns` ({ header, width?, render(row) }: a column with no
+ * `width` takes the rest; `render` draws the whole cell, its own width with it) and `rows`. Folio's own: `rowKey(row)`,
+ * `rowHref(row)` with `linkComponent` (a router's Link; default `a`), and `empty` (the node drawn when there are no
+ * rows). */
+function TableFolio({ columns = [], rows = [], rowKey = (r) => r.id, rowHref, linkComponent: L = 'a', empty, className = '' }) {
+  return (
+    <div className={`kol-table--folio flex flex-col ${className}`.trim()}>
+      <div className="kol-folio-label kol-table-head flex h-[34px] items-center gap-[20px] border-b-2">
+        {columns.map((c, i) => <p key={i} className={c.width ? 'shrink-0' : 'min-w-0 flex-1'} style={c.width ? { width: c.width } : undefined}>{c.header}</p>)}
+        <span className="w-[18px] shrink-0" />
+      </div>
+      {rows.map((row) => {
+        const href = rowHref?.(row)
+        return (
+          <L key={rowKey(row)} {...(L === 'a' ? { href } : { to: href })} className="kol-table-row group flex h-[70px] items-center gap-[20px] border-b">
+            {columns.map((c, i) => <Fragment key={i}>{c.render(row)}</Fragment>)}
+            <span className="kol-table-arrow shrink-0"><IconLoader name="arrow-right" size={18} /></span>
+          </L>
+        )
+      })}
+      {rows.length === 0 && empty}
+    </div>
+  )
+}
+
+const Table = (props) => (props.variant === 'folio' ? <TableFolio {...props} /> : props.variant === 'kolbox' ? <TableKolbox {...props} /> : <TableDefault {...props} />)
 
 export default Table

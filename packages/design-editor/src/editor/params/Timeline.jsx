@@ -237,7 +237,7 @@ function WaveLane({ view, lit, label, wave }) {
 function LayerLabel({ layer, name, sub, lit, select, toggleLayer, toggleLayerLock, fold }) {
   return (
     <div
-      className={`flex items-center gap-2.5 shrink-0 px-2 rounded-md ${lit ? 'bg-fg-16' : ''} ${layer ? 'cursor-pointer' : ''}`}
+      className={`flex items-center gap-2.5 shrink-0 px-2 rounded-md ${lit ? 'bg-fg-12' : ''} ${layer ? 'cursor-pointer' : ''}`}
       style={{ width: GUTTER, height: ROW, paddingLeft: sub ? 8 + 14 + 10 : undefined }}
       onClick={layer ? () => select(layer.id) : undefined}
     >

@@ -35,3 +35,6 @@ CSS (`pnpm lookups`) — never hand-edit one.
 | [[10-opacity\|Opacity]] | [[10-opacity-lookup\|Opacity lookup]] | Ink ladders, the eight roles, scrims |
 | [[../03-components/05-control-chrome\|Control chrome · Tone]] | [[13-tone-lookup\|Tone lookup]] | The seven control tones, ordered by depth |
 | — | [[14-cursor-lookup\|Cursor lookup]] | Every cursor and pointer in use |
+| [[15-type-ramp\|Type ramp]] | — | Draft: the size ramp every text style picks a step from |
+| [[16-type-references\|Type references]] | — | Draft: how Material, Atlassian, Tailwind and Carbon build their type scales |
+| [[17-type-sets\|Type sets]] | — | Draft: the article, site and research sets, each role mapped to its ramp step |

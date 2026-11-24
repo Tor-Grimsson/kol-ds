@@ -270,7 +270,7 @@ export default function HubHome({
 
   /* NEW AND WALKTHROUGH LIVE IN THE MASTHEAD'S ROUND BUTTON (user 2026-10-23: *"New and more should go into a component
    * like apps/catalog"*): the catalog's inverted full-radius Button in PageHeader's `actions` slot, opening the same sheet
-   * the phone bar's More draws (MoreRows in `.kol-more-sheet`). The foot row it replaces was a row of buttons under the
+   * the phone bar's More draws (MenuFloatRows in `.kol-more-sheet`). The foot row it replaces was a row of buttons under the
    * catalog, hence a bottom pad that read as a clipped last row. With the bar on a phone the bar's More carries both
    * and the button hides below `md`; with the drawer it stays on every width. */
   const baseActions = [

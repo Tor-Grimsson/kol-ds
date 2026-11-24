@@ -10,7 +10,11 @@ const ITEMS = [
 ]
 
 /* the account's circle — the user glyph with no initial, the Avatar with one */
-export default function AccountMenuPreview() {
+export const variants = ['default', 'kolbox']
+
+export default function AccountMenuPreview({ variant = 'default' }) {
+  /* kolbox (W31.2 batch 4): kolbox's AccountChip, the trigger only */
+  if (variant === 'kolbox') return <AccountMenu variant="kolbox" initial="T" />
   return (
     <div className="flex min-h-[200px] w-full items-start justify-center gap-6">
       <AccountMenu items={ITEMS} />

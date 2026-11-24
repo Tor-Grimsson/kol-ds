@@ -94,16 +94,15 @@
 .kol-prose pre,
 .kol-doc-code {
   font-family: var(--kol-font-family-mono);
-  font-size: 14px;             /* matches CodeBlock's reference voice (14/1.6) */
   font-weight: 400;
-  line-height: 1.6;
   padding: 16px 20px;
   background: var(--kol-fg-04);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   overflow-x: auto;
 }
-.kol-doc-code { margin: 0; }
-.kol-prose pre { margin: 24px 0; }   /* prose keeps its editorial block rhythm */
+.kol-doc-code { margin: 0; font-size: 14px; line-height: 1.6; }   /* matches CodeBlock's reference voice (14/1.6) */
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose pre { margin: 24px 0; font-size: var(--kol-ramp-size-t5); line-height: var(--kol-ramp-line-height-t5); }   /* prose keeps its editorial block rhythm */
 
 /* INLINE CODE — the chip look, shared with `.kol-table-token` (user question
  * 2026-08-01: *"list all the inline code classes, why do we have more then
@@ -133,13 +132,17 @@
 .kol-table-token,
 .kol-table code {
   font-family: var(--kol-font-family-mono);
-  font-size: 0.75rem;
   font-weight: 400;
   color: var(--kol-fg-80);
   background: var(--kol-fg-08);
   padding: 2px var(--kol-spacing-1);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
+.kol-doc-code-inline,
+.kol-table-token,
+.kol-table code { font-size: 0.75rem; }
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose code { font-size: var(--kol-ramp-size-t6); }   /* line height is the paragraph's */
 /* code inside pre stays stripped (rule preserved from the prose sheet) */
 .kol-prose pre code,
 .kol-doc-code code {
@@ -157,10 +160,11 @@
   text-align: left;
   border-collapse: collapse;
   font-family: var(--kol-font-family-sans);
-  font-size: var(--kol-text-body-02);
-  line-height: 160%;
   font-weight: 400;
 }
+.kol-doc-table { font-size: var(--kol-text-body-02); line-height: 160%; }
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose table { font-size: var(--kol-ramp-size-t5); line-height: var(--kol-ramp-line-height-t5); }
 .kol-prose thead tr,
 .kol-doc-table thead tr {
   border-bottom: 1px solid var(--kol-fg-12);
@@ -168,8 +172,6 @@
 .kol-prose th,
 .kol-doc-table th {
   font-family: var(--kol-font-family-mono);
-  font-size: 10px;
-  line-height: 1;
   font-weight: 400;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -179,6 +181,9 @@
      4-line value and the label↔value pairing broke. Both cell types agree. */
   vertical-align: top;
 }
+.kol-doc-table th { font-size: 10px; line-height: 1; }
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose th { font-size: var(--kol-ramp-size-u8); line-height: var(--kol-ramp-line-height-u8); }
 .kol-prose td,
 .kol-doc-table td {
   padding: 12px 16px;
@@ -233,7 +238,7 @@
   /* oq, not fg (2026-07-30) — the seam law: chrome borders are opaque so they
    * never brighten over tinted fills; weight 08 matches the table wrapper. */
   border: 1px solid var(--kol-oq-08);
-  border-radius: var(--kol-radius-sm);   /* 4px — THE radius law */
+  border-radius: var(--kol-radius-4);   /* 4px — THE radius law */
   overflow: hidden;
 }
 
@@ -241,12 +246,13 @@
 .kol-prose figcaption,
 .kol-doc-caption {
   font-family: var(--kol-font-family-mono);
-  font-size: 12px;
-  line-height: 16px;
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--kol-fg-meta);
 }
+.kol-doc-caption { font-size: 12px; line-height: 16px; }
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose figcaption { font-size: var(--kol-ramp-size-l6); line-height: var(--kol-ramp-line-height-l6); }
 
 /* footer — wrappable closing chrome (attributions, notes, updated-lines).
  * Mono ramp BY LAW: helper is line-height-1 single-line chrome and never
@@ -254,12 +260,13 @@
 .kol-prose footer,
 .kol-doc-footer {
   font-family: var(--kol-font-family-mono);
-  font-size: 10px;
-  line-height: 14px;
   font-weight: 400;
   letter-spacing: 0.02em;
   color: var(--kol-fg-meta);
 }
+.kol-doc-footer { font-size: 10px; line-height: 14px; }
+/* the prose half reads the type ramp (W7.2, 17-type-sets.md); the doc half keeps its values */
+.kol-prose footer { font-size: var(--kol-ramp-size-l8); line-height: var(--kol-ramp-line-height-l8); }
 
 /* =============================================================================
  * CARD SET — 6 roles. Grounded in the shipped card families: mono body voice,

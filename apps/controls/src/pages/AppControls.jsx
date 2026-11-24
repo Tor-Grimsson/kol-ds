@@ -51,9 +51,9 @@ export default function AppControls() {
       </Specimen>
 
       <Specimen title="Switch · Checkbox" ships="kol-component · ToggleSwitch · ToggleCheckbox">
-        <ToggleSwitch label="Bare" checked={on} onChange={setOn} />
-        <ToggleSwitch label="Primary" checked={on} onChange={setOn} variant="primary" />
-        <ToggleSwitch label="Outline" checked={on} onChange={setOn} variant="outline" />
+        <LabeledControl horizontal label="Bare" labelWidth="fit-content"><ToggleSwitch checked={on} onChange={setOn} aria-label="Bare" /></LabeledControl>
+        <LabeledControl horizontal label="Primary" labelWidth="fit-content"><ToggleSwitch checked={on} onChange={setOn} variant="primary" aria-label="Primary" /></LabeledControl>
+        <LabeledControl horizontal label="Outline" labelWidth="fit-content"><ToggleSwitch checked={on} onChange={setOn} variant="outline" aria-label="Outline" /></LabeledControl>
         <ToggleCheckbox label="ACCEPT" checked={on} onChange={setOn} />
       </Specimen>
 
@@ -90,8 +90,8 @@ export default function AppControls() {
         <div className="grid w-full max-w-lg grid-cols-2 gap-6">
           <LabeledControl label={`COLUMNS · ${n}`}><Slider min={1} max={32} value={n} onChange={setN} /></LabeledControl>
           <LabeledControl label="HEX" hint="6-char"><Input prefix="#" value={hex} onChange={(e) => setHex(e.target.value)} chars={6} /></LabeledControl>
-          <LabeledControl inline label="Sort"><Dropdown value={sort} onChange={setSort} variant="grey" size="sm" options={SORT} /></LabeledControl>
-          <LabeledControl inline label="Wave"><Stepper value={wave} onChange={(e) => setWave(e.target.value)} options={['sine', 'tri', 'saw', 'sqr']} size="xs" /></LabeledControl>
+          <LabeledControl horizontal label="Sort"><Dropdown value={sort} onChange={setSort} variant="grey" size="sm" options={SORT} /></LabeledControl>
+          <LabeledControl horizontal label="Wave"><Stepper value={wave} onChange={(e) => setWave(e.target.value)} options={['sine', 'tri', 'saw', 'sqr']} size="xs" /></LabeledControl>
         </div>
       </Specimen>
 

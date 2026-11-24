@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { SettingsSections } from '@kolkrabbi/kol-component'
 import { DEFAULT_TYPE_LAB, TYPE_CASES, TYPE_FACES, TYPE_INKS, TYPE_RATIOS, TYPE_STEPS, typeLab, typeLabCss } from './typeLab.js'
-import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.jsx'
+import ModalLab, { CopyAction, LabHistory, useLabValue } from './lab/ModalLab.jsx'
 
 /* taxonomy-ok: organism — the type generator in the lab window: scale, steps and roles in the rail, the samples on the stage */
 
@@ -9,7 +9,7 @@ import LabWindow, { CopyAction, LabHistory, useLabValue } from './lab/LabWindow.
  * TypeLab — A brand's type, generated. A base size and a musical ratio set every step; each step's line height is the
  * brand's to tune; sixteen roles sit on the steps, each with its face, weight, tracking, case and ink (`typeLab.js`).
  *
- * In the lab window (BrandLabToolWindow, 2026-10-29 — LabWindow): the rail's tabs are Scale (base, ratio, what the ratio
+ * In the lab window (BrandLabToolWindow, 2026-10-29 — ModalLab): the rail's tabs are Scale (base, ratio, what the ratio
  * is for), Steps (each step's line-height factor) and Roles (one role at a time); the stage draws a step per line, or
  * the roles while Roles is open, every sample one line and truncated; the output under the window is the table of roles
  * and the CSS. The faces are the BRAND's, passed in — the lab never sets KOL's type.
@@ -83,7 +83,7 @@ export default function TypeLab({ value: valueProp, onChange, faces = FACES, sam
   ]
 
   return (
-    <LabWindow
+    <ModalLab
       className={className}
       title="Type Lab"
       tabs={tabs}
@@ -118,6 +118,6 @@ export default function TypeLab({ value: valueProp, onChange, faces = FACES, sam
           const f = face(s.face)
           return <SampleRow key={s.id} spec={`${s.id} ${s.size}/${s.lh}`} text={sample} style={{ fontFamily: f.family, fontWeight: f.weight, fontSize: s.size, lineHeight: `${s.lh}px`, color: 'var(--kol-fg-emphasis)' }} />
         })}
-    </LabWindow>
+    </ModalLab>
   )
 }

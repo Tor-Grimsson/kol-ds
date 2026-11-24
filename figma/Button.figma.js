@@ -3,14 +3,14 @@
 // component=Button
 import figma from 'figma'
 
-// axes = what the code uses (2026-11-06): role · size · content · state · shape. Color is NOT a property: it is the
+// axes = what the code uses (2026-11-06): role · size · iconOnly · state · round (true/false toggles, 2026-11-12). Color is NOT a property: it is the
 // instance's `tone` variable mode (in code `tone="…"` or a `kol-tone-*` wrapper), which Code Connect cannot read.
 const instance = figma.selectedInstance
 const role = instance.getEnum('role', { "default": "default", "nav": "nav", "tab-filled": "tab-filled" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md", "lg": "lg" })
-const content = instance.getEnum('content', { "text": "text", "icon": "icon" })
+const content = instance.getEnum('iconOnly', { "false": "text", "true": "icon" })
 const state = instance.getEnum('state', { "rest": "rest", "quiet": "quiet", "pressed": "pressed", "disabled": "disabled", "hover": "rest" })
-const shape = instance.getEnum('shape', { "square": "square", "round": "round" })
+const shape = instance.getEnum('round', { "false": "square", "true": "round" })
 // the glyph lives in a nested IconLoader (2026-11-07): read its `glyph` swap; a layer name never follows a swap
 const glyphOf = (layer, fallback) => {
   const n = instance.findInstance(layer)

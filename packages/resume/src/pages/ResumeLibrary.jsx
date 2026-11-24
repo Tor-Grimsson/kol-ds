@@ -67,7 +67,7 @@ export default function ResumeLibrary() {
         <KitOptionsFields />
       </LabeledControlSection>
 
-      {err && <pre className="kol-mono-10 whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-sm)] p-2 mb-6">{err}</pre>}
+      {err && <pre className="kol-mono-10 whitespace-pre-wrap text-meta border border-fg-12 rounded-[var(--kol-radius-4)] p-2 mb-6">{err}</pre>}
 
       <ContentCollection min="320px">
         {TREATMENTS.map((t) => (

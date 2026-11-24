@@ -42,6 +42,8 @@ import { useTheme } from '@kolkrabbi/kol-framework'
  * @param {object} [props.settingsStore] `{ load() → Promise, save(settings) }`
  *   — where the editor's preferences persist beyond this browser (a database
  *   row keyed by tool). Without it they stay in localStorage.
+ * The root entry's DesignEditor (index.jsx) adds `variant`, the editor's style; the core entry has no packs, so it has
+ * only the default style.
  */
 export function DesignEditor({ mediaProxyBase, mediaClient, settingsStore } = {}) {
   // ponytail: module-global config knob, set at render — idempotent, runs
@@ -121,6 +123,11 @@ export { TimelineRail, timelineView } from './editor/params/Timeline'
  * props call the same three.
  */
 export { setMediaClient, setMediaProxyBase, setSettingsStore }
+
+/** The editor's style (C3): the Style row's app setting, read by a host to pass `<DesignEditor variant>`; the variant
+ *  context the shared parts read ('float', 'kolbox' or null). */
+export { useAppSettings } from './editor/lib/appSettings'
+export { VariantContext, useVariant, STYLE_OPTIONS } from './editor/variant'
 
 /** Where the library syncs to (plan 07) — unset, the app is localStorage only and shows no Sign in. */
 export { setLibraryApi, getLibraryApi, useLibrarySession, useAccount, signInLibrary, signUpLibrary, signOutLibrary, updateAccount, mintInvite, requestInvite, listInviteRequests, inviteFromRequest, UnauthorizedError } from './editor/library/libraryApi'

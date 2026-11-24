@@ -1,15 +1,21 @@
-import { PageHeader } from '@kolkrabbi/kol-component'
-import { ThemeToggle } from '@kolkrabbi/kol-framework'
-import { PageShell } from '@kolkrabbi/kol-shell'
-import Style from './Style.jsx'
+import { useEffect, useState } from 'react'
+import Board from './Board.jsx'
+import Pair from './Pair.jsx'
+import Kolbox from './Kolbox.jsx'
 
-/* THE TOOL FRAME AS A REFERENCE PAGE (apps/overlays' shape): PageShell, the title-only masthead with its control on the
- * right, a list that scrolls. The list is Style.jsx — A beside B. */
+/* Three pages on the hash (the app is served at / in dev and /apps/style/ built, so a path route would need a fallback):
+ * `#/` the styles board, `#/pair` the earlier default-beside-float page, kept as it was so he can compare rounds,
+ * `#/kolbox` the kolbox stylesheet. */
+const PAGES = { '/pair': Pair, '/kolbox': Kolbox }
+const read = () => window.location.hash.replace(/^#/, '')
+
 export default function App() {
-  return (
-    <PageShell className="gap-10 [--kol-page-header-mb:0]">
-      <PageHeader title="STYLE" actions={<ThemeToggle fill="none" label={false} size="sm" />} />
-      <div className="mt-8"><Style /></div>
-    </PageShell>
-  )
+  const [page, setPage] = useState(read)
+  useEffect(() => {
+    const on = () => { setPage(read()); window.scrollTo(0, 0) }
+    window.addEventListener('hashchange', on)
+    return () => window.removeEventListener('hashchange', on)
+  }, [])
+  const Page = PAGES[page] ?? Board
+  return <Page />
 }

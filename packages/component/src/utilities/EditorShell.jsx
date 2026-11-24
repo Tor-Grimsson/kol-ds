@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import Divider from '../atoms/Divider.jsx'
 import useDragResize from '../hooks/useDragResize.js'
+import useMediaQuery from '../hooks/useMediaQuery.js'
 
 /**
  * EditorShell — the two-rail editor layout frame.
@@ -63,7 +64,7 @@ import useDragResize from '../hooks/useDragResize.js'
  * @param {string|number} height   shell height (default '100dvh'; pass a bounded value to embed)
  * @param {string}    className    extra classes merged onto the shell root
  */
-export default function EditorShell({
+function EditorShellDefault({
   topbar,
   leftHeader,
   left,
@@ -178,4 +179,44 @@ function Rail({ side, header, footer, width, resizable, children }) {
       {resizable && <div {...grabProps} className={`kol-rail-grab kol-rail-grab--${side}`} />}
     </aside>
   )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's Shell (plan 3.1), carried from apps/kolbox/src/ui/Shell.jsx: `topbar`, then `left`, the canvas (children),
+ * `right`; no gutters, the regions' own edge lines shared, radius 12 on the outer shell only. The rails are fixed, the
+ * canvas flexes. `canvasFooter` (kolbox's timeline) floats over the canvas's foot, the canvas's width, under neither
+ * rail, out of the layout flow; `toolbar` (the tool dock or the transport) floats at the canvas's bottom centre, 12 above (Figma's, W3)
+ * its foot, and an open canvasFooter covers it. Under 768: the canvas on top, the canvasFooter under it (its lanes keep
+ * 768 and slide sideways), then both rails in one column at half the display, the right rail first. */
+function EditorShellKolbox({ topbar, left, right, canvasFooter, toolbar, children, className = '' }) {
+  const phone = useMediaQuery('(max-width: 767px)')
+  const canvas = (
+    <main className="kol-editor-canvas--kolbox relative min-w-0 flex-1 overflow-hidden" data-canvas>
+      {children}
+      {toolbar && <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center pb-3 *:pointer-events-auto max-md:px-2" data-toolbar>{toolbar}</div>}
+      {canvasFooter && !phone && <div className="absolute inset-x-0 bottom-0 z-20" data-timeline>{canvasFooter}</div>}
+    </main>
+  )
+  return (
+    <div className={`kol-editor-shell--kolbox relative flex h-full flex-col overflow-hidden ${className}`.trim()} data-shell>
+      {topbar}
+      {phone ? (
+        <>
+          {canvas}
+          {canvasFooter && <div className="shrink-0 overflow-x-auto" data-timeline><div className="w-[768px]">{canvasFooter}</div></div>}
+          {(left || right) && <div className="h-[50dvh] shrink-0 overflow-y-auto" data-shell-rails>{right}{left}</div>}
+        </>
+      ) : (
+        <div className="flex min-h-0 flex-1">
+          {left}
+          {canvas}
+          {right}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default function EditorShell(props) {
+  return props.variant === 'kolbox' ? <EditorShellKolbox {...props} /> : <EditorShellDefault {...props} />
 }

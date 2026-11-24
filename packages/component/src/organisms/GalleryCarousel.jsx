@@ -58,7 +58,7 @@ export default function GalleryCarousel({ media = [], title = '', defaultAspect 
           return (
             <div
               key={item.url || i}
-              className="w-full overflow-hidden rounded-[var(--kol-radius-xs)] cursor-pointer"
+              className="w-full overflow-hidden rounded-[var(--kol-radius-2)] cursor-pointer"
               style={{ aspectRatio: aspect }}
               onPointerDown={onPointerDown}
               onPointerMove={onPointerMove}

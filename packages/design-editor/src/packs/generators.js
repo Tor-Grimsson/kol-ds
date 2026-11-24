@@ -17,8 +17,8 @@ import { paramsFor as generateParamsFor } from '../generate/index.js'
 import { generateMarks, generateBody } from '../editor/generate/generateCore'
 import GenerateLayer from '../editor/generate/GenerateLayer'
 /* the generator tools — Generate · Repeat · Paratype letter, the Rail and the settings dialog (W7) */
-import GeneratorRail from '../editor/generate/GeneratorRail'
-import { GeneratorWindows } from '../editor/generate/GeneratorWindow'
+import RailSettings from '../editor/generate/RailSettings'
+import { GeneratorWindows } from '../editor/generate/ModalSettings'
 
 export const generators = {
   layerTypes: ['loop', 'misc', 'generate'],
@@ -26,7 +26,9 @@ export const generators = {
   presetsInGroup, presetsInSub, presetLayerPatch, isToolPreset, groupById,
   drawLoopFrame, GENERATIVE_TREE, MISC_TREE, THEME_OPTIONS, buildParatypeFlattenGroup,
   LoopPicker, LoopFields, stepFromPreset,
-  generateParamsFor, generateMarks, generateBody, GenerateLayer, GeneratorRail, GeneratorWindows,
+  generateParamsFor, generateMarks, generateBody, GenerateLayer, RailSettings, GeneratorWindows,
+  /** @deprecated 2026-11-12 — `RailSettings` under its old name (family-prefix rename); drops when nobody reads it */
+  GeneratorRail: RailSettings,
   /* the three.js engines stay lazy — loaded when an engine layer first renders */
   loadGlHost: () => import('../loops/gl/host.js'),
 }

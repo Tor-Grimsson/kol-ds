@@ -3,7 +3,7 @@ title: Foundry system
 type: reference
 status: canonical
 created: 2026-07-31
-updated: 2026-11-08
+updated: 2026-11-14
 verified: 2026-07-09
 description: The type-specimen apparatus in kol-foundry
 aliases:
@@ -12,7 +12,7 @@ aliases:
   - type specimen
 sources:
   - packages/foundry/src/index.js
-  - packages/foundry/src/TypeSpecimenLive.jsx
+  - packages/foundry/src/specimenAliases.js
   - packages/foundry/src/useFontMetrics.js
   - packages/foundry/README.md
   - showcase/src/sets/foundry-specimen.jsx
@@ -43,16 +43,16 @@ import { TypefaceHero, VariableFontSection } from '@kolkrabbi/kol-foundry'
 | `TypefaceStyleSection` | per-style specimen block | style meta |
 | `FontPreviewSection` | size-ladder / free-preview control (size + text) | preview text |
 | `GlyphMetricsSection` | section wrapper — header (style/axis dropdowns) over `GlyphMetricsGrid` | font URLs, axis defs |
-| `SpecimenSectionHeader` | shared section header (title + `Divider`) | title |
+| `SpecimenSectionHeader` | **alias** of kol-styleguide's `SpecimenHeader` since 2026-11-14 (the sections above import `SpecimenHeader`) | title |
 
 ### Type-specimen kit + live-font effects (moved from `kol-component` 2026-07-09)
 
-Four components moved in from `@kolkrabbi/kol-component` — each passes the membership test (renders, inspects, or manipulates a live font). `kol-component` never imports back (topology §3: no reverse dependency).
+Four components moved in from `@kolkrabbi/kol-component` — each passes the membership test (renders, inspects, or manipulates a live font). `kol-component` never imports back (topology §3: no reverse dependency). **2026-11-14 (type-ramp plan 7.5):** the specimen kit moved on to `@kolkrabbi/kol-styleguide` under the Specimen names, with the Figma Specimen family; kol-foundry now depends on kol-styleguide and keeps the old names as aliases on the retirement ledger (`src/specimenAliases.js`): `TypeSample` = `SpecimenSample`, `TypeSpecCard` = `SpecimenSpec`, `TypeSpecimenLive` = `SpecimenLive`, `SpecimenSectionHeader` = `SpecimenHeader`; `readMeta` is re-exported. See [[10-styleguide-system|styleguide system]].
 
 | Component | What it is |
 |-----------|-----------|
-| `TypeSample` | a single labeled type-specimen block — family/weight/size/line-height rendered live via props |
-| `TypeSpecCard` | two-column type-spec row — font-metric key/value panel beside a live sample slot |
+| `TypeSample` | alias of kol-styleguide's `SpecimenSample` (2026-11-14) |
+| `TypeSpecCard` | alias of kol-styleguide's `SpecimenSpec` (2026-11-14) |
 | `TextPressure` | a line of variable-font text whose glyphs deform toward the pointer — manipulates `wght`/`wdth`/`ital` per glyph, each frame; `variant="intro"` tracks the whole window and is bent from mount (`WebsiteIntroLoader`) |
 | `IntroLoader` | full-height branded loading curtain — times in a live TextPressure variable-font wordmark (**peer:** `framer-motion`) |
 
@@ -76,7 +76,7 @@ The bucket-B engine upgrades — the specimen tools gain a self-measuring row an
 
 | Export | What it is |
 |--------|-----------|
-| `TypeSpecimenLive` | self-measuring type specimen — one row per type class, each reading its OWN `getComputedStyle` to print the resolved typeface / weight / size / leading / tracking beside a live sample, so the labels can never drift from the CSS. The live cousin of the static `TypeSpecCard` (a hand-typed data sheet): nothing to type, nothing to keep in sync. (`readMeta` also exported for reuse.) |
+| `TypeSpecimenLive` | **alias** of kol-styleguide's `SpecimenLive` since 2026-11-14 (same props). Self-measuring type specimen — one row per type class, each reading its OWN `getComputedStyle` to print the resolved typeface / weight / size / leading / tracking beside a live sample, so the labels can never drift from the CSS. The live cousin of the static `TypeSpecCard` (a hand-typed data sheet): nothing to type, nothing to keep in sync. (`readMeta` also exported for reuse.) |
 | `useFontMetrics` | opentype.js glyph-metric parse + text→outline — per-glyph advance / bounding-box readouts and true glyph OUTLINE path data (`<path d>`) for any string at any size/tracking, wrapped to a box. The reusable parse-only layer beneath `GlyphMetricsGrid`. **Optional peer** (`opentype.js`): absent it, resolves to `status: 'unavailable'` and every helper returns an empty/zero result instead of throwing. |
 
 > **Parametric type (ParaType) — spec'd, deferred.** A parametric font *synthesizer* — generates letterforms from ~30 numeric parameters, no font file — is specced but intentionally NOT built unattended (an 864-line composition + 6 effect modules + 2 engines + ~8 external libs; too large to rush-port). Recreate-from brief: [`ParaType lobby spec`](../../../lobby/ParaType.md).

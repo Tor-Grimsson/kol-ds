@@ -12,6 +12,18 @@ import fieldRose from './assets/field-rose.svg'
 export const LABEL = 'text-[10px] font-semibold tracking-[1.1px]'
 export const SECTION = 'text-[28px] font-bold tracking-[-0.8px]'
 export const PROSE = 'text-[20px] leading-[1.65]'
+/* the controls' text, kolbox's roles (apps/kolbox/src/index.css): a label in Inter 12/16 medium, a value in JetBrains Mono 12/16 */
+export const CONTROL = 'text-[12px] font-medium leading-[16px]'
+export const VALUE = 'font-[family-name:var(--kol-font-family-mono)] text-[12px] leading-[16px]'
+/* and the rest of kolbox's roles the parts read: a group's heading 12/17 medium, help 11/15, meta in mono 10/14 */
+export const GROUP = 'text-[12px] font-medium leading-[17px]'
+export const HELP = 'text-[11px] leading-[15px]'
+export const META = 'font-[family-name:var(--kol-font-family-mono)] text-[10px] leading-[14px]'
+
+/* the ✓ beside a picked row (Choice, the menus); the box is KOL's checkbox, 16 square */
+export const Check = ({ checked }) => (
+  <span aria-hidden className="inline-flex size-[16px] shrink-0 items-center justify-center text-folio-green">{checked ? '✓' : ''}</span>
+)
 
 /* the face is the DS's Inter (kol-theme ≥ 0.211, /fonts/inter); `attrs` carries /demo-4's theme, palette, accent */
 export function FolioFrame({ className = 'max-w-[1440px]', attrs, children }) {
@@ -41,16 +53,6 @@ export function Wordmark({ to = '/mockups' }) {
 export function Profile() {
   return (
     <div className="flex size-[34px] items-center justify-center rounded-full border border-folio-rule bg-folio-surface text-[11px] font-bold">JL</div>
-  )
-}
-
-export function Action({ children, glyph, primary }) {
-  const tone = primary ? 'border-folio-green bg-folio-green text-folio-paper' : 'border-folio-rule bg-folio-paper text-folio-ink'
-  return (
-    <button type="button" className={`flex h-[42px] shrink-0 items-center gap-[12px] whitespace-nowrap rounded-[3px] border px-[16px] ${tone}`}>
-      <span className="text-[12px] font-semibold">{children}</span>
-      <span className="text-[16px]">{glyph}</span>
-    </button>
   )
 }
 

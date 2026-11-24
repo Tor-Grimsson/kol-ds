@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button } from '@kolkrabbi/kol-component'
+import { Button, LabeledControl } from '@kolkrabbi/kol-component'
 
 /**
  * ShareButtons — Share an article or a work page. a share bar for an article or work page. A copy-link button
@@ -31,12 +31,14 @@ export default function ShareButtons({ url, title = '', targets = ['x', 'linkedi
   }
   const open = (t) => window.open(INTENT[t](url, title), '_blank', 'noopener,noreferrer')
   return (
-    <div className={`flex flex-wrap items-center gap-2 ${className}`.trim()}>
-      {label && <span className="kol-helper-12 text-fg-48">{label}</span>}
-      <Button tone="outline" size="sm" onClick={copy}>{copied ? 'Copied' : 'Copy link'}</Button>
-      {targets.filter((t) => INTENT[t]).map((t) => (
-        <Button key={t} tone="outline" size="sm" onClick={() => open(t)}>{LABEL[t] ?? t}</Button>
-      ))}
-    </div>
+    /* the label names the buttons: a LabeledControl, label beside (plan-2026-11-12-float-rails-figma W12.1) */
+    <LabeledControl horizontal label={label} labelWidth="fit-content" labelClass="kol-helper-12 text-fg-48" className={`gap-2 ${className}`.trim()}>
+      <div className="flex flex-wrap items-center gap-2">
+        <Button tone="outline" size="sm" onClick={copy}>{copied ? 'Copied' : 'Copy link'}</Button>
+        {targets.filter((t) => INTENT[t]).map((t) => (
+          <Button key={t} tone="outline" size="sm" onClick={() => open(t)}>{LABEL[t] ?? t}</Button>
+        ))}
+      </div>
+    </LabeledControl>
   )
 }

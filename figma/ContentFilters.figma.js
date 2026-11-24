@@ -4,7 +4,7 @@
 import figma from 'figma'
 const instance = figma.selectedInstance
 // variant float (float-everything W4 row 56, 2026-11-04): the capsule chips with counts in a capsule track
-const variant = instance.getEnum('variant', { "default": "default", "float": "float" })
+const variant = instance.getEnum('float', { "true": "float", "false": "default" })
 export default {
   example: variant === 'float'
     ? figma.code`<ContentFilters variant="float" title="Tasks" items={items} filterGroups={groups} renderItem={render} />`

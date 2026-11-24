@@ -252,7 +252,7 @@ function toSlideCard(c, { layout }) {
   }
 }
 
-export default function CatalogPage({
+function CatalogPageDefault({
   /* FIRST, so every default below can read it */
   preset = 'catalog',
   header,
@@ -412,4 +412,21 @@ export default function CatalogPage({
     </PageShell>
     </AppItemMenuProvider>
   )
+}
+
+/* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): kolbox's Browser (Figma `Browser`), carried from
+ * apps/kolbox/src/home/Browser.jsx: the whole window with its own top bar, so not in an EditorShell: `sidebar` (the home
+ * rail) and the main column (children: the top bar, the title row, the grid or the list, which scroll). The panel fill,
+ * the sans 12 / 16 in the ink. Under 768 it stacks and scrolls as one column. */
+function CatalogPageKolbox({ sidebar, children, className = '' }) {
+  return (
+    <div className={`kol-catalog-page--kolbox flex h-full overflow-hidden max-md:flex-col max-md:overflow-y-auto ${className}`.trim()} data-browser>
+      {sidebar}
+      <main className="flex min-w-0 flex-1 flex-col max-md:contents" data-browser-main>{children}</main>
+    </div>
+  )
+}
+
+export default function CatalogPage(props) {
+  return props.variant === 'kolbox' ? <CatalogPageKolbox {...props} /> : <CatalogPageDefault {...props} />
 }

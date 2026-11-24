@@ -7,7 +7,7 @@ import figma from 'figma'
 // Color is NOT a property: it is the instance's `tone` variable mode (in code `tone="…"` or a `kol-tone-*` wrapper).
 const instance = figma.selectedInstance
 const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
-const content = instance.getEnum('content', { "text": "text", "icon": "icon" })
+const content = instance.getEnum('content', { "text": "text", "icon": "icon", "chevron": "chevron" })
 const state = instance.getEnum('state', { "rest": "rest", "pressed": "pressed", "disabled": "disabled" })
 // the glyph lives in a nested IconLoader (2026-11-07): read its `glyph` swap; a layer name never follows a swap
 const glyphOf = (layer, fallback) => {
@@ -25,7 +25,10 @@ const count = countOn ? `<span className="kol-float-ruler ml-0.5 tabular-nums te
 const xs = (state === 'pressed' ? ' pressed' : '') + (state === 'disabled' ? ' disabled' : '')
 const xl = (iconLeftOn ? ` iconLeft="${left}"` : '') + (iconRightOn ? ` iconRight="${right}"` : '')
 export default {
-  example: content === 'icon'
+  // content=chevron: the icon-only chevron whose glyph is the chevron token (RailHeader float's fold, plan-2026-11-12-float-rails-figma 4.2)
+  example: content === 'chevron'
+    ? figma.code`<Button variant="float" tone="ghost" size="${size}" iconOnly="${glyphOf('icon', 'chevron-up')}" className="[--kol-float-ic:var(--kol-float-chev-${size})]" aria-label="${glyphOf('icon', 'chevron-up')}"${xs} />`
+    : content === 'icon'
     ? figma.code`<Button variant="float" size="${size}" iconOnly="${icon}" aria-label="${icon}"${xs} />`
     : figma.code`<Button variant="float" size="${size}"${xl}${xs}>${instance.getString('label')}${count}</Button>`,
   imports: ["import { Button } from \"@kolkrabbi/kol-component\""],

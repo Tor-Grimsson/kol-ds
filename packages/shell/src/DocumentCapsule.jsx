@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Button, MenuTrigger, usePopover, PopoverPanel, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import { IconLoader } from '@kolkrabbi/kol-icons'
-import MoreRows, { FloatMenu } from './MoreSheet.jsx'
+import { MenuFloatRows, MenuFloat } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: molecule — a float Button, a float MenuTrigger (the name), the More sheet's rows */
 
@@ -16,12 +16,37 @@ import MoreRows, { FloatMenu } from './MoreSheet.jsx'
  * @param {string}   statusIcon an icon before the status (`check` for a saved document) — a glyph is an Icon, never a text
  *                              character (plan-2026-11-06-buttons-page 1.4: the "✓" was a string)
  * @param {Function} onBack     the ← press; unset, no ←
- * @param {Array}    menuItems  `[{ label, icon?, onPress, sub? }]` — the ▾ menu's rows (MoreRows float); unset with `onMenu`, the ▾ runs it
+ * @param {Array}    menuItems  `[{ label, icon?, onPress, sub? }]` — the ▾ menu's rows (MenuFloatRows float); unset with `onMenu`, the ▾ runs it
  * @param {Function} onMenu     `() => void` — the ▾ press when the consumer owns the menu
  * @param {'solid'|'glass-dark'|'glass-light'} surface  what the capsule (and its menu) is made of (default `solid`)
  * @param {string}   className
  */
-export default function DocumentCapsule({ name, status, statusIcon, onBack, menuItems, onMenu, surface = 'solid', className = '' }) {
+export default function DocumentCapsule({ name, status, statusIcon, onBack, menuItems, onMenu, surface = 'solid', variant, open: kolboxOpen, ref, className = '' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18): the kolbox top rail's DocumentTitle (the file's
+   * TopRail 36:9458), carried from apps/kolbox/src/ui/TopRail.jsx: the slash, then the `name` and its 12 chevron, 12
+   * apart. `onMenu(event)` the name's press (the host owns the menu, anchored to the name; `ref` reaches the name's
+   * button); without it the name is not a button's press and draws no chevron. `open` lights the name while its menu
+   * is up. No save state (W19.5: saving raises a toast). */
+  if (variant === 'kolbox') {
+    return (
+      <span className={`kol-document-title--kolbox flex min-w-0 items-center gap-3 ${className}`.trim()} data-document-title>
+        <span className="kol-document-title-slash">/</span>
+        <button
+          ref={ref}
+          type="button"
+          aria-haspopup={onMenu ? 'menu' : undefined}
+          aria-expanded={onMenu ? kolboxOpen : undefined}
+          disabled={!onMenu}
+          onClick={onMenu}
+          data-file-name
+          className={`kol-document-title-name${kolboxOpen ? ' is-open' : ''} inline-flex min-w-0 items-center gap-3 outline-none focus-visible:outline-solid focus-visible:outline-1`}
+        >
+          <span className="truncate">{name}</span>
+          {onMenu && <IconLoader name="chevron-down" size={12} className={`kol-kolbox-chevron shrink-0${kolboxOpen ? '' : ' kol-document-title-chevron'}`} />}
+        </button>
+      </span>
+    )
+  }
   const [open, setOpen] = useState(false)
   const popover = usePopover({ open, onOpenChange: setOpen, placement: 'bottom-start', offset: 8 })
   const hasMenu = menuItems?.length > 0
@@ -51,9 +76,9 @@ export default function DocumentCapsule({ name, status, statusIcon, onBack, menu
       )}
       {hasMenu && (
         <PopoverPanel popover={popover} panel={false} focus={false} className={card} style={{ minWidth: 220, maxWidth: 'calc(100vw - 24px)' }}>
-          <FloatMenu beside cardClass={card} onLeaf={() => setOpen(false)}>
-            <MoreRows variant="float" actions={menuItems} onPick={() => setOpen(false)} />
-          </FloatMenu>
+          <MenuFloat beside cardClass={card} onLeaf={() => setOpen(false)} title={name}>
+            <MenuFloatRows variant="float" actions={menuItems} onPick={() => setOpen(false)} />
+          </MenuFloat>
         </PopoverPanel>
       )}
     </div>

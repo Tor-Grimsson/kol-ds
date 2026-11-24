@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* THE KOLBOX STYLE'S SHEET (plan-2026-11-19-kolbox-whats-left C3), loaded by App.jsx only when the Style row says
+   Kolbox: its own Tailwind root over kolbox's sheet, which lives with the kolbox screens in the engine. Under the
+   default style it is never in the page. */
+@import "../../../packages/design-editor/src/editor/kolbox/kolbox.css";

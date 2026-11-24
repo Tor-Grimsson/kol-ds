@@ -23,9 +23,26 @@ import { useEffect, useState } from 'react'
  *                             well, − value + in Inter 500 (the glyphs oq, 40% at a bound), the float heights by `size`
  * @param {string}   unit      FLOAT: a word after the value (`22 px` — the reader's text size, W11 row 151, 2026-11-04)
  * @param {string}   ariaLabel FLOAT: what the value is; the − + read `Decrease <it>` / `Increase <it>` (default quantity)
+ * @param {'folio'}  variant   also `folio` (Folio migration batch A, 2026-11-22): Folio's stepper, two 32 squares at radius
+ *                             4 with the rule line round the value (JetBrains Mono 12 / 16), the step glyphs 12 / 500;
+ *                             8 apart, the root as wide as its row; a bound dims its square to 40%
+ * @param {number}   step      FOLIO: how far one press moves the value (default 1; the reader's sizes step by 2)
+ * @param {ReactNode} down     FOLIO: the − square's text (`A−`)
+ * @param {ReactNode} up       FOLIO: the + square's text (`A+`)
+ * @param {string}   downLabel FOLIO: the − square's name (`Smaller text`)
+ * @param {string}   upLabel   FOLIO: the + square's name (`Larger text`)
+ * @param {'kolbox'} variant  also `kolbox` (Folio on kolbox, 2026-11-22): kolbox has no stepper of its own, so it is built
+ *                             from its parts: `Input variant="kolbox"` (its sm field, `--kol-kolbox-ctl` high: the value
+ *                             in mono with `unit` after it, typed and committed on Enter or leaving, ↑↓ step it) between
+ *                             two kolbox icon Buttons, − and + (your icons' `minus` and `plus`), 4 apart, the root as wide
+ *                             as its row. `step`, `min`, `max` as folio's: a typed value is held to the range and the step;
+ *                             a button at a bound is disabled. `downLabel`, `upLabel` name the buttons (else
+ *                             `Decrease <ariaLabel>`, `Increase <ariaLabel>`); `down`, `up` are not drawn (the set's glyphs are)
  * @param {string}   className extra classes on the root
  */
 import { IconLoader } from '@kolkrabbi/kol-icons'
+import Input from '../atoms/Input.jsx'
+import Button from '../atoms/Button.jsx'
 const FLOAT_H = { sm: 'h-[var(--kol-float-h-sm)]', md: 'h-[var(--kol-float-h-md)]', lg: 'h-[var(--kol-float-h-lg)]' }
 
 const SIZE_MAP = {
@@ -44,6 +61,11 @@ const QuantityInput = ({
   variant,
   unit,
   ariaLabel = 'quantity',
+  step = 1,
+  down,
+  up,
+  downLabel,
+  upLabel,
   className = '',
 }) => {
   const [resolvedSize, setResolvedSize] = useState('md')
@@ -86,6 +108,32 @@ const QuantityInput = ({
         <button type="button" onClick={decrement} disabled={value <= min} className={btn} aria-label={`Decrease ${ariaLabel}`}><IconLoader name="minus" size={14} /></button>
         <span className="min-w-6 flex-1 text-center tabular-nums">{value}{unit ? ` ${unit}` : ''}</span>
         <button type="button" onClick={increment} disabled={value >= max} className={btn} aria-label={`Increase ${ariaLabel}`}><IconLoader name="plus" size={14} /></button>
+      </div>
+    )
+  }
+
+  /* folio (Folio migration batch A, 2026-11-22): Folio's Stepper carried class for class (apps/folio Chrome.jsx), two 32
+   * squares round the value, stepping by `step`; the chrome in kol-theme `.kol-quantity-input--folio` */
+  if (variant === 'folio') {
+    const stepCls = 'kol-quantity-input-step flex size-[32px] items-center justify-center rounded-[4px] border disabled:opacity-40'
+    return (
+      <div className={`kol-quantity-input--folio flex items-center gap-[8px] ${className}`.trim()}>
+        <button type="button" aria-label={downLabel} disabled={value <= min} onClick={() => onChange?.(value - step)} className={stepCls}>{down}</button>
+        <p className="kol-quantity-input-value flex-1 text-center tabular-nums">{value}{unit ? ` ${unit}` : ''}</p>
+        <button type="button" aria-label={upLabel} disabled={value >= max} onClick={() => onChange?.(value + step)} className={stepCls}>{up}</button>
+      </div>
+    )
+  }
+
+  /* kolbox (Folio on kolbox, 2026-11-22): kolbox's field between its two icon buttons */
+  if (variant === 'kolbox') {
+    const to = (n) => Math.min(max, Math.max(min, min + Math.round((n - min) / step) * step))
+    const commit = (text) => { const n = parseFloat(text); if (Number.isFinite(n) && to(n) !== value) onChange?.(to(n)) }
+    return (
+      <div className={`flex min-w-0 items-center gap-1 ${className}`.trim()}>
+        <Button variant="kolbox" iconOnly="minus" aria-label={downLabel ?? `Decrease ${ariaLabel}`} disabled={value <= min} onClick={() => onChange?.(to(value - step))} />
+        <Input variant="kolbox" aria-label={ariaLabel} value={value} onCommit={commit} suffix={unit} className="flex-1" />
+        <Button variant="kolbox" iconOnly="plus" aria-label={upLabel ?? `Increase ${ariaLabel}`} disabled={value >= max} onClick={() => onChange?.(to(value + step))} />
       </div>
     )
   }

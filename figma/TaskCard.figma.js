@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "lg": "lg", "sm": "sm" })
+const size = instance.getEnum('sm', { "false": "lg", "true": "sm" })
 const selected = instance.getEnum('selected', { "true": "true", "false": "false" })
 
 export default {

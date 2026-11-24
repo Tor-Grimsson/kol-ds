@@ -1,6 +1,6 @@
 {
   "name": "@kolkrabbi/kol-content",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "private": false,
   "description": "Blog and portfolio components",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "embla-carousel-react": "^8.6.0"
   },
   "peerDependencies": {
-    "@kolkrabbi/kol-component": ">=0.113.0",
+    "@kolkrabbi/kol-component": ">=0.370.0",
     "@kolkrabbi/kol-framework": ">=0.72.0",
     "@kolkrabbi/kol-theme": ">=0.51.0",
     "@kolkrabbi/kol-icons": ">=0.68.0",

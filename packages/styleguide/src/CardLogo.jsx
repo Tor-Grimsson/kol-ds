@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import ClearspaceDiagram, { hasFramework } from './ClearspaceDiagram.jsx'
-import { ToggleSwitch } from '@kolkrabbi/kol-component'
+import { LabeledControl, ToggleSwitch } from '@kolkrabbi/kol-component'
 
 /**
  * CardLogo — A logo specimen tile (LogoCard until 2026-10-31; the old name is an alias on the retirement ledger). framed logo specimen tile with a clearspace / grid toggle.
@@ -85,12 +85,15 @@ export default function CardLogo({
             <span />
           )}
           {canFramework && (
-            <ToggleSwitch
-              variant="bare"
-              label={toggleLabel}
-              checked={showFramework}
-              onToggle={setShowFramework}
-            />
+            /* a switch never carries its words: they are its LabeledControl (ToggleSwitch `label` deprecated 2026-11-12) */
+            <LabeledControl horizontal label={toggleLabel} labelWidth="fit-content" labelClass="kol-mono-14 text-body">
+              <ToggleSwitch
+                variant="bare"
+                aria-label={typeof toggleLabel === 'string' ? toggleLabel : undefined}
+                checked={showFramework}
+                onToggle={setShowFramework}
+              />
+            </LabeledControl>
           )}
         </div>
       )}

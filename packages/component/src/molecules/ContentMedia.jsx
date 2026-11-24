@@ -122,7 +122,7 @@ export default function ContentMedia({
   if (children == null) {
     return <AssetPlaceholder radius={radius} aspectRatio={ratio ?? undefined} className={ratio == null ? `h-full ${className}` : className} />
   }
-  const round = radius ? 'rounded-[var(--kol-radius-sm)]' : ''
+  const round = radius ? 'rounded-[var(--kol-radius-4)]' : ''
   return (
     <div
       className={`relative ${fillHeight ? 'h-full w-auto' : 'w-full'} overflow-hidden ${round} ${FIT[fit] ?? FIT.cover} ${frame ? 'bg-fg-04 border border-fg-08' : ''} ${border ? 'border border-fg-08' : ''} ${zoom ? `kol-media-zoom${zoom === 'hero' ? ' is-hero' : ''}` : ''} ${borderHover ? 'transition-colors hover:border-fg-16' : ''} ${ratio == null ? 'h-full' : ''} ${className}`.trim()}

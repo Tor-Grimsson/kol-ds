@@ -7,7 +7,7 @@ import figma from 'figma'
 // variant outline · solid; glyph = the instance swap from Icon masters, whose own Code Connect id is its code name.
 const instance = figma.selectedInstance
 const size = instance.getEnum('size', { "10": "10", "12": "12", "14": "14", "16": "16", "18": "18", "20": "20", "24": "24", "40": "40", "48": "48" })
-const variant = instance.getEnum('variant', { "outline": "outline", "solid": "solid" })
+const variant = instance.getEnum('solid', { "false": "outline", "true": "solid" })
 const swap = instance.getInstanceSwap('glyph')
 const name = (swap && typeof swap.codeConnectId === 'function' && swap.codeConnectId()) || 'search'
 const xs = size === '16' ? '' : ` size={${size}}`

@@ -15,7 +15,7 @@ const walk = (dir) => readdirSync(dir).flatMap((e) => {
   const p = join(dir, e)
   return statSync(p).isDirectory() ? walk(p) : p.endsWith('.svg') ? [p.split('/').pop().replace('.svg', '')] : []
 })
-const names = new Set(['interface', 'signal', 'identity', 'external'].flatMap((s) => walk(join(SRC, `kol-icon-set-${s}`))))
+const names = new Set(['interface', 'editor', 'signal', 'identity', 'external'].flatMap((s) => walk(join(SRC, `kol-icon-set-${s}`))))
 const TAGS = JSON.parse(readFileSync(join(SRC, 'tags.json'), 'utf8'))
 
 const missing = [...names].filter((n) => !TAGS[n]?.length)

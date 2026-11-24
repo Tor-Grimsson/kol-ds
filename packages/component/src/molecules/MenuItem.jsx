@@ -295,7 +295,7 @@ function MenuFlyoutNest({ prefix, iconLeft, label, disabled, scroll, rowClass, p
         <div
           ref={panel}
           role="menu"
-          className={`absolute ${fit.flip ? 'right-full' : 'left-full'} flex flex-col w-max min-w-[180px] max-w-[320px] z-10 ${panelClassName ?? 'py-1 bg-surface-secondary rounded border border-oq-08 shadow-lg'} ${scroll ? 'max-h-[60vh] overflow-y-auto' : ''}`}
+          className={`absolute ${fit.flip ? 'right-full' : 'left-full'} flex flex-col gap-[var(--kol-spacing-0-5)] w-max min-w-[180px] max-w-[320px] z-10 ${panelClassName ?? 'py-1 bg-surface-secondary rounded border border-oq-08 shadow-lg'} ${scroll ? 'max-h-[60vh] overflow-y-auto' : ''}`}
           style={{ top: -5 + fit.dy, ...(fit.flip && panelStyle?.marginLeft != null ? { ...panelStyle, marginLeft: undefined, marginRight: panelStyle.marginLeft } : panelStyle) }}
         >
           {children}

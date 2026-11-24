@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon-kol-ds.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>KOL tuner</title>
+    <script>
+      // the kolbox theme variant (as apps/kolbox), then the saved theme before paint (no flash), dark by default
+      document.documentElement.dataset.themeVariant = 'kolbox'
+      try {
+        if (localStorage.getItem('kol-theme-v') !== '3') {
+          localStorage.removeItem('kol-theme')
+          localStorage.removeItem('theme')
+          localStorage.setItem('kol-theme-v', '3')
+        }
+        var t = localStorage.getItem('kol-theme')
+        document.documentElement.dataset.theme = (t === 'light' || t === 'dark') ? t : 'dark'
+      } catch (e) { document.documentElement.dataset.theme = 'dark' }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

@@ -41,8 +41,35 @@ const full = () => import('@kolkrabbi/design-editor').then((m) => {
   m.setSettingsStore(settingsStore)
   return m
 })
+/* THE STYLE (plan-2026-11-19-kolbox-whats-left C3): the editor's Style row, the app setting `style`, read once at boot from
+ * the package's local cache of that row (the store's copy, the fake D1's `editor`, lands after and is the same; if it
+ * differs, StyleWatch reloads once). A change reloads the page
+ * (StyleWatch): the kolbox sheet stays in the page once loaded. Never the theme. */
+const bootStyle = () => {
+  let s = null
+  try { s = JSON.parse(localStorage.getItem('kol-editor-settings') || '{}').style } catch { /* storage blocked */ }
+  return s === 'kolbox' ? 'kolbox' : 'default'
+}
+const STYLE = bootStyle()
+/* the page's one sheet (main.jsx): the kolbox style's alone, as apps/kolbox loads it, on every route but /core (R1: with
+ * index.css under it, KOL's whole theme and the framework chrome sat beside kolbox's and the shell drew apart) */
+export const KOLBOX_SHEET = STYLE === 'kolbox' && here() !== '/core'
+
+/* the kolbox sheet before the screens: loaded once, under the kolbox style only; /labs and /randomiser open their
+ * screens on the mode track */
+const KolboxSheet = lazy(() => import('./kolbox.css').then(() => {
+  if (!location.hash && (here() === '/labs' || here() === '/randomiser')) history.replaceState(null, '', location.pathname + location.search + '#' + here())
+  return { default: ({ children }) => children }
+}))
+/* Home and Library under the kolbox style (C3 batch 7): this app's host pages, never the engine's; apps/kolbox uses
+ * these same files. Handed to the editor as `pages`, drawn in its kolbox frame on #/home and #/library */
+const KOLBOX_PAGES = {
+  '/home': lazy(() => import('./kolbox/pages/Home.jsx')),
+  '/library': lazy(() => import('./kolbox/pages/Library.jsx')),
+}
+
 const Editor = lazy(() => full().then((m) => ({
-  default: () => <m.DesignEditor mediaClient={fixtureClient} settingsStore={settingsStore} />,
+  default: () => <m.DesignEditor mediaClient={fixtureClient} settingsStore={settingsStore} variant={STYLE} pages={STYLE === 'kolbox' ? KOLBOX_PAGES : undefined} />,
 })))
 const Core = lazy(() => import('@kolkrabbi/design-editor/core').then((m) => ({
   default: () => <m.DesignEditor mediaClient={fixtureClient} settingsStore={settingsStore} />,
@@ -51,7 +78,7 @@ const Labs = lazy(() => full().then((m) => ({ default: m.LabsView })))
 const Randomiser = lazy(() => full().then((m) => ({ default: m.MobileView })))
 const Output = lazy(() => full().then((m) => ({ default: m.OutputView })))
 
-const ROUTES = { '/': Editor, '/editor': Editor, '/labs': Labs, '/randomiser': Randomiser, '/core': Core }
+const ROUTES = { '/': Editor, '/editor': Editor, '/labs': STYLE === 'kolbox' ? Editor : Labs, '/randomiser': STYLE === 'kolbox' ? Editor : Randomiser, '/core': Core }
 
 const ITEMS = [
   { icon: 'desktop', path: '/', label: 'Editor' },
@@ -132,6 +159,17 @@ export default function App() {
     return <Suspense fallback={null}><Output /></Suspense>
   }
 
+  /* THE KOLBOX STYLE: the editor's own screens fill the page, its mode track in place of this rail (Home, Library,
+   * Editor, Labs, Morph and the Randomiser on the hash); /core keeps the default chrome. */
+  if (STYLE === 'kolbox' && path !== '/core') {
+    return (
+      <>
+        {api && <StyleWatch useAppSettings={api.useAppSettings} />}
+        <Suspense fallback={null}><KolboxSheet>{page}</KolboxSheet></Suspense>
+      </>
+    )
+  }
+
   const railPath = path === '/editor' || !ROUTES[path] ? '/' : path
 
   return (
@@ -152,6 +190,7 @@ export default function App() {
       pageWash="var(--kol-fg-02)"
     >
       {api && <ExtrasBridge useRailExtras={api.useRailExtras} onChange={setExtras} />}
+      {api && <StyleWatch useAppSettings={api.useAppSettings} />}
       <RailFrame>
         <Suspense fallback={null}>
           {page}
@@ -166,5 +205,12 @@ export default function App() {
 function ExtrasBridge({ useRailExtras, onChange }) {
   const extras = useRailExtras()
   useEffect(() => { onChange(extras) }, [extras, onChange])
+  return null
+}
+
+/* reloads when the Style row changes the style this page booted with (see STYLE) */
+function StyleWatch({ useAppSettings }) {
+  const { style } = useAppSettings()
+  useEffect(() => { if ((style === 'kolbox' ? 'kolbox' : 'default') !== STYLE) location.reload() }, [style])
   return null
 }

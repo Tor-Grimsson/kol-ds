@@ -31,6 +31,8 @@ import { FLOW_LOOPS, FLOW_PRESETS } from './flow/presets.js'
 /* GL catalog is DATA ONLY (groups/defs/presets/schemas) — the three.js
  * engines behind it load lazily via gl/host.js when a layer renders. */
 import { GL_GROUPS, GL_LOOPS, GL_PRESETS_BY_GROUP, MESH_PRESETS } from './gl/catalog.js'
+/* the generator engine's Line Swell family as still loops (W29.2) */
+import { LINE_SWELL_LOOPS, LINE_SWELL_LOOP_PRESETS } from '../generate/lineSwell/labs.js'
 
 export const GROUPS = [
   { id: 'shape', label: 'Simple' },
@@ -47,6 +49,7 @@ export const GROUPS = [
   { id: 'distress', label: 'Distressor' },
   { id: 'flow', label: 'Flow' },
   { id: 'lettergap', label: 'Letter gap' },
+  { id: 'lineswell', label: 'Line Swell' },
   ...GL_GROUPS,
 ]
 export const groupById = (id) => GROUPS.find((g) => g.id === id) || GROUPS[0]
@@ -54,13 +57,13 @@ export const groupById = (id) => GROUPS.find((g) => g.id === id) || GROUPS[0]
 const LOOPS = [
   ...SHAPE_LOOPS, ...FIELD_LOOPS, ...PATTERN_LOOPS, ...PENROSE_LOOPS,
   ...SCANLINE_LOOPS, ...OPTIC_LOOPS, ...ABSTRACT_LOOPS,
-  ...MATH_LOOPS, ...PARATYPE_LOOPS, ...MODULATOR_LOOPS, ...DISTRESS_LOOPS, ...FLOW_LOOPS, ...GL_LOOPS, gameOfLife,
+  ...MATH_LOOPS, ...PARATYPE_LOOPS, ...MODULATOR_LOOPS, ...DISTRESS_LOOPS, ...FLOW_LOOPS, ...GL_LOOPS, gameOfLife, ...LINE_SWELL_LOOPS,
 ]
 /* THE TIME-SHAPE FOLD (plan 18 § 4): every def whose clock is `u` — 2d draws and the GL engines
  * alike — carries the three time params (editor/lib/viewport.js `TIME_PARAMS`), so the Animation tab shows
  * them and the Motion Form scope rolls them. Not the Penrose sims. Idempotent under HMR. */
 for (const def of LOOPS) {
-  if (def?.group === 'penrose' || !def?.params || def.params.some((p) => p.key === 'vpTime')) continue
+  if (def?.group === 'penrose' || def?.still || !def?.params || def.params.some((p) => p.key === 'vpTime')) continue
   def.params = [...def.params, ...TIME_PARAMS]
   if (def.defaults) Object.assign(def.defaults, TIME_DEFAULTS)
 }
@@ -146,6 +149,7 @@ const PRESETS_BY_GROUP = {
   /* the effects intake (plan 37 W6) — two groups, one type each in GENERATIVE_TREE */
   flow: FLOW_PRESETS.filter((p) => p.loop !== 'flow-letter-gap'),
   lettergap: FLOW_PRESETS.filter((p) => p.loop === 'flow-letter-gap'),
+  lineswell: LINE_SWELL_LOOP_PRESETS,
   ...GL_PRESETS_BY_GROUP,
 }
 export const PRESETS = [
@@ -153,7 +157,7 @@ export const PRESETS = [
   ...FIELD_PRESETS,
   ...SCANLINE_PRESETS, ...OPTIC_PRESETS, ...MESH_PRESETS, ...ABSTRACT_PRESETS,
   ...MATH_PRESETS, ...PENROSE_MATH, ...PARATYPE_PRESETS, ...MODULATOR_PRESETS, ...DISTRESS_PRESETS, ...FLOW_PRESETS,
-  ...Object.values(GL_PRESETS_BY_GROUP).flat(),
+  ...Object.values(GL_PRESETS_BY_GROUP).flat(), ...LINE_SWELL_LOOP_PRESETS,
 ]
 
 export const loopById = (id) => LOOPS.find((l) => l.id === id) || LOOPS[0]

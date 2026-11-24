@@ -1,6 +1,7 @@
 /* Folio — My library (Figma 228:13254) */
 import { Link } from 'react-router-dom'
-import { FolioFrame, Wordmark, Profile, Action, Icon, Jacket, ContinueCard, BOOKS, IN_PROGRESS, LABEL, SECTION } from './parts'
+import { Button } from '@kolkrabbi/kol-component'
+import { FolioFrame, Wordmark, Profile, Icon, Jacket, ContinueCard, BOOKS, IN_PROGRESS, LABEL, SECTION } from './parts'
 
 const NAV = [['My library', '/mockups'], ['Collections'], ['Highlights'], ['Reading journal', '/mockups/article']]
 const TABS = [['All books', 48], ['Reading', 2], ['Unread', 28], ['Finished', 18]]
@@ -72,14 +73,14 @@ function Controls() {
           <input placeholder="Search by title, author, or keyword" className="min-w-0 flex-1 bg-transparent text-[13px] outline-none placeholder:text-folio-muted" />
           <span className="text-[11px] text-folio-muted">⌘ K</span>
         </label>
-        <Action glyph="⌄">All genres</Action>
-        <Action glyph="⌄">All collections</Action>
-        <Action glyph="+" primary>Add a book</Action>
+        <Button variant="folio" size="lg" glyph="⌄">All genres</Button>
+        <Button variant="folio" size="lg" glyph="⌄">All collections</Button>
+        <Button variant="folio" size="lg" tone="primary" glyph="+">Add a book</Button>
       </div>
       <div className="flex items-center justify-between whitespace-nowrap border-b border-folio-rule">
         <div className="flex gap-[32px]">
           {TABS.map(([label, n], i) => (
-            <button key={label} type="button" className={`-mb-px flex items-start gap-[10px] pb-[16px] ${i === 0 ? 'shadow-[inset_0_-3px_0_var(--color-folio-ink)]' : 'text-folio-muted'}`}>
+            <button key={label} type="button" className={`-mb-px flex items-start gap-[10px] pb-[16px] ${i === 0 ? 'shadow-[inset_0_-3px_0_var(--kol-folio-ink)]' : 'text-folio-muted'}`}>
               <span className={`text-[12px] ${i === 0 ? 'font-bold' : 'font-medium'}`}>{label}</span>
               <span className={`text-[10px] ${i === 0 ? 'text-folio-muted' : ''}`}>{n}</span>
             </button>
@@ -125,7 +126,7 @@ function Catalog() {
         <Heading n="03" title="All books" sub="48 titles" />
         <div className="flex items-center gap-[14px]">
           <p className={`${LABEL} text-folio-muted`}>SORT BY</p>
-          <Action glyph="⌄">Recently added</Action>
+          <Button variant="folio" size="lg" glyph="⌄">Recently added</Button>
           <div className="flex gap-[4px] border border-folio-rule p-[4px] text-[15px]">
             <button type="button" aria-label="List view" className="bg-folio-mint p-[7px] text-folio-green">☰</button>
             <button type="button" aria-label="Grid view" className="p-[7px] text-folio-muted">▦</button>

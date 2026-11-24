@@ -16,7 +16,8 @@ KOL ships two icon sets in one package, `@kolkrabbi/kol-icons`. Every icon is a 
 
 | Set | For |
 |---|---|
-| **Interface** | app and site chrome: navigation, files, layout, playback, type, the editor's tools |
+| **Interface** | app and site chrome: navigation, files, layout, playback |
+| **Editor** | design tools and type: pen and bezier, corners, align, transforms, color modes, text |
 | **Signal** | instruments, racks and generators: waves, cables, filters, logic, sequencing, dither |
 
 ## Use one

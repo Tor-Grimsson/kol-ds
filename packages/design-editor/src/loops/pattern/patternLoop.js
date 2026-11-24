@@ -42,11 +42,12 @@ function shapeFor(id, customSvg, p) {
   // font has parsed, then caches — the loop retries next frame (labs idiom).
   if (id === 'glyph') {
     const text = p?.glyphChar || 'A'
-    const width = p?.glyphFont || 'base'
+    /* an outline family; a tile stored on the old width cuts (`glyphFont`, no `glyphFamily`) reads as Inter */
+    const family = GLYPH_FAMILY_OPTIONS.some((o) => o.value === p?.glyphFamily) ? p.glyphFamily : 'inter'
     const weight = p?.glyphWeight ?? 900
-    const key = `glyph|${width}|${weight}|${text}`
+    const key = `glyph|${family}|${weight}|${text}`
     if (cache && cache.key === key) return cache
-    const gs = glyphShape(width, weight, text)
+    const gs = glyphShape(family, weight, text)
     if (!gs) return EMPTY // font cold — retry next frame
     cache = { key, ...buildPaths(gs.viewBox, gs.paths) }
     return cache
@@ -171,21 +172,9 @@ function drawWeave(ctx, u, w, h, p) {
 // ── Inspector schema options (select vocabularies) ────────────────────────────
 // Full catalog including 'glyph' + 'custom' (labs parity — both restored).
 const TILE_SHAPE_OPTIONS = SHAPE_OPTIONS
-// Glyph tile faces — the cuts fontLoader can actually serve (Right Grotesk
-// TTFs in /public/fonts/right-grotesk-ttf; 'mono' is woff2-only ⇒ excluded).
-// Values are fontLoader's width ids / numeric weights.
-const GLYPH_FONT_OPTIONS = [
-  { value: 'base', label: 'Display' }, { value: 'Compact', label: 'Compact' },
-  { value: 'Tall', label: 'Tall' }, { value: 'Wide', label: 'Wide' },
-  { value: 'Narrow', label: 'Narrow' }, { value: 'Spatial', label: 'Spatial' },
-  { value: 'Tight', label: 'Tight' },
-]
-const GLYPH_WEIGHT_OPTIONS = [
-  { value: 100, label: 'Fine' }, { value: 300, label: 'Light' },
-  { value: 400, label: 'Regular' }, { value: 500, label: 'Medium' },
-  { value: 600, label: 'Dark' }, { value: 700, label: 'Bold' },
-  { value: 900, label: 'Black' },
-]
+// Glyph tile faces — the outline families fontLoader serves (variable fonts
+// since 2026-11-18; families.js ids), the weight any value on the axis.
+const GLYPH_FAMILY_OPTIONS = [{ value: 'inter', label: 'Inter' }, { value: 'malromur', label: 'Malromur' }]
 const DIR_OPTIONS = [
   { value: 'right', label: 'Right' }, { value: 'left', label: 'Left' },
   { value: 'up', label: 'Up' }, { value: 'down', label: 'Down' },
@@ -257,10 +246,10 @@ export default {
     { key: 'color3', label: 'Color 3', type: 'color', role: 'dim', default: '#3f6485', section: 'Color', collapsed: true },
     // Tiles — shape + grid (grid shared with weave)
     { key: 'shape', label: 'Shape', type: 'select', options: TILE_SHAPE_OPTIONS, default: DEFAULT_SHAPE_ID, when: isTiles, section: 'Tiles' },
-    // Glyph tile (shape:'glyph') — char/run + a Right Grotesk cut (glyphTile.js)
+    // Glyph tile (shape:'glyph') — char/run in an outline family at a weight (glyphTile.js)
     { key: 'glyphChar', label: 'Glyph', type: 'text', rows: 1, placeholder: 'A', default: 'A', when: (l) => isTiles(l) && l.shape === 'glyph', section: 'Tiles' },
-    { key: 'glyphFont', label: 'Font', type: 'select', options: GLYPH_FONT_OPTIONS, default: 'base', when: (l) => isTiles(l) && l.shape === 'glyph', section: 'Tiles' },
-    { key: 'glyphWeight', label: 'Weight', type: 'select', numeric: true, options: GLYPH_WEIGHT_OPTIONS, default: 900, when: (l) => isTiles(l) && l.shape === 'glyph', section: 'Tiles' },
+    { key: 'glyphFamily', label: 'Font', type: 'select', options: GLYPH_FAMILY_OPTIONS, default: 'inter', when: (l) => isTiles(l) && l.shape === 'glyph', section: 'Tiles' },
+    { key: 'glyphWeight', label: 'Weight', type: 'range', min: 100, max: 900, step: 1, default: 900, when: (l) => isTiles(l) && l.shape === 'glyph', section: 'Tiles' },
     // Custom tile (shape:'custom') — pasted SVG, sanitized at resolve (shapes.js)
     { key: 'customSvg', label: 'Custom SVG', type: 'text', rows: 4, placeholder: '<svg viewBox="0 0 24 24"><path d="…"/></svg>', default: '', when: (l) => isTiles(l) && l.shape === 'custom', section: 'Tiles' },
     { key: 'cols', label: 'Cols', type: 'range', min: 1, max: 32, step: 1, default: 4, noRandom: true, animatable: false, when: (l) => !isField(l), section: 'Grid' },
@@ -321,8 +310,8 @@ export default {
     shape: DEFAULT_SHAPE_ID,
     customSvg: '',
     glyphChar: 'A',      // glyph tile: one char or a short run
-    glyphFont: 'base',   // fontLoader cut id (Right Grotesk width)
-    glyphWeight: 900,    // fontLoader numeric weight
+    glyphFamily: 'inter', // outline family (families.js id)
+    glyphWeight: 900,    // weight on the family's axis
     cols: 4,
     rows: 4,
     cell: 120,

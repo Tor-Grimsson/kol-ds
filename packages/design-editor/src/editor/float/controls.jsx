@@ -31,8 +31,24 @@ function FloatChoice({ options = [], value, onChange, ariaLabel, className = '' 
   return <TabsRow variant="float" size="xs" tabs={options} value={value} onChange={onChange} ariaLabel={ariaLabel} className={className} />
 }
 
+/* BINARY IS A TOGGLE (plan-2026-11-12-float-system W2.3; the user: *"USE FUCKING TOGGLE WHEN option is BINARY"*): under the
+ * float chrome a two-option choice whose states are off and on (Invert, Background, Orbit, a schema's Off / On segmented)
+ * draws a ToggleSwitch float at the cell's end. A pair of named things (Clip / Visible, Rows / Columns) stays a choice.
+ * The rule lives here, so the app chromes (LabsView, EditorShell) keep their Off / On strip. */
+const isOnOff = (options = []) => options.length === 2 && options.every((o) => /^(off|on)$/i.test(String(o.value))) && options.some((o) => /^on$/i.test(String(o.value)))
+function FloatOnOff({ options, value, onChange, ariaLabel, className = '' }) {
+  const on = options.find((o) => /^on$/i.test(String(o.value))).value
+  const off = options.find((o) => o.value !== on).value
+  return (
+    <span className={`flex w-full items-center justify-end ${className.replace(/\bw-full\b/g, '')}`.trim()}>
+      <KToggleSwitch variant="float" checked={value === on} onChange={(v) => onChange?.(v ? on : off)} aria-label={ariaLabel} />
+    </span>
+  )
+}
+
 export function ButtonGroup({ variant, tone, size, ...p }) {
   if (useChrome() !== 'float' || p.layout !== 'joined') return <KButtonGroup variant={variant} tone={tone} size={size} {...p} />
+  if (isOnOff(p.options)) return <FloatOnOff options={p.options} value={p.value} onChange={p.onChange} ariaLabel={p.ariaLabel} className={p.className} />
   return <FloatChoice options={p.options} value={p.value} onChange={p.onChange} ariaLabel={p.ariaLabel} className={p.className} />
 }
 
@@ -66,11 +82,14 @@ export function Textarea({ variant, size, ...p }) {
 export function ViewToggle({ variant, options = [], viewMode, onViewChange, size, className, ...p }) {
   if (useChrome() !== 'float') return <KViewToggle variant={variant} options={options} viewMode={viewMode} onViewChange={onViewChange} size={size} className={className} {...p} />
   if (variant === 'icon') return <KViewToggle variant="float" options={options} viewMode={viewMode} onViewChange={onViewChange} className={className} {...p} />
+  if (isOnOff(options)) return <FloatOnOff options={options} value={viewMode} onChange={onViewChange} ariaLabel={p.ariaLabel} className={className} />
   return <FloatChoice options={options} value={viewMode} onChange={onViewChange} className={className} />
 }
 
-export function LabeledControl({ variant, ...p }) {
-  return <KLabeledControl variant={useChrome() === 'float' && !variant ? 'float' : variant} {...p} />
+/* under the float chrome the label column is the spec's (`--kol-float-label-w`), whatever column the app chrome set */
+export function LabeledControl({ variant, labelWidth, ...p }) {
+  const float = useChrome() === 'float' && !variant
+  return <KLabeledControl variant={float ? 'float' : variant} labelWidth={float && labelWidth !== 'auto' ? undefined : labelWidth} {...p} />
 }
 
 /* SettingsRow's anatomy (kol-component SettingsPanel) with the float label: the hint role, as written — no uppercase */
@@ -78,20 +97,24 @@ export function SettingsRow({ label, hint, align = 'end', labelWidth = 160, text
   if (useChrome() !== 'float') return <KSettingsRow label={label} hint={hint} align={align} labelWidth={labelWidth} text={text} stack={stack}>{children}</KSettingsRow>
   const cell = `flex min-h-6 items-center w-full ${align === 'fill' ? '' : 'justify-end'}`.trim()
   return (
-    <KLabeledControl variant="float" inline={!stack} text={text} label={label} labelWidth={labelWidth}>
+    <KLabeledControl variant="float" horizontal={!stack} text={text} label={label} labelWidth={labelWidth === 'auto' ? 'auto' : undefined}>
       {hint ? <Tooltip label={hint} triggerClassName={cell}>{children}</Tooltip> : <span className={cell}>{children}</span>}
     </KLabeledControl>
   )
 }
 
-/* the section head in the float panel role (LayerInspector's float heads), the rest as kol-component draws it */
+/* the section head in the float panel role (LayerInspector's float heads), the rest as kol-component draws it. Under the
+ * float chrome it is kol-component's float LabeledControlSection (plan-2026-11-12-float-rails-figma W10.1, the one section:
+ * PARAMETERS, LINES), the label 8 over the rows on the label's 18 line */
 export function LabeledControlSection({ label, divided = false, rowGap = 2, children, className = '' }) {
   if (useChrome() !== 'float') return <KLabeledControlSection label={label} divided={divided} rowGap={rowGap} className={className}>{children}</KLabeledControlSection>
   return (
-    <div className={`flex flex-col gap-3 ${divided ? 'kol-section--divided' : ''} ${className}`.replace(/\s+/g, ' ').trim()}>
-      {label && <p className="kol-float-label text-fg-emphasis">{label}</p>}
-      <div className={`flex flex-col ${rowGap === 1 ? 'gap-1' : 'gap-2'}`}>{children}</div>
-    </div>
+    /* no `divided` in the float: the section never pads or rules itself — the space between sections is the stack's gap
+       (plan-2026-11-12-one-header W10.1, P15: *"super random padding that controls spacing?? why not controlled GAP??"*) */
+    <KLabeledControlSection variant="float" gap={2} rowGap={rowGap === 1 ? 1 : 2} label={label && <span className="kol-float-label leading-[18px] text-fg-emphasis">{label}</span>}
+      className={className}>
+      {children}
+    </KLabeledControlSection>
   )
 }
 

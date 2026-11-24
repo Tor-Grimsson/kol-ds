@@ -1,18 +1,37 @@
 import { useState } from 'react'
 import {
-  Button, SettingsPanel, LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter,
+  Button, Input, LabeledControl, SettingsPanel, LabeledControlSection, SettingsRow, SettingsSwitch, SettingsChoice, SettingsMulti, SettingsFooter,
 } from '@kolkrabbi/kol-component'
 
 /* THE APPROVED DRAWER (kol-r2b2, user: "LOCK THIS", 2026-08-27): title only, a
  * divider, eyebrow sections of LabeledControl rows — switches at the far
  * right, one-of-N as full-width Dropdowns, the kinds as ONE toggling Dropdown —
  * and a divider + reset icon at the foot. No edge, no shadow. */
-export const variants = ['drawer', 'overlay']
+export const variants = ['drawer', 'overlay', 'kolbox', 'folio']
 
 const DEFAULTS = { kinds: ['image', 'video', 'markdown'], columns: false, flat: false, groupVariants: true, pageSize: 200, video: 'poster', layout: 'grid', sortBy: 'date', sortDir: 'desc' }
 const KINDS = ['audio', 'video', 'image', 'markdown', 'json', 'yaml', 'text', 'code', 'playlist', 'font', 'archive', 'other'].map((k) => ({ value: k, label: k }))
 
 export default function SettingsPanelPreview({ variant = 'drawer' }) {
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <div className="flex w-60 flex-col">
+      <LabeledControlSection variant="kolbox" label="Position" end={<Button variant="kolbox" iconOnly="plus" aria-label="Add" className="size-4!" />}>
+        <LabeledControl variant="kolbox" horizontal label="X"><Input variant="kolbox" defaultValue="140" /></LabeledControl>
+        <LabeledControl variant="kolbox" horizontal label="Y"><Input variant="kolbox" defaultValue="280" /></LabeledControl>
+      </LabeledControlSection>
+      <LabeledControlSection variant="kolbox" label="Effects" />
+    </div>
+  )
+  /* folio (Folio batch C): Folio's SettingGroup over two Setting rows */
+  if (variant === 'folio') return (
+    <div className="w-64">
+      <LabeledControlSection variant="folio" label="Position">
+        <LabeledControl variant="folio" horizontal label="X"><Input defaultValue="140" width="100%" /></LabeledControl>
+        <LabeledControl variant="folio" horizontal label="Y"><Input defaultValue="280" width="100%" /></LabeledControl>
+      </LabeledControlSection>
+    </div>
+  )
   const [open, setOpen] = useState(false)
   const [s, setS] = useState(DEFAULTS)
   const set = (patch) => setS((prev) => ({ ...prev, ...patch }))

@@ -46,7 +46,7 @@ export const TYPE_SCALE = [
   { cls: 'kol-mono-14', label: 'Mono 14', size: '', sample: 'const token = "--kol-fg-08"' },
 ]
 
-export const RADII = ['none', 'sm', 'md', 'lg', 'xl', '2xl', 'full']
+export const RADII = ['0', '2', '4', '6', '8', '12', '16', 'full']
   .map((n) => ({ token: `--kol-radius-${n}`, label: `radius-${n}` }))
 
 export const SHADOWS = ['sm', 'md', 'lg', 'xl', 'inner']

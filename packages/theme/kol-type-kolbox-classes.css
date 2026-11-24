@@ -1,0 +1,33 @@
+/**
+ * kol-type-kolbox-classes — the kolbox look's type roles (plan-2026-11-18-kolbox-system W31.2, batch 0, 2026-11-18).
+ *
+ * Eleven roles, carried value for value from kolbox's own steps (apps/kolbox/src/index.css: text-title … text-rail-title),
+ * as float's are in kol-type-float-classes.css. Each class sets family, size, weight and line-height. Sizes are fixed: a
+ * kolbox role is a control-sized voice, not a fluid one. The families are the theme's own (`--kol-font-family-sans`,
+ * `--kol-font-family-mono`), as kolbox reads them, so a theme variant that sets its families reaches these roles too.
+ *
+ *   role        size / weight / lh    use
+ *   title       16 / 500 / 22         a window's or a rail's title line
+ *   rail-title  14 / 500 / 20         the selection's name in a rail's header
+ *   body        14 / 400 / 20         body text
+ *   document    13 / 500 / 22         the file's name (rail and top rail)
+ *   brand       15 / 600 / 21         the KOL mark's word
+ *   section     11 / 500 / 16         a section heading
+ *   label       11 / 500 / 16         control labels
+ *   row         11 / 400 / 16         list and menu rows
+ *   help        11 / 400 / 15         help and hints
+ *   value       12 / 400 / 16  mono   values in fields
+ *   meta        10 / 400 / 14  mono   metadata
+ */
+
+.kol-kolbox-title      { font-family: var(--kol-font-family-sans); font-size: 16px; font-weight: var(--kol-kolbox-title-weight, 500); line-height: 22px; }
+.kol-kolbox-rail-title { font-family: var(--kol-font-family-sans); font-size: 14px; font-weight: var(--kol-kolbox-title-weight, 500); line-height: 20px; }
+.kol-kolbox-body       { font-family: var(--kol-font-family-sans); font-size: 14px; font-weight: 400; line-height: 20px; }
+.kol-kolbox-document   { font-family: var(--kol-font-family-sans); font-size: 13px; font-weight: var(--kol-kolbox-title-weight, 500); line-height: 22px; }
+.kol-kolbox-brand      { font-family: var(--kol-font-family-sans); font-size: 15px; font-weight: 600; line-height: 21px; }
+.kol-kolbox-section    { font-family: var(--kol-font-family-sans); font-size: var(--kol-kolbox-text); font-weight: var(--kol-kolbox-title-weight, 500); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-kolbox-label      { font-family: var(--kol-font-family-sans); font-size: var(--kol-kolbox-text); font-weight: var(--kol-kolbox-label-weight, 500); line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-kolbox-row        { font-family: var(--kol-font-family-sans); font-size: var(--kol-kolbox-text); font-weight: 400; line-height: var(--kol-kolbox-text-lh); letter-spacing: var(--kol-kolbox-text-ls); }
+.kol-kolbox-help       { font-family: var(--kol-font-family-sans); font-size: 11px; font-weight: 400; line-height: 15px; }
+.kol-kolbox-value      { font-family: var(--kol-font-family-mono); font-size: 12px; font-weight: 400; line-height: 16px; }
+.kol-kolbox-meta       { font-family: var(--kol-font-family-mono); font-size: 10px; font-weight: 400; line-height: 14px; }

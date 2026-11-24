@@ -1,10 +1,12 @@
-// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=33-176
+// url=https://www.figma.com/design/n48kE2bJtrFjl7wxst30xH/library--kol-ds-ui?node-id=1859-631
 // source=packages/icons/src
 // component=Icon
 import figma from 'figma'
 
+const suffix = figma.selectedInstance.getEnum('solid', { "true": "-solid", "false": "" })
+
 export default {
-  example: figma.code`<IconLoader name="repeat" />`,
+  example: figma.code`<IconLoader name="repeat${suffix}" />`,
   imports: ["import { IconLoader } from \"@kolkrabbi/kol-component\""],
   id: 'repeat',
 }

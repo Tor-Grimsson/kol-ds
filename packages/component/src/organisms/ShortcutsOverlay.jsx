@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
 import SettingsPanel, { LabeledControlSection, SettingsRow } from './SettingsPanel.jsx'
+import CommandOverlay, { isKeyCombo } from './CommandOverlay.jsx'
+import ModalShell from '../molecules/ModalShell.jsx'
 
 /**
  * ShortcutsOverlay — The keyboard shortcut sheet. the keyboard-shortcut sheet: blurred scrim, centred
@@ -41,8 +44,13 @@ import SettingsPanel, { LabeledControlSection, SettingsRow } from './SettingsPan
  * @param {Array} props.shortcuts - `[{ label, combo }]` or `[{ section, items: [{ id, label, combo }] }]` — the same array `SettingsShortcuts` takes (ShellHomeSystemMonitorGaps, kol-monitor 2026-08-27: the overlay read `keys` while the settings block read `combo`; `combo` is the name, `keys` is tolerated for a release)
  * @param {Function} props.onClose
  * @param {string} [props.title]  the header, beside the × (default `Shortcuts`)
- * @param {'overlay'|'rail'} [props.variant]  centred (default) or the right rail — SettingsPanel's two forms, so an app
- *   never hand-builds the rail (kol-monitor's ShortcutsRail, 2026-10-18)
+ * @param {'overlay'|'rail'|'folio'|'kolbox'} [props.variant]  centred (default) or the right rail — SettingsPanel's two forms, so an app
+ *   never hand-builds the rail (kol-monitor's ShortcutsRail, 2026-10-18). `folio` (Folio migration batch B, 2026-11-22):
+ *   Folio's list (its KeysPanel, carried class for class): `ModalShell variant="folio"` 460 wide centred on the Folio dim,
+ *   the title as a label, then each key under a rule, the label in body text and the combo in Folio's green. Flat
+ *   `shortcuts` only; drawn in place, never portalled, so it keeps the frame's `data-folio-*`. Escape and a press on the
+ *   dim close it. `kolbox` (Folio on kolbox, 2026-11-22): kolbox's S sheet, `CommandOverlay variant="kolbox"
+ *   mode="shortcuts"`, from the same array (see `ShortcutsOverlayKolbox`)
  * @param {string} [props.currentPath]  sections may carry `routes: ['/rack']` (CommandOverlayModes, kol-monitor
  *   2026-10-17 — user: *"im in dev, how can I cable lock here?"*): with a path, only the sections that work here
  *   are drawn (ShortcutsOverlayList, kol-monitor 2026-10-18 — the muted ELSEWHERE block is gone). A section without `routes`
@@ -58,7 +66,43 @@ const isSectioned = (list) => Array.isArray(list?.[0]?.items)
 /* ONE OVERLAY, NOT TWO (user 2026-10-18, retiring the near-copy): the sheet is `SettingsPanel variant="overlay"` —
  * the title on the header with the × beside it, a Divider, then the sections exactly as monitor's ⇧S rail draws
  * them (LabeledControlSection divided · SettingsRow text · the combo in mono). Same props as before, plus `title`. */
+function ShortcutsOverlayFolio({ shortcuts = [], onClose, title = 'Shortcuts' }) {
+  useEffect(() => {
+    const esc = (e) => e.key === 'Escape' && onClose?.()
+    addEventListener('keydown', esc)
+    return () => removeEventListener('keydown', esc)
+  }, [onClose])
+  return (
+    <div className="kol-modal-dim--folio fixed inset-0 z-50 flex items-center justify-center px-[16px]" onMouseDown={onClose}>
+      <ModalShell variant="folio" role="dialog" aria-label={title} onMouseDown={(e) => e.stopPropagation()} className="kol-shortcuts--folio w-full max-w-[460px] gap-[4px] p-[20px]">
+        <p className="kol-folio-label kol-shortcuts-title--folio pb-[10px]">{title}</p>
+        {shortcuts.map((it) => (
+          <div key={it.label} className="kol-shortcuts-row--folio flex items-baseline justify-between gap-[16px] border-t py-[9px]">
+            <span className="kol-folio-body">{it.label}</span>
+            <kbd className="kol-folio-meta kol-shortcuts-combo--folio whitespace-nowrap">{it.combo ?? it.keys}</kbd>
+          </div>
+        ))}
+      </ModalShell>
+    </div>
+  )
+}
+
+/* `variant="kolbox"` (Folio on kolbox, 2026-11-22): kolbox's S sheet, which kolbox draws as `CommandOverlay variant="kolbox"
+ * mode="shortcuts"` (its WindowShortcuts), from the same `shortcuts`: one group under `title`; a sectioned list's sections
+ * are its folds, open. A combo that is one key chord is drawn as key caps, any other text (`S, or ⌥S while writing`) as
+ * the row's hint. The sheet keeps its own lit row; Escape and the dim close it. */
+function ShortcutsOverlayKolbox({ shortcuts = [], onClose, currentPath, title }) {
+  const [active, setActive] = useState(0)
+  const row = (it, i, at = '') => ({ id: `${at}${i}:${it.label}`, label: it.label, hint: it.combo ?? it.keys, kbd: isKeyCombo(it.combo ?? it.keys) })
+  const rows = isSectioned(shortcuts)
+    ? shortcuts.filter((s) => shortcutInScope(s, currentPath)).map((s, n) => ({ id: `cat:${s.section ?? n}`, label: s.section, open: true, items: (s.items ?? []).map((it, i) => row(it, i, `${n}/`)) }))
+    : shortcuts.map((it, i) => row(it, i))
+  return <CommandOverlay variant="kolbox" open mode="shortcuts" onClose={onClose} groups={[{ title, rows }]} active={active} onActive={setActive} />
+}
+
 export default function ShortcutsOverlay({ shortcuts = [], onClose, currentPath, title = 'Shortcuts', variant = 'overlay' }) {
+  if (variant === 'kolbox') return <ShortcutsOverlayKolbox shortcuts={shortcuts} onClose={onClose} currentPath={currentPath} title={title} />
+  if (variant === 'folio') return <ShortcutsOverlayFolio shortcuts={shortcuts} onClose={onClose} title={title} />
   const sections = isSectioned(shortcuts)
     ? shortcuts.filter((s) => shortcutInScope(s, currentPath))
     : [{ items: shortcuts }]

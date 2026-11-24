@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Tooltip, MenuPanel, MenuRow, PopoverPanel, usePopover, floatSurfaceClass } from '@kolkrabbi/kol-component'
+import { Button, ButtonSplit, KbdKeys, Tooltip, MenuPanel, MenuRow, PopoverPanel, usePopover, floatSurfaceClass } from '@kolkrabbi/kol-component'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 
 /* taxonomy-ok: molecule — a column of float Buttons, each named by the float Tooltip */
@@ -25,12 +25,12 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
  * @param {ReactNode} end      after a rule — the dock's hand and undo
  * @param {Object}   search    `{ onPress, kbd?, label?, pressed? }` — the ⌘K pill at the dock's end, after a rule
  */
-export default function ToolRail({ tools = [], value, onChange, surface = 'solid', more, orientation = 'vertical', end, search, className = '' }) {
+function ToolRailDefault({ tools = [], value, onChange, surface = 'solid', more, orientation = 'vertical', end, search, className = '' }) {
   const row = orientation === 'horizontal'
   if (more?.length && !row) {
     return (
       <div className={`inline-flex flex-col items-center gap-4 ${className}`.trim()}>
-        <ToolRail tools={tools} value={value} onChange={onChange} surface={surface} />
+        <ToolRailDefault tools={tools} value={value} onChange={onChange} surface={surface} />
         <ToolMore items={more} surface={surface} />
       </div>
     )
@@ -96,4 +96,81 @@ function ToolMore({ items, surface, chevron = false, label = 'More tools', onPic
       )}
     </>
   )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's ToolDock (the file's ToolDock 28:9326, plan 10.8; W19.2), carried from apps/kolbox/src/ui/ToolDock.jsx: the
+ * panel fill, radius 12, padding 8, on the one floating surface (`kol-kolbox-surface`). The tools, 4 apart; a rule 1 by
+ * 24 between groups; `end` a second group after a rule (kolbox's well; the design draws none, the transport fills it).
+ * ToolRail's words: `tools` [{ id, icon, label, kbd, more: [{ id, icon, label, kbd, action }] }] (kolbox's `variants`),
+ * `value` a tool's id or one of its `more` ids (the tool shows its current member's glyph), `onChange(id)`. Two more
+ * kinds in `tools`, as the real ToolPalette's: `{ divider: true }` and a one-shot `{ id, icon, label, kbd, disabled,
+ * onClick }` that is never the armed tool. A tool with `more` is `ButtonSplit variant="kolbox"` in its icon-only form:
+ * the tool a tile, its chevron a separate 16 by 32 button 1 beside it, `onVariants(tool, element)` its press (the host
+ * opens its own menu), `variantsOpen` the id of the tool whose menu is open (its chevron keeps the quiet fill).
+ * `children` replace the tools (the transport's own cells).
+ * Under 768 the dock and its end wrap onto a second row. Sizes are Figma's dock as measured 2026-11-20 (W16.3): 48 high,
+ * padding 8, a slot 32 square, 8 between a tool's chevron and the next tool. Glyphs are your icons by the set's names at
+ * 20 in the full ink (his "bigger icons", R3.4): drawn 14 to 15, Figma's 16 to 17 inside its 24 box. */
+export function ToolRailSlot({ icon, label, kbd, active = false, lit = false, className = '', ...rest }) {
+  return (
+    <Tooltip variant="kolbox" label={kbd ? <>{label}<KbdKeys variant="kolbox" size="sm" keys={kbd} className="ml-2" /></> : label}>
+      <button
+        type="button"
+        aria-label={label}
+        aria-pressed={active || lit}
+        data-dock-cell
+        className={`kol-tool-slot--kolbox${active ? ' is-active' : lit ? ' is-lit' : ''} inline-flex size-8 shrink-0 items-center justify-center outline-none focus-visible:outline-solid focus-visible:outline-1 ${active || lit ? '' : 'disabled:opacity-40'} ${className}`.trim()}
+        {...rest}
+      >
+        <IconLoader name={icon} size={22} className="kol-kolbox-icon shrink-0" />
+      </button>
+    </Tooltip>
+  )
+}
+
+function ToolRailKolbox({ tools = [], value, onChange, onVariants, variantsOpen, end, children, className = '' }) {
+  const rule = (key) => <span key={key} className="kol-tool-rail-rule h-6 w-px shrink-0" />
+  return (
+    <div data-kol-dock className={`kol-tool-rail--kolbox kol-kolbox-surface inline-flex items-center gap-2 p-2 max-md:max-w-full max-md:flex-wrap max-md:justify-center ${className}`.trim()}>
+      <div className="flex items-center gap-2">
+        {children ??
+          tools.map((t, i) => {
+            if (t.divider) return rule(`d${i}`)
+            if (t.onClick) return <ToolRailSlot key={t.id} icon={t.icon} label={t.label} kbd={t.kbd} disabled={t.disabled} onClick={t.onClick} />
+            const current = t.more?.find((v) => v.id === value)
+            const icon = current?.icon ?? t.icon
+            const label = current?.label ?? t.label
+            const kbd = current ? current.kbd : t.kbd
+            const active = value === t.id || !!current
+            const arm = () => onChange?.(current?.id ?? t.id)
+            if (!t.more?.length) return <ToolRailSlot key={t.id} icon={icon} label={label} kbd={kbd} active={active} onClick={arm} />
+            return (
+              <ButtonSplit key={t.id} variant="kolbox" iconOnly={icon} aria-label={label} pressed={active} onClick={arm}
+                tooltip={kbd ? <>{label}<KbdKeys variant="kolbox" size="sm" keys={kbd} className="ml-2" /></> : label}
+                menuLabel={`${t.label} variants`} menuOpen={variantsOpen === t.id} onMenu={(e) => onVariants?.(t, e.currentTarget)} />
+            )
+          })}
+      </div>
+      {end && (
+        <>
+          {rule('end')}
+          <div className="flex items-center gap-1 max-md:flex-wrap max-md:justify-center">{end}</div>
+        </>
+      )}
+    </div>
+  )
+}
+
+/* ── folio (Folio migration batch D, 2026-11-22) ──────────────────────────────────────────────────────────────────────
+ * Folio's toolbar row under the menus (ToolRow), carried from apps/folio's EditorChrome.jsx: 56 high, 56 in, 8 between
+ * its tools, a rule under it in Folio's rule ink; a row wider than the window scrolls sideways with no scrollbar. Its
+ * tools are the format's own, as `children` (kolbox's word for cells in the dock's place). */
+function ToolRailFolio({ children, className = '' }) {
+  return <div className={`kol-tool-rail--folio flex h-[56px] shrink-0 items-center gap-[8px] overflow-x-auto border-b px-[56px] [scrollbar-width:none] ${className}`.trim()}>{children}</div>
+}
+
+export default function ToolRail(props) {
+  if (props.variant === 'folio') return <ToolRailFolio {...props} />
+  return props.variant === 'kolbox' ? <ToolRailKolbox {...props} /> : <ToolRailDefault {...props} />
 }

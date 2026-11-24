@@ -3,6 +3,7 @@ import { toneClass } from '../utilities/tone.js'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { MenuList } from './MenuList.jsx'
 import { Menu } from './Menu.jsx'
+import KolboxGlyph from '../utilities/kolboxGlyph.jsx'
 import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
 
 /**
@@ -29,7 +30,9 @@ import { glyphSize, indicatorSize } from '../hooks/glyphLadders.js'
  *   variant="float"             — the float select (float-everything W2 row 25 · W4 row 54, 2026-11-04): the
  *     trigger a `kol-btn-float` capsule on the float well (a `tone` still wins), the float heights by `size`
  *     (sm 28 · md 36 · lg 44); its list opens 8 under it on `--kol-float-list-r`, the trigger's width, 34 rows
- *     in Inter, the current row lifted fg-16 with the dot, no hairline. Still rest and open only.
+ *     in Inter, no hairline. Still rest and open only. The caret is the float spec's chevron for the trigger's size
+ *     (`--kol-float-chev-*`, 12 at sm — plan-2026-11-12-float-system W3.1); in the list hover is the only fill, the
+ *     current row carries its dot and no fill (`--kol-float-row-hover` · `-row-selected`).
  *
  * Legacy aliases (pre-law variants, kept so call-sites don't break):
  *   default → primary · subtle → primary · minimal → outline
@@ -64,7 +67,116 @@ const ROW = { xs: `kol-mono-8 ${ROW_PAD.xs} ${ROW_H.xs}`, sm: `kol-mono-12 ${ROW
 
 const LEGACY_VARIANTS = { default: 'primary', subtle: 'primary', minimal: 'outline' }
 
-const Dropdown = ({
+/* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 4, 2026-11-18): kolbox's Dropdown carried line for line,
+ * the chrome in kol-theme `.kol-dd--kolbox`. The closed field with the 12 chevron at the right: a button that opens
+ * `Menu variant="kolbox"` OVER itself (28.5: the chosen row on the field, the left edges together, at least as wide as
+ * the field, flipped to the field's right edge near the window's, 4 from it), with a check on the current option.
+ * `options` strings or `{ value, label }`; `onChange` gets the value as a string. Enter, Space or ArrowDown opens; in the
+ * menu the arrows move, Enter picks, a letter jumps, Escape closes; focus comes back to the field.
+ *   size   sm (unset) the 28 field; xs the 24 filter (Home's), no fill, Figma's filter measured (plan-2026-11-23-editor-
+ *          measured-against-figma W7): the value 8 in, the chevron's glyph 5 after it and 7 off the right edge
+ *   tone   unset: the outlined field, the oq-24 line only (the master's default), the line the accent while open or
+ *          focused; `grey`: the unbordered field (oq-16 at sm, bare at xs), padding 12 left and 4 right, the chevron 4
+ *          after the value, so it hugs its value (the top rail's zoom)
+ *   menu   a trigger for its own overlay instead of the option list (the zoom's): menu({ anchor, open, onClose }) is drawn
+ *          in place of the Menu, and the field reads `value` as it is
+ *   ariaLabel  what it chooses, as KOL's Dropdown; other props (disabled, data-*) land on the button
+ *   Folio on kolbox (2026-11-22): a number option's value reaches `onChange` as a number (every other as a string); a
+ *   `value` no option holds is shown as it is; `align` (folio's) is read and dropped, the list lies over its field */
+function DropdownKolbox({ size, tone, value, options = [], onChange, menu, ariaLabel, align: _align, className = '', variant, ...rest }) {
+  const ref = useRef(null)
+  const [open, setOpen] = useState(false)
+  const outlined = tone !== 'grey'
+  const xs = size === 'xs'
+  /* `{ divider: true }` starts a new group (Menu draws the line between groups); a `{ heading }` is not a row here */
+  const all = options.map((o) => (typeof o === 'string' ? { value: o, label: o } : o)).filter((o) => !o?.heading)
+  const opts = all.filter((o) => !o?.divider)
+  /* a value that no option holds (a node, or an action's name: Folio's Heading, Save to bucket) is shown as it is */
+  const current = opts.find((o) => String(o.value) === String(value)) ?? (value != null && value !== '' && opts.length ? { label: value } : opts[0]) ?? { label: value }
+  const close = () => { setOpen(false); ref.current?.focus({ preventScroll: true }) }
+  const groups = [[]]
+  /* the check column only when the field holds one of its options (an action list, Folio's Save to bucket, has none) */
+  const held = opts.includes(current)
+  for (const o of all) {
+    if (o.divider) { if (groups.at(-1).length) groups.push([]); continue }
+    const on = o === current
+    groups.at(-1).push({ label: o.label, value: o.value, check: held ? on : undefined, highlighted: on })
+  }
+  return (
+    <>
+      <button
+        ref={ref}
+        type="button"
+        aria-haspopup="menu"
+        aria-expanded={open}
+        aria-label={ariaLabel}
+        data-kol-dropdown=""
+        onClick={() => (open ? close() : setOpen(true))}
+        onKeyDown={(e) => {
+          /* the field's own keys, kept from the page's shortcuts as a native select's are */
+          if (!['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(e.key)) return
+          e.preventDefault(); e.stopPropagation()
+          if (e.key !== 'ArrowUp') setOpen(true)
+        }}
+        className={`kol-dd--kolbox${outlined ? ' kol-dd--kolbox-outlined' : ''}${outlined && open ? ' is-open' : ''}${!outlined && !xs ? ' kol-dd--kolbox-filled' : ''} relative flex min-w-0 cursor-pointer items-center disabled:cursor-default disabled:opacity-40 ${xs ? 'h-6 bg-transparent' : 'h-(--kol-kolbox-ctl)'} text-left outline-none ${outlined ? (xs ? 'gap-0.5 border pr-[3px] pl-[7px]' : 'gap-2 border px-2') : 'gap-1 pr-1 pl-3 focus-visible:outline-1'} ${className}`}
+        {...rest}
+      >
+        <span className="min-w-0 flex-1 truncate">{current?.label}</span>
+        <KolboxGlyph name="chevron-down" className="kol-dd-caret--kolbox pointer-events-none" />
+      </button>
+      {menu ? menu({ anchor: ref, open, onClose: close }) : <Menu
+        variant="kolbox"
+        anchor={ref}
+        open={open}
+        onClose={close}
+        onSelect={(row) => onChange?.(typeof row.value === 'number' ? row.value : String(row.value))}
+        groups={groups}
+        placement="over"
+        aria-label={ariaLabel}
+        minWidth={ref.current?.offsetWidth}
+      />}
+    </>
+  )
+}
+
+/* `variant="folio"` (Folio migration batch B, 2026-11-22): Folio's Choice carried class for class, the chrome in kol-theme
+ * `.kol-dd--folio`. The button is as wide as its text (its type is the caller's or the row's), the ⌄ after it; the list
+ * opens under it in place (never portalled, so it keeps the frame's `data-folio-*`), the current row green with its ✓.
+ * Esc or a press outside closes. `options` `{ value, label }` (a label may be a node; `value` reaches `onChange` as it
+ * is), `ariaLabel`, `disabled`, `className` (the button's). Folio's own word: `align` left (unset), right, bottom-left,
+ * bottom-right: the list's edge and side. */
+function DropdownFolio({ value, options = [], onChange, ariaLabel, disabled, align = 'left', className = '' }) {
+  const [open, setOpen] = useState(false)
+  const box = useRef(null)
+  useEffect(() => {
+    if (!open) return undefined
+    const off = (e) => { if (!box.current?.contains(e.target)) setOpen(false) }
+    const esc = (e) => e.key === 'Escape' && setOpen(false)
+    addEventListener('mousedown', off); addEventListener('keydown', esc)
+    return () => { removeEventListener('mousedown', off); removeEventListener('keydown', esc) }
+  }, [open])
+  const current = options.find((o) => o.value === value)?.label ?? value
+  return (
+    <span ref={box} className="relative inline-flex">
+      <button type="button" aria-label={ariaLabel} aria-haspopup="listbox" aria-expanded={open} disabled={disabled} onClick={() => setOpen(!open)} className={`kol-dd--folio inline-flex items-center gap-[4px] rounded-[3px] disabled:cursor-default ${className}`}>
+        {current}{!disabled && <span aria-hidden className="kol-dd-caret--folio">⌄</span>}
+      </button>
+      {open && (
+        <span role="listbox" aria-label={ariaLabel} className={`kol-dd-list--folio absolute z-50 flex min-w-[160px] flex-col rounded-[3px] border py-[4px] ${/right/.test(align) ? 'right-0' : 'left-0'} ${/bottom/.test(align) ? 'bottom-[calc(100%+6px)]' : 'top-[calc(100%+6px)]'}`}>
+          {options.map((o) => (
+            <button key={o.value} type="button" role="option" aria-selected={o.value === value} onClick={() => { setOpen(false); onChange?.(o.value) }} className={`kol-dd-option--folio${o.value === value ? ' is-current' : ''} flex items-center gap-[8px] whitespace-nowrap px-[12px] py-[7px] text-left`}>
+              <span aria-hidden className="kol-dd-check--folio inline-flex size-[16px] shrink-0 items-center justify-center">{o.value === value ? '✓' : ''}</span>{o.label}
+            </button>
+          ))}
+        </span>
+      )}
+    </span>
+  )
+}
+
+const Dropdown = (props) => (props.variant === 'kolbox' ? <DropdownKolbox {...props} /> : props.variant === 'folio' ? <DropdownFolio {...props} /> : <DropdownOn {...props} />)
+
+const DropdownOn = ({
   options = [],
   value,
   onChange,
@@ -265,7 +377,7 @@ const Dropdown = ({
             </span>
             {/* chrome lives in .kol-dd-caret (trailing edge + open-state flip) —
               * keyed off the trigger's data-state, no inline styles */}
-            <IconLoader name="chevron-down" size={float ? 'var(--kol-float-ic)' : indicatorSize(resolvedSize)} className="kol-dd-caret" />
+            <IconLoader name="chevron-down" size={float ? `var(--kol-float-chev-${resolvedSize === 'md' || resolvedSize === 'lg' ? resolvedSize : 'sm'})` : indicatorSize(resolvedSize)} className="kol-dd-caret" />
           </>
         )}
         {/* a consumer's own trigger mark — the tool-palette corner fold rides
@@ -286,7 +398,7 @@ const Dropdown = ({
       hover: false,
       size: resolvedSize,
       /* a float row is the float list's (`.kol-menu-panel--float .kol-menu-row`), whatever the trigger's rung; the
-       * current one is lifted (row 54: "selected / checked") — still no hover */
+       * current one carries its dot and no fill (W3.1, P2: "it dosnt highlight selected, only hover") */
       rowClass: float ? `kol-menu-row${isActive ? ' kol-menu-row--current' : ''}` : (ROW[resolvedSize] ?? ROW.sm),
       height: rowHeight,
       onPointerEnter: onOptionHover ? () => reportHover(option.value) : undefined,
@@ -332,7 +444,7 @@ const Dropdown = ({
           * not"*). One rule: an open dropdown has the line. */}
         <div className="kol-dd-div" />
 
-        <div ref={listRef} className="kol-dd-list" role="listbox" aria-multiselectable={multiple || undefined} style={scale !== 1 ? { zoom: scale } : undefined}>
+        <div ref={listRef} className="kol-dd-list flex flex-col gap-[var(--kol-spacing-0-5)]" role="listbox" aria-multiselectable={multiple || undefined} style={scale !== 1 ? { zoom: scale } : undefined}>
           <MenuList items={items} dividerClassName="my-1" headingClassName={headingCls} />
         </div>
     </Menu>

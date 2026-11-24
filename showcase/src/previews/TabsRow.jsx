@@ -3,7 +3,7 @@ import { TabsRow, Button } from '@kolkrabbi/kol-component'
 
 /* one tab component, four looks — the picker on the toolbar flips it */
 export const stage = 'md'
-export const variants = ['underline', 'chip', 'text', 'stacked', 'float']
+export const variants = ['underline', 'chip', 'text', 'stacked', 'float', 'kolbox']
 
 /* float (W5 rows 67 · 78, W9 row 137): the inspector's 26 chips · the tab navigation pill with glyphs and counts (lg in a
  * solid capsule, the trailing slot holding search and the primary action) · the mono text tabs, the selected one filled */
@@ -37,8 +37,21 @@ const TABS = [
 /* record's dashboard: six tabs, 394px of underline — wider than a phone column */
 const SIX = ['Tasks', 'Capture', 'Projects', 'Calendar', 'Metrics', 'Links'].map((l) => ({ id: l.toLowerCase(), label: l }))
 
+/* kolbox (W31.2 batch 3): sm the tab track, md the top rail's mode track; a disabled tab shows its tooltip */
+function KolboxRows() {
+  const [a, setA] = useState('Generate')
+  const [b, setB] = useState('editor')
+  return (
+    <div className="flex flex-col items-start gap-4">
+      <TabsRow variant="kolbox" tabs={['Generate', 'Style', 'Animation', { value: 'Export', label: 'Export', disabled: true, tooltip: 'Not wired' }]} value={a} onChange={setA} />
+      <TabsRow variant="kolbox" size="md" tabs={[{ value: 'editor', label: 'Editor' }, { value: 'labs', label: 'Labs' }, { value: 'morph', label: 'Morph' }]} value={b} onChange={setB} className="w-72" />
+    </div>
+  )
+}
+
 export default function TabsRowPreview({ variant = 'underline' }) {
   if (variant === 'float') return <FloatRows />
+  if (variant === 'kolbox') return <KolboxRows />
   return <Rows variant={variant} />
 }
 

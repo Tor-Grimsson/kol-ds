@@ -1,0 +1,27 @@
+{
+  "name": "minimal",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Labs and the editor in the minimal style: the shell as local React with its own tokens (nothing from the KOL look), design-editor's engine from its workspace source in the canvas. Never published.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kolkrabbi/design-editor": "workspace:*",
+    "@kolkrabbi/kol-framework": "workspace:*",
+    "@kolkrabbi/kol-icons": "workspace:*",
+    "@tailwindcss/vite": "^4.2.4",
+    "media-fixture": "workspace:*",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tailwindcss": "^4.2.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "vite": "^8.0.10",
+    "vite-plugin-svgr": "^5.2.0"
+  }
+}

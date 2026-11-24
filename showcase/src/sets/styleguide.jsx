@@ -25,7 +25,6 @@ import {
   SwatchTile,
   ColorInputRow,
 } from '@kolkrabbi/kol-component'
-import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
 import {
   ComboLab,
   DEFAULT_COMBO_LAB,
@@ -50,6 +49,7 @@ import {
   Letterhead,
   LetterheadCorrespondence,
   EmailSignature,
+  SpecimenSample, SpecimenSpec,
 } from '@kolkrabbi/kol-styleguide'
 
 export const meta = {
@@ -243,19 +243,19 @@ export default function StyleguideSet() {
       <Section title="Type">
         {/* Sample stack — one family across a weight / size ladder */}
         <div className="flex flex-col">
-          <TypeSample family={FAMILY} weight={700} size={56} label="Display / Bold 700">
+          <SpecimenSample family={FAMILY} weight={700} size={56} label="Display / Bold 700">
             {SPECIMEN}
-          </TypeSample>
-          <TypeSample family={FAMILY} weight={500} size={32} label="Heading / Medium 500">
+          </SpecimenSample>
+          <SpecimenSample family={FAMILY} weight={500} size={32} label="Heading / Medium 500">
             {SPECIMEN}
-          </TypeSample>
-          <TypeSample family={FAMILY} weight={400} size={18} label="Body / Regular 400">
+          </SpecimenSample>
+          <SpecimenSample family={FAMILY} weight={400} size={18} label="Body / Regular 400">
             {BODY_TEXT}
-          </TypeSample>
+          </SpecimenSample>
         </div>
 
         {/* Spec card — numeric metrics beside a live sample */}
-        <TypeSpecCard
+        <SpecimenSpec
           label="Right Grotesk / Regular"
           meta={[
             ['Family', 'Right Grotesk'],
@@ -265,10 +265,10 @@ export default function StyleguideSet() {
             ['Tracking', '0'],
           ]}
         >
-          <TypeSample family={FAMILY} weight={400} size={24} lineHeight={32}>
+          <SpecimenSample family={FAMILY} weight={400} size={24} lineHeight={32}>
             {SPECIMEN}
-          </TypeSample>
-        </TypeSpecCard>
+          </SpecimenSample>
+        </SpecimenSpec>
       </Section>
 
       {/* 3 — ASSETS & LAYOUT */}

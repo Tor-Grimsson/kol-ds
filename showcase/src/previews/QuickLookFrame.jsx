@@ -25,7 +25,9 @@ function UtilityWindow() {
           <LabeledControl variant="float" label="Duration"><Input variant="float" value="00:12:00" onChange={() => {}} width="100%" /></LabeledControl>
         </div>
         <ColorField label="Background" value="#0B0B0B" />
-        <ToggleSwitch variant="float" label="Show safe area" checked={safe} onChange={setSafe} className="w-full justify-between" />
+        <LabeledControl variant="float" horizontal label="Show safe area" labelWidth="auto">
+          <ToggleSwitch variant="float" checked={safe} onChange={setSafe} aria-label="Show safe area" />
+        </LabeledControl>
       </QuickLookFrame>
     </div>
   )

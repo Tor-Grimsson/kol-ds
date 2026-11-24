@@ -102,7 +102,17 @@ function Controls({ surface }) {
   )
 }
 
-export default function AppFloatNavPreview() {
+export const variants = ['default', 'kolbox', 'folio']
+
+export default function AppFloatNavPreview({ variant = 'default' }) {
+  /* folio (Folio migration batch D): Folio's transport, its slots Button folio's icon */
+  if (variant === 'folio') return (
+    <div className="inline-flex p-4" style={{ background: 'var(--kol-folio-paper)', color: 'var(--kol-folio-ink)' }}><AppFloatNav variant="folio" transport loop timecode={{ current: '00:04', total: '00:12' }} /></div>
+  )
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return (
+    <AppFloatNav variant="kolbox" transport time={1.25} loopLength={4} loop />
+  )
   return (
     <div className="@container flex flex-col gap-8 w-full">
       {Object.entries(SHAPES).map(([shape, nav]) => (

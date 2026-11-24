@@ -19,7 +19,7 @@
 // re-inits every frame — same caveat as math-orbits' count/seed. Bind the
 // live keys (declared per proto in presets.js) or colours instead.
 
-import { loadFonts as loadEditorFonts, FONTS as EDITOR_FONTS } from '../../kinetic/fonts.js'
+import { loadFonts as loadEditorFonts, TG_FACES as EDITOR_FONTS } from '../../kinetic/fonts.js'
 import { recordRoles } from './roles.js'
 import { transport } from '../../editor/params/transport.js'
 import { themeById, DEFAULT_THEME } from '../../editor/lib/themes.js'

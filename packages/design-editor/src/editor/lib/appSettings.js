@@ -40,6 +40,9 @@ const DEFAULTS = {
   grab: false,
   interactions: true,
   zoomLock: false,
+  /* THE EDITOR'S STYLE (plan-2026-11-19-kolbox-whats-left C3): 'default' | 'kolbox', the Style row in Settings. A host
+     reads it to mount `<DesignEditor variant>`; a `variant` prop the host passes wins. Never the theme. */
+  style: 'default',
 }
 
 function load() {

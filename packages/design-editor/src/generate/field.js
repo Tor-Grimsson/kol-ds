@@ -373,18 +373,20 @@ export const FIELD_SCHEMA = [
   { key: 'fInvert', label: 'Invert', type: 'toggle', default: false, section: 'Field' },
   { key: 'fSplit', label: 'Split at', type: 'range', min: 0, max: 1, step: 0.01, default: 0, format: (v) => (v ? `${Math.round(v * 100)}%` : 'Off'), section: 'Field' },
 ]
+/* The outline families (variable fonts since 2026-11-18), by the ids editor/modes/type/families.js gives them. A letter
+ * stored on the old width cuts (`mCut`, no `mFamily`) reads as Inter at its weight: read-time, nothing rewritten. */
+export const OUTLINE_FAMILY_OPTIONS = [{ value: 'inter', label: 'Inter' }, { value: 'malromur', label: 'Malromur' }]
+export const letterFamily = (l) => (OUTLINE_FAMILY_OPTIONS.some((o) => o.value === l?.mFamily) ? l.mFamily : 'inter')
 export const MASK_SCHEMA = [
   { key: 'mKind', label: 'Mask', type: 'select', default: 'none', section: 'Mask',
     options: ['none', 'rect', 'ellipse', 'circle', 'hourglass', 'diamond', 'octagon', 'arch', 'letter', 'layer'].map((v) => ({ value: v, label: { layer: 'Linked layer' }[v] ?? v[0].toUpperCase() + v.slice(1) })) },
   { key: 'mSize', label: 'Size', type: 'range', min: 0.2, max: 1.5, step: 0.01, default: 1, section: 'Mask', when: (l) => !['none', 'rect', 'letter', 'layer'].includes(l.mKind ?? 'none') },
   ...[['mX', 'Centre X', 0.5], ['mY', 'Centre Y', 0.5], ['mW', 'Width', 1], ['mH', 'Height', 1]].map(([key, label, d]) =>
     ({ key, label, type: 'range', min: 0, max: 1, step: 0.01, default: d, section: 'Mask', when: (l) => l.mKind === 'rect' })),
-  /* LETTER (W4 § 4.1): a character in a Right Grotesk cut; the outline is resolved by the editor */
+  /* LETTER (W4 § 4.1): a character in an outline family at a weight on its axis; the outline is resolved by the editor */
   { key: 'mChar', label: 'Letter', type: 'text', default: 'A', section: 'Mask', when: (l) => l.mKind === 'letter' },
-  { key: 'mCut', label: 'Cut', type: 'select', default: 'base', section: 'Mask', when: (l) => l.mKind === 'letter',
-    options: [['base', 'Display'], ['Compact', 'Compact'], ['Tall', 'Tall'], ['Wide', 'Wide'], ['Narrow', 'Narrow'], ['Spatial', 'Spatial'], ['Tight', 'Tight']].map(([value, label]) => ({ value, label })) },
-  { key: 'mWeight', label: 'Weight', type: 'select', default: 700, section: 'Mask', when: (l) => l.mKind === 'letter',
-    options: [[100, 'Fine'], [300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'Dark'], [700, 'Bold'], [900, 'Black']].map(([value, label]) => ({ value, label })) },
+  { key: 'mFamily', label: 'Font', type: 'select', default: 'inter', section: 'Mask', when: (l) => l.mKind === 'letter', options: OUTLINE_FAMILY_OPTIONS },
+  { key: 'mWeight', label: 'Weight', type: 'range', min: 100, max: 900, step: 1, default: 700, section: 'Mask', when: (l) => l.mKind === 'letter' },
   { key: 'mFit', label: 'Fit', type: 'range', min: 0.2, max: 1.2, step: 0.01, default: 0.9, format: (v) => `${Math.round(v * 100)}%`, section: 'Mask', when: (l) => l.mKind === 'letter' },
   { key: 'mWaist', label: 'Waist', type: 'range', min: 0, max: 0.5, step: 0.01, default: 0.08, section: 'Mask', when: (l) => l.mKind === 'hourglass' },
 ]

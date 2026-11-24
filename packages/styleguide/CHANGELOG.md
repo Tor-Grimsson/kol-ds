@@ -1,5 +1,13 @@
 # @kolkrabbi/kol-styleguide
 
+## 0.27.0 — 2026-11-12
+
+- **`CardLogo`**'s framework switch is a bare `ToggleSwitch` inside a `LabeledControl` (ToggleSwitch `label` is deprecated in kol-component 0.377.0); the words unchanged.
+
+## 0.26.0 — 2026-11-12
+
+- **`ModalLab`** — `LabWindow` renamed to lead with its family word (the Modal family); the file is `lab/ModalLab.jsx`. Same component, same props; `LabWindow` stays exported (root and `/lab`) as its deprecated alias (04-retirements.md).
+
 ## 0.25.0 — 2026-11-08
 
 - Renders `IconLoader` (kol-icons' `Icon`, renamed; `Icon` is its deprecated alias). Peers `@kolkrabbi/kol-icons` >=0.68.0, `@kolkrabbi/kol-component` >=0.355.0.

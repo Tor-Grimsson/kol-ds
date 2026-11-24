@@ -5,7 +5,7 @@ import Image from '../atoms/Image.jsx'
  * frame (bordered surface-secondary panel, rounded) holding one object-cover
  * image. Extracted from the foundry TypefacePage, where it sat inlined 5x
  * verbatim between content sections. The double radius (`rounded` panel,
- * `rounded-[var(--kol-radius-sm)]` image) is intentional — the image nests inside the border.
+ * `rounded-[var(--kol-radius-4)]` image) is intentional — the image nests inside the border.
  *
  * Presentational — the caller passes finished `src`/`srcSet` strings; any
  * CDN size-ladder generation stays at the call site. `media` swaps an
@@ -44,7 +44,7 @@ export default function FramedMediaBand({
                 srcSet={srcSet}
                 sizes={sizes}
                 alt={alt}
-                className="w-full h-full object-cover rounded-[var(--kol-radius-sm)]"
+                className="w-full h-full object-cover rounded-[var(--kol-radius-4)]"
               />
             )}
           </div>

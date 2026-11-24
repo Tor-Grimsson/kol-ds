@@ -3,7 +3,7 @@
 // component=StackHero
 import figma from 'figma'
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { default: 'default', tall: 'tall' })
+const variant = instance.getEnum('tall', { "true": 'tall', "false": 'default' })
 
 export default {
   example: figma.code`<StackHero title={title} description={description} src={src} alt="" variant="${variant}" />`,

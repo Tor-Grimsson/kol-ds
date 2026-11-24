@@ -24,7 +24,20 @@
  *                     used by tightly-packed grid layouts.
  *   variant         — 'default' (border-based chrome) |
  *                     'halo' (macOS-port double box-shadow halo). Halo
- *                     overrides `frame` since it provides its own ring.
+ *                     overrides `frame` since it provides its own ring. |
+ *                     'folio' (Folio's Swatch, Folio batch C, 2026-11-22, carried
+ *                     class for class): always a button, 24 square at radius 4,
+ *                     `frame` Folio's hairline round it, `selected` a 2px outline
+ *                     of Folio's ink 2 off it; `title` is the native title, `size`
+ *                     and `radius` are not read. With no `hex` the caller paints
+ *                     it (an accent swatch: `data-folio-accent` and `hex`
+ *                     `var(--kol-folio-green)`). Chrome in kol-theme
+ *                     `.kol-color-swatch--folio`. |
+ *                     'kolbox' (Folio on kolbox, 2026-11-22): SwatchGrid kolbox's
+ *                     cell as one chip, always a button: `size` square (24), radius
+ *                     2, `frame` its 1px oq-24 ring inside it, `selected` the 2px
+ *                     accent ring 1 off the secondary surface (chrome
+ *                     `.kol-swatch-grid-cell`); `title` names it in Tooltip kolbox.
  *   hoverable       — boolean (default true). When false, no hover border
  *                     state is applied even if `onClick` is set. For static
  *                     chips that just open a popover (e.g. inspector fill /
@@ -55,7 +68,7 @@ const NAMED_PX = {
 
 const RADIUS_CLASSES = {
   none:  'rounded-none',
-  tight: 'rounded-[var(--kol-radius-xs)]',
+  tight: 'rounded-[var(--kol-radius-2)]',
   sm:    'rounded',
   full:  'rounded-full',
 }
@@ -84,6 +97,34 @@ export default function ColorSwatch({
   className = '',
   ...rest
 }) {
+  if (variant === 'kolbox') {
+    return (
+      <Tooltip variant="kolbox" asChild label={title}>
+        <button
+          type="button"
+          aria-pressed={selected}
+          onClick={onClick}
+          {...rest}
+          className={`kol-swatch-grid-cell${selected ? ' is-current ring-2 ring-offset-1' : frame ? ' ring-1 ring-inset' : ''} shrink-0 outline-none ${className}`.trim()}
+          style={{ width: size, height: size, background: hex, ...rest.style }}
+        />
+      </Tooltip>
+    )
+  }
+  if (variant === 'folio') {
+    return (
+      <button
+        type="button"
+        aria-pressed={selected}
+        /* title-ok: a port, verbatim (Folio batch C): Folio's swatches name their color in the browser's own tooltip */
+        title={title}
+        onClick={onClick}
+        {...rest}
+        className={`kol-color-swatch--folio size-[24px] rounded-[4px] ${frame ? 'border ' : ''}${selected ? 'is-selected outline outline-2 outline-offset-2' : ''} ${className}`}
+        style={hex ? { background: hex, ...rest.style } : rest.style}
+      />
+    )
+  }
   const interactive = typeof onClick === 'function'
   const resolvedSize = NAMED_PX[size] ?? size
   const isNamed = typeof resolvedSize === 'string'

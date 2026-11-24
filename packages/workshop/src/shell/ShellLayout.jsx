@@ -216,6 +216,37 @@ const quickList = (ranked) => {
   return out.slice(0, QUICK_MAX)
 }
 
+/* PAGES FIRST (his ruling 2026-11-20, plan W17.2: *"the pages have to be suggested before content within them"*): an item
+ * carrying `within` is something found inside a page (an icon), not a page. Every page is listed before any of it; what
+ * is inside pages follows, one heading per `within`, its best WITHIN_MAX rows, then one row to `withinHref?q=` (the full
+ * catalog, the typed word carried over). */
+const WITHIN_MAX = 5
+const toRow = ({ item, reasons, highlights }) => {
+  const titleHit = reasons.some((r) => r.field === 'title')
+  const first = reasons.find((r) => r.hit)
+  return {
+    id: item.id,
+    label: item.title,
+    group: item.within ?? item.category,
+    hint: titleHit ? item.hint : (first?.hit ?? item.description ?? item.hint),
+    href: item.href,
+    highlights: highlights.title,
+    /* `action` survives the reshape — a row may run a closure instead of going somewhere */
+    action: item.action,
+  }
+}
+const quickRows = (ranked, q) => {
+  const inside = new Map()
+  ranked.forEach((r) => { if (r.item.within) inside.set(r.item.within, [...(inside.get(r.item.within) ?? []), r]) })
+  return [
+    ...quickList(ranked.filter((r) => !r.item.within)).map(toRow),
+    ...[...inside].flatMap(([within, hits]) => [
+      ...hits.slice(0, WITHIN_MAX).map(toRow),
+      ...(hits[0].item.withinHref ? [{ id: `within:${within}`, label: `All ${within.toLowerCase()} for “${q}”`, group: within, hint: `${hits.length}`, href: `${hits[0].item.withinHref}?q=${encodeURIComponent(q)}` }] : []),
+    ]),
+  ]
+}
+
 const toSearchItem = (item, i) => ({
   ...item,
   id: item.id ?? item.href ?? `${item.label ?? item.title}-${i}`,
@@ -552,22 +583,17 @@ const ShellLayout = ({ routes = [], basePath = '/', brand: brandProp, brandLogoS
    * search to the spaces in view. */
   const searchIndex = useMemo(() => createIndex((searchItems ?? []).map(toSearchItem)), [searchItems])
   const quickScope = scopedIds ? { space: scopedIds } : {}
-  const searchResults = searchQuery
-    ? quickList(search(searchIndex, searchQuery, { scope: quickScope }).results).map(({ item, reasons, highlights }) => {
-      const titleHit = reasons.some((r) => r.field === 'title')
-      const first = reasons.find((r) => r.hit)
-      return {
-        id: item.id,
-        label: item.title,
-        group: item.category,
-        hint: titleHit ? item.hint : (first?.hit ?? item.description ?? item.hint),
-        href: item.href,
-        highlights: highlights.title,
-        /* `action` survives the reshape — a row may run a closure instead of going somewhere */
-        action: item.action,
-      }
-    })
-    : []
+  /* a word that names a facet is read as its filter (`icons` → kind icon), which would hide the pages titled with it:
+   * the same word as plain text finds them, and they lead (plan-2026-11-20 W17.2) */
+  const searchResults = searchQuery ? (() => {
+    const q = searchQuery.trim()
+    const ranked = search(searchIndex, searchQuery, { scope: quickScope }).results
+    const titled = /^[^-"#][^":]*$/.test(q)
+      ? search(searchIndex, `"${q}"`, { scope: quickScope }).results.filter((r) => !r.item.within && r.reasons.some((x) => x.field === 'title'))
+      : []
+    const ids = new Set(titled.map((r) => r.item.id))
+    return quickRows([...titled, ...ranked.filter((r) => !ids.has(r.item.id))], q)
+  })() : []
   const openResultsPage = () => {
     const q = searchQuery.trim()
     closeSearch()

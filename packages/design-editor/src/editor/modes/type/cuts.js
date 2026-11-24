@@ -1,23 +1,11 @@
 /**
- * Type-lab cuts — width / aspect / case + display palette + cssFor.
- * Phase 7 cleanup: WEIGHTS / familyFor / applyCase moved to
- * `src/data/typography-cuts.js` (shared with DS + styleguide). Re-exported
- * here so type-lab consumers don't need to chase the move.
+ * Type-lab constants — aspect / case + display palette. The Right Grotesk
+ * width cuts, WEIGHTS, familyFor and cssFor left with the static cut system
+ * (2026-11-18, variable fonts; kept in _tmp/2026-11-18-static-cuts/).
  */
-import { WEIGHTS, familyFor, applyCase } from '../../../data/typography-cuts'
+import { applyCase } from '../../../data/typography-cuts'
 
-export { WEIGHTS, familyFor, applyCase }
-
-export const WIDTHS = [
-  { id: 'base',    label: 'Display' },
-  { id: 'Compact', label: 'Compact' },
-  { id: 'Tall',    label: 'Tall'    },
-  { id: 'Wide',    label: 'Wide'    },
-  { id: 'Narrow',  label: 'Narrow'  },
-  { id: 'Spatial', label: 'Spatial' },
-  { id: 'Tight',   label: 'Tight'   },
-  { id: 'mono',    label: 'Mono'    },
-]
+export { applyCase }
 
 export { ASPECTS } from '../../shell/aspects'
 
@@ -50,20 +38,3 @@ export const PALETTE = [
   { hex: '#1B1B1E', label: 'Grey 800' },
   { hex: '#131316', label: 'Grey 900' },
 ]
-
-export const cssFor = (s) => {
-  const lines = [
-    `font-family: '${familyFor(s.width)}', 'Right Grotesk', sans-serif;`,
-    `font-weight: ${s.weight};`,
-    `font-style: ${s.italic ? 'italic' : 'normal'};`,
-    `font-size: ${s.size}px;`,
-    `letter-spacing: ${s.tracking}em;`,
-    `line-height: ${s.lineHeight};`,
-    `color: ${s.color};`,
-  ]
-  if (s.case !== 'original') {
-    const tt = s.case === 'sentence' ? 'none' : s.case === 'upper' ? 'uppercase' : 'lowercase'
-    lines.push(`text-transform: ${tt};`)
-  }
-  return lines.join('\n')
-}

@@ -1,19 +1,10 @@
 /**
- * Per-letter random axis — deterministic (width, weight) pick per char index
- * + seed. Same inputs → same output, so re-renders don't shuffle on every
- * keystroke. Scrubbing the seed (via the canvas blend handle) re-rolls the
- * layout.
+ * Per-letter random axis — a deterministic weight per char index + seed, any
+ * value on the family's wght axis (variable fonts since 2026-11-18; the old
+ * pool of static (width, weight) cuts is in _tmp/2026-11-18-static-cuts/).
+ * Same inputs → same output, so re-renders don't shuffle on every keystroke.
+ * Scrubbing the seed (via the canvas blend handle) re-rolls the layout.
  */
-
-import { WIDTHS, WEIGHTS } from './cuts'
-
-/* Pool: every (width, weight) pair from the design system. */
-export const CUT_POOL = []
-for (const w of WIDTHS) {
-  for (const wt of WEIGHTS) {
-    CUT_POOL.push([w.id, wt.id])
-  }
-}
 
 function hash32(x) {
   x = (x | 0) >>> 0
@@ -25,19 +16,10 @@ function hash32(x) {
   return x
 }
 
-/**
- * Deterministic pick from the cut pool.
- *   opts.widthLock  — '' / falsy = any; otherwise restrict to matching width id
- *   opts.weightLock — 0 / falsy = any; otherwise restrict to matching weight
- * If locks reduce the pool to empty, falls back to full pool to avoid blanks.
- */
-export function pickCutFor(charIndex, seed, opts = {}) {
-  let pool = CUT_POOL
-  if (opts.widthLock)  pool = pool.filter(([w])     => w === opts.widthLock)
-  if (opts.weightLock) pool = pool.filter(([, wt]) => wt === Number(opts.weightLock))
-  if (pool.length === 0) pool = CUT_POOL
+/** A whole weight in [min, max] for this char and seed. */
+export function pickWeightFor(charIndex, seed, min = 100, max = 900) {
   const h = hash32(charIndex * 374761393 + (seed | 0) * 668265263)
-  return pool[h % pool.length]
+  return Math.round(min + (h / 4294967295) * (max - min))
 }
 
 /* Seed derived from the frame's `blend` (0..1) — 5-digit prime range so small

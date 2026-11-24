@@ -2,7 +2,7 @@ import CanvasArea from '../compose/CanvasArea'
 import { composePanes, composeTabs, useTabContext } from '../shell/panels/tabs'
 import EditorFooter from '../shell/panels/EditorFooter'
 import ActionBar from '../shell/panels/ActionBar'
-import LayerEffectsWindow from '../shell/LayerEffectsWindow'
+import ModalLayerEffects from '../shell/ModalLayerEffects'
 import { TextSurface } from '../compose/inspectors/TextPanel'
 import InspectorRail from '../compose/InspectorRail'
 import ParametersPanel from '../compose/inspectors/ParametersPanel'
@@ -82,7 +82,7 @@ const floatRegistry = () => ({
   moreTools: [
     { id: 'hand', icon: 'hand', label: 'Hand' },
     { id: 'orbit', icon: 'shape-torus', label: 'Orbit', kbd: 'C' },
-    { label: 'Node select', icon: 'arrow-upleft', kbd: 'A', onPick: () => window.dispatchEvent(new CustomEvent('kol:node-edit')) },
+    { label: 'Node select', icon: 'pointer-node', kbd: 'A', onPick: () => window.dispatchEvent(new CustomEvent('kol:node-edit')) },
     { id: 'triangle', icon: 'triangle', label: 'Triangle' },
     { id: 'line', icon: 'line', label: 'Line' },
     { id: 'polygon', icon: 'polygon', label: 'Polygon' },
@@ -97,7 +97,7 @@ const floatRegistry = () => ({
   dockTools: [
     { id: 'select', icon: 'pointer', label: 'Select', kbd: 'V', more: [
       { id: 'select', icon: 'pointer', label: 'Select', kbd: 'V' },
-      { label: 'Node select', icon: 'arrow-upleft', kbd: 'A', onClick: () => window.dispatchEvent(new CustomEvent('kol:node-edit')) },
+      { label: 'Node select', icon: 'pointer-node', kbd: 'A', onClick: () => window.dispatchEvent(new CustomEvent('kol:node-edit')) },
     ] },
     { id: 'rect', icon: 'square', label: 'Rectangle', kbd: 'R', more: [
       { id: 'rect', icon: 'square', label: 'Rectangle', kbd: 'R' },
@@ -136,7 +136,7 @@ let registry = null
 export default function FloatCompose() {
   return (
     <>
-      <LayerEffectsWindow />
+      <ModalLayerEffects />
       {(() => { const GeneratorWindows = pack('generators')?.GeneratorWindows; return GeneratorWindows ? <GeneratorWindows /> : null })()}
       {/* the action band's file picker answers `kol:insert-image` (the rail's Image slot, Tools › Insert image); the
           band itself has no place in the float chrome, its verbs are Layer's rows */}

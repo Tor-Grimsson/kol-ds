@@ -1,0 +1,60 @@
+export const meta = {
+  id: "2.64.0",
+  slug: "specimen-sample",
+  title: "SpecimenSample",
+  type: "reference",
+  status: "active",
+  updated: "2026-11-14",
+  tags: [
+    "domain/components",
+    "domain/components/atoms",
+    "domain/brand",
+    "domain/typography",
+    "pattern/display",
+  ],
+  description: "One caption and one sample.",
+  aliases: [
+    "specimensample",
+    "TypeSample",
+  ],
+  reuses: [
+    "kol-type-sample 2★",
+    "--kol-font-family-sans 1★",
+  ],
+}
+
+<Preview name="SpecimenSample" />
+
+## Installation
+
+<Install name="SpecimenSample" />
+
+## Usage
+
+```jsx
+import { SpecimenSample } from '@kolkrabbi/kol-styleguide'
+
+<SpecimenSample label="Sans, 700, 48/52" weight={700} size={48} lineHeight={52}>Hamburgefonstiv</SpecimenSample>
+<SpecimenSample horizontal label="Bold" weight={700} size={28}>ABCDEFGHIJKLMNOPQRSTUVWXYZ</SpecimenSample>
+```
+
+## Behavior
+
+The library master `SpecimenSample` (Styleguide page; it was kol-foundry's `TypeSample`, now an alias on the retirement ledger). The atomic unit of the Specimen kit: an optional mono caption over one
+paragraph whose typography is driven entirely by props via inline style —
+**arbitrary px values are the point**, so props map to inline style rather
+than fixed kol- size stops. Stack several to show a scale, a weight range or
+a family; adjacent samples get a hairline separator automatically. Label and
+children render verbatim as authored. `horizontal` puts the caption beside the sample, left, in the sample's own type (the font sheet's weight rows), with no hairline. Stack them in a `SpecimenSampleGroup`.
+
+## Props
+
+<Api name="SpecimenSample" rows={[
+  {"prop":"family","type":"string","def":"—","desc":"Font family; unset falls back to var(--kol-font-family-sans)."},
+  {"prop":"weight","type":"number","def":"400","desc":"font-weight."},
+  {"prop":"italic","type":"boolean","def":"false","desc":"Italic sample."},
+  {"prop":"size / lineHeight","type":"number","def":"32 / —","desc":"px values; unitless 1.2 line-height when unset."},
+  {"prop":"label","type":"string","def":"—","desc":"The caption (Figma `caption`); omitted, it is hidden (`show caption`)."},
+  {"prop":"horizontal","type":"boolean","def":"false","desc":"Caption beside the sample instead of above it."},
+  {"prop":"children","type":"ReactNode","def":"—","desc":"The specimen text."}
+]} />

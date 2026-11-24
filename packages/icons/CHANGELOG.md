@@ -1,5 +1,23 @@
 # @kolkrabbi/kol-icons
 
+## Unreleased — 2026-11-22
+
+- **New set, `kol-icon-set-editor`.** Interface's `design` (167) and `typography` (43) groups move whole to `kol-icon-set-editor/`, its own chunk beside signal, so a page that renders no editor icon never fetches them. Names are unchanged and `<IconLoader>` resolves interface → editor → signal → identity → external, so call sites are unchanged. New exports `KOL_ICON_SET_EDITOR`, `KOL_ICON_SET_EDITOR_NAMES`, `KOL_ICON_SET_EDITOR_META`; `KOL_ICON_SET_INTERFACE` no longer lists `design` or `typography`; `ALL_ICONS`, `KOL_ICON_META`, `getCategory` and `hasIcon` cover the new set.
+
+## Unreleased — 2026-11-18
+
+- **Kolbox's glyphs land, redrawn in the set's own language** (round 2, `_tmp/2026-11-18-kolbox-icons-r2/`). One radius rule: a box with a side of 12 or more takes r 2, a box under 10 takes r 1, a corner arc takes `corner-radius`'s r 4.5; caps and joins round.
+- **Look change:** `component-01` is now the outline (the same four diamonds, a clear gap at the centre); the filled drawing it had is `component-01-solid`, so `<IconLoader name="component-01" variant="solid">` gives it. Old file in `_tmp/2026-11-18-component-01-before/`.
+- **New, layout:** `corner-top-left`, `corner-top-right`, `corner-bottom-right`, `corner-bottom-left`, `corner-independent`, `aspect-ratio`, `section`, `layout-freeform`.
+- **New, design:** `keyframe`, `stroke-weight`, `stroke-sides`, `flatten`, `shadow-inner`, `shadow-drop`, `blur-layer`, `blur-background`, `noise`, `texture`, `glass`, `perspective`, `paint-solid`, `paint-noise`, `offset-path`, `pucker-bloat`, `twist`, `warp`. Every effect and paint is drawn on the layer box (`grad-lin`'s 17 box, r 2).
+- **New, signal `cap`:** `join-miter`, `join-bevel`, `join-round`, the cap bar bent.
+- Tags for the new names; `cuts.json` regenerated.
+
+## 0.71.0 — 2026-11-12
+
+- **The four diagonal arrows are centred.** `arrow-upright`, `arrow-upleft`, `arrow-downleft` and `arrow-downright` each sat in a 14px box pushed into a corner; each now spans 5–19 on both axes, centred on 12,12 like the straight arrows. Same drawing, same names.
+- **The double chevron is a full set.** New `chevrons-left`, `chevrons-up` and `chevrons-down`; `chevrons-right` is redrawn to the single chevron's size (18 tall, was 15), the two strokes 7.5 apart, centred. Old drawings in `_tmp/2026-11-12-arrows-before/`.
+
 ## 0.70.1 — 2026-11-12
 
 - **The transport set moves to the signal set's `transport` folder** (`kol-icon-set-signal/transport/`), its home in the Figma library too, so code and Figma keep one place for it. All 32 files (play, pause, stop, stop-circle, rewind, fast-forward, reverse, skip-start, skip-end, skip-back, skip-forward, the `-15` skips, shuffle, loop and repeat, each with `-solid`) left interface `media` and `actions`. Names are unchanged, so `<IconLoader>` calls are unchanged. `KOL_ICON_SET_INTERFACE.media` and `.actions` no longer list them; `KOL_ICON_SET_SIGNAL.transport` does.

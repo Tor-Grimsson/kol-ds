@@ -272,7 +272,7 @@ export default function SectionSplit({
              * the rung-minus-padding height made a fixed window over a card with its own height —
              * /studio's 621px ProfileCard showed as a 104px strip at 1440. Auto media takes the
              * column's width and its own height, at every width; a ratio keeps the bounded rule. */
-            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-sm)] ${ratio === 'auto' ? '' : 'min-[901px]:w-auto min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))]'} ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
+            className={`kol-section-split-visual relative w-full max-w-full justify-self-center rounded-[var(--kol-radius-4)] ${ratio === 'auto' ? '' : 'min-[901px]:w-auto min-[901px]:h-[calc(var(--kol-section-h,60vh)_-_2*var(--kol-section-py,4rem))]'} ${mediaClip ? 'overflow-hidden' : ''} ${mediaHover ? 'is-hoverable' : ''} ${mediaFirst ? 'order-1' : ''} ${centred ? 'max-w-[640px]' : ''}`.replace(/\s+/g, ' ').trim()}
             style={ratio === 'auto' ? undefined : { aspectRatio: ratio }}
           >
             {media ?? (placeholder === true

@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, SectionCardItem } from '@kolkrabbi/kol-component'
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 
-/* taxonomy-ok: organism — nests SpecimenSectionHeader (relative) + kol-component's SectionCardItem / Button */
+/* taxonomy-ok: organism — nests SpecimenHeader (kol-styleguide) + kol-component's SectionCardItem / Button */
 
 const DEFAULT_DETAILS = [
   { title: 'Designer', description: 'Tor Grimsson', icon: 'foundation' },
@@ -30,7 +30,7 @@ export default function FoundryTypefaceDetails({ details = DEFAULT_DETAILS, acti
   return (
     <section className={`w-full py-12 lg:py-16 ${className}`.trim()}>
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader label={label} icon={icon} size="md" showDropdown={false} />
+        <SpecimenHeader label={label} icon={icon} size="md" showDropdown={false} />
         <div className="flex flex-col md:flex-row gap-8 w-full">
           {details.map((d, i) => (
             <SectionCardItem key={i} title={d.title} description={d.description} icon={d.icon} className="flex-1" />

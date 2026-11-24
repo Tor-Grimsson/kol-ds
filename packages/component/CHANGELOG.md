@@ -1,5 +1,126 @@
 # @kolkrabbi/kol-component
 
+## 0.378.0 — 2026-11-13
+
+His ModalSettings mock and windows (plan-2026-11-12-one-header W8.1 · W10.1):
+
+- **`ModalDialog variant="settings"`** — no outer border, radius 20 (`ModalShell settings`); the header's × 15 from the right edge. Live against his mock 879P1yBsBPqpdGI5a5v2Y5 143:35343: sheet 880×656, header 60, body 536, footer 60, every block within 2px.
+- **`Header variant="property"` `kind`** — the quiet second text beside the title (the preset beside the effect: "Drift" + "Storm", never "Drift · Storm"). **`RailFloat` `kind`** passes it, open and collapsed.
+- **`LabeledControlSection variant="float"` `collapsible`** (`open` · `defaultOpen` · `onToggle`) — the head is the toggle with ONE indicator, the 12 chevron at its right end (⌄ open, › closed); the items hide while closed.
+
+## 0.377.0 — 2026-11-12
+
+ModalSettings on base float parts only (plan-2026-11-12-one-header W6.1) — needs kol-theme ≥0.225.0 (`--kol-float-window-w`):
+
+- **`Slider variant="float" readout="input"`** — the value as an `Input variant="float"` pill at the track's right, sized in `ch` to the widest value; typing shows the raw number and commits on Enter or blur, clamped (Escape reverts). Unset, a float Slider is still the track alone. Every Slider's typed value now reads `45°` / `0,5` back (parseFloat).
+- **Settings parts** — `SettingsPoint`, `SettingsRamp`, `SettingsLights` draw float Inputs, float Dropdowns and float Buttons (no 28 bordered boxes, no 6 round); the ramp's label column is `--kol-float-label-w`. Retired as deprecated aliases, each now rendering its base: `SettingsCell` → `LabeledControl variant="float"`, `SettingsSlider` → `Slider variant="float" readout="input"`, `SettingsRange` → `Slider variant="dual"`, `SettingsSelect` → `Dropdown variant="float"`, `SettingsSegmented` → `TabsRow variant="float"`, `SettingsToggle` → `LabeledControl horizontal` + `ToggleSwitch`, `SettingsText` → `Input variant="float"`. The private `NumberBox` is gone.
+- **`ToggleSwitch` `label` / `hint`** deprecated — a switch is bare, its words a `LabeledControl`; still drawn, warns once in dev.
+- **`ButtonGroup align="between"`** — first button left, last right (a float window's Cancel · Export row).
+- **`ModalDialog variant="float"`** is `--kol-float-window-w` wide unless `width` is given; the useModal float prompts too, their action row a `ButtonGroup`.
+- **`MenuFloat` · `MenuFloatRows`** moved in from kol-shell (rows take `disabled`); **`ButtonSplit` float** draws its menu with `MenuFloatRows` — one float menu, not a copy.
+- **`ReadingPanel`** renders `Header variant="property"`; its collapse-v chevron is 12 (was the 18 glyph).
+
+## 0.376.0 — 2026-11-12
+
+One header, collapse-v / collapse-h, ButtonSplit (plan-2026-11-12-one-header W1.1 · W2.1 · W4.1) — needs kol-theme ≥0.224.0 (`--kol-float-collapsed-h`):
+
+- **`Header`** — the one header, `variant` nav · property · modal · settings; the title a slot; `end`, then expand (`onExpand`), collapse-h (`onCollapseH`), collapse-v (`onCollapseV` + `collapsedV`, the 12 chevron, aria "Collapse"/"Expand"), close (`onClose`); modal adds − (`onMinimise`), settings `kind`. RailFloat, NavRail float (its switcher row is `variant="nav"`, the ⌄ now 12 — was the lg chevron), ModalDialog float and settings, the useModal float prompts, QuickLookFrame float and MenuFloat's card all render it.
+- **`RailHeader variant="float"`** and **`ModalHeader`'s float window row** render `Header` (deprecated under those names, on the retirement ledger). RailHeader's default title line and ModalHeader's menu row and default window row stay.
+- **Words**: RailFloat and NavRail float take `collapsibleV` · `collapsedV` · `defaultCollapsedV` · `onCollapseV` (`foldable` · `folded` · `defaultFolded` · `onFold` still accepted, deprecated); RailFloat takes `onExpand`, `onCollapseH`, `headerVariant`, `icon`, `onSwitch`; ReadingPanel `onCollapseV` (`onFold` deprecated); `data-float-module="collapsed"` (was `folded`); the chevron reads "Collapse"/"Expand" (was "Fold"/"Open").
+- **`ButtonSplit`** — the main action, a 1px divider and a 12 ⌄ opening the other actions; `variant` default · float (MenuFloatRows' rows on the float sheet, or your `menu(close)`), `tone` incl. `grey` (the float well).
+
+## 0.375.0 — 2026-11-12
+
+- **NavRail float** search capsule: 12 in on both sides (was 12 · 8), so the ⌘K key sits clear of the edge.
+
+## 0.374.0 — 2026-11-12
+
+- **ModalDialog settings section rows** take the list-row selection: the lit section fills fg-12 (its 2px marker stays), the others hover fg-04 (was hover oq-08, no selected fill).
+
+## 0.373.0 — 2026-11-12
+
+- **`RailFloat`** — `FloatModule` renamed to lead with its family word (the Rail family); the file is `molecules/RailFloat.jsx`. Same component, same props; `FloatModule` stays its deprecated alias.
+- **`RailHeader variant="float"`** — `FloatModuleHeader` folded into `RailHeader` (its own molecule now, `molecules/RailHeader.jsx`; the rail kit re-exports it): `variant` default is the kit's title line, unchanged; `float` is the old FloatModuleHeader, and its `title` is a slot — a node fills the title position (NavRail float's switcher row). `FloatModuleHeader` stays a deprecated alias (`RailHeader variant="float"`).
+
+## 0.372.0 — 2026-11-12
+
+- List rows: selected fg-12, hover fg-04 — Figma-style white selection (TreeRow, TocRow, IndexRow, MediaLibrary; were fg-16 and fg-08).
+
+## 0.371.0 — 2026-11-12
+
+- **`ModalDialog`** — `Dialog` renamed to lead with its family word (the Modal family). Same component, same props; `Dialog` stays exported as its deprecated alias (04-retirements.md).
+
+## 0.370.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W12.1 and W13.1 (*"CODE IS WRONG"*: where code breaks a law, the code is fixed) — needs kol-theme ≥0.223.0 for LayerRow's selected fill to match LayerStack:
+
+- **LabeledControl** — `variant="settings"` (the settings window's row: Inter 10 oq-64 label, 6 over the control; `horizontal`
+  8 beside, the label hugging); `labelClass` replaces the label's type and ink on every variant (was panel only); other
+  props (`style`, `onClick`, `data-*`) land on the wrapper; a display or `gap-*` class in `className` replaces the
+  wrapper's own (a caller's `hidden md:flex` holds).
+- **LabeledControlSection** — `variant="settings"`: the window's group (title, note at its right, 15 over the items,
+  `divided` the rule under it).
+- **Slider** — a `label` renders through LabeledControl (`horizontal` for the row and the dual, above for `vertical`); the
+  label keeps kol-helper-12 at fg-80 and the track row draws as before.
+- **ReadingSettings** — every setting is `LabeledControl variant="float"`: the float label as written (no uppercase,
+  fg-64), 8 over the control (was its own uppercase `kol-float-ruler` label 10 over).
+- **Settings\*** — `SettingsCell`, `SettingsToggle` and `SettingsRamp` are LabeledControl `variant="settings"` (the
+  toggle's words now before the switch); `SettingsSlider` and `SettingsRange` show their values as editable number boxes
+  (Enter or blur commits, Escape reverts), not raw text; `SettingsDisclosure` is a settings LabeledControlSection with the
+  12 chevron (was a typed 16px ›) and moved to `organisms/SettingsPanel.jsx` beside the section it draws.
+- **Deprecated: `SettingsGroup`** → `LabeledControlSection variant="settings"` (on the retirement ledger; same render).
+- **Dialog `variant="settings"`** — the lit section row carries its marker and no fill (LAW 16; it sat on oq-12); the
+  header's spacer span is gone (its right side is pushed by its own margin).
+- **LayerRow** — `selected` is fg-12 with the name at emphasis and its glyphs on oq-96 (was fg-16), LayerStack's selected row.
+
+## 0.369.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W11.1 — needs kol-theme ≥0.222.0:
+- **Every list's rows sit `--kol-spacing-0-5` (2px) apart**: Menu's panel, `MenuPanel`, MenuFlyout's panel, ContextMenu, Dropdown's list and CommandOverlay's results. With the theme's current-row change, hover (and keyboard focus) is the only fill; the current row shows its dot.
+
+
+## 0.368.0 — 2026-11-12
+
+- **LAW 9, chevrons are 12** (the user, 2026-11-12: *"USE 12px chevron"*): a float `Button` whose every glyph is a chevron or caret sizes it with the float chevron token (`--kol-float-chev-sm|md|lg`: 12 · 12 · 16, touch 14 · 14 · 18) instead of the 18 glyph. This reaches ReaderBar's prev/next, PeriodNav, ProgressDock and the fold. `ReadingChapterNav`'s chevrons take `--kol-float-chev-md`. Matches the Figma Button float `content=chevron`.
+
+## 0.367.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma W7.1, W8.1, W10.1 and W4.1:
+- **`LabeledControl horizontal`**: true, the label beside the control; false (default), above it. `inline` is its deprecated old name and renders the same (retirement ledger). `label` takes any node.
+- **`LayerRow`**: the eye and the lock render only when their handler is given. `variant="head"` is the selected object's line at the top of an inspector (the 18 glyph, the name in `kol-float-panel`, the eye as a float ghost Button), PropertyRail's `selected`.
+- **`LabeledControlSection variant="float"`**: the one float section, a head (`label`, any node, and `end`) over its items, each rendered only when given; `gap` and `rowGap` per call site, `as`. NavRail float's groups (`{ heading }` items) render it, the 72 rail's groups too, 24 apart.
+- **New: `FloatModuleHeader`**: the title, an `actions` slot and the fold, whose glyph is the 12 chevron token (`--kol-float-chev-sm`), no longer the float button's 18.
+- **`FloatModule` is three slots**: `header` (default a FloatModuleHeader), the body and `footer`, which renders only when given. Folded is the same component with the same header, the body and footer hidden, not removed, drawn as the 40 pill.
+- **BREAKING `ReadingContents` is body content**: no sheet, header or top margins; `bare`, `title`, `status`, `width` and the fold props are gone. Put it in a `FloatModule title="Contents"` and pass the status line as the module's `footer`. A column 24 apart: the book (4), the chapters as a float LabeledControlSection (12, rows 4, 36 TocRows, no longer pulled 8 past the module inset) and the progress (12).
+
+## 0.366.0 — 2026-11-12
+
+plan-2026-11-12-float-rails-figma 2.1:
+- **`NavRail variant="float"` expanded falls back to 264** (was 280) when `--kol-shell-float-rail-open` is unset; with kol-theme ≥0.221.0 it reads the token (264). Float Rails are 264 and 360 wide, nothing else.
+
+## 0.365.0 — 2026-11-12
+
+plan-2026-11-12-float-system W4.1:
+- **New: `FloatModule`** — the one float Rail shell: the sheet on the float surface at `--kol-float-menu-r`, a header (`title` or `head`, `actions`, the fold ⌃), a body that scrolls under the header with its scrollbar hidden, a `footer`; `foldable` / `folded` / `defaultFolded` / `onFold` fold it to a `--kol-float-fold-h` pill (title and ⌄) at its width. Width `--kol-float-module-w` (`wide` the wide one, `width` overrides), `compact` rows, `inset` md · sm · none, `surface`, `as`. kol-shell re-exports it.
+- **`NavRail variant="float"` draws on FloatModule** (expanded and the 72 rail) and **folds**: `foldable`, `folded`, `defaultFolded`, `onFold` — the pill is the title and ⌄ at 280, separate from collapse and hide. Same look otherwise.
+- **Changed: `ReadingContents` draws on FloatModule** — its header is the module's (title in `kol-float-panel`, was `kol-float-body-lg`), the inset 16 (was 20), the width `--kol-float-module-w` (was 304; `width` overrides), the float shadow on the solid surface. `onFold` now receives `(folded)` and the sheet folds to its pill; `foldable`, `folded`, `defaultFolded` added.
+
+## 0.364.0 — 2026-11-12
+
+plan-2026-11-12-float-system W3 — needs kol-theme ≥0.220.0:
+- **Changed: `Dropdown variant="float"`'s caret is the float spec's chevron for its size** (`--kol-float-chev-*`: 12 at sm and md, 16 at lg), was the 18 glyph token (P1). The current row no longer adds a fill — its dot marks it (the theme's list states).
+- `NavRail variant="float"`: the switcher row's chevron reads `--kol-float-chev-lg` (16, was 14).
+
+## 0.363.0 — 2026-11-12
+
+plan-2026-11-12-float-system W2 — needs kol-theme ≥0.219.0:
+- **Changed: `Slider variant="float"` is track and thumb only** — the label and readout head is gone (the user: *"SOME IDIOT tried to put label on the slider instead of using a fucking LABELEDCONTROL"*). A `label` passed to it is drawn by `LabeledControl variant="float"`, a `readout="value"` as its hint; without a label it renders the bare range, `className` and `style` on the input.
+- **Changed: `LabeledControl variant="float"` reads the float spec** — `inline` takes the `--kol-float-label-w` column (a `labelWidth` still wins) and stands at least `--kol-float-h-sm`; label to control is `--kol-float-label-gap` (stacked and inline). Its wrapper carries `data-labeled-control`. The app and panel variants are unchanged (`labelWidth` still defaults to 48 there).
+
+## 0.362.0 — 2026-11-12
+
+- `ReadingContents` `bare`: the body only (book, chapters, progress, status) with no sheet and no header, for kol-shell's `PropertyRail`, which carries the title and the fold.
+
 ## 0.361.1 — 2026-11-12
 
 - `MediaLibrary`'s play badge, `PlayTile` and `RecordManager`'s Preview name `play-solid` / `pause-solid`, so they keep the filled look now that `play` and `pause` are outline (kol-icons 0.69.0). Peer `@kolkrabbi/kol-icons` >=0.69.0. `PlaybackBar` is a transport and draws the outline.

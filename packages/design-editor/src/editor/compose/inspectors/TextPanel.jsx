@@ -6,11 +6,11 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
 import BindDot from '../../params/BindDot'
 import { isBinding } from '../../params/resolve'
 import { TEXT_SCHEMA } from '../../params/schemas/text'
-import { WIDTHS, WEIGHTS, CASES } from '../../modes/type/cuts'
+import { CASES } from '../../modes/type/cuts'
 import { CURVE_OPTIONS } from '../../modes/type/curveMath'
 import {
-  FAMILY_OPTIONS, layerFamily, stylesFor, styleValueFor,
-  isOutlineFamily, ensureFamilyLoaded, FAMILY_RG, FAMILY_JB,
+  FAMILY_OPTIONS, layerFamily, layerWeight, weightRange, clampWeight, stylesFor, styleValueFor,
+  isOutlineFamily, ensureFamilyLoaded, FAMILY_JB,
 } from '../../modes/type/families'
 import { useComposeState, resolveColor } from '../state'
 import { useLayerEdit } from '../useLayerEdit'
@@ -24,8 +24,9 @@ import { useControlSize, RAIL_LABEL_W } from '../../params/controlSize'
  * selected object's major interaction), rebuilt on the Figma typography
  * model (2026-08-12 typography pass):
  *
- *   Content · FAMILY (families.js — RG / JetBrains / Google) · STYLE (the
- *   family's own variants) · Font readout · Alignment (H + V icon rows +
+ *   Content · FAMILY (families.js — Inter, Malromur / JetBrains / Google) ·
+ *   WEIGHT (a slider over an outline family's axis; the style list for the
+ *   others) · Alignment (H + V icon rows +
  *   the type-settings ⚙ popover holding Case/Italic) · Metrics (bindable).
  *
  * One home per control: these fields are filtered OUT of the Parameters
@@ -51,26 +52,23 @@ export const TEXT_TAB_KEYS = new Set([
 const AXIS_CURVE_OPTIONS = CURVE_OPTIONS.map((o) =>
   o.value === 'custom' ? { ...o, label: 'Custom' } : o)
 
-const weightLabel = (w) => WEIGHTS.find((x) => x.id === w)?.label ?? String(w)
-
-const WIDTH_OPTIONS  = WIDTHS.map((w) => ({ value: w.id, label: w.label }))
-const WEIGHT_OPTIONS = WEIGHTS.map((w) => ({ value: w.id, label: w.label }))
 const CASE_OPTIONS   = CASES.map((c) => ({ value: c.id, label: c.label }))
 
 /* Metric inputs reuse the schema param defs (ranges + binding identity)
  * under the mode-verbatim labels and value formatting. */
 const metric = (key, label, format) => ({ ...TEXT_SCHEMA.find((p) => p.key === key), label, format })
 
-/* Family switch — one patch that keeps the (width, weight) storage legal in
- * the target family: RG restores a real cut, JetBrains claims the 'mono'
- * width and its static weights, Google keeps width inert and snaps weight
- * to the family's nearest available stop. */
+/* Family switch — one patch that keeps the weight legal in the target family:
+ * an outline family clamps it into its axis, JetBrains claims the 'mono'
+ * width and its static weights, Google snaps weight to the family's nearest
+ * available stop. */
 export function familyPatch(layer, familyId) {
   const patch = { family: familyId }
   const styles = stylesFor(familyId)
-  if (familyId === FAMILY_RG) {
-    if (!layer.width || layer.width === 'mono') patch.width = 'Tight'
-    if (!WEIGHTS.some((w) => w.id === layer.weight)) patch.weight = 600
+  if (isOutlineFamily(familyId)) {
+    if (layer.width === 'mono') patch.width = undefined
+    patch.weight = clampWeight(familyId, layer.weight ?? 600)
+    patch.weight2 = clampWeight(familyId, layer.weight2 ?? 900)
   } else if (familyId === FAMILY_JB) {
     patch.width = 'mono'
     if (![400, 500, 600].includes(layer.weight)) patch.weight = 400
@@ -157,15 +155,30 @@ export function TextSurface({ layer, bare = false }) {
         onChange={onFamily}
       />
 
-      {/* Style + Size row (Figma's "Narrow … | 12 ⌄"): size = ONE field, its preset chevron inside
-        * (the inspector rebuild — it was an input and a detached trigger). The bind dot rides gated. */}
+      {/* Weight + Size row (Figma's "Narrow … | 12 ⌄"): size = ONE field, its preset chevron inside
+        * (the inspector rebuild — it was an input and a detached trigger). The bind dot rides gated.
+        * An outline family's weight is a slider over its axis; the others keep their style list. */}
       <div className="grid grid-cols-[1fr_96px] gap-2">
-        <Dropdown
-          variant="subtle" size={cs} className="w-full"
-          options={styles.map(({ value, label }) => ({ value, label }))}
-          value={styleValueFor(layer)}
-          onChange={onStyle}
-        />
+        {isOutlineFamily(family)
+          ? (
+            <Tooltip label="Weight" triggerClassName="flex min-w-0">
+              <div className="flex flex-1 items-center min-w-0">
+                <Slider
+                  aria-label="Weight" min={weightRange(family).min} max={weightRange(family).max} step={1}
+                  value={layerWeight(layer)}
+                  onChange={(v) => setProp('weight', Math.round(v))}
+                />
+              </div>
+            </Tooltip>
+          )
+          : (
+            <Dropdown
+              variant="subtle" size={cs} className="w-full"
+              options={styles.map(({ value, label }) => ({ value, label }))}
+              value={styleValueFor(layer)}
+              onChange={onStyle}
+            />
+          )}
         <SizeCombo layer={layer} setProp={setProp} />
       </div>
 
@@ -303,8 +316,8 @@ function SizeCombo({ layer, setProp }) {
 
 /* VariableBlock — the brand editor's Variable axis block (TypeControls,
  * ported): morph as a BASIC text setting. On/Off, then Mode (morph = glyph
- * outline interpolation Cut A→Cut B · fade = cross-fade · random = per-char
- * cut scatter), Cut B, Curve (+ custom control points via rail sliders —
+ * outline interpolation weight → weight B on the one variable file · fade =
+ * cross-fade · random = per-char weight scatter), Weight B, Curve (+ custom control points via rail sliders —
  * no canvas overlay in compose), and the Blend/Seed row with a bind dot so
  * the morph animates like any bound param.
  *
@@ -328,20 +341,21 @@ export function VariableBlock({ layer, setProp }) {
       </div>
     </div>
   )
-  /* Morph needs parseable outlines — only Right Grotesk ships TTFs. Other
-   * families render fine but can't feed the glyph engine; say so instead
-   * of showing dead controls. */
-  if (!isOutlineFamily(layerFamily(layer))) {
+  /* Morph needs parseable outlines — only the variable families ship TTFs.
+   * Other families render fine but can't feed the glyph engine; say so
+   * instead of showing dead controls. */
+  const family = layerFamily(layer)
+  if (!isOutlineFamily(family)) {
     return (
       <div className="flex flex-col gap-2">
         <span className="kol-eyebrow text-meta">Morph</span>
         <p className="kol-mono-12 text-meta">
-          Morph needs an outline font — switch the Family to Right Grotesk.
+          Morph needs an outline font — switch the Family to Inter or Malromur.
         </p>
       </div>
     )
   }
-  const rgStyles = stylesFor(FAMILY_RG)
+  const range = weightRange(family)
   return (
     <div className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
@@ -367,17 +381,12 @@ export function VariableBlock({ layer, setProp }) {
           </SettingsRow>
 
           {(mode === 'morph' || mode === 'fade') && (
-            <SettingsRow label="Style B" align="fill" labelWidth={RAIL_LABEL_W}>
-              {/* One Style picker (family model) — writes the width2/weight2
-                * pair the engine morphs toward. */}
-              <Dropdown
-                variant="subtle" size={cs} className="w-full"
-                options={rgStyles.map(({ value, label }) => ({ value, label }))}
-                value={`${layer.width2 ?? 'Spatial'}/${layer.weight2 ?? 900}`}
-                onChange={(v) => {
-                  const s = rgStyles.find((x) => x.value === v)
-                  if (s) { setProp('width2', s.patch.width); setProp('weight2', s.patch.weight) }
-                }}
+            <SettingsRow label="Weight B" align="fill" labelWidth={RAIL_LABEL_W}>
+              {/* The weight the engine morphs toward, on the same axis. */}
+              <Slider
+                min={range.min} max={range.max} step={1}
+                value={layerWeight(layer, 'weight2')}
+                onChange={(v) => setProp('weight2', Math.round(v))}
               />
             </SettingsRow>
           )}
@@ -404,26 +413,6 @@ export function VariableBlock({ layer, setProp }) {
 
           <MetricRow param={blendParam} layer={layer} setProp={setProp} />
 
-          {mode === 'random' && (
-            <div className="flex flex-col gap-2">
-              <SettingsRow label="Lock width" align="fill" labelWidth={RAIL_LABEL_W}>
-                <Dropdown
-                  variant="subtle" size={cs} className="w-full"
-                  options={[{ value: '', label: 'Any' }, ...WIDTH_OPTIONS]}
-                  value={layer.randomWidthLock ?? ''}
-                  onChange={(v) => setProp('randomWidthLock', v)}
-                />
-              </SettingsRow>
-              <SettingsRow label="Lock weight" align="fill" labelWidth={RAIL_LABEL_W}>
-                <Dropdown
-                  variant="subtle" size={cs} className="w-full"
-                  options={[{ value: '', label: 'Any' }, ...WEIGHT_OPTIONS.map((o) => ({ value: String(o.value), label: o.label }))]}
-                  value={layer.randomWeightLock ?? ''}
-                  onChange={(v) => setProp('randomWeightLock', v)}
-                />
-              </SettingsRow>
-            </div>
-          )}
         </>
       )}
     </div>

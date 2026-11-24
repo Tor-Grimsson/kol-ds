@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, usePopover, PopoverPanel, floatSurfaceClass, floatMotion } from '@kolkrabbi/kol-component'
-import MoreRows, { FloatMenu } from './MoreSheet.jsx'
+import { MenuFloatRows, MenuFloat } from '@kolkrabbi/kol-component'
 
 /* taxonomy-ok: molecule — a float Button that opens the More sheet's rows */
 
@@ -36,16 +36,11 @@ export default function RailTrigger({ items = [], currentPath = '/', onNavigate,
       </span>
       {breadcrumb && <span className="kol-float-hint text-oq-64">{Array.isArray(breadcrumb) ? breadcrumb.join('  /  ') : breadcrumb}</span>}
       <PopoverPanel popover={popover} panel={false} focus={false} motion={motion} className={`${card} w-[280px]`} style={{ maxWidth: 'calc(100vw - 24px)' }}>
-        {title && (
-          <div className="flex items-center justify-between pl-3 pr-1 pt-1 pb-2">
-            <span className="kol-float-body text-emphasis">{title}</span>
-            <Button variant="float" tone="ghost" size="sm" iconOnly="x" aria-label="Close" onClick={() => setOpen(false)} />
-          </div>
-        )}
-        <FloatMenu cardClass={card} onLeaf={pick}>
-          <MoreRows variant="float" items={items.filter((i) => !i.heading)} active={currentPath} onPick={pick} itemsFirst
+        <MenuFloat cardClass={card} onLeaf={pick} title={title}
+          titleActions={<Button variant="float" tone="ghost" size="sm" iconOnly="x" aria-label="Close" onClick={() => setOpen(false)} />}>
+          <MenuFloatRows variant="float" items={items.filter((i) => !i.heading)} active={currentPath} onPick={pick} itemsFirst
             actions={onRestore ? [{ label: 'Show navigation', icon: 'panel-left', restore: true }] : undefined} />
-        </FloatMenu>
+        </MenuFloat>
       </PopoverPanel>
     </div>
   )

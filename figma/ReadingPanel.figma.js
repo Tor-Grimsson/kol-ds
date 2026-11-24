@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 export default {
-  example: figma.code`<ReadingPanel tab={tab} onTab={setTab} onFold={fold}>{body}</ReadingPanel>`,
+  example: figma.code`<ReadingPanel tab={tab} onTab={setTab} onCollapseV={collapseV}>{body}</ReadingPanel>`,
   imports: ["import { ReadingPanel } from \"@kolkrabbi/kol-component\""],
   id: 'ReadingPanel',
 }

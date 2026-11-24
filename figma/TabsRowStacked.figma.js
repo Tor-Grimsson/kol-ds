@@ -4,15 +4,14 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const shape = instance.getEnum('shape', { "pill": "pill", "bar": "bar" })
-const surface = instance.getEnum('surface', { "solid": "solid", "glass-dark": "glass-dark", "glass-light": "glass-light" })
+const shape = instance.getEnum('bar', { "false": "pill", "true": "bar" })
 const labels = instance.getEnum('labels', { "true": " labels", "false": "" })
 const dock = instance.getEnum('dock', { "true": " dock", "false": "" })
 const shadow = instance.getEnum('shadow', { "true": " shadow", "false": "" })
-const edge = instance.getEnum('edge', { "top": ' edge="top"', "bottom": "" })
+const edge = instance.getEnum('top', { "false": "", "true": ' edge="top"' })
 
 export default {
-  example: figma.code`<TabsRow variant="stacked" placement="phone" shape="${shape}" surface="${surface}"${labels}${dock}${shadow}${edge} tabs={tabs} value={value} onChange={onChange} />`,
+  example: figma.code`<TabsRow variant="stacked" placement="phone" shape="${shape}"${labels}${dock}${shadow}${edge} tabs={tabs} value={value} onChange={onChange} />`,
   imports: ["import { TabsRow } from \"@kolkrabbi/kol-component\""],
   id: 'TabsRowStacked',
 }

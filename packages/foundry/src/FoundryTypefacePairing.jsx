@@ -1,7 +1,7 @@
-import SpecimenSectionHeader from './SpecimenSectionHeader.jsx'
+import { SpecimenHeader } from '@kolkrabbi/kol-styleguide'
 import PairingCard from './PairingCard.jsx'
 
-/* taxonomy-ok: organism — nests SpecimenSectionHeader + PairingCard (relative) */
+/* taxonomy-ok: organism — nests SpecimenHeader + PairingCard (relative) */
 
 const DEFAULT_PAIRINGS = [
   { leftTitle: 'Málrómur', leftTag: 'Body Text', leftDescription: 'Variable weight for nuanced discourse and extended reading', leftFontFamily: 'TGMalromur', rightTitle: 'Gullhamrar', rightTag: 'Headings', rightDescription: 'Warm, graceful forms for elegant hierarchy', rightFontFamily: 'TGGullhamrar' },
@@ -21,7 +21,7 @@ export default function FoundryTypefacePairing({ pairings = DEFAULT_PAIRINGS, la
   return (
     <section className={`w-full py-12 lg:py-16 ${className}`.trim()}>
       <div className="max-w-[var(--kol-container-max)] mx-auto flex flex-col gap-8">
-        <SpecimenSectionHeader label={label} icon={icon} size="md" showDropdown={false} />
+        <SpecimenHeader label={label} icon={icon} size="md" showDropdown={false} />
         <div className="w-full flex flex-col gap-4">
           {pairings.map((p, i) => <PairingCard key={i} {...p} />)}
         </div>

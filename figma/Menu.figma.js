@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "default": "", "float": ' variant="float"' })
+const variant = instance.getEnum('float', { "false": "", "true": ' variant="float"' })
 export default {
   example: figma.code`<Menu${variant} items={items} trigger={({ open, props }) => <Button {...props}>Menu</Button>} />`,
   imports: ["import { Menu, Button } from \"@kolkrabbi/kol-component\""],

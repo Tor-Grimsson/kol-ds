@@ -40,7 +40,8 @@ const HANDLE_R = 7
 const HUE_GRADIENT =
   'linear-gradient(to right, hsl(0,100%,50%), hsl(60,100%,50%), hsl(120,100%,50%), hsl(180,100%,50%), hsl(240,100%,50%), hsl(300,100%,50%), hsl(360,100%,50%))'
 
-/**
+/* (the default look; the exported HueStrip below picks the look)
+ *
  * HueStrip — A hue slider. 1D hue slider: a rainbow bar with a draggable knob. Pointer
  * drag anywhere on the strip; focus + Left/Right (or Down/Up) arrow keys
  * nudge hue by 1° (role="slider").
@@ -48,7 +49,7 @@ const HUE_GRADIENT =
  * @param {number}   hue      controlled hue, 0–360
  * @param {Function} onChange (hue: number) => void — fires on press, drag, and arrow keys
  */
-export function HueStrip({ hue, onChange }) {
+function HueStripDefault({ hue, onChange }) {
   const ref = useRef(null)
   const dragging = useRef(false)
 
@@ -103,7 +104,7 @@ export function HueStrip({ hue, onChange }) {
       aria-valuenow={Math.round(hue)}
       onPointerDown={onDown}
       onKeyDown={onKeyDown}
-      className="relative rounded-[var(--kol-radius-xs)] cursor-pointer touch-none"
+      className="relative rounded-[var(--kol-radius-2)] cursor-pointer touch-none"
       style={{ height: 12, background: HUE_GRADIENT }}
     >
       {/* Handle positions inside an inset region so 0..100% maps to the
@@ -118,7 +119,8 @@ export function HueStrip({ hue, onChange }) {
 /* the transparency checker behind an alpha ramp — literal greys, like the spectra (not themeable) */
 const CHECKER = 'repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 0 0 / 8px 8px'
 
-/**
+/* (the default look; the exported AlphaStrip below picks the look)
+ *
  * AlphaStrip — An opacity slider. HueStrip's twin for alpha: the colour ramped from transparent to
  * opaque over a checker, same knob, same inset (ColorPickerPopover, kol-monitor 2026-10-17). Focus +
  * Left/Right (or Down/Up) nudge alpha by 1% (role="slider").
@@ -127,7 +129,7 @@ const CHECKER = 'repeating-conic-gradient(#ccc 0% 25%, #fff 0% 50%) 0 0 / 8px 8p
  * @param {string}   color    the opaque colour the ramp ends on (any CSS colour)
  * @param {Function} onChange (alpha: number) => void — fires on press, drag, and arrow keys
  */
-export function AlphaStrip({ alpha, color, onChange }) {
+function AlphaStripDefault({ alpha, color, onChange }) {
   const ref = useRef(null)
   const dragging = useRef(false)
 
@@ -173,7 +175,7 @@ export function AlphaStrip({ alpha, color, onChange }) {
       aria-valuenow={Math.round(alpha * 100)}
       onPointerDown={(e) => { dragging.current = true; update(e.clientX); e.preventDefault() }}
       onKeyDown={onKeyDown}
-      className="relative rounded-[var(--kol-radius-xs)] cursor-pointer touch-none"
+      className="relative rounded-[var(--kol-radius-2)] cursor-pointer touch-none"
       style={{ height: 12, background: `linear-gradient(to right, transparent, ${color}), ${CHECKER}` }}
     >
       <div className="absolute inset-y-0" style={{ left: HANDLE_R, right: HANDLE_R }}>
@@ -183,10 +185,11 @@ export function AlphaStrip({ alpha, color, onChange }) {
   )
 }
 
-/**
+/* (the default look; the exported SBSquare below picks the look)
+ *
  * SBSquare — Pick saturation and value on a square. 2D saturation/value picker: white→hue horizontal gradient with
  * a black overlay fading upward, crosshair handle. Fills its container
- * (consumer owns the size — and the rounding: apply `rounded-[var(--kol-radius-xs)]
+ * (consumer owns the size — and the rounding: apply `rounded-[var(--kol-radius-2)]
  * overflow-hidden` on the wrapper). Focus + arrow keys nudge: Left/Right =
  * saturation ±1, Up/Down = value ±1 (role="slider").
  *
@@ -195,7 +198,7 @@ export function AlphaStrip({ alpha, color, onChange }) {
  * @param {number}   val      controlled value/brightness, 0–100
  * @param {Function} onChange (sat: number, val: number) => void
  */
-export function SBSquare({ hue, sat, val, onChange }) {
+function SBSquareDefault({ hue, sat, val, onChange }) {
   const ref = useRef(null)
   const dragging = useRef(false)
 
@@ -242,7 +245,7 @@ export function SBSquare({ hue, sat, val, onChange }) {
 
   const sb = `linear-gradient(to bottom, transparent 0%, #000 100%), linear-gradient(to right, #fff 0%, hsl(${hue},100%,50%) 100%)`
   /* Gradient field is rectangular — rounding is the consumer's job (apply
-   * `rounded-[var(--kol-radius-xs)] overflow-hidden` on the wrapper). Putting border-radius
+   * `rounded-[var(--kol-radius-2)] overflow-hidden` on the wrapper). Putting border-radius
    * on the gradient itself produces tiny antialiasing artifacts at the
    * corners; clipping via overflow-hidden on the parent is cleaner. */
   return (
@@ -313,8 +316,13 @@ function vertexAt(angleRad) {
  * @param {number}   val         controlled value/brightness, 0–100
  * @param {Function} onChangeHue (hue: number) => void — ring drag / hue arrow keys
  * @param {Function} onChangeSV  (sat: number, val: number) => void — triangle drag / value arrow keys
+ * @param {'default'|'kolbox'} [variant='default'] `kolbox` (kolbox's ColorWheel, plan-2026-11-18-kolbox-system W31.2,
+ *   2026-11-18): the same wheel, its handles a ring in the ink over a hairline of the ground (so it reads on the
+ *   triangle's white corner) and a round focus ring in the accent, 2 out. Chrome in kol-theme `.kol-wheel-triangle--kolbox`.
+ * @param {string} [className] extra classes on the wrapper
  */
-export function WheelTriangle({ hue, sat, val, onChangeHue, onChangeSV }) {
+export function WheelTriangle({ hue, sat, val, onChangeHue, onChangeSV, variant = 'default', className = '' }) {
+  const kolbox = variant === 'kolbox'
   const svgRef   = useRef(null)
   const dragMode = useRef(null)   /* { type: 'ring' } | { type: 'tri', offsetX, offsetY } | null */
 
@@ -459,7 +467,9 @@ export function WheelTriangle({ hue, sat, val, onChangeHue, onChangeSV }) {
       aria-valuenow={Math.round(hue)}
       aria-valuetext={`Hue ${Math.round(hue)} degrees, saturation ${Math.round(sat)}%, brightness ${Math.round(val)}%`}
       onKeyDown={onKeyDown}
-      className="aspect-square max-h-full max-w-full"
+      className={kolbox
+        ? `kol-wheel-triangle--kolbox aspect-square max-h-full max-w-full rounded-full outline-none focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-offset-2 ${className}`
+        : `aspect-square max-h-full max-w-full ${className}`.trim()}
     >
     <svg
       ref={svgRef}
@@ -509,8 +519,8 @@ export function WheelTriangle({ hue, sat, val, onChangeHue, onChangeSV }) {
       <polygon points={trianglePoints} fill={`url(#${blackFadeId})`} />
 
       {/* Handles. Ring handle is larger than the SV handle to match the Ref. */}
-      <SvgHandle cx={ringHx}  cy={ringHy}  r={3.2} />
-      <SvgHandle cx={handleX} cy={handleY} r={2.0} />
+      <SvgHandle cx={ringHx}  cy={ringHy}  r={3.2} kolbox={kolbox} />
+      <SvgHandle cx={handleX} cy={handleY} r={2.0} kolbox={kolbox} />
     </svg>
     </div>
   )
@@ -536,11 +546,12 @@ function Handle({ left, top }) {
 
 /* SVG handle for WheelTriangle. Two concentric circles to stay sharp at any
  * zoom — outer black halo + white outline. */
-function SvgHandle({ cx, cy, r = 2.4 }) {
+function SvgHandle({ cx, cy, r = 2.4, kolbox = false }) {
+  /* kolbox: the ring in the ink over a hairline of the ground (the theme's `.kol-wheel-triangle--kolbox` strokes) */
   return (
     <g pointerEvents="none">
-      <circle cx={cx} cy={cy} r={r + 0.5} fill="none" stroke="#000" strokeOpacity="0.7" strokeWidth="0.5" />
-      <circle cx={cx} cy={cy} r={r}       fill="none" stroke="#FFF" strokeWidth="1.4" />
+      <circle cx={cx} cy={cy} r={r + 0.5} fill="none" stroke={kolbox ? undefined : '#000'} className={kolbox ? 'kol-wheel-triangle-halo' : undefined} strokeOpacity="0.7" strokeWidth="0.5" />
+      <circle cx={cx} cy={cy} r={r}       fill="none" stroke={kolbox ? undefined : '#FFF'} className={kolbox ? 'kol-wheel-triangle-ring' : undefined} strokeWidth="1.4" />
     </g>
   )
 }
@@ -548,7 +559,7 @@ function SvgHandle({ cx, cy, r = 2.4 }) {
 /**
  * SpectrumControls — A hue strip over a saturation square. The composed classic square picker: HueStrip stacked
  * over a fill-height SBSquare, per the source color panel's Hue mode layout
- * (SBSquare wrapped in `rounded-[var(--kol-radius-xs)] overflow-hidden`, see its comment).
+ * (SBSquare wrapped in `rounded-[var(--kol-radius-2)] overflow-hidden`, see its comment).
  * Fills its container — the consumer owns the outer size. For the ring
  * picker, use WheelTriangle directly; the primitives are also exported for
  * custom layouts.
@@ -564,9 +575,91 @@ export default function SpectrumControls({ value, onChange }) {
   return (
     <div className="flex flex-col gap-3 w-full h-full min-h-0">
       <HueStrip hue={hue} onChange={(h) => onChange({ hue: h, sat, val })} />
-      <div className="flex-1 min-h-0 rounded-[var(--kol-radius-xs)] overflow-hidden">
+      <div className="flex-1 min-h-0 rounded-[var(--kol-radius-2)] overflow-hidden">
         <SBSquare hue={hue} sat={sat} val={val} onChange={(s, v) => onChange({ hue, sat: s, val: v })} />
       </div>
     </div>
   )
+}
+
+/* ── kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5, 2026-11-18) ─────────────────────────────────────────────────
+ * kolbox's ColorField, HueSlider and OpacitySlider, carried from apps/kolbox/src/ui as `variant="kolbox"` of SBSquare,
+ * HueStrip and AlphaStrip, on these parts' own words (`hue`, `sat` and `val` 0–100, `alpha` 0–1). Pointer down and drag,
+ * no keys (kolbox's have none); the handle a 12 ring in the ink. `className` lands on the part. */
+
+/* pointer down on the element and drag: move(x, y), each clamped to 0..1 of its box */
+function dragKolbox(e, move) {
+  const box = e.currentTarget
+  const at = (ev) => { const r = box.getBoundingClientRect(); move(Math.min(1, Math.max(0, (ev.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (ev.clientY - r.top) / r.height))) }
+  box.setPointerCapture(e.pointerId)
+  at(e)
+  const up = () => { box.removeEventListener('pointermove', at); box.removeEventListener('pointerup', up) }
+  box.addEventListener('pointermove', at)
+  box.addEventListener('pointerup', up)
+}
+
+/* the saturation and brightness square at the hue (Figma plan W13 state 4); onChange(sat, val) */
+function SBSquareKolbox({ hue = 0, sat = 100, val = 100, onChange, className = '' }) {
+  return (
+    <div
+      role="slider"
+      aria-label="Saturation and brightness"
+      aria-valuetext={`${Math.round(sat)}%, ${Math.round(val)}%`}
+      onPointerDown={(e) => dragKolbox(e, (x, y) => onChange?.(x * 100, (1 - y) * 100))}
+      className={`relative aspect-square w-full cursor-crosshair touch-none ${className}`}
+      style={{ background: `linear-gradient(to top, black, transparent), linear-gradient(to right, white, hsl(${hue} 100% 50%))` }}
+    >
+      <span className="kol-spectrum-handle--kolbox pointer-events-none absolute size-3 -translate-1/2 rounded-full" style={{ left: `${sat}%`, top: `${100 - val}%` }} />
+    </div>
+  )
+}
+
+/* the hue run, 0 to 360, 12 high, its thumb the hue */
+function HueStripKolbox({ hue = 0, onChange, className = '' }) {
+  return (
+    <div
+      role="slider"
+      aria-label="Hue"
+      aria-valuemin={0}
+      aria-valuemax={360}
+      aria-valuenow={Math.round(hue)}
+      onPointerDown={(e) => dragKolbox(e, (x) => onChange?.(x * 360))}
+      className={`relative h-3 w-full cursor-pointer touch-none rounded-full ${className}`}
+      style={{ background: 'linear-gradient(to right, hsl(0 100% 50%), hsl(60 100% 50%), hsl(120 100% 50%), hsl(180 100% 50%), hsl(240 100% 50%), hsl(300 100% 50%), hsl(360 100% 50%))' }}
+    >
+      <span className="kol-spectrum-handle--kolbox pointer-events-none absolute top-1/2 size-3 -translate-1/2 rounded-full" style={{ left: `${(hue / 360) * 100}%`, background: `hsl(${hue} 100% 50%)` }} />
+    </div>
+  )
+}
+
+/* the opacity run, clear to `color` over the checker; onChange(alpha), in whole percents */
+function AlphaStripKolbox({ alpha = 1, color = 'currentColor', onChange, className = '' }) {
+  const value = alpha * 100
+  return (
+    <div
+      role="slider"
+      aria-label="Opacity"
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-valuenow={Math.round(value)}
+      onPointerDown={(e) => dragKolbox(e, (x) => onChange?.(Math.round(x * 100) / 100))}
+      className={`kol-alpha-strip--kolbox relative h-3 w-full cursor-pointer touch-none rounded-full ${className}`}
+    >
+      <span className="absolute inset-0 rounded-full" style={{ background: `linear-gradient(to right, transparent, ${color})` }} />
+      <span className="kol-spectrum-handle--kolbox pointer-events-none absolute top-1/2 size-3 -translate-1/2 rounded-full" style={{ left: `${value}%` }} />
+    </div>
+  )
+}
+
+/** SBSquare — Pick saturation and value on a square. @param {'default'|'kolbox'} [variant] `kolbox`: kolbox's ColorField (above) */
+export function SBSquare(props) {
+  return props.variant === 'kolbox' ? <SBSquareKolbox {...props} /> : <SBSquareDefault {...props} />
+}
+/** HueStrip — A hue slider. @param {'default'|'kolbox'} [variant] `kolbox`: kolbox's HueSlider (above) */
+export function HueStrip(props) {
+  return props.variant === 'kolbox' ? <HueStripKolbox {...props} /> : <HueStripDefault {...props} />
+}
+/** AlphaStrip — An opacity slider. @param {'default'|'kolbox'} [variant] `kolbox`: kolbox's OpacitySlider (above) */
+export function AlphaStrip(props) {
+  return props.variant === 'kolbox' ? <AlphaStripKolbox {...props} /> : <AlphaStripDefault {...props} />
 }

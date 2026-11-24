@@ -10,9 +10,272 @@
 
 @import "@kolkrabbi/kol-theme";
 @import "@kolkrabbi/kol-theme/kol-type-roles.css";
+/* Folio's type roles, unlayered as apps/folio has them (its reader.css reached this board unlayered through Chrome.jsx) */
+@import "@kolkrabbi/kol-theme/kol-type-folio-classes.css";
 /* ARCHITECTURE §5 — framework chrome in the components layer */
 @import "@kolkrabbi/kol-framework/kol-framework.css" layer(components);
 @import "@kolkrabbi/kol-theme/kol-sources.css";
+
+/* ── THE STYLES BOARD (Board.jsx): Folio's, minimal's and kolbox's own parts, rendered from their apps' source ──
+   Their utilities are generated from their files; their tokens are scoped to each style's cell wrapper
+   (`.kol-style-folio`, `.kol-style-minimal`, `.kol-style-kolbox`) so nothing reaches the KOL columns or the page. */
+@source "../../folio/src/folio";
+@source "../../minimal/src/ui";
+@source "../../../packages/design-editor/src/editor/kolbox/ui";
+/* the kolbox stylesheet (#/kolbox) also shows its file browser and home rail, kept in apps/editor */
+@source "../../editor/src/kolbox";
+
+/* FOLIO — its colors are kol-theme's `--kol-folio-*` (kol-color.css: the day set at :root, and the data-folio-theme,
+   -palette and -accent switches, so the cell's data-folio-theme="light" and the Swatches cell's accents need nothing
+   here). Registered `inline` the way apps/folio does, so each utility reads the KOL variable at its own element. */
+@theme inline {
+  --color-folio-paper: var(--kol-folio-paper);
+  --color-folio-ink: var(--kol-folio-ink);
+  --color-folio-muted: var(--kol-folio-muted);
+  --color-folio-rule: var(--kol-folio-rule);
+  --color-folio-surface: var(--kol-folio-surface);
+  --color-folio-mint: var(--kol-folio-mint);
+  --color-folio-green: var(--kol-folio-green);
+  --font-folio: var(--kol-font-family-float), "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* MINIMAL — the values from apps/minimal/src/index.css's @theme, held as plain variables on the cell wrapper.
+   THE CLASH: minimal's `--color-fg` makes `text-fg` / `bg-fg` / `border-fg`, and KOL already ships hand-written
+   `.text-fg` · `.bg-fg` · `.border-fg` (kol-opacity.css, kol-color.css) = the surface ink. Registered `inline`, each
+   utility reads `--minimal-fg` and falls back to that same KOL ink, so outside a minimal cell it paints exactly
+   what KOL's class did. The other names (ground, panel, field, line, muted, faint, accent, the radii and the type)
+   exist nowhere in KOL; they go through the wrapper the same way so no minimal value sits at :root. */
+@theme inline {
+  /* the names minimal and kolbox share (ground, panel, canvas, field, muted, accent, and text-label below) read
+     minimal's value, else kolbox's: each wrapper sets only its own, so a cell gets its style's value and nothing else */
+  --color-ground: var(--minimal-ground, var(--kolbox-ground));
+  --color-panel: var(--minimal-panel, var(--kolbox-panel));
+  --color-canvas: var(--minimal-canvas, var(--kolbox-canvas));
+  --color-field: var(--minimal-field, var(--kolbox-field));
+  --color-field-hover: var(--minimal-field-hover);
+  --color-line: var(--minimal-line);
+  --color-line-strong: var(--minimal-line-strong);
+  --color-fg: var(--minimal-fg, var(--kol-surface-on-primary));
+  --color-muted: var(--minimal-muted, var(--kolbox-muted));
+  --color-faint: var(--minimal-faint);
+  --color-accent: var(--minimal-accent, var(--kolbox-accent));
+  --color-accent-fg: var(--minimal-accent-fg);
+  --radius-inner: var(--minimal-radius-inner);
+  --radius-field: var(--minimal-radius-field);
+  --radius-nav: var(--minimal-radius-nav);
+  --radius-bar: var(--minimal-radius-bar);
+  --text-label: var(--minimal-text-label, var(--kolbox-text-label));
+  --text-label--line-height: var(--minimal-text-label-lh, var(--kolbox-text-label-lh));
+  --text-caps: var(--minimal-text-caps);
+  --text-caps--line-height: var(--minimal-text-caps-lh);
+  --text-caps--letter-spacing: var(--minimal-text-caps-ls);
+  --text-nav: var(--minimal-text-nav);
+  --text-nav--line-height: var(--minimal-text-nav-lh);
+}
+.kol-style-minimal {
+  --minimal-ground: #000000;
+  --minimal-panel: #0a0a0a;
+  --minimal-canvas: #171717;
+  --minimal-field: #1f1f1f;
+  --minimal-field-hover: #2a2a2a;
+  --minimal-line: #262626;
+  --minimal-line-strong: #3d3d3d;
+  --minimal-fg: #fcfbf8;
+  --minimal-muted: #a1a1a1;
+  --minimal-faint: #6b6b6b;
+  --minimal-accent: #fcfbf8;
+  --minimal-accent-fg: #0e0e11;
+  --minimal-radius-inner: 4px;
+  --minimal-radius-field: 6px;
+  --minimal-radius-nav: 8px;
+  --minimal-radius-bar: 10px;
+  --minimal-text-label: 12px;
+  --minimal-text-label-lh: 16px;
+  --minimal-text-caps: 10px;
+  --minimal-text-caps-lh: 14px;
+  --minimal-text-caps-ls: 0.06em;
+  --minimal-text-nav: 14px;
+  --minimal-text-nav-lh: 20px;
+  /* minimal's body: Inter (KOL's theme already loads the face) and JetBrains Mono */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-sans);
+}
+
+/* minimal's two hand-written controls, copied from apps/minimal/src/index.css and scoped to its cells (their tokens
+   read through the wrapper). ponytail: a copy, it drifts if minimal changes them; lift them into a minimal stylesheet
+   both apps import once minimal may be edited. */
+.kol-style-minimal .range { appearance: none; background: transparent; height: 16px; cursor: pointer; }
+.kol-style-minimal .range::-webkit-slider-runnable-track {
+  height: 1px;
+  background: linear-gradient(to right, var(--minimal-fg) var(--p), var(--minimal-line-strong) var(--p));
+}
+.kol-style-minimal .range::-moz-range-track {
+  height: 1px;
+  background: linear-gradient(to right, var(--minimal-fg) var(--p), var(--minimal-line-strong) var(--p));
+}
+.kol-style-minimal .range::-webkit-slider-thumb {
+  appearance: none; width: 9px; height: 9px; margin-top: -4px; border-radius: 9999px; background: var(--minimal-fg); border: 0;
+}
+.kol-style-minimal .range::-moz-range-thumb { width: 9px; height: 9px; border-radius: 9999px; background: var(--minimal-fg); border: 0; }
+.kol-style-minimal .range:hover::-webkit-slider-thumb { width: 11px; height: 11px; margin-top: -5px; }
+.kol-style-minimal .range:hover::-moz-range-thumb { width: 11px; height: 11px; }
+.kol-style-minimal .range:focus-visible { outline: 1px solid var(--minimal-fg); outline-offset: 2px; }
+.kol-style-minimal .select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23fcfbf8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 7.5 L12 16.5 L21 7.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+}
+
+/* KOLBOX — the values from apps/kolbox/src/index.css's @theme, held as plain variables on the cell wrapper, registered
+   the way minimal's are (the shared names chain above). Its overlays (Menu, Popover) portal to the body and so leave
+   the cell: they carry `data-kolbox-overlay`, which takes the same variables. The spacing steps 1 to 8 are not repeated:
+   KOL registers the same 4px ladder. */
+@theme inline {
+  --color-border: var(--kolbox-border);
+  --color-text: var(--kolbox-text);
+  --color-on-accent: var(--kolbox-on-accent);
+  --color-info: var(--kolbox-info);
+  --color-success: var(--kolbox-success);
+  --color-error: var(--kolbox-error);
+  --color-link: var(--kolbox-link);
+  --color-menu: var(--kolbox-menu);
+  --color-accent-tint: var(--kolbox-accent-tint);
+  --color-accent-tint-soft: var(--kolbox-accent-tint-soft);
+  --color-hover: var(--kolbox-hover);
+  --color-dim: var(--kolbox-dim);
+  --spacing-control: var(--kolbox-control);
+  --spacing-top-rail: var(--kolbox-top-rail);
+  --spacing-rail: var(--kolbox-rail);
+  --spacing-rail-collapsed: var(--kolbox-rail-collapsed);
+  --spacing-pane: var(--kolbox-pane);
+  --spacing-timeline: var(--kolbox-timeline);
+  --spacing-cell: var(--kolbox-cell);
+  --spacing-row: var(--kolbox-row);
+  --spacing-popover: var(--kolbox-popover);
+  --spacing-modal: var(--kolbox-modal);
+  --spacing-modal-wide: var(--kolbox-modal-wide);
+  --spacing-modal-generator: var(--kolbox-modal-generator);
+  --spacing-modal-generator-height: var(--kolbox-modal-generator-height);
+  --spacing-modal-search: var(--kolbox-modal-search);
+  --radius-control: var(--kolbox-radius-control);
+  --radius-track: var(--kolbox-radius-track);
+  --radius-well: var(--kolbox-radius-well);
+  --radius-search: var(--kolbox-radius-search);
+  --radius-modal: var(--kolbox-radius-modal);
+  --radius-menu: var(--kolbox-radius-menu);
+  --shadow-menu: var(--kolbox-shadow-menu);
+  --text-title: var(--kolbox-text-title);
+  --text-title--line-height: var(--kolbox-text-title-lh);
+  --text-section: var(--kolbox-text-section);
+  --text-section--line-height: var(--kolbox-text-section-lh);
+  --text-help: var(--kolbox-text-help);
+  --text-help--line-height: var(--kolbox-text-help-lh);
+  --text-value: var(--kolbox-text-value);
+  --text-value--line-height: var(--kolbox-text-value-lh);
+}
+.kol-style-kolbox,
+[data-kolbox-overlay] {
+  --kolbox-ground: #1D2021;
+  --kolbox-panel: #282828;
+  --kolbox-canvas: #32302F;
+  --kolbox-field: #3C3836;
+  --kolbox-border: #504945;
+  --kolbox-text: #EBDBB2;
+  --kolbox-muted: #A89984;
+  --kolbox-accent: #FABD2F;
+  --kolbox-on-accent: #1D2021;
+  --kolbox-info: #83A598;
+  --kolbox-success: #B8BB26;
+  --kolbox-error: #FB4934;
+  --kolbox-link: #8EC07C;
+  --kolbox-menu: var(--kolbox-ground);
+  --kolbox-accent-tint: color-mix(in srgb, var(--kolbox-accent) 25%, transparent);
+  --kolbox-accent-tint-soft: color-mix(in srgb, var(--kolbox-accent) 15%, transparent);
+  --kolbox-hover: color-mix(in srgb, var(--kolbox-text) 4%, transparent);
+  --kolbox-dim: rgb(0 0 0 / 0.24);
+  /* the KOL roles kolbox's package parts read (kol-component variant="kolbox", plan-2026-11-18-kolbox-system W31.2), on
+     the same values, so a part kolbox now takes from the package draws here as kolbox's own did (the color map:
+     ground, panel, canvas oq-08, field oq-16, border oq-24, text, muted oq-64, the accent pair and tint, hover fg-04,
+     link the palette teal) */
+  --kol-surface-primary: var(--kolbox-ground);
+  --kol-surface-secondary: var(--kolbox-panel);
+  --kol-oq-08: var(--kolbox-canvas);
+  --kol-oq-16: var(--kolbox-field);
+  --kol-oq-24: var(--kolbox-border);
+  --kol-surface-on-primary: var(--kolbox-text);
+  --kol-oq-64: var(--kolbox-muted);
+  --kol-accent-primary: var(--kolbox-accent);
+  --kol-accent-on-primary: var(--kolbox-on-accent);
+  --kol-accent-tint: var(--kolbox-accent-tint);
+  --kol-fg-04: var(--kolbox-hover);
+  --kol-palette-teal: var(--kolbox-link);
+  --kolbox-control: var(--kol-kolbox-ctl);
+  --kolbox-top-rail: 56px;
+  --kolbox-rail: 240px;
+  --kolbox-rail-collapsed: 49px;
+  --kolbox-pane: 320px;
+  --kolbox-timeline: 200px;
+  --kolbox-cell: 32px;
+  --kolbox-row: 24px;
+  --kolbox-popover: 240px;
+  --kolbox-modal: 480px;
+  --kolbox-modal-wide: 820px;
+  --kolbox-modal-generator: 880px;
+  --kolbox-modal-generator-height: 656px;
+  --kolbox-modal-search: 576px;
+  /* Modal sets its width inline as var(--spacing-modal), a raw name no utility emits here: given in the scope itself */
+  --spacing-modal: var(--kolbox-modal);
+  --spacing-modal-wide: var(--kolbox-modal-wide);
+  /* kolbox's radii and menu edge on KOL's stops since 8.1 (plan-2026-11-18-kolbox-system) */
+  --kolbox-radius-xs: 2px;
+  --kolbox-radius-sm: 4px;
+  --kolbox-radius-control: 4px;
+  --kolbox-radius-track: 6px;
+  --kolbox-radius-well: 8px;
+  --kolbox-radius-search: 12px;
+  --kolbox-radius-modal: 16px;
+  --kolbox-radius-menu: 12px;
+  --kolbox-shadow-menu: 0 2px 5px rgb(0 0 0 / 0.35), 0 10px 24px rgb(0 0 0 / 0.35), inset 0 0 0 0.5px color-mix(in srgb, var(--kolbox-text) 32%, transparent), inset 0 0.5px 0 color-mix(in srgb, var(--kolbox-text) 8%, transparent);
+  --kolbox-text-title: 16px;
+  --kolbox-text-title-lh: 22px;
+  --kolbox-text-title-weight: 500;
+  --kolbox-text-section: 12px;
+  --kolbox-text-section-lh: 17px;
+  --kolbox-text-section-weight: 500;
+  --kolbox-text-label: 12px;
+  --kolbox-text-label-lh: 16px;
+  --kolbox-text-label-weight: 500;
+  --kolbox-text-help: 11px;
+  --kolbox-text-help-lh: 15px;
+  --kolbox-text-meta: 10px;
+  --kolbox-text-meta-lh: 14px;
+  --kolbox-text-value: 12px;
+  --kolbox-text-value-lh: 16px;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-sans);
+}
+/* Two of kolbox's type steps cannot be registered here. `text-meta` is KOL's own meta-ink class (kol-opacity.css, 40-odd
+   uses in the packages): a registered size would reach those. And kolbox's medium weight on title, section and label
+   would reach minimal's `text-label`. Both are written for the kolbox scope only, in the components layer so any
+   utility on the element still wins; the meta ink is let go so kolbox's own color utilities decide. */
+@layer components {
+  :is(.kol-style-kolbox, [data-kolbox-overlay]) .text-meta { font-size: var(--kolbox-text-meta); line-height: var(--kolbox-text-meta-lh); color: inherit; }
+  :is(.kol-style-kolbox, [data-kolbox-overlay]) .text-title { font-weight: var(--kolbox-text-title-weight); }
+  :is(.kol-style-kolbox, [data-kolbox-overlay]) .text-section { font-weight: var(--kolbox-text-section-weight); }
+  :is(.kol-style-kolbox, [data-kolbox-overlay]) .text-label { font-weight: var(--kolbox-text-label-weight); }
+}
+
+/* kolbox's three hand-written rules, copied from apps/kolbox/src/index.css with its variables renamed to the wrapper's.
+   ponytail: a copy, it drifts if kolbox changes them; lift them into a kolbox stylesheet both apps import once kolbox
+   may be edited. */
+.kol-kolbox-checker { background: repeating-conic-gradient(var(--kolbox-border) 0 25%, var(--kolbox-field) 0 50%) 0 0 / 8px 8px; }
+/* kolbox's one floating surface is kol-theme's `.kol-kolbox-surface` now (kol-components-atoms.css, W31.2 batch 4); the
+   board's kolbox scope sets the oq-24 it reads */
+/* the board's own stacking, not kolbox's look: the default and float Modal cells hold their dialog open at z 150 inside
+   the page, which would paint over kolbox's body layer (z-50) and its Modal's dim */
+[data-kolbox-overlay] { z-index: 200; }
 
 body {
   background-color: var(--kol-surface-primary);

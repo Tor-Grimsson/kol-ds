@@ -3,7 +3,7 @@ title: Compositions
 type: index
 status: active
 created: 2026-08-01
-updated: 2026-10-24
+updated: 2026-11-18
 description: The layers built above components
 tags:
   - domain/compositions
@@ -40,3 +40,5 @@ Everything assembled FROM components — blocks, sets, shells, and the seven dom
 | [[23-website-frame\|Website frame]] | kolkrabbi.io's frame as `WebsiteLayout` — the bar, takeover, footer, intro and cursor layer, content as props; the pages it holds; apps/layouts shows all four frames |
 | [[19-rails\|Rails]] | The rail kit (RailHeader · RailTabs · RailSection · RailRow · RailHint · RailActions · RailFoot), the two tiers' widths and paddings, and the whole rails — settings, inspector, list, bottom — with `apps/rails` as the reference |
 | [[24-float-system\|Float system]] | The float style — Inter, pill controls, three radii, the focus ring, translucent selection, solid and glass grounds — and every part of it by family with where it lives and its state; the gap map in kol-float--style is its source |
+| [[26-kolbox-system\|Kolbox system]] | The kolbox look — docked rails 240 wide, 28 controls, a solid accent, one floating surface — every part by family, the package it joined and the props it maps; `apps/kolbox` is its app |
+| [[27-tuner\|Tuner]] | The form tuner — `@kolkrabbi/kol-tuner` (harmonies, guides, Construct, System, the Tuner) carried from kol-branding's Line Swell canvas, its checks, and apps/tuner |

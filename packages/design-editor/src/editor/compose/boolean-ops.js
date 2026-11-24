@@ -41,7 +41,7 @@ export function isBooleanable(layer) {
 }
 
 let paperReady = false
-function ensurePaper() {
+export function ensurePaper() {
   if (!paperReady) {
     paper.setup(new paper.Size(1, 1)) /* headless project — no canvas */
     paperReady = true
@@ -105,7 +105,7 @@ function layerToPaperItem(layer) {
 }
 
 /* paper.Path → our node ring (handles absolute; zero-length handle = null) */
-function pathToRing(p) {
+export function pathToRing(p) {
   return p.segments.map((seg) => ({
     x: seg.point.x,
     y: seg.point.y,

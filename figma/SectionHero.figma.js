@@ -8,7 +8,7 @@ const instance = figma.selectedInstance
 const headline = instance.getString('headline')
 const body = instance.getString('body')
 const foot = instance.getBoolean('showFoot') ? ' foot={foot} overlap={288}' : ''
-const route = instance.getEnum('route', { "text": "text", "panel": "panel" })
+const route = instance.getEnum('routePanel', { "true": "panel", "false": "text" })
 
 export default {
   /* route=panel: the composed route — a caller `panel` over `media` (StackHero, as FullBleedHero) */

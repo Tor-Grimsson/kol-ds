@@ -4,7 +4,8 @@
  *
  * `title` in Inter body, `count` in mono beside it (an open count, a row count), `meta` (a support line: "Last 30 days")
  * or `description` under it, `value` at the right in mono (a chart card's total). `controls` is the right group (a
- * `MenuMore`); `onFold` adds the chevron — ⌃ open, ⌄ when `folded`. `Card variant="float"` draws this head; it is
+ * `MenuMore`); `onCollapseV` adds the collapse-v chevron — ⌃ open, ⌄ when `collapsedV` (`folded` / `onFold` are their
+ * deprecated aliases, plan-2026-11-12-one-header W2.1). `Card variant="float"` draws this head; it is
  * exported for a card that draws its own body.
  *
  * `tabs` (`[{ key, label }]`, the editor card — plan-2026-11-05-float-editor W1.2) puts a tab row where the title was:
@@ -12,11 +13,13 @@
  * one baseline, uppercase; `onTab(key)`. Its chevron sits flush with the card's right inset (his frame 20:14470). */
 import { Button } from '@kolkrabbi/kol-component'
 
-export default function SectionHead({ title, count, meta, description, value, controls, folded = false, onFold, tabs, tab, onTab, className = '' }) {
+export default function SectionHead({ title, count, meta, description, value, controls, collapsedV, onCollapseV, folded, onFold, tabs, tab, onTab, className = '' }) {
+  const isCollapsed = collapsedV ?? folded ?? false
+  const collapse = onCollapseV ?? onFold
   /* the tab form's chevron at oq-64, a step up from the ghost's oq-48 (his frame 20:14470) */
-  const chevron = onFold && (
-    <Button variant="float" tone="ghost" size="sm" iconOnly={folded ? 'chevron-down' : 'chevron-up'}
-      aria-label={folded ? 'Expand' : 'Collapse'} aria-expanded={!folded} onClick={onFold}
+  const chevron = collapse && (
+    <Button variant="float" tone="ghost" size="sm" iconOnly={isCollapsed ? 'chevron-down' : 'chevron-up'}
+      aria-label={isCollapsed ? 'Expand' : 'Collapse'} aria-expanded={!isCollapsed} onClick={collapse}
       className={tabs?.length ? '[--kol-tone-fg:var(--kol-oq-64)]' : undefined} />
   )
   if (tabs?.length) {
@@ -34,7 +37,7 @@ export default function SectionHead({ title, count, meta, description, value, co
             )
           })}
         </div>
-        {(controls || onFold) && <span className="flex items-center gap-1 shrink-0 -mt-[3px]">{controls}{chevron}</span>}
+        {(controls || collapse) && <span className="flex items-center gap-1 shrink-0 -mt-[3px]">{controls}{chevron}</span>}
       </header>
     )
   }
@@ -49,7 +52,7 @@ export default function SectionHead({ title, count, meta, description, value, co
         {description && <span className="kol-float-hint text-fg-64">{description}</span>}
       </div>
       {value != null && <span className="kol-float-timecode text-fg-64 shrink-0 tabular-nums pt-0.5">{value}</span>}
-      {(controls || onFold) && (
+      {(controls || collapse) && (
         <span className="flex items-center gap-1 shrink-0 -my-1.5 -mr-2">
           {controls}
           {chevron}

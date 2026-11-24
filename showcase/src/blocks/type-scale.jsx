@@ -1,4 +1,4 @@
-import { TypeSample, TypeSpecCard } from '@kolkrabbi/kol-foundry'
+import { SpecimenSample, SpecimenSpec } from '@kolkrabbi/kol-styleguide'
 
 export const meta = {
   title: 'Type scale',
@@ -18,25 +18,25 @@ export default function TypeScale() {
     <div className="flex w-full flex-col gap-8 px-6 py-10 md:px-10">
       {/* The scale, display → caption. Sizes are px on purpose (spec, not stops). */}
       <div className="flex flex-col">
-        <TypeSample label="Display · 700 · 64/68" weight={700} size={64} lineHeight={68}>
+        <SpecimenSample label="Display · 700 · 64/68" weight={700} size={64} lineHeight={68}>
           Kolkrabbi
-        </TypeSample>
-        <TypeSample label="Heading · 600 · 40/46" weight={600} size={40} lineHeight={46}>
+        </SpecimenSample>
+        <SpecimenSample label="Heading · 600 · 40/46" weight={600} size={40} lineHeight={46}>
           {PANGRAM}
-        </TypeSample>
-        <TypeSample label="Title · 500 · 28/34" weight={500} size={28} lineHeight={34}>
+        </SpecimenSample>
+        <SpecimenSample label="Title · 500 · 28/34" weight={500} size={28} lineHeight={34}>
           {PANGRAM}
-        </TypeSample>
-        <TypeSample label="Body · 400 · 18/28" size={18} lineHeight={28}>
+        </SpecimenSample>
+        <SpecimenSample label="Body · 400 · 18/28" size={18} lineHeight={28}>
           {PANGRAM}
-        </TypeSample>
-        <TypeSample label="Caption · 400 · 13/18" size={13} lineHeight={18}>
+        </SpecimenSample>
+        <SpecimenSample label="Caption · 400 · 13/18" size={13} lineHeight={18}>
           {PANGRAM}
-        </TypeSample>
+        </SpecimenSample>
       </div>
 
       {/* Spec sheets — numeric metrics beside a live rendering of the style. */}
-      <TypeSpecCard
+      <SpecimenSpec
         label="Display 01"
         meta={[
           ['Family', 'Right Grotesk'],
@@ -46,12 +46,12 @@ export default function TypeScale() {
           ['Tracking', '-0.02em'],
         ]}
       >
-        <TypeSample weight={700} size={64} lineHeight={68}>
+        <SpecimenSample weight={700} size={64} lineHeight={68}>
           Kolkrabbi
-        </TypeSample>
-      </TypeSpecCard>
+        </SpecimenSample>
+      </SpecimenSpec>
 
-      <TypeSpecCard
+      <SpecimenSpec
         label="Body"
         meta={[
           ['Family', 'Right Grotesk'],
@@ -61,10 +61,10 @@ export default function TypeScale() {
           ['Tracking', '0'],
         ]}
       >
-        <TypeSample size={18} lineHeight={28}>
+        <SpecimenSample size={18} lineHeight={28}>
           {PANGRAM}
-        </TypeSample>
-      </TypeSpecCard>
+        </SpecimenSample>
+      </SpecimenSpec>
     </div>
   )
 }

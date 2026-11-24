@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary" })
+const variant = instance.getEnum('variant', { "primary": "primary", "secondary": "secondary", "tertiary": "tertiary", "float": "float" })
 const size = instance.getEnum('size', { "xs": "xs", "sm": "sm", "md": "md" })
 const active = instance.getEnum('active', { "true": "true", "false": "false" })
 const label = instance.getString('label').replace(/^#/, '')

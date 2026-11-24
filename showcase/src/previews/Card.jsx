@@ -25,11 +25,11 @@ export default function CardPreview({ variant = 'title' }) {
   if (variant === 'float') {
     return (
       <div className="w-full max-w-[640px] flex flex-col gap-4">
-        <Card variant="float" title="Briefs" count="1 open" controls={more} folded={folded} onFold={() => setFolded((f) => !f)} addLabel="New brief" onAdd={() => {}}>
+        <Card variant="float" title="Briefs" count="1 open" controls={more} collapsedV={folded} onCollapseV={() => setFolded((f) => !f)} addLabel="New brief" onAdd={() => {}}>
           <TaskCard size="sm" title="Design the Tasks tab (Briefs / Todos / Other)" date="2026-07-01" done={done} onToggle={setDone} />
           <TaskCard size="sm" title="Rename a card" chip="S" done={false} onToggle={() => {}} />
         </Card>
-        <Card variant="float" title="Profiles" folded onFold={() => {}} />
+        <Card variant="float" title="Profiles" collapsedV onCollapseV={() => {}} />
       </div>
     )
   }

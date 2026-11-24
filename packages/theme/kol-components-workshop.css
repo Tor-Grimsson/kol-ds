@@ -178,7 +178,7 @@
   max-height: calc(100dvh - 2 * var(--kol-spacing-12));
   padding: var(--kol-spacing-6);
   border: 1px solid var(--kol-oq-08);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   overflow-x: auto;
 }
 .shell-tree-space {
@@ -624,7 +624,7 @@
 .docs-card {
   display: block;
   padding: 16px;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   border: 1px solid;
   border-color: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
   background: transparent;
@@ -645,7 +645,7 @@
 /* Compact doc card for sidebar */
 .docs-card--compact {
   padding: 8px 12px;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
 }
 
 .docs-title-link {
@@ -789,7 +789,7 @@
 .docs-image {
   max-width: 100%;
   height: auto;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   margin-block: 1.5rem;
 }
 
@@ -844,7 +844,7 @@
   gap: 6px;
   padding: 6px 12px;
   border: 1px solid color-mix(in srgb, var(--kol-surface-on-primary) 16%, transparent);
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   background: transparent;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -897,7 +897,7 @@
   aspect-ratio: 1;
   position: relative;
   overflow: hidden;
-  border-radius: var(--kol-radius-sm);
+  border-radius: var(--kol-radius-4);
   background: color-mix(in srgb, var(--kol-surface-on-primary) 4%, transparent);
 }
 

@@ -3,12 +3,13 @@ import { CANVAS_DEFAULTS } from '../../shell/Canvas'
 import { useComposeState, resolveColor } from '../../compose/state'
 import { findLayerDeep } from '../../compose/helpers'
 import { applyCase } from './cuts'
-import { pickCutFor } from './axisRandom'
+import { pickWeightFor } from './axisRandom'
+import { layerFamily, weightRange } from './families'
 
 /* Fields a text-layer in compose understands. updateFrame patches that
  * touch any of these fields are mirrored into the bound compose layer. */
 const TEXT_LAYER_FIELDS = new Set([
-  'text', 'width', 'weight', 'italic', 'size',
+  'text', 'family', 'weight', 'italic', 'size',
   'tracking', 'lineHeight', 'case', 'color', 'textAlign',
 ])
 
@@ -25,7 +26,7 @@ const newFrame = (overrides = {}) => ({
   y:          440,
   w:          600,
   text:       'Made to last',
-  width:      'Tight',
+  family:     'inter',
   weight:     600,
   italic:     false,
   size:       96,
@@ -36,14 +37,11 @@ const newFrame = (overrides = {}) => ({
   textAlign:  'center',
   axisOn:           false,
   axisMode:         'morph',
-  width2:           'Spatial',
   weight2:          900,
   blend:            0.5,
   axisCurve:        'flat',
   curveCp1:         { x: 0.33, y: 0.33 },
   curveCp2:         { x: 0.66, y: 0.66 },
-  randomWidthLock:  '',
-  randomWeightLock: '',
   ...overrides,
 })
 
@@ -118,16 +116,14 @@ export function TypeStateProvider({ children }) {
     const seed  = Math.floor(Math.random() * 99991)
     const estW  = Math.max(40, src.size * 0.62)
     const newFrames = chars.map((ch, i) => {
-      const [w, wt] = pickCutFor(i, seed, {
-        widthLock:  src.randomWidthLock,
-        weightLock: src.randomWeightLock,
-      })
+      const { min, max } = weightRange(layerFamily(src)) ?? { min: 100, max: 900 }
+      const wt = pickWeightFor(i, seed, min, max)
       return newFrame({
         x:          src.x + i * estW,
         y:          src.y,
         w:          estW,
         text:       ch,
-        width:      w,
+        family:     layerFamily(src),
         weight:     wt,
         size:       src.size,
         tracking:   0,

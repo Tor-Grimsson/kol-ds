@@ -3,7 +3,7 @@ import { Button, SectionText, Tag } from '@kolkrabbi/kol-component'
 /* The ruled text block every section composes: label · headline · body ·
  * actions, each opt-in. `align` centres the block. The header LEVELS (2026-10-22 — PageHeader folded in):
  * page · app · section · content · document, each a role set an explicit prop still overrides. */
-export const variants = ['block', 'centred', 'page', 'app', 'section', 'content', 'document', 'float']
+export const variants = ['block', 'centred', 'page', 'app', 'section', 'content', 'document', 'float', 'kolbox', 'folio']
 export const stage = 'full'
 
 const LEVEL = {
@@ -17,6 +17,10 @@ const LEVEL = {
 }
 
 export default function SectionTextPreview({ variant = 'block' }) {
+  /* folio (Folio batch E): a page's title block and a numbered section head, on Folio's paper */
+  if (variant === 'folio') return <div data-folio-theme="light" className="w-full bg-[var(--kol-folio-paper)] p-6 leading-[1.21] text-[var(--kol-folio-ink)] [font-family:var(--kol-font-family-float)]"><div className="flex flex-col gap-[36px]"><SectionText variant="folio" eyebrow="Your own little world" headline="My library" body="Old favorites, new discoveries, and the next good chapter." /><SectionText variant="folio" inline eyebrow="01" headline="Fresh on your shelf" headlineSize="section" headlineAs="h2" meta="The newest from each shelf." gap="gap-[18px]" /></div></div>
+  /* kolbox (plan-2026-11-18-kolbox-system W31.2 batch 5) */
+  if (variant === 'kolbox') return <div className="w-full"><SectionText variant="kolbox" headline="Drafts" actions={<Button variant="kolbox">New file</Button>} /></div>
   if (LEVEL[variant]) return (
     <div className="flex w-full flex-col">
       <SectionText variant={variant} {...LEVEL[variant]} />

@@ -82,6 +82,7 @@ function resolveAspect(aspect, customRatio, aspects) {
  * @param {Array}    aspects     [{ id, label, ratio }] ratio table (default DEFAULT_ASPECTS)
  * @param {string}   bgColor     frame background fill (default transparent)
  * @param {string}   guideColor  dashed border (@24%) + label (@70%) color
+ * @param {{x: number, y: number}} offset where the frame sits, in VIRTUAL px from its letterboxed place (default 0,0)
  * @param {ReactNode} children   rendered in the 1080-virtual scale layer
  */
 export function CanvasFrame({
@@ -90,13 +91,16 @@ export function CanvasFrame({
   aspects,
   bgColor,
   guideColor,
+  offset,
   children,
 }) {
   const { ratio, label } = resolveAspect(aspect, customRatio, aspects)
   /* NO guideColor → THEME INK (editor DS sync 2026-09-27, from the design editor's copy, which had
    * it and this lift had not): the border and label follow the theme, so the frame reads on a light
    * page and a dark one. A guideColor (a type frame's own color) still tints both. */
-  const borderColor = guideColor ? `color-mix(in srgb, ${guideColor} 24%, transparent)` : 'var(--kol-oq-24)'
+  /* the quiet line (plan-2026-11-18-kolbox-system 28.2): oq-24 read brighter than the rail divider in light; the engine
+   * sheet sets --kol-canvas-line from the page's own oq-16, the rails' line */
+  const borderColor = guideColor ? `color-mix(in srgb, ${guideColor} 24%, transparent)` : 'var(--kol-canvas-line, var(--kol-oq-24))'
   const labelColor = guideColor ? `color-mix(in srgb, ${guideColor} 70%, transparent)` : 'var(--kol-fg-64)'
   const virtualH = CANVAS_VIRTUAL_W / ratio
 
@@ -128,15 +132,26 @@ export function CanvasFrame({
       style={{
         aspectRatio: ratio,
         background:  bgColor ?? 'transparent',
+        /* THE FRAME'S X AND Y (plan-2026-11-18-kolbox-system 11.3): a translate in percent of the frame's own box,
+         * so it holds at any fit and zoom. Everything that reads this element's rect (the stage's pointer math,
+         * the rulers, the guides) follows it with no second coordinate system. */
+        transform: offset && (offset.x || offset.y)
+          ? `translate(${(offset.x / CANVAS_VIRTUAL_W) * 100}%, ${(offset.y / virtualH) * 100}%)`
+          : undefined,
       }}
     >
-      <div
-        className="absolute inset-0 pointer-events-none z-[2]"
-        style={{
-          border:      '1px solid',
-          borderColor,
-        }}
-      />
+      {/* the frame's edge line belongs to its fill: a frame with no fill (and it has no stroke of its own yet) draws
+          nothing at all, so only its name and, when selected, the selection outline show (his ruling 2026-11-19:
+          "there should be NO stroke if there is no fill and no stroke") */}
+      {bgColor != null && bgColor !== 'transparent' && (
+        <div
+          className="absolute inset-0 pointer-events-none z-[2]"
+          style={{
+            border:      '1px solid',
+            borderColor,
+          }}
+        />
+      )}
       <span
         className="z-[2]"
         style={{
@@ -197,6 +212,7 @@ export function CanvasFrame({
  * @param {Function}  setGuides   updater for `guides` — the viewport owns no guide state, the consumer does
  * @param {boolean}   guidesInteractive  let guides be grabbed and created (default true)
  * @param {Function}  onSpaceTap  fires when Space was pressed and released WITHOUT panning — a tap, not a drag. fxr binds its transport play/pause here; unset, a tap does nothing
+ * @param {{x: number, y: number}} offset the frame's X and Y in virtual px (CanvasFrame)
  * @param {ReactNode} children    rendered in the 1080-virtual scale layer
  */
 export default function Canvas({
@@ -205,6 +221,7 @@ export default function Canvas({
   aspects,
   bgColor,
   guideColor,
+  offset,
   align = 'center',
   panEnabled = false,
   backdrop,
@@ -240,6 +257,7 @@ export default function Canvas({
           aspects={aspects}
           bgColor={bgColor}
           guideColor={guideColor}
+          offset={offset}
         >
           {children}
         </CanvasFrame>
@@ -376,6 +394,16 @@ export function PanViewport({ backdrop, children }) {
 const ZOOM_MIN_REAL = 0.02
 const ZOOM_MAX_REAL = 32
 const FIT_MARGIN = 24 /* screen px around a rect fitted by `kol:zoom-fit` */
+/* PINCH ZOOM (plan-2026-11-19-kolbox-whats-left R6): Chrome and Firefox on macOS both turn a trackpad pinch into
+ * ctrl+wheel in pixels, deltaY about -100 x ln(the pinch's own scale) summed over the gesture (Chromium's pinch-to-wheel,
+ * Gecko's PinchGestureInput::ComputeDeltaY, written to match it); Safari sends gesturechange with that scale instead.
+ * So exp(-deltaY x 0.01) makes the canvas follow the fingers in all three: a full pinch-out of about 4x goes 100% to
+ * about 400%. The old 0.00225 gave the same pinch 1.37x. `localStorage['kol.editor.pinchStrength']` multiplies it (default 1). */
+const PINCH_STRENGTH = 0.01
+const WHEEL_ZOOM_STEP = 25 /* px of deltaY one event may zoom by: a mouse notch (~100) zooms about 1.28x, a pinch event (1 to 10) is never cut */
+const pinchTuning = () => { try { return Number(localStorage.getItem('kol.editor.pinchStrength')) || 1 } catch { return 1 } }
+/* wheel deltas in px whatever the deltaMode (Firefox gives a mouse wheel in lines once deltaMode is read) */
+const wheelPx = (e, d, page) => (e.deltaMode === 1 ? d * 16 : e.deltaMode === 2 ? d * page : d)
 
 /* The fit scale: the frame's LAYOUT width (untransformed) over its virtual width. 1 without a frame. */
 function fitOf(node) {
@@ -442,7 +470,7 @@ function isTypingTarget(el) {
  * `translate() scale()` on the transform layer carries both, so a consumer's
  * screen→virtual math needs no zoom awareness. Pointer events on the
  * transform layer disable while Space is held so layer mousedowns don't fire
- * mid-pan. `f` toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
+ * mid-pan. Shift+F toggles an fps chip beside the zoom readout. From outside: `kol:zoom-at`
  * { clientX, clientY, factor } · `kol:zoom-to` { scale } (real, 1 = 100%) · `kol:zoom-fit` { to:
  * 'frame' | 'width' | { x, y, w, h } } — window events. Zoom is clamped at 2%–3200% real. Touch:
  * two fingers pinch-zoom + pan; a one-finger tap fires `onSpaceTap`.
@@ -479,6 +507,22 @@ export function PanZoomViewport({
    * rebinding the window listeners on every consumer re-render. */
   const spaceTapRef = useRef(onSpaceTap)
   spaceTapRef.current = onSpaceTap
+  /* ONE VIEW UPDATE PER FRAME (plan-2026-11-18-kolbox-system W18): a trackpad pinch sends a wheel event or more per
+   * frame, and each was its own setView, so its own React commit. The steps queue here and fold into one setView on
+   * the next animation frame, in order, so the anchor math is the same as applying them one by one. */
+  const pendingView = useRef({ fns: [], raf: 0 })
+  const queueView = useCallback((fn) => {
+    const q = pendingView.current
+    q.fns.push(fn)
+    if (q.raf) return
+    q.raf = requestAnimationFrame(() => {
+      const fns = q.fns
+      q.fns = []
+      q.raf = 0
+      setView((v) => fns.reduce((acc, f) => f(acc), v))
+    })
+  }, [])
+  useEffect(() => () => cancelAnimationFrame(pendingView.current.raf), [])
 
   /* Space toggles pan mode; Cmd+0 / Cmd+= / Cmd+- drive zoom from the
    * keyboard (centered on the viewport). Skipped while typing in a field. */
@@ -552,20 +596,43 @@ export function PanZoomViewport({
   useEffect(() => {
     const node = containerRef.current
     if (!node) return
+    let gestureScale = 0 /* Safari: the last gesturechange scale while a pinch is on, 0 when none */
     const onWheel = (e) => {
       e.preventDefault()
       const rect = node.getBoundingClientRect()
       const sx = e.clientX - rect.left
       const sy = e.clientY - rect.top
+      const deltaX = wheelPx(e, e.deltaX, rect.width), deltaY = wheelPx(e, e.deltaY, rect.height)
       if (e.ctrlKey || e.metaKey) {
-        setView((v) => zoomAt(v, Math.exp(-e.deltaY * 0.0015), sx, sy, fitOf(node)))
+        if (gestureScale) return
+        const d = Math.max(-WHEEL_ZOOM_STEP, Math.min(WHEEL_ZOOM_STEP, deltaY))
+        const factor = Math.exp(-d * PINCH_STRENGTH * pinchTuning()), fit = fitOf(node)
+        queueView((v) => zoomAt(v, factor, sx, sy, fit))
       } else {
-        setView((v) => ({ ...v, x: v.x - e.deltaX, y: v.y - e.deltaY }))
+        queueView((v) => ({ ...v, x: v.x - deltaX, y: v.y - deltaY }))
       }
     }
+    const onGestureStart = (e) => { e.preventDefault(); gestureScale = 1 }
+    const onGestureChange = (e) => {
+      e.preventDefault()
+      if (!gestureScale || !e.scale) return
+      const rect = node.getBoundingClientRect(), fit = fitOf(node)
+      const factor = Math.pow(e.scale / gestureScale, PINCH_STRENGTH * 100 * pinchTuning())
+      gestureScale = e.scale
+      queueView((v) => zoomAt(v, factor, e.clientX - rect.left, e.clientY - rect.top, fit))
+    }
+    const onGestureEnd = (e) => { e.preventDefault(); gestureScale = 0 }
     node.addEventListener('wheel', onWheel, { passive: false })
-    return () => node.removeEventListener('wheel', onWheel)
-  }, [])
+    node.addEventListener('gesturestart', onGestureStart)
+    node.addEventListener('gesturechange', onGestureChange)
+    node.addEventListener('gestureend', onGestureEnd)
+    return () => {
+      node.removeEventListener('wheel', onWheel)
+      node.removeEventListener('gesturestart', onGestureStart)
+      node.removeEventListener('gesturechange', onGestureChange)
+      node.removeEventListener('gestureend', onGestureEnd)
+    }
+  }, [queueView])
 
   /* Touch (ViewportTouchGestures, kol-fxr 2026-10-14): two fingers pinch-zoom at their midpoint and
    * the midpoint's travel pans, in one gesture; the transform layer goes deaf while they are down so
@@ -597,7 +664,7 @@ export function PanZoomViewport({
       pinch = next
       const r = node.getBoundingClientRect()
       const fit = fitOf(node)
-      setView((v) => {
+      queueView((v) => {
         const z = zoomAt(v, next.d / prev.d, prev.mx - r.left, prev.my - r.top, fit)
         return { ...z, x: z.x + next.mx - prev.mx, y: z.y + next.my - prev.my }
       })
@@ -618,7 +685,7 @@ export function PanZoomViewport({
       window.removeEventListener('pointerup', onEnd)
       window.removeEventListener('pointercancel', onEnd)
     }
-  }, [])
+  }, [queueView])
 
   /* A consumer's zoom TOOL announces clicks as `kol:zoom-at` (client coords +
    * factor) rather than reaching into this state — anchored zoom at the
@@ -647,7 +714,10 @@ export function PanZoomViewport({
       const node = containerRef.current
       const frame = node?.querySelector('[data-canvas-frame]')
       const to = e.detail?.to ?? 'frame'
-      if (!frame || to === 'frame') { setView({ zoom: 1, x: 0, y: 0 }); return }
+      /* frames as objects (plan-2026-11-19-kolbox-whats-left C1): 'frame' fits the frame the consumer marks
+         `data-ruler-origin` (the selected or first one); with none, the stage at rest as before */
+      const origin = to === 'frame' ? node?.querySelector('[data-ruler-origin]') : null
+      if (!frame || (to === 'frame' && !origin)) { setView({ zoom: 1, x: 0, y: 0 }); return }
       const fit = fitOf(node)
       const cr = node.getBoundingClientRect()
       const fr = frame.getBoundingClientRect()
@@ -655,7 +725,10 @@ export function PanZoomViewport({
         /* the frame's rect at rest (zoom 1, no pan), in viewport px */
         const fx = (fr.left - cr.left - v.x) / v.zoom
         const fy = (fr.top - cr.top - v.y) / v.zoom
-        const rect = to === 'width'
+        const or = origin?.getBoundingClientRect()
+        const rect = origin
+          ? { x: (or.left - cr.left - v.x) / v.zoom, y: (or.top - cr.top - v.y) / v.zoom, w: or.width / v.zoom, h: or.height / v.zoom }
+          : to === 'width'
           ? { x: fx, y: fy, w: frame.offsetWidth, h: frame.offsetHeight }
           : { x: fx + to.x * fit, y: fy + to.y * fit, w: to.w * fit, h: to.h * fit }
         const zoom = clampZoom(to === 'width'
@@ -678,12 +751,12 @@ export function PanZoomViewport({
     }
   }, [])
 
-  /* `f` toggles the fps chip (measured only while shown). Guarded against
+  /* Shift+F toggles the fps chip (measured only while shown). Guarded against
    * typing targets so text fields don't flip it. */
   useEffect(() => {
     const onKey = (e) => {
       if (e.key !== 'f' && e.key !== 'F') return
-      if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (!e.shiftKey || e.metaKey || e.ctrlKey || e.altKey) return
       if (isTypingTarget(e.target)) return
       setShowFps((v) => !v)
     }
@@ -736,6 +809,7 @@ export function PanZoomViewport({
             the canvas content. */}
         {guides && setGuides && (
           <CanvasGuides
+            view={view}
             containerRef={containerRef}
             guides={guides}
             setGuides={setGuides}
@@ -743,10 +817,10 @@ export function PanZoomViewport({
           />
         )}
 
-        {showRulers && <CanvasRuler containerRef={containerRef} disabled={spaceHeld} />}
+        {showRulers && <CanvasRuler containerRef={containerRef} disabled={spaceHeld} view={view} />}
 
         {/* Zoom % + fps — matching chips. Zoom (click resets to 100% /
-            centered) first, fps to its right, shown while `f` toggles it. */}
+            centered) first, fps to its right, shown while Shift+F toggles it. */}
         <div className="absolute bottom-3 right-3 z-[3] flex items-center gap-2">
           <Tooltip label="Reset zoom (⌘0)" asChild>
           <button
@@ -840,7 +914,7 @@ export function ticksFor(originScreen, pxPer, spanScreen, step) {
  * horizontal guides). Re-measures on every `view` change and on container
  * resize. Shared by CanvasRuler and CanvasGuides so ruler labels and guide
  * lines can never disagree. */
-export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
+export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W, view) {
   const [geom, setGeom] = useState(null)
 
   const measure = useCallback(() => {
@@ -851,14 +925,20 @@ export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
     if (!frame || crect.width === 0) { setGeom(null); return }
     const frect = frame.getBoundingClientRect()
     const pxPer = frect.width / virtualWidth
-    setGeom({
-      left:  frect.left - crect.left,
-      top:   frect.top  - crect.top,
+    /* frames as objects (plan-2026-11-19-kolbox-whats-left C1): the zero sits on the frame the consumer marks
+       `data-ruler-origin` (its selected or first frame); with none, on the stage as before. The scale is the stage's. */
+    const o = el.querySelector('[data-ruler-origin]')?.getBoundingClientRect() ?? frect
+    const next = {
+      left:  o.left - crect.left,
+      top:   o.top  - crect.top,
       pxPer,
-      vh:    pxPer > 0 ? frect.height / pxPer : 0,
+      vh:    pxPer > 0 ? o.height / pxPer : 0,
+      vw:    pxPer > 0 ? o.width / pxPer : virtualWidth,
       cw:    crect.width,
       ch:    crect.height,
-    })
+    }
+    /* the observer below fires on every layer's move: an unchanged geometry renders nothing */
+    setGeom((g) => (g && Object.keys(next).every((k) => g[k] === next[k]) ? g : next))
   }, [containerRef, virtualWidth])
 
   /* A zoom that ANIMATES its transform (a consumer's eased step-zoom) would
@@ -887,14 +967,23 @@ export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
     }
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
-  }, [measure, containerRef])
+    /* `view` (pan and zoom) is a dep: the transform sits on the layer ABOVE the frame, which neither observer below
+     * sees, so without it the rulers and guides were measured once and stood still (found 2026-11-18: "it doesnt
+     * follow the canvas at all") */
+  }, [measure, containerRef, view?.x, view?.y, view?.zoom])
 
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
     const ro = new ResizeObserver(measure)
     ro.observe(el)
-    return () => ro.disconnect()
+    /* the frame's X and Y move it by its style transform (plan-2026-11-18-kolbox-system 11.3), which no resize sees:
+     * re-measure on its style, so the rulers' zero and the guides travel with the frame */
+    const frame = el.querySelector('[data-canvas-frame]')
+    const mo = frame ? new MutationObserver(measure) : null
+    /* …and on the frames inside it (C1): a frame drawn, moved, resized or made the origin moves the zero */
+    mo?.observe(frame, { attributes: true, attributeFilter: ['style', 'data-ruler-origin'], subtree: true, childList: true })
+    return () => { ro.disconnect(); mo?.disconnect() }
   }, [measure, containerRef])
 
   return geom
@@ -917,8 +1006,8 @@ export function useFrameGeom(containerRef, virtualWidth = CANVAS_VIRTUAL_W) {
  * @param {number} [virtualWidth=CANVAS_VIRTUAL_W] - The frame's virtual width, forwarded to `useFrameGeom`
  * @param {boolean} [disabled=false] - Let a pointerdown bubble instead of starting a guide (a pan gesture is holding the surface)
  */
-export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, disabled = false }) {
-  const geom = useFrameGeom(containerRef, virtualWidth)
+export function CanvasRuler({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, disabled = false, view }) {
+  const geom = useFrameGeom(containerRef, virtualWidth, view)
   const hPointer = useRef(null)
   const vPointer = useRef(null)
 
@@ -1074,8 +1163,8 @@ function GuideLine({ axis, screenPos, interactive, onGrab }) {
  * @param {Function} setGuides - Updater, called with the next `{h, v}`
  * @param {boolean} interactive - Allow grab and create; false renders the lines inert
  */
-export function CanvasGuides({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, guides, setGuides, interactive }) {
-  const geom = useFrameGeom(containerRef, virtualWidth)
+export function CanvasGuides({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, guides, setGuides, interactive, view }) {
+  const geom = useFrameGeom(containerRef, virtualWidth, view)
   /* Ref mirror so the drag listeners read fresh geometry without rebinding. */
   const geomRef = useRef(null)
   geomRef.current = geom
@@ -1118,7 +1207,7 @@ export function CanvasGuides({ containerRef, virtualWidth = CANVAS_VIRTUAL_W, gu
     const onUp = (e) => {
       const pos = posFrom(e)
       const { axis, index } = guideDrag
-      const max = axis === 'h' ? Math.round(geomRef.current?.vh ?? 0) : virtualWidth
+      const max = axis === 'h' ? Math.round(geomRef.current?.vh ?? 0) : Math.round(geomRef.current?.vw ?? virtualWidth)
       setGuides((g) => {
         const arr = [...g[axis]]
         if (pos < 0) {

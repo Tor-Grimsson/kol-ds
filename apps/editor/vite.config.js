@@ -32,6 +32,8 @@ export default defineConfig(({ command }) => ({
     // `exports` point at dist — which would mean a build between every edit and the app. The
     // alias gives this app the same live link every other app has to its package.
     alias: [
+      // the engine's source by path, for the kolbox host pages (src/kolbox/, C3 batch 7), as apps/kolbox reaches it
+      { find: /^@design-editor-src\/(.*)$/, replacement: SRC + '/$1' },
       { find: /^@kolkrabbi\/design-editor$/, replacement: SRC + '/index.jsx' },
       { find: /^@kolkrabbi\/design-editor\/core$/, replacement: SRC + '/core.jsx' },
       { find: /^@kolkrabbi\/design-editor\/(generators|effects|motion)$/, replacement: SRC + '/packs/$1.js' },

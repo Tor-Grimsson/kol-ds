@@ -3,7 +3,7 @@
 // component=InlineAddRow
 import figma from 'figma'
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const size = instance.getEnum('sm', { "false": "md", "true": "sm" })
 export default {
   example: figma.code`<InlineAddRow variant="float"${size === 'sm' ? ' size="sm"' : ''} label="New brief" onAdd={add} />`,
   imports: ["import { InlineAddRow } from \"@kolkrabbi/kol-component\""],

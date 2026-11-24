@@ -9,7 +9,8 @@
 
 import { loadFont } from './fontLoader'
 import { applyCase } from './cuts'
-import { pickCutFor, seedFromBlend } from './axisRandom'
+import { pickWeightFor, seedFromBlend } from './axisRandom'
+import { layerFamily, layerWeight, weightRange } from './families'
 import { curveBlend } from './curveMath'
 /* Path-command serializers shared with the kinetic morph engine (identical
  * copies unified — morph.js is the export). */
@@ -43,14 +44,17 @@ function alignOffset(textAlign, frameW, totalW) {
   return (frameW - totalW) / 2
 }
 
+/* Cut A and Cut B are one variable file at two weights (weight → weight2),
+ * so their outlines share topology and the morph lerps point for point. */
 async function fontsForFrame(frame) {
-  const a = await loadFont(frame.width,  frame.weight,  frame.italic)
+  const family = layerFamily(frame)
+  const a = await loadFont(family, layerWeight(frame), frame.italic)
   let b = a
   const mode = frame.axisMode ?? 'morph'
   if (frame.axisOn && (mode === 'morph' || mode === 'fade')) {
-    b = await loadFont(frame.width2, frame.weight2, frame.italic)
+    b = await loadFont(family, layerWeight({ ...frame, weight: frame.weight2 ?? 900 }), frame.italic)
   }
-  return { a, b }
+  return { a, b, family }
 }
 
 /**
@@ -76,7 +80,7 @@ export async function computeFrameGlyphs(frame) {
     return { glyphs: [], totalW: 0, offset: 0, tx: frame.x, ty: frame.y }
   }
 
-  const { a, b } = await fontsForFrame(frame)
+  const { a, b, family } = await fontsForFrame(frame)
   const size    = frame.size
   const mode    = frame.axisMode ?? 'morph'
   const trackPx = (frame.tracking ?? -0.01) * size
@@ -130,11 +134,8 @@ export async function computeFrameGlyphs(frame) {
         advance = advA * (1 - bl) + advB * bl + trackPx
       } else if (frame.axisOn && mode === 'random') {
         const seed = seedFromBlend(blendVal)
-        const [w, wt] = pickCutFor(gi, seed, {
-          widthLock:  frame.randomWidthLock,
-          weightLock: frame.randomWeightLock,
-        })
-        const font = await loadFont(w, wt, frame.italic)
+        const { min, max } = weightRange(family)
+        const font = await loadFont(family, pickWeightFor(gi, seed, min, max), frame.italic)
         const path = font.getPath(ch, 0, 0, size)
         d       = path.toPathData(2)
         bbox    = path.getBoundingBox()

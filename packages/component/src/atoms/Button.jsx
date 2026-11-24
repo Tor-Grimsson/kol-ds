@@ -1,8 +1,10 @@
-import { isValidElement } from 'react'
+import { isValidElement, useContext } from 'react'
 import { toneClass, VARIANT_TONE } from '../utilities/tone.js'
 import { IconLoader } from '@kolkrabbi/kol-icons'
 import { glyphSize } from '../hooks/glyphLadders.js'
 import Kbd from './Kbd.jsx'
+import KolboxGlyph from '../utilities/kolboxGlyph.jsx'
+import { InTooltipKolbox, Tooltip } from '../utilities/Popover.jsx'
 
 /**
  * Button — canonical KOL button. Emits kol-btn* classes (CSS in @kol/theme).
@@ -36,9 +38,17 @@ import Kbd from './Kbd.jsx'
  * @param {boolean} props.selected - Selected/active state (toggle highlight)
  * @param {ElementType|ReactNode} props.iconComponent - Icon renderer seam — a component that receives `{ name, size, className, style }` in place of the DS Icon (custom icon registries plug in here), or a pre-rendered node dropped in verbatim where the glyph would go. Defaults to DS Icon.
  * @param {boolean} props.pressed - Toggle state — sets `aria-pressed` (true/false) and `kol-btn-pressed`; a `quiet` button drops its dimming while pressed. Leave undefined for non-toggle buttons.
+ * @param {'kolbox'} props.variant - also `kolbox` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's button, `--kol-kolbox-ctl` high (24), 12 in, radius 4, a 1px line, Inter 12 / 16 / 500, one size. Its grounds are tones: `primary` the accent with the on-accent ink (110% brightness on hover), `secondary` (also unset) the oq-16 field with the oq-24 line (the line's oq-24 on hover), `ghost` bare in oq-64 (the field and the ink on hover); `pressed` is its lit look (the accent tint, the accent ink) and sets aria-pressed. `iconLeft` is a 16 glyph 8 off the label. With `iconOnly` it is kolbox's icon button: a 28 box, the glyph in oq-64, the ink on hover over a 28 oq-16 frame drawn centred on the glyph, so a caller may set a 16 or 24 box and the frame still lights 28; `pressed` lights the frame in the accent tint with the accent glyph; `aria-pressed` is always set; `children` stand in for a glyph that is not an icon. The glyph is your icons by the set's name at 16 with the stroke lift (`.kol-kolbox-icon`, KolboxGlyph); `iconComponent` is not read here (C9.2: kolbox's data carries the set's names).
+ * @param {'folio'} props.variant - also `folio` (Folio migration batch A, 2026-11-22): Folio's buttons carried class for class, the chrome in kol-theme `.kol-btn--folio` and `.kol-icon-btn--folio`, the colors Folio's (`--kol-folio-*`). `size` picks the shape: `md` (default) Folio's editor tool, 32 high, 10 in, radius 3, Inter 11, a 16 `iconLeft` 8 off the label; `lg` Folio's page action, 42 high, 16 in, radius 3, a 1px line, the label 12 / 600 and its `glyph` (a character, 16) 12 after it. Grounds are tones: `ghost` (md's default) bare in the ink, the surface on hover; `outline` (lg's default) the paper with the rule line; `primary` the accent fill with the paper ink. `pressed` is its lit look (the accent's soft ground and strong ink) and sets aria-pressed. With `iconOnly` it is Folio's tool icon: a 32 square at radius 4, the glyph 20, the paper on hover, lit when `pressed`. A press does not take the focus (`mousedown` is prevented), so the editor's selection stays.
+ * @param {string} props.glyph - folio `lg` only: the character after the label (`+`, `⌄`, `→`)
  * @param {string} props.kbd - a key cap after the label, inside the button (float-everything W2 row 12, 2026-11-04): `Kbd size="sm"`, a leading ⌘ drawn as the `command` icon. On `variant="float"` the cap takes the button's own ink (`.kol-btn-kbd`). The float roles are tones (W0.5): primary `tone="inverted"` · secondary `tone="secondary"` · quiet `tone="ghost"` · destructive `tone="danger"` — `danger` is accepted as a tone on a float button so the role and the shape are two props.
  */
 const warned = new Set()
+/* kolbox's grounds, by KOL's tone names; unset is its secondary. `outline` the line with no fill (Figma's browser
+   top bar: Share, the adjust and star boxes, 2026-11-23) */
+const KOLBOX_TONES = ['primary', 'secondary', 'outline', 'ghost']
+/* Folio's three grounds; unset is the shape's own (md ghost, lg outline) */
+const FOLIO_TONES = ['primary', 'outline', 'ghost']
 
 const Button = ({
   children,
@@ -66,8 +76,11 @@ const Button = ({
   pressed,
   tone = 'default',
   kbd,
+  glyph,
   ...props
 }) => {
+  /* an icon-only kolbox button names itself in a tooltip unless it already sits in one */
+  const inTip = useContext(InTooltipKolbox)
   /* `variant="bare"` (MetricRebuild, 2026-10-31): a pressable SURFACE — a stat tile, a bar row, a column head — that
    * draws itself. No kol-btn chrome (ground, size, type, radius); the button keeps its type, the KOL focus ring
    * (`kol-menu-btn`, as MenuItem's rows) and `disabled`;
@@ -75,12 +88,86 @@ const Button = ({
   if (variant === 'bare') {
     return <button type={type} onClick={onClick} disabled={disabled} className={`kol-menu-btn kol-menu-btn--bare ${className}`.trim()} style={style} {...props}>{children}</button>
   }
+  /* `variant="kolbox"` (plan-2026-11-18-kolbox-system W31.2 batch 3, 2026-11-18): kolbox's Button and IconButton carried
+   * class for class, the chrome in kol-theme `.kol-btn--kolbox` and `.kol-icon-btn--kolbox`. */
+  if (variant === 'kolbox') {
+    const on = Boolean(pressed !== undefined ? pressed : selected)
+    /* your icons as kolbox draws them (KolboxGlyph: the stroke lift, every chevron 12 at the dock chevron's stroke) */
+    const glyph = (name) => <KolboxGlyph name={name} />
+    /* IconButton: a box at the kolbox control height (`--kol-kolbox-ctl`, 24) whose hover and pressed fill is its own
+       layer (::before) at the same height, centred on the glyph, so a caller's 16 box keeps its size in the layout and
+       still lights 24 */
+    if (iconOnly) {
+      const tip = !inTip && props['aria-label'] && props['aria-hidden'] == null ? props['aria-label'] : null
+      const btn = (
+        <button
+          type={type}
+          onClick={onClick}
+          disabled={disabled}
+          style={style}
+          aria-pressed={on}
+          className={`kol-icon-btn--kolbox${on ? ' is-pressed' : ''} relative inline-flex size-(--kol-kolbox-ctl) shrink-0 items-center justify-center outline-none focus-visible:outline-solid focus-visible:outline-1 disabled:opacity-40 disabled:pointer-events-none isolate before:absolute before:top-1/2 before:left-1/2 before:-z-10 before:size-(--kol-kolbox-ctl) before:-translate-1/2 before:content-[''] ${className}`}
+          {...props}
+        >
+          {children ?? glyph(iconOnly)}
+        </button>
+      )
+      return tip ? <Tooltip variant="kolbox" asChild label={tip}>{btn}</Tooltip> : btn
+    }
+    const look = on ? 'lit' : KOLBOX_TONES.includes(tone) ? tone : 'secondary'
+    /* the secondary tone is fill only, no border in any state (W15.4, his "I dont like borders with fill") */
+    return (
+      <button
+        type={type}
+        onClick={onClick}
+        disabled={disabled}
+        style={style}
+        aria-pressed={pressed}
+        className={`kol-btn--kolbox kol-btn--kolbox-${look} inline-flex h-(--kol-kolbox-ctl) shrink-0 items-center justify-center gap-2 ${look === 'secondary' ? 'border-0' : 'border'} px-3 whitespace-nowrap outline-none focus-visible:outline-solid focus-visible:outline-1 focus-visible:outline-offset-1 disabled:opacity-40${look === 'primary' ? ' enabled:hover:brightness-110' : ''} ${className}`}
+        {...props}
+      >
+        {iconLeft && glyph(iconLeft)}
+        {children}
+      </button>
+    )
+  }
+  /* `variant="folio"` (Folio migration batch A, 2026-11-22): Folio's Action, Tool and ToolIcon carried class for class
+   * (apps/folio parts.jsx, EditorChrome.jsx), the chrome in kol-theme `.kol-btn--folio` and `.kol-icon-btn--folio`. */
+  if (variant === 'folio') {
+    const on = pressed !== undefined ? pressed : (selected || undefined)
+    const keep = (e) => e.preventDefault()
+    if (iconOnly) {
+      return (
+        <button type={type} onMouseDown={keep} onClick={onClick} disabled={disabled} style={style} aria-pressed={on} {...props} className={`kol-icon-btn--folio flex size-[32px] shrink-0 items-center justify-center rounded-[4px] ${className}`}>
+          {children ?? <IconLoader name={iconOnly} size={20} />}
+        </button>
+      )
+    }
+    const look = FOLIO_TONES.includes(tone) ? tone : size === 'lg' ? 'outline' : 'ghost'
+    if (size === 'lg') {
+      return (
+        <button type={type} onClick={onClick} disabled={disabled} style={style} aria-pressed={on} {...props} className={`kol-btn--folio kol-btn--folio-lg kol-btn--folio-${look} flex h-[42px] shrink-0 items-center gap-[12px] whitespace-nowrap rounded-[3px] border px-[16px] ${className}`}>
+          <span className="kol-btn-label">{children}</span>
+          <span className="kol-btn-glyph">{glyph}</span>
+        </button>
+      )
+    }
+    return (
+      <button type={type} onMouseDown={keep} onClick={onClick} disabled={disabled} style={style} aria-pressed={on} {...props} className={`kol-btn--folio kol-btn--folio-md kol-btn--folio-${look} flex h-[32px] shrink-0 items-center gap-[8px] whitespace-nowrap rounded-[3px] px-[10px] disabled:opacity-30 ${className}`}>
+        {iconLeft && <IconLoader name={iconLeft} size={16} />}{children}
+      </button>
+    )
+  }
   // Two ladders, split on whether a label sits beside the glyph. An icon-only
   // button is a solo glyph in a pinned square, so it takes SOLO (16/20/24) —
   // it took the text-adjacent ladder until component 0.20.0, which put a 14px
   // glyph in a 28px square at `sm`. `iconSize` still overrides either.
   /* a float glyph follows the pointer (18, 20 on touch — `--kol-float-ic`), so its size is the token, not a number */
-  const resolvedIconSize = iconSize ?? (variant === 'float' ? 'var(--kol-float-ic)' : glyphSize(size, Boolean(iconOnly)))
+  /* …except a chevron or caret: LAW 9 (the user, 2026-11-12: *"USE 12px chevron"*), the float chevron token per size
+     (12 · 12 · 16, touch 14 · 14 · 18), the same as the Dropdown and the fold. Only when every glyph is one. */
+  const glyphs = [iconOnly, iconLeft, iconRight].filter(Boolean)
+  const chevronOnly = glyphs.length > 0 && glyphs.every((g) => /^(chevron|caret)/.test(g))
+  const resolvedIconSize = iconSize ?? (variant === 'float' ? (chevronOnly ? `var(--kol-float-chev-${size === 'lg' ? 'lg' : size === 'md' ? 'md' : 'sm'})` : 'var(--kol-float-ic)') : glyphSize(size, Boolean(iconOnly)))
 
   // `control` is a legacy alias for `ghost` (kept so web call-sites passing
   // variant="control" keep working post-migration).

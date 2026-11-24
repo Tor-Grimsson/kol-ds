@@ -1,7 +1,7 @@
 import '../styles/kol-labs.css'
 import '../styles/kol-editor.css'
 import { useEffect, useRef, useState } from 'react'
-import { NavRail, useMediaQuery } from '@kolkrabbi/kol-component'
+import { LabeledControlSection, NavRail, useMediaQuery } from '@kolkrabbi/kol-component'
 import { PropertyRail, RailDisplayControls, RailTrigger } from '@kolkrabbi/kol-shell'
 import { EditorProviders } from '../Editor'
 import { ChromeContext } from '../float/chrome'
@@ -76,12 +76,15 @@ function FloatLabsBody() {
   /* labs' one layer stays selected — every inspector in the params Rail reads `selectedId` */
   useEffect(() => { if (layer && selectedId !== layer.id) select(layer.id) }, [layer, selectedId, select])
   const nav = useLabsNav()
-  const title = layer ? sheetLabels(layer).title : 'Labs'
+  const { title, kind } = layer ? sheetLabels(layer) : { title: 'Labs' }
   /* every section opens on its groups while the Rail is expanded */
   const open = nav.items.filter((i) => i.sub?.length).map((i) => i.path)
   const [collapsed, setCollapsed] = useState(phone)
-  const [hidden, setHidden] = useState(false)
+  /* a phone has no room for a Rail beside a sheet: the nav starts behind RailTrigger and the params start collapsed (collapse-v) */
+  const [hidden, setHidden] = useState(phone)
   const [transportMoved, setTransportMoved] = useState(false)
+  /* the nav collapses (collapse-v) to its pill like the params Rail (RailFloat, plan-2026-11-12-float-system W4.1) — apart from collapse and hide */
+  const [navCollapsedV, setNavCollapsedV] = useState(false)
 
   return (
     <div className="kol-float-labs kol-editor-shell relative h-dvh overflow-hidden" data-editor-keep-selection>
@@ -91,15 +94,26 @@ function FloatLabsBody() {
             onRestore={() => setHidden(false)} className="absolute left-6 top-6 z-[var(--kol-z-sticky)]" />
         : <NavRail variant="float" items={nav.items} currentPath={nav.active ?? ''} onNavigate={nav.pick} title="Labs" icon="globe"
             defaultExpanded={open} collapsed={collapsed} onCollapsedChange={setCollapsed} onHide={() => setHidden(true)}
+            collapsibleV collapsedV={navCollapsedV} onCollapseV={setNavCollapsedV}
             footer={collapsed ? undefined : <RailDisplayControls onCollapse={() => setCollapsed(true)} onHide={() => setHidden(true)} />}
-            className="absolute inset-y-6 left-6 z-[var(--kol-z-sticky)] !h-auto" />}
+            className={`absolute left-6 top-6 z-[var(--kol-z-sticky)] ${navCollapsedV && !collapsed ? '' : 'bottom-6 !h-auto'}`} />}
       {/* under the params Rail, bottom-right; grab it to move it — while it sits there the Rail stops 24 above it (48 + 24) */}
-      {!phone && <Movable id="labs-transport" start={{ right: 24, bottom: 24 }} onMoved={setTransportMoved}><Transport /></Movable>}
-      <div className={`absolute top-6 right-6 ${!phone && !transportMoved ? 'bottom-24' : 'bottom-6'} z-[var(--kol-z-sticky)] flex flex-col pointer-events-none [&>*]:pointer-events-auto`}>
-          <PropertyRail title={title || 'Parameters'} width={phone ? 300 : 352} density="compact" surface="solid"
-            className="max-h-full min-h-0 overflow-y-auto [scrollbar-width:none] [&_.kol-compose-inspector-body]:!p-0"
-            sections={[{ id: 'labs-params', label: 'Parameters', rows: [{ id: 'body', render: () => <div className="kol-editor-labs"><div className="kol-compose-inspector-body"><LabsParams /></div></div> }] }]}
-            footer={<div className="kol-editor-labs"><EditorFooter /></div>} />
+      {!phone && <Movable id="labs-transport" start={{ right: 24, bottom: 24 }} onMoved={setTransportMoved}><Transport collapsibleH /></Movable>}
+      {/* the wide module (`--kol-float-module-w-wide`, the float spec): a tool Rail whose rows carry two controls — at the
+          inspector width the Preset and Palette dropdowns collapse to nothing (measured 2026-11-12). On a phone it spans the
+          screen under RailTrigger. AS WINDOWS (plan-2026-11-12-one-header W10.1, P15): the effect's parameters (title the
+          effect, the preset its quiet second text), Output and File are separate RailFloat windows, each collapsing (collapse-v)
+          alone; the stack scrolls only when they outgrow the screen. No effect picked: "Labs" with its Parameters head alone. */}
+      <div className={`absolute ${phone ? 'left-6 right-6 top-[88px]' : 'top-6 right-6'} ${!phone && !transportMoved ? 'bottom-24' : 'bottom-6'} z-[var(--kol-z-sticky)] flex flex-col pointer-events-none [&>*]:pointer-events-auto`}>
+          <PropertyRail wide width={phone ? '100%' : undefined} density="compact" surface="solid" className="max-h-full"
+            windows={[
+              { id: 'params', title: title || 'Labs', kind, defaultCollapsedV: phone, className: '[&_.kol-compose-inspector-body]:!p-0',
+                children: layer
+                  ? <div className="kol-editor-labs"><div className="kol-compose-inspector-body"><LabsParams /></div></div>
+                  : <LabeledControlSection variant="float" label="Parameters" /> },
+              { id: 'output', title: 'Output', defaultCollapsedV: phone, children: <div className="kol-editor-labs"><EditorFooter part="output" /></div> },
+              { id: 'file', title: 'File', defaultCollapsedV: phone, children: <div className="kol-editor-labs"><EditorFooter part="file" /></div> },
+            ]} />
       </div>
     </div>
   )

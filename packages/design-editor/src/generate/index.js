@@ -14,10 +14,12 @@ import tiling from './styles/tiling.js'
 import ascii from './styles/ascii.js'
 import stipple from './styles/stipple.js'
 import mosaic from './styles/mosaic.js'
+import { LINE_SWELL_STYLE } from './lineSwell/index.js'
 import { PRESETS } from './presets.js'
 import { REPEAT_SCHEMA, copyMatrices, apply } from './repeat.js'
 
-export const STYLES = [lineScreen, dotScreen, ascii, stripeArray, radialArray, symbolGrid, tiling, stipple, mosaic]
+/* Line Swell (R8) is one style: an effect row's form drawn as a generate vehicle; it is never listed in a window */
+export const STYLES = [lineScreen, dotScreen, ascii, stripeArray, radialArray, symbolGrid, tiling, stipple, mosaic, LINE_SWELL_STYLE]
 export const styleById = (id) => STYLES.find((s) => s.id === id) ?? STYLES[0]
 
 /* RANDOMNESS (plan 53 § 1.3): a seeded jitter on every mark after the style draws — position (px), size
@@ -74,11 +76,15 @@ function repeatMarks(m, p, w, h) {
   return out
 }
 
-/* the rows every generate layer carries, whatever its style: art inset, ink, ground */
+/* the rows every generate layer carries, whatever its style: art inset, ink, ground (unset: the layer's own fill shows), fit */
 const FRAME_SCHEMA = [
   { key: 'inset', label: 'Inset', type: 'range', min: 0, max: 400, step: 1, default: 0, format: (v) => `${v}px`, section: 'Frame' },
   { key: 'color', label: 'Ink', type: 'color', default: '#FFFFFF', section: 'Frame' },
-  { key: 'bg', label: 'Ground', type: 'color', default: '#000000', section: 'Frame' },
+  { key: 'bg', label: 'Ground', type: 'color', section: 'Frame' },
+  /* how the picture meets the layer's box: fit (scaled whole into it), fill (scaled to cover it), actual (drawn at the
+     box's own size); a layer without it is drawn actual, as before */
+  { key: 'genFit', label: 'Fit', type: 'select', default: 'fit', section: 'Frame',
+    options: [{ value: 'fit', label: 'Fit' }, { value: 'fill', label: 'Fill' }, { value: 'actual', label: 'Actual size' }] },
 ]
 
 /* Warp and Frame open closed: the window leads with the style's own controls, its field and its mask */
@@ -116,7 +122,8 @@ export function renderGenerate(p, w, h, { rings = null, image = null } = {}) {
   const box = artBox(p, w, h)
   if (box.w <= 1 || box.h <= 1) return m
   const aspect = box.w / box.h
-  const ctx = { aspect }
+  /* a style that reads its own source (Line Swell) takes the letter's rings and the photo as they come */
+  const ctx = { aspect, rings, image }
   if (s.sampled) {
     ctx.field = makeField(p, aspect, image)
     ctx.mask = makeMask(p, aspect, rings)

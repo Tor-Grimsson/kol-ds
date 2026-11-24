@@ -3,7 +3,7 @@
 // component=ValueField
 import figma from 'figma'
 const instance = figma.selectedInstance
-const size = instance.getEnum('size', { "sm": "sm", "md": "md" })
+const size = instance.getEnum('size', { "sm": "sm", "md": "md", "lg": "lg" })
 const value = instance.getString('value')
 const iconOn = instance.getBoolean('icon')
 // the glyph lives in a nested IconLoader (2026-11-07): read its `glyph` swap; a layer name never follows a swap

@@ -5,7 +5,7 @@ import figma from 'figma'
 
 const instance = figma.selectedInstance
 // type=custom — a control at the row's end; type=text — a row whose value is text (`text`)
-const type = instance.getEnum('type', { "custom": "custom", "text": "text" })
+const type = instance.getEnum('text', { "false": "custom", "true": "text" })
 
 export default {
   example: type === 'text'

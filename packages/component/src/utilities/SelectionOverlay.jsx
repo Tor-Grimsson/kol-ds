@@ -51,11 +51,21 @@ import { Tooltip } from '../utilities/Popover.jsx'
  * @param {string}   accentColor  outline + handle + label color (default var(--kol-accent-primary))
  * @param {Function} labelFormatter (box) => string — dimension readout (default `${round(w)} × ${round(h)}`)
  * @param {string}   rotateTitle  tooltip on the rotate handle (default 'Rotate')
- * @param {'float'}  variant      THE FLOAT LOOK (plan-2026-11-05-float-editor W2.6; his frame 19:6066 — "New text" ·
+ * @param {'float'|'kolbox'} variant      THE FLOAT LOOK (plan-2026-11-05-float-editor W2.6; his frame 19:6066 — "New text" ·
  *                                "600 × 160"): a solid 1px oq-64 outline, 6 square handles filled at full ink, the
  *                                rotate handle a 6 circle, `name` above the box's top-left (`kol-float-label`, oq-64) and
  *                                the size cap under it (`kol-float-ruler` on oq-08, the float list round). Unset, as before
  * @param {string}   name         the object's name, drawn above the box by the float look
+ * @param {number}   scale        screen px per virtual px (default: the zoom); a host whose stage is also fitted passes
+ *                                fit × zoom so 1 screen px stays 1
+ *
+ * THE KOLBOX LOOK (`variant="kolbox"`, plan-2026-11-19-kolbox-whats-left R2, his Figma reference "this is how shape looks
+ * like in figma"): one solid 1 screen px accent line, four white 6 squares with a 1px accent edge at the corners only
+ * (SelectionBox 28:9356's handle size), no name, and the size on an accent chip centred 8 px under the box (the design's
+ * label: medium 10 / 14, 8 by 2 in, radius 4, the accent's own ink). The sides and the rotate are NOT drawn but still
+ * answer the pointer: an 8 px band on each side (`data-handle` N, E, S, W, the resize cursors) and a 16 px zone just
+ * outside each corner (`data-handle="ROT"`, the host's `--kol-cursor-rotate`). `showHandles` false draws the line
+ * alone (hover, a multi-selection's member).
  */
 const HANDLE_DIRS = [
   { dir: 'NW', cursor: 'nwse-resize', x: 0,    y: 0    },
@@ -83,6 +93,7 @@ export default function SelectionOverlay({
   rotateTitle = 'Rotate',
   variant,
   name,
+  scale,
 }) {
   /* Chrome renders in virtual px inside the zoomed transform — divide by zoom
    * so handles / outline / label stay screen-constant at any zoom. 1 outside a
@@ -90,6 +101,7 @@ export default function SelectionOverlay({
   const zoom = useContext(CanvasZoomContext)
 
   if (!box || box.x == null) return null  /* no positional box → no chrome */
+  if (variant === 'kolbox') return <KolboxSelection box={box} s={scale || zoom || 1} showHandles={showHandles} showRotate={showRotate} showLabel={showLabel} labelFormatter={labelFormatter} />
   if (variant === 'float') return <FloatSelection box={box} zoom={zoom} showHandles={showHandles} showRotate={showRotate} showLabel={showLabel} name={name} labelFormatter={labelFormatter} rotateTitle={rotateTitle} />
 
   const { x, y, w, h } = box
@@ -237,6 +249,67 @@ function FloatSelection({ box, zoom, showHandles = true, showRotate, showLabel =
         <div style={{ position: 'absolute', left: x + w / 2, top: y + h + 8 / zoom, width: 0, height: 0, zIndex: 100 }}>
           <span className="kol-float-ruler text-emphasis bg-oq-08 rounded-[var(--kol-float-list-r)] px-2 py-1"
             style={{ ...counter, position: 'absolute', left: 0, top: 0, transform: `translateX(-50%) scale(${1 / zoom})`, transformOrigin: 'top center' }}>{labelFormatter(box)}</span>
+        </div>
+      )}
+    </>
+  )
+}
+
+/* the kolbox look (see the header): every screen-constant size is `n * px`, px being one screen px in virtual px */
+const KOLBOX_CORNERS = [
+  { dir: 'NW', cursor: 'nwse-resize', x: 0, y: 0 },
+  { dir: 'NE', cursor: 'nesw-resize', x: 1, y: 0 },
+  { dir: 'SE', cursor: 'nwse-resize', x: 1, y: 1 },
+  { dir: 'SW', cursor: 'nesw-resize', x: 0, y: 1 },
+]
+function KolboxSelection({ box, s, showHandles = true, showRotate, showLabel = true, labelFormatter }) {
+  const { x, y, w, h } = box
+  const px = 1 / s
+  const hs = 6 * px, band = 8 * px, rz = 16 * px
+  const rotate = showRotate ?? showHandles
+  const rot = typeof box.rotation === 'number' ? box.rotation : 0
+  const rad = (rot * Math.PI) / 180
+  const halfBoundsH = (Math.abs(w * Math.sin(rad)) + Math.abs(h * Math.cos(rad))) / 2
+  const accent = 'var(--kol-accent-primary)'
+  const zone = { position: 'absolute', pointerEvents: 'auto' }
+  return (
+    <>
+      <div data-selection="kolbox" style={{ position: 'absolute', left: x, top: y, width: w, height: h, transform: rot ? `rotate(${rot}deg)` : undefined, pointerEvents: 'none', zIndex: 100 }}>
+        {/* a spread shadow, not an outline: an outline's width is rounded to whole layout px before the zoom scales it */}
+        <div data-selection-line style={{ position: 'absolute', inset: 0, boxShadow: `0 0 0 ${px}px ${accent}` }} />
+        {rotate && KOLBOX_CORNERS.map(({ dir, x: cx, y: cy }) => (
+          <div key={`r${dir}`} data-handle="ROT" style={{ ...zone, left: cx ? '100%' : -rz, top: cy ? '100%' : -rz, width: rz, height: rz, cursor: 'var(--kol-cursor-rotate, grab)' }} />
+        ))}
+        {showHandles && (
+          <>
+            <div data-handle="N" style={{ ...zone, left: hs, right: hs, top: -band / 2, height: band, cursor: 'ns-resize' }} />
+            <div data-handle="S" style={{ ...zone, left: hs, right: hs, bottom: -band / 2, height: band, cursor: 'ns-resize' }} />
+            <div data-handle="W" style={{ ...zone, top: hs, bottom: hs, left: -band / 2, width: band, cursor: 'ew-resize' }} />
+            <div data-handle="E" style={{ ...zone, top: hs, bottom: hs, right: -band / 2, width: band, cursor: 'ew-resize' }} />
+            {KOLBOX_CORNERS.map(({ dir, cursor, x: cx, y: cy }) => (
+              <div
+                key={dir}
+                data-handle={dir}
+                data-selection-handle
+                style={{ ...zone, left: `calc(${cx * 100}% - ${hs / 2}px)`, top: `calc(${cy * 100}% - ${hs / 2}px)`, width: hs, height: hs, background: '#fff', boxShadow: `inset 0 0 0 ${px}px ${accent}`, cursor }}
+              />
+            ))}
+          </>
+        )}
+      </div>
+      {showLabel && (
+        <div style={{ position: 'absolute', left: x + w / 2, top: y + h / 2 + halfBoundsH + 8 * px, width: 0, height: 0, zIndex: 100, pointerEvents: 'none' }}>
+          <span
+            data-selection-size
+            style={{
+              position: 'absolute', left: 0, top: 0, transform: `translateX(-50%) scale(${px})`, transformOrigin: 'top center',
+              display: 'flex', alignItems: 'center', height: 18, padding: '2px 8px', boxSizing: 'border-box', borderRadius: 4,
+              fontFamily: 'var(--kol-font-family-sans)', fontSize: 10, lineHeight: '14px', fontWeight: 500, whiteSpace: 'nowrap',
+              background: accent, color: 'var(--kol-accent-on-primary)',
+            }}
+          >
+            {labelFormatter(box)}
+          </span>
         </div>
       )}
     </>

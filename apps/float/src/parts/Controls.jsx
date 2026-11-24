@@ -1,7 +1,7 @@
 import { ThemeTile } from '@kolkrabbi/kol-styleguide'
 import { useState } from 'react'
 import {
-  Badge, Button, Delta, Dropdown, Kbd, LiveDot, MenuDatePicker, Pill, ProgressBar, QuantityInput, ButtonGroup, SizeChip,
+  Badge, Button, Delta, Dropdown, Kbd, LabeledControl, LiveDot, MenuDatePicker, Pill, ProgressBar, QuantityInput, ButtonGroup, SizeChip,
   Slider, Tag, ToggleCheckbox, ToggleSwitch, ViewToggle, floatSurfaceClass,
 } from '@kolkrabbi/kol-component'
 import FamilyPage, { Part } from '../FamilyPage.jsx'
@@ -74,7 +74,7 @@ export default function Controls() {
           </Part>
 
           <Part name="ToggleSwitch" slug="toggle-switch">
-            <Plate surface={surface}><ToggleSwitch variant="float" label="Autoplay" checked={sw} onChange={setSw} /></Plate>
+            <Plate surface={surface}><LabeledControl variant="float" horizontal label="Autoplay" labelWidth="fit-content"><ToggleSwitch variant="float" checked={sw} onChange={setSw} aria-label="Autoplay" /></LabeledControl></Plate>
           </Part>
 
           <Part name="ToggleCheckbox" slug="toggle-checkbox">
@@ -86,8 +86,8 @@ export default function Controls() {
 
           <Part name="Slider" slug="slider">
             <Plate surface={surface} className="w-64 flex-col items-stretch">
-              <Slider variant="float" label="Intensity" value={level} onChange={setLevel} readout="value" formatValue={(n) => `${Math.round(n)}%`} />
-              <Slider variant="float" label="Disabled" value={40} onChange={() => {}} readout="value" formatValue={(n) => `${n}%`} disabled />
+              <LabeledControl variant="float" label="Intensity" hint={`${Math.round(level)}%`}><Slider variant="float" aria-label="Intensity" value={level} onChange={setLevel} /></LabeledControl>
+              <LabeledControl variant="float" label="Disabled" hint="40%" className="opacity-40"><Slider variant="float" aria-label="Disabled" value={40} onChange={() => {}} disabled /></LabeledControl>
             </Plate>
           </Part>
 

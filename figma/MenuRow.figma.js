@@ -12,7 +12,7 @@ const glyphOf = (layer, fallback) => {
 }
 const label = instance.getString('label')
 // variant float (2026-11-04) is the panel's — Menu variant="float" draws every row float; tone=danger is the destructive row
-const tone = instance.getEnum('tone', { "default": "default", "danger": "danger" })
+const tone = instance.getEnum('danger', { "false": "default", "true": "danger" })
 // state + indicator in words (plan-2026-11-07-menu-system W2.1); variant select is Dropdown's row
 const state = instance.getEnum('state', { "rest": "rest", "current": "current", "disabled": "disabled" })
 const indicator = instance.getEnum('indicator', { "none": "none", "check": "check", "dot": "dot", "chevron": "chevron" })

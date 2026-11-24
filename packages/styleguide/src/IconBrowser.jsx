@@ -36,6 +36,8 @@ import { IconLoader } from '@kolkrabbi/kol-icons'
  * @param {Function} onSelect    `(names) => …`, every change of the selection
  * @param {Function} onContextMenu `(selectedItems, event) => …` — right-click on a plate; an unselected plate becomes the
  *                               selection first. The browser draws no menu: the page opens its own (ContextMenu).
+ * @param {string} searchValue   the search text, controlled (optional) — a page that opens with a word typed (`?q=`) hands it here
+ * @param {Function} onSearchChange `(text) => …`, every change of the search text
  * @param {string} persistKey    opt-in: the controls (ticked facet values, per row, size, ground, guide, labels, layout,
  *                               select mode, facets open) are kept in sessionStorage under `kol-icon-browser:<key>`, so a
  *                               reload comes back as it was. The selection is the page's (controlled `selected`).
@@ -125,7 +127,8 @@ function Tile({ item, size, ground, guide, copied, onCopy, labels = true, select
         </Tooltip>
         <span className="flex flex-col gap-1">
           <span className={`${nameType(size)[0]} text-emphasis`}>{copied === item.name ? 'copied!' : item.name}</span>
-          <span className="kol-mono-10 text-meta">{item.group}</span>
+          {/* an icon with a solid cut shows it here, beside the group (W20.3: one tile per name, solid its variant) */}
+          <span className="kol-mono-10 text-meta flex items-center gap-1">{item.group}{item.solid && <IconLoader name={item.solid} size={12} className="text-oq-64" />}</span>
         </span>
       </button>
       {check}
@@ -182,7 +185,7 @@ function ShownRows({ rows, onRows }) {
   return null
 }
 
-export default function IconBrowser({ items = [], filterGroups, title = 'Icons', defaultGround = 'light', filters = 'chips', labels: labelsDefault = true, labelToggle = false, perRowControl = false, actions = null, selectable = false, selected: selectedProp, onSelect, onContextMenu, persistKey, className = '' }) {
+export default function IconBrowser({ items = [], filterGroups, title = 'Icons', defaultGround = 'light', filters = 'chips', labels: labelsDefault = true, labelToggle = false, perRowControl = false, actions = null, selectable = false, selected: selectedProp, onSelect, onContextMenu, persistKey, searchValue, onSearchChange, className = '' }) {
   const [saved] = useState(() => readSaved(persistKey))
   /* light ground by default (2026-10-09 — user: "make light ground default") */
   const [ground, setGround] = useState(saved.ground ?? defaultGround)
@@ -274,6 +277,8 @@ export default function IconBrowser({ items = [], filterGroups, title = 'Icons',
       totalCount={items.length}
       /* `tags` (kol-icons KOL_ICON_TAGS, 2026-11-05): search finds an icon by what it is for — "lab" finds the flasks */
       searchKeys={['name', 'tags']}
+      searchValue={searchValue}
+      onSearchChange={onSearchChange}
       filterGroups={dropdown ? [] : groups}
       mutuallyExclusiveFilters={groups.map((g) => g.key)}
       showCountOnlyWhenFiltering

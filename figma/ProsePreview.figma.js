@@ -4,7 +4,7 @@
 import figma from 'figma'
 
 const instance = figma.selectedInstance
-const collection = instance.getEnum('collection', { "prose": "prose", "doc": "doc" })
+const collection = instance.getEnum('doc', { "false": "prose", "true": "doc" })
 
 export default {
   example: collection === 'doc'
